@@ -1,0 +1,107 @@
+.gameplay_button {
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    transition-duration: 0.1s;
+    width: 18px;
+    height: 26px;
+    background-color: rgba(0, 0, 0, 0);
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.gameplay_button:active {
+    scale: 0.8 0.8;
+}
+
+.info_box_button {
+    font-size: 8px;
+    color: rgb(255, 255, 255);
+    right: 2px;
+    bottom: 2px;
+    position: absolute;
+    display: none;
+}
+
+.info_box_button_value {
+    padding-left: 10px;
+}
+
+.menu_content {
+    width: 100%;
+    min-height: 30px;
+}
+
+.menu_close_button:active {
+    scale: 0.8 0.8;
+}
+
+.inventory_more_button {
+    background-image: url('project://database/Assets/Sprites/Buttons/SellButton.png?fileID=2800000&guid=662692b9da6fe3e4697413d31ef49f69&type=3#SellButton');
+    width: 43px;
+    height: 18px;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 12px;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    background-color: rgba(0, 0, 0, 0);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    color: rgb(255, 255, 255);
+    font-size: 8px;
+    -unity-text-align: middle-center;
+    transition-duration: 0.1s;
+}
+
+.value_button {
+    font-size: 6px;
+    -unity-text-align: middle-center;
+    color: rgb(58, 58, 58);
+    padding-right: 3px;
+    padding-left: 20px;
+    transition-duration: 0.1s;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    background-color: rgba(0, 0, 0, 0);
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.value_button:active {
+    scale: 0.8 0.8;
+}
+
+.value_button:disabled {
+    opacity: 1;
+}
+
+.value_bob {
+    scale: 1.2 1.2;
+}
