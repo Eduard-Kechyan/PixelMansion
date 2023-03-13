@@ -13,7 +13,7 @@ public class InfoBox : MonoBehaviour
     public Color blueColor;
     public Color yellowColor;
     public BoardInteractions boardInteractions;
-    public Selection selection;
+    public SelectionManager selectionManager;
     public int openAmount = 10;
     public int unlockAmount = 5;
     public int sellAmount = 5;
@@ -84,7 +84,7 @@ public class InfoBox : MonoBehaviour
 
         switch (item.state)
         {
-            case Item.State.Crate: //////// CRATE ////////
+            case Types.State.Crate: //////// CRATE ////////
                 infoName.text = LOCALE.Get("info_box_crate");
 
                 textToSet = LOCALE.Get("info_box_crate_text");
@@ -93,7 +93,7 @@ public class InfoBox : MonoBehaviour
 
                 actionType = ActionType.Open;
                 break;
-            case Item.State.Locker: //////// LOCKER ////////
+            case Types.State.Locker: //////// LOCKER ////////
                 infoName.text = item.itemName + " " + LOCALE.Get("info_box_locker");
 
                 textToSet = LOCALE.Get("info_box_locker_text");
@@ -113,7 +113,7 @@ public class InfoBox : MonoBehaviour
 
                 switch (item.type)
                 {
-                    case Item.Type.Gen:
+                    case Types.Type.Gen:
                         if (item.isMaxLavel)
                         {
                             textToSet = LOCALE.Get("info_box_gen_max");
@@ -232,17 +232,17 @@ public class InfoBox : MonoBehaviour
     {
         switch (newItem.state)
         {
-            case Item.State.Crate:
+            case Types.State.Crate:
                 textToSet = LOCALE.Get("info_box_crate_text");
                 break;
-            case Item.State.Locker:
+            case Types.State.Locker:
 
                 textToSet = LOCALE.Get("info_box_locker_text");
                 break;
             default:
                 switch (newItem.type)
                 {
-                    case Item.Type.Gen:
+                    case Types.Type.Gen:
                         if (newItem.isMaxLavel)
                         {
                             textToSet = LOCALE.Get("info_box_gen_max");
@@ -276,23 +276,23 @@ public class InfoBox : MonoBehaviour
             case ActionType.Open:
                 boardInteractions.OpenItem(item, openAmount, true);
                 Select(item);
-                selection.Select("both", false);
+                selectionManager.Select("both", false);
                 break;
             case ActionType.Unlock:
                 boardInteractions.OpenItem(item, unlockAmount, false);
                 Select(item);
-                selection.Select("both", false);
+                selectionManager.Select("both", false);
                 break;
             case ActionType.Sell:
                 boardInteractions.RemoveItem(item, sellAmount);
                 Unselect(true);
-                selection.UnselectAlt();
+                selectionManager.UnselectAlt();
                 SetUndoButton(true);
                 break;
             case ActionType.Remove:
                 boardInteractions.RemoveItem(item);
                 Unselect(true);
-                selection.UnselectAlt();
+                selectionManager.UnselectAlt();
                 SetUndoButton();
                 break;
             case ActionType.Undo:

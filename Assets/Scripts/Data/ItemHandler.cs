@@ -13,9 +13,9 @@ public class ItemHandler : MonoBehaviour
         Vector3 pos,
         GameObject tile,
         float tileSize,
-        Item.Group group,
+        Types.Group group,
         string spriteName,
-        Item.State state = Item.State.Default,
+        Types.State state = Types.State.Default,
         int crate = 0
     )
     {
@@ -29,10 +29,9 @@ public class ItemHandler : MonoBehaviour
         newItem.itemName = itemData.itemName;
         newItem.level = itemData.level;
         newItem.state = state; // From the board
-        newItem.type = itemData.type;
+        newItem.type = Types.Type.Default;
         newItem.hasLevel = itemData.hasLevel;
         newItem.parents = itemData.parents;
-        newItem.generates = itemData.generates;
         newItem.isMaxLavel = itemData.isMaxLavel;
         newItem.group = group; // From the board
         newItem.crateSprite = crateSprites[crate]; // From the board
@@ -55,10 +54,54 @@ public class ItemHandler : MonoBehaviour
         return newItem;
     }
 
-    // Find the item by group and anme
-    Types.ItemsData FindItem(Item.Group group, string spriteName)
+    public Item CreateGenerator(
+        Vector3 pos,
+        GameObject tile,
+        float tileSize,
+        Types.GenGroup genGroup,
+        string spriteName,
+        Types.State state = Types.State.Default,
+        int crate = 0
+    )
     {
-        //Debug.Log(group);
+        Types.GeneratorsData generatorData = FindGenerator(genGroup, spriteName);
+
+        // Instantiate item
+        GameObject newItemPre = Instantiate(item, pos, Quaternion.identity);
+        Item newItem = newItemPre.GetComponent<Item>();
+
+        newItem.sprite = generatorData.sprite;
+        newItem.itemName = generatorData.itemName;
+        newItem.level = generatorData.level;
+        newItem.state = state; // From the board
+        newItem.type = Types.Type.Default;
+        newItem.hasLevel = generatorData.hasLevel;
+        newItem.creates = generatorData.creates;
+        newItem.isMaxLavel = generatorData.isMaxLavel;
+        newItem.genGroup = genGroup; // From the board
+        newItem.crateSprite = crateSprites[crate]; // From the board
+
+        if (!generatorData.isMaxLavel)
+        {
+            newItem.nextName = GetNextGenerator(genGroup, spriteName);
+        }
+
+        // Set item scale
+        newItem.transform.localScale = new Vector3(
+            tileSize,
+            tileSize,
+            newItem.transform.localScale.y
+        );
+
+        // Set item position
+        newItem.transform.parent = tile.transform;
+
+        return newItem;
+    }
+
+    //////// FIND ////////
+    Types.ItemsData FindItem(Types.Group group, string spriteName)
+    {
         Types.ItemsData foundItem = new Types.ItemsData();
 
         Types.Items[] data = GameData.itemsData;
@@ -80,8 +123,31 @@ public class ItemHandler : MonoBehaviour
         return foundItem;
     }
 
-    // Get next item's name
-    string GetNextItem(Item.Group group, string spriteName)
+    Types.GeneratorsData FindGenerator(Types.GenGroup genGroup, string spriteName)
+    {
+        Types.GeneratorsData foundItem = new Types.GeneratorsData();
+
+        Types.Generators[] data = GameData.generatorsData;
+
+        for (int i = 0; i < data.Length; i++)
+        {
+            if (genGroup == data[i].genGroup)
+            {
+                for (int j = 0; j < data[i].content.Length; j++)
+                {
+                    if (spriteName == data[i].content[j].sprite.name)
+                    {
+                        foundItem = data[i].content[j];
+                    }
+                }
+            }
+        }
+
+        return foundItem;
+    }
+
+    //////// NEXT NAME ////////
+    string GetNextItem(Types.Group group, string spriteName)
     {
         string nextName = "";
 
@@ -90,6 +156,32 @@ public class ItemHandler : MonoBehaviour
         for (int i = 0; i < data.Length; i++)
         {
             if (group == data[i].group)
+            {
+                for (int j = 0; j < data[i].content.Length; j++)
+                {
+                    if (
+                        spriteName == data[i].content[j].sprite.name
+                        && data[i].content[j + 1] != null
+                    )
+                    {
+                        nextName = data[i].content[j + 1].itemName;
+                    }
+                }
+            }
+        }
+
+        return nextName;
+    }
+
+    string GetNextGenerator(Types.GenGroup group, string spriteName)
+    {
+        string nextName = "";
+
+        Types.Generators[] data = GameData.generatorsData;
+
+        for (int i = 0; i < data.Length; i++)
+        {
+            if (group == data[i].genGroup)
             {
                 for (int j = 0; j < data[i].content.Length; j++)
                 {

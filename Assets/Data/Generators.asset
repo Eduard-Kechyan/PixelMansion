@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4203ecd0e53d9fc498dd02c56ad66e86, type: 3}
+  m_Name: Generators
+  m_EditorClassIdentifier: 
+  content:
+  - genGroup: 0
+    hasLevel: 1
+    itemName: Mine Cart
+    creates:
+    - group: 0
+      chance: 85
+    - group: 1
+      chance: 10
+    - group: 2
+      chance: 5
+    content:
+    - sprite: {fileID: 21300000, guid: 1c8d58bf4c3b7e2488afd145982b99f9, type: 3}
+      itemName: 
+      level: 1
+      genGroup: 0
+      creates: []
+      unlocked: 0
+      isMaxLavel: 0
+      hasLevel: 0
+    - sprite: {fileID: 21300000, guid: 1c8d58bf4c3b7e2488afd145982b99f9, type: 3}
+      itemName: 
+      level: 2
+      genGroup: 0
+      creates: []
+      unlocked: 0
+      isMaxLavel: 0
+      hasLevel: 0

@@ -14,254 +14,380 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   content:
   - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
+    type: 0
     group: 0
+    genGroup: 0
     state: 1
     crate: 2
   - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
+    type: 0
     group: 0
+    genGroup: 0
     state: 1
     crate: 0
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 21300000, guid: 1c8d58bf4c3b7e2488afd145982b99f9, type: 3}
-    group: 1
+    type: 1
+    group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 2
   - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 2
   - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 0
   - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 21300000, guid: 33390d7654178a245a98c808b3dd2e56, type: 3}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 0
   - sprite: {fileID: 21300000, guid: 33390d7654178a245a98c808b3dd2e56, type: 3}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 21300000, guid: 33390d7654178a245a98c808b3dd2e56, type: 3}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 2
   - sprite: {fileID: 21300000, guid: 33390d7654178a245a98c808b3dd2e56, type: 3}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1
   - sprite: {fileID: 0}
+    type: 0
     group: 0
+    genGroup: 0
     state: 0
     crate: 1

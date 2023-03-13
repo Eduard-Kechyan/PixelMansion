@@ -34,9 +34,7 @@ public class BoardInteractions : MonoBehaviour
     private VisualElement root;
     private VisualElement dragOverlay;
     private GameObject initialTile;
-    private Selection selection;
-    private SelectManager selectManager;
-    private DoubleTapManager doubleTapManager;
+    private SelectionManager selectionManager;
     private InitializeBoard initializeBoard;
     private Action callback;
     private bool previousInteractionsEnabled = true;
@@ -59,11 +57,9 @@ public class BoardInteractions : MonoBehaviour
         soundManager = SoundManager.Instance;
         dataManager = DataManager.Instance;
         itemHandler = dataManager.GetComponent<ItemHandler>();
-        doubleTapManager = GetComponent<DoubleTapManager>();
 
-        // Cache selection
-        selection = GetComponent<Selection>();
-        selectManager = GetComponent<SelectManager>();
+        // Cache selectionManager
+        selectionManager = GetComponent<SelectionManager>();
 
         // Cache initializeBoard
         initializeBoard = GetComponent<InitializeBoard>();
@@ -127,8 +123,8 @@ public class BoardInteractions : MonoBehaviour
                             if (currentItem != null && currentItem.isSelected)
                             {
                                 isSelected = false;
-                                selection.Unselect("both");
-                                selection.Select("only");
+                                selectionManager.Unselect("both");
+                                selectionManager.Select("only");
                             }
 
                             // Drag the item around
@@ -161,10 +157,7 @@ public class BoardInteractions : MonoBehaviour
                     else
                     {
                         // Select the item
-                        if (selectManager.SelectItem(worldPos))
-                        {
-                            doubleTapManager.DoubleTapped();
-                        }
+                        selectionManager.SelectItem(worldPos);
                     }
                 }
             }
@@ -206,18 +199,18 @@ public class BoardInteractions : MonoBehaviour
             Item item = hit.transform.gameObject.GetComponent<Item>();
 
             // Check if gameobject is a item and isn't empty and if it isn't a crate or locked
-            if (item != null && item.state != Item.State.Crate && item.state != Item.State.Locker)
+            if (item != null && item.state != Types.State.Crate && item.state != Types.State.Locker)
             {
                 if (currentItem != null && currentItem.isSelected)
                 {
-                    selection.Unselect("both");
+                    selectionManager.Unselect("both");
                 }
 
                 // Set current item
                 currentItem = item;
 
                 // Show selected item's info in the info box
-                selection.Select("info");
+                selectionManager.Select("info");
 
                 // Start dragging the item
                 StartDragging();
@@ -361,7 +354,7 @@ public class BoardInteractions : MonoBehaviour
                     && !otherItem.isMaxLavel
                 )
                 {
-                    if (otherItem.state != Item.State.Crate)
+                    if (otherItem.state != Types.State.Crate)
                     {
                         Merge(otherItem);
 
@@ -370,7 +363,10 @@ public class BoardInteractions : MonoBehaviour
                 }
                 else
                 {
-                    if (otherItem.state != Item.State.Crate && otherItem.state != Item.State.Locker)
+                    if (
+                        otherItem.state != Types.State.Crate
+                        && otherItem.state != Types.State.Locker
+                    )
                     {
                         Swap(otherItem);
 
@@ -400,7 +396,7 @@ public class BoardInteractions : MonoBehaviour
         SetBoardData(initialTile, tile);
 
         // Select item
-        selection.Select("both");
+        selectionManager.Select("both");
 
         CancelUndo();
     }
@@ -416,8 +412,10 @@ public class BoardInteractions : MonoBehaviour
         Item item = otherItem;
 
         // Get item data for the next item
-        Item.Group group = otherItem.group;
-        string spriteName = otherItem.next;
+        Types.Type type = otherItem.type;
+        Types.Group group = otherItem.group;
+        Types.GenGroup genGroup = otherItem.genGroup;
+        string spriteName = otherItem.nextSpriteName;
 
         currentItem.transform.parent = null;
         otherItem.transform.parent = null;
@@ -429,17 +427,33 @@ public class BoardInteractions : MonoBehaviour
         tempCurrentItem.ScaleToSize(Vector2.zero, scaleSpeed, true);
         otherItem.GetComponent<Item>().ScaleToSize(Vector2.zero, scaleSpeed, true);
 
+        // Get the prefab that's one level heigher
+        if (type == Types.Type.Default)
+        {
+            currentItem = itemHandler.CreateItem(
+                initialPos,
+                otherTile,
+                initializeBoard.tileSize,
+                group,
+                spriteName
+            );
+        }
+        else if (type == Types.Type.Gen)
+        {
+            currentItem = itemHandler.CreateGenerator(
+                initialPos,
+                otherTile,
+                initializeBoard.tileSize,
+                genGroup,
+                spriteName
+            );
+        }
+
         // Play merge audio
         soundManager.PlaySFX("Merge");
 
-        // Get the prefab that's one level heigher
-        currentItem = itemHandler.CreateItem(
-            initialPos,
-            otherTile,
-            initializeBoard.tileSize,
-            group,
-            spriteName
-        );
+        // Unlock the item
+        dataManager.UnlockItem(currentItem.sprite.name);
 
         // Set the new item's layer to ItemBusy
         currentItem.gameObject.layer = LayerMask.NameToLayer("ItemBusy");
@@ -461,7 +475,7 @@ public class BoardInteractions : MonoBehaviour
     void MergeBackCallback()
     {
         // Select item
-        selection.Select("both", false);
+        selectionManager.Select("both", false);
     }
 
     void Swap(Item otherItem)
@@ -484,7 +498,7 @@ public class BoardInteractions : MonoBehaviour
         SwapBoardData(initialTile, otherTile);
 
         // Select item
-        selection.Select("both");
+        selectionManager.Select("both");
 
         CancelUndo();
     }
@@ -515,7 +529,7 @@ public class BoardInteractions : MonoBehaviour
     void MoveBackCallback()
     {
         // Select item
-        selection.Select("both");
+        selectionManager.Select("both");
     }
 
     void CheckForCrate(Vector3 center)
@@ -531,7 +545,7 @@ public class BoardInteractions : MonoBehaviour
         {
             Item hitItem = hitCollider.GetComponent<Item>();
 
-            if (hitItem.state == Item.State.Crate)
+            if (hitItem.state == Types.State.Crate)
             {
                 hitItem.OpenCrate();
 
@@ -633,9 +647,9 @@ public class BoardInteractions : MonoBehaviour
     {
         GameObject itemTile = item.transform.parent.gameObject;
 
-        if (GameData.boardData[GetTileOrder(itemTile)].state == Item.State.Crate)
+        if (GameData.boardData[GetTileOrder(itemTile)].state == Types.State.Crate)
         {
-            GameData.boardData[GetTileOrder(itemTile)].state = Item.State.Locker;
+            GameData.boardData[GetTileOrder(itemTile)].state = Types.State.Locker;
 
             dataManager.SaveBoard();
         }
@@ -645,9 +659,9 @@ public class BoardInteractions : MonoBehaviour
     {
         GameObject itemTile = item.transform.parent.gameObject;
 
-        if (GameData.boardData[GetTileOrder(itemTile)].state == Item.State.Locker)
+        if (GameData.boardData[GetTileOrder(itemTile)].state == Types.State.Locker)
         {
-            GameData.boardData[GetTileOrder(itemTile)].state = Item.State.Default;
+            GameData.boardData[GetTileOrder(itemTile)].state = Types.State.Default;
 
             dataManager.SaveBoard();
         }
@@ -692,7 +706,7 @@ public class BoardInteractions : MonoBehaviour
 
             GameData.boardData[GetTileOrder(undoTile)] = undoBoardItem;
 
-            selectManager.SelectItemAfterUndo();
+            selectionManager.SelectItemAfterUndo();
 
             if (sellUndoAmount > 0)
             {

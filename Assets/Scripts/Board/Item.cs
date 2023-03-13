@@ -6,8 +6,14 @@ using UnityEngine;
 public class Item : MonoBehaviour
 {
     // Names
+    [ReadOnly]
     public string itemName = "";
+
+    [HideInInspector]
     public string itemLevelName = "";
+
+    [HideInInspector]
+    public string nextSpriteName;
 
     [HideInInspector]
     public string nextName = "";
@@ -22,38 +28,15 @@ public class Item : MonoBehaviour
 
     public int level = 1;
 
-    [HideInInspector]
-    public string next;
+    public Types.Group group;
+    public Types.GenGroup genGroup;
+    public Types.Creates[] creates;
 
-    public enum Group
-    {
-        Metals,
-        MetalsGen,
-        Tree
-    };
+    public Types.GenGroup[] parents;
 
-    public Group group;
+    public Types.State state = Types.State.Default;
 
-    public Group[] parents;
-
-    public Types.Generates[] generates;
-
-    public enum State
-    {
-        Default,
-        Crate,
-        Locker
-    };
-
-    public State state = State.Default;
-
-    public enum Type
-    {
-        Default,
-        Gen
-    };
-
-    public Type type = Type.Default;
+    public Types.Type type = Types.Type.Default;
 
     [HideInInspector]
     public Sprite sprite = null;
@@ -157,7 +140,14 @@ public class Item : MonoBehaviour
             itemLevelName = itemName + " (Level " + level + ")";
         }
 
-        next = group + "Item" + (level + 1);
+        if (type == Types.Type.Default)
+        {
+            nextSpriteName = group + "Item" + (level + 1);
+        }
+        else if (type == Types.Type.Gen)
+        {
+            nextSpriteName = genGroup + "Gen" + (level + 1);
+        }
 
         itemChild.GetComponent<SpriteRenderer>().sprite = sprite;
         crateChild.GetComponent<SpriteRenderer>().sprite = crateSprite;
@@ -167,20 +157,20 @@ public class Item : MonoBehaviour
 
     void CheckChildren()
     {
-        if (state == State.Crate)
+        if (state == Types.State.Crate)
         {
             crateChild.SetActive(true);
             itemChild.SetActive(false);
         }
 
-        if (state == State.Locker)
+        if (state == Types.State.Locker)
         {
             lockerChild.SetActive(true);
             crateChild.SetActive(false);
             itemChild.SetActive(true);
         }
 
-        if (state == State.Default)
+        if (state == Types.State.Default)
         {
             lockerChild.SetActive(false);
             crateChild.SetActive(false);
@@ -195,9 +185,9 @@ public class Item : MonoBehaviour
 
     public void OpenCrate()
     {
-        if (state == State.Crate)
+        if (state == Types.State.Crate)
         {
-            state = State.Locker;
+            state = Types.State.Locker;
 
             CheckChildren();
         }
@@ -205,9 +195,9 @@ public class Item : MonoBehaviour
 
     public void UnlockLock()
     {
-        if (state == State.Locker)
+        if (state == Types.State.Locker)
         {
-            state = State.Default;
+            state = Types.State.Default;
 
             CheckChildren();
         }

@@ -17,6 +17,7 @@ public class GameData : MonoBehaviour
 
     // Items data
     public static Types.Items[] itemsData;
+    public static Types.Generators[] generatorsData;
 
     //public static Types.Items[] storageData;
     public static Types.Board[] boardData;
@@ -25,13 +26,17 @@ public class GameData : MonoBehaviour
     private static Values values;
     private static DataManager dataManager;
 
+    private static Sprite[] itemsSprites;
+    private static Sprite[] generatorsSprites;
+
     void Start()
     {
         values = GetComponent<Values>();
         dataManager = GetComponent<DataManager>();
     }
 
-    // Set
+    //////// SET ////////
+
     public static void SetExperience(float amount, bool initial = false)
     {
         experience = amount;
@@ -82,7 +87,8 @@ public class GameData : MonoBehaviour
         }
     }
 
-    // Update
+    //////// UPDATE ////////
+
     public static bool UpdateExperience(float amount = 1)
     {
         experience += amount;
@@ -189,5 +195,41 @@ public class GameData : MonoBehaviour
         }
 
         return false;
+    }
+
+    //////// OTHER ////////
+
+    public static void LoadSprites()
+    {
+        // Load spirtes from resources
+        itemsSprites = Resources.LoadAll<Sprite>("Sprites/Items");
+        generatorsSprites = Resources.LoadAll<Sprite>("Sprites/Generators");
+    }
+
+    // Get Sprite from sprite name
+    public static Sprite GetSprite(string name, Types.Type type)
+    {
+        if (type == Types.Type.Default)
+        {
+            foreach (Sprite sprite in itemsSprites)
+            {
+                if (sprite.name == name)
+                {
+                    return sprite;
+                }
+            }
+        }
+        else if ((type == Types.Type.Gen))
+        {
+            foreach (Sprite sprite in generatorsSprites)
+            {
+                if (sprite.name == name)
+                {
+                    return sprite;
+                }
+            }
+        }
+
+        return null;
     }
 }

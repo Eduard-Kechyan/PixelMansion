@@ -64,7 +64,7 @@ public class InfoMenu : MonoBehaviour
             // Title
             string title;
 
-            if (item.type == Item.Type.Gen)
+            if (item.type == Types.Type.Gen)
             {
                 title = item.itemLevelName;
             }
@@ -246,25 +246,25 @@ public class InfoMenu : MonoBehaviour
         }
     }
 
-    Sprite GetParentSprite(Item.Group parentGroup)
+    Sprite GetParentSprite(Types.GenGroup parentGroup)
     {
         Sprite sprite = null;
 
-        for (int i = 0; i < GameData.itemsData.Length; i++)
+        for (int i = 0; i < GameData.generatorsData.Length; i++)
         {
-            if (parentGroup == GameData.itemsData[i].group)
+            if (parentGroup == GameData.generatorsData[i].genGroup)
             {
-                if (GameData.itemsData[i].content.Length == 1)
+                if (GameData.generatorsData[i].content.Length == 1)
                 {
-                    sprite = GameData.itemsData[i].content[0].sprite;
+                    sprite = GameData.generatorsData[i].content[0].sprite;
                 }
                 else
                 {
-                    for (int j = 0; j < GameData.itemsData[i].content.Length; j++)
+                    for (int j = 0; j < GameData.generatorsData[i].content.Length; j++)
                     {
-                        if (!GameData.itemsData[i].content[j].unlocked && j >= 0)
+                        if (!GameData.generatorsData[i].content[j].unlocked && j >= 0)
                         {
-                            sprite = GameData.itemsData[i].content[j - 1].sprite;
+                            sprite = GameData.generatorsData[i].content[j - 1].sprite;
 
                             break;
                         }

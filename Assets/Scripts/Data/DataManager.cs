@@ -22,6 +22,7 @@ public class DataManager : MonoBehaviour
 
     // Initial items
     public Items items;
+    public Generators generators;
     public InitialItems initialItems;
 
     // Whether data has been fully loaded
@@ -35,11 +36,10 @@ public class DataManager : MonoBehaviour
     private JsonHandler jsonHandler;
     private static Values values;
 
-    private string itemsJsonData;
+    /*private string itemsJsonData;
+    private string generatorJsonData;*/
     private string initialJsonData;
     private string unlockedJsonData;
-
-    private Sprite[] sprites;
 
     // Handle instance
     void Awake()
@@ -61,14 +61,13 @@ public class DataManager : MonoBehaviour
         settings = new QuickSaveSettings() { CompressionMode = CompressionMode.None }; //TODO -  Set CompressionMode to in the final game Gzip
         writer = QuickSaveWriter.Create("Root", settings);
 
-        // Load spirtes from resources
-        sprites = Resources.LoadAll<Sprite>("Sprites/Items");
-
         // Cache JsonHandler
         jsonHandler = GetComponent<JsonHandler>();
 
         // Cache Values
         values = GetComponent<Values>();
+
+        GameData.LoadSprites();
 
 #if (UNITY_EDITOR)
         // Make this script run if we not starting from the Losding scene
@@ -86,14 +85,15 @@ public class DataManager : MonoBehaviour
         {
             writer
                 .Write("rootSet", true)
-                // Values
+                //////// Values ////////
                 .Write("experience", GameData.experience)
                 .Write("level", GameData.level)
                 .Write("energy", GameData.energy)
                 .Write("gold", GameData.gold)
                 .Write("gems", GameData.gems)
-                // Items
-                .Write("itemsData", ConvertItemsToJson())
+                //////// Items ////////
+                /*.Write("itemsData", ConvertItemsToJson(Types.Type.Default))
+                .Write("generatorsData", ConvertItemsToJson(Types.Type.Gen))*/
                 .Write("boardData", ConvertInitialItemsToJson())
                 .Write("unlockedData", GetInitialUnlocked())
                 .Commit();
@@ -111,21 +111,24 @@ public class DataManager : MonoBehaviour
     // Get object data from the initial data
     async Task GetData(bool initialLoad)
     {
-        string newItemsData = "";
+        /*string newItemsData = "";
+        string newGeneratorsData = "";*/
         string newBoardData = "";
         string newUnlockedData = "";
 
         if (initialLoad)
         {
             // Get json string from the initial json file
-            newItemsData = itemsJsonData;
+            /* newItemsData = itemsJsonData;
+             newGeneratorsData = generatorJsonData;*/
             newBoardData = initialJsonData;
             newUnlockedData = unlockedJsonData;
         }
         else
         {
             // Get json string from the saved json file
-            reader.Read<string>("itemsData", r => newItemsData = r);
+            /*reader.Read<string>("itemsData", r => newItemsData = r);
+            reader.Read<string>("generatorsData", r => newGeneratorsData = r);*/
             reader.Read<string>("boardData", r => newBoardData = r);
             reader.Read<string>("unlockedData", r => newUnlockedData = r);
 
@@ -139,9 +142,11 @@ public class DataManager : MonoBehaviour
         }
 
         // Get object from json
-        Types.ItemsJson[] itemsDataJson = JsonConvert.DeserializeObject<Types.ItemsJson[]>(
-            newItemsData
-        );
+        /* Types.ItemsJson[] itemsDataJson = JsonConvert.DeserializeObject<Types.ItemsJson[]>(
+             newItemsData
+         );
+         Types.GeneratorsJson[] generatorsDataJson =
+             JsonConvert.DeserializeObject<Types.GeneratorsJson[]>(newGeneratorsData);*/
         Types.BoardJson[] boardDataJson = JsonConvert.DeserializeObject<Types.BoardJson[]>(
             newBoardData
         );
@@ -151,7 +156,10 @@ public class DataManager : MonoBehaviour
         GameData.unlockedData = unlockedDataTemp;
 
         // Convert data
-        GameData.itemsData = jsonHandler.ConvertItemsFromJson(itemsDataJson);
+        GameData.itemsData = ConvertItems(items.content);
+        GameData.generatorsData = ConvertGenerators(generators.content);
+        /*GameData.itemsData = jsonHandler.ConvertItemsFromJson(itemsDataJson);
+        GameData.generatorsData = jsonHandler.ConvertGeneratorsFromJson(generatorsDataJson);*/
         GameData.boardData = jsonHandler.ConvertBoardFromJson(boardDataJson);
 
         // Finish Task
@@ -159,14 +167,104 @@ public class DataManager : MonoBehaviour
         await Task.Delay(500);
     }
 
+    Types.Items[] ConvertItems(Types.Items[] itemsContent)
+    {
+        Types.Items[] convertedItems = new Types.Items[itemsContent.Length];
+
+        for (int i = 0; i < itemsContent.Length; i++)
+        {
+            int count = 1;
+
+            Types.Items newObjectData = new Types.Items
+            {
+                group = itemsContent[i].group,
+                hasLevel = itemsContent[i].hasLevel,
+                itemName = itemsContent[i].itemName,
+                parents = itemsContent[i].parents,
+                content = new Types.ItemsData[itemsContent[i].content.Length]
+            };
+
+            for (int j = 0; j < itemsContent[i].content.Length; j++)
+            {
+                Types.ItemsData newInnerObjectData = new Types.ItemsData
+                {
+                    group = itemsContent[i].group,
+                    parents = itemsContent[i].parents,
+                    hasLevel = itemsContent[i].hasLevel,
+                    itemName =
+                        itemsContent[i].content[j].itemName != ""
+                            ? itemsContent[i].content[j].itemName
+                            : items.content[i].itemName,
+                    level = count,
+                    sprite = itemsContent[i].content[j].sprite,
+                    unlocked = CheckUnlocked(itemsContent[i].content[j].sprite.name),
+                    isMaxLavel = count == itemsContent[i].content.Length
+                };
+
+                newObjectData.content[j] = newInnerObjectData;
+
+                count++;
+            }
+
+            convertedItems[i] = newObjectData;
+        }
+
+        return convertedItems;
+    }
+
+    Types.Generators[] ConvertGenerators(Types.Generators[] generatorsCotent)
+    {
+        Types.Generators[] convertedGenerators = new Types.Generators[generatorsCotent.Length];
+
+        for (int i = 0; i < generatorsCotent.Length; i++)
+        {
+            int count = 1;
+
+            Types.Generators newObjectData = new Types.Generators
+            {
+                genGroup = generatorsCotent[i].genGroup,
+                hasLevel = generatorsCotent[i].hasLevel,
+                itemName = generatorsCotent[i].itemName,
+                creates = generatorsCotent[i].creates,
+                content = new Types.GeneratorsData[generatorsCotent[i].content.Length]
+            };
+
+            for (int j = 0; j < generatorsCotent[i].content.Length; j++)
+            {
+                Types.GeneratorsData newInnerObjectData = new Types.GeneratorsData
+                {
+                    genGroup = generatorsCotent[i].genGroup,
+                    creates = generatorsCotent[i].creates,
+                    hasLevel = generatorsCotent[i].hasLevel,
+                    itemName =
+                        generatorsCotent[i].content[j].itemName != ""
+                            ? generatorsCotent[i].content[j].itemName
+                            : items.content[i].itemName,
+                    level = count,
+                    sprite = generatorsCotent[i].content[j].sprite,
+                    unlocked = CheckUnlocked(generatorsCotent[i].content[j].sprite.name),
+                    isMaxLavel = count == generatorsCotent[i].content.Length
+                };
+
+                newObjectData.content[j] = newInnerObjectData;
+
+                count++;
+            }
+
+            convertedGenerators[i] = newObjectData;
+        }
+
+        return convertedGenerators;
+    }
+
     // Check if item is unlocked
-    public bool CheckUnlocked(string sprite)
+    bool CheckUnlocked(string spriteName)
     {
         bool found = false;
 
         for (int i = 0; i < GameData.unlockedData.Length; i++)
         {
-            if (sprite == GameData.unlockedData[i])
+            if (spriteName == GameData.unlockedData[i])
             {
                 found = true;
                 break;
@@ -240,18 +338,34 @@ public class DataManager : MonoBehaviour
         return unlockedJsonData;
     }
 
-    // Get Sprite from sprite name
-    public Sprite GetSprite(string name)
+    // Unlock item
+    public void UnlockItem(string spriteName)
     {
-        foreach (Sprite sprite in sprites)
+        bool found = false;
+
+        for (int i = 0; i < GameData.unlockedData.Length; i++)
         {
-            if (sprite.name == name)
+            if (spriteName == GameData.unlockedData[i])
             {
-                return sprite;
+                found = true;
+                break;
             }
         }
 
-        return null;
+        if (!found)
+        {
+            string[] newUnlockedData = new string[GameData.unlockedData.Length + 1];
+
+            for (int i = 0; i < GameData.unlockedData.Length; i++)
+            {
+                newUnlockedData[i] = GameData.unlockedData[i];
+            }
+
+            newUnlockedData[GameData.unlockedData.Length] = spriteName;
+
+            GameData.unlockedData.CopyTo(newUnlockedData, 0);
+            GameData.unlockedData = newUnlockedData;
+        }
     }
 
     //// SAVE ////
@@ -268,12 +382,24 @@ public class DataManager : MonoBehaviour
 
     //// CONVERT ////
 
-    string ConvertItemsToJson()
+    /*sstring ConvertItemsToJson(Types.Type type)
     {
-        itemsJsonData = JsonConvert.SerializeObject(jsonHandler.ConvertItemsToJson(items.content));
+        witch (type)
+        {
+            case Types.Type.Default:
+                itemsJsonData = JsonConvert.SerializeObject(
+                    jsonHandler.ConvertItemsToJson(items.content)
+                );
+                return itemsJsonData;
+            case Types.Type.Gen:
+                generatorJsonData = JsonConvert.SerializeObject(
+                    jsonHandler.ConvertGeneratorsToJson(generators.content)
+                );
+                return generatorJsonData;
+        }
 
-        return itemsJsonData;
-    }
+        return "";
+    }*/
 
     string ConvertInitialItemsToJson()
     {

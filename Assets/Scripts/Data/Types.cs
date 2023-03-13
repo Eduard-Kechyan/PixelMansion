@@ -5,16 +5,48 @@ using UnityEngine;
 
 public class Types : MonoBehaviour
 {
-    //// ITEMS ////
+    //// ITEMS ///
+    public enum GenGroup
+    {
+        MineCart,
+    }
+
+    public enum Group
+    {
+        Metals,
+        Crystals,
+        Coals,
+        Tree
+    };
+
+    public enum State
+    {
+        Default,
+        Crate,
+        Locker
+    };
+
+    public enum Type
+    {
+        Default,
+        Gen
+    };
+
+    [Serializable]
+    public class Creates
+    {
+        public Group group;
+        public float chance;
+    }
+
+    //// ITEMS DATA ////
     [Serializable]
     public class ItemsJson
     {
         public string group;
-        public string type;
         public bool hasLevel;
         public string itemName;
         public string[] parents;
-        public string[] generates;
         public ItemsDataJson[] content;
     }
 
@@ -25,9 +57,7 @@ public class Types : MonoBehaviour
         public string itemName;
         public int level;
         public string group;
-        public string type;
         public string[] parents;
-        public string[] generates;
         public bool unlocked;
         public bool isMaxLavel;
         public bool hasLevel;
@@ -36,12 +66,10 @@ public class Types : MonoBehaviour
     [Serializable]
     public class Items
     {
-        public Item.Group group;
-        public Item.Type type;
+        public Group group;
         public bool hasLevel;
         public string itemName;
-        public Item.Group[] parents;
-        public Generates[] generates;
+        public GenGroup[] parents;
         public ItemsData[] content;
     }
 
@@ -50,19 +78,15 @@ public class Types : MonoBehaviour
     {
         public Sprite sprite;
         public string itemName;
+
+        [ReadOnly]
         public int level;
 
         [HideInInspector]
-        public Item.Group group;
+        public Group group;
 
         [HideInInspector]
-        public Item.Type type;
-
-        [HideInInspector]
-        public Item.Group[] parents;
-
-        [HideInInspector]
-        public Generates[] generates;
+        public GenGroup[] parents;
 
         [HideInInspector]
         public bool unlocked;
@@ -74,11 +98,63 @@ public class Types : MonoBehaviour
         public bool hasLevel;
     }
 
+    //// GENERATORS DATA ////
     [Serializable]
-    public class Generates
+    public class GeneratorsJson
     {
-        public Item.Group group;
-        public float chance;
+        public string genGroup;
+        public bool hasLevel;
+        public string itemName;
+        public string[] creates;
+        public GeneratorsDataJson[] content;
+    }
+
+    [Serializable]
+    public class GeneratorsDataJson
+    {
+        public string sprite;
+        public string itemName;
+        public int level;
+        public string genGroup;
+        public string[] creates;
+        public bool unlocked;
+        public bool isMaxLavel;
+        public bool hasLevel;
+    }
+
+    [Serializable]
+    public class Generators
+    {
+        public GenGroup genGroup;
+        public bool hasLevel;
+        public string itemName;
+        public Creates[] creates;
+        public GeneratorsData[] content;
+    }
+
+    [Serializable]
+    public class GeneratorsData
+    {
+        public Sprite sprite;
+        public string itemName;
+
+        [ReadOnly]
+        public int level;
+
+        [HideInInspector]
+        public GenGroup genGroup;
+
+        [HideInInspector]
+        public Creates[] creates;
+
+        [HideInInspector]
+        public bool unlocked;
+
+        [HideInInspector]
+        public bool isMaxLavel;
+
+        [HideInInspector]
+        public bool hasLevel;
     }
 
     //// BOARD ////
@@ -86,7 +162,9 @@ public class Types : MonoBehaviour
     public class BoardJson
     {
         public string sprite;
+        public string type;
         public string group;
+        public string genGroup;
         public string state;
         public int crate;
     }
@@ -95,8 +173,10 @@ public class Types : MonoBehaviour
     public class Board
     {
         public Sprite sprite;
-        public Item.Group group;
-        public Item.State state;
+        public Type type;
+        public Group group;
+        public GenGroup genGroup;
+        public State state;
         public int crate;
     }
 }

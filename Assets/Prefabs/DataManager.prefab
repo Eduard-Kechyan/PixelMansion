@@ -64,6 +64,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ignoreInitialCheck: 0
   items: {fileID: 11400000, guid: 57c1070c394c056458be9ca08c7d6ee3, type: 2}
+  generators: {fileID: 11400000, guid: 0042b6014d742fe498a59b3ae3a5f8a5, type: 2}
   initialItems: {fileID: 11400000, guid: 4e4dfc5175592b245906d52a6ec1dcd6, type: 2}
   loaded: 0
 --- !u!114 &2647993437880791096
@@ -144,4 +145,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiDoc: {fileID: 0}
-  bobDuration: 0.1

@@ -154,15 +154,30 @@ public class InitializeBoard : MonoBehaviour
                 // Create item
                 if (GameData.boardData[count] != null && GameData.boardData[count].sprite != null)
                 {
-                    itemHandler.CreateItem(
-                        pos,
-                        newTile,
-                        tileSize,
-                        GameData.boardData[count].group,
-                        GameData.boardData[count].sprite.name,
-                        GameData.boardData[count].state,
-                        GameData.boardData[count].crate
-                    );
+                    if (GameData.boardData[count].type == Types.Type.Default)
+                    {
+                        itemHandler.CreateItem(
+                            pos,
+                            newTile,
+                            tileSize,
+                            GameData.boardData[count].group,
+                            GameData.boardData[count].sprite.name,
+                            GameData.boardData[count].state,
+                            GameData.boardData[count].crate
+                        );
+                    }
+                    else if (GameData.boardData[count].type == Types.Type.Gen)
+                    {
+                        itemHandler.CreateGenerator(
+                            pos,
+                            newTile,
+                            tileSize,
+                            GameData.boardData[count].genGroup,
+                            GameData.boardData[count].sprite.name,
+                            GameData.boardData[count].state,
+                            GameData.boardData[count].crate
+                        );
+                    }
                 }
 
                 // Increase count for the next loop
