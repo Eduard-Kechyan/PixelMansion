@@ -10,7 +10,6 @@ public class ItemHandler : MonoBehaviour
 
     // Create a new item on the board
     public Item CreateItem(
-        Vector3 pos,
         GameObject tile,
         float tileSize,
         Types.Group group,
@@ -22,7 +21,7 @@ public class ItemHandler : MonoBehaviour
         Types.ItemsData itemData = FindItem(group, spriteName);
 
         // Instantiate item
-        GameObject newItemPre = Instantiate(item, pos, Quaternion.identity);
+        GameObject newItemPre = Instantiate(item, tile.transform.position, Quaternion.identity);
         Item newItem = newItemPre.GetComponent<Item>();
 
         newItem.sprite = itemData.sprite;
@@ -55,7 +54,6 @@ public class ItemHandler : MonoBehaviour
     }
 
     public Item CreateGenerator(
-        Vector3 pos,
         GameObject tile,
         float tileSize,
         Types.GenGroup genGroup,
@@ -67,14 +65,14 @@ public class ItemHandler : MonoBehaviour
         Types.GeneratorsData generatorData = FindGenerator(genGroup, spriteName);
 
         // Instantiate item
-        GameObject newItemPre = Instantiate(item, pos, Quaternion.identity);
+        GameObject newItemPre = Instantiate(item, tile.transform.position, Quaternion.identity);
         Item newItem = newItemPre.GetComponent<Item>();
 
         newItem.sprite = generatorData.sprite;
         newItem.itemName = generatorData.itemName;
         newItem.level = generatorData.level;
         newItem.state = state; // From the board
-        newItem.type = Types.Type.Default;
+        newItem.type = Types.Type.Gen;
         newItem.hasLevel = generatorData.hasLevel;
         newItem.creates = generatorData.creates;
         newItem.isMaxLavel = generatorData.isMaxLavel;

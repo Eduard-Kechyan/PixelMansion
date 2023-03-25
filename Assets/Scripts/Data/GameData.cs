@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class GameData : MonoBehaviour
 {
+    // Board width in items
+    public const int WIDTH = 7;
+    public const int HEIGHT = 9;
+    public const int ITEM_COUNT = WIDTH * HEIGHT;
+
     public static float maxExperience = 100f;
     public static int maxLevel = 99;
     public static int maxOther = 9999;
@@ -19,8 +24,12 @@ public class GameData : MonoBehaviour
     public static Types.Items[] itemsData;
     public static Types.Generators[] generatorsData;
 
+    //// TEST DATA ////
+    public static Types.TestTile[,] testTilesPre = new Types.TestTile[WIDTH, HEIGHT];
+    public static Types.TestTile[,] testTiles = new Types.TestTile[WIDTH, HEIGHT];
+
     //public static Types.Items[] storageData;
-    public static Types.Board[] boardData;
+    public static Types.Board[,] boardData;
     public static string[] unlockedData = new string[0];
 
     private static Values values;
@@ -28,6 +37,21 @@ public class GameData : MonoBehaviour
 
     private static Sprite[] itemsSprites;
     private static Sprite[] generatorsSprites;
+
+    public static GameData Instance;
+
+    void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
 
     void Start()
     {

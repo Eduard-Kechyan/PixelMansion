@@ -38,12 +38,12 @@ public class SafeAreaHandler : MonoBehaviour
         height = Screen.height - Screen.safeArea.height;
 
         // Set top padding for top box
-        topPadding = Mathf.RoundToInt((height) / singlePixelWidth);
+        topPadding = Mathf.RoundToInt(height / singlePixelWidth);
 
         topBox.style.paddingTop = topPadding;
 
         // Calculated sizes
-        calculatedHeight = (((Screen.height - height) / singlePixelWidth) - manualSizes);
+        calculatedHeight = ((Screen.height - height) / singlePixelWidth) - manualSizes;
 
         if (alternativeAspectRatio)
         {
@@ -61,9 +61,7 @@ public class SafeAreaHandler : MonoBehaviour
 
     public float GetBottomOffset()
     {
-        float bottomOffset = 0f;
-
-        bottomOffset = options.resolvedStyle.height + (dividedHeight * 2);
+        float bottomOffset = options.resolvedStyle.height + (dividedHeight * 2);
 
         return bottomOffset;
     }

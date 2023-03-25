@@ -9,11 +9,6 @@ using Newtonsoft.Json;
 
 public class DataManager : MonoBehaviour
 {
-    // Board width in items
-    const int WIDTH = 7;
-    const int HEIGHT = 9;
-    public const int ITEM_COUNT = WIDTH * HEIGHT;
-
     // Instance
     public static DataManager Instance;
 
@@ -34,12 +29,14 @@ public class DataManager : MonoBehaviour
     public QuickSaveReader reader;
 
     private JsonHandler jsonHandler;
+    private InitializeBoard initializeBoard;
     private static Values values;
 
     /*private string itemsJsonData;
     private string generatorJsonData;*/
     private string initialJsonData;
     private string unlockedJsonData;
+    private string testTilesJsonData;
 
     // Handle instance
     void Awake()
@@ -85,7 +82,7 @@ public class DataManager : MonoBehaviour
         {
             writer
                 .Write("rootSet", true)
-                //////// Values ////////
+                //// TEST DATA ////
                 .Write("experience", GameData.experience)
                 .Write("level", GameData.level)
                 .Write("energy", GameData.energy)
@@ -96,6 +93,8 @@ public class DataManager : MonoBehaviour
                 .Write("generatorsData", ConvertItemsToJson(Types.Type.Gen))*/
                 .Write("boardData", ConvertInitialItemsToJson())
                 .Write("unlockedData", GetInitialUnlocked())
+                //.Write("testTiles", ConvertTestTilesToJson())
+                //////// Values ////////
                 .Commit();
 
             await GetData(true);
@@ -115,6 +114,8 @@ public class DataManager : MonoBehaviour
         string newGeneratorsData = "";*/
         string newBoardData = "";
         string newUnlockedData = "";
+        //// TEST DATA ////
+       // string newTestTilesData = "";
 
         if (initialLoad)
         {
@@ -123,6 +124,8 @@ public class DataManager : MonoBehaviour
              newGeneratorsData = generatorJsonData;*/
             newBoardData = initialJsonData;
             newUnlockedData = unlockedJsonData;
+            //// TEST DATA ////
+           // newTestTilesData = testTilesJsonData;
         }
         else
         {
@@ -131,6 +134,8 @@ public class DataManager : MonoBehaviour
             reader.Read<string>("generatorsData", r => newGeneratorsData = r);*/
             reader.Read<string>("boardData", r => newBoardData = r);
             reader.Read<string>("unlockedData", r => newUnlockedData = r);
+            //// TEST DATA ////
+            //reader.Read<string>("testTiles", r => newTestTilesData = r);
 
             GameData.SetExperience(reader.Read<float>("experience"), true);
             GameData.SetLevel(reader.Read<int>("level"), true);
@@ -151,6 +156,10 @@ public class DataManager : MonoBehaviour
             newBoardData
         );
         string[] unlockedDataTemp = JsonConvert.DeserializeObject<string[]>(newUnlockedData);
+        //// TEST DATA ////
+        /*Types.TestTile[,] testTilesDataJson = ConvertArrayTestTiles(
+            JsonConvert.DeserializeObject<Types.TestTile[]>(newTestTilesData)
+        );*/
 
         GameData.unlockedData.CopyTo(unlockedDataTemp, 0);
         GameData.unlockedData = unlockedDataTemp;
@@ -160,7 +169,11 @@ public class DataManager : MonoBehaviour
         GameData.generatorsData = ConvertGenerators(generators.content);
         /*GameData.itemsData = jsonHandler.ConvertItemsFromJson(itemsDataJson);
         GameData.generatorsData = jsonHandler.ConvertGeneratorsFromJson(generatorsDataJson);*/
-        GameData.boardData = jsonHandler.ConvertBoardFromJson(boardDataJson);
+        GameData.boardData = ConvertArrayToBoard(jsonHandler.ConvertBoardFromJson(boardDataJson));
+
+        //// TEST DATA ////
+       // GameData.testTiles = testTilesDataJson;
+        //TestTiles.Instance.InitializeTestTiles();
 
         // Finish Task
         loaded = true;
@@ -374,7 +387,7 @@ public class DataManager : MonoBehaviour
     public void SaveBoard()
     {
         string newBoardData = JsonConvert.SerializeObject(
-            jsonHandler.ConvertBoardToJson(GameData.boardData)
+            jsonHandler.ConvertBoardToJson(ConvertBoardToArray(GameData.boardData))
         );
 
         writer.Write("boardData", newBoardData).Commit();
@@ -415,9 +428,113 @@ public class DataManager : MonoBehaviour
     [ContextMenu("Loop Board Data")]
     public void LoopBoardData()
     {
-        for (int i = 0; i < GameData.boardData.Length; i++)
+        foreach (Types.Board boardItem in GameData.boardData)
         {
-            Debug.Log(GameData.boardData[i].sprite);
+            Debug.Log(boardItem.sprite);
         }
+    }
+
+    Types.Board[,] ConvertArrayToBoard(Types.Board[] boardArray)
+    {
+        Types.Board[,] newBoardData = new Types.Board[GameData.WIDTH, GameData.HEIGHT];
+
+        int count = 0;
+
+        for (int i = 0; i < GameData.WIDTH; i++)
+        {
+            for (int j = 0; j < GameData.HEIGHT; j++)
+            {
+                newBoardData[i, j] = new Types.Board
+                {
+                    sprite = boardArray[count].sprite,
+                    type = boardArray[count].type,
+                    group = boardArray[count].group,
+                    genGroup = boardArray[count].genGroup,
+                    state = boardArray[count].state,
+                    crate = boardArray[count].crate,
+                    order = count,
+                    loc = new Vector2Int(i, j)
+                };
+
+                count++;
+            }
+        }
+
+        return newBoardData;
+    }
+
+    Types.Board[] ConvertBoardToArray(Types.Board[,] boardData)
+    {
+        Types.Board[] newBoardArray = new Types.Board[GameData.ITEM_COUNT];
+
+        int count = 0;
+
+        foreach (Types.Board boardItem in boardData)
+        {
+            newBoardArray[count] = new Types.Board
+            {
+                sprite = boardItem.sprite,
+                type = boardItem.type,
+                group = boardItem.group,
+                genGroup = boardItem.genGroup,
+                state = boardItem.state,
+                crate = boardItem.crate,
+                order = 0,
+                loc = Vector2Int.zero
+            };
+
+            count++;
+        }
+
+        return newBoardArray;
+    }
+
+    //// TEST DATA ////
+
+    string ConvertTestTilesToJson()
+    {
+        /*Types.TestTile[] testTilesArray = new Types.TestTile[GameData.ITEM_COUNT];
+
+       int count = 0;
+
+        foreach (Types.TestTile i in GameData.testTilesPre)
+        {
+            testTilesArray[count] = new Types.TestTile
+            {
+                order = i.order,
+                x = i.x,
+                y = i.y
+            };
+
+            count++;
+        }
+
+        testTilesJsonData = JsonConvert.SerializeObject(testTilesArray);*/
+
+        return testTilesJsonData;
+    }
+
+    Types.TestTile[,] ConvertArrayTestTiles(Types.TestTile[] testTilesArray)
+    {
+        Types.TestTile[,] newTestTiles = new Types.TestTile[GameData.WIDTH, GameData.HEIGHT];
+
+        /*int count = 0;
+
+        for (int i = 0; i < GameData.WIDTH; i++)
+        {
+            for (int j = 0; j < GameData.HEIGHT; j++)
+            {
+                newTestTiles[i, j] = new Types.TestTile
+                {
+                    order = testTilesArray[count].order,
+                    x = testTilesArray[count].x,
+                    y = testTilesArray[count].y
+                };
+
+                count++;
+            }
+        }*/
+
+        return newTestTiles;
     }
 }

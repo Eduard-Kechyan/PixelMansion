@@ -213,6 +213,8 @@ public class JsonHandler : MonoBehaviour
                 genGroup = (Types.GenGroup)
                     System.Enum.Parse(typeof(Types.GenGroup), jsonData[i].genGroup),
                 crate = jsonData[i].crate,
+                order = 0,
+                loc = Vector2Int.zero,
             };
 
             objectData[i] = newObjectData;

@@ -60,7 +60,7 @@ public class Item : MonoBehaviour
     public GameObject itemChild;
     private GameObject completionChild;
 
-    private void Start()
+    void Start()
     {
         // Cache animation
         anim = GetComponent<Animation>();

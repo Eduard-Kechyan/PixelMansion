@@ -16,13 +16,14 @@ MonoBehaviour:
   - genGroup: 0
     hasLevel: 1
     itemName: Mine Cart
+    createsTotal: 100
     creates:
     - group: 0
-      chance: 85
+      chance: 70
     - group: 1
-      chance: 10
+      chance: 20
     - group: 2
-      chance: 5
+      chance: 10
     content:
     - sprite: {fileID: 21300000, guid: 1c8d58bf4c3b7e2488afd145982b99f9, type: 3}
       itemName: 

@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1421027688365102118}
   - component: {fileID: 1231640885035286458}
-  - component: {fileID: 1421027688365102117}
   - component: {fileID: 7561733915583812847}
+  - component: {fileID: 4723663706656572997}
   m_Layer: 8
   m_Name: Item
   m_TagString: Untagged
@@ -49,6 +49,25 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -65,30 +84,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &1421027688365102117
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1421027688365102107}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3509c79be9fbb0c44b067bf0cf088046, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemName: 
-  isSelected: 0
-  isCompleted: 0
-  isDragging: 0
-  isPlaying: 0
-  level: 1
-  groupObject: {fileID: 0}
-  dataManager: {fileID: -7698504415603008170, guid: af9e0bfb46c520a4fac5c30843ed2d4e, type: 3}
-  state: 0
-  next: 
-  sprite: {fileID: 0}
-  itemChild: {fileID: 0}
 --- !u!111 &7561733915583812847
 Animation:
   m_ObjectHideFlags: 0
@@ -105,6 +100,38 @@ Animation:
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!114 &4723663706656572997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1421027688365102107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6b3e29215424214484ca49570a4df1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemName: 
+  itemLevelName: 
+  nextSpriteName: 
+  nextName: 
+  isSelected: 0
+  isCompleted: 0
+  isDragging: 0
+  isPlaying: 0
+  isMaxLavel: 0
+  hasLevel: 0
+  level: 1
+  group: 0
+  genGroup: 0
+  creates: []
+  parents: 
+  state: 0
+  type: 0
+  sprite: {fileID: 0}
+  crateSprite: {fileID: 0}
+  itemChild: {fileID: 0}
 --- !u!1 &2437546720063912707
 GameObject:
   m_ObjectHideFlags: 0
@@ -346,12 +373,12 @@ SpriteRenderer:
   m_SortingLayerID: 562084113
   m_SortingLayer: 3
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 31fe7071a1868d24abe629b269f1c1da, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5889a0a2b4de54b42ae7c45d4adf1e0a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.24, y: 0.24}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

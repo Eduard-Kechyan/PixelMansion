@@ -39,8 +39,24 @@ public class Types : MonoBehaviour
         public float chance;
     }
 
-    //// ITEMS DATA ////
+    //// TEST DATA ////
     [Serializable]
+    public class TestTileDistance
+    {
+        public int order;
+        public float distance;
+    }
+
+    [Serializable]
+    public class TestTile
+    {
+        public int order;
+        public int x;
+        public int y;
+    }
+
+    //// ITEMS DATA ////
+    /*[Serializable]
     public class ItemsJson
     {
         public string group;
@@ -61,7 +77,7 @@ public class Types : MonoBehaviour
         public bool unlocked;
         public bool isMaxLavel;
         public bool hasLevel;
-    }
+    }*/
 
     [Serializable]
     public class Items
@@ -79,7 +95,7 @@ public class Types : MonoBehaviour
         public Sprite sprite;
         public string itemName;
 
-        [ReadOnly]
+        [HideInInspector]
         public int level;
 
         [HideInInspector]
@@ -99,28 +115,28 @@ public class Types : MonoBehaviour
     }
 
     //// GENERATORS DATA ////
-    [Serializable]
-    public class GeneratorsJson
-    {
-        public string genGroup;
-        public bool hasLevel;
-        public string itemName;
-        public string[] creates;
-        public GeneratorsDataJson[] content;
-    }
-
-    [Serializable]
-    public class GeneratorsDataJson
-    {
-        public string sprite;
-        public string itemName;
-        public int level;
-        public string genGroup;
-        public string[] creates;
-        public bool unlocked;
-        public bool isMaxLavel;
-        public bool hasLevel;
-    }
+    /* [Serializable]
+     public class GeneratorsJson
+     {
+         public string genGroup;
+         public bool hasLevel;
+         public string itemName;
+         public string[] creates;
+         public GeneratorsDataJson[] content;
+     }
+ 
+     [Serializable]
+     public class GeneratorsDataJson
+     {
+         public string sprite;
+         public string itemName;
+         public int level;
+         public string genGroup;
+         public string[] creates;
+         public bool unlocked;
+         public bool isMaxLavel;
+         public bool hasLevel;
+     }*/
 
     [Serializable]
     public class Generators
@@ -128,7 +144,11 @@ public class Types : MonoBehaviour
         public GenGroup genGroup;
         public bool hasLevel;
         public string itemName;
+
+        [ReadOnly]
+        public int createsTotal;
         public Creates[] creates;
+
         public GeneratorsData[] content;
     }
 
@@ -138,7 +158,7 @@ public class Types : MonoBehaviour
         public Sprite sprite;
         public string itemName;
 
-        [ReadOnly]
+        [HideInInspector]
         public int level;
 
         [HideInInspector]
@@ -159,6 +179,13 @@ public class Types : MonoBehaviour
 
     //// BOARD ////
     [Serializable]
+    public class BoardDistance
+    {
+        public int order;
+        public float distance;
+    }
+
+    [Serializable]
     public class BoardJson
     {
         public string sprite;
@@ -178,5 +205,11 @@ public class Types : MonoBehaviour
         public GenGroup genGroup;
         public State state;
         public int crate;
+
+        [HideInInspector]
+        public int order;
+
+        [HideInInspector]
+        public Vector2Int loc;
     }
 }

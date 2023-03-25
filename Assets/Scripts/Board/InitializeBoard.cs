@@ -6,9 +6,6 @@ using UnityEngine.UIElements;
 
 public class InitializeBoard : MonoBehaviour
 {
-    const int WIDTH = 7;
-    const int HEIGHT = 9;
-
     public UIDocument uiDoc;
     public GameObject boardTiles;
     public GameObject tile;
@@ -127,9 +124,9 @@ public class InitializeBoard : MonoBehaviour
     {
         int count = 0;
 
-        for (int x = 0; x < WIDTH; x++)
+        for (int x = 0; x < GameData.WIDTH; x++)
         {
-            for (int y = 0; y < HEIGHT; y++)
+            for (int y = 0; y < GameData.HEIGHT; y++)
             {
                 // Calculate tile's position
                 Vector3 pos = new Vector3(
@@ -152,33 +149,33 @@ public class InitializeBoard : MonoBehaviour
                 newTile.transform.parent = boardTiles.transform;
 
                 // Create item
-                if (GameData.boardData[count] != null && GameData.boardData[count].sprite != null)
-                {
-                    if (GameData.boardData[count].type == Types.Type.Default)
+                Types.Board baordItem =GameData.boardData[x,y];
+                
+                if (baordItem != null && baordItem.sprite != null)
                     {
-                        itemHandler.CreateItem(
-                            pos,
-                            newTile,
-                            tileSize,
-                            GameData.boardData[count].group,
-                            GameData.boardData[count].sprite.name,
-                            GameData.boardData[count].state,
-                            GameData.boardData[count].crate
-                        );
+                        if (baordItem.type == Types.Type.Default)
+                        {
+                            itemHandler.CreateItem(
+                                newTile,
+                                tileSize,
+                                baordItem.group,
+                                baordItem.sprite.name,
+                                baordItem.state,
+                                baordItem.crate
+                            );
+                        }
+                        else if (baordItem.type == Types.Type.Gen)
+                        {
+                            itemHandler.CreateGenerator(
+                                newTile,
+                                tileSize,
+                                baordItem.genGroup,
+                                baordItem.sprite.name,
+                                baordItem.state,
+                                baordItem.crate
+                            );
+                        }
                     }
-                    else if (GameData.boardData[count].type == Types.Type.Gen)
-                    {
-                        itemHandler.CreateGenerator(
-                            pos,
-                            newTile,
-                            tileSize,
-                            GameData.boardData[count].genGroup,
-                            GameData.boardData[count].sprite.name,
-                            GameData.boardData[count].state,
-                            GameData.boardData[count].crate
-                        );
-                    }
-                }
 
                 // Increase count for the next loop
                 count++;
