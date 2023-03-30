@@ -5,9 +5,13 @@ using UnityEngine.UIElements;
 
 public class Values : MonoBehaviour
 {
-    public UIDocument uiDoc;
+    [HideInInspector]
+    public bool set;
 
-    // UI
+    private GameData gameData;
+
+    private UIDocument uiDoc;
+
     private VisualElement root;
 
     private VisualElement topBox;
@@ -17,6 +21,8 @@ public class Values : MonoBehaviour
 
     private Button energyButton;
     private VisualElement energyPlus;
+    [HideInInspector]
+    public Label energyTimer;
 
     private Button goldButton;
     private VisualElement goldPlus;
@@ -26,7 +32,14 @@ public class Values : MonoBehaviour
 
     void Start()
     {
+        gameData = GameData.Instance;
+    }
+
+    public void InitializeValues()
+    {
         // Cache UI
+        uiDoc = GameObject.Find("GamePlayUI").GetComponent<UIDocument>();
+
         root = uiDoc.rootVisualElement;
 
         topBox = root.Q<VisualElement>("TopBox");
@@ -36,6 +49,9 @@ public class Values : MonoBehaviour
 
         energyButton = topBox.Q<Button>("EnergyButton");
         energyPlus = energyButton.Q<VisualElement>("Plus");
+        energyTimer = energyButton.Q<Label>("EnergyTimer");
+
+        energyTimer.style.display = DisplayStyle.None;
 
         goldButton = topBox.Q<Button>("GoldButton");
         goldPlus = goldButton.Q<VisualElement>("Plus");
@@ -43,10 +59,12 @@ public class Values : MonoBehaviour
         gemsButton = topBox.Q<Button>("GemsButton");
         gemsPlus = gemsButton.Q<VisualElement>("Plus");
 
-        InitializeValues();
+        set = true;
+
+        SetValues();
     }
 
-    void InitializeValues()
+    void SetValues()
     {
         levelButton.SetEnabled(false);
 
@@ -64,11 +82,11 @@ public class Values : MonoBehaviour
 
     public void UpdateValues()
     {
-        levelButton.text = GameData.experience.ToString(); // TODO -  Change this to a fill
+        levelButton.text = gameData.experience.ToString(); // TODO -  Change this to a fill
 
-        levelValue.text = GameData.level.ToString();
-        energyButton.text = GameData.energy.ToString();
-        goldButton.text = GameData.gold.ToString();
-        gemsButton.text = GameData.gems.ToString();
+        levelValue.text = gameData.level.ToString();
+        energyButton.text = gameData.energy.ToString();
+        goldButton.text = gameData.gold.ToString();
+        gemsButton.text = gameData.gems.ToString();
     }
 }

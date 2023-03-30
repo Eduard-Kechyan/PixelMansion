@@ -68,6 +68,17 @@ public class SceneLoader : MonoBehaviour
         else
         {
             soundManager.FadeInBg(fadeDuration);
+
+            Values values = DataManager.Instance.GetComponent<Values>();
+
+            if (values.set)
+            {
+                DataManager.Instance.GetComponent<Values>().UpdateValues();
+            }
+            else
+            {
+                DataManager.Instance.GetComponent<Values>().InitializeValues();
+            }
         }
     }
 }

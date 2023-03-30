@@ -13,6 +13,7 @@ public class InfoMenu : MonoBehaviour
     public Color lineColor;
 
     private MenuManager menuManager;
+    private GameData gameData;
     private InfoBox infoBox;
 
     private VisualElement root;
@@ -29,9 +30,11 @@ public class InfoMenu : MonoBehaviour
     void Start()
     {
         // Cache
-        menuManager = GetComponent<MenuManager>();
+        menuManager = MenuManager.Instance;
 
         infoBox = menuManager.uiDoc.GetComponent<InfoBox>();
+
+        gameData = GameData.Instance;
 
         // Cache UI
         root = menuManager.uiDoc.rootVisualElement;
@@ -93,13 +96,13 @@ public class InfoMenu : MonoBehaviour
 
     void GetUnlockedItems(Item item)
     {
-        for (int i = 0; i < GameData.itemsData.Length; i++)
+        for (int i = 0; i < gameData.itemsData.Length; i++)
         {
-            if (item.group == GameData.itemsData[i].group)
+            if (item.group == gameData.itemsData[i].group)
             {
                 int count = 0;
 
-                for (int j = 0; j < GameData.itemsData[i].content.Length; j++)
+                for (int j = 0; j < gameData.itemsData[i].content.Length; j++)
                 {
                     VisualElement current = new VisualElement { name = "Current" };
                     VisualElement unlockedItem = new VisualElement { name = "UnlockedItem" + i };
@@ -112,7 +115,7 @@ public class InfoMenu : MonoBehaviour
                     current.style.marginRight = 4f;
                     current.style.marginBottom = 10f;
 
-                    if (item.sprite == GameData.itemsData[i].content[j].sprite)
+                    if (item.sprite == gameData.itemsData[i].content[j].sprite)
                     {
                         current.style.backgroundImage = new StyleBackground(infoCurrentSprite);
                     }
@@ -131,15 +134,17 @@ public class InfoMenu : MonoBehaviour
                         line.style.display = DisplayStyle.None;
                     }
 
-                    if (count == GameData.itemsData[i].content.Length)
+                    if (count == gameData.itemsData[i].content.Length)
                     {
                         line.style.display = DisplayStyle.None;
                     }
 
-                    if (GameData.itemsData[i].content[j].unlocked)
+                    Debug.Log(gameData.itemsData[i].content[j].unlocked);
+
+                    if (gameData.itemsData[i].content[j].unlocked)
                     {
                         unlockedItem.style.backgroundImage = new StyleBackground(
-                            GameData.itemsData[i].content[j].sprite
+                            gameData.itemsData[i].content[j].sprite
                         );
                     }
                     else
@@ -250,21 +255,21 @@ public class InfoMenu : MonoBehaviour
     {
         Sprite sprite = null;
 
-        for (int i = 0; i < GameData.generatorsData.Length; i++)
+        for (int i = 0; i < gameData.generatorsData.Length; i++)
         {
-            if (parentGroup == GameData.generatorsData[i].genGroup)
+            if (parentGroup == gameData.generatorsData[i].genGroup)
             {
-                if (GameData.generatorsData[i].content.Length == 1)
+                if (gameData.generatorsData[i].content.Length == 1)
                 {
-                    sprite = GameData.generatorsData[i].content[0].sprite;
+                    sprite = gameData.generatorsData[i].content[0].sprite;
                 }
                 else
                 {
-                    for (int j = 0; j < GameData.generatorsData[i].content.Length; j++)
+                    for (int j = 0; j < gameData.generatorsData[i].content.Length; j++)
                     {
-                        if (!GameData.generatorsData[i].content[j].unlocked && j >= 0)
+                        if (!gameData.generatorsData[i].content[j].unlocked && j >= 0)
                         {
-                            sprite = GameData.generatorsData[i].content[j - 1].sprite;
+                            sprite = gameData.generatorsData[i].content[j - 1].sprite;
 
                             break;
                         }

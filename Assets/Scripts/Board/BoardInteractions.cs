@@ -16,6 +16,9 @@ public class BoardInteractions : MonoBehaviour
     public bool isSelected = false; // Have we currently selected something
     public Item currentItem;
 
+    [HideInInspector]
+    public GameObject tempTile;
+
     // Undo
     [HideInInspector]
     public bool canUndo = false;
@@ -28,6 +31,7 @@ public class BoardInteractions : MonoBehaviour
     public GameObject boardTiles;
     public UIDocument uiDoc;
     private DataManager dataManager;
+    private GameData gameData;
     private ItemHandler itemHandler;
 
     private SoundManager soundManager;
@@ -36,6 +40,7 @@ public class BoardInteractions : MonoBehaviour
     private VisualElement dragOverlay;
     private GameObject initialTile;
     private SelectionManager selectionManager;
+    private BoardManager boardManager;
     private InitializeBoard initializeBoard;
     private Action callback;
     private bool previousInteractionsEnabled = true;
@@ -44,9 +49,6 @@ public class BoardInteractions : MonoBehaviour
     private Vector3 worldPos;
     private Vector2 initialPos;
     private Vector2 initialTouchPos = Vector2.zero;
-
-    // Board item data
-    Types.Board boardItem = new Types.Board();
 
     private void Start()
     {
@@ -57,10 +59,13 @@ public class BoardInteractions : MonoBehaviour
         // Cache managers
         soundManager = SoundManager.Instance;
         dataManager = DataManager.Instance;
+        gameData = GameData.Instance;
         itemHandler = dataManager.GetComponent<ItemHandler>();
 
         // Cache selectionManager
         selectionManager = GetComponent<SelectionManager>();
+
+        boardManager = GetComponent<BoardManager>();
 
         // Cache initializeBoard
         initializeBoard = GetComponent<InitializeBoard>();
@@ -102,6 +107,10 @@ public class BoardInteractions : MonoBehaviour
                         if (hit.transform.childCount == 0)
                         {
                             touchBeganOutsideItem = true;
+                        }
+                        else
+                        {
+                            tempTile = hit.transform.gameObject;
                         }
                     }
                 }
@@ -242,8 +251,6 @@ public class BoardInteractions : MonoBehaviour
             currentItem.transform.position.x,
             currentItem.transform.position.y
         );
-
-        GetBoardData();
     }
 
     void Drag()
@@ -394,7 +401,7 @@ public class BoardInteractions : MonoBehaviour
         currentItem.gameObject.layer = LayerMask.NameToLayer("Item");
 
         // Set board data
-        SetBoardData(initialTile, tile);
+        boardManager.SwapBoardData(initialTile, tile);
 
         // Select item
         selectionManager.Select("both");
@@ -429,7 +436,7 @@ public class BoardInteractions : MonoBehaviour
         otherItem.GetComponent<Item>().ScaleToSize(Vector2.zero, scaleSpeed, true);
 
         // Get the prefab that's one level heigher
-        if (type == Types.Type.Default)
+        if (type == Types.Type.Item)
         {
             currentItem = itemHandler.CreateItem(
                 otherTile,
@@ -452,7 +459,12 @@ public class BoardInteractions : MonoBehaviour
         soundManager.PlaySFX("Merge");
 
         // Unlock the item
-        dataManager.UnlockItem(currentItem.sprite.name);
+        dataManager.UnlockItem(
+            currentItem.sprite.name,
+            currentItem.type,
+            currentItem.group,
+            currentItem.genGroup
+        );
 
         // Set the new item's layer to ItemBusy
         currentItem.gameObject.layer = LayerMask.NameToLayer("ItemBusy");
@@ -460,7 +472,7 @@ public class BoardInteractions : MonoBehaviour
         // Reduce and then enlarge the new item
         currentItem.transform.localScale = new Vector3(0, 0, currentItem.transform.localScale.z);
 
-        MergeBoardData(initialTile, otherTile, currentItem);
+        boardManager.MergeBoardData(initialTile, otherTile, currentItem);
 
         callback += MergeBackCallback;
 
@@ -468,7 +480,7 @@ public class BoardInteractions : MonoBehaviour
 
         CancelUndo();
 
-        CheckForCrate(otherTile);
+        boardManager.CheckForCrate(otherTile);
     }
 
     void MergeBackCallback()
@@ -494,7 +506,7 @@ public class BoardInteractions : MonoBehaviour
         currentItem.gameObject.layer = LayerMask.NameToLayer("Item");
 
         // Set board data
-        SwapBoardData(initialTile, otherTile);
+        boardManager.SwapBoardData(initialTile, otherTile);
 
         // Select item
         selectionManager.Select("both");
@@ -520,9 +532,6 @@ public class BoardInteractions : MonoBehaviour
 
         // Set the item's layer back to Item
         currentItem.gameObject.layer = LayerMask.NameToLayer("Item");
-
-        // Set board data
-        SetBoardData(initialTile, initialTile);
     }
 
     void MoveBackCallback()
@@ -531,218 +540,13 @@ public class BoardInteractions : MonoBehaviour
         selectionManager.Select("both");
     }
 
-    void CheckForCrate(GameObject tile)
-    {
-        //Vector2Int loc = GetBoardLocation(tile);
-
-        /*if (loc.x == 0)
-        {
-            if (GameData.boardData[1, 0].state == Types.State.Crate)
-            {
-                GameData.boardData[1, 0].state = Types.State.Locker;
-
-                FindItemAndOpenCrate(1);
-            }
-        }*/
-
-        // Check for the first
-        /*if (tileOrder == 0)
-        {
-            if (GameData.boardData[1, 0].state == Types.State.Crate)
-            {
-                GameData.boardData[1, 0].state = Types.State.Locker;
-
-                FindItemAndOpenCrate(1);
-            }
-        }*/
-
-        // Check for the last
-        /*if (tileOrder == GameData.ITEM_COUNT)
-        {
-            if (GameData.boardData[GameData.ITEM_COUNT - 1, 0].state == Types.State.Crate)
-            {
-                GameData.boardData[GameData.ITEM_COUNT - 1, 0].state = Types.State.Locker;
-
-                FindItemAndOpenCrate(GameData.ITEM_COUNT - 1);
-            }
-        }*/
-
-        // Check for in between verticaly
-        /* if (tileOrder >= 1 && tileOrder <= GameData.ITEM_COUNT - 1)
-         {
-             if (GameData.boardData[tileOrder + 1, 0].state == Types.State.Crate)
-             {
-                 GameData.boardData[tileOrder + 1, 0].state = Types.State.Locker;
- 
-                 FindItemAndOpenCrate(tileOrder - 1);
-             }
- 
-             if (GameData.boardData[tileOrder - 1, 0].state == Types.State.Crate)
-             {
-                 GameData.boardData[tileOrder - 1, 0].state = Types.State.Locker;
- 
-                 FindItemAndOpenCrate(tileOrder - 1);
-             }
-         }*/
-
-        // Check for in between horizontaly
-        /* if (tileOrder >= GameData.HEIGHT && tileOrder <= GameData.ITEM_COUNT - GameData.HEIGHT)
-         {
-             if (GameData.boardData[tileOrder - GameData.HEIGHT, 0].state == Types.State.Crate)
-             {
-                 GameData.boardData[tileOrder - GameData.HEIGHT, 0].state = Types.State.Locker;
- 
-                 FindItemAndOpenCrate(tileOrder - GameData.HEIGHT);
-             }
- 
-             if (GameData.boardData[tileOrder + GameData.HEIGHT, 0].state == Types.State.Crate)
-             {
-                 GameData.boardData[tileOrder + GameData.HEIGHT, 0].state = Types.State.Locker;
- 
-                 FindItemAndOpenCrate(tileOrder + GameData.HEIGHT);
-             }
-         }*/
-
-        ///////////////////////////
-    }
-
-    //////// OTHER ////////
-
-    void GetBoardData()
-    {
-        Vector2Int loc = GetBoardLocation(initialTile);
-
-        // Get item
-        boardItem = GameData.boardData[loc.x, loc.y];
-        Debug.Log(GameData.boardData[loc.x, loc.y].order);
-    }
-
-    void SetBoardData(GameObject oldTile, GameObject newTile)
-    {
-        Vector2Int loc = GetBoardLocation(oldTile);
-
-        // Clear old item
-        Types.Board tempItem = GameData.boardData[loc.x, loc.y];
-        Debug.Log(tempItem.order);
-
-        GameData.boardData[loc.x, loc.y] = new Types.Board
-        {
-            order = tempItem.order,
-            loc = tempItem.loc
-        };
-
-        // Set new item
-        loc = GetBoardLocation(newTile);
-
-        GameData.boardData[loc.x, loc.y] = boardItem;
-
-        // Save the board to disk
-        dataManager.SaveBoard();
-    }
-
-    void SwapBoardData(GameObject oldTile, GameObject newTile)
-    {
-        // Get tile orders
-
-        Vector2Int oldLoc = GetBoardLocation(oldTile);
-        Vector2Int newLoc = GetBoardLocation(newTile);
-
-        // Save items
-        Types.Board oldItem = GameData.boardData[oldLoc.x, oldLoc.y];
-        Types.Board newItem = GameData.boardData[newLoc.x, newLoc.y];
-
-        // Clear items
-        Types.Board tempItem = GameData.boardData[oldLoc.x, oldLoc.y];
-        Types.Board tempItemB = GameData.boardData[newLoc.x, newLoc.y];
-
-        GameData.boardData[oldLoc.x, oldLoc.y] = new Types.Board
-        {
-            order = tempItem.order,
-            loc = tempItem.loc
-        };
-        GameData.boardData[newLoc.x, newLoc.y] = new Types.Board
-        {
-            order = tempItemB.order,
-            loc = tempItemB.loc
-        };
-
-        // Set items
-        GameData.boardData[oldLoc.x, oldLoc.y] = newItem;
-        GameData.boardData[newLoc.x, newLoc.y] = oldItem;
-
-        // Save the board to disk
-        dataManager.SaveBoard();
-    }
-
-    void MergeBoardData(GameObject oldTile, GameObject newTile, Item newItem)
-    {
-        // Clear old items
-        Vector2Int loc = GetBoardLocation(oldTile);
-
-        Types.Board tempItem = GameData.boardData[loc.x, loc.y];
-
-        GameData.boardData[loc.x, loc.y] = new Types.Board
-        {
-            order = tempItem.order,
-            loc = tempItem.loc
-        };
-
-        // Set new item
-        loc = GetBoardLocation(newTile);
-        GameData.boardData[loc.x, loc.y] = new Types.Board
-        {
-            sprite = newItem.sprite,
-            group = newItem.group,
-            state = newItem.state,
-            crate = int.Parse(
-                newItem.crateSprite.name[(newItem.crateSprite.name.LastIndexOf('e') + 1)..]
-            )
-        };
-
-        // Save the board to disk
-        dataManager.SaveBoard();
-    }
-
-    Vector2Int GetBoardLocation(GameObject tile)
-    {
-        Vector2Int loc = new Vector2Int(0, 0);
-
-        int order = int.Parse(tile.gameObject.name[(tile.gameObject.name.LastIndexOf('e') + 1)..]);
-
-        /* Debug.Log("_________________________________________");
-         Debug.Log("_________________________________________");
-         Debug.Log("_________________________________________");*/
-
-        foreach (Types.Board boardItem in GameData.boardData)
-        {
-            //Debug.Log(boardItem.order);
-            if (boardItem.order == order)
-            {
-                loc = new Vector2Int(boardItem.loc.x, boardItem.loc.y);
-                break;
-            }
-        }
-
-        return loc;
-    }
-
-    void FindItemAndOpenCrate(int order)
-    {
-        GameObject foundItem = initializeBoard.boardTiles.transform
-            .GetChild(order)
-            .GetChild(0)
-            .gameObject;
-
-        foundItem.GetComponent<Item>().OpenCrate();
-    }
-
     //////// INFO ACTION ////////
 
     public void OpenItem(Item item, int amount, bool open)
     {
         if (item.name == currentItem.name)
         {
-            if (GameData.UpdateGems(-amount))
+            if (gameData.UpdateGems(-amount))
             {
                 if (open)
                 {
@@ -762,11 +566,11 @@ public class BoardInteractions : MonoBehaviour
     {
         GameObject itemTile = item.transform.parent.gameObject;
 
-        Vector2Int loc = GetBoardLocation(itemTile);
+        Vector2Int loc = boardManager.GetBoardLocation(0, itemTile);
 
-        if (GameData.boardData[loc.x, loc.y].state == Types.State.Crate)
+        if (gameData.boardData[loc.x, loc.y].state == Types.State.Crate)
         {
-            GameData.boardData[loc.x, loc.y].state = Types.State.Locker;
+            gameData.boardData[loc.x, loc.y].state = Types.State.Locker;
 
             dataManager.SaveBoard();
         }
@@ -776,11 +580,11 @@ public class BoardInteractions : MonoBehaviour
     {
         GameObject itemTile = item.transform.parent.gameObject;
 
-        Vector2Int loc = GetBoardLocation(itemTile);
+        Vector2Int loc = boardManager.GetBoardLocation(0, itemTile);
 
-        if (GameData.boardData[loc.x, loc.y].state == Types.State.Locker)
+        if (gameData.boardData[loc.x, loc.y].state == Types.State.Locker)
         {
-            GameData.boardData[loc.x, loc.y].state = Types.State.Default;
+            gameData.boardData[loc.x, loc.y].state = Types.State.Default;
 
             dataManager.SaveBoard();
         }
@@ -794,7 +598,7 @@ public class BoardInteractions : MonoBehaviour
 
             if (amount > 0)
             {
-                GameData.UpdateGold(amount);
+                gameData.UpdateGold(amount);
 
                 sellUndoAmount = amount;
             }
@@ -803,15 +607,15 @@ public class BoardInteractions : MonoBehaviour
             undoTile = undoItem.transform.parent.gameObject;
             undoScale = undoItem.transform.localScale;
 
-            Vector2Int loc = GetBoardLocation(undoTile);
+            Vector2Int loc = boardManager.GetBoardLocation(0, undoTile);
 
-            undoBoardItem = GameData.boardData[loc.x, loc.y];
+            undoBoardItem = gameData.boardData[loc.x, loc.y];
 
             undoItem.transform.parent = null;
 
             undoItem.ScaleToSize(Vector2.zero, scaleSpeed, false);
 
-            GameData.boardData[loc.x, loc.y] = new Types.Board();
+            gameData.boardData[loc.x, loc.y] = new Types.Board();
         }
     }
 
@@ -825,15 +629,15 @@ public class BoardInteractions : MonoBehaviour
 
             undoItem.ScaleToSize(undoScale, scaleSpeed, false);
 
-            Vector2Int loc = GetBoardLocation(undoTile);
+            Vector2Int loc = boardManager.GetBoardLocation(0, undoTile);
 
-            GameData.boardData[loc.x, loc.y] = undoBoardItem;
+            gameData.boardData[loc.x, loc.y] = undoBoardItem;
 
             selectionManager.SelectItemAfterUndo();
 
             if (sellUndoAmount > 0)
             {
-                GameData.UpdateGold(-sellUndoAmount);
+                gameData.UpdateGold(-sellUndoAmount);
                 sellUndoAmount = 0;
             }
 

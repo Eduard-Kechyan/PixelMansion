@@ -8,6 +8,12 @@ public class ItemHandler : MonoBehaviour
 
     public Sprite[] crateSprites;
 
+    private GameData gameData;
+
+    void Start() {        
+        gameData = GameData.Instance;
+    }
+
     // Create a new item on the board
     public Item CreateItem(
         GameObject tile,
@@ -28,7 +34,7 @@ public class ItemHandler : MonoBehaviour
         newItem.itemName = itemData.itemName;
         newItem.level = itemData.level;
         newItem.state = state; // From the board
-        newItem.type = Types.Type.Default;
+        newItem.type = Types.Type.Item;
         newItem.hasLevel = itemData.hasLevel;
         newItem.parents = itemData.parents;
         newItem.isMaxLavel = itemData.isMaxLavel;
@@ -102,7 +108,7 @@ public class ItemHandler : MonoBehaviour
     {
         Types.ItemsData foundItem = new Types.ItemsData();
 
-        Types.Items[] data = GameData.itemsData;
+        Types.Items[] data = gameData.itemsData;
 
         for (int i = 0; i < data.Length; i++)
         {
@@ -125,7 +131,7 @@ public class ItemHandler : MonoBehaviour
     {
         Types.GeneratorsData foundItem = new Types.GeneratorsData();
 
-        Types.Generators[] data = GameData.generatorsData;
+        Types.Generators[] data = gameData.generatorsData;
 
         for (int i = 0; i < data.Length; i++)
         {
@@ -149,7 +155,7 @@ public class ItemHandler : MonoBehaviour
     {
         string nextName = "";
 
-        Types.Items[] data = GameData.itemsData;
+        Types.Items[] data = gameData.itemsData;
 
         for (int i = 0; i < data.Length; i++)
         {
@@ -175,7 +181,7 @@ public class ItemHandler : MonoBehaviour
     {
         string nextName = "";
 
-        Types.Generators[] data = GameData.generatorsData;
+        Types.Generators[] data = gameData.generatorsData;
 
         for (int i = 0; i < data.Length; i++)
         {

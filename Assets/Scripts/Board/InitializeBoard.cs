@@ -7,13 +7,14 @@ using UnityEngine.UIElements;
 public class InitializeBoard : MonoBehaviour
 {
     public UIDocument uiDoc;
-    public GameObject boardTiles;
     public GameObject tile;
     public float tileWidth = 24f;
     public float tileSize;
 
     private DataManager dataManager;
+    private GameData gameData;
     private ItemHandler itemHandler;
+    private BoardManager boardManager;
 
     private GameObject board;
     private float gamePixelWidth;
@@ -33,10 +34,14 @@ public class InitializeBoard : MonoBehaviour
         cam = Camera.main;
 
         dataManager = DataManager.Instance;
+        gameData = GameData.Instance;
         itemHandler = dataManager.GetComponent<ItemHandler>();
+
+        boardManager=GetComponent<BoardManager>();
 
         // Cache the SafeAreaHandler
         safeAreaHandler = uiDoc.GetComponent<SafeAreaHandler>();
+        
 
         // Cache the SafeAreaHandler
         root = uiDoc.rootVisualElement;
@@ -64,6 +69,8 @@ public class InitializeBoard : MonoBehaviour
 
     void SetBoard(GeometryChangedEvent evt)
     {
+        // Ready the board
+
         root.UnregisterCallback<GeometryChangedEvent>(SetBoard);
 
         // Get board sprite width
@@ -106,11 +113,7 @@ public class InitializeBoard : MonoBehaviour
             - ((board.transform.localScale.x / 174) * 3)
             - (boardPosX - ((board.transform.localScale.x * 1.28f) / 2));
 
-        CalcTiles();
-    }
-
-    void CalcTiles()
-    {
+        // Calculate tile size
         // Get the size of the item relative to the in game units
         float tilePixelWidth = singlePixelWidth * tileWidth;
 
@@ -122,6 +125,8 @@ public class InitializeBoard : MonoBehaviour
 
     void CreateBoard()
     {
+        // Loop the items to the board
+
         int count = 0;
 
         for (int x = 0; x < GameData.WIDTH; x++)
@@ -146,36 +151,36 @@ public class InitializeBoard : MonoBehaviour
 
                 newTile.gameObject.name = "Tile" + count;
 
-                newTile.transform.parent = boardTiles.transform;
+                newTile.transform.parent = boardManager.boardTiles.transform;
 
                 // Create item
-                Types.Board baordItem =GameData.boardData[x,y];
-                
+                Types.Board baordItem = gameData.boardData[x, y];
+
                 if (baordItem != null && baordItem.sprite != null)
+                {
+                    if (baordItem.type == Types.Type.Item)
                     {
-                        if (baordItem.type == Types.Type.Default)
-                        {
-                            itemHandler.CreateItem(
-                                newTile,
-                                tileSize,
-                                baordItem.group,
-                                baordItem.sprite.name,
-                                baordItem.state,
-                                baordItem.crate
-                            );
-                        }
-                        else if (baordItem.type == Types.Type.Gen)
-                        {
-                            itemHandler.CreateGenerator(
-                                newTile,
-                                tileSize,
-                                baordItem.genGroup,
-                                baordItem.sprite.name,
-                                baordItem.state,
-                                baordItem.crate
-                            );
-                        }
+                        itemHandler.CreateItem(
+                            newTile,
+                            tileSize,
+                            baordItem.group,
+                            baordItem.sprite.name,
+                            baordItem.state,
+                            baordItem.crate
+                        );
                     }
+                    else if (baordItem.type == Types.Type.Gen)
+                    {
+                        itemHandler.CreateGenerator(
+                            newTile,
+                            tileSize,
+                            baordItem.genGroup,
+                            baordItem.sprite.name,
+                            baordItem.state,
+                            baordItem.crate
+                        );
+                    }
+                }
 
                 // Increase count for the next loop
                 count++;

@@ -4,19 +4,25 @@ using UnityEngine;
 
 public class DoubleTapManager : MonoBehaviour
 {
+    public float moveSpeed = 14f;
+    public float scaleSpeed = 8f;
+
     private BoardInteractions interactions;
+    private BoardManager boardManager;
     private InitializeBoard initializeBoard;
     private DataManager dataManager;
     private ItemHandler itemHandler;
-    public GameObject boardTiles;
+    private GameData gameData;
 
     void Start()
     {
         // Cache
         interactions = GetComponent<BoardInteractions>();
         initializeBoard = GetComponent<InitializeBoard>();
+        boardManager = GetComponent<BoardManager>();
 
         dataManager = DataManager.Instance;
+        gameData = GameData.Instance;
         itemHandler = dataManager.GetComponent<ItemHandler>();
     }
 
@@ -25,26 +31,50 @@ public class DoubleTapManager : MonoBehaviour
         if (
             interactions.currentItem.type == Types.Type.Gen
             && interactions.currentItem.creates.Length > 0
+            && gameData.energy >= 1
         )
         {
-            List<int> emptyTiles = new List<int>();
+            List<Types.BoardEmpty> distances = new List<Types.BoardEmpty>();
 
-            for (int i = 0; i < GameData.boardData.Length; i++)
+            GameObject tile = interactions.currentItem.transform.parent.gameObject;
+
+            Vector2Int tileLoc = boardManager.GetBoardLocation(0, tile);
+
+            // Get all empty items from the board data
+            for (int x = 0; x < gameData.boardData.GetLength(0); x++)
             {
-               /* if (GameData.boardData[i].sprite == null)
+                for (int y = 0; y < gameData.boardData.GetLength(1); y++)
                 {
-                    emptyTiles.Add(i);
-                }*/
+                    if (gameData.boardData[x, y].sprite == null)
+                    {
+                        distances.Add(
+                            new Types.BoardEmpty
+                            {
+                                order = gameData.boardData[x, y].order,
+                                loc = boardManager.GetBoardLocation(gameData.boardData[x, y].order),
+                                distance = CalculateDistance(tileLoc.x, tileLoc.y, x, y),
+                            }
+                        );
+                    }
+                }
             }
 
-            if (emptyTiles.Count > 0)
+            // Check if the board is full
+            if (distances.Count > 0)
             {
-                SelectRadnomGroupAndItem(emptyTiles);
+                distances.Sort((p1, p2) => p1.distance.CompareTo(p2.distance));
+
+                SelectRadnomGroupAndItem(distances[0], tile);
+            }
+            else
+            {
+                // TODO - Handle full board
+                Debug.Log("Board full!");
             }
         }
     }
 
-    void SelectRadnomGroupAndItem(List<int> emptyTiles)
+    void SelectRadnomGroupAndItem(Types.BoardEmpty emptyBoard, GameObject tile)
     {
         Types.Creates[] creates = interactions.currentItem.creates;
 
@@ -69,15 +99,15 @@ public class DoubleTapManager : MonoBehaviour
         // TODO - Randomly create an item from the selected group
 
         // Create item from selected group
-        for (int i = 0; i < GameData.itemsData.Length; i++)
+        for (int i = 0; i < gameData.itemsData.Length; i++)
         {
-            if (GameData.itemsData[i].group == selectedGroup)
+            if (gameData.itemsData[i].group == selectedGroup)
             {
                 CreateItemOnEmptyTile(
-                    GameData.itemsData[i].content[0].sprite.name,
-                    GameData.itemsData[i].content[0].group,
-                    interactions.currentItem.transform.parent.gameObject,
-                    emptyTiles
+                    gameData.itemsData[i].content[0].sprite.name,
+                    gameData.itemsData[i].content[0].group,
+                    emptyBoard,
+                    tile
                 );
             }
         }
@@ -86,61 +116,13 @@ public class DoubleTapManager : MonoBehaviour
     void CreateItemOnEmptyTile(
         string spriteName,
         Types.Group group,
-        GameObject parentTile,
-        List<int> emptyTiles
+        Types.BoardEmpty emptyBoard,
+        GameObject tile
     )
     {
-        /*int tileOrder = interactions.GetTileOrder(parentTile);
-
-        int currentDistance = 1000;
-        int currentOrder = 1000;
-
-        for (int i = 0; i < emptyTiles.Count; i++)
-        {
-            int newDistance = 0;
-
-            if (emptyTiles[i] < GameData.HEIGHT)
-            {
-                newDistance = Mathf.Abs(emptyTiles[i] - tileOrder);
-            }
-            else
-            {
-                int offset = emptyTiles[i] / GameData.HEIGHT;
-
-                newDistance = Mathf.Abs(emptyTiles[i] - (offset * GameData.HEIGHT) - tileOrder);
-            }
-            
-            Debug.Log(newDistance);
-
-            if (currentDistance > newDistance)
-            {
-                currentDistance = newDistance;
-
-                currentOrder = emptyTiles[i];
-            }
-            else if (currentDistance == newDistance)
-            {
-                int[] values = new int[2];
-
-                values[0] = currentOrder;
-                values[1] = emptyTiles[i];
-
-                System.Random r = new System.Random();
-
-                int result = values[r.Next(values.Length)];
-
-                if (result == emptyTiles[i])
-                {
-                    currentOrder = emptyTiles[i];
-                }
-                else if (currentOrder == 1000)
-                {
-                    currentOrder = emptyTiles[i];
-                }
-            }
-        }
-
-        GameObject emptyTile = boardTiles.transform.GetChild(currentOrder).gameObject;
+        GameObject emptyTile = boardManager.boardTiles.transform
+            .GetChild(emptyBoard.order)
+            .gameObject;
 
         // Create the item on the board
         Item newItem = itemHandler.CreateItem(
@@ -150,16 +132,45 @@ public class DoubleTapManager : MonoBehaviour
             spriteName
         );
 
-        GameData.boardData[currentOrder] = new Types.Board
+        Vector2 tempScale = new Vector2(
+            newItem.transform.localScale.x,
+            newItem.transform.localScale.y
+        );
+
+        newItem.transform.GetChild(3).GetComponent<SpriteRenderer>().sortingOrder = 2;
+        newItem.gameObject.layer = LayerMask.NameToLayer("ItemDragging");
+
+        newItem.transform.position = tile.transform.position;
+
+        newItem.transform.localScale = Vector2.zero;
+
+        newItem.MoveAndScale(emptyTile.transform.position, tempScale, moveSpeed, scaleSpeed);
+
+        gameData.boardData[emptyBoard.loc.x, emptyBoard.loc.y] = new Types.Board
         {
             sprite = newItem.sprite,
             type = newItem.type,
             group = newItem.group,
             genGroup = newItem.genGroup,
             state = newItem.state,
-            crate = 0
+            crate = 0,
+            order = emptyBoard.order
         };
 
-        dataManager.SaveBoard();*/
+        dataManager.UnlockItem(newItem.sprite.name, newItem.type, newItem.group, newItem.genGroup);
+
+        gameData.UpdateEnergy(-1);
+
+        dataManager.SaveBoard();
+    }
+
+    // Calculate the distance between two points in a 2d array
+    float CalculateDistance(int currentX, int currentY, int otherX, int otherY)
+    {
+        float distance = Mathf.Sqrt(
+            (currentX - otherX) * (currentX - otherX) + (currentY - otherY) * (currentY - otherY)
+        );
+
+        return distance;
     }
 }

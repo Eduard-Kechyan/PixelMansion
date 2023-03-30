@@ -40,7 +40,7 @@ public class SelectionManager : MonoBehaviour
             Item item = hit.transform.gameObject.GetComponent<Item>();
 
             // Check if gameobject is an item and isn't empty
-            if (item != null && !item.isPlaying)
+            if (item != null)
             {
                 if (
                     interactions.currentItem != null
@@ -51,15 +51,18 @@ public class SelectionManager : MonoBehaviour
                     doubleTapManager.DoubleTapped();
                 }
 
-                // Unselect other items if they exist
-                Unselect("both");
+                if (!item.isPlaying)
+                {
+                    // Unselect other items if they exist
+                    Unselect("both");
 
-                // Set current item
-                interactions.currentItem = item;
+                    // Set current item
+                    interactions.currentItem = item;
 
-                // Select the item
-                interactions.isSelected = true;
-                Select("both");
+                    // Select the item
+                    interactions.isSelected = true;
+                    Select("both");
+                }
             }
         }
 

@@ -28,9 +28,32 @@ public class Types : MonoBehaviour
 
     public enum Type
     {
-        Default,
+        Item,
         Gen
     };
+
+    //// TIMERS ///
+    public enum TimerType
+    {
+        Item,
+        Energy
+    };
+
+    [Serializable]
+    public class Timer
+    {
+        public DateTime dateTime;
+        public TimerType type;
+        public string timerName;
+    }
+
+    [Serializable]
+    public class TimerJson
+    {
+        public string dateTime;
+        public string type;
+        public string timerName;
+    }
 
     [Serializable]
     public class Creates
@@ -39,45 +62,7 @@ public class Types : MonoBehaviour
         public float chance;
     }
 
-    //// TEST DATA ////
-    [Serializable]
-    public class TestTileDistance
-    {
-        public int order;
-        public float distance;
-    }
-
-    [Serializable]
-    public class TestTile
-    {
-        public int order;
-        public int x;
-        public int y;
-    }
-
     //// ITEMS DATA ////
-    /*[Serializable]
-    public class ItemsJson
-    {
-        public string group;
-        public bool hasLevel;
-        public string itemName;
-        public string[] parents;
-        public ItemsDataJson[] content;
-    }
-
-    [Serializable]
-    public class ItemsDataJson
-    {
-        public string sprite;
-        public string itemName;
-        public int level;
-        public string group;
-        public string[] parents;
-        public bool unlocked;
-        public bool isMaxLavel;
-        public bool hasLevel;
-    }*/
 
     [Serializable]
     public class Items
@@ -115,28 +100,6 @@ public class Types : MonoBehaviour
     }
 
     //// GENERATORS DATA ////
-    /* [Serializable]
-     public class GeneratorsJson
-     {
-         public string genGroup;
-         public bool hasLevel;
-         public string itemName;
-         public string[] creates;
-         public GeneratorsDataJson[] content;
-     }
- 
-     [Serializable]
-     public class GeneratorsDataJson
-     {
-         public string sprite;
-         public string itemName;
-         public int level;
-         public string genGroup;
-         public string[] creates;
-         public bool unlocked;
-         public bool isMaxLavel;
-         public bool hasLevel;
-     }*/
 
     [Serializable]
     public class Generators
@@ -179,9 +142,10 @@ public class Types : MonoBehaviour
 
     //// BOARD ////
     [Serializable]
-    public class BoardDistance
+    public class BoardEmpty
     {
         public int order;
+        public Vector2Int loc;
         public float distance;
     }
 
@@ -205,11 +169,6 @@ public class Types : MonoBehaviour
         public GenGroup genGroup;
         public State state;
         public int crate;
-
-        [HideInInspector]
         public int order;
-
-        [HideInInspector]
-        public Vector2Int loc;
     }
 }

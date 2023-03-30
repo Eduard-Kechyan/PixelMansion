@@ -36,7 +36,7 @@ public class Item : MonoBehaviour
 
     public Types.State state = Types.State.Default;
 
-    public Types.Type type = Types.Type.Default;
+    public Types.Type type = Types.Type.Item;
 
     [HideInInspector]
     public Sprite sprite = null;
@@ -48,6 +48,7 @@ public class Item : MonoBehaviour
     private float scaleSpeed;
     private bool isMoving = false;
     private bool isScaling = false;
+    private bool isMovingAndScaling = false;
     private bool destroy;
     private Vector2 position;
     private Vector2 scale;
@@ -66,11 +67,11 @@ public class Item : MonoBehaviour
         anim = GetComponent<Animation>();
 
         // Cache children
-        selectionChild = transform.Find("Selection").gameObject;
-        crateChild = transform.Find("Crate").gameObject;
-        lockerChild = transform.Find("Locker").gameObject;
-        itemChild = transform.Find("Item").gameObject;
-        completionChild = transform.Find("Completion").gameObject;
+        selectionChild = transform.GetChild(0).gameObject; // Selection
+        crateChild = transform.GetChild(1).gameObject; // Crate
+        lockerChild = transform.GetChild(2).gameObject; // Locker
+        itemChild = transform.GetChild(3).gameObject; // Item
+        completionChild = transform.GetChild(4).gameObject; // Completion
 
         CheckChildren();
 
@@ -127,6 +128,41 @@ public class Item : MonoBehaviour
             return;
         }
 
+        if (isMovingAndScaling)
+        {
+            transform.localScale = Vector2.MoveTowards(
+                transform.localScale,
+                scale,
+                scaleSpeed * Time.deltaTime
+            );
+
+            if (Vector2.Distance(transform.localScale, scale) < 0.3f)
+            {
+                transform.position = Vector2.MoveTowards(
+                    transform.position,
+                    position,
+                    moveSpeed * Time.deltaTime
+                );
+
+                if (
+                    Mathf.Abs(transform.position.x - position.x) < 0.03f
+                    && Mathf.Abs(transform.position.y - position.y) < 0.03f
+                )
+                {
+                    transform.position = new Vector2(position.x, position.y);
+
+                    scale = Vector2.zero;
+                    position = Vector2.zero;
+                    isMovingAndScaling = false;
+
+                    itemChild.GetComponent<SpriteRenderer>().sortingOrder = 1;
+                    gameObject.layer = LayerMask.NameToLayer("Item");
+                }
+            }
+
+            return;
+        }
+
         if (isPlaying && !anim.IsPlaying("ItemSelect"))
         {
             isPlaying = false;
@@ -140,7 +176,7 @@ public class Item : MonoBehaviour
             itemLevelName = itemName + " (Level " + level + ")";
         }
 
-        if (type == Types.Type.Default)
+        if (type == Types.Type.Item)
         {
             nextSpriteName = group + "Item" + (level + 1);
         }
@@ -223,6 +259,16 @@ public class Item : MonoBehaviour
         }
     }
 
+    public void IncreaseSortingOrder()
+    {
+        itemChild.GetComponent<SpriteRenderer>().sortingOrder = 2;
+    }
+
+    public void DecreaseSortingOrder()
+    {
+        itemChild.GetComponent<SpriteRenderer>().sortingOrder = 1;
+    }
+
     public void Select(float newSpeed, bool animate = true)
     {
         isSelected = true;
@@ -272,5 +318,19 @@ public class Item : MonoBehaviour
             gameObject.GetComponent<BoxCollider2D>().enabled = false;
             gameObject.layer = LayerMask.NameToLayer("ItemBusy");
         }
+    }
+
+    public void MoveAndScale(
+        Vector2 newPos,
+        Vector2 newScale,
+        float newMoveSpeed,
+        float newScaleSpeed
+    )
+    {
+        isMovingAndScaling = true;
+        position = newPos;
+        scale = newScale;
+        moveSpeed = newMoveSpeed;
+        scaleSpeed = newScaleSpeed;
     }
 }

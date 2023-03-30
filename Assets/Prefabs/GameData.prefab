@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2656915087510296412}
   - component: {fileID: 7628476360138686812}
+  - component: {fileID: 7608245173361121897}
   m_Layer: 0
   m_Name: GameData
   m_TagString: Untagged
@@ -42,5 +43,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9e0f109035be95a448a1d075e6d12875, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxExperience: 100
+  maxLevel: 99
+  maxOther: 9999
+  energyTime: 120
+  energyTimerText: 00:00
+  experience: 0
+  level: 0
+  energy: 100
+  gold: 100
+  gems: 100
+  itemsData: []
+  generatorsData: []
+  unlockedData: []
+--- !u!114 &7608245173361121897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6831382092569983105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3e4614f32e736e4ab12bfb061afb02f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
