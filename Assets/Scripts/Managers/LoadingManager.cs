@@ -22,9 +22,6 @@ public class LoadingManager : MonoBehaviour
 
     private I18n LOCALE = I18n.Instance;
 
-    // Data
-    public float gamePixelWidth = 180f;
-
     void Start()
     {
         // Cache the camera
@@ -42,11 +39,15 @@ public class LoadingManager : MonoBehaviour
         {
             loaded = true;
             callback = LoadContentPre;
-            StartCoroutine(SetFill(50f, callback));
+            StartCoroutine(SetFill(70f, callback));
+
+            SetLanguage();
         }
         else
         {
             FirstLoading();
+
+            SetLanguage(true);
         }
     }
 
@@ -54,13 +55,11 @@ public class LoadingManager : MonoBehaviour
 
     void FirstLoading()
     {
-        SetLanguage(true);
-
         SetPrefs(); // This goes last
 
         // Next step
         callback = LoadContentPre;
-        StartCoroutine(SetFill(50f, callback));
+        StartCoroutine(SetFill(70f, callback));
     }
 
     async void LoadContentPre()
@@ -149,9 +148,6 @@ public class LoadingManager : MonoBehaviour
 
     void SetPrefs()
     {
-        // Set the prefs
-        PlayerPrefs.SetFloat("gamePixelWidth", gamePixelWidth);
-
         // Set Loaded to 1 to make sure this callculations aren't run again
         PlayerPrefs.SetInt("Loaded", 1);
 

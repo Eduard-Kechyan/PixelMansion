@@ -9,12 +9,15 @@ public class BoardManager : MonoBehaviour
 
     private DataManager dataManager;
     private GameData gameData;
+    private SoundManager soundManager;
 
     void Start()
     {
         boardTiles = transform.GetChild(0).gameObject;
 
         dataManager = DataManager.Instance;
+
+        soundManager = SoundManager.Instance;
 
         gameData = GameData.Instance;
     }
@@ -178,11 +181,21 @@ public class BoardManager : MonoBehaviour
         {
             gameData.boardData[x, y].state = Types.State.Locker;
 
+            // Play crate opening audio
+            soundManager.PlaySFX("OpenCrate", 0.3f);
+
             int order = GetBoardOrder(x, y);
 
-            GameObject foundItem = boardTiles.transform.GetChild(order).GetChild(0).gameObject;
+            Transform foundTile = boardTiles.transform.GetChild(order);
 
-            foundItem.GetComponent<Item>().OpenCrate();
+            if (foundTile.childCount > 0)
+            {
+                GameObject foundItem = boardTiles.transform.GetChild(order).GetChild(0).gameObject;
+
+                foundItem.GetComponent<Item>().OpenCrate();
+            }
+
+            dataManager.SaveBoard();
         }
     }
 }

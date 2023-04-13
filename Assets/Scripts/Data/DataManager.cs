@@ -82,7 +82,7 @@ public class DataManager : MonoBehaviour
     {
         if (!writer.Exists("rootSet") || (ignoreInitialCheck && isEditor))
         {
-            initialJsonData = jsonHandler.ConvertBoardToJson(initialItems.content);
+            initialJsonData = jsonHandler.ConvertBoardToJson(initialItems.content,true);
             timersJsonData = jsonHandler.ConvertTimersToJson(gameData.timers);
 
             writer
@@ -149,9 +149,11 @@ public class DataManager : MonoBehaviour
         gameData.timers = jsonHandler.ConvertTimersFromJson(newTimersData);
         gameData.boardData = ConvertArrayToBoard(jsonHandler.ConvertBoardFromJson(newBoardData));
 
+        //timeManager.CheckTimers();
+
         // Finish Task
         loaded = true;
-        await Task.Delay(500);
+        await Task.Delay(200);
     }
 
     Types.Items[] ConvertItems(Types.Items[] itemsContent)
@@ -358,7 +360,7 @@ public class DataManager : MonoBehaviour
             gameData.unlockedData.CopyTo(newUnlockedData, 0);
             gameData.unlockedData = newUnlockedData;
 
-            writer.Write("unlockedData", gameData.unlockedData).Commit();
+            writer.Write("unlockedData", JsonConvert.SerializeObject(gameData.unlockedData)).Commit();
         }
 
         if (type == Types.Type.Item)

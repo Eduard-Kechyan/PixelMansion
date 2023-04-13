@@ -105,3 +105,7 @@
 .value_bob {
     scale: 1.2 1.2;
 }
+
+.menu_close:disabled {
+    opacity: 1;
+}

@@ -32,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1888629426759165983
 MonoBehaviour:
@@ -49,6 +49,13 @@ MonoBehaviour:
   sfxClips:
   - {fileID: 8300000, guid: be59fa3cfd5dc97408fe790c9b9ae7fc, type: 3}
   - {fileID: 8300000, guid: bd038163b09bb8f44b0bfee87acf4527, type: 3}
+  - {fileID: 8300000, guid: 713015114f231414ebf8b0b9297ee6ab, type: 3}
+  - {fileID: 8300000, guid: 9deeb94331cc6c34189bba62103e982b, type: 3}
+  - {fileID: 8300000, guid: 22ec3269f1cda4943ae06826f85b9c0e, type: 3}
+  - {fileID: 8300000, guid: e346cd270506370439664fd7b910894b, type: 3}
+  - {fileID: 8300000, guid: b325ca30b3007ea488ec9049fb29659d, type: 3}
+  - {fileID: 8300000, guid: 86bcfdc8ca7a6be46984995c262dee09, type: 3}
+  - {fileID: 8300000, guid: 9ea99671376d836408659e2ed74f865a, type: 3}
   bgClips:
   - {fileID: 8300000, guid: 78f963753dfba5b41873a35a705b4d6a, type: 3}
   - {fileID: 8300000, guid: 8f5d6a2bd7f781c48ae24799746c60c8, type: 3}

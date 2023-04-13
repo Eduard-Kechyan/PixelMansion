@@ -9,6 +9,8 @@ public class GameData : MonoBehaviour
     public const int WIDTH = 7;
     public const int HEIGHT = 9;
     public const int ITEM_COUNT = WIDTH * HEIGHT;
+    public const int MAX_ENERGY = 100;
+    public const float GAME_PIXEL_WIDTH = 180f;
 
     public float maxExperience = 100f;
     public int maxLevel = 99;
@@ -27,7 +29,7 @@ public class GameData : MonoBehaviour
     public int energy = 100;
     public int gold = 100;
     public int gems = 100;
-    
+
     // Timers
     public List<Types.Timer> timers;
 
@@ -41,6 +43,7 @@ public class GameData : MonoBehaviour
 
     private Values values;
     private DataManager dataManager;
+    private TimeManager timeManager;
 
     private Sprite[] itemsSprites;
     private Sprite[] generatorsSprites;
@@ -63,6 +66,8 @@ public class GameData : MonoBehaviour
     void Start()
     {
         dataManager = DataManager.Instance;
+
+        timeManager = GetComponent<TimeManager>();
 
         values = dataManager.GetComponent<Values>();
 
@@ -289,27 +294,42 @@ public class GameData : MonoBehaviour
         return null;
     }
 
-    void CheckEnergy(bool fromTimer = false)
+    public void CheckEnergy(bool fromTimer = false)
     {
+        /*if(energy < MAX_ENERGY){
+            timeManager.AddEnergyTimer();
+        }*/
+
+
         energyTimeOut = energyTime;
 
-            // Increase energy after set time if energy is less than 100
-            if (energy < 100)
-            {
-                energyTimerOn = true;
-            }
-            else
-            {
-                // End the timer and notify the plat that the energy is full
-                energyTimerOn = false;
+        // Increase energy after set time if energy is less than 100
+        if (energy < 100)
+        {
+            energyTimerOn = true;
+        }
+        else
+        {
+            // End the timer and notify the plat that the energy is full
+            energyTimerOn = false;
 
-                if (energy == 100 && fromTimer)
+            if (fromTimer)
+            {
+                if (energy >= 100)
                 {
                     Debug.Log("Energy full!");
 
                     // TODO = Add notification for a full energy
                 }
             }
+            else
+            {
+                if (values.energyTimer != null)
+                {
+                    values.energyTimer.style.display = DisplayStyle.None;
+                }
+            }
+        }
     }
 
     void UpdateEnergyTimer(float currentTime)

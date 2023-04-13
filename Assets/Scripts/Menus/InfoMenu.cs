@@ -11,13 +11,12 @@ public class InfoMenu : MonoBehaviour
     public Sprite infoParentItemSprite;
     public Color textColor;
     public Color lineColor;
+    public InfoBox infoBox;
 
     private MenuManager menuManager;
     private GameData gameData;
-    private InfoBox infoBox;
 
     private VisualElement root;
-
     private VisualElement infoMenu;
     private VisualElement itemSprite;
     private VisualElement unlockedItems;
@@ -32,12 +31,10 @@ public class InfoMenu : MonoBehaviour
         // Cache
         menuManager = MenuManager.Instance;
 
-        infoBox = menuManager.uiDoc.GetComponent<InfoBox>();
-
         gameData = GameData.Instance;
 
         // Cache UI
-        root = menuManager.uiDoc.rootVisualElement;
+        root = menuManager.menuUI.rootVisualElement;
 
         infoMenu = root.Q<VisualElement>("InfoMenu");
 
@@ -139,8 +136,6 @@ public class InfoMenu : MonoBehaviour
                         line.style.display = DisplayStyle.None;
                     }
 
-                    Debug.Log(gameData.itemsData[i].content[j].unlocked);
-
                     if (gameData.itemsData[i].content[j].unlocked)
                     {
                         unlockedItem.style.backgroundImage = new StyleBackground(
@@ -155,8 +150,8 @@ public class InfoMenu : MonoBehaviour
                     }
 
                     // Order
-                    order.style.width = 24f;
                     order.text = (j + 1) + "";
+                    order.style.width = 24f;
                     order.style.position = Position.Absolute;
                     order.style.left = Length.Percent(50);
                     order.style.bottom = -10f;
@@ -168,7 +163,6 @@ public class InfoMenu : MonoBehaviour
                     order.style.color = new StyleColor(textColor);
                     order.style.translate = new Translate(Length.Percent(-50), 0f);
                     order.style.unityTextAlign = TextAnchor.MiddleCenter;
-                    order.style.width = 24f;
 
                     // Line
                     line.style.width = 2f;

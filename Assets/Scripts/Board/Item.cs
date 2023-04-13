@@ -145,14 +145,15 @@ public class Item : MonoBehaviour
                 );
 
                 if (
-                    Mathf.Abs(transform.position.x - position.x) < 0.03f
+                    Vector2.Distance(transform.localScale, scale) < 0.01f
+                    && Mathf.Abs(transform.position.x - position.x) < 0.03f
                     && Mathf.Abs(transform.position.y - position.y) < 0.03f
                 )
                 {
                     transform.position = new Vector2(position.x, position.y);
 
-                    scale = Vector2.zero;
                     position = Vector2.zero;
+                    scale = Vector2.zero;
                     isMovingAndScaling = false;
 
                     itemChild.GetComponent<SpriteRenderer>().sortingOrder = 1;

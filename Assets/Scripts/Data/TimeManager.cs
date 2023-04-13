@@ -32,6 +32,19 @@ public class TimeManager : MonoBehaviour
         dataManager.SaveTimers();
     }
 
+    public void AddEnergyTimer()
+    {
+        int energyNeeded = GameData.MAX_ENERGY - gameData.energy;
+
+        int totalSeconds = (int)Mathf.Floor(energyNeeded * gameData.energyTime);
+
+        Debug.Log(totalSeconds);
+
+        AddTimer(Types.TimerType.Energy, "Energy");
+
+        // gameData.UpdateEnergy(1);
+    }
+
     public void RemoveTimer(string timerName)
     {
         int index = 0;
@@ -76,5 +89,30 @@ public class TimeManager : MonoBehaviour
         }
 
         return finished;
+    }
+
+    public void CheckTimers()
+    {
+        for (int i = 0; i < gameData.timers.Count; i++)
+        {
+            if (gameData.timers[i].type == Types.TimerType.Energy)
+            {
+                CheckEnergyTimer(gameData.timers[i]);
+            }
+            else if (gameData.timers[i].type == Types.TimerType.Item)
+            {
+                CheckItemTimer(gameData.timers[i]);
+            }
+        }
+    }
+
+    void CheckEnergyTimer(Types.Timer timer)
+    {
+        //RemoveTimer(timer.timerName);
+    }
+
+    void CheckItemTimer(Types.Timer timer)
+    {
+        //RemoveTimer(timer.timerName);
     }
 }

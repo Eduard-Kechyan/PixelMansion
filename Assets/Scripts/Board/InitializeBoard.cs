@@ -17,7 +17,6 @@ public class InitializeBoard : MonoBehaviour
     private BoardManager boardManager;
 
     private GameObject board;
-    private float gamePixelWidth;
     private float singlePixelWidth;
     private float screenUnitWidth;
     private float boardHalfWidth;
@@ -50,8 +49,7 @@ public class InitializeBoard : MonoBehaviour
         board = gameObject;
 
         // Cache the preferences
-        gamePixelWidth = PlayerPrefs.GetFloat("gamePixelWidth", gamePixelWidth);
-        singlePixelWidth = cam.pixelWidth / gamePixelWidth;
+        singlePixelWidth = cam.pixelWidth / GameData.GAME_PIXEL_WIDTH;
         screenUnitWidth =
             cam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 10)).x * 2;
     }
@@ -92,7 +90,7 @@ public class InitializeBoard : MonoBehaviour
         // Set board vertical position
         float screenUnitHeight =
             cam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 10)).y * 2;
-        float gamePixelOnScreen = cam.pixelWidth / gamePixelWidth;
+        float gamePixelOnScreen = cam.pixelWidth / GameData.GAME_PIXEL_WIDTH;
         float gamePixelHeight = (cam.pixelHeight / gamePixelOnScreen);
 
         float boardPosX =

@@ -31,8 +31,10 @@ public class SoundManager : MonoBehaviour
         sourceSFX.volume = volume;
     }
 
-    public void PlaySFX(string clipName = "", AudioClip clip = null)
+    public void PlaySFX(string clipName = "", float volume = 1f, AudioClip clip = null)
     {
+        sourceSFX.volume = volume;
+
         if (clip != null)
         {
             sourceSFX.PlayOneShot(clip);
@@ -57,8 +59,10 @@ public class SoundManager : MonoBehaviour
         sourceBG.volume = volume;
     }
 
-    public void PlayBg(string clipName = "", AudioClip clip = null)
+    public void PlayBg(string clipName = "", float volume = 1f, AudioClip clip = null)
     {
+        sourceBG.volume = volume;
+
         if (clip != null)
         {
             sourceBG.clip = clip;
@@ -80,12 +84,12 @@ public class SoundManager : MonoBehaviour
 
     public void FadeInBg(float seconds)
     {
-        StartCoroutine(FadeCoroutine(seconds, 0, 1));
+        StartCoroutine(FadeCoroutine(seconds, sourceBG.volume, 1));
     }
 
     public void FadeOutBg(float seconds)
     {
-        StartCoroutine(FadeCoroutine(seconds, 1, 0));
+        StartCoroutine(FadeCoroutine(seconds, sourceBG.volume, 0));
     }
 
     IEnumerator FadeCoroutine(float seconds, float from, float to)

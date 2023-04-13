@@ -161,7 +161,6 @@ MonoBehaviour:
   fillSpeed: 2
   sceneLoader: {fileID: 1419910202}
   uiDocument: {fileID: 57463799}
-  gamePixelWidth: 180
 --- !u!4 &189977663
 Transform:
   m_ObjectHideFlags: 0
@@ -241,6 +240,10 @@ PrefabInstance:
       propertyPath: sceneLoader
       value: 
       objectReference: {fileID: 1419910202}
+    - target: {fileID: 8705023981684288967, guid: af9e0bfb46c520a4fac5c30843ed2d4e, type: 3}
+      propertyPath: sceneLoader
+      value: 
+      objectReference: {fileID: 1419910202}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -298,6 +301,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3467940804924618783, guid: 9191de2ed2b660e45ac702f5b04303ad, type: 3}
+      propertyPath: sceneLoader
+      value: 
+      objectReference: {fileID: 1419910202}
     - target: {fileID: 6831382092569983105, guid: 9191de2ed2b660e45ac702f5b04303ad, type: 3}
       propertyPath: m_Name
       value: GameData

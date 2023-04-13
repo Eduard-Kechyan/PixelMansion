@@ -7,17 +7,20 @@ using UnityEngine.SceneManagement;
 public class SceneLoader : MonoBehaviour
 {
     public GameObject uiDoc;
-    public float duration = 5f;
-    public float fadeDuration = 1f;
+    public float duration = 0.6f;
+    public float fadeDuration = 0.5f;
     private TansitionUI tansitionUI;
 
     private SoundManager soundManager;
+    private GameData gameData;
 
     void Start()
     {
         tansitionUI = uiDoc.GetComponent<TansitionUI>();
 
         soundManager = SoundManager.Instance;
+
+        gameData=GameData.Instance;
 
         StartBg();
     }
@@ -59,14 +62,16 @@ public class SceneLoader : MonoBehaviour
     {
         Scene scene = SceneManager.GetActiveScene();
 
-        soundManager.PlayBg(scene.name);
-
         if (scene.name == "Loading")
         {
-            soundManager.SetVolumeBG(1);
+            soundManager.PlayBg(scene.name, 0.7f);
         }
         else
         {
+            soundManager.PlayBg(scene.name);
+
+            gameData.CheckEnergy();
+
             soundManager.FadeInBg(fadeDuration);
 
             Values values = DataManager.Instance.GetComponent<Values>();

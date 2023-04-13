@@ -7,15 +7,14 @@ using Newtonsoft.Json;
 
 public class JsonHandler : MonoBehaviour
 {
-    private DataManager dataManager;
     private GameData gameData;
+    private ItemHandler itemHandler;
 
     void Start()
     {
-        // Cache DataManager
-        dataManager = GetComponent<DataManager>();
-
         gameData = GameData.Instance;
+
+        itemHandler = DataManager.Instance.GetComponent<ItemHandler>();
     }
 
     //// TIMERS ////
@@ -93,7 +92,7 @@ public class JsonHandler : MonoBehaviour
         return boardData;
     }
 
-    public string ConvertBoardToJson(Types.Board[] boardData)
+    public string ConvertBoardToJson(Types.Board[] boardData, bool initialLoop = false)
     {
         Types.BoardJson[] boardJson = new Types.BoardJson[boardData.Length];
 
@@ -106,7 +105,7 @@ public class JsonHandler : MonoBehaviour
                 type = boardData[i].type.ToString(),
                 group = boardData[i].group.ToString(),
                 genGroup = boardData[i].genGroup.ToString(),
-                crate = boardData[i].crate,
+                crate = initialLoop ? RandomCrateInt() : boardData[i].crate,
             };
 
             boardJson[i] = newBoardJson;
@@ -116,6 +115,13 @@ public class JsonHandler : MonoBehaviour
     }
 
     //// OTHER ////
+
+    int RandomCrateInt()
+    {
+        int randomInt = Random.Range(0, itemHandler.crateSprites.Length);
+
+        return randomInt;
+    }
 
     Types.GenGroup[] LoopParentsToObject(string[] newParents)
     {

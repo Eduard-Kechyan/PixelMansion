@@ -40,6 +40,7 @@ public class BoardInteractions : MonoBehaviour
     private VisualElement dragOverlay;
     private GameObject initialTile;
     private SelectionManager selectionManager;
+    private BoardPopup boardPopup;
     private BoardManager boardManager;
     private InitializeBoard initializeBoard;
     private Action callback;
@@ -64,6 +65,7 @@ public class BoardInteractions : MonoBehaviour
 
         // Cache selectionManager
         selectionManager = GetComponent<SelectionManager>();
+        boardPopup = GetComponent<BoardPopup>();
 
         boardManager = GetComponent<BoardManager>();
 
@@ -358,6 +360,7 @@ public class BoardInteractions : MonoBehaviour
                 // Check if objects should be merged of swapped
                 if (
                     otherItem.group == currentItem.group
+                    && otherItem.type == currentItem.type
                     && otherItem.level == currentItem.level
                     && !otherItem.isMaxLavel
                 )
@@ -405,8 +408,6 @@ public class BoardInteractions : MonoBehaviour
 
         // Select item
         selectionManager.Select("both");
-
-        CancelUndo();
     }
 
     void Merge(Item otherItem)
@@ -424,6 +425,7 @@ public class BoardInteractions : MonoBehaviour
         Types.Group group = otherItem.group;
         Types.GenGroup genGroup = otherItem.genGroup;
         string spriteName = otherItem.nextSpriteName;
+        bool isLocked = otherItem.state == Types.State.Locker;
 
         currentItem.transform.parent = null;
         otherItem.transform.parent = null;
@@ -455,8 +457,16 @@ public class BoardInteractions : MonoBehaviour
             );
         }
 
-        // Play merge audio
-        soundManager.PlaySFX("Merge");
+        if (isLocked)
+        {
+            // Play unlocking audio
+            soundManager.PlaySFX("UnlockLock", 0.5f);
+        }
+        else
+        {
+            // Play merge audio
+            soundManager.PlaySFX("Merge");
+        }
 
         // Unlock the item
         dataManager.UnlockItem(
@@ -477,8 +487,6 @@ public class BoardInteractions : MonoBehaviour
         callback += MergeBackCallback;
 
         currentItem.ScaleToSize(initialScale, scaleSpeed, false, callback);
-
-        CancelUndo();
 
         boardManager.CheckForCrate(otherTile);
     }
@@ -510,8 +518,6 @@ public class BoardInteractions : MonoBehaviour
 
         // Select item
         selectionManager.Select("both");
-
-        CancelUndo();
     }
 
     void CheckInventoryButton()
@@ -551,11 +557,19 @@ public class BoardInteractions : MonoBehaviour
                 if (open)
                 {
                     currentItem.OpenCrate();
+
+                    // Play crate opening audio
+                    soundManager.PlaySFX("OpenCrate", 0.3f);
+
                     OpenCrateCallback(currentItem);
                 }
                 else
                 {
                     currentItem.UnlockLock();
+
+                    // Play unlocking audio
+                    soundManager.PlaySFX("UnlockLock", 0.6f);
+
                     OpenLockCallback(currentItem);
                 }
             }
@@ -592,6 +606,8 @@ public class BoardInteractions : MonoBehaviour
 
     public void RemoveItem(Item item, int amount = 0)
     {
+        CancelUndo();
+
         if (item.name == currentItem.name)
         {
             canUndo = true;
@@ -615,7 +631,7 @@ public class BoardInteractions : MonoBehaviour
 
             undoItem.ScaleToSize(Vector2.zero, scaleSpeed, false);
 
-            gameData.boardData[loc.x, loc.y] = new Types.Board();
+            gameData.boardData[loc.x, loc.y] = new Types.Board { order = undoBoardItem.order };
         }
     }
 
@@ -631,7 +647,13 @@ public class BoardInteractions : MonoBehaviour
 
             Vector2Int loc = boardManager.GetBoardLocation(0, undoTile);
 
-            gameData.boardData[loc.x, loc.y] = undoBoardItem;
+            gameData.boardData[loc.x, loc.y] = new Types.Board{
+                sprite=undoBoardItem.sprite,
+                group=undoBoardItem.group,
+                state=undoBoardItem.state,
+                crate=undoBoardItem.crate,
+                order=undoBoardItem.order,
+            };
 
             selectionManager.SelectItemAfterUndo();
 
@@ -645,7 +667,7 @@ public class BoardInteractions : MonoBehaviour
         }
     }
 
-    void CancelUndo()
+    public void CancelUndo()
     {
         canUndo = false;
 

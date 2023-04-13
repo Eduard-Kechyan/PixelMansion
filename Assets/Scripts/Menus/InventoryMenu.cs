@@ -33,7 +33,7 @@ public class InventoryMenu : MonoBehaviour
         gameData = DataManager.Instance.GetComponent<GameData>();
 
         // Cache UI
-        root = menuManager.uiDoc.rootVisualElement;
+        root = menuManager.menuUI.rootVisualElement;
 
         inventoryMenu = root.Q<VisualElement>("InventoryMenu");
         container = root.Q<VisualElement>("Container");
@@ -55,16 +55,15 @@ public class InventoryMenu : MonoBehaviour
 
     public void Open()
     {
-        if (inventoryMenu != null)
-        {
-            ClearData();
+        ClearData();
 
-            // Unlocked items
-            SetMenuUI();
+        // Unlocked items
+        SetMenuUI();
 
-            // Open menu
-            menuManager.OpenMenu(inventoryMenu, LOCALE.Get("menu_inventory_title"));
-        }
+        string title = LOCALE.Get("menu_inventory_title");
+
+        // Open menu
+        menuManager.OpenMenu(inventoryMenu, title, true);
     }
 
     void SetMenuUI()

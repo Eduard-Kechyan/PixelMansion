@@ -12,16 +12,20 @@ public class ResetHandler : MonoBehaviour
     {
         dataManager = DataManager.Instance;
     }
-
-    [ContextMenu("Restart App")]
-    public void RestartApp()
+    
+    public void RestartApp(bool reset = false)
     {
-        ResetData();
+        if (reset)
+        {
+            ResetData();
+        }
 
         if (dataManager != null)
         {
             Destroy(dataManager.gameObject);
         }
+
+        Debug.Log("A");
 
         StartCoroutine(GoToLoadingScene());
     }
@@ -41,7 +45,9 @@ public class ResetHandler : MonoBehaviour
 
     IEnumerator GoToLoadingScene()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.2f);
+
+        Debug.Log("B");
 
         sceneLoader.Load(0);
     }

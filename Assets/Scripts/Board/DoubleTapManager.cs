@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Locale;
 
 public class DoubleTapManager : MonoBehaviour
 {
@@ -13,6 +14,11 @@ public class DoubleTapManager : MonoBehaviour
     private DataManager dataManager;
     private ItemHandler itemHandler;
     private GameData gameData;
+    private SoundManager soundManager;
+    private BoardPopup boardPopup;
+    private EnergyMenu energyMenu;
+
+    private I18n LOCALE = I18n.Instance;
 
     void Start()
     {
@@ -20,14 +26,18 @@ public class DoubleTapManager : MonoBehaviour
         interactions = GetComponent<BoardInteractions>();
         initializeBoard = GetComponent<InitializeBoard>();
         boardManager = GetComponent<BoardManager>();
+        boardPopup = GetComponent<BoardPopup>();
 
         dataManager = DataManager.Instance;
         gameData = GameData.Instance;
+        soundManager = SoundManager.Instance;
         itemHandler = dataManager.GetComponent<ItemHandler>();
+        energyMenu = MenuManager.Instance.GetComponent<EnergyMenu>();
     }
 
     public void DoubleTapped()
     {
+        // Check for generator
         if (
             interactions.currentItem.type == Types.Type.Gen
             && interactions.currentItem.creates.Length > 0
@@ -62,14 +72,26 @@ public class DoubleTapManager : MonoBehaviour
             // Check if the board is full
             if (distances.Count > 0)
             {
-                distances.Sort((p1, p2) => p1.distance.CompareTo(p2.distance));
+                // Check if we have any energy left
+                if (gameData.energy > 0)
+                {
+                    distances.Sort((p1, p2) => p1.distance.CompareTo(p2.distance));
 
-                SelectRadnomGroupAndItem(distances[0], tile);
+                    SelectRadnomGroupAndItem(distances[0], tile);
+                }
+                else
+                {
+                    energyMenu.Open();
+                }
             }
             else
             {
-                // TODO - Handle full board
-                Debug.Log("Board full!");
+                boardPopup.AddPop(
+                    LOCALE.Get("pop_board_full"),
+                    interactions.currentItem.transform.position,
+                    true,
+                    "Buzz"
+                );
             }
         }
     }
@@ -139,6 +161,9 @@ public class DoubleTapManager : MonoBehaviour
 
         newItem.transform.GetChild(3).GetComponent<SpriteRenderer>().sortingOrder = 2;
         newItem.gameObject.layer = LayerMask.NameToLayer("ItemDragging");
+
+        // Play generating audio
+        soundManager.PlaySFX("Generate", 0.3f);
 
         newItem.transform.position = tile.transform.position;
 

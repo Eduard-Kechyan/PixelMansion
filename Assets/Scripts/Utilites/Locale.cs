@@ -14,6 +14,7 @@ namespace Locale
         private static readonly string[] locales = new string[]
         {
             "en-US", // English - English
+            "hy-HY", // Armenian - Հայերեն
             "fr-FR", // French - Français
             "es-ES", // Spanish - Español
             "de-DE", // German - Deutsch

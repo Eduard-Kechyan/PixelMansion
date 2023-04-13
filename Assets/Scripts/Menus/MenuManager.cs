@@ -5,24 +5,32 @@ using UnityEngine.UIElements;
 
 public class MenuManager : MonoBehaviour
 {
-    public UIDocument uiDoc;
+    public UIDocument menuUI;
+    public UIDocument valuesUI;
     public BoardInteractions boardInteractions;
     public float transitionDuration = 0.5f;
+    public float menuDecreaseOffset = 0.8f;
     public bool menuOpen;
+
+    private class MenuItem
+    {
+        public VisualElement menuItem;
+        public bool showValues;
+    }
 
     public static MenuManager Instance;
 
-    private VisualElement root;
+    private Values values;
 
-    private VisualElement menuBackground;
-    private VisualElement menuContainer;
-    private Label menuTitle;
-    private Button closeButton;
+    private VisualElement background;
+    private Label title;
 
+    private List<MenuItem> menus = new List<MenuItem>();
     private VisualElement currentMenu;
 
-    private string title;
+    private bool valuesShown;
 
+    // Set Singelton
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -38,66 +46,82 @@ public class MenuManager : MonoBehaviour
 
     void Start()
     {
-        root = uiDoc.rootVisualElement;
-
-        menuBackground = root.Q<VisualElement>("MenuBackground");
-        menuContainer = root.Q<VisualElement>("MenuContainer");
-        menuTitle = root.Q<VisualElement>("MenuTitle").Q<Label>("Value");
-        closeButton = root.Q<Button>("MenuCloseButton");
-
-        menuBackground.AddManipulator(new Clickable(evt => CloseMenu()));
-        closeButton.clickable.clicked += () => CloseMenu();
-
-        InitializeMenus();
-
-        currentMenu = null;
+        // Cache
+        values = DataManager.Instance.GetComponent<Values>();
     }
 
-    void InitializeMenus()
+    public void OpenMenu(
+        VisualElement newMenu,
+        string newTitle,
+        bool showValues = false
+    )
     {
-        menuBackground.style.display = DisplayStyle.None;
-        menuBackground.style.opacity = 0f;
-        menuContainer.style.display = DisplayStyle.None;
-        menuContainer.style.opacity = 0f;
-    }
+        // Add the menu to the menu list
+        menus.Add(new MenuItem { menuItem = newMenu, showValues = showValues });
 
-    public void OpenMenu(VisualElement newMenu, string newTitle)
-    {
-        title = newTitle;
-
+        // Set the current menu
         currentMenu = newMenu;
 
-        ShowMenu();
-    }
+        currentMenu.SetEnabled(true);
 
-    public void CloseMenu()
-    {
-        if (currentMenu != null)
+        if (showValues)
         {
-            HideMenu();
+            ShowValues();
         }
+
+        CheckMenuOpened();
+
+        ShowMenu(newTitle);
     }
 
-    void ShowMenu()
+    void ShowMenu(string newTitle)
     {
-        menuBackground.style.display = DisplayStyle.Flex;
-        menuBackground.style.opacity = 1f;
-        menuContainer.style.display = DisplayStyle.Flex;
-        menuContainer.style.opacity = 1f;
+        VisualElement newMenu = new VisualElement();
 
+        // Show the menu
         currentMenu.style.display = DisplayStyle.Flex;
+        currentMenu.style.opacity = 1f;
 
-        menuTitle.text = title;
+        // Add background click handler
+        background = currentMenu.Q<VisualElement>("Background");
 
+        background.AddManipulator(new Clickable(evt => CloseMenu(currentMenu.name)));
+
+        // Disable the close button
+        currentMenu.Q<VisualElement>("Close").pickingMode = PickingMode.Ignore;
+
+        // Set the menu's itle
+        title = currentMenu.Q<VisualElement>("Title").Q<Label>("Value");
+
+        title.text = newTitle;
+
+        // Set open menu indicator to open
         menuOpen = true;
 
+        // Disable the board
         boardInteractions.DisableInteractions();
     }
 
-    void HideMenu()
+    public void CloseMenu(string menuName)
     {
-        menuBackground.style.opacity = 0f;
-        menuContainer.style.opacity = 0f;
+        // Disable the menu to make it unclickable
+        currentMenu.SetEnabled(false);
+
+        // Hide the menu
+        currentMenu.style.opacity = 0f;
+
+        // Remove the menu from the menu list
+        int currentMenuIndex = 0;
+
+        for (int i = 0; i < menus.Count; i++)
+        {
+            if (menus[i].menuItem.name == menuName)
+            {
+                currentMenuIndex = i;
+            }
+        }
+
+        menus.RemoveAt(currentMenuIndex);
 
         StartCoroutine(HideMenuAfter());
     }
@@ -106,15 +130,82 @@ public class MenuManager : MonoBehaviour
     {
         yield return new WaitForSeconds(transitionDuration);
 
+        // Hide and remove the current menu
         currentMenu.style.display = DisplayStyle.None;
 
         currentMenu = null;
 
-        menuBackground.style.display = DisplayStyle.None;
-        menuContainer.style.display = DisplayStyle.None;
+        CheckMenuClosed();
+    }
 
-        menuOpen = false;
+    void CheckMenuOpened()
+    {
+        // Check if there are more than 1 menu's open
+        if (menus.Count > 1)
+        {
+            // Decrease the menu's size
+            Scale scale = new Scale(new Vector2(menuDecreaseOffset, menuDecreaseOffset));
 
-        boardInteractions.EnableInteractions();
+            menus[menus.Count - 2].menuItem.style.scale = new StyleScale(scale);
+
+            // Hide close button
+            menus[menus.Count - 2].menuItem.Q<VisualElement>("Close").style.opacity = 0f;
+        }
+    }
+
+    void CheckMenuClosed()
+    {
+        // Check if there are any menu's open
+        if (menus.Count > 0)
+        {
+            // Set the current menu
+            currentMenu = menus[menus.Count - 1].menuItem;
+
+            // Reset the menu's size
+            Scale scale = new Scale(new Vector2(1f, 1f));
+
+            currentMenu.style.scale = new StyleScale(scale);
+
+            // Show close button
+            currentMenu.Q<VisualElement>("Close").style.opacity = 1f;
+
+            if (menus[menus.Count - 1].showValues)
+            {
+                ShowValues();
+            }
+        }
+        else
+        {
+            // Set open menu indicator to close
+            menuOpen = false;
+
+            // Enable the board
+            boardInteractions.EnableInteractions();
+
+            if (valuesShown)
+            {
+                HideValues();
+            }
+        }
+    }
+
+    void ShowValues()
+    {
+        // Show the values over the menu and disable the buttons
+        valuesShown = true;
+
+        valuesUI.sortingOrder = 12;
+
+        values.DisableButtons();
+    }
+
+    void HideValues()
+    {
+        // Reset values order in hierarchy and enable the buttons
+        valuesShown = false;
+
+        valuesUI.sortingOrder = 10;
+
+        values.EnableButtons();
     }
 }

@@ -5,18 +5,19 @@ using UnityEngine.UIElements;
 
 public class SafeAreaHandler : MonoBehaviour
 {
-    public float gamePixelWidth = 180f;
     public float manualSizes = 0f;
     public bool alternativeAspectRatio;
     public Camera cam;
+    public UIDocument valuesUI;
 
     private float height;
     private float calculatedHeight;
     private float dividedHeight;
-    private float topPadding;
+    [HideInInspector]
+    public float topPadding;
     private float devicePixelWidth;
     private float singlePixelWidth;
-    private VisualElement topBox;
+    private VisualElement valuesBox;
     private VisualElement bottomBox;
     private VisualElement options;
     private VisualElement infoBox;
@@ -26,21 +27,21 @@ public class SafeAreaHandler : MonoBehaviour
     {
         VisualElement root = GetComponent<UIDocument>().rootVisualElement;
 
-        topBox = root.Q<VisualElement>("TopBox");
+        valuesBox = valuesUI.rootVisualElement.Q<VisualElement>("ValuesBox");
         bottomBox = root.Q<VisualElement>("BottomBox");
         options = root.Q<VisualElement>("Options");
         infoBox = root.Q<VisualElement>("InfoBox");
         board = root.Q<VisualElement>("Board");
 
         devicePixelWidth = cam.pixelWidth;
-        singlePixelWidth = devicePixelWidth / gamePixelWidth;
+        singlePixelWidth = devicePixelWidth / GameData.GAME_PIXEL_WIDTH;
 
         height = Screen.height - Screen.safeArea.height;
 
         // Set top padding for top box
         topPadding = Mathf.RoundToInt(height / singlePixelWidth);
 
-        topBox.style.paddingTop = topPadding;
+        valuesBox.style.top = topPadding;
 
         // Calculated sizes
         calculatedHeight = ((Screen.height - height) / singlePixelWidth) - manualSizes;

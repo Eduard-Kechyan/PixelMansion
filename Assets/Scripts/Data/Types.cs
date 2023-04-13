@@ -171,4 +171,32 @@ public class Types : MonoBehaviour
         public int crate;
         public int order;
     }
+
+    //// SHOP ////
+    public enum ShopValuesType
+    {
+        Gems,
+        Gold
+    };
+
+    [Serializable]
+    public class ShopItemsContent
+    {
+        public int left;
+        public int price;
+        public ShopValuesType priceType;
+        public Sprite sprite;
+    }
+
+    [Serializable]
+    public class ShopValuesContent
+    {
+        public int amount;
+        public int bonusAmount;
+        public float price;
+        public ShopValuesType type;
+        public Sprite sprite;
+        public bool hasBonus;
+        public bool isPopular;
+    }
 }

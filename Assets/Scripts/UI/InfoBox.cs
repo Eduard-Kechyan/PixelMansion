@@ -10,6 +10,7 @@ public class InfoBox : MonoBehaviour
     public Sprite gemValue;
     public Color redColor;
     public Color greenColor;
+    public Color greyColor;
     public Color blueColor;
     public Color yellowColor;
     public BoardInteractions boardInteractions;
@@ -31,6 +32,8 @@ public class InfoBox : MonoBehaviour
     private string textToSet = "";
 
     private InfoMenu infoMenu;
+    private ShopMenu shopMenu;
+    private GameData gameData;
 
     private I18n LOCALE = I18n.Instance;
 
@@ -62,6 +65,9 @@ public class InfoBox : MonoBehaviour
         infoData = root.Q<Label>("InfoData");
 
         infoMenu = MenuManager.Instance.GetComponent<InfoMenu>();
+        shopMenu = MenuManager.Instance.GetComponent<ShopMenu>();
+
+        gameData = GameData.Instance;
 
         // Initiate info box
         infoName.text = "";
@@ -73,9 +79,9 @@ public class InfoBox : MonoBehaviour
     void CheckForTaps()
     {
         //Open info menu
-        infoButton.clickable.clicked += () => infoMenu.Open(item);
+        infoButton.clicked += () => infoMenu.Open(item);
 
-        infoActionButton.clickable.clicked += () => InfoAction();
+        infoActionButton.clicked += () => InfoAction();
     }
 
     public void Select(Item newItem)
@@ -222,6 +228,8 @@ public class InfoBox : MonoBehaviour
 
             infoActionButton.RemoveFromClassList("info_box_button_value");
 
+            infoActionButton.RemoveFromClassList("info_box_button_disabled");
+
             infoActionValue.style.display = DisplayStyle.None;
 
             infoData.text = LOCALE.Get("info_box_default");
@@ -274,14 +282,28 @@ public class InfoBox : MonoBehaviour
         switch (actionType)
         {
             case ActionType.Open:
-                boardInteractions.OpenItem(item, openAmount, true);
-                Select(item);
-                selectionManager.Select("both", false);
+                if (gameData.gems < openAmount)
+                {
+                    shopMenu.Open("Gems");
+                }
+                else
+                {
+                    boardInteractions.OpenItem(item, openAmount, true);
+                    Select(item);
+                    selectionManager.Select("both", false);
+                }
                 break;
             case ActionType.Unlock:
-                boardInteractions.OpenItem(item, unlockAmount, false);
-                Select(item);
-                selectionManager.Select("both", false);
+                if (gameData.gems < unlockAmount)
+                {
+                    shopMenu.Open("Gems");
+                }
+                else
+                {
+                    boardInteractions.OpenItem(item, unlockAmount, false);
+                    Select(item);
+                    selectionManager.Select("both", false);
+                }
                 break;
             case ActionType.Sell:
                 boardInteractions.RemoveItem(item, sellAmount);
@@ -315,6 +337,18 @@ public class InfoBox : MonoBehaviour
 
             infoActionValue.style.backgroundImage = new StyleBackground(goldValue);
             infoActionValue.style.display = DisplayStyle.Flex;
+        }
+    }
+
+    public void Refresh()
+    {
+        if (boardInteractions.isSelected)
+        {
+            Select(boardInteractions.currentItem);
+        }
+        else
+        {
+            infoData.text = LOCALE.Get("info_box_default");
         }
     }
 }
