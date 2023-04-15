@@ -12,6 +12,7 @@ public class BoardInteractions : MonoBehaviour
     public float touchThreshold = 20f; // How far can the finger be moved before starting to drag
     public float radius = 0.5f;
     public float radiusAlt = 0.5f;
+    public int experienceThreshold = 4;
     public bool isDragging = false; // Are we currently dragging
     public bool isSelected = false; // Have we currently selected something
     public Item currentItem;
@@ -40,7 +41,6 @@ public class BoardInteractions : MonoBehaviour
     private VisualElement dragOverlay;
     private GameObject initialTile;
     private SelectionManager selectionManager;
-    private BoardPopup boardPopup;
     private BoardManager boardManager;
     private InitializeBoard initializeBoard;
     private Action callback;
@@ -65,7 +65,6 @@ public class BoardInteractions : MonoBehaviour
 
         // Cache selectionManager
         selectionManager = GetComponent<SelectionManager>();
-        boardPopup = GetComponent<BoardPopup>();
 
         boardManager = GetComponent<BoardManager>();
 
@@ -469,12 +468,19 @@ public class BoardInteractions : MonoBehaviour
         }
 
         // Unlock the item
-        dataManager.UnlockItem(
+        bool firstUnlock = dataManager.UnlockItem(
             currentItem.sprite.name,
             currentItem.type,
             currentItem.group,
-            currentItem.genGroup
+            currentItem.genGroup,
+            currentItem.collGroup
         );
+
+        // Give experience if it's the first time unlocking it and its level is heigher than experienceThreshold (default 4)
+        if (firstUnlock && currentItem.level >= experienceThreshold)
+        {
+            boardManager.CreateCollectable();
+        }
 
         // Set the new item's layer to ItemBusy
         currentItem.gameObject.layer = LayerMask.NameToLayer("ItemBusy");
@@ -647,12 +653,13 @@ public class BoardInteractions : MonoBehaviour
 
             Vector2Int loc = boardManager.GetBoardLocation(0, undoTile);
 
-            gameData.boardData[loc.x, loc.y] = new Types.Board{
-                sprite=undoBoardItem.sprite,
-                group=undoBoardItem.group,
-                state=undoBoardItem.state,
-                crate=undoBoardItem.crate,
-                order=undoBoardItem.order,
+            gameData.boardData[loc.x, loc.y] = new Types.Board
+            {
+                sprite = undoBoardItem.sprite,
+                group = undoBoardItem.group,
+                state = undoBoardItem.state,
+                crate = undoBoardItem.crate,
+                order = undoBoardItem.order,
             };
 
             selectionManager.SelectItemAfterUndo();

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.SceneManagement;
 
 public class SafeAreaHandler : MonoBehaviour
 {
@@ -13,10 +14,13 @@ public class SafeAreaHandler : MonoBehaviour
     private float height;
     private float calculatedHeight;
     private float dividedHeight;
+
     [HideInInspector]
     public float topPadding;
     private float devicePixelWidth;
     private float singlePixelWidth;
+
+    private VisualElement root;
     private VisualElement valuesBox;
     private VisualElement bottomBox;
     private VisualElement options;
@@ -25,23 +29,46 @@ public class SafeAreaHandler : MonoBehaviour
 
     void Start()
     {
-        VisualElement root = GetComponent<UIDocument>().rootVisualElement;
-
         valuesBox = valuesUI.rootVisualElement.Q<VisualElement>("ValuesBox");
+
+        // Get the safe area height
+        height = Screen.height - Screen.safeArea.height;
+
+        // Calculate the pixel widths
+        devicePixelWidth = cam.pixelWidth;
+        singlePixelWidth = devicePixelWidth / GameData.GAME_PIXEL_WIDTH;
+
+        // Set top padding for the values box
+        topPadding = Mathf.RoundToInt(height / singlePixelWidth);
+        valuesBox.style.top = topPadding;
+
+        Scene scene = SceneManager.GetActiveScene();
+
+        switch (scene.name)
+        {
+            case "Loading":
+                break;
+
+            case "Hub":
+                break;
+
+            case "GamePlay":
+                SetGamplayUI();
+                break;
+
+            default:
+                Debug.Log("Unknown scene name: " + scene.name);
+                break;
+        }
+    }
+
+    void SetGamplayUI()
+    {
+        root = GetComponent<UIDocument>().rootVisualElement;
         bottomBox = root.Q<VisualElement>("BottomBox");
         options = root.Q<VisualElement>("Options");
         infoBox = root.Q<VisualElement>("InfoBox");
         board = root.Q<VisualElement>("Board");
-
-        devicePixelWidth = cam.pixelWidth;
-        singlePixelWidth = devicePixelWidth / GameData.GAME_PIXEL_WIDTH;
-
-        height = Screen.height - Screen.safeArea.height;
-
-        // Set top padding for top box
-        topPadding = Mathf.RoundToInt(height / singlePixelWidth);
-
-        valuesBox.style.top = topPadding;
 
         // Calculated sizes
         calculatedHeight = ((Screen.height - height) / singlePixelWidth) - manualSizes;

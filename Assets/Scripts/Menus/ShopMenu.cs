@@ -13,8 +13,10 @@ public class ShopMenu : MonoBehaviour
 
     private MenuManager menuManager;
     private NoteMenu noteMenu;
+    private InfoMenu infoMenu;
     private ValuePop valuePop;
     private GameData gameData;
+    private ItemHandler itemHandler;
 
     private VisualElement root;
     private VisualElement shopMenu;
@@ -38,9 +40,11 @@ public class ShopMenu : MonoBehaviour
     {
         // Cache
         menuManager = MenuManager.Instance;
-        noteMenu = menuManager.GetComponent<NoteMenu>();
+        noteMenu = GetComponent<NoteMenu>();
+        infoMenu = GetComponent<InfoMenu>();
         valuePop = GetComponent<ValuePop>();
         gameData = GameData.Instance;
+        itemHandler = DataManager.Instance.GetComponent<ItemHandler>();
 
         // Cache UI
         root = menuManager.menuUI.rootVisualElement;
@@ -99,7 +103,8 @@ public class ShopMenu : MonoBehaviour
             VisualElement shopBox = dailyBoxes.Q<VisualElement>("DailyBox" + i);
             Label topLabel = shopBox.Q<Label>("TopLabel");
             VisualElement image = shopBox.Q<VisualElement>("Image");
-            Button buyButton = shopBox.Q<Button>("BuyButton");
+            Button infoButton = shopBox.Q<Button>("InfoButton" + i);
+            Button buyButton = shopBox.Q<Button>("BuyButton" + i);
             VisualElement buyButtonValue = buyButton.Q<VisualElement>("Value");
             Label buyButtonLabel = buyButton.Q<Label>("Label");
 
@@ -127,6 +132,8 @@ public class ShopMenu : MonoBehaviour
                 buyButtonLabel.text = dailyContent[i].price.ToString();
             }
 
+            infoButton.clicked += () => ShowInfo(infoButton.name);
+
             buyButton.clicked += () =>
                 BuyItem(buyButton.name, image.resolvedStyle.backgroundImage.sprite.name);
         }
@@ -141,7 +148,8 @@ public class ShopMenu : MonoBehaviour
             VisualElement shopBox = itemsBoxes.Q<VisualElement>("ItemBox" + i);
             Label topLabel = shopBox.Q<Label>("TopLabel");
             VisualElement image = shopBox.Q<VisualElement>("Image");
-            Button buyButton = shopBox.Q<Button>("BuyButton");
+            Button infoButton = shopBox.Q<Button>("InfoButton" + i);
+            Button buyButton = shopBox.Q<Button>("BuyButton" + i);
             VisualElement buyButtonValue = buyButton.Q<VisualElement>("Value");
             Label buyButtonLabel = buyButton.Q<Label>("Label");
 
@@ -158,7 +166,10 @@ public class ShopMenu : MonoBehaviour
 
             buyButtonLabel.text = itemsContent[i].price.ToString();
 
-            buyButton.clicked += () => BuyGold(buyButton.name);
+            infoButton.clicked += () => ShowInfo(infoButton.name);
+
+            buyButton.clicked += () =>
+                BuyItem(buyButton.name, image.resolvedStyle.backgroundImage.sprite.name);
         }
     }
 
@@ -227,7 +238,7 @@ public class ShopMenu : MonoBehaviour
             VisualElement shopBox = goldBoxes.Q<VisualElement>("GoldBox" + i);
             Label topLabel = shopBox.Q<Label>("TopLabel");
             VisualElement image = shopBox.Q<VisualElement>("Image");
-            Button buyButton = shopBox.Q<Button>("BuyButton");
+            Button buyButton = shopBox.Q<Button>("BuyButton" + i);
             VisualElement popular = shopBox.Q<VisualElement>("Popular");
             Label popularLabel = popular.Q<Label>("PopularLabel");
 
@@ -272,7 +283,7 @@ public class ShopMenu : MonoBehaviour
     {
         // NOTE -  The initial given price is in dollars
 
-        return price.ToString();
+        return "$" + price;
     }
 
     public void Open(string newLocation = "")
@@ -333,6 +344,21 @@ public class ShopMenu : MonoBehaviour
         scrollContainer.scrollOffset = new Vector2(
             0,
             scrollContainer.scrollOffset.y + scrollOffset
+        );
+    }
+
+    void ShowInfo(string buttonName)
+    {
+        int order = int.Parse(buttonName[(buttonName.LastIndexOf('n') + 1)..]);
+
+        Types.ShopItemsContent shopItemsContent = shopData.itemsContent[order];
+        
+        infoMenu.Open(
+            itemHandler.CreateItemTemp(
+                shopItemsContent.group,
+                shopItemsContent.type,
+                shopItemsContent.sprite.name
+            )
         );
     }
 

@@ -6,23 +6,52 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
-    public GameObject uiDoc;
+    public TansitionUI tansitionUI;
     public float duration = 0.6f;
     public float fadeDuration = 0.5f;
-    private TansitionUI tansitionUI;
 
     private SoundManager soundManager;
     private GameData gameData;
+    private Values values;
 
     void Start()
     {
-        tansitionUI = uiDoc.GetComponent<TansitionUI>();
-
         soundManager = SoundManager.Instance;
-
-        gameData=GameData.Instance;
+        gameData = GameData.Instance;
+        values = DataManager.Instance.GetComponent<Values>();
 
         StartBg();
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        switch (scene.name)
+        {
+            case "Loading":
+                break;
+
+            case "Hub":
+                GameData.Instance.InitializeGamedataCache();
+
+                values.InitializeValues();
+                break;
+
+            case "GamePlay":
+                InfoMenu infoMenu = MenuManager.Instance.GetComponent<InfoMenu>();
+
+                infoMenu.enabled = true;
+
+                GameData.Instance.InitializeGamedataCache();
+
+                values.InitializeValues();
+                break;
+
+            default:
+                Debug.Log("Unknown scene name: " + scene.name);
+                break;
+        }
     }
 
     public void Load(int sceneIndex)
@@ -70,19 +99,18 @@ public class SceneLoader : MonoBehaviour
         {
             soundManager.PlayBg(scene.name);
 
-            gameData.CheckEnergy();
+            //gameData.CheckEnergy();
 
             soundManager.FadeInBg(fadeDuration);
 
-            Values values = DataManager.Instance.GetComponent<Values>();
+            GameData.Instance.InitializeGamedataCache();
 
-            if (values.set)
-            {
-                DataManager.Instance.GetComponent<Values>().UpdateValues();
-            }
-            else
-            {
-                DataManager.Instance.GetComponent<Values>().InitializeValues();
+            if(values.set){
+
+                values.UpdateValues();
+            }else{
+                
+                values.InitializeValues();
             }
         }
     }

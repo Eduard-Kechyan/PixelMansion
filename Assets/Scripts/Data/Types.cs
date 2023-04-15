@@ -11,6 +11,13 @@ public class Types : MonoBehaviour
         MineCart,
     }
 
+    public enum CollGroup
+    {
+        Experience,
+        Gold,
+        Gems
+    };
+
     public enum Group
     {
         Metals,
@@ -29,7 +36,8 @@ public class Types : MonoBehaviour
     public enum Type
     {
         Item,
-        Gen
+        Gen,
+        Coll
     };
 
     //// TIMERS ///
@@ -140,6 +148,38 @@ public class Types : MonoBehaviour
         public bool hasLevel;
     }
 
+    //// COLLECTABLES ////
+    [Serializable]
+    public class Collectables
+    {
+        public CollGroup collGroup;
+        public CollectablesData[] content;
+    }
+
+    [Serializable]
+    public class CollectablesData
+    {
+        public Sprite sprite;
+
+        [HideInInspector]
+        public string itemName;
+
+        [HideInInspector]
+        public int level;
+
+        [HideInInspector]
+        public CollGroup collGroup;
+
+        [HideInInspector]
+        public bool unlocked;
+
+        [HideInInspector]
+        public bool isMaxLavel;
+
+        [HideInInspector]
+        public bool hasLevel;
+    }
+
     //// BOARD ////
     [Serializable]
     public class BoardEmpty
@@ -167,6 +207,7 @@ public class Types : MonoBehaviour
         public Type type;
         public Group group;
         public GenGroup genGroup;
+        public CollGroup collGroup;
         public State state;
         public int crate;
         public int order;
@@ -184,6 +225,8 @@ public class Types : MonoBehaviour
     {
         public int left;
         public int price;
+        public Group group;
+        public Type type;
         public ShopValuesType priceType;
         public Sprite sprite;
     }

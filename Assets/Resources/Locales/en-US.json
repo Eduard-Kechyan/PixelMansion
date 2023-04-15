@@ -14,6 +14,8 @@
     "info_box_gen_max": "TAP to get new items. This item is at MAX level, it can't be MERGED!",
     "info_box_item": "MERGE with the same item to get {0}.",
     "info_box_item_max": "This item is at MAX level, it can't be MERGED!",
+    "info_box_coll": "TAP to collect. MERGE with the same item to get the next level of {0}.",
+    "info_box_coll_max": "TAP to collect. This item is at MAX level, it can't be MERGED!",
     "info_box_button_remove": "Remove",
     "info_box_button_undo": "Undo",
     "________ INFO_MENU ________": "________________",

@@ -30,6 +30,7 @@ public class Item : MonoBehaviour
 
     public Types.Group group;
     public Types.GenGroup genGroup;
+    public Types.CollGroup collGroup;
     public Types.Creates[] creates;
 
     public Types.GenGroup[] parents;
@@ -177,13 +178,20 @@ public class Item : MonoBehaviour
             itemLevelName = itemName + " (Level " + level + ")";
         }
 
-        if (type == Types.Type.Item)
+        switch (type)
         {
-            nextSpriteName = group + "Item" + (level + 1);
-        }
-        else if (type == Types.Type.Gen)
-        {
-            nextSpriteName = genGroup + "Gen" + (level + 1);
+            case Types.Type.Item:
+                nextSpriteName = group + "Item" + (level + 1);
+                break;
+            case Types.Type.Gen:
+                nextSpriteName = genGroup + "Gen" + (level + 1);
+                break;
+            case Types.Type.Coll:
+                nextSpriteName = collGroup + "Coll" + (level + 1);
+                break;
+            default:
+                Debug.Log("Wrong type!");
+                break;
         }
 
         itemChild.GetComponent<SpriteRenderer>().sprite = sprite;

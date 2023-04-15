@@ -6,8 +6,6 @@ using Locale;
 
 public class SettingsMenu : MonoBehaviour
 {
-    public InfoBox infoBox;
-
     private MenuManager menuManager;
 
     private VisualElement root;
@@ -17,8 +15,6 @@ public class SettingsMenu : MonoBehaviour
     
     void Start()
     {
-        infoBox = GetComponent<InfoBox>();
-
         // Cache
         menuManager = GetComponent<MenuManager>();
 
@@ -50,7 +46,5 @@ public class SettingsMenu : MonoBehaviour
             I18n.SetLocale("en-US");
             PlayerPrefs.SetString("locale", "en-US");
         }
-
-        infoBox.Refresh();
     }
 }

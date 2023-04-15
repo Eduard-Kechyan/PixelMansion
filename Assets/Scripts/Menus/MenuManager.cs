@@ -40,7 +40,7 @@ public class MenuManager : MonoBehaviour
         else
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
     }
 
@@ -50,11 +50,7 @@ public class MenuManager : MonoBehaviour
         values = DataManager.Instance.GetComponent<Values>();
     }
 
-    public void OpenMenu(
-        VisualElement newMenu,
-        string newTitle,
-        bool showValues = false
-    )
+    public void OpenMenu(VisualElement newMenu, string newTitle, bool showValues = false)
     {
         // Add the menu to the menu list
         menus.Add(new MenuItem { menuItem = newMenu, showValues = showValues });
@@ -99,7 +95,10 @@ public class MenuManager : MonoBehaviour
         menuOpen = true;
 
         // Disable the board
-        boardInteractions.DisableInteractions();
+        if (boardInteractions != null)
+        {
+            boardInteractions.DisableInteractions();
+        }
     }
 
     public void CloseMenu(string menuName)
@@ -180,7 +179,10 @@ public class MenuManager : MonoBehaviour
             menuOpen = false;
 
             // Enable the board
-            boardInteractions.EnableInteractions();
+            if (boardInteractions != null)
+            {
+                boardInteractions.EnableInteractions();
+            }
 
             if (valuesShown)
             {

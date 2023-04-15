@@ -17,6 +17,7 @@ MonoBehaviour:
     type: 0
     group: 0
     genGroup: 0
+    collGroup: 0
     state: 1
     crate: 2
     order: 0
@@ -24,6 +25,7 @@ MonoBehaviour:
     type: 0
     group: 0
     genGroup: 0
+    collGroup: 0
     state: 1
     crate: 2
     order: 0
@@ -31,6 +33,7 @@ MonoBehaviour:
     type: 0
     group: 0
     genGroup: 0
+    collGroup: 0
     state: 1
     crate: 2
     order: 0
@@ -38,6 +41,7 @@ MonoBehaviour:
     type: 0
     group: 0
     genGroup: 0
+    collGroup: 0
     state: 1
     crate: 2
     order: 0
@@ -45,6 +49,7 @@ MonoBehaviour:
     type: 0
     group: 0
     genGroup: 0
+    collGroup: 0
     state: 1
     crate: 2
     order: 0
@@ -52,6 +57,7 @@ MonoBehaviour:
     type: 0
     group: 0
     genGroup: 0
+    collGroup: 0
     state: 1
     crate: 2
     order: 0
@@ -59,6 +65,7 @@ MonoBehaviour:
     type: 0
     group: 0
     genGroup: 0
+    collGroup: 0
     state: 1
     crate: 2
     order: 0
@@ -66,6 +73,7 @@ MonoBehaviour:
     type: 0
     group: 0
     genGroup: 0
+    collGroup: 0
     state: 1
     crate: 2
     order: 0
@@ -73,6 +81,7 @@ MonoBehaviour:
     type: 0
     group: 0
     genGroup: 0
+    collGroup: 0
     state: 1
     crate: 2
     order: 0
@@ -80,6 +89,7 @@ MonoBehaviour:
     type: 0
     group: 0
     genGroup: 0
+    collGroup: 0
     state: 1
     crate: 2
     order: 0
@@ -87,76 +97,7 @@ MonoBehaviour:
     type: 0
     group: 0
     genGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
+    collGroup: 0
     state: 1
     crate: 2
     order: 0
@@ -164,6 +105,71 @@ MonoBehaviour:
     type: 0
     group: 0
     genGroup: 0
+    collGroup: 0
+    state: 0
+    crate: 0
+    order: 0
+  - sprite: {fileID: 0}
+    type: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    state: 0
+    crate: 0
+    order: 0
+  - sprite: {fileID: 0}
+    type: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    state: 0
+    crate: 0
+    order: 0
+  - sprite: {fileID: 0}
+    type: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    state: 0
+    crate: 0
+    order: 0
+  - sprite: {fileID: 0}
+    type: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    state: 0
+    crate: 0
+    order: 0
+  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
+    type: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    state: 1
+    crate: 2
+    order: 0
+  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
+    type: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    state: 1
+    crate: 2
+    order: 0
+  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
+    type: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    state: 1
+    crate: 2
+    order: 0
+  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
+    type: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
     state: 1
     crate: 2
     order: 0
@@ -171,6 +177,15 @@ MonoBehaviour:
     type: 0
     group: 0
     genGroup: 0
+    collGroup: 0
+    state: 0
+    crate: 0
+    order: 0
+  - sprite: {fileID: 0}
+    type: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
     state: 1
     crate: 2
     order: 0
@@ -178,48 +193,7 @@ MonoBehaviour:
     type: 0
     group: 0
     genGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
+    collGroup: 0
     state: 1
     crate: 2
     order: 0
@@ -227,6 +201,63 @@ MonoBehaviour:
     type: 0
     group: 0
     genGroup: 0
+    collGroup: 0
+    state: 1
+    crate: 2
+    order: 0
+  - sprite: {fileID: 0}
+    type: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    state: 0
+    crate: 0
+    order: 0
+  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
+    type: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    state: 1
+    crate: 2
+    order: 0
+  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
+    type: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    state: 1
+    crate: 2
+    order: 0
+  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
+    type: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    state: 1
+    crate: 2
+    order: 0
+  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
+    type: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    state: 1
+    crate: 2
+    order: 0
+  - sprite: {fileID: 0}
+    type: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    state: 0
+    crate: 0
+    order: 0
+  - sprite: {fileID: 0}
+    type: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
     state: 1
     crate: 2
     order: 0
@@ -234,6 +265,7 @@ MonoBehaviour:
     type: 1
     group: 0
     genGroup: 0
+    collGroup: 0
     state: 0
     crate: 2
     order: 0
@@ -241,48 +273,7 @@ MonoBehaviour:
     type: 0
     group: 0
     genGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
+    collGroup: 0
     state: 1
     crate: 2
     order: 0
@@ -290,6 +281,39 @@ MonoBehaviour:
     type: 0
     group: 0
     genGroup: 0
+    collGroup: 0
+    state: 0
+    crate: 0
+    order: 0
+  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
+    type: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    state: 1
+    crate: 2
+    order: 0
+  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
+    type: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    state: 1
+    crate: 2
+    order: 0
+  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
+    type: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    state: 1
+    crate: 2
+    order: 0
+  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
+    type: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
     state: 1
     crate: 2
     order: 0
@@ -297,6 +321,15 @@ MonoBehaviour:
     type: 0
     group: 0
     genGroup: 0
+    collGroup: 0
+    state: 0
+    crate: 0
+    order: 0
+  - sprite: {fileID: 0}
+    type: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
     state: 1
     crate: 2
     order: 0
@@ -304,6 +337,31 @@ MonoBehaviour:
     type: 0
     group: 0
     genGroup: 0
+    collGroup: 0
+    state: 1
+    crate: 2
+    order: 0
+  - sprite: {fileID: 0}
+    type: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    state: 1
+    crate: 2
+    order: 0
+  - sprite: {fileID: 0}
+    type: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    state: 0
+    crate: 0
+    order: 0
+  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
+    type: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
     state: 1
     crate: 2
     order: 0
@@ -311,6 +369,7 @@ MonoBehaviour:
     type: 0
     group: 0
     genGroup: 0
+    collGroup: 0
     state: 1
     crate: 2
     order: 0
@@ -318,6 +377,7 @@ MonoBehaviour:
     type: 0
     group: 0
     genGroup: 0
+    collGroup: 0
     state: 1
     crate: 2
     order: 0
@@ -325,6 +385,55 @@ MonoBehaviour:
     type: 0
     group: 0
     genGroup: 0
+    collGroup: 0
+    state: 1
+    crate: 2
+    order: 0
+  - sprite: {fileID: 0}
+    type: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    state: 0
+    crate: 0
+    order: 0
+  - sprite: {fileID: 0}
+    type: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    state: 0
+    crate: 0
+    order: 0
+  - sprite: {fileID: 0}
+    type: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    state: 0
+    crate: 0
+    order: 0
+  - sprite: {fileID: 0}
+    type: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    state: 0
+    crate: 0
+    order: 0
+  - sprite: {fileID: 0}
+    type: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    state: 0
+    crate: 0
+    order: 0
+  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
+    type: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
     state: 1
     crate: 2
     order: 0
@@ -332,6 +441,7 @@ MonoBehaviour:
     type: 0
     group: 0
     genGroup: 0
+    collGroup: 0
     state: 1
     crate: 2
     order: 0
@@ -339,6 +449,7 @@ MonoBehaviour:
     type: 0
     group: 0
     genGroup: 0
+    collGroup: 0
     state: 1
     crate: 2
     order: 0
@@ -346,6 +457,7 @@ MonoBehaviour:
     type: 0
     group: 0
     genGroup: 0
+    collGroup: 0
     state: 1
     crate: 2
     order: 0
@@ -353,6 +465,7 @@ MonoBehaviour:
     type: 0
     group: 0
     genGroup: 0
+    collGroup: 0
     state: 1
     crate: 2
     order: 0
@@ -360,6 +473,7 @@ MonoBehaviour:
     type: 0
     group: 0
     genGroup: 0
+    collGroup: 0
     state: 1
     crate: 2
     order: 0
@@ -367,6 +481,7 @@ MonoBehaviour:
     type: 0
     group: 0
     genGroup: 0
+    collGroup: 0
     state: 1
     crate: 2
     order: 0
@@ -374,6 +489,7 @@ MonoBehaviour:
     type: 0
     group: 0
     genGroup: 0
+    collGroup: 0
     state: 1
     crate: 2
     order: 0
@@ -381,6 +497,7 @@ MonoBehaviour:
     type: 0
     group: 0
     genGroup: 0
+    collGroup: 0
     state: 1
     crate: 2
     order: 0
@@ -388,6 +505,7 @@ MonoBehaviour:
     type: 0
     group: 0
     genGroup: 0
+    collGroup: 0
     state: 1
     crate: 2
     order: 0
@@ -395,62 +513,7 @@ MonoBehaviour:
     type: 0
     group: 0
     genGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
+    collGroup: 0
     state: 1
     crate: 2
     order: 0

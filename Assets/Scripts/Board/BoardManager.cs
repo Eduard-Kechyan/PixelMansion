@@ -4,22 +4,30 @@ using UnityEngine;
 
 public class BoardManager : MonoBehaviour
 {
+    public float moveSpeed = 14f;
+    public float scaleSpeed = 8f;
+
     [HideInInspector]
     public GameObject boardTiles;
 
     private DataManager dataManager;
     private GameData gameData;
     private SoundManager soundManager;
+    private InitializeBoard initializeBoard;
+    private BoardInteractions interactions;
+    private ItemHandler itemHandler;
+    private ValuePop valuePop;
 
     void Start()
     {
         boardTiles = transform.GetChild(0).gameObject;
-
+        initializeBoard = GetComponent<InitializeBoard>();
+        interactions = GetComponent<BoardInteractions>();
         dataManager = DataManager.Instance;
-
         soundManager = SoundManager.Instance;
-
         gameData = GameData.Instance;
+        itemHandler = dataManager.GetComponent<ItemHandler>();
+        valuePop = MenuManager.Instance.GetComponent<ValuePop>();
     }
 
     /////// GET BOARD DATA ////////
@@ -197,5 +205,186 @@ public class BoardManager : MonoBehaviour
 
             dataManager.SaveBoard();
         }
+    }
+
+    /////// CREATE ITEM ON THE BOARD ////////
+    public void CreateCollectable()
+    {
+        GameObject tile = interactions.currentItem.transform.parent.gameObject;
+
+        Vector2Int tileLoc = GetBoardLocation(0, tile);
+
+        List<Types.BoardEmpty> emptyBoard = GetEmptyBoardItems(tileLoc);
+
+        // Check if the board is full
+        if (emptyBoard.Count > 0)
+        {
+            // Create item from selected group
+            for (int i = 0; i < gameData.collectablesData.Length; i++)
+            {
+                if (gameData.collectablesData[i].collGroup == Types.CollGroup.Experience)
+                {
+                    CreateCollectableOnEmptyTile(
+                        gameData.collectablesData[i].content[0].sprite.name,
+                        gameData.collectablesData[i].content[0].collGroup,
+                        emptyBoard[0],
+                        tile
+                    );
+                }
+            }
+        }
+        else {
+            valuePop.PopExperience(1, "Experience",tile.transform.position);
+        }
+    }
+
+    public void CreateItemOnEmptyTile(
+        string spriteName,
+        Types.Group group,
+        Types.BoardEmpty emptyBoard,
+        GameObject tile
+    )
+    {
+        GameObject emptyTile = boardTiles.transform.GetChild(emptyBoard.order).gameObject;
+
+        // Create the item on the board
+        Item newItem = itemHandler.CreateItem(
+            emptyTile,
+            initializeBoard.tileSize,
+            group,
+            spriteName
+        );
+
+        Vector2 tempScale = new Vector2(
+            newItem.transform.localScale.x,
+            newItem.transform.localScale.y
+        );
+
+        newItem.transform.GetChild(3).GetComponent<SpriteRenderer>().sortingOrder = 2;
+        newItem.gameObject.layer = LayerMask.NameToLayer("ItemDragging");
+
+        // Play generating audio
+        soundManager.PlaySFX("Generate", 0.3f);
+
+        newItem.transform.position = tile.transform.position;
+
+        newItem.transform.localScale = Vector2.zero;
+
+        newItem.MoveAndScale(emptyTile.transform.position, tempScale, moveSpeed, scaleSpeed);
+
+        gameData.boardData[emptyBoard.loc.x, emptyBoard.loc.y] = new Types.Board
+        {
+            sprite = newItem.sprite,
+            type = newItem.type,
+            group = newItem.group,
+            genGroup = newItem.genGroup,
+            state = newItem.state,
+            crate = 0,
+            order = emptyBoard.order
+        };
+
+        dataManager.UnlockItem(
+            newItem.sprite.name,
+            newItem.type,
+            newItem.group,
+            newItem.genGroup,
+            newItem.collGroup
+        );
+
+        gameData.UpdateEnergy(-1);
+
+        dataManager.SaveBoard();
+    }
+
+    public void CreateCollectableOnEmptyTile(
+        string spriteName,
+        Types.CollGroup collGroup,
+        Types.BoardEmpty emptyBoard,
+        GameObject tile
+    )
+    {
+        GameObject emptyTile = boardTiles.transform.GetChild(emptyBoard.order).gameObject;
+
+        // Create the item on the board
+        Item newItem = itemHandler.CreateCollection(
+            emptyTile,
+            initializeBoard.tileSize,
+            collGroup,
+            spriteName
+        );
+
+        Vector2 tempScale = new Vector2(
+            newItem.transform.localScale.x,
+            newItem.transform.localScale.y
+        );
+
+        newItem.transform.GetChild(3).GetComponent<SpriteRenderer>().sortingOrder = 2;
+        newItem.gameObject.layer = LayerMask.NameToLayer("ItemDragging");
+
+        // Play generating audio
+        soundManager.PlaySFX("Experience", 0.3f);
+
+        newItem.transform.position = tile.transform.position;
+
+        newItem.transform.localScale = Vector2.zero;
+
+        newItem.MoveAndScale(emptyTile.transform.position, tempScale, moveSpeed, scaleSpeed);
+
+        gameData.boardData[emptyBoard.loc.x, emptyBoard.loc.y] = new Types.Board
+        {
+            sprite = newItem.sprite,
+            type = newItem.type,
+            group = newItem.group,
+            genGroup = newItem.genGroup,
+            collGroup = newItem.collGroup,
+            state = newItem.state,
+            crate = 0,
+            order = emptyBoard.order
+        };
+
+        dataManager.UnlockItem(
+            newItem.sprite.name,
+            newItem.type,
+            newItem.group,
+            newItem.genGroup,
+            newItem.collGroup
+        );
+
+        dataManager.SaveBoard();
+    }
+
+    public List<Types.BoardEmpty> GetEmptyBoardItems(Vector2Int tileLoc)
+    {
+        List<Types.BoardEmpty> emptyBoard = new List<Types.BoardEmpty>();
+
+        for (int x = 0; x < gameData.boardData.GetLength(0); x++)
+        {
+            for (int y = 0; y < gameData.boardData.GetLength(1); y++)
+            {
+                if (gameData.boardData[x, y].sprite == null)
+                {
+                    emptyBoard.Add(
+                        new Types.BoardEmpty
+                        {
+                            order = gameData.boardData[x, y].order,
+                            loc = GetBoardLocation(gameData.boardData[x, y].order),
+                            distance = CalculateDistance(tileLoc.x, tileLoc.y, x, y),
+                        }
+                    );
+                }
+            }
+        }
+
+        return emptyBoard;
+    }
+
+    // Calculate the distance between two points in a 2d array
+    float CalculateDistance(int currentX, int currentY, int otherX, int otherY)
+    {
+        float distance = Mathf.Sqrt(
+            (currentX - otherX) * (currentX - otherX) + (currentY - otherY) * (currentY - otherY)
+        );
+
+        return distance;
     }
 }

@@ -10,13 +10,10 @@ public class DoubleTapManager : MonoBehaviour
 
     private BoardInteractions interactions;
     private BoardManager boardManager;
-    private InitializeBoard initializeBoard;
-    private DataManager dataManager;
-    private ItemHandler itemHandler;
     private GameData gameData;
-    private SoundManager soundManager;
     private BoardPopup boardPopup;
     private EnergyMenu energyMenu;
+    private ValuePop valuePop;
 
     private I18n LOCALE = I18n.Instance;
 
@@ -24,15 +21,11 @@ public class DoubleTapManager : MonoBehaviour
     {
         // Cache
         interactions = GetComponent<BoardInteractions>();
-        initializeBoard = GetComponent<InitializeBoard>();
         boardManager = GetComponent<BoardManager>();
         boardPopup = GetComponent<BoardPopup>();
-
-        dataManager = DataManager.Instance;
         gameData = GameData.Instance;
-        soundManager = SoundManager.Instance;
-        itemHandler = dataManager.GetComponent<ItemHandler>();
         energyMenu = MenuManager.Instance.GetComponent<EnergyMenu>();
+        valuePop = MenuManager.Instance.GetComponent<ValuePop>();
     }
 
     public void DoubleTapped()
@@ -44,55 +37,46 @@ public class DoubleTapManager : MonoBehaviour
             && gameData.energy >= 1
         )
         {
-            List<Types.BoardEmpty> distances = new List<Types.BoardEmpty>();
+            DoubleTappedGenerator();
+        }
+        else if (interactions.currentItem.type == Types.Type.Coll)
+        {
+            valuePop.PopExperience(interactions.currentItem.level, "Experience", interactions.currentItem.transform.position);
+        }
+    }
 
-            GameObject tile = interactions.currentItem.transform.parent.gameObject;
+    void DoubleTappedGenerator()
+    {
 
-            Vector2Int tileLoc = boardManager.GetBoardLocation(0, tile);
+        GameObject tile = interactions.currentItem.transform.parent.gameObject;
 
-            // Get all empty items from the board data
-            for (int x = 0; x < gameData.boardData.GetLength(0); x++)
+        Vector2Int tileLoc = boardManager.GetBoardLocation(0, tile);
+
+        List<Types.BoardEmpty> emptyBoard = boardManager.GetEmptyBoardItems(tileLoc);
+
+        // Check if the board is full
+        if (emptyBoard.Count > 0)
+        {
+            // Check if we have any energy left
+            if (gameData.energy > 0)
             {
-                for (int y = 0; y < gameData.boardData.GetLength(1); y++)
-                {
-                    if (gameData.boardData[x, y].sprite == null)
-                    {
-                        distances.Add(
-                            new Types.BoardEmpty
-                            {
-                                order = gameData.boardData[x, y].order,
-                                loc = boardManager.GetBoardLocation(gameData.boardData[x, y].order),
-                                distance = CalculateDistance(tileLoc.x, tileLoc.y, x, y),
-                            }
-                        );
-                    }
-                }
-            }
+                emptyBoard.Sort((p1, p2) => p1.distance.CompareTo(p2.distance));
 
-            // Check if the board is full
-            if (distances.Count > 0)
-            {
-                // Check if we have any energy left
-                if (gameData.energy > 0)
-                {
-                    distances.Sort((p1, p2) => p1.distance.CompareTo(p2.distance));
-
-                    SelectRadnomGroupAndItem(distances[0], tile);
-                }
-                else
-                {
-                    energyMenu.Open();
-                }
+                SelectRadnomGroupAndItem(emptyBoard[0], tile);
             }
             else
             {
-                boardPopup.AddPop(
-                    LOCALE.Get("pop_board_full"),
-                    interactions.currentItem.transform.position,
-                    true,
-                    "Buzz"
-                );
+                energyMenu.Open();
             }
+        }
+        else
+        {
+            boardPopup.AddPop(
+                LOCALE.Get("pop_board_full"),
+                interactions.currentItem.transform.position,
+                true,
+                "Buzz"
+            );
         }
     }
 
@@ -125,7 +109,7 @@ public class DoubleTapManager : MonoBehaviour
         {
             if (gameData.itemsData[i].group == selectedGroup)
             {
-                CreateItemOnEmptyTile(
+                boardManager.CreateItemOnEmptyTile(
                     gameData.itemsData[i].content[0].sprite.name,
                     gameData.itemsData[i].content[0].group,
                     emptyBoard,
@@ -135,67 +119,4 @@ public class DoubleTapManager : MonoBehaviour
         }
     }
 
-    void CreateItemOnEmptyTile(
-        string spriteName,
-        Types.Group group,
-        Types.BoardEmpty emptyBoard,
-        GameObject tile
-    )
-    {
-        GameObject emptyTile = boardManager.boardTiles.transform
-            .GetChild(emptyBoard.order)
-            .gameObject;
-
-        // Create the item on the board
-        Item newItem = itemHandler.CreateItem(
-            emptyTile,
-            initializeBoard.tileSize,
-            group,
-            spriteName
-        );
-
-        Vector2 tempScale = new Vector2(
-            newItem.transform.localScale.x,
-            newItem.transform.localScale.y
-        );
-
-        newItem.transform.GetChild(3).GetComponent<SpriteRenderer>().sortingOrder = 2;
-        newItem.gameObject.layer = LayerMask.NameToLayer("ItemDragging");
-
-        // Play generating audio
-        soundManager.PlaySFX("Generate", 0.3f);
-
-        newItem.transform.position = tile.transform.position;
-
-        newItem.transform.localScale = Vector2.zero;
-
-        newItem.MoveAndScale(emptyTile.transform.position, tempScale, moveSpeed, scaleSpeed);
-
-        gameData.boardData[emptyBoard.loc.x, emptyBoard.loc.y] = new Types.Board
-        {
-            sprite = newItem.sprite,
-            type = newItem.type,
-            group = newItem.group,
-            genGroup = newItem.genGroup,
-            state = newItem.state,
-            crate = 0,
-            order = emptyBoard.order
-        };
-
-        dataManager.UnlockItem(newItem.sprite.name, newItem.type, newItem.group, newItem.genGroup);
-
-        gameData.UpdateEnergy(-1);
-
-        dataManager.SaveBoard();
-    }
-
-    // Calculate the distance between two points in a 2d array
-    float CalculateDistance(int currentX, int currentY, int otherX, int otherY)
-    {
-        float distance = Mathf.Sqrt(
-            (currentX - otherX) * (currentX - otherX) + (currentY - otherY) * (currentY - otherY)
-        );
-
-        return distance;
-    }
 }

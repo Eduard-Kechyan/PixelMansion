@@ -18,7 +18,7 @@ public class GameData : MonoBehaviour
 
     public float energyTime = 120f;
     private float energyTimeOut;
-    private bool energyTimerOn = false;
+    //private bool energyTimerOn = false;
 
     [SerializeField]
     private string energyTimerText = "00:00";
@@ -35,6 +35,7 @@ public class GameData : MonoBehaviour
 
     // Items data
     public Types.Items[] itemsData;
+    public Types.Collectables[] collectablesData;
     public Types.Generators[] generatorsData;
 
     //public  Types.Items[] storageData;
@@ -67,16 +68,12 @@ public class GameData : MonoBehaviour
     {
         dataManager = DataManager.Instance;
 
-        timeManager = GetComponent<TimeManager>();
-
-        values = dataManager.GetComponent<Values>();
-
         energyTimeOut = energyTime;
     }
 
     void Update()
     {
-        if (energyTimerOn)
+        /*if (energyTimerOn)
         {
             if (energyTimeOut > 0)
             {
@@ -89,7 +86,14 @@ public class GameData : MonoBehaviour
 
                 CheckEnergy(true);
             }
-        }
+        }*/
+    }
+
+   public void InitializeGamedataCache(){
+
+        timeManager = GetComponent<TimeManager>();
+
+        values = dataManager.GetComponent<Values>();
     }
 
     //////// SET ////////
@@ -306,12 +310,12 @@ public class GameData : MonoBehaviour
         // Increase energy after set time if energy is less than 100
         if (energy < 100)
         {
-            energyTimerOn = true;
+           // energyTimerOn = true;
         }
         else
         {
             // End the timer and notify the plat that the energy is full
-            energyTimerOn = false;
+           // energyTimerOn = false;
 
             if (fromTimer)
             {

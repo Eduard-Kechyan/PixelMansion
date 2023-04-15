@@ -37,12 +37,17 @@ public class ValuePop : MonoBehaviour
         root = MenuManager.Instance.menuUI.rootVisualElement;
     }
 
-    public void PopValue(float newAmount, string newType)
+    public void PopValue(float amount, string type)
     {
-            StartCoroutine(HandlePopValue(newAmount, newType));
+        StartCoroutine(HandlePopValue(amount, type, Vector2.zero));
     }
 
-    public IEnumerator HandlePopValue(float amount, string type)
+    public void PopExperience(int level, string type, Vector2 position)
+    {
+        StartCoroutine(HandlePopValue(level, type, Vector2.zero));
+    }
+
+    public IEnumerator HandlePopValue(float amount, string type, Vector2 position)
     {
         Sprite valuePopSprite;
         float valuePopOffset;
@@ -74,7 +79,7 @@ public class ValuePop : MonoBehaviour
         }
 
         // Add value pop element to the root
-        VisualElement valuePop= InitializePopValueElement(valuePopSprite);
+        VisualElement valuePop = InitializePopValueElement(valuePopSprite, position);
 
         yield return new WaitForSeconds(0.1f);
 
@@ -130,7 +135,7 @@ public class ValuePop : MonoBehaviour
         }
     }
 
-    VisualElement InitializePopValueElement(Sprite sprite)
+    VisualElement InitializePopValueElement(Sprite sprite, Vector2 position)
     {
         VisualElement newValuePop = new VisualElement { name = "ValuePop" };
 
@@ -148,15 +153,32 @@ public class ValuePop : MonoBehaviour
         newValuePop.style.transitionDuration = new StyleList<TimeValue>(durations);
 
         newValuePop.style.scale = new StyleScale(scale);
+        
+            float halfWidth = popWidth / 2;
 
-        // Calculate the center of the UI
-        float halfWidth = popWidth / 2;
-        float rootHalfWidth = root.resolvedStyle.width / 2;
-        float rootHalfHeight = root.resolvedStyle.height / 2;
+        // Check where we should initialize the pop value
+        if (position.x == 0 && position.y == 0)
+        {
+            // Calculate the center of the UI
+            float rootHalfWidth = root.resolvedStyle.width / 2;
+            float rootHalfHeight = root.resolvedStyle.height / 2;
 
-        // Set the value pop's position
-        newValuePop.style.left = rootHalfWidth - halfWidth;
-        newValuePop.style.top = rootHalfHeight - halfWidth;
+            // Set the value pop's position
+            newValuePop.style.left = rootHalfWidth - halfWidth;
+            newValuePop.style.top = rootHalfHeight - halfWidth;
+        }
+        else
+        {
+            // Get position on the UI from the scene
+            Vector2 newUIPos = RuntimePanelUtils.CameraTransformWorldToPanel(
+                root.panel,
+                position,
+                Camera.main
+            );
+            // Set the value pop's position
+            newValuePop.style.left = newUIPos.x - halfWidth;
+            newValuePop.style.top = newUIPos.y - halfWidth;
+        }
 
         // Add the value pop to the root
         root.Add(newValuePop);
@@ -164,7 +186,5 @@ public class ValuePop : MonoBehaviour
         return newValuePop;
     }
 
-    void RemovePopFromQuery(Pop oldPop){
-
-    }
+    void RemovePopFromQuery(Pop oldPop) { }
 }

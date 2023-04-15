@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ab8382626fbf07458b6bdf60ca97bbf, type: 3}
+  m_Name: Collectables
+  m_EditorClassIdentifier: 
+  content:
+  - valueGroup: 0
+    content:
+    - sprite: {fileID: 21300000, guid: f8b66945f5e9ea248bad5cafefe4b8d5, type: 3}
+      itemName: 
+      level: 0
+      valueGroup: 0
+      isMaxLavel: 0
+      hasLevel: 0
+    - sprite: {fileID: 21300000, guid: 4249019a1f0651f42b68810168bb6ade, type: 3}
+      itemName: 
+      level: 0
+      valueGroup: 0
+      isMaxLavel: 0
+      hasLevel: 0
+    - sprite: {fileID: 21300000, guid: 69417eebe82810f43876239658178873, type: 3}
+      itemName: 
+      level: 0
+      valueGroup: 0
+      isMaxLavel: 0
+      hasLevel: 0
+  - valueGroup: 1
+    content:
+    - sprite: {fileID: 21300000, guid: 57ad0ef4820afde4f8afb343ae1b5083, type: 3}
+      itemName: 
+      level: 0
+      valueGroup: 0
+      isMaxLavel: 0
+      hasLevel: 0
+    - sprite: {fileID: 21300000, guid: ca3a280a957839843b47b3b96175df80, type: 3}
+      itemName: 
+      level: 0
+      valueGroup: 0
+      isMaxLavel: 0
+      hasLevel: 0
+    - sprite: {fileID: 21300000, guid: 7a2ac0667b8c36b4aa5641e6d10a9fc1, type: 3}
+      itemName: 
+      level: 0
+      valueGroup: 0
+      isMaxLavel: 0
+      hasLevel: 0
+  - valueGroup: 2
+    content:
+    - sprite: {fileID: 21300000, guid: d9aa7229a4950d74195693da1dd5f82c, type: 3}
+      itemName: 
+      level: 0
+      valueGroup: 0
+      isMaxLavel: 0
+      hasLevel: 0
+    - sprite: {fileID: 21300000, guid: efe79adffec4b6c4abc7e59b6b0629c7, type: 3}
+      itemName: 
+      level: 0
+      valueGroup: 0
+      isMaxLavel: 0
+      hasLevel: 0
+    - sprite: {fileID: 21300000, guid: d58e076bfa16ab84ca83c028755c7917, type: 3}
+      itemName: 
+      level: 0
+      valueGroup: 0
+      isMaxLavel: 0
+      hasLevel: 0

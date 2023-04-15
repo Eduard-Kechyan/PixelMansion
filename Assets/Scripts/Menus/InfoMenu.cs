@@ -11,10 +11,10 @@ public class InfoMenu : MonoBehaviour
     public Sprite infoParentItemSprite;
     public Color textColor;
     public Color lineColor;
-    public InfoBox infoBox;
 
     private MenuManager menuManager;
     private GameData gameData;
+    private InfoBox infoBox;
 
     private VisualElement root;
     private VisualElement infoMenu;
@@ -30,8 +30,8 @@ public class InfoMenu : MonoBehaviour
     {
         // Cache
         menuManager = MenuManager.Instance;
-
         gameData = GameData.Instance;
+        infoBox = GameObject.Find("GamePlayUI").GetComponent<InfoBox>();
 
         // Cache UI
         root = menuManager.menuUI.rootVisualElement;
@@ -46,10 +46,10 @@ public class InfoMenu : MonoBehaviour
         itemName = infoMenu.Q<Label>("ItemName");
         itemData = infoMenu.Q<Label>("ItemData");
 
-        InitializeMenu();
+        InitializeInfoMenu();
     }
 
-    void InitializeMenu()
+    void InitializeInfoMenu()
     {
         infoMenu.style.display = DisplayStyle.None;
         infoParent.style.display = DisplayStyle.None;
@@ -136,7 +136,10 @@ public class InfoMenu : MonoBehaviour
                         line.style.display = DisplayStyle.None;
                     }
 
-                    if (gameData.itemsData[i].content[j].unlocked)
+                    if (
+                        gameData.itemsData[i].content[j].unlocked
+                        || gameData.itemsData[i].content[j].sprite.name == item.sprite.name
+                    )
                     {
                         unlockedItem.style.backgroundImage = new StyleBackground(
                             gameData.itemsData[i].content[j].sprite

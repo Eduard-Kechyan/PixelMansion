@@ -18,6 +18,7 @@ public class DataManager : MonoBehaviour
     // Initial items
     public Items items;
     public Generators generators;
+    public Collectables collectables;
     public InitialItems initialItems;
 
     // Whether data has been fully loaded
@@ -70,7 +71,7 @@ public class DataManager : MonoBehaviour
         isEditor = true;
 
         // Make this script run if we not starting from the Losding scene
-        if (!loaded && SceneManager.GetActiveScene().name == "GamePlay")
+        if (!loaded && (SceneManager.GetActiveScene().name == "GamePlay"|| SceneManager.GetActiveScene().name == "Hub"))
         {
             await CheckInitialData();
         }
@@ -145,6 +146,7 @@ public class DataManager : MonoBehaviour
         // Convert data
         gameData.itemsData = ConvertItems(items.content);
         gameData.generatorsData = ConvertGenerators(generators.content);
+        gameData.collectablesData = ConvertCollectables(collectables.content);
 
         gameData.timers = jsonHandler.ConvertTimersFromJson(newTimersData);
         gameData.boardData = ConvertArrayToBoard(jsonHandler.ConvertBoardFromJson(newBoardData));
@@ -246,6 +248,42 @@ public class DataManager : MonoBehaviour
         return convertedGenerators;
     }
 
+    Types.Collectables[] ConvertCollectables(Types.Collectables[] collectablesContent){
+        Types.Collectables[] convertedCollectables = new Types.Collectables[collectablesContent.Length];
+
+        for (int i = 0; i < collectablesContent.Length; i++)
+        {
+            int count = 1;
+
+            Types.Collectables newObjectData = new Types.Collectables
+            {
+                collGroup = collectablesContent[i].collGroup,
+                content = new Types.CollectablesData[collectablesContent[i].content.Length]
+            };
+
+            for (int j = 0; j < collectablesContent[i].content.Length; j++)
+            {
+                Types.CollectablesData newInnerObjectData = new Types.CollectablesData
+                {
+                    collGroup = collectablesContent[i].collGroup,
+                    hasLevel = true,
+                    itemName =collectablesContent[i].collGroup.ToString(),
+                    level = count,
+                    sprite = collectablesContent[i].content[j].sprite,
+                    isMaxLavel = count == collectablesContent[i].content.Length
+                };
+
+                newObjectData.content[j] = newInnerObjectData;
+
+                count++;
+            }
+
+            convertedCollectables[i] = newObjectData;
+        }
+
+        return convertedCollectables;
+    }
+
     // Check if item is unlocked
     bool CheckUnlocked(string spriteName)
     {
@@ -328,11 +366,12 @@ public class DataManager : MonoBehaviour
     }
 
     // Unlock item
-    public void UnlockItem(
+    public bool UnlockItem(
         string spriteName,
         Types.Type type,
         Types.Group group,
-        Types.GenGroup genGroup
+        Types.GenGroup genGroup,
+        Types.CollGroup collGroup
     )
     {
         bool found = false;
@@ -363,9 +402,10 @@ public class DataManager : MonoBehaviour
             writer.Write("unlockedData", JsonConvert.SerializeObject(gameData.unlockedData)).Commit();
         }
 
-        if (type == Types.Type.Item)
+switch (type)
         {
-            for (int i = 0; i < gameData.itemsData.Length; i++)
+            case Types.Type.Item:
+                 for (int i = 0; i < gameData.itemsData.Length; i++)
             {
                 if (gameData.itemsData[i].group == group)
                 {
@@ -378,10 +418,9 @@ public class DataManager : MonoBehaviour
                     }
                 }
             }
-        }
-        else if (type == Types.Type.Gen)
-        {
-            for (int i = 0; i < gameData.generatorsData.Length; i++)
+                break;
+            case Types.Type.Gen:
+                for (int i = 0; i < gameData.generatorsData.Length; i++)
             {
                 if (gameData.generatorsData[i].genGroup == genGroup)
                 {
@@ -394,7 +433,28 @@ public class DataManager : MonoBehaviour
                     }
                 }
             }
+                break;
+            case Types.Type.Coll:
+                for (int i = 0; i < gameData.collectablesData.Length; i++)
+            {
+                if (gameData.collectablesData[i].collGroup == collGroup)
+                {
+                    for (int j = 0; j < gameData.collectablesData[i].content.Length; j++)
+                    {
+                        if (gameData.collectablesData[i].content[j].sprite.name == spriteName)
+                        {
+                            gameData.collectablesData[i].content[j].unlocked = true;
+                        }
+                    }
+                }
+            }
+                break;
+            default:
+                Debug.Log("Wrong type!");
+                break;
         }
+
+        return found;
     }
 
     //// SAVE ////

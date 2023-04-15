@@ -43,7 +43,8 @@ public class InfoBox : MonoBehaviour
         Unlock,
         Sell,
         Remove,
-        Undo
+        Undo,
+        None
     };
 
     private ActionType actionType;
@@ -129,6 +130,16 @@ public class InfoBox : MonoBehaviour
                             textToSet = LOCALE.Get("info_box_gen", item.nextName);
                         }
                         break;
+                    case Types.Type.Coll:
+                        if (item.isMaxLavel)
+                        {
+                            textToSet = LOCALE.Get("info_box_coll_max");
+                        }
+                        else
+                        {
+                            textToSet = LOCALE.Get("info_box_coll", item.nextName);
+                        }
+                        break;
                     default:
                         if (item.isMaxLavel)
                         {
@@ -141,16 +152,21 @@ public class InfoBox : MonoBehaviour
                         break;
                 }
 
+                infoButton.style.display = DisplayStyle.Flex;
+
                 if (item.level > 3 || item.isMaxLavel)
                 {
                     actionType = ActionType.Sell;
+                }
+                else if(item.type==Types.Type.Coll){
+                    actionType = ActionType.None;
+                infoButton.style.display = DisplayStyle.None;
                 }
                 else
                 {
                     actionType = ActionType.Remove;
                 }
 
-                infoButton.style.display = DisplayStyle.Flex;
                 break;
         }
 
@@ -197,6 +213,11 @@ public class InfoBox : MonoBehaviour
                 infoActionButton.RemoveFromClassList("info_box_button_value");
                 infoActionButton.style.display = DisplayStyle.Flex;
                 infoActionButton.style.backgroundColor = redColor;
+
+                infoActionValue.style.display = DisplayStyle.None;
+                break;
+            case ActionType.None:
+                infoActionButton.style.display = DisplayStyle.None;
 
                 infoActionValue.style.display = DisplayStyle.None;
                 break;
