@@ -35,6 +35,7 @@ public class DataManager : MonoBehaviour
     private TimeManager timeManager;
 
     private string initialJsonData;
+    private string bonusData;
     private string timersJsonData;
     private string unlockedJsonData;
 
@@ -71,7 +72,13 @@ public class DataManager : MonoBehaviour
         isEditor = true;
 
         // Make this script run if we not starting from the Losding scene
-        if (!loaded && (SceneManager.GetActiveScene().name == "GamePlay"|| SceneManager.GetActiveScene().name == "Hub"))
+        if (
+            !loaded
+            && (
+                SceneManager.GetActiveScene().name == "GamePlay"
+                || SceneManager.GetActiveScene().name == "Hub"
+            )
+        )
         {
             await CheckInitialData();
         }
@@ -83,7 +90,8 @@ public class DataManager : MonoBehaviour
     {
         if (!writer.Exists("rootSet") || (ignoreInitialCheck && isEditor))
         {
-            initialJsonData = jsonHandler.ConvertBoardToJson(initialItems.content,true);
+            initialJsonData = jsonHandler.ConvertBoardToJson(initialItems.content, true);
+            bonusData = jsonHandler.ConvertBonusToJson(gameData.bonusData);
             timersJsonData = jsonHandler.ConvertTimersToJson(gameData.timers);
 
             writer
@@ -96,6 +104,7 @@ public class DataManager : MonoBehaviour
                 .Write("gems", gameData.gems)
                 //////// Items ////////
                 .Write("boardData", initialJsonData)
+                .Write("bonusData", bonusData)
                 .Write("unlockedData", GetInitialUnlocked())
                 .Write("timers", timersJsonData)
                 .Commit();
@@ -114,6 +123,7 @@ public class DataManager : MonoBehaviour
     async Task GetData(bool initialLoad)
     {
         string newBoardData = "";
+        string newBonusData = "";
         string newTimersData = "";
         string newUnlockedData = "";
 
@@ -121,6 +131,7 @@ public class DataManager : MonoBehaviour
         {
             // Get json string from the initial json file
             newBoardData = initialJsonData;
+            newBonusData = bonusData;
             newTimersData = timersJsonData;
             newUnlockedData = unlockedJsonData;
         }
@@ -128,10 +139,11 @@ public class DataManager : MonoBehaviour
         {
             // Get json string from the saved json file
             reader.Read<string>("boardData", r => newBoardData = r);
+            reader.Read<string>("bonusData", r => newBonusData = r);
             reader.Read<string>("timers", r => newTimersData = r);
             reader.Read<string>("unlockedData", r => newUnlockedData = r);
 
-            gameData.SetExperience(reader.Read<float>("experience"), true);
+            gameData.SetExperience(reader.Read<int>("experience"), true);
             gameData.SetLevel(reader.Read<int>("level"), true);
             gameData.SetEnergy(reader.Read<int>("energy"), true);
             gameData.SetGold(reader.Read<int>("gold"), true);
@@ -150,6 +162,7 @@ public class DataManager : MonoBehaviour
 
         gameData.timers = jsonHandler.ConvertTimersFromJson(newTimersData);
         gameData.boardData = ConvertArrayToBoard(jsonHandler.ConvertBoardFromJson(newBoardData));
+        gameData.bonusData = jsonHandler.ConvertBonusFromJson(newBonusData);
 
         //timeManager.CheckTimers();
 
@@ -248,8 +261,11 @@ public class DataManager : MonoBehaviour
         return convertedGenerators;
     }
 
-    Types.Collectables[] ConvertCollectables(Types.Collectables[] collectablesContent){
-        Types.Collectables[] convertedCollectables = new Types.Collectables[collectablesContent.Length];
+    Types.Collectables[] ConvertCollectables(Types.Collectables[] collectablesContent)
+    {
+        Types.Collectables[] convertedCollectables = new Types.Collectables[
+            collectablesContent.Length
+        ];
 
         for (int i = 0; i < collectablesContent.Length; i++)
         {
@@ -267,7 +283,7 @@ public class DataManager : MonoBehaviour
                 {
                     collGroup = collectablesContent[i].collGroup,
                     hasLevel = true,
-                    itemName =collectablesContent[i].collGroup.ToString(),
+                    itemName = collectablesContent[i].collGroup.ToString(),
                     level = count,
                     sprite = collectablesContent[i].content[j].sprite,
                     isMaxLavel = count == collectablesContent[i].content.Length
@@ -399,55 +415,57 @@ public class DataManager : MonoBehaviour
             gameData.unlockedData.CopyTo(newUnlockedData, 0);
             gameData.unlockedData = newUnlockedData;
 
-            writer.Write("unlockedData", JsonConvert.SerializeObject(gameData.unlockedData)).Commit();
+            writer
+                .Write("unlockedData", JsonConvert.SerializeObject(gameData.unlockedData))
+                .Commit();
         }
 
-switch (type)
+        switch (type)
         {
             case Types.Type.Item:
-                 for (int i = 0; i < gameData.itemsData.Length; i++)
-            {
-                if (gameData.itemsData[i].group == group)
+                for (int i = 0; i < gameData.itemsData.Length; i++)
                 {
-                    for (int j = 0; j < gameData.itemsData[i].content.Length; j++)
+                    if (gameData.itemsData[i].group == group)
                     {
-                        if (gameData.itemsData[i].content[j].sprite.name == spriteName)
+                        for (int j = 0; j < gameData.itemsData[i].content.Length; j++)
                         {
-                            gameData.itemsData[i].content[j].unlocked = true;
+                            if (gameData.itemsData[i].content[j].sprite.name == spriteName)
+                            {
+                                gameData.itemsData[i].content[j].unlocked = true;
+                            }
                         }
                     }
                 }
-            }
                 break;
             case Types.Type.Gen:
                 for (int i = 0; i < gameData.generatorsData.Length; i++)
-            {
-                if (gameData.generatorsData[i].genGroup == genGroup)
                 {
-                    for (int j = 0; j < gameData.generatorsData[i].content.Length; j++)
+                    if (gameData.generatorsData[i].genGroup == genGroup)
                     {
-                        if (gameData.generatorsData[i].content[j].sprite.name == spriteName)
+                        for (int j = 0; j < gameData.generatorsData[i].content.Length; j++)
                         {
-                            gameData.generatorsData[i].content[j].unlocked = true;
+                            if (gameData.generatorsData[i].content[j].sprite.name == spriteName)
+                            {
+                                gameData.generatorsData[i].content[j].unlocked = true;
+                            }
                         }
                     }
                 }
-            }
                 break;
             case Types.Type.Coll:
                 for (int i = 0; i < gameData.collectablesData.Length; i++)
-            {
-                if (gameData.collectablesData[i].collGroup == collGroup)
                 {
-                    for (int j = 0; j < gameData.collectablesData[i].content.Length; j++)
+                    if (gameData.collectablesData[i].collGroup == collGroup)
                     {
-                        if (gameData.collectablesData[i].content[j].sprite.name == spriteName)
+                        for (int j = 0; j < gameData.collectablesData[i].content.Length; j++)
                         {
-                            gameData.collectablesData[i].content[j].unlocked = true;
+                            if (gameData.collectablesData[i].content[j].sprite.name == spriteName)
+                            {
+                                gameData.collectablesData[i].content[j].unlocked = true;
+                            }
                         }
                     }
                 }
-            }
                 break;
             default:
                 Debug.Log("Wrong type!");
@@ -474,6 +492,13 @@ switch (type)
         string newTimers = jsonHandler.ConvertTimersToJson(gameData.timers);
 
         writer.Write("timers", newTimers).Commit();
+    }
+
+    public void SaveBonus()
+    {
+        string newBonusData = jsonHandler.ConvertBonusToJson(gameData.bonusData);
+
+        writer.Write("bonusData", newBonusData).Commit();
     }
 
     //// OTHER ////
@@ -529,6 +554,7 @@ switch (type)
                 type = boardItem.type,
                 group = boardItem.group,
                 genGroup = boardItem.genGroup,
+                collGroup = boardItem.collGroup,
                 state = boardItem.state,
                 crate = boardItem.crate
             };

@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 public class ValuePop : MonoBehaviour
 {
     public SafeAreaHandler safeAreaHandler;
-    public float topOffset = 3f;
+    public float offset = 3f;
     public float popWidth = 17f;
     public Sprite experienceSprite;
     public Sprite energySprite;
@@ -37,17 +37,27 @@ public class ValuePop : MonoBehaviour
         root = MenuManager.Instance.menuUI.rootVisualElement;
     }
 
-    public void PopValue(float amount, string type)
+    public void PopValue(int amount, string type)
     {
         StartCoroutine(HandlePopValue(amount, type, Vector2.zero));
     }
 
     public void PopExperience(int level, string type, Vector2 position)
     {
-        StartCoroutine(HandlePopValue(level, type, Vector2.zero));
+        StartCoroutine(HandlePopValue(level, type, position, true));
     }
 
-    public IEnumerator HandlePopValue(float amount, string type, Vector2 position)
+    public void PopBonus(Item item, Vector2 bonusButtonPosition,bool check = true)
+    {
+        StartCoroutine(HandlePopBonus(item, bonusButtonPosition,check));
+    }
+
+    public IEnumerator HandlePopValue(
+        int amount,
+        string type,
+        Vector2 position,
+        bool useOffset = false
+    )
     {
         Sprite valuePopSprite;
         float valuePopOffset;
@@ -91,14 +101,12 @@ public class ValuePop : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
 
         // Move the value pop to it's intended position
-
-        valuePop.style.left = Mathf.Ceil(valuePopOffset);
-        valuePop.style.top = safeAreaHandler.topPadding + topOffset;
+        valuePop.style.left = Mathf.Ceil(valuePopOffset + (useOffset ? offset : 0));
+        valuePop.style.top = safeAreaHandler.topPadding + offset;
 
         yield return new WaitForSeconds(0.5f);
 
         // Decrease the size of the value pop
-
         scale = new Scale(new Vector2(0f, 0f));
 
         valuePop.style.scale = new StyleScale(scale);
@@ -121,21 +129,81 @@ public class ValuePop : MonoBehaviour
         switch (type)
         {
             case "Energy":
-                gameData.UpdateEnergy((int)amount);
+                gameData.UpdateEnergy(amount);
                 break;
             case "Gold":
-                gameData.UpdateGold((int)amount);
+                gameData.UpdateGold(amount);
                 break;
             case "Gems":
-                gameData.UpdateGems((int)amount);
+                gameData.UpdateGems(amount);
                 break;
             default: // Experience
-                gameData.UpdateExperience(amount);
+                gameData.UpdateExperience(amount,useOffset);
                 break;
         }
     }
 
-    VisualElement InitializePopValueElement(Sprite sprite, Vector2 position)
+    public IEnumerator HandlePopBonus(Item item, Vector2 bonusButtonPosition,bool check = true)
+    {
+        Vector2 initialPosition = new Vector2(
+            Mathf.Ceil(values.levelButton.layout.x + offset),
+            safeAreaHandler.topPadding + offset
+        );
+
+        Sprite valuePopSprite = item.sprite;
+        string valuePopSFX = "Experience";
+
+        // Add value pop element to the root
+        VisualElement valuePop = InitializePopValueElement(valuePopSprite, initialPosition, true);
+
+        yield return new WaitForSeconds(0.1f);
+
+        // Increase the size of the value pop
+        Scale scale = new Scale(new Vector2(1f, 1f));
+
+        valuePop.style.scale = new StyleScale(scale);
+
+        yield return new WaitForSeconds(0.5f);
+
+        // Move the value pop to it's intended position
+        Vector2 newUIPos = RuntimePanelUtils.CameraTransformWorldToPanel(
+            root.panel,
+            bonusButtonPosition,
+            Camera.main
+        );
+
+        valuePop.style.left = newUIPos.x - (28 / 4);
+        valuePop.style.top = newUIPos.y - (28 / 4);
+
+        yield return new WaitForSeconds(0.5f);
+
+        // Decrease the size of the value pop
+        scale = new Scale(new Vector2(0f, 0f));
+
+        valuePop.style.scale = new StyleScale(scale);
+
+        yield return new WaitForSeconds(0.1f);
+
+        // Play value pop sound
+        soundManager.PlaySFX(valuePopSFX, 0.3f);
+
+        // Hide the value pop
+        valuePop.style.visibility = Visibility.Hidden;
+        valuePop.style.opacity = 0;
+
+        yield return new WaitForSeconds(0.5f);
+
+        // Remove the value pop
+        root.Remove(valuePop);
+
+        gameData.AddToBonus(item,check);
+    }
+
+    VisualElement InitializePopValueElement(
+        Sprite sprite,
+        Vector2 position,
+        bool ingoreZeroes = false
+    )
     {
         VisualElement newValuePop = new VisualElement { name = "ValuePop" };
 
@@ -153,11 +221,11 @@ public class ValuePop : MonoBehaviour
         newValuePop.style.transitionDuration = new StyleList<TimeValue>(durations);
 
         newValuePop.style.scale = new StyleScale(scale);
-        
-            float halfWidth = popWidth / 2;
+
+        float halfWidth = popWidth / 2;
 
         // Check where we should initialize the pop value
-        if (position.x == 0 && position.y == 0)
+        if (position.x == 0 && position.y == 0 && !ingoreZeroes)
         {
             // Calculate the center of the UI
             float rootHalfWidth = root.resolvedStyle.width / 2;
@@ -169,15 +237,25 @@ public class ValuePop : MonoBehaviour
         }
         else
         {
-            // Get position on the UI from the scene
-            Vector2 newUIPos = RuntimePanelUtils.CameraTransformWorldToPanel(
-                root.panel,
-                position,
-                Camera.main
-            );
-            // Set the value pop's position
-            newValuePop.style.left = newUIPos.x - halfWidth;
-            newValuePop.style.top = newUIPos.y - halfWidth;
+            if (ingoreZeroes)
+            {
+                // Set the value pop's position
+                newValuePop.style.left = position.x;
+                newValuePop.style.top = position.y;
+            }
+            else
+            {
+                // Get position on the UI from the scene
+                Vector2 newUIPos = RuntimePanelUtils.CameraTransformWorldToPanel(
+                    root.panel,
+                    position,
+                    Camera.main
+                );
+
+                // Set the value pop's position
+                newValuePop.style.left = newUIPos.x - halfWidth;
+                newValuePop.style.top = newUIPos.y - halfWidth;
+            }
         }
 
         // Add the value pop to the root
@@ -185,6 +263,4 @@ public class ValuePop : MonoBehaviour
 
         return newValuePop;
     }
-
-    void RemovePopFromQuery(Pop oldPop) { }
 }

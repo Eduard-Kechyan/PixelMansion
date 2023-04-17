@@ -32,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7628476360138686812
 MonoBehaviour:
@@ -46,7 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e0f109035be95a448a1d075e6d12875, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxExperience: 100
+  valuesData: {fileID: 11400000, guid: e82c58a155150ca47be106027d9ca637, type: 2}
+  maxExperience: 10
   maxLevel: 99
   maxOther: 9999
   energyTime: 120
@@ -58,6 +59,7 @@ MonoBehaviour:
   gems: 100
   timers: []
   itemsData: []
+  collectablesData: []
   generatorsData: []
   unlockedData: []
 --- !u!114 &7608245173361121897

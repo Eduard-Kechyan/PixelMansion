@@ -131,13 +131,24 @@ public class InfoBox : MonoBehaviour
                         }
                         break;
                     case Types.Type.Coll:
+                        int multipliedValue = GetMultipliedValue(item.level, item.collGroup);
+
                         if (item.isMaxLavel)
                         {
-                            textToSet = LOCALE.Get("info_box_coll_max");
+                            textToSet = LOCALE.Get(
+                                "info_box_coll_max",
+                                multipliedValue,
+                                item.collGroup.ToString()
+                            );
                         }
                         else
                         {
-                            textToSet = LOCALE.Get("info_box_coll", item.nextName);
+                            textToSet = LOCALE.Get(
+                                "info_box_coll",
+                                multipliedValue,
+                                item.collGroup.ToString(),
+                                item.nextName
+                            );
                         }
                         break;
                     default:
@@ -158,9 +169,10 @@ public class InfoBox : MonoBehaviour
                 {
                     actionType = ActionType.Sell;
                 }
-                else if(item.type==Types.Type.Coll){
+                else if (item.type == Types.Type.Coll)
+                {
                     actionType = ActionType.None;
-                infoButton.style.display = DisplayStyle.None;
+                    infoButton.style.display = DisplayStyle.None;
                 }
                 else
                 {
@@ -371,5 +383,27 @@ public class InfoBox : MonoBehaviour
         {
             infoData.text = LOCALE.Get("info_box_default");
         }
+    }
+
+    int GetMultipliedValue(int level, Types.CollGroup collGroup)
+    {
+        int multipliedValue = 0;
+        switch (collGroup)
+        {
+            case Types.CollGroup.Experience:
+                multipliedValue = gameData.valuesData.experienceMultiplier[level - 1];
+                break;
+            case Types.CollGroup.Gold:
+                multipliedValue = gameData.valuesData.goldMultiplier[level - 1];
+                break;
+            case Types.CollGroup.Gems:
+                multipliedValue = gameData.valuesData.gemsMultiplier[level - 1];
+                break;
+            default:
+                Debug.Log("Wrong collectables group");
+                break;
+        }
+
+        return multipliedValue;
     }
 }

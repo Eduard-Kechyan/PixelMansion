@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 293068ba8de23734ba37b38f0f5c264f, type: 3}
+  m_Name: ValuesData
+  m_EditorClassIdentifier: 
+  maxExperienceMultiplier: 060000000c000000180000003000000060000000
+  experienceMultiplier: 0100000003000000080000001400000032000000
+  energyMultiplier: 0200000006000000100000002800000064000000
+  goldMultiplier: 010000000300000008000000140000003200000078000000
+  gemsMultiplier: 01000000030000000800000014000000

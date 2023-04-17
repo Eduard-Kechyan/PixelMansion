@@ -11,13 +11,12 @@ public class SceneLoader : MonoBehaviour
     public float fadeDuration = 0.5f;
 
     private SoundManager soundManager;
-    private GameData gameData;
     private Values values;
+    private LevelMenu levelMenu;
 
     void Start()
     {
         soundManager = SoundManager.Instance;
-        gameData = GameData.Instance;
         values = DataManager.Instance.GetComponent<Values>();
 
         StartBg();
@@ -43,9 +42,13 @@ public class SceneLoader : MonoBehaviour
 
                 infoMenu.enabled = true;
 
-                GameData.Instance.InitializeGamedataCache();
+                GameData.Instance.InitializeGamedataCache(true);
 
                 values.InitializeValues();
+
+                levelMenu = MenuManager.Instance.GetComponent<LevelMenu>();
+
+                levelMenu.InitializeLevelMenuCache();
                 break;
 
             default:
@@ -99,17 +102,16 @@ public class SceneLoader : MonoBehaviour
         {
             soundManager.PlayBg(scene.name);
 
-            //gameData.CheckEnergy();
-
             soundManager.FadeInBg(fadeDuration);
 
             GameData.Instance.InitializeGamedataCache();
 
-            if(values.set){
-
+            if (values.set)
+            {
                 values.UpdateValues();
-            }else{
-                
+            }
+            else
+            {
                 values.InitializeValues();
             }
         }

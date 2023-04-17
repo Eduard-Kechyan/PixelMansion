@@ -196,6 +196,7 @@ public class Types : MonoBehaviour
         public string type;
         public string group;
         public string genGroup;
+        public string collGroup;
         public string state;
         public int crate;
     }
@@ -211,6 +212,23 @@ public class Types : MonoBehaviour
         public State state;
         public int crate;
         public int order;
+    }
+
+    //// BONUS ////
+    public class BonusJson
+    {
+        public string sprite;
+        public string type;
+        public string group;
+        public string genGroup;
+    }
+
+    public class Bonus
+    {
+        public Sprite sprite;
+        public Type type;
+        public Group group;
+        public GenGroup genGroup;
     }
 
     //// SHOP ////

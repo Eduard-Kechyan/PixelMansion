@@ -219,6 +219,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d57223b0b509d824a95334ca2e16cce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &559508587 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7663993300848593194, guid: 1e12059634d57394e83558f7fb3e6c21, type: 3}
+  m_PrefabInstance: {fileID: 8740222668793601254}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 559508582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c73e8f8897e322641bb49026858262a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &639326496
 GameObject:
   m_ObjectHideFlags: 0
@@ -328,7 +339,6 @@ MonoBehaviour:
   touchThreshold: 20
   radius: 0.5
   radiusAlt: 4
-  experienceThreshold: 4
   isDragging: 0
   isSelected: 0
   currentItem: {fileID: 0}
@@ -394,6 +404,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 14
   scaleSpeed: 8
+  experienceThreshold: 4
   boardTiles: {fileID: 0}
 --- !u!114 &639326508
 MonoBehaviour:
@@ -481,6 +492,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: DataManager
       objectReference: {fileID: 0}
+    - target: {fileID: 2623850417819894209, guid: af9e0bfb46c520a4fac5c30843ed2d4e, type: 3}
+      propertyPath: boardManager
+      value: 
+      objectReference: {fileID: 639326507}
+    - target: {fileID: 2623850417819894209, guid: af9e0bfb46c520a4fac5c30843ed2d4e, type: 3}
+      propertyPath: gamePlayButtons
+      value: 
+      objectReference: {fileID: 559508587}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -760,6 +779,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameData
       objectReference: {fileID: 0}
+    - target: {fileID: 7628476360138686812, guid: 9191de2ed2b660e45ac702f5b04303ad, type: 3}
+      propertyPath: gamePlayButtons
+      value: 
+      objectReference: {fileID: 559508587}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1033,6 +1056,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 60280229929866590, guid: 1e12059634d57394e83558f7fb3e6c21, type: 3}
+      propertyPath: boardManager
+      value: 
+      objectReference: {fileID: 639326507}
     - target: {fileID: 827824982746509652, guid: 1e12059634d57394e83558f7fb3e6c21, type: 3}
       propertyPath: m_Name
       value: GamePlayUI
@@ -1101,6 +1128,10 @@ PrefabInstance:
       propertyPath: sceneLoader
       value: 
       objectReference: {fileID: 2129448916}
+    - target: {fileID: 7663993300848593194, guid: 1e12059634d57394e83558f7fb3e6c21, type: 3}
+      propertyPath: bonusManager
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

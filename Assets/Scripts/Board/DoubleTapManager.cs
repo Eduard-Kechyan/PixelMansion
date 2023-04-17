@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,10 @@ public class DoubleTapManager : MonoBehaviour
     private ValuePop valuePop;
 
     private I18n LOCALE = I18n.Instance;
+
+    private Action callback;
+
+    private GameObject itemParent;
 
     void Start()
     {
@@ -41,13 +46,12 @@ public class DoubleTapManager : MonoBehaviour
         }
         else if (interactions.currentItem.type == Types.Type.Coll)
         {
-            valuePop.PopExperience(interactions.currentItem.level, "Experience", interactions.currentItem.transform.position);
+            DoubleTappedCollectable();
         }
     }
 
     void DoubleTappedGenerator()
     {
-
         GameObject tile = interactions.currentItem.transform.parent.gameObject;
 
         Vector2Int tileLoc = boardManager.GetBoardLocation(0, tile);
@@ -62,7 +66,7 @@ public class DoubleTapManager : MonoBehaviour
             {
                 emptyBoard.Sort((p1, p2) => p1.distance.CompareTo(p2.distance));
 
-                SelectRadnomGroupAndItem(emptyBoard[0], tile);
+                SelectRadnomGroupAndItem(emptyBoard[0], tile.transform.position);
             }
             else
             {
@@ -80,7 +84,29 @@ public class DoubleTapManager : MonoBehaviour
         }
     }
 
-    void SelectRadnomGroupAndItem(Types.BoardEmpty emptyBoard, GameObject tile)
+    void DoubleTappedCollectable()
+    {
+        valuePop.PopExperience(
+            interactions.currentItem.level,
+            "Experience",
+            interactions.currentItem.transform.position
+        );
+
+        callback = RemoveCollectableFromTheBoard;
+
+        itemParent = interactions.currentItem.transform.parent.gameObject;
+
+        interactions.currentItem.ScaleToSize(Vector2.zero, scaleSpeed, true, callback);
+    }
+
+    void RemoveCollectableFromTheBoard()
+    {
+        boardManager.RemoveBoardData(itemParent);
+
+        itemParent = null;
+    }
+
+    void SelectRadnomGroupAndItem(Types.BoardEmpty emptyBoard, Vector2 initialPosition)
     {
         Types.Creates[] creates = interactions.currentItem.creates;
 
@@ -113,10 +139,9 @@ public class DoubleTapManager : MonoBehaviour
                     gameData.itemsData[i].content[0].sprite.name,
                     gameData.itemsData[i].content[0].group,
                     emptyBoard,
-                    tile
+                    initialPosition
                 );
             }
         }
     }
-
 }

@@ -33,7 +33,12 @@ public class BoardPopup : MonoBehaviour
         soundManager = SoundManager.Instance;
     }
 
-    public void AddPop(string newText, Vector2 position, bool single = true, string sfxName = "")
+    public void AddPop(
+        string newText,
+        Vector2 position,
+        bool single = true,
+        string sfxName = ""
+    )
     {
         if (single)
         {
@@ -70,7 +75,12 @@ public class BoardPopup : MonoBehaviour
         currentPops.RemoveAt(index);
     }
 
-    IEnumerator PopTextToBoard(string newText, Vector2 pos, bool single, string sfxName = "")
+    IEnumerator PopTextToBoard(
+        string newText,
+        Vector2 pos,
+        bool single,
+        string sfxName = ""
+    )
     {
         Label popLabel = new Label { name = "PopLabel" + newText, text = newText };
 
@@ -79,7 +89,8 @@ public class BoardPopup : MonoBehaviour
         if (pos.x > 1.24f)
         {
             newPos = new Vector2(positionOffset, pos.y);
-        }else if (pos.x < -1.24f)
+        }
+        else if (pos.x < -1.24f)
         {
             newPos = new Vector2(-positionOffset, pos.y);
         }

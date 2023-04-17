@@ -12,7 +12,6 @@ public class BoardInteractions : MonoBehaviour
     public float touchThreshold = 20f; // How far can the finger be moved before starting to drag
     public float radius = 0.5f;
     public float radiusAlt = 0.5f;
-    public int experienceThreshold = 4;
     public bool isDragging = false; // Are we currently dragging
     public bool isSelected = false; // Have we currently selected something
     public Item currentItem;
@@ -357,8 +356,35 @@ public class BoardInteractions : MonoBehaviour
             if (otherItem != null)
             {
                 // Check if objects should be merged of swapped
+                bool sameGroup = false;
+
+                switch (otherItem.type)
+                {
+                    case Types.Type.Item:
+                        if (otherItem.group == currentItem.group)
+                        {
+                            sameGroup = true;
+                        }
+                        break;
+                    case Types.Type.Gen:
+                        if (otherItem.genGroup == currentItem.genGroup)
+                        {
+                            sameGroup = true;
+                        }
+                        break;
+                    case Types.Type.Coll:
+                        if (otherItem.collGroup == currentItem.collGroup)
+                        {
+                            sameGroup = true;
+                        }
+                        break;
+                    default:
+                        Debug.Log("Wrong type!");
+                        break;
+                }
+
                 if (
-                    otherItem.group == currentItem.group
+                    sameGroup
                     && otherItem.type == currentItem.type
                     && otherItem.level == currentItem.level
                     && !otherItem.isMaxLavel
@@ -423,6 +449,7 @@ public class BoardInteractions : MonoBehaviour
         Types.Type type = otherItem.type;
         Types.Group group = otherItem.group;
         Types.GenGroup genGroup = otherItem.genGroup;
+        Types.CollGroup collGroup = otherItem.collGroup;
         string spriteName = otherItem.nextSpriteName;
         bool isLocked = otherItem.state == Types.State.Locker;
 
@@ -437,23 +464,38 @@ public class BoardInteractions : MonoBehaviour
         otherItem.GetComponent<Item>().ScaleToSize(Vector2.zero, scaleSpeed, true);
 
         // Get the prefab that's one level heigher
-        if (type == Types.Type.Item)
+        switch (type)
         {
-            currentItem = itemHandler.CreateItem(
-                otherTile,
-                initializeBoard.tileSize,
-                group,
-                spriteName
-            );
-        }
-        else if (type == Types.Type.Gen)
-        {
-            currentItem = itemHandler.CreateGenerator(
-                otherTile,
-                initializeBoard.tileSize,
-                genGroup,
-                spriteName
-            );
+            case Types.Type.Item:
+                currentItem = itemHandler.CreateItem(
+                    otherTile,
+                    initializeBoard.tileSize,
+                    group,
+                    spriteName
+                );
+
+                break;
+            case Types.Type.Gen:
+                currentItem = itemHandler.CreateGenerator(
+                    otherTile,
+                    initializeBoard.tileSize,
+                    genGroup,
+                    spriteName
+                );
+
+                break;
+            case Types.Type.Coll:
+                currentItem = itemHandler.CreateCollection(
+                    otherTile,
+                    initializeBoard.tileSize,
+                    collGroup,
+                    spriteName
+                );
+
+                break;
+            default:
+                Debug.Log("Wrong type!");
+                break;
         }
 
         if (isLocked)
@@ -467,19 +509,16 @@ public class BoardInteractions : MonoBehaviour
             soundManager.PlaySFX("Merge");
         }
 
-        // Unlock the item
-        bool firstUnlock = dataManager.UnlockItem(
-            currentItem.sprite.name,
-            currentItem.type,
-            currentItem.group,
-            currentItem.genGroup,
-            currentItem.collGroup
-        );
-
-        // Give experience if it's the first time unlocking it and its level is heigher than experienceThreshold (default 4)
-        if (firstUnlock && currentItem.level >= experienceThreshold)
+        if (currentItem.type != Types.Type.Coll)
         {
-            boardManager.CreateCollectable();
+            // Unlock the item
+            dataManager.UnlockItem(
+                currentItem.sprite.name,
+                currentItem.type,
+                currentItem.group,
+                currentItem.genGroup,
+                currentItem.collGroup
+            );
         }
 
         // Set the new item's layer to ItemBusy

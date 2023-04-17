@@ -17,12 +17,12 @@ public class Values : MonoBehaviour
     private VisualElement valuesBox;
 
     public Button levelButton;
+    private VisualElement levelFill;
     private Label levelValue;
 
     public Button energyButton;
     private VisualElement energyPlus;
 
-    [HideInInspector]
     public Label energyTimer;
 
     public Button goldButton;
@@ -31,6 +31,7 @@ public class Values : MonoBehaviour
     public Button gemsButton;
     private VisualElement gemsPlus;
 
+    private LevelMenu levelMenu;
     private EnergyMenu energyMenu;
     private ShopMenu shopMenu;
 
@@ -53,6 +54,7 @@ public class Values : MonoBehaviour
     public void InitializeValues()
     {
         // Menus
+        levelMenu = MenuManager.Instance.GetComponent<LevelMenu>();
         energyMenu = MenuManager.Instance.GetComponent<EnergyMenu>();
         shopMenu = MenuManager.Instance.GetComponent<ShopMenu>();
 
@@ -64,6 +66,7 @@ public class Values : MonoBehaviour
         valuesBox = root.Q<VisualElement>("ValuesBox");
 
         levelButton = valuesBox.Q<Button>("LevelButton");
+        levelFill = levelButton.Q<VisualElement>("Fill");
         levelValue = levelButton.Q<Label>("Value");
 
         energyButton = valuesBox.Q<Button>("EnergyButton");
@@ -103,19 +106,68 @@ public class Values : MonoBehaviour
 
     void CheckForTaps()
     {
+        levelButton.clicked += () => levelMenu.Open();
         energyButton.clicked += () => energyMenu.Open();
         goldButton.clicked += () => shopMenu.Open("Gold");
-        gemsButton.clicked += () => shopMenu.Open("Gems");
+        gemsButton.clicked += () => Test();
+    }
+
+    public void Test()
+    {
+        Debug.Log("AAA");
+        //shopMenu.Open("Gems");
     }
 
     public void UpdateValues()
     {
-        levelButton.text = gameData.experience.ToString(); // TODO -  Change this to a fill
+        levelFill.style.width = CalcLevelFill();
 
         levelValue.text = gameData.level.ToString();
         energyButton.text = gameData.energy.ToString();
         goldButton.text = gameData.gold.ToString();
         gemsButton.text = gameData.gems.ToString();
+    }
+
+    public void UpdateLevel()
+    {
+        levelValue.text = gameData.level.ToString();
+
+        StartCoroutine(UpdateEnergyFullAfter());
+    }
+
+    IEnumerator UpdateEnergyFullAfter()
+    {
+        yield return new WaitForSeconds(0.3f);
+
+        List<TimeValue> durationsZero = new List<TimeValue>();
+        durationsZero.Add(new TimeValue(0f, TimeUnit.Second));
+
+        levelFill.style.transitionDuration = new StyleList<TimeValue>(durationsZero);
+
+        levelFill.style.width = Length.Percent(0);
+
+        List<TimeValue> durationsFull = new List<TimeValue>();
+        durationsFull.Add(new TimeValue(0.3f, TimeUnit.Second));
+
+        levelFill.style.transitionDuration = new StyleList<TimeValue>(durationsFull);
+
+        gameData.experience = gameData.leftoverExperience;
+
+        gameData.leftoverExperience = 0;
+
+        levelFill.style.width = CalcLevelFill();
+    }
+
+    public Length CalcLevelFill()
+    {
+        if (gameData == null)
+        {
+            gameData = GameData.Instance;
+        }
+
+        float fillPercent = (100f / (float)gameData.maxExperience) * (float)gameData.experience;
+
+        return Length.Percent(fillPercent);
     }
 
     public void DisableButtons()

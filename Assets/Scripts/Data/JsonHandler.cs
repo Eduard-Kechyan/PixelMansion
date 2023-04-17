@@ -17,26 +17,110 @@ public class JsonHandler : MonoBehaviour
         itemHandler = DataManager.Instance.GetComponent<ItemHandler>();
     }
 
-    //// TIMERS ////
+    //// BOARD ////
 
-    public string ConvertTimersToJson(List<Types.Timer> timers)
+    public Types.Board[] ConvertBoardFromJson(string boardString)
     {
-        Types.TimerJson[] timerJson = new Types.TimerJson[timers.Count];
+        Types.BoardJson[] boardJson = JsonConvert.DeserializeObject<Types.BoardJson[]>(boardString);
 
-        for (int i = 0; i < timers.Count; i++)
+        Types.Board[] boardData = new Types.Board[boardJson.Length];
+
+        for (int i = 0; i < boardJson.Length; i++)
         {
-            Types.TimerJson newTimerJson = new Types.TimerJson
+            Types.Type newType = (Types.Type)
+                System.Enum.Parse(typeof(Types.Type), boardJson[i].type);
+
+            Types.Board newBoardData = new Types.Board
             {
-                timerName = timers[i].timerName,
-                type = timers[i].type.ToString(),
-                dateTime = timers[i].dateTime.ToString(),
+                sprite = gameData.GetSprite(boardJson[i].sprite, newType),
+                state = (Types.State)System.Enum.Parse(typeof(Types.State), boardJson[i].state),
+                type = newType,
+                group = (Types.Group)System.Enum.Parse(typeof(Types.Group), boardJson[i].group),
+                genGroup = (Types.GenGroup)
+                    System.Enum.Parse(typeof(Types.GenGroup), boardJson[i].genGroup),
+                collGroup = (Types.CollGroup)
+                    System.Enum.Parse(typeof(Types.CollGroup), boardJson[i].collGroup),
+                crate = boardJson[i].crate,
             };
 
-            timerJson[i] = newTimerJson;
+            boardData[i] = newBoardData;
         }
 
-        return JsonConvert.SerializeObject(timerJson);
+        return boardData;
     }
+
+    public string ConvertBoardToJson(Types.Board[] boardData, bool initialLoop = false)
+    {
+        Types.BoardJson[] boardJson = new Types.BoardJson[boardData.Length];
+
+        for (int i = 0; i < boardData.Length; i++)
+        {
+            Types.BoardJson newBoardJson = new Types.BoardJson
+            {
+                sprite = boardData[i].sprite == null ? "" : boardData[i].sprite.name,
+                state = boardData[i].state.ToString(),
+                type = boardData[i].type.ToString(),
+                group = boardData[i].group.ToString(),
+                genGroup = boardData[i].genGroup.ToString(),
+                collGroup = boardData[i].collGroup.ToString(),
+                crate = initialLoop ? RandomCrateInt() : boardData[i].crate,
+            };
+
+            boardJson[i] = newBoardJson;
+        }
+
+        return JsonConvert.SerializeObject(boardJson);
+    }
+
+    //// BONUS ////
+
+    public List<Types.Bonus> ConvertBonusFromJson(string bonusString)
+    {
+        Types.BonusJson[] bonusJson = JsonConvert.DeserializeObject<Types.BonusJson[]>(bonusString);
+
+        List<Types.Bonus> bonusData =new List<Types.Bonus>();
+
+        for (int i = 0; i < bonusJson.Length; i++)
+        {
+            Types.Type newType = (Types.Type)
+                System.Enum.Parse(typeof(Types.Type), bonusJson[i].type);
+
+            Types.Bonus newBonusData = new Types.Bonus
+            {
+                sprite = gameData.GetSprite(bonusJson[i].sprite, newType),
+                type = newType,
+                group = (Types.Group)System.Enum.Parse(typeof(Types.Group), bonusJson[i].group),
+                genGroup = (Types.GenGroup)
+                    System.Enum.Parse(typeof(Types.GenGroup), bonusJson[i].genGroup),
+            };
+
+            bonusData.Add(newBonusData);
+        }
+
+        return bonusData;
+    }
+
+    public string ConvertBonusToJson(List<Types.Bonus> bonusData)
+    {
+        Types.BonusJson[] bonusJson = new Types.BonusJson[bonusData.Count];
+
+        for (int i = 0; i < bonusData.Count; i++)
+        {
+            Types.BonusJson newBonusJson = new Types.BonusJson
+            {
+                sprite = bonusData[i].sprite == null ? "" : bonusData[i].sprite.name,
+                type = bonusData[i].type.ToString(),
+                group = bonusData[i].group.ToString(),
+                genGroup = bonusData[i].genGroup.ToString(),
+            };
+
+            bonusJson[i] = newBonusJson;
+        }
+
+        return JsonConvert.SerializeObject(bonusJson);
+    }
+
+    //// TIMERS ////
 
     public List<Types.Timer> ConvertTimersFromJson(string timersString)
     {
@@ -62,56 +146,23 @@ public class JsonHandler : MonoBehaviour
         return timers;
     }
 
-    //// BOARD ////
-
-    public Types.Board[] ConvertBoardFromJson(string boardString)
+    public string ConvertTimersToJson(List<Types.Timer> timers)
     {
-        Types.BoardJson[] boardJson = JsonConvert.DeserializeObject<Types.BoardJson[]>(boardString);
+        Types.TimerJson[] timerJson = new Types.TimerJson[timers.Count];
 
-        Types.Board[] boardData = new Types.Board[boardJson.Length];
-
-        for (int i = 0; i < boardJson.Length; i++)
+        for (int i = 0; i < timers.Count; i++)
         {
-            Types.Type newType = (Types.Type)
-                System.Enum.Parse(typeof(Types.Type), boardJson[i].type);
-
-            Types.Board newBoardData = new Types.Board
+            Types.TimerJson newTimerJson = new Types.TimerJson
             {
-                sprite = gameData.GetSprite(boardJson[i].sprite, newType),
-                state = (Types.State)System.Enum.Parse(typeof(Types.State), boardJson[i].state),
-                type = newType,
-                group = (Types.Group)System.Enum.Parse(typeof(Types.Group), boardJson[i].group),
-                genGroup = (Types.GenGroup)
-                    System.Enum.Parse(typeof(Types.GenGroup), boardJson[i].genGroup),
-                crate = boardJson[i].crate,
+                timerName = timers[i].timerName,
+                type = timers[i].type.ToString(),
+                dateTime = timers[i].dateTime.ToString(),
             };
 
-            boardData[i] = newBoardData;
+            timerJson[i] = newTimerJson;
         }
 
-        return boardData;
-    }
-
-    public string ConvertBoardToJson(Types.Board[] boardData, bool initialLoop = false)
-    {
-        Types.BoardJson[] boardJson = new Types.BoardJson[boardData.Length];
-
-        for (int i = 0; i < boardData.Length; i++)
-        {
-            Types.BoardJson newBoardJson = new Types.BoardJson
-            {
-                sprite = boardData[i].sprite == null ? "" : boardData[i].sprite.name,
-                state = boardData[i].state.ToString(),
-                type = boardData[i].type.ToString(),
-                group = boardData[i].group.ToString(),
-                genGroup = boardData[i].genGroup.ToString(),
-                crate = initialLoop ? RandomCrateInt() : boardData[i].crate,
-            };
-
-            boardJson[i] = newBoardJson;
-        }
-
-        return JsonConvert.SerializeObject(boardJson);
+        return JsonConvert.SerializeObject(timerJson);
     }
 
     //// OTHER ////

@@ -295,7 +295,7 @@ public class ShopMenu : MonoBehaviour
         menuManager.OpenMenu(shopMenu, title, true);
 
         // Check if we need to scroll to a specific location
-        if (newLocation != "")
+                if (newLocation != "")
         {
             scrollLocation = newLocation;
 
@@ -306,6 +306,8 @@ public class ShopMenu : MonoBehaviour
     void ScroolCallback(GeometryChangedEvent evt)
     {
         shopMenu.UnregisterCallback<GeometryChangedEvent>(ScroolCallback);
+
+        scrollContainer.scrollOffset = Vector2.zero;
 
         switch (scrollLocation)
         {

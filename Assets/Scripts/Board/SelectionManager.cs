@@ -45,7 +45,6 @@ public class SelectionManager : MonoBehaviour
                 if (
                     interactions.currentItem != null
                     && interactions.currentItem.sprite.name == item.sprite.name
-                    && item.type == Types.Type.Gen
                 )
                 {
                     doubleTapManager.DoubleTapped();

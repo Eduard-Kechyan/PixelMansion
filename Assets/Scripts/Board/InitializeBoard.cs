@@ -36,11 +36,10 @@ public class InitializeBoard : MonoBehaviour
         gameData = GameData.Instance;
         itemHandler = dataManager.GetComponent<ItemHandler>();
 
-        boardManager=GetComponent<BoardManager>();
+        boardManager = GetComponent<BoardManager>();
 
         // Cache the SafeAreaHandler
         safeAreaHandler = uiDoc.GetComponent<SafeAreaHandler>();
-        
 
         // Cache the SafeAreaHandler
         root = uiDoc.rootVisualElement;
@@ -156,27 +155,44 @@ public class InitializeBoard : MonoBehaviour
 
                 if (baordItem != null && baordItem.sprite != null)
                 {
-                    if (baordItem.type == Types.Type.Item)
+                    switch (baordItem.type)
                     {
-                        itemHandler.CreateItem(
-                            newTile,
-                            tileSize,
-                            baordItem.group,
-                            baordItem.sprite.name,
-                            baordItem.state,
-                            baordItem.crate
-                        );
-                    }
-                    else if (baordItem.type == Types.Type.Gen)
-                    {
-                        itemHandler.CreateGenerator(
-                            newTile,
-                            tileSize,
-                            baordItem.genGroup,
-                            baordItem.sprite.name,
-                            baordItem.state,
-                            baordItem.crate
-                        );
+                        case Types.Type.Item:
+                            itemHandler.CreateItem(
+                                newTile,
+                                tileSize,
+                                baordItem.group,
+                                baordItem.sprite.name,
+                                baordItem.state,
+                                baordItem.crate
+                            );
+
+                            break;
+                        case Types.Type.Gen:
+                            itemHandler.CreateGenerator(
+                                newTile,
+                                tileSize,
+                                baordItem.genGroup,
+                                baordItem.sprite.name,
+                                baordItem.state,
+                                baordItem.crate
+                            );
+
+                            break;
+                        case Types.Type.Coll:
+                            itemHandler.CreateCollection(
+                                newTile,
+                                tileSize,
+                                baordItem.collGroup,
+                                baordItem.sprite.name,
+                                baordItem.state,
+                                baordItem.crate
+                            );
+
+                            break;
+                        default:
+                            Debug.Log("Wrong type!");
+                            break;
                     }
                 }
 
