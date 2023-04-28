@@ -10,6 +10,8 @@ using Locale;
 
 public class DataManager : MonoBehaviour
 {
+    public Settings settings;
+
     // Instance
     public static DataManager Instance;
 
@@ -27,7 +29,7 @@ public class DataManager : MonoBehaviour
     private bool isEditor = false;
 
     // Quick Save
-    private QuickSaveSettings settings;
+    private QuickSaveSettings saveSettings;
     public QuickSaveWriter writer;
     public QuickSaveReader reader;
 
@@ -60,8 +62,8 @@ public class DataManager : MonoBehaviour
     async void Start()
     {
         // Set up Quick Save
-        settings = new QuickSaveSettings() { CompressionMode = CompressionMode.None }; //TODO -  Set CompressionMode to in the final game Gzip
-        writer = QuickSaveWriter.Create("Root", settings);
+        saveSettings = new QuickSaveSettings() { CompressionMode = CompressionMode.None }; //TODO -  Set CompressionMode to in the final game Gzip
+        writer = QuickSaveWriter.Create("Root", saveSettings);
 
         // Cache JsonHandler
         jsonHandler = GetComponent<JsonHandler>();
@@ -121,7 +123,7 @@ public class DataManager : MonoBehaviour
         }
         else
         {
-            reader = QuickSaveReader.Create("Root", settings);
+            reader = QuickSaveReader.Create("Root", saveSettings);
 
             await GetData(false);
         }
@@ -182,6 +184,8 @@ public class DataManager : MonoBehaviour
 
         // Finish Task
         loaded = true;
+
+        settings.SetLocale(Types.Locale.English, true);
 
         await Task.Delay(200);
     }

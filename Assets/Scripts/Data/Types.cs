@@ -44,7 +44,16 @@ public class Types : MonoBehaviour
     public enum Locale
     {
         English,
-        Armenian
+        French,
+        Français,
+        Español,
+        Deutsch,
+        Italiano,
+        Русский,
+        Հայերեն,
+        日本語,
+        한국어,
+        中文
     };
 
     //// TIMERS ///

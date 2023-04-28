@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 07bb167d50942dc49b68121a8c79ab82
+guid: 9d7ced4bf39764043827be92e97d7a81
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Dogica Pixel
+  - LanaPixel
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

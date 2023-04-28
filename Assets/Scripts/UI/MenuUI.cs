@@ -29,8 +29,14 @@ public class MenuUI : MonoBehaviour
     private VisualElement background;
     private Label title;
 
-    void Start() {
+    void Start()
+    {
         valuesUI = GameRefs.Instance.valuesUI;
+    }
+
+    public void UpdateTitle(string newTitle)
+    {
+        title.text = newTitle;
     }
 
     public void OpenMenu(VisualElement newMenu, string newTitle, bool showValues = false)

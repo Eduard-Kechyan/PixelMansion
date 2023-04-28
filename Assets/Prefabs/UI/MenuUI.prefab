@@ -40,7 +40,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6890635896343097084
 MonoBehaviour:
@@ -71,7 +71,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boardInteractions: {fileID: 0}
-  transitionDuration: 0.3
+  transitionDuration: 0.1
   menuDecreaseOffset: 0.8
   menuOpen: 0
 --- !u!114 &8964243059281490872
@@ -168,6 +168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 994a24be7a547c74093dc4ff16d1b2e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  settings: {fileID: 0}
 --- !u!114 &3570785117545677035
 MonoBehaviour:
   m_ObjectHideFlags: 0

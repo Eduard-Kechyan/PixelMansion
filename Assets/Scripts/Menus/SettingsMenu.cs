@@ -6,10 +6,12 @@ using Locale;
 
 public class SettingsMenu : MonoBehaviour
 {
+    // Variables
+    public Settings settings;
+
     // References
     private MenuUI menuUI;
-
-    // Instances
+    private LocaleMenu localeMenu;
     private I18n LOCALE;
 
     // UI
@@ -17,16 +19,19 @@ public class SettingsMenu : MonoBehaviour
     private VisualElement settingsMenu;
 
     private Slider soundSlider;
+    private VisualElement soundDragger;
     private Slider musicSlider;
-    private EnumField languageEnum;
+    private VisualElement musicDragger;
+    private VisualElement languageContainer;
+    private Label languageLabel;
+    private Button languageButton;
     private Toggle saveToggle;
 
     void Start()
     {
         // Cache
         menuUI = GetComponent<MenuUI>();
-
-        // Cache instances
+        localeMenu = GetComponent<LocaleMenu>();
         LOCALE = I18n.Instance;
 
         // Cache UI
@@ -34,10 +39,24 @@ public class SettingsMenu : MonoBehaviour
 
         settingsMenu = root.Q<VisualElement>("SettingsMenu");
 
-        soundSlider=settingsMenu.Q<Slider>("SoundSlider");
-        musicSlider=settingsMenu.Q<Slider>("MusicSlider");
-        languageEnum=settingsMenu.Q<EnumField>("LanguageEnum");
-        saveToggle=settingsMenu.Q<Toggle>("SaveToggle");
+        soundSlider = settingsMenu.Q<Slider>("SoundSlider");
+        soundDragger = soundSlider.Q<Slider>("unity-dragger");
+
+        musicSlider = settingsMenu.Q<Slider>("MusicSlider");
+        musicDragger = musicSlider.Q<Slider>("unity-dragger");
+
+        languageContainer = settingsMenu.Q<VisualElement>("LanguageContainer");
+        languageLabel = languageContainer.Q<Label>("Label");
+        languageButton = languageContainer.Q<Button>("Button");
+
+        saveToggle = settingsMenu.Q<Toggle>("SaveToggle");
+        // Callbacks
+        soundSlider.RegisterValueChangedCallback(SetSound);
+        musicSlider.RegisterValueChangedCallback(SetMusic);
+        languageButton.clicked += () => localeMenu.Open();
+        saveToggle.RegisterValueChangedCallback(SetSave);
+
+        Init();
     }
 
     void Init()
@@ -52,21 +71,58 @@ public class SettingsMenu : MonoBehaviour
         // Set the title
         string title = LOCALE.Get("settings_menu_title");
 
-        soundSlider.label = LOCALE.Get("settings_menu_sound_label");
-        musicSlider.label = LOCALE.Get("settings_menu_music_label");
-        languageEnum.label = LOCALE.Get("settings_menu_language_label");
-        saveToggle.label = LOCALE.Get("settings_menu_save_label");
+        SetUi();
+
+        soundSlider.value = settings.GetSound();
+        musicSlider.value = settings.GetMusic();
+        languageButton.text = settings.GetLocale().ToString();
+        saveToggle.value = settings.GetSave();
 
         // Open menu
         menuUI.OpenMenu(settingsMenu, title);
     }
 
-    void SetLocale(string locale)
+    void SetUi(bool update = false, Types.Locale newLocale = Types.Locale.English)
     {
-        I18n.SetLocale(locale);
-        PlayerPrefs.SetString("locale", locale);
+        soundSlider.label = LOCALE.Get("settings_menu_sound_label");
+        musicSlider.label = LOCALE.Get("settings_menu_music_label");
+        languageLabel.text = LOCALE.Get("settings_menu_language_label");
+        saveToggle.label = LOCALE.Get("settings_menu_save_label");
 
-        //I18n.SetLocale("hy-HY");
-        // PlayerPrefs.SetString("locale", "hy-HY");
+        if (update)
+        {
+            string title = LOCALE.Get("settings_menu_title");
+
+            languageButton.text = newLocale.ToString();
+
+            menuUI.UpdateTitle(title);
+        }
+    }
+
+    //// SET ////
+
+    void SetSound(ChangeEvent<float> evt)
+    {
+        settings.SetSound(soundSlider.value);
+    }
+
+    void SetMusic(ChangeEvent<float> evt)
+    {
+        settings.SetMusic(musicSlider.value);
+    }
+
+    public void SetLocale(Types.Locale newLocale)
+    {
+        settings.SetLocale(newLocale);
+
+        SetUi(true, newLocale);
+    }
+
+    void SetSave(ChangeEvent<bool> evt)
+    {
+        if (saveToggle.resolvedStyle.width != 0)
+        {
+            settings.SetSave(evt.newValue);
+        }
     }
 }

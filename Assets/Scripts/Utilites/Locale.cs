@@ -14,12 +14,12 @@ namespace Locale
         private static readonly string[] locales = new string[]
         {
             "en-US", // English - English
-            "hy-HY", // Armenian - Հայերեն
             "fr-FR", // French - Français
             "es-ES", // Spanish - Español
             "de-DE", // German - Deutsch
             "it-IT", // Italian - Utaliano
             "ru-RU", // Russian - Русский
+            "hy-HY", // Armenian - Հայերեն
             "ja-JP", // Japanese - 日本語
             "ko-KR", // Korean - 한국어
             "zh-CN" // Chinese - 中文
@@ -52,6 +52,89 @@ namespace Locale
             {
                 Debug.Log("Missing: locale [" + currentLocale + "] not found in supported list");
             }
+        }
+
+        public string ConvertToCode(Types.Locale newLocale)
+        {
+            string locale;
+
+            switch (newLocale)
+            {
+                case Types.Locale.Français:
+                    locale = "fr-FR";
+                    break;
+                case Types.Locale.Español:
+                    locale = "es-ES";
+                    break;
+                case Types.Locale.Deutsch:
+                    locale = "de-DE";
+                    break;
+                case Types.Locale.Italiano:
+                    locale = "it-IT";
+                    break;
+                case Types.Locale.Русский: // Russian
+                    locale = "ru-RU";
+                    break;
+                case Types.Locale.Հայերեն: // Armenian
+                    locale = "hy-HY";
+                    break;
+                case Types.Locale.日本語: // Japanese
+                    locale = "ja-JP";
+                    break;
+                case Types.Locale.한국어: // Korean
+                    locale = "ko-KR";
+                    break;
+                case Types.Locale.中文: // Chinese
+                    locale = "zh-CN";
+                    break;
+                default:
+                    locale = "en-US";
+                    break;
+            }
+
+            return locale;
+        }
+
+        public Types.Locale ConvertToLocale(string localeCode)
+        {
+            Types.Locale locale;
+
+            switch (localeCode)
+            {
+
+                case "fr-FR":
+                    locale = Types.Locale.Français;
+                    break;
+                case "es-ES":
+                    locale = Types.Locale.Español;
+                    break;
+                case "de-DE":
+                    locale = Types.Locale.Deutsch;
+                    break;
+                case "it-IT":
+                    locale = Types.Locale.Italiano;
+                    break;
+                case "ru-RU":
+                    locale = Types.Locale.Русский;// Russian
+                    break;
+                case "hy-HY":
+                    locale = Types.Locale.Հայերեն;// Armenian
+                    break;
+                case "ja-JP":
+                    locale = Types.Locale.日本語;// Japanese
+                    break;
+                case "ko-KR":
+                    locale = Types.Locale.한국어; // Korean
+                    break;
+                case "zh-CN":
+                    locale = Types.Locale.中文; // Chinese
+                    break;
+                default:
+                    locale = Types.Locale.English;
+                    break;
+            };
+
+            return locale;
         }
 
         public static string GetLocale()

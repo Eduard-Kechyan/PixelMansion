@@ -11,6 +11,7 @@ public class LoadingManager : MonoBehaviour
     public bool stayOnScene = false;
     public float fillSpeed = 3f;
     public SceneLoader sceneLoader;
+    public Settings settings;
     public GameObject uiDocument;
 
     private Camera cam;
@@ -38,19 +39,15 @@ public class LoadingManager : MonoBehaviour
         fill = root.Q<VisualElement>("Fill");
 
         // Check if data has already been loaded
-        if (PlayerPrefs.HasKey("Loaded") && PlayerPrefs.GetInt("Loaded") == 1)
+        if (PlayerPrefs.HasKey("loaded") && PlayerPrefs.GetInt("loaded") == 1)
         {
             loaded = true;
             callback = LoadContentPre;
             StartCoroutine(SetFill(70f, callback));
-
-            SetLanguage();
         }
         else
         {
             FirstLoading();
-
-            SetLanguage(true);
         }
     }
 
@@ -77,8 +74,6 @@ public class LoadingManager : MonoBehaviour
     {
         if (!loaded)
         {
-            SetLanguage();
-
             // Save the prefs to disk
             PlayerPrefs.Save();
         }
@@ -124,35 +119,10 @@ public class LoadingManager : MonoBehaviour
 
     //////// STEPS ////////
 
-    void SetLanguage(bool first = false)
-    {
-        string locale = "en-US";
-
-        if (first)
-        {
-            switch (Application.systemLanguage)
-            {
-                case SystemLanguage.English:
-                    locale = "en-US";
-                    I18n.SetLocale(locale);
-                    PlayerPrefs.SetString("locale", locale);
-                    break;
-                default:
-                    I18n.SetLocale(locale);
-                    PlayerPrefs.SetString("locale", locale);
-                    break;
-            }
-        }
-        else
-        {
-            I18n.SetLocale(PlayerPrefs.GetString("locale"));
-        }
-    }
-
     void SetPrefs()
     {
         // Set Loaded to 1 to make sure this callculations aren't run again
-        PlayerPrefs.SetInt("Loaded", 1);
+        PlayerPrefs.SetInt("loaded", 1);
 
         // Save the prefs to disk
         PlayerPrefs.Save();

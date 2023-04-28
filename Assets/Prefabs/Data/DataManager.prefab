@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32fa525191c09d74480ce81539a1c0f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  settings: {fileID: 0}
   ignoreInitialCheck: 0
   items: {fileID: 11400000, guid: c8cb055841d16d4418a75072be1f69f5, type: 2}
   generators: {fileID: 11400000, guid: c258775e13b5df74081b412b6f1f3947, type: 2}
