@@ -9,76 +9,154 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ab8382626fbf07458b6bdf60ca97bbf, type: 3}
+  m_Script: {fileID: 11500000, guid: ad1dbff0d9e1b67449c032e521e80bbc, type: 3}
   m_Name: Collectables
   m_EditorClassIdentifier: 
   content:
-  - collGroup: 0
+  - type: 2
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    hasLevel: 1
+    customName: 0
+    parents: 
+    createsTotal: 0
+    creates: []
     content:
     - sprite: {fileID: 21300000, guid: f8b66945f5e9ea248bad5cafefe4b8d5, type: 3}
+      customName: 0
       itemName: 
       level: 0
+      group: 0
+      type: 0
+      genGroup: 0
       collGroup: 0
+      parents: 
+      creates: []
       unlocked: 0
       isMaxLavel: 0
       hasLevel: 0
     - sprite: {fileID: 21300000, guid: 4249019a1f0651f42b68810168bb6ade, type: 3}
+      customName: 0
       itemName: 
       level: 0
+      group: 0
+      type: 0
+      genGroup: 0
       collGroup: 0
+      parents: 
+      creates: []
       unlocked: 0
       isMaxLavel: 0
       hasLevel: 0
     - sprite: {fileID: 21300000, guid: 69417eebe82810f43876239658178873, type: 3}
+      customName: 0
       itemName: 
       level: 0
+      group: 0
+      type: 0
+      genGroup: 0
       collGroup: 0
+      parents: 
+      creates: []
       unlocked: 0
       isMaxLavel: 0
       hasLevel: 0
-  - collGroup: 1
+  - type: 2
+    group: 0
+    genGroup: 0
+    collGroup: 1
+    hasLevel: 1
+    customName: 0
+    parents: 
+    createsTotal: 0
+    creates: []
     content:
     - sprite: {fileID: 21300000, guid: 57ad0ef4820afde4f8afb343ae1b5083, type: 3}
+      customName: 0
       itemName: 
       level: 0
+      group: 0
+      type: 0
+      genGroup: 0
       collGroup: 0
+      parents: 
+      creates: []
       unlocked: 0
       isMaxLavel: 0
       hasLevel: 0
     - sprite: {fileID: 21300000, guid: ca3a280a957839843b47b3b96175df80, type: 3}
+      customName: 0
       itemName: 
       level: 0
+      group: 0
+      type: 0
+      genGroup: 0
       collGroup: 0
+      parents: 
+      creates: []
       unlocked: 0
       isMaxLavel: 0
       hasLevel: 0
     - sprite: {fileID: 21300000, guid: 7a2ac0667b8c36b4aa5641e6d10a9fc1, type: 3}
+      customName: 0
       itemName: 
       level: 0
+      group: 0
+      type: 0
+      genGroup: 0
       collGroup: 0
+      parents: 
+      creates: []
       unlocked: 0
       isMaxLavel: 0
       hasLevel: 0
-  - collGroup: 2
+  - type: 2
+    group: 0
+    genGroup: 0
+    collGroup: 2
+    hasLevel: 1
+    customName: 0
+    parents: 
+    createsTotal: 0
+    creates: []
     content:
     - sprite: {fileID: 21300000, guid: d9aa7229a4950d74195693da1dd5f82c, type: 3}
+      customName: 0
       itemName: 
       level: 0
+      group: 0
+      type: 0
+      genGroup: 0
       collGroup: 0
+      parents: 
+      creates: []
       unlocked: 0
       isMaxLavel: 0
       hasLevel: 0
     - sprite: {fileID: 21300000, guid: efe79adffec4b6c4abc7e59b6b0629c7, type: 3}
+      customName: 0
       itemName: 
       level: 0
+      group: 0
+      type: 0
+      genGroup: 0
       collGroup: 0
+      parents: 
+      creates: []
       unlocked: 0
       isMaxLavel: 0
       hasLevel: 0
     - sprite: {fileID: 21300000, guid: d58e076bfa16ab84ca83c028755c7917, type: 3}
+      customName: 0
       itemName: 
       level: 0
+      group: 0
+      type: 0
+      genGroup: 0
       collGroup: 0
+      parents: 
+      creates: []
       unlocked: 0
       isMaxLavel: 0
       hasLevel: 0

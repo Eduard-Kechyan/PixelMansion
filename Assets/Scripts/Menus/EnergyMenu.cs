@@ -6,15 +6,21 @@ using Locale;
 
 public class EnergyMenu : MonoBehaviour
 {
+    // Variables
     public int energyBuyAmount = 100;
     public int energyWatchAmount = 20;
     public int gemsCost = 5;
 
-    private MenuManager menuManager;
-    private GameData gameData;
+    // References
+    private MenuUI menuUI;
     private ShopMenu shopMenu;
     private ValuePop valuePop;
 
+    // Instances
+    private GameData gameData;
+    private I18n LOCALE;
+
+    // UI
     private VisualElement root;
     private VisualElement energyMenu;
     private Label energyLabelA;
@@ -24,18 +30,19 @@ public class EnergyMenu : MonoBehaviour
     private Button buyButton;
     private Button watchButton;
 
-    private I18n LOCALE = I18n.Instance;
-
     void Start()
     {
         // Cache
-        menuManager = MenuManager.Instance;
-        gameData = GameData.Instance;
+        menuUI = GetComponent<MenuUI>();
         shopMenu = GetComponent<ShopMenu>();
         valuePop = GetComponent<ValuePop>();
 
+        // Cache instances
+        gameData = GameData.Instance;
+        LOCALE = I18n.Instance;
+
         // Cache UI
-        root = menuManager.menuUI.rootVisualElement;
+        root = GetComponent<UIDocument>().rootVisualElement;
 
         energyMenu = root.Q<VisualElement>("EnergyMenu");
 
@@ -51,10 +58,10 @@ public class EnergyMenu : MonoBehaviour
         watchButton.clicked += () => WatchAdHandle();
         buyButton.clicked += () => BuyEnegyHandler();
 
-        InitializeEnergyMenu();
+        InitMenu();
     }
 
-    void InitializeEnergyMenu()
+    void InitMenu()
     {
         energyLabelB.text = LOCALE.Get("energy_menu_label_b");
         energyLabelA.text = LOCALE.Get("energy_menu_label_a");
@@ -69,12 +76,12 @@ public class EnergyMenu : MonoBehaviour
     public void Open()
     {
         // Title
-            string title = LOCALE.Get("energy_menu_title");
+        string title = LOCALE.Get("energy_menu_title");
 
-            watchButton.SetEnabled(false);
+        watchButton.SetEnabled(false);
 
-            // Open menu
-            menuManager.OpenMenu(energyMenu, title, true);
+        // Open menu
+        menuUI.OpenMenu(energyMenu, title, true);
     }
 
     // Add energy after successfuly watching an ad
@@ -86,7 +93,7 @@ public class EnergyMenu : MonoBehaviour
 
         gameData.UpdateEnergy(energyWatchAmount);
 
-        menuManager.CloseMenu(energyMenu.name);
+        menuUI.CloseMenu(energyMenu.name);
     }
 
     // Add energy after buyinh it
@@ -99,7 +106,7 @@ public class EnergyMenu : MonoBehaviour
 
             valuePop.PopValue(energyBuyAmount, "Energy");
 
-            menuManager.CloseMenu(energyMenu.name);
+            menuUI.CloseMenu(energyMenu.name);
         }
         else
         {

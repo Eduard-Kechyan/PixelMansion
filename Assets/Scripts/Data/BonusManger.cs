@@ -5,43 +5,25 @@ using Locale;
 
 public class BonusManager : MonoBehaviour
 {
+    // Variables
     public BoardManager boardManager;
+    public BoardPopup boardPopup;
 
-    [HideInInspector]
-    public Vector2 bonusButtonPosition;
+    // References
+    private GameplayUI gameplayUI;
 
+    // Instances
     private GameData gameData;
-    private GamePlayButtons gamePlayButtons;
-    private BoardPopup boardPopup;
-
-    private I18n LOCALE = I18n.Instance;
+    private I18n LOCALE;
 
     void Start()
     {
+        // References
+        gameplayUI = GetComponent<GameplayUI>();
+
+        // Cache instances
         gameData = GameData.Instance;
-        gamePlayButtons= GetComponent<GamePlayButtons>();
-        boardPopup = boardManager.GetComponent<BoardPopup>();
-    }
-
-    public void CalcBonusButtonPosition()
-    {
-        // Calculate the button position on the screen and the world space
-        float singlePixelWidth = Camera.main.pixelWidth / GameData.GAME_PIXEL_WIDTH;
-
-        Vector2 bonusButtonScreenPosition = new Vector2(
-            singlePixelWidth
-                * (
-                    gamePlayButtons.root.worldBound.width
-                    - gamePlayButtons.bonusButton.worldBound.center.x
-                ),
-            singlePixelWidth
-                * (
-                    gamePlayButtons.root.worldBound.height
-                    - gamePlayButtons.bonusButton.worldBound.center.y
-                )
-        );
-
-        bonusButtonPosition = Camera.main.ScreenToWorldPoint(bonusButtonScreenPosition);
+        LOCALE = I18n.Instance;
     }
 
     public void GetBonus()
@@ -55,29 +37,30 @@ public class BonusManager : MonoBehaviour
 
             emptyBoard.Sort((p1, p2) => p1.distance.CompareTo(p2.distance));
 
-            if (latestBonus.type == Types.Type.Item)
+            Types.ItemsData boardItem = new Types.ItemsData
             {
-                boardManager.CreateItemOnEmptyTile(
-                    latestBonus.sprite.name,
-                    latestBonus.group,
-                    emptyBoard[0],
-                    bonusButtonPosition,
-                    false
-                );
-            }
-            else if (latestBonus.type == Types.Type.Gen)
-            {
-                boardManager.CreateGenOnEmptyTile(
-                    latestBonus.sprite.name,
-                    latestBonus.genGroup,
-                    emptyBoard[0],
-                    bonusButtonPosition
-                );
-            }
+                sprite = latestBonus.sprite,
+                type = latestBonus.type,
+                group = latestBonus.group,
+                genGroup = latestBonus.genGroup,
+                collGroup = Types.CollGroup.Experience,
+            };
+
+            boardManager.CreateItemOnEmptyTile(
+                boardItem,
+                emptyBoard[0],
+                gameplayUI.bonusButtonPosition,
+                false
+            );
         }
         else
         {
-            boardPopup.AddPop(LOCALE.Get("pop_board_full"), bonusButtonPosition, true, "Buzz");
+            boardPopup.AddPop(
+                LOCALE.Get("pop_board_full"),
+                gameplayUI.bonusButtonPosition,
+                true,
+                "Buzz"
+            );
         }
     }
 }

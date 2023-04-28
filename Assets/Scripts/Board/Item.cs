@@ -18,6 +18,9 @@ public class Item : MonoBehaviour
     [HideInInspector]
     public string nextName = "";
 
+    [HideInInspector]
+    public string id = "";
+
     // Bools
     public bool isSelected;
     public bool isCompleted;
@@ -28,16 +31,13 @@ public class Item : MonoBehaviour
 
     public int level = 1;
 
+    public Types.Type type = Types.Type.Item;
     public Types.Group group;
     public Types.GenGroup genGroup;
     public Types.CollGroup collGroup;
-    public Types.Creates[] creates;
-
-    public Types.GenGroup[] parents;
-
     public Types.State state = Types.State.Default;
-
-    public Types.Type type = Types.Type.Item;
+    public Types.Creates[] creates;
+    public Types.GenGroup[] parents;
 
     [HideInInspector]
     public Sprite sprite = null;
@@ -57,7 +57,7 @@ public class Item : MonoBehaviour
     private Action callback;
 
     private GameObject selectionChild;
-    private GameObject crateChild;
+    public GameObject crateChild;
     private GameObject lockerChild;
     public GameObject itemChild;
     private GameObject completionChild;
@@ -75,6 +75,8 @@ public class Item : MonoBehaviour
         completionChild = transform.GetChild(4).gameObject; // Completion
 
         CheckChildren();
+
+        GenerateRandomId();
 
         SetItemInitial();
     }
@@ -190,7 +192,7 @@ public class Item : MonoBehaviour
                 nextSpriteName = collGroup + "Coll" + (level + 1);
                 break;
             default:
-                Debug.Log("Wrong type!");
+                ErrorManager.Instance.Throw(Types.ErrorType.Code, "Wrong type: " + type);
                 break;
         }
 
@@ -198,6 +200,13 @@ public class Item : MonoBehaviour
         crateChild.GetComponent<SpriteRenderer>().sprite = crateSprite;
 
         CheckChildren();
+    }
+
+    void GenerateRandomId()
+    {
+        Guid guid = Guid.NewGuid();
+
+        id = guid.ToString();
     }
 
     void CheckChildren()

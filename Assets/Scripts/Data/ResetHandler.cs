@@ -5,11 +5,15 @@ using System.IO;
 
 public class ResetHandler : MonoBehaviour
 {
+    // Varaibles
     public SceneLoader sceneLoader;
+
+    // Instances
     private DataManager dataManager;
 
     void Start()
     {
+        // Cache instances
         dataManager = DataManager.Instance;
     }
     

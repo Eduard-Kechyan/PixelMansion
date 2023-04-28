@@ -7,9 +7,9 @@ using UnityEngine.UIElements;
 
 public class GameData : MonoBehaviour
 {
+    // Variables
     public ValuesData valuesData;
 
-    // Board width in items
     public const int WIDTH = 7;
     public const int HEIGHT = 9;
     public const int ITEM_COUNT = WIDTH * HEIGHT;
@@ -36,39 +36,46 @@ public class GameData : MonoBehaviour
     public int gold = 100;
     public int gems = 100;
 
+    public bool canLevelUp = false;
+
+    public int inventorySpace = 7;
+    public const int maxInventorySpace = 50;
+
     // Timers
     public List<Types.Timer> timers;
 
     // Items data
     public Types.Items[] itemsData;
-    public Types.Collectables[] collectablesData;
-    public Types.Generators[] generatorsData;
+    public Types.Items[] collectablesData;
+    public Types.Items[] generatorsData;
     public List<Types.Bonus> bonusData = new List<Types.Bonus>();
+    public List<Types.Inventory> inventoryData = new List<Types.Inventory>();
 
     //public  Types.Items[] storageData;
     public Types.Board[,] boardData;
     public string[] unlockedData = new string[0];
 
-    private Values values;
-    private DataManager dataManager;
-    private TimeManager timeManager;
-    private LevelMenu levelMenu;
-    private GamePlayButtons gamePlayButtons;
-
     private Sprite[] itemsSprites;
     private Sprite[] generatorsSprites;
     private Sprite[] collectablesSprites;
 
-    public static GameData Instance;
+    // References
+    private TimeManager timeManager;
+    private LevelMenu levelMenu;
+    private ValuesUI valuesUI;
+    private GameplayUI gameplayUI;
 
-    [HideInInspector]
-    public bool canLevelUp = false;
+    // Instances
+    private DataManager dataManager;
+
+    // Instance
+    public static GameData Instance;
 
     void Awake()
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(this);
+            Destroy(gameObject);
         }
         else
         {
@@ -79,6 +86,10 @@ public class GameData : MonoBehaviour
 
     void Start()
     {
+        // Cache
+        timeManager = GetComponent<TimeManager>();
+
+        // Cache instances
         dataManager = DataManager.Instance;
 
         energyTimeOut = energyTime;
@@ -88,36 +99,34 @@ public class GameData : MonoBehaviour
         CalcMaxExperience();
     }
 
-    void Update()
+    public void Init(string sceneName)
     {
-        /*if (energyTimerOn)
+        levelMenu = GameRefs.Instance.levelMenu;
+        valuesUI = GameRefs.Instance.valuesUI;
+
+        if (sceneName == "Gameplay")
         {
-            if (energyTimeOut > 0)
-            {
-                energyTimeOut -= Time.deltaTime;
-                UpdateEnergyTimer(energyTimeOut);
-            }
-            else
-            {
-                UpdateEnergy();
-
-                CheckEnergy(true);
-            }
-        }*/
-    }
-
-    public void InitializeGamedataCache(bool check=false)
-    {
-        timeManager = GetComponent<TimeManager>();
-
-        levelMenu = MenuManager.Instance.GetComponent<LevelMenu>();
-
-        values = dataManager.GetComponent<Values>();
-        
-        if(check){
-        gamePlayButtons = GameObject.Find("GamePlayUI").GetComponent<GamePlayButtons>();
+            gameplayUI = GameRefs.Instance.gameplayUI;
         }
     }
+
+    /* void Update()
+     {
+         if (energyTimerOn)
+         {
+             if (energyTimeOut > 0)
+             {
+                 energyTimeOut -= Time.deltaTime;
+                 UpdateEnergyTimer(energyTimeOut);
+             }
+             else
+             {
+                 UpdateEnergy();
+ 
+                 CheckEnergy(true);
+             }
+         }
+     }*/
 
     //////// SET ////////
 
@@ -127,7 +136,7 @@ public class GameData : MonoBehaviour
 
         if (!initial)
         {
-            values.UpdateValues();
+            valuesUI.UpdateValues();
         }
     }
 
@@ -139,7 +148,7 @@ public class GameData : MonoBehaviour
 
         if (!initial)
         {
-            values.UpdateValues();
+            valuesUI.UpdateValues();
         }
     }
 
@@ -149,7 +158,7 @@ public class GameData : MonoBehaviour
 
         if (!initial)
         {
-            values.UpdateValues();
+            valuesUI.UpdateValues();
 
             CheckEnergy();
         }
@@ -161,7 +170,7 @@ public class GameData : MonoBehaviour
 
         if (!initial)
         {
-            values.UpdateValues();
+            valuesUI.UpdateValues();
         }
     }
 
@@ -171,7 +180,7 @@ public class GameData : MonoBehaviour
 
         if (!initial)
         {
-            values.UpdateValues();
+            valuesUI.UpdateValues();
         }
     }
 
@@ -179,22 +188,36 @@ public class GameData : MonoBehaviour
 
     public void UpdateExperience(int amount = 1, bool useMultiplier = false)
     {
-        if (useMultiplier)
+        if (canLevelUp)
         {
-            experience += valuesData.experienceMultiplier[amount - 1];
+            if (useMultiplier)
+            {
+                leftoverExperience += valuesData.experienceMultiplier[amount - 1];
+            }
+            else
+            {
+                leftoverExperience += amount;
+            }
         }
         else
         {
-            experience += amount;
-        }
+            if (useMultiplier)
+            {
+                experience += valuesData.experienceMultiplier[amount - 1];
+            }
+            else
+            {
+                experience += amount;
+            }
 
-        if (experience >= maxExperience)
-        {
-            leftoverExperience = experience - maxExperience;
+            if (experience >= maxExperience)
+            {
+                leftoverExperience = experience - maxExperience;
 
-            experience = maxExperience;
+                experience = maxExperience;
 
-            ToggleCanLevelUpCheck(true);
+                ToggleCanLevelUpCheck(true);
+            }
         }
 
         if (experience < 0)
@@ -202,7 +225,7 @@ public class GameData : MonoBehaviour
             experience = 0;
         }
 
-        values.UpdateValues();
+        valuesUI.UpdateValues();
 
         levelMenu.UpdateLevelMenu();
 
@@ -215,11 +238,13 @@ public class GameData : MonoBehaviour
 
         dataManager.writer.Write("level", level).Commit();
 
+        experience = leftoverExperience;
+
         ToggleCanLevelUpCheck(false);
 
         CalcMaxExperience();
 
-        values.UpdateLevel();
+        valuesUI.UpdateLevel();
     }
 
     public bool UpdateEnergy(int amount = 1, bool useMultiplier = false)
@@ -249,7 +274,7 @@ public class GameData : MonoBehaviour
 
             dataManager.writer.Write("energy", energy).Commit();
 
-            values.UpdateValues();
+            valuesUI.UpdateValues();
 
             return true;
         }
@@ -282,7 +307,7 @@ public class GameData : MonoBehaviour
 
             dataManager.writer.Write("gold", gold).Commit();
 
-            values.UpdateValues();
+            valuesUI.UpdateValues();
 
             return true;
         }
@@ -315,7 +340,7 @@ public class GameData : MonoBehaviour
 
             dataManager.writer.Write("gems", gems).Commit();
 
-            values.UpdateValues();
+            valuesUI.UpdateValues();
 
             return true;
         }
@@ -339,7 +364,7 @@ public class GameData : MonoBehaviour
 
         if (check)
         {
-            gamePlayButtons.CheckBonusButton();
+            gameplayUI.CheckBonusButton();
         }
 
         dataManager.SaveBonus();
@@ -355,7 +380,7 @@ public class GameData : MonoBehaviour
 
         dataManager.SaveBonus();
 
-        gamePlayButtons.CheckBonusButton();
+        gameplayUI.CheckBonusButton();
 
         return newBonus;
     }
@@ -413,7 +438,7 @@ public class GameData : MonoBehaviour
                 }
                 break;
             default:
-                Debug.Log("Wrong type!");
+                ErrorManager.Instance.Throw(Types.ErrorType.Code, "Wrong type: " + type);
                 break;
         }
 
@@ -450,9 +475,9 @@ public class GameData : MonoBehaviour
             }
             else
             {
-                if (values.energyTimer != null)
+                if (valuesUI.energyTimer != null)
                 {
-                    values.energyTimer.style.display = DisplayStyle.None;
+                    valuesUI.energyTimer.style.display = DisplayStyle.None;
                 }
             }
         }
@@ -470,8 +495,8 @@ public class GameData : MonoBehaviour
 
         energyTimerText = minutesText + ":" + secondsText;
 
-        values.energyTimer.text = energyTimerText;
-        values.energyTimer.style.display = DisplayStyle.Flex;
+        valuesUI.energyTimer.text = energyTimerText;
+        valuesUI.energyTimer.style.display = DisplayStyle.Flex;
     }
 
     void CalcMaxExperience()

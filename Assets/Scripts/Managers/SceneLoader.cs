@@ -6,60 +6,35 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
-    public TansitionUI tansitionUI;
+    // Variables
+    public TransitionUI transitionUI;
     public float duration = 0.6f;
     public float fadeDuration = 0.5f;
 
+    [HideInInspector]
+    public string sceneName;
+
+    // References
     private SoundManager soundManager;
-    private Values values;
-    private LevelMenu levelMenu;
 
     void Start()
     {
+        // Cache
         soundManager = SoundManager.Instance;
-        values = DataManager.Instance.GetComponent<Values>();
 
-        StartBg();
+        InitializeScene();
 
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        switch (scene.name)
-        {
-            case "Loading":
-                break;
-
-            case "Hub":
-                GameData.Instance.InitializeGamedataCache();
-
-                values.InitializeValues();
-                break;
-
-            case "GamePlay":
-                InfoMenu infoMenu = MenuManager.Instance.GetComponent<InfoMenu>();
-
-                infoMenu.enabled = true;
-
-                GameData.Instance.InitializeGamedataCache(true);
-
-                values.InitializeValues();
-
-                levelMenu = MenuManager.Instance.GetComponent<LevelMenu>();
-
-                levelMenu.InitializeLevelMenuCache();
-                break;
-
-            default:
-                Debug.Log("Unknown scene name: " + scene.name);
-                break;
-        }
+        InitializeScene();
     }
 
     public void Load(int sceneIndex)
     {
-        tansitionUI.Open();
+        transitionUI.Open();
         soundManager.FadeOutBg(fadeDuration);
         StartCoroutine(LoadScene(sceneIndex));
     }
@@ -73,7 +48,7 @@ public class SceneLoader : MonoBehaviour
 
     public void LoadAsync(int sceneIndex)
     {
-        tansitionUI.Open();
+        transitionUI.Open();
         soundManager.FadeOutBg(fadeDuration);
         StartCoroutine(LoadAsyncScene(sceneIndex));
     }
@@ -90,30 +65,43 @@ public class SceneLoader : MonoBehaviour
         }
     }
 
-    void StartBg()
+    void InitializeScene()
     {
-        Scene scene = SceneManager.GetActiveScene();
+        // Play background music when the scene starts from the editor
+        sceneName = SceneManager.GetActiveScene().name;
 
-        if (scene.name == "Loading")
+        switch (sceneName)
         {
-            soundManager.PlayBg(scene.name, 0.7f);
-        }
-        else
-        {
-            soundManager.PlayBg(scene.name);
+            case "Loading":
+                // Play background music
+                soundManager.PlayBg(sceneName, 0.7f);
 
-            soundManager.FadeInBg(fadeDuration);
+                break;
 
-            GameData.Instance.InitializeGamedataCache();
+            case "Hub":
+                // Play background music
+                soundManager.PlayBg(sceneName);
 
-            if (values.set)
-            {
-                values.UpdateValues();
-            }
-            else
-            {
-                values.InitializeValues();
-            }
+                soundManager.FadeInBg(fadeDuration);
+
+                GameData.Instance.Init(sceneName);
+
+                break;
+
+            case "Gameplay":
+                // Play background music
+                soundManager.PlayBg(sceneName);
+
+                soundManager.FadeInBg(fadeDuration);
+
+                GameData.Instance.Init(sceneName);
+
+                break;
+
+            default:
+                Debug.Log("Unknown scene name: " + sceneName);
+
+                break;
         }
     }
 }

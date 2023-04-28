@@ -6,10 +6,10 @@ using UnityEngine.SceneManagement;
 
 public class SafeAreaHandler : MonoBehaviour
 {
+    // Variables
     public float manualSizes = 0f;
     public bool alternativeAspectRatio;
     public Camera cam;
-    public UIDocument valuesUI;
 
     private float height;
     private float calculatedHeight;
@@ -20,8 +20,9 @@ public class SafeAreaHandler : MonoBehaviour
     private float devicePixelWidth;
     private float singlePixelWidth;
 
+    // UI
     private VisualElement root;
-    private VisualElement valuesBox;
+    public VisualElement valuesBox;
     private VisualElement bottomBox;
     private VisualElement options;
     private VisualElement infoBox;
@@ -29,7 +30,8 @@ public class SafeAreaHandler : MonoBehaviour
 
     void Start()
     {
-        valuesBox = valuesUI.rootVisualElement.Q<VisualElement>("ValuesBox");
+        // UI
+        valuesBox = GameRefs.Instance.valuesUIDoc.rootVisualElement.Q<VisualElement>("ValuesBox");
 
         // Get the safe area height
         height = Screen.height - Screen.safeArea.height;
@@ -52,7 +54,7 @@ public class SafeAreaHandler : MonoBehaviour
             case "Hub":
                 break;
 
-            case "GamePlay":
+            case "Gameplay":
                 SetGamplayUI();
                 break;
 
@@ -92,5 +94,12 @@ public class SafeAreaHandler : MonoBehaviour
         float bottomOffset = options.resolvedStyle.height + (dividedHeight * 2);
 
         return bottomOffset;
+    }
+
+    public float GetTopOffset()
+    {
+        float topOffset = topPadding + valuesBox.resolvedStyle.height;
+
+        return topOffset;
     }
 }

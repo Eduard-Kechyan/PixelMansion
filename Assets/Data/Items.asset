@@ -13,130 +13,215 @@ MonoBehaviour:
   m_Name: Items
   m_EditorClassIdentifier: 
   content:
-  - group: 0
+  - type: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
     hasLevel: 1
-    itemName: Metals
+    customName: 1
     parents: 00000000
+    createsTotal: 0
+    creates: []
     content:
     - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-      itemName: Dirt
+      customName: 0
+      itemName: 
       level: 1
       group: 0
+      type: 0
+      genGroup: 0
+      collGroup: 0
       parents: 
+      creates: []
       unlocked: 1
       isMaxLavel: 0
       hasLevel: 0
     - sprite: {fileID: 21300000, guid: 33390d7654178a245a98c808b3dd2e56, type: 3}
-      itemName: Dirt Clump
+      customName: 0
+      itemName: 
       level: 2
       group: 0
+      type: 0
+      genGroup: 0
+      collGroup: 0
       parents: 
+      creates: []
       unlocked: 1
       isMaxLavel: 0
       hasLevel: 0
     - sprite: {fileID: 21300000, guid: 90365727a4c01584a8e05ed14c547ece, type: 3}
-      itemName: Ore
+      customName: 0
+      itemName: 
       level: 3
       group: 0
+      type: 0
+      genGroup: 0
+      collGroup: 0
       parents: 
+      creates: []
       unlocked: 0
       isMaxLavel: 0
       hasLevel: 0
     - sprite: {fileID: 21300000, guid: 0b77e89831834594099e8bd21d26eb9d, type: 3}
-      itemName: Iron Ore
+      customName: 0
+      itemName: 
       level: 4
       group: 0
+      type: 0
+      genGroup: 0
+      collGroup: 0
       parents: 
+      creates: []
       unlocked: 0
       isMaxLavel: 0
       hasLevel: 0
     - sprite: {fileID: 21300000, guid: fd096c8b290cb704999c39616ea7fd1b, type: 3}
-      itemName: Silver Ingot
+      customName: 0
+      itemName: 
       level: 5
       group: 0
+      type: 0
+      genGroup: 0
+      collGroup: 0
       parents: 
+      creates: []
       unlocked: 0
       isMaxLavel: 0
       hasLevel: 0
     - sprite: {fileID: 21300000, guid: dc9eb41a213e8924db6f27140cb766aa, type: 3}
-      itemName: Gold Ingot
+      customName: 0
+      itemName: 
       level: 6
       group: 0
+      type: 0
+      genGroup: 0
+      collGroup: 0
       parents: 
+      creates: []
       unlocked: 0
       isMaxLavel: 0
       hasLevel: 0
-  - group: 1
+  - type: 0
+    group: 1
+    genGroup: 0
+    collGroup: 0
     hasLevel: 1
-    itemName: Crystal
+    customName: 0
     parents: 00000000
+    createsTotal: 0
+    creates: []
     content:
     - sprite: {fileID: 21300000, guid: 576b12ed504b2c9468bddc262bd49b63, type: 3}
-      itemName: 
+      customName: 1
+      itemName: Crystal
       level: 1
       group: 0
+      type: 0
+      genGroup: 0
+      collGroup: 0
       parents: 
+      creates: []
       unlocked: 0
       isMaxLavel: 0
       hasLevel: 0
     - sprite: {fileID: 21300000, guid: 91ba67bca6f91dd4281d6782ea840660, type: 3}
+      customName: 0
       itemName: 
       level: 2
       group: 0
+      type: 0
+      genGroup: 0
+      collGroup: 0
       parents: 
+      creates: []
       unlocked: 0
       isMaxLavel: 0
       hasLevel: 0
     - sprite: {fileID: 21300000, guid: 5f8be899b45e92540b530fe59dbaa56b, type: 3}
+      customName: 0
       itemName: 
       level: 3
       group: 0
+      type: 0
+      genGroup: 0
+      collGroup: 0
       parents: 
+      creates: []
       unlocked: 0
       isMaxLavel: 0
       hasLevel: 0
     - sprite: {fileID: 21300000, guid: 14b2702a8c3a86d469b3b802c1e01009, type: 3}
+      customName: 0
       itemName: 
       level: 4
       group: 0
+      type: 0
+      genGroup: 0
+      collGroup: 0
       parents: 
+      creates: []
       unlocked: 0
       isMaxLavel: 0
       hasLevel: 0
     - sprite: {fileID: 21300000, guid: 9eafaf7b521bfcc4f9444072175c26fd, type: 3}
-      itemName: Crystal Shards
+      customName: 1
+      itemName: CrystalShards
       level: 5
       group: 0
+      type: 0
+      genGroup: 0
+      collGroup: 0
       parents: 
+      creates: []
       unlocked: 0
       isMaxLavel: 0
       hasLevel: 0
-  - group: 2
+  - type: 0
+    group: 2
+    genGroup: 0
+    collGroup: 0
     hasLevel: 1
-    itemName: Coals
+    customName: 1
     parents: 00000000
+    createsTotal: 0
+    creates: []
     content:
     - sprite: {fileID: 21300000, guid: 79eddbaa4d73237478e8e3ea9e2976f4, type: 3}
-      itemName: Coal
+      customName: 0
+      itemName: 
       level: 1
       group: 0
+      type: 0
+      genGroup: 0
+      collGroup: 0
       parents: 
+      creates: []
       unlocked: 0
       isMaxLavel: 0
       hasLevel: 0
     - sprite: {fileID: 21300000, guid: abe7830432310fb468f41afb4956f8f1, type: 3}
-      itemName: Sack of coals
+      customName: 0
+      itemName: 
       level: 2
       group: 0
+      type: 0
+      genGroup: 0
+      collGroup: 0
       parents: 
+      creates: []
       unlocked: 0
       isMaxLavel: 0
       hasLevel: 0
     - sprite: {fileID: 21300000, guid: 5d65fadcbddf0ab49bfefa54a92f663d, type: 3}
-      itemName: Crate of coals
+      customName: 0
+      itemName: 
       level: 3
       group: 0
+      type: 0
+      genGroup: 0
+      collGroup: 0
       parents: 
+      creates: []
       unlocked: 0
       isMaxLavel: 0
       hasLevel: 0

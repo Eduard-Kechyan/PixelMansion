@@ -6,18 +6,31 @@ using Locale;
 
 public class ShopMenu : MonoBehaviour
 {
+    // Variables
+    public bool gameplayScene = false;
+    public GameplayUI gameplayUI;
+    public HubUI hubUI;
+    public BoardManager boardManager;
+    public SceneLoader sceneLoader;
     public ShopData shopData;
     public Sprite smallGoldSprite;
     public Sprite smallGemSprite;
     public bool purchaseFailed = false;
 
-    private MenuManager menuManager;
+    private string scrollLocation;
+
+    // References
+    private MenuUI menuUI;
     private NoteMenu noteMenu;
     private InfoMenu infoMenu;
     private ValuePop valuePop;
+
+    // Instances
     private GameData gameData;
     private ItemHandler itemHandler;
+    private I18n LOCALE;
 
+    // UI
     private VisualElement root;
     private VisualElement shopMenu;
     private ScrollView scrollContainer;
@@ -32,22 +45,21 @@ public class ShopMenu : MonoBehaviour
     private Button restoreGems;
     private Button restoreGold;
 
-    private string scrollLocation;
-
-    private I18n LOCALE = I18n.Instance;
-
     void Start()
     {
         // Cache
-        menuManager = MenuManager.Instance;
+        menuUI = GetComponent<MenuUI>();
         noteMenu = GetComponent<NoteMenu>();
         infoMenu = GetComponent<InfoMenu>();
         valuePop = GetComponent<ValuePop>();
+
+        // Cache instances
         gameData = GameData.Instance;
+        LOCALE = I18n.Instance;
         itemHandler = DataManager.Instance.GetComponent<ItemHandler>();
 
         // Cache UI
-        root = menuManager.menuUI.rootVisualElement;
+        root = GetComponent<UIDocument>().rootVisualElement;
 
         shopMenu = root.Q<VisualElement>("ShopMenu");
 
@@ -66,10 +78,10 @@ public class ShopMenu : MonoBehaviour
         restoreGems = shopMenu.Q<Button>("RestoreGems");
         restoreGold = shopMenu.Q<Button>("RestoreGold");
 
-        InitializeShopMenu();
+        InitMenu();
     }
 
-    void InitializeShopMenu()
+    void InitMenu()
     {
         // Subtitles
         dailySubtitle.text = LOCALE.Get("shop_menu_subtitle_daily");
@@ -134,8 +146,7 @@ public class ShopMenu : MonoBehaviour
 
             infoButton.clicked += () => ShowInfo(infoButton.name);
 
-            buyButton.clicked += () =>
-                BuyItem(buyButton.name, image.resolvedStyle.backgroundImage.sprite.name);
+            buyButton.clicked += () => BuyItem(buyButton.name, "Daily");
         }
     }
 
@@ -168,8 +179,7 @@ public class ShopMenu : MonoBehaviour
 
             infoButton.clicked += () => ShowInfo(infoButton.name);
 
-            buyButton.clicked += () =>
-                BuyItem(buyButton.name, image.resolvedStyle.backgroundImage.sprite.name);
+            buyButton.clicked += () => BuyItem(buyButton.name);
         }
     }
 
@@ -292,10 +302,13 @@ public class ShopMenu : MonoBehaviour
         string title = LOCALE.Get("shop_menu_title");
 
         // Open menu
-        menuManager.OpenMenu(shopMenu, title, true);
+        menuUI.OpenMenu(shopMenu, title, true);
+
+        // Reset scroll position
+        scrollContainer.scrollOffset = Vector2.zero;
 
         // Check if we need to scroll to a specific location
-                if (newLocation != "")
+        if (newLocation != "")
         {
             scrollLocation = newLocation;
 
@@ -306,8 +319,6 @@ public class ShopMenu : MonoBehaviour
     void ScroolCallback(GeometryChangedEvent evt)
     {
         shopMenu.UnregisterCallback<GeometryChangedEvent>(ScroolCallback);
-
-        scrollContainer.scrollOffset = Vector2.zero;
 
         switch (scrollLocation)
         {
@@ -354,17 +365,11 @@ public class ShopMenu : MonoBehaviour
         int order = int.Parse(buttonName[(buttonName.LastIndexOf('n') + 1)..]);
 
         Types.ShopItemsContent shopItemsContent = shopData.itemsContent[order];
-        
-        infoMenu.Open(
-            itemHandler.CreateItemTemp(
-                shopItemsContent.group,
-                shopItemsContent.type,
-                shopItemsContent.sprite.name
-            )
-        );
+
+        infoMenu.Open(itemHandler.CreateItemTemp(shopItemsContent));
     }
 
-    void BuyItem(string buttonName, string spriteName)
+    void BuyItem(string buttonName, string type = "Items")
     {
         int order = int.Parse(buttonName[(buttonName.LastIndexOf('n') + 1)..]);
 
@@ -372,18 +377,42 @@ public class ShopMenu : MonoBehaviour
         {
             if (shopData.itemsContent[order].priceType == Types.ShopValuesType.Gold)
             {
-                gameData.UpdateGold(-shopData.itemsContent[order].price);
+                if (gameData.gold >= shopData.itemsContent[order].price)
+                {
+                    gameData.UpdateGold(-shopData.itemsContent[order].price);
+                }
+                else
+                {
+                    string[] notes = new string[] { "note_menu_not_enough_gold_text" };
+
+                    noteMenu.Open("note_menu_not_enough_gold_title", notes);
+                }
             }
             else
             {
-                gameData.UpdateGems(-shopData.itemsContent[order].price);
+                if (gameData.gems >= shopData.itemsContent[order].price)
+                {
+                    gameData.UpdateGems(-shopData.itemsContent[order].price);
+                }
+                else
+                {
+                    string[] notes = new string[] { "note_menu_not_enough_gems_text" };
+
+                    noteMenu.Open("note_menu_not_enough_gems_title", notes);
+                }
             }
         }
 
-        // TODO - Add item to the board or to the bonus button
-        Debug.Log("Bought Item: " + spriteName);
+        if (sceneLoader.sceneName == "Gameplay")
+        {
+            StartCoroutine(AddItemToBoardOrBonusButton(order, type));
+        }
+        else
+        {
+            StartCoroutine(AddItemToPlayButton(order, type));
+        }
 
-        menuManager.CloseMenu(shopMenu.name);
+        menuUI.CloseMenu(shopMenu.name);
     }
 
     void BuyGems(string buttonName)
@@ -404,13 +433,13 @@ public class ShopMenu : MonoBehaviour
                 valuePop.PopValue(shopData.gemsContent[order].bonusAmount, "Energy");
             }
 
-            menuManager.CloseMenu(shopMenu.name);
+            menuUI.CloseMenu(shopMenu.name);
         }
         else
         {
             string[] notes = new string[] { "note_menu_purchase_failed_text" };
 
-            noteMenu.Open("note_menu_purchase_failed", notes);
+            noteMenu.Open("note_menu_purchase_failed_title", notes);
         }
     }
 
@@ -427,7 +456,7 @@ public class ShopMenu : MonoBehaviour
         {
             valuePop.PopValue(shopGold.amount, "Gold");
 
-            menuManager.CloseMenu(shopMenu.name);
+            menuUI.CloseMenu(shopMenu.name);
             ;
         }
         else
@@ -441,5 +470,84 @@ public class ShopMenu : MonoBehaviour
     void Restore(string type)
     {
         Debug.Log("Restore " + type);
+    }
+
+    IEnumerator AddItemToBoardOrBonusButton(int order, string type)
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        // Add item to the board or to the bonus button
+        List<Types.BoardEmpty> emptyBoard = boardManager.GetEmptyBoardItems(Vector2Int.zero, false);
+
+        Types.ItemsData boardItem;
+        Item newItem;
+
+        if (type == "Items")
+        {
+            boardItem = new Types.ItemsData
+            {
+                sprite = shopData.itemsContent[order].sprite,
+                type = shopData.itemsContent[order].type,
+                group = shopData.itemsContent[order].group,
+                genGroup = shopData.itemsContent[order].genGroup,
+                collGroup = Types.CollGroup.Experience,
+            };
+
+            newItem = itemHandler.CreateItemTemp(shopData.itemsContent[order]);
+        }
+        else
+        {
+            boardItem = new Types.ItemsData
+            {
+                sprite = shopData.dailyContent[order].sprite,
+                type = shopData.dailyContent[order].type,
+                group = shopData.dailyContent[order].group,
+                genGroup = shopData.dailyContent[order].genGroup,
+                collGroup = Types.CollGroup.Experience,
+            };
+
+            newItem = itemHandler.CreateItemTemp(shopData.dailyContent[order]);
+        }
+
+        // Check if the board is full
+        if (emptyBoard.Count > 0)
+        {
+            emptyBoard.Sort((p1, p2) => p1.distance.CompareTo(p2.distance));
+
+            boardManager.CreateItemOnEmptyTile(boardItem, emptyBoard[0], Vector2.zero, false);
+        }
+        else
+        {
+            Vector2 buttonPosition;
+
+            if (gameplayScene)
+            {
+                buttonPosition = gameplayUI.bonusButtonPosition;
+            }
+            else
+            {
+                buttonPosition = hubUI.playButtonPosition;
+            }
+
+            valuePop.PopBonus(newItem, buttonPosition, true, true);
+        }
+    }
+
+    IEnumerator AddItemToPlayButton(int order, string type)
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        Item newItem;
+
+        if (type == "Items")
+        {
+            newItem = itemHandler.CreateItemTemp(shopData.itemsContent[order]);
+        }
+        else
+        {
+            newItem = itemHandler.CreateItemTemp(shopData.dailyContent[order]);
+        }
+
+        valuePop.PopBonus(newItem, hubUI.playButtonPosition, false, true);
     }
 }

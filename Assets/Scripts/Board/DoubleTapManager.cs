@@ -6,17 +6,20 @@ using Locale;
 
 public class DoubleTapManager : MonoBehaviour
 {
+    // Variables
     public float moveSpeed = 14f;
     public float scaleSpeed = 8f;
 
+    // References
     private BoardInteractions interactions;
     private BoardManager boardManager;
-    private GameData gameData;
     private BoardPopup boardPopup;
+
+    // Instances
+    private GameData gameData;
+    private I18n LOCALE;
     private EnergyMenu energyMenu;
     private ValuePop valuePop;
-
-    private I18n LOCALE = I18n.Instance;
 
     private Action callback;
 
@@ -28,59 +31,66 @@ public class DoubleTapManager : MonoBehaviour
         interactions = GetComponent<BoardInteractions>();
         boardManager = GetComponent<BoardManager>();
         boardPopup = GetComponent<BoardPopup>();
+
+        // Cache instances
         gameData = GameData.Instance;
-        energyMenu = MenuManager.Instance.GetComponent<EnergyMenu>();
-        valuePop = MenuManager.Instance.GetComponent<ValuePop>();
+        LOCALE = I18n.Instance;
+        energyMenu=GameRefs.Instance.energyMenu;
+        valuePop=GameRefs.Instance.valuePop;
     }
 
-    public void DoubleTapped()
+    public bool CheckForDoubleTaps()
     {
-        // Check for generator
-        if (
-            interactions.currentItem.type == Types.Type.Gen
-            && interactions.currentItem.creates.Length > 0
-            && gameData.energy >= 1
-        )
-        {
-            DoubleTappedGenerator();
-        }
-        else if (interactions.currentItem.type == Types.Type.Coll)
-        {
-            DoubleTappedCollectable();
-        }
+        switch (interactions.currentItem.type)
+            {
+                case Types.Type.Gen:
+                    DoubleTappedGenerator();
+                    return true;
+
+                case Types.Type.Coll:
+                    DoubleTappedCollectable();
+                    return true;
+
+                default:
+
+                    return false;
+            }
     }
 
     void DoubleTappedGenerator()
     {
-        GameObject tile = interactions.currentItem.transform.parent.gameObject;
-
-        Vector2Int tileLoc = boardManager.GetBoardLocation(0, tile);
-
-        List<Types.BoardEmpty> emptyBoard = boardManager.GetEmptyBoardItems(tileLoc);
-
-        // Check if the board is full
-        if (emptyBoard.Count > 0)
+        if (interactions.currentItem.creates.Length > 0)
         {
-            // Check if we have any energy left
-            if (gameData.energy > 0)
+            // Check if we have enough enrgy to generate an item
+            if (gameData.energy >= 1)
             {
-                emptyBoard.Sort((p1, p2) => p1.distance.CompareTo(p2.distance));
+                GameObject tile = interactions.currentItem.transform.parent.gameObject;
 
-                SelectRadnomGroupAndItem(emptyBoard[0], tile.transform.position);
+                Vector2Int tileLoc = boardManager.GetBoardLocation(0, tile);
+
+                List<Types.BoardEmpty> emptyBoard = boardManager.GetEmptyBoardItems(tileLoc);
+
+                // Check if the board is full
+                if (emptyBoard.Count > 0)
+                {
+                    emptyBoard.Sort((p1, p2) => p1.distance.CompareTo(p2.distance));
+
+                    SelectRadnomGroupAndItem(emptyBoard[0], tile.transform.position);
+                }
+                else
+                {
+                    boardPopup.AddPop(
+                        LOCALE.Get("pop_board_full"),
+                        interactions.currentItem.transform.position,
+                        true,
+                        "Buzz"
+                    );
+                }
             }
             else
             {
                 energyMenu.Open();
             }
-        }
-        else
-        {
-            boardPopup.AddPop(
-                LOCALE.Get("pop_board_full"),
-                interactions.currentItem.transform.position,
-                true,
-                "Buzz"
-            );
         }
     }
 
@@ -136,10 +146,11 @@ public class DoubleTapManager : MonoBehaviour
             if (gameData.itemsData[i].group == selectedGroup)
             {
                 boardManager.CreateItemOnEmptyTile(
-                    gameData.itemsData[i].content[0].sprite.name,
-                    gameData.itemsData[i].content[0].group,
+                    gameData.itemsData[i].content[0],
                     emptyBoard,
-                    initialPosition
+                    initialPosition,
+                    true,
+                    true
                 );
             }
         }

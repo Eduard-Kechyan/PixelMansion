@@ -3,19 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Locale;
+using UnityEngine.SceneManagement;
 
 public class InfoMenu : MonoBehaviour
 {
+    // Variables
     public Sprite unlockedQuestionMarkSprite;
     public Sprite infoCurrentSprite;
     public Sprite infoParentItemSprite;
     public Color textColor;
     public Color lineColor;
 
-    private MenuManager menuManager;
-    private GameData gameData;
+    // References
+    private MenuUI menuUI;
     private InfoBox infoBox;
 
+    // Instances
+    private GameData gameData;
+    private I18n LOCALE;
+
+    // UI
     private VisualElement root;
     private VisualElement infoMenu;
     private VisualElement itemSprite;
@@ -24,17 +31,22 @@ public class InfoMenu : MonoBehaviour
     private Label itemName;
     private Label itemData;
 
-    private I18n LOCALE = I18n.Instance;
-
     void Start()
     {
         // Cache
-        menuManager = MenuManager.Instance;
+        menuUI = GetComponent<MenuUI>();
+
+        if (SceneManager.GetActiveScene().name == "Gameplay")
+        {
+            infoBox = GameRefs.Instance.gameplayUI.GetComponent<InfoBox>();
+        }
+
+        // Cache instances
         gameData = GameData.Instance;
-        infoBox = GameObject.Find("GamePlayUI").GetComponent<InfoBox>();
+        LOCALE = I18n.Instance;
 
         // Cache UI
-        root = menuManager.menuUI.rootVisualElement;
+        root = GetComponent<UIDocument>().rootVisualElement;
 
         infoMenu = root.Q<VisualElement>("InfoMenu");
 
@@ -46,10 +58,10 @@ public class InfoMenu : MonoBehaviour
         itemName = infoMenu.Q<Label>("ItemName");
         itemData = infoMenu.Q<Label>("ItemData");
 
-        InitializeInfoMenu();
+        InitMenu();
     }
 
-    void InitializeInfoMenu()
+    void InitMenu()
     {
         infoMenu.style.display = DisplayStyle.None;
         infoParent.style.display = DisplayStyle.None;
@@ -78,7 +90,15 @@ public class InfoMenu : MonoBehaviour
 
             itemName.text = item.itemName;
 
-            itemData.text = infoBox.GetItemData(item);
+            if (infoBox != null)
+            {
+                itemData.text = infoBox.GetItemData(item);
+            }
+            else
+            {
+                // TODO - Change this DUMMY
+                itemData.text = "DUMMY";
+            }
 
             // Unlocked items
             GetUnlockedItems(item);
@@ -87,7 +107,7 @@ public class InfoMenu : MonoBehaviour
             CheckInfoParent(item);
 
             // Open menu
-            menuManager.OpenMenu(infoMenu, title);
+            menuUI.OpenMenu(infoMenu, title);
         }
     }
 

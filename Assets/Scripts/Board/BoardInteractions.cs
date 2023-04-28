@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 
 public class BoardInteractions : MonoBehaviour
 {
+    // Variables
     public bool interactionsEnabled = true; // Is the board currently interactable
     public float moveSpeed = 16f; // How fast should the item move
     public float scaleSpeed = 8f; // How fast should the item resize
@@ -29,21 +30,24 @@ public class BoardInteractions : MonoBehaviour
     private int sellUndoAmount = 0;
 
     public GameObject boardTiles;
-    public UIDocument uiDoc;
-    private DataManager dataManager;
-    private GameData gameData;
-    private ItemHandler itemHandler;
-
-    private SoundManager soundManager;
-    private bool touchBeganOutsideItem = false;
-    private VisualElement root;
-    private VisualElement dragOverlay;
     private GameObject initialTile;
+    private bool touchBeganOutsideItem = false;
+    private bool previousInteractionsEnabled = true;
+    private Action callback;
+
+    // References
     private SelectionManager selectionManager;
     private BoardManager boardManager;
     private InitializeBoard initializeBoard;
-    private Action callback;
-    private bool previousInteractionsEnabled = true;
+    private InventoryMenu inventoryMenu;
+    private DataManager dataManager;
+    private GameData gameData;
+    private ItemHandler itemHandler;
+    private SoundManager soundManager;
+
+    // UI
+    private VisualElement root;
+    private VisualElement dragOverlay;
 
     // Positions
     private Vector3 worldPos;
@@ -52,23 +56,19 @@ public class BoardInteractions : MonoBehaviour
 
     private void Start()
     {
-        // Cache root and dragOverlay
-        root = uiDoc.rootVisualElement;
-        dragOverlay = root.Q<VisualElement>("DragOverlay");
-
-        // Cache managers
+        // Cache
+        initializeBoard = GetComponent<InitializeBoard>();
+        selectionManager = GetComponent<SelectionManager>();
+        boardManager = GetComponent<BoardManager>();
+        inventoryMenu = GameRefs.Instance.inventoryMenu;
         soundManager = SoundManager.Instance;
         dataManager = DataManager.Instance;
         gameData = GameData.Instance;
         itemHandler = dataManager.GetComponent<ItemHandler>();
 
-        // Cache selectionManager
-        selectionManager = GetComponent<SelectionManager>();
-
-        boardManager = GetComponent<BoardManager>();
-
-        // Cache initializeBoard
-        initializeBoard = GetComponent<InitializeBoard>();
+        // Cache root and dragOverlay
+        root = GameRefs.Instance.gameplayUIDoc.rootVisualElement;
+        dragOverlay = root.Q<VisualElement>("DragOverlay");
 
         // Drag overlay shouldn't be pickable
         dragOverlay.pickingMode = PickingMode.Ignore;
@@ -295,22 +295,9 @@ public class BoardInteractions : MonoBehaviour
 
     void CheckItemDropAction()
     {
-        //////// Check for the storage button ////////
-
-        // Get dragged position on the UI
-        Vector2 newUIPos = RuntimePanelUtils.CameraTransformWorldToPanel(
-            root.panel,
-            currentItem.transform.position,
-            Camera.main
-        );
-
-        var pickedElement = root.panel.Pick(newUIPos);
-
-        // Check if the element under the position is the one we need
-        if (pickedElement != null && pickedElement.name == "StorageButton")
+        //////// Check for the inventory button ////////
+        if (inventoryMenu.CheckInventoryButton(currentItem, initialTile, scaleSpeed))
         {
-            CheckInventoryButton();
-
             return;
         }
 
@@ -379,7 +366,10 @@ public class BoardInteractions : MonoBehaviour
                         }
                         break;
                     default:
-                        Debug.Log("Wrong type!");
+                        ErrorManager.Instance.Throw(
+                            Types.ErrorType.Code,
+                            "Wrong type: " + otherItem.type
+                        );
                         break;
                 }
 
@@ -444,12 +434,15 @@ public class BoardInteractions : MonoBehaviour
 
         // Calc new item name
         Item item = otherItem;
+        Types.Board boardItem = new Types.Board
+        {
+            sprite = item.sprite,
+            type = item.type,
+            group = item.group,
+            genGroup = item.genGroup,
+            collGroup = item.collGroup,
+        };
 
-        // Get item data for the next item
-        Types.Type type = otherItem.type;
-        Types.Group group = otherItem.group;
-        Types.GenGroup genGroup = otherItem.genGroup;
-        Types.CollGroup collGroup = otherItem.collGroup;
         string spriteName = otherItem.nextSpriteName;
         bool isLocked = otherItem.state == Types.State.Locker;
 
@@ -464,39 +457,12 @@ public class BoardInteractions : MonoBehaviour
         otherItem.GetComponent<Item>().ScaleToSize(Vector2.zero, scaleSpeed, true);
 
         // Get the prefab that's one level heigher
-        switch (type)
-        {
-            case Types.Type.Item:
-                currentItem = itemHandler.CreateItem(
-                    otherTile,
-                    initializeBoard.tileSize,
-                    group,
-                    spriteName
-                );
-
-                break;
-            case Types.Type.Gen:
-                currentItem = itemHandler.CreateGenerator(
-                    otherTile,
-                    initializeBoard.tileSize,
-                    genGroup,
-                    spriteName
-                );
-
-                break;
-            case Types.Type.Coll:
-                currentItem = itemHandler.CreateCollection(
-                    otherTile,
-                    initializeBoard.tileSize,
-                    collGroup,
-                    spriteName
-                );
-
-                break;
-            default:
-                Debug.Log("Wrong type!");
-                break;
-        }
+        currentItem = itemHandler.CreateItem(
+            otherTile,
+            initializeBoard.tileSize,
+            boardItem,
+            spriteName
+        );
 
         if (isLocked)
         {
@@ -563,13 +529,6 @@ public class BoardInteractions : MonoBehaviour
 
         // Select item
         selectionManager.Select("both");
-    }
-
-    void CheckInventoryButton()
-    {
-        // TODO - Check if there is room in the inventory and if so, store the item in it, or else, move the item back to it's intialPosition
-        Debug.Log("Checking inventory!"); // TODO - Remove this
-        MoveBack();
     }
 
     void MoveBack()

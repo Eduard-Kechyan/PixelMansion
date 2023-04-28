@@ -118,3 +118,11 @@
     scale: 0.9 0.9;
     transition-duration: 0.1s;
 }
+
+.inventory_more_button:active {
+    scale: 0.9 0.9;
+}
+
+.slot_item_hidden {
+    scale: 0 0;
+}

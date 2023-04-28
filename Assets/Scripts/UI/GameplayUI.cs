@@ -2,13 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Locale;
 
-public class GamePlayButtons : MonoBehaviour
+public class GameplayUI : MonoBehaviour
 {
+    // Variables
     public SceneLoader sceneLoader;
 
-    public VisualElement root;
+    [HideInInspector]
+    public Vector2 bonusButtonPosition;
+
+    // References
+    private BonusManager bonusManager;
+    private GameData gameData;
+    private InventoryMenu inventoryMenu;
+    private ShopMenu shopMenu;
+    private TaskMenu taskMenu;
+
+    // UI
+    private VisualElement root;
     private Button homeButton;
     private Button inventoryButton;
     public Button bonusButton;
@@ -16,17 +27,14 @@ public class GamePlayButtons : MonoBehaviour
     private Button shopButton;
     private Button taskButton;
 
-    private InventoryMenu inventoryMenu;
-    private ShopMenu shopMenu;
-    private TaskMenu taskMenu;
-    private GameData gameData;
-    private BonusManager bonusManager;
-
     void Start()
     {
         // Cache
-        gameData = GameData.Instance;
         bonusManager = GetComponent<BonusManager>();
+        gameData = GameData.Instance;
+        inventoryMenu = GameRefs.Instance.inventoryMenu;
+        shopMenu = GameRefs.Instance.shopMenu;
+        taskMenu = GameRefs.Instance.taskMenu;
 
         // UI
         root = GetComponent<UIDocument>().rootVisualElement;
@@ -38,10 +46,8 @@ public class GamePlayButtons : MonoBehaviour
         shopButton = root.Q<Button>("ShopButton");
         taskButton = root.Q<Button>("TaskButton");
 
-        // Menus
-        inventoryMenu = MenuManager.Instance.GetComponent<InventoryMenu>();
-        shopMenu = MenuManager.Instance.GetComponent<ShopMenu>();
-        taskMenu = MenuManager.Instance.GetComponent<TaskMenu>();
+        // Disable inventory button border
+        inventoryButton.Q<VisualElement>("Border").pickingMode = PickingMode.Ignore;
 
         // Button taps
         homeButton.clicked += () => sceneLoader.Load(1);
@@ -50,16 +56,29 @@ public class GamePlayButtons : MonoBehaviour
         shopButton.clicked += () => shopMenu.Open();
         taskButton.clicked += () => taskMenu.Open();
 
-        root.RegisterCallback<GeometryChangedEvent>(CalcBonusButtonPositionChangeEvent);
+        root.RegisterCallback<GeometryChangedEvent>(CalcBonusButtonPosition);
 
         CheckBonusButton();
     }
 
-    void CalcBonusButtonPositionChangeEvent(GeometryChangedEvent evt)
+    public void CalcBonusButtonPosition(GeometryChangedEvent evt)
     {
-        root.UnregisterCallback<GeometryChangedEvent>(CalcBonusButtonPositionChangeEvent);
+        root.UnregisterCallback<GeometryChangedEvent>(CalcBonusButtonPosition);
 
-        bonusManager.CalcBonusButtonPosition();
+        // Calculate the button position on the screen and the world space
+        float singlePixelWidth = Camera.main.pixelWidth / GameData.GAME_PIXEL_WIDTH;
+        
+        Vector2 bonusButtonScreenPosition = new Vector2(
+            singlePixelWidth
+                * (
+                    root.worldBound.width
+                    - (root.worldBound.width - (bonusButton.worldBound.position.x + (bonusButton.resolvedStyle.width/4)))
+                ),
+            singlePixelWidth
+                * (root.worldBound.height - (bonusButton.worldBound.position.y + (bonusButton.resolvedStyle.width/4)))
+        );
+
+        bonusButtonPosition = Camera.main.ScreenToWorldPoint(bonusButtonScreenPosition);
     }
 
     public void CheckBonusButton()

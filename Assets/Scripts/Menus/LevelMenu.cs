@@ -3,19 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Locale;
+using UnityEngine.SceneManagement;
 
 public class LevelMenu : MonoBehaviour
 {
+    // Variables
+    public bool gameplayScene = false;
+    public HubUI hubUI;
     public ShopData shopData;
 
-    private MenuManager menuManager;
+    // References
+    private MenuUI menuUI;
     private InfoMenu infoMenu;
-    private GameData gameData;
-    private Values values;
-    private ItemHandler itemHandler;
-    private BonusManager bonusManager;
     private ValuePop valuePop;
+    private ValuesUI valuesUI;
+    private GameplayUI gameplayUI;
 
+    // Instances
+    private GameData gameData;
+    private ItemHandler itemHandler;
+    private I18n LOCALE;
+
+    // UI
     private VisualElement root;
     private VisualElement levelMenu;
     private Label levelLabel;
@@ -27,20 +36,22 @@ public class LevelMenu : MonoBehaviour
     private Button levelUpButton;
     private Label levelUpLabel;
 
-    private I18n LOCALE = I18n.Instance;
-
     void Start()
     {
         // Cache
-        menuManager = GetComponent<MenuManager>();
-        infoMenu = menuManager.GetComponent<InfoMenu>();
+        menuUI = GetComponent<MenuUI>();
+        infoMenu = menuUI.GetComponent<InfoMenu>();
         valuePop = GetComponent<ValuePop>();
+        valuesUI = GameRefs.Instance.valuesUI;
+        gameplayUI = GameRefs.Instance.gameplayUI;
+
+        // Cache instances
         gameData = GameData.Instance;
-        values = DataManager.Instance.GetComponent<Values>();
         itemHandler = DataManager.Instance.GetComponent<ItemHandler>();
+        LOCALE = I18n.Instance;
 
         // Cache UI
-        root = menuManager.menuUI.rootVisualElement;
+        root = GetComponent<UIDocument>().rootVisualElement;
 
         levelMenu = root.Q<VisualElement>("LevelMenu");
 
@@ -54,11 +65,6 @@ public class LevelMenu : MonoBehaviour
         levelUpLabel = levelUpButton.Q<Label>("LevelUpLabel");
 
         levelUpButton.clicked += () => UpdateLevel();
-    }
-
-    public void InitializeLevelMenuCache()
-    {
-        bonusManager = GameObject.Find("GamePlayUI").GetComponent<BonusManager>();
     }
 
     public void Open()
@@ -77,14 +83,14 @@ public class LevelMenu : MonoBehaviour
         HandleRewards();
 
         // Open menu
-        menuManager.OpenMenu(levelMenu, title);
+        menuUI.OpenMenu(levelMenu, title);
     }
 
     public void UpdateLevelMenu()
     {
         levelValue.text = gameData.level.ToString();
 
-        levelFill.style.width = values.CalcLevelFill();
+        levelFill.style.width = valuesUI.CalcLevelFill();
 
         levelFillLabel.text = gameData.experience + "/" + gameData.maxExperience;
 
@@ -112,13 +118,7 @@ public class LevelMenu : MonoBehaviour
 
         Types.ShopItemsContent rewardContent = shopData.levelRewardContent[order];
 
-        infoMenu.Open(
-            itemHandler.CreateItemTemp(
-                rewardContent.group,
-                rewardContent.type,
-                rewardContent.sprite.name
-            )
-        );
+        infoMenu.Open(itemHandler.CreateItemTemp(rewardContent));
     }
 
     void UpdateLevel()
@@ -137,19 +137,30 @@ public class LevelMenu : MonoBehaviour
             StartCoroutine(PopOutBonus(i * 0.2f, i, check));
         }
 
-        menuManager.CloseMenu(levelMenu.name);
+        menuUI.CloseMenu(levelMenu.name);
     }
 
-    IEnumerator PopOutBonus(float seconds, int order, bool check = true)
+    IEnumerator PopOutBonus(float seconds, int order, bool newCheck = true)
     {
         yield return new WaitForSeconds(seconds);
 
-        Item newItem = itemHandler.CreateItemTemp(
-            shopData.levelRewardContent[order].group,
-            shopData.levelRewardContent[order].type,
-            shopData.levelRewardContent[order].sprite.name
-        );
+        bool check = newCheck;
 
-        valuePop.PopBonus(newItem, bonusManager.bonusButtonPosition, check);
+        Item newItem = itemHandler.CreateItemTemp(shopData.levelRewardContent[order]);
+
+        Vector2 buttonPosition;
+
+        if (gameplayScene)
+        {
+            buttonPosition = gameplayUI.bonusButtonPosition;
+        }
+        else
+        {
+            buttonPosition = hubUI.playButtonPosition;
+
+            check = false;
+        }
+
+        valuePop.PopBonus(newItem, buttonPosition, check, false, false);
     }
 }

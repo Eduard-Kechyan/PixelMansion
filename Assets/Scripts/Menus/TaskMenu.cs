@@ -6,23 +6,28 @@ using Locale;
 
 public class TaskMenu : MonoBehaviour
 {
-    private MenuManager menuManager;
+    // References
+    private MenuUI menuUI;
 
+    // Instances
+    private I18n LOCALE;
+
+    // UI
     private VisualElement root;
     private VisualElement taskMenu;
 
-    private I18n LOCALE = I18n.Instance;
-    
     void Start()
     {
         // Cache
-        menuManager = GetComponent<MenuManager>();
+        menuUI = GetComponent<MenuUI>();
+
+        // Cache instances
+        LOCALE = I18n.Instance;
 
         // Cache UI
-        root = menuManager.menuUI.rootVisualElement;
+        root = GetComponent<UIDocument>().rootVisualElement;
 
         taskMenu = root.Q<VisualElement>("TaskMenu");
-        
     }
 
     public void Open()
@@ -31,6 +36,6 @@ public class TaskMenu : MonoBehaviour
         string title = LOCALE.Get("task_menu_title");
 
         // Open menu
-        menuManager.OpenMenu(taskMenu, title);
+        menuUI.OpenMenu(taskMenu, title);
     }
 }

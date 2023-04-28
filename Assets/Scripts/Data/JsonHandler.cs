@@ -7,13 +7,14 @@ using Newtonsoft.Json;
 
 public class JsonHandler : MonoBehaviour
 {
+    // Isntances
     private GameData gameData;
     private ItemHandler itemHandler;
 
     void Start()
     {
+        // Cache instances
         gameData = GameData.Instance;
-
         itemHandler = DataManager.Instance.GetComponent<ItemHandler>();
     }
 
@@ -78,7 +79,7 @@ public class JsonHandler : MonoBehaviour
     {
         Types.BonusJson[] bonusJson = JsonConvert.DeserializeObject<Types.BonusJson[]>(bonusString);
 
-        List<Types.Bonus> bonusData =new List<Types.Bonus>();
+        List<Types.Bonus> bonusData = new List<Types.Bonus>();
 
         for (int i = 0; i < bonusJson.Length; i++)
         {
@@ -118,6 +119,56 @@ public class JsonHandler : MonoBehaviour
         }
 
         return JsonConvert.SerializeObject(bonusJson);
+    }
+
+    //// INVENTORY ////
+
+    public List<Types.Inventory> ConvertInventoryFromJson(string inventoryString)
+    {
+        Types.InventoryJson[] inventoryJson = JsonConvert.DeserializeObject<Types.InventoryJson[]>(
+            inventoryString
+        );
+
+        List<Types.Inventory> inventoryData = new List<Types.Inventory>();
+
+        for (int i = 0; i < inventoryJson.Length; i++)
+        {
+            Types.Type newType = (Types.Type)
+                System.Enum.Parse(typeof(Types.Type), inventoryJson[i].type);
+
+            Types.Inventory newInventoryData = new Types.Inventory
+            {
+                sprite = gameData.GetSprite(inventoryJson[i].sprite, newType),
+                type = newType,
+                group = (Types.Group)System.Enum.Parse(typeof(Types.Group), inventoryJson[i].group),
+                genGroup = (Types.GenGroup)
+                    System.Enum.Parse(typeof(Types.GenGroup), inventoryJson[i].genGroup),
+            };
+
+            inventoryData.Add(newInventoryData);
+        }
+
+        return inventoryData;
+    }
+
+    public string ConvertInventoryToJson(List<Types.Inventory> inventoryData)
+    {
+        Types.InventoryJson[] inventoryJson = new Types.InventoryJson[inventoryData.Count];
+
+        for (int i = 0; i < inventoryData.Count; i++)
+        {
+            Types.InventoryJson newInventoryJson = new Types.InventoryJson
+            {
+                sprite = inventoryData[i].sprite == null ? "" : inventoryData[i].sprite.name,
+                type = inventoryData[i].type.ToString(),
+                group = inventoryData[i].group.ToString(),
+                genGroup = inventoryData[i].genGroup.ToString(),
+            };
+
+            inventoryJson[i] = newInventoryJson;
+        }
+
+        return JsonConvert.SerializeObject(inventoryJson);
     }
 
     //// TIMERS ////

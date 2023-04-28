@@ -6,7 +6,7 @@ using TMPro;
 
 public class BoardPopup : MonoBehaviour
 {
-    public UIDocument uiDoc;
+    // Varaibles
     public Color textColor;
     public Color outlineColor;
     public Color shadowColor;
@@ -22,23 +22,23 @@ public class BoardPopup : MonoBehaviour
 
     private List<Pop> currentPops = new List<Pop>();
 
-    private VisualElement root;
+    // Instances
 
     private SoundManager soundManager;
 
+    // UI
+    private VisualElement root;
+
     private void Start()
     {
-        root = uiDoc.rootVisualElement;
-
+        // Cache instances
         soundManager = SoundManager.Instance;
+
+        // UI
+        root = GameRefs.Instance.gameplayUIDoc.rootVisualElement;
     }
 
-    public void AddPop(
-        string newText,
-        Vector2 position,
-        bool single = true,
-        string sfxName = ""
-    )
+    public void AddPop(string newText, Vector2 position, bool single = true, string sfxName = "")
     {
         if (single)
         {
@@ -75,12 +75,7 @@ public class BoardPopup : MonoBehaviour
         currentPops.RemoveAt(index);
     }
 
-    IEnumerator PopTextToBoard(
-        string newText,
-        Vector2 pos,
-        bool single,
-        string sfxName = ""
-    )
+    IEnumerator PopTextToBoard(string newText, Vector2 pos, bool single, string sfxName = "")
     {
         Label popLabel = new Label { name = "PopLabel" + newText, text = newText };
 

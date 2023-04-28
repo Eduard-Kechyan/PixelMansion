@@ -5,25 +5,30 @@ using UnityEngine.UIElements;
 
 public class LoadingSceneUI : MonoBehaviour
 {
+    // Variables
     public float backgroundDelay = 15f;
     public float skyUpDelay = 0.1f;
     public float skyDownDelay = 1f;
-    private VisualElement background;
-    private Label version;
-    private VisualElement skyUp;
-    private VisualElement skyDown;
+
     private int backgroundCount = 0;
     private float skyUpCount = 0;
     private float skyDownCount = 0;
     private Sprite[] backgroundSprites;
+
+// UI
+    private VisualElement root;
+    private VisualElement background;
+    private Label version;
+    private VisualElement skyUp;
+    private VisualElement skyDown;
 
     private void Start()
     {
         // Load the sprites
         backgroundSprites = Resources.LoadAll<Sprite>("Scenes/Loading/Scene");
 
-        // Get UI items
-        VisualElement root = GetComponent<UIDocument>().rootVisualElement;
+        // Cache UI
+        root = GetComponent<UIDocument>().rootVisualElement;
 
         background = root.Q<VisualElement>("Background");
         version = root.Q<Label>("Version");

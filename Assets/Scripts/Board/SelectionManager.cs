@@ -5,23 +5,26 @@ using UnityEngine.UIElements;
 
 public class SelectionManager : MonoBehaviour
 {
-    public UIDocument uiDoc;
+    // Variables
     public float selectSpeed = 1.8f;
 
+    // References
     private BoardInteractions interactions;
     private DoubleTapManager doubleTapManager;
+
+    // Instances
+    private GameplayUI gameplayUI;
     private InfoBox infoBox;
 
     void Start()
     {
-        // Cache boardInteractions
+        // Cache
         interactions = GetComponent<BoardInteractions>();
-
-        // Cache doubleTapManager
         doubleTapManager = GetComponent<DoubleTapManager>();
 
-        // Cache the infoBox
-        infoBox = uiDoc.GetComponent<InfoBox>();
+        // Cache instances
+        gameplayUI = GameRefs.Instance.gameplayUI;
+        infoBox = gameplayUI.GetComponent<InfoBox>();
     }
 
     public void SelectItem(Vector3 worldPos)
@@ -42,12 +45,10 @@ public class SelectionManager : MonoBehaviour
             // Check if gameobject is an item and isn't empty
             if (item != null)
             {
-                if (
-                    interactions.currentItem != null
-                    && interactions.currentItem.sprite.name == item.sprite.name
-                )
+                // See if the same exact item was double tapped
+                if (interactions.currentItem != null&&interactions.currentItem.isSelected && interactions.currentItem.id == item.id)
                 {
-                    doubleTapManager.DoubleTapped();
+                        doubleTapManager.CheckForDoubleTaps();
                 }
 
                 if (!item.isPlaying)
@@ -133,6 +134,7 @@ public class SelectionManager : MonoBehaviour
 
                 interactions.currentItem?.Unselect(); // Null propagation
             }
+            
             infoBox.Unselect();
         }
     }

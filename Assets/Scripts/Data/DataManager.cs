@@ -6,6 +6,7 @@ using UnityEngine;
 using CI.QuickSave;
 using UnityEngine.SceneManagement;
 using Newtonsoft.Json;
+using Locale;
 
 public class DataManager : MonoBehaviour
 {
@@ -17,8 +18,8 @@ public class DataManager : MonoBehaviour
 
     // Initial items
     public Items items;
-    public Generators generators;
-    public Collectables collectables;
+    public Items generators;
+    public Items collectables;
     public InitialItems initialItems;
 
     // Whether data has been fully loaded
@@ -36,8 +37,11 @@ public class DataManager : MonoBehaviour
 
     private string initialJsonData;
     private string bonusData;
+    private string inventoryData;
     private string timersJsonData;
     private string unlockedJsonData;
+
+    private I18n LOCALE = I18n.Instance;
 
     // Handle instance
     void Awake()
@@ -68,14 +72,14 @@ public class DataManager : MonoBehaviour
 
         gameData.LoadSprites();
 
-#if (UNITY_EDITOR)
+#if UNITY_EDITOR
         isEditor = true;
 
         // Make this script run if we not starting from the Losding scene
         if (
             !loaded
             && (
-                SceneManager.GetActiveScene().name == "GamePlay"
+                SceneManager.GetActiveScene().name == "Gameplay"
                 || SceneManager.GetActiveScene().name == "Hub"
             )
         )
@@ -92,6 +96,7 @@ public class DataManager : MonoBehaviour
         {
             initialJsonData = jsonHandler.ConvertBoardToJson(initialItems.content, true);
             bonusData = jsonHandler.ConvertBonusToJson(gameData.bonusData);
+            inventoryData = jsonHandler.ConvertInventoryToJson(gameData.inventoryData);
             timersJsonData = jsonHandler.ConvertTimersToJson(gameData.timers);
 
             writer
@@ -102,11 +107,14 @@ public class DataManager : MonoBehaviour
                 .Write("energy", gameData.energy)
                 .Write("gold", gameData.gold)
                 .Write("gems", gameData.gems)
-                //////// Items ////////
+                //////// Data ////////
                 .Write("boardData", initialJsonData)
                 .Write("bonusData", bonusData)
+                .Write("inventoryData", inventoryData)
                 .Write("unlockedData", GetInitialUnlocked())
                 .Write("timers", timersJsonData)
+                // Other
+                .Write("inventorySpace", gameData.inventorySpace)
                 .Commit();
 
             await GetData(true);
@@ -124,6 +132,7 @@ public class DataManager : MonoBehaviour
     {
         string newBoardData = "";
         string newBonusData = "";
+        string newInventoryData = "";
         string newTimersData = "";
         string newUnlockedData = "";
 
@@ -132,22 +141,26 @@ public class DataManager : MonoBehaviour
             // Get json string from the initial json file
             newBoardData = initialJsonData;
             newBonusData = bonusData;
+            newInventoryData = inventoryData;
             newTimersData = timersJsonData;
             newUnlockedData = unlockedJsonData;
         }
         else
         {
-            // Get json string from the saved json file
-            reader.Read<string>("boardData", r => newBoardData = r);
-            reader.Read<string>("bonusData", r => newBonusData = r);
-            reader.Read<string>("timers", r => newTimersData = r);
-            reader.Read<string>("unlockedData", r => newUnlockedData = r);
-
             gameData.SetExperience(reader.Read<int>("experience"), true);
             gameData.SetLevel(reader.Read<int>("level"), true);
             gameData.SetEnergy(reader.Read<int>("energy"), true);
             gameData.SetGold(reader.Read<int>("gold"), true);
             gameData.SetGems(reader.Read<int>("gems"), true);
+
+            // Get json string from the saved json file
+            reader.Read<string>("boardData", r => newBoardData = r);
+            reader.Read<string>("bonusData", r => newBonusData = r);
+            reader.Read<string>("inventoryData", r => newInventoryData = r);
+            reader.Read<string>("timers", r => newTimersData = r);
+            reader.Read<string>("unlockedData", r => newUnlockedData = r);
+
+            gameData.inventorySpace = reader.Read<int>("inventorySpace");
         }
 
         string[] unlockedDataTemp = JsonConvert.DeserializeObject<string[]>(newUnlockedData);
@@ -157,17 +170,19 @@ public class DataManager : MonoBehaviour
 
         // Convert data
         gameData.itemsData = ConvertItems(items.content);
-        gameData.generatorsData = ConvertGenerators(generators.content);
-        gameData.collectablesData = ConvertCollectables(collectables.content);
+        gameData.generatorsData = ConvertItems(generators.content);
+        gameData.collectablesData = ConvertItems(collectables.content);
 
         gameData.timers = jsonHandler.ConvertTimersFromJson(newTimersData);
         gameData.boardData = ConvertArrayToBoard(jsonHandler.ConvertBoardFromJson(newBoardData));
         gameData.bonusData = jsonHandler.ConvertBonusFromJson(newBonusData);
+        gameData.inventoryData = jsonHandler.ConvertInventoryFromJson(newInventoryData);
 
         //timeManager.CheckTimers();
 
         // Finish Task
         loaded = true;
+
         await Task.Delay(200);
     }
 
@@ -181,10 +196,14 @@ public class DataManager : MonoBehaviour
 
             Types.Items newObjectData = new Types.Items
             {
+                type = itemsContent[i].type,
                 group = itemsContent[i].group,
+                genGroup = itemsContent[i].genGroup,
+                collGroup = itemsContent[i].collGroup,
                 hasLevel = itemsContent[i].hasLevel,
-                itemName = itemsContent[i].itemName,
+                customName = itemsContent[i].customName,
                 parents = itemsContent[i].parents,
+                creates = itemsContent[i].creates,
                 content = new Types.ItemsData[itemsContent[i].content.Length]
             };
 
@@ -192,13 +211,15 @@ public class DataManager : MonoBehaviour
             {
                 Types.ItemsData newInnerObjectData = new Types.ItemsData
                 {
+                    type = itemsContent[i].type,
                     group = itemsContent[i].group,
+                    genGroup = itemsContent[i].genGroup,
+                    collGroup = itemsContent[i].collGroup,
+                    creates = itemsContent[i].creates,
+                    customName = itemsContent[i].content[j].customName,
                     parents = itemsContent[i].parents,
                     hasLevel = itemsContent[i].hasLevel,
-                    itemName =
-                        itemsContent[i].content[j].itemName != ""
-                            ? itemsContent[i].content[j].itemName
-                            : items.content[i].itemName,
+                    itemName = GetItemName(itemsContent[i].content[j], newObjectData, count),
                     level = count,
                     sprite = itemsContent[i].content[j].sprite,
                     unlocked = CheckUnlocked(itemsContent[i].content[j].sprite.name),
@@ -216,88 +237,56 @@ public class DataManager : MonoBehaviour
         return convertedItems;
     }
 
-    Types.Generators[] ConvertGenerators(Types.Generators[] generatorsCotent)
+    string GetItemName(Types.ItemsData itemSingle, Types.Items itemsData, int count)
     {
-        Types.Generators[] convertedGenerators = new Types.Generators[generatorsCotent.Length];
-
-        for (int i = 0; i < generatorsCotent.Length; i++)
+        if (itemSingle.customName && itemSingle.itemName != "")
         {
-            int count = 1;
-
-            Types.Generators newObjectData = new Types.Generators
-            {
-                genGroup = generatorsCotent[i].genGroup,
-                hasLevel = generatorsCotent[i].hasLevel,
-                itemName = generatorsCotent[i].itemName,
-                creates = generatorsCotent[i].creates,
-                content = new Types.GeneratorsData[generatorsCotent[i].content.Length]
-            };
-
-            for (int j = 0; j < generatorsCotent[i].content.Length; j++)
-            {
-                Types.GeneratorsData newInnerObjectData = new Types.GeneratorsData
-                {
-                    genGroup = generatorsCotent[i].genGroup,
-                    creates = generatorsCotent[i].creates,
-                    hasLevel = generatorsCotent[i].hasLevel,
-                    itemName =
-                        generatorsCotent[i].content[j].itemName != ""
-                            ? generatorsCotent[i].content[j].itemName
-                            : items.content[i].itemName,
-                    level = count,
-                    sprite = generatorsCotent[i].content[j].sprite,
-                    unlocked = CheckUnlocked(generatorsCotent[i].content[j].sprite.name),
-                    isMaxLavel = count == generatorsCotent[i].content.Length
-                };
-
-                newObjectData.content[j] = newInnerObjectData;
-
-                count++;
-            }
-
-            convertedGenerators[i] = newObjectData;
+            return LOCALE.Get(itemsData.type + "_" + itemSingle.itemName);
         }
 
-        return convertedGenerators;
-    }
-
-    Types.Collectables[] ConvertCollectables(Types.Collectables[] collectablesContent)
-    {
-        Types.Collectables[] convertedCollectables = new Types.Collectables[
-            collectablesContent.Length
-        ];
-
-        for (int i = 0; i < collectablesContent.Length; i++)
+        if (itemsData.customName)
         {
-            int count = 1;
-
-            Types.Collectables newObjectData = new Types.Collectables
+            switch (itemsData.type)
             {
-                collGroup = collectablesContent[i].collGroup,
-                content = new Types.CollectablesData[collectablesContent[i].content.Length]
-            };
+                case Types.Type.Item:
+                    return LOCALE.Get(
+                        itemsData.type + "_" + itemsData.group.ToString() + "_" + (count - 1)
+                    );
+                case Types.Type.Gen:
+                    return LOCALE.Get(
+                        itemsData.type + "_" + itemsData.genGroup.ToString() + "_" + (count - 1)
+                    );
+                case Types.Type.Coll:
+                    return "";
 
-            for (int j = 0; j < collectablesContent[i].content.Length; j++)
-            {
-                Types.CollectablesData newInnerObjectData = new Types.CollectablesData
-                {
-                    collGroup = collectablesContent[i].collGroup,
-                    hasLevel = true,
-                    itemName = collectablesContent[i].collGroup.ToString(),
-                    level = count,
-                    sprite = collectablesContent[i].content[j].sprite,
-                    isMaxLavel = count == collectablesContent[i].content.Length
-                };
+                default:
+                    ErrorManager.Instance.Throw(
+                        Types.ErrorType.Code,
+                        "Wrong type: " + itemsData.type
+                    );
 
-                newObjectData.content[j] = newInnerObjectData;
-
-                count++;
+                    return "";
             }
-
-            convertedCollectables[i] = newObjectData;
         }
 
-        return convertedCollectables;
+        if (itemsData.type == Types.Type.Item)
+        {
+            return LOCALE.Get("Item_" + itemsData.group.ToString() + "_" + 0);
+        }
+
+        if (itemsData.type == Types.Type.Gen)
+        {
+            return LOCALE.Get("Gen_" + itemsData.genGroup.ToString() + "_" + 0);
+        }
+
+        if (itemsData.type == Types.Type.Coll)
+        {
+            return LOCALE.Get("Coll_" + itemsData.collGroup.ToString(), count);
+        }
+
+        ErrorManager.Instance.Throw(Types.ErrorType.Locale, "error_loc_name");
+
+        return LOCALE.Get("Item_error_name");
     }
 
     // Check if item is unlocked
@@ -468,7 +457,7 @@ public class DataManager : MonoBehaviour
                 }
                 break;
             default:
-                Debug.Log("Wrong type!");
+                ErrorManager.Instance.Throw(Types.ErrorType.Code, "Wrong type: " + type);
                 break;
         }
 
@@ -499,6 +488,20 @@ public class DataManager : MonoBehaviour
         string newBonusData = jsonHandler.ConvertBonusToJson(gameData.bonusData);
 
         writer.Write("bonusData", newBonusData).Commit();
+    }
+
+    public void SaveInventory(bool saveSpace = false)
+    {
+        if (saveSpace)
+        {
+            writer.Write("inventorySpace", gameData.inventorySpace).Commit();
+        }
+        else
+        {
+            string newInventoryData = jsonHandler.ConvertInventoryToJson(gameData.inventoryData);
+
+            writer.Write("inventoryData", newInventoryData).Commit();
+        }
     }
 
     //// OTHER ////

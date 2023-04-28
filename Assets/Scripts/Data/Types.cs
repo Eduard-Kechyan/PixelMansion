@@ -40,6 +40,13 @@ public class Types : MonoBehaviour
         Coll
     };
 
+    //// OTHER ////
+    public enum Locale
+    {
+        English,
+        Armenian
+    };
+
     //// TIMERS ///
     public enum TimerType
     {
@@ -75,10 +82,18 @@ public class Types : MonoBehaviour
     [Serializable]
     public class Items
     {
+        public Type type;
         public Group group;
+        public GenGroup genGroup;
+        public CollGroup collGroup;
         public bool hasLevel;
-        public string itemName;
+        public bool customName;
         public GenGroup[] parents;
+
+        [ReadOnly]
+        public int createsTotal;
+        public Creates[] creates;
+
         public ItemsData[] content;
     }
 
@@ -86,6 +101,7 @@ public class Types : MonoBehaviour
     public class ItemsData
     {
         public Sprite sprite;
+        public bool customName;
         public string itemName;
 
         [HideInInspector]
@@ -95,80 +111,19 @@ public class Types : MonoBehaviour
         public Group group;
 
         [HideInInspector]
+        public Type type;
+
+        [HideInInspector]
+        public GenGroup genGroup;
+
+        [HideInInspector]
+        public CollGroup collGroup;
+
+        [HideInInspector]
         public GenGroup[] parents;
 
         [HideInInspector]
-        public bool unlocked;
-
-        [HideInInspector]
-        public bool isMaxLavel;
-
-        [HideInInspector]
-        public bool hasLevel;
-    }
-
-    //// GENERATORS DATA ////
-
-    [Serializable]
-    public class Generators
-    {
-        public GenGroup genGroup;
-        public bool hasLevel;
-        public string itemName;
-
-        [ReadOnly]
-        public int createsTotal;
         public Creates[] creates;
-
-        public GeneratorsData[] content;
-    }
-
-    [Serializable]
-    public class GeneratorsData
-    {
-        public Sprite sprite;
-        public string itemName;
-
-        [HideInInspector]
-        public int level;
-
-        [HideInInspector]
-        public GenGroup genGroup;
-
-        [HideInInspector]
-        public Creates[] creates;
-
-        [HideInInspector]
-        public bool unlocked;
-
-        [HideInInspector]
-        public bool isMaxLavel;
-
-        [HideInInspector]
-        public bool hasLevel;
-    }
-
-    //// COLLECTABLES ////
-    [Serializable]
-    public class Collectables
-    {
-        public CollGroup collGroup;
-        public CollectablesData[] content;
-    }
-
-    [Serializable]
-    public class CollectablesData
-    {
-        public Sprite sprite;
-
-        [HideInInspector]
-        public string itemName;
-
-        [HideInInspector]
-        public int level;
-
-        [HideInInspector]
-        public CollGroup collGroup;
 
         [HideInInspector]
         public bool unlocked;
@@ -231,6 +186,32 @@ public class Types : MonoBehaviour
         public GenGroup genGroup;
     }
 
+    //// INVENTORY ////
+    public class InventoryJson
+    {
+        public string sprite;
+        public string type;
+        public string group;
+        public string genGroup;
+    }
+
+    public class Inventory
+    {
+        public Sprite sprite;
+        public Type type;
+        public Group group;
+        public GenGroup genGroup;
+    }
+
+    //// ERROR ////
+    public enum ErrorType
+    {
+        Code,
+        Gameplay,
+        Locale,
+        Network
+    };
+
     //// SHOP ////
     public enum ShopValuesType
     {
@@ -243,8 +224,9 @@ public class Types : MonoBehaviour
     {
         public int left;
         public int price;
-        public Group group;
         public Type type;
+        public Group group;
+        public GenGroup genGroup;
         public ShopValuesType priceType;
         public Sprite sprite;
     }

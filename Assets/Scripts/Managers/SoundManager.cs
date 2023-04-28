@@ -4,18 +4,20 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
+    // Variables
     public AudioClip[] sfxClips;
     public AudioClip[] bgClips;
     public AudioSource sourceSFX;
     public AudioSource sourceBG;
 
+    // Instance
     public static SoundManager Instance;
 
     void Awake()
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(this);
+            Destroy(gameObject);
         }
         else
         {

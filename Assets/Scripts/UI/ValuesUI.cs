@@ -3,15 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class Values : MonoBehaviour
+public class ValuesUI : MonoBehaviour
 {
-    [HideInInspector]
-    public bool set;
+    // Variables
+    private bool levelEnabled = false;
+    private bool energyEnabled = false;
+    private bool goldEnabled = false;
+    private bool gemsEnabled = false;
 
+    private bool energyPlusEnabled = false;
+    private bool goldPlusEnabled = false;
+    private bool gemsPlusEnabled = false;
+
+    private bool enabledSet = false;
+
+    // References
+    private LevelMenu levelMenu;
+    private EnergyMenu energyMenu;
+    private ShopMenu shopMenu;
+
+    // Instances
     private GameData gameData;
 
-    private UIDocument valuesUI;
-
+    // UI
     private VisualElement root;
 
     private VisualElement valuesBox;
@@ -31,37 +45,18 @@ public class Values : MonoBehaviour
     public Button gemsButton;
     private VisualElement gemsPlus;
 
-    private LevelMenu levelMenu;
-    private EnergyMenu energyMenu;
-    private ShopMenu shopMenu;
-
-    private bool levelEnabled = false;
-    private bool energyEnabled = false;
-    private bool goldEnabled = false;
-    private bool gemsEnabled = false;
-
-    private bool energyPlusEnabled = false;
-    private bool goldPlusEnabled = false;
-    private bool gemsPlusEnabled = false;
-
-    private bool enabledSet = false;
-
     void Start()
     {
-        gameData = GameData.Instance;
-    }
+        // Cache
+        levelMenu = GameRefs.Instance.levelMenu;
+        energyMenu = GameRefs.Instance.energyMenu;
+        shopMenu = GameRefs.Instance.shopMenu;
 
-    public void InitializeValues()
-    {
-        // Menus
-        levelMenu = MenuManager.Instance.GetComponent<LevelMenu>();
-        energyMenu = MenuManager.Instance.GetComponent<EnergyMenu>();
-        shopMenu = MenuManager.Instance.GetComponent<ShopMenu>();
+        // Cache instances
+        gameData = GameData.Instance;
 
         // Cache UI
-        valuesUI = GameObject.Find("ValuesUI").GetComponent<UIDocument>();
-
-        root = valuesUI.rootVisualElement;
+        root = GetComponent<UIDocument>().rootVisualElement;
 
         valuesBox = root.Q<VisualElement>("ValuesBox");
 
@@ -80,8 +75,6 @@ public class Values : MonoBehaviour
 
         gemsButton = valuesBox.Q<Button>("GemsButton");
         gemsPlus = gemsButton.Q<VisualElement>("Plus");
-
-        set = true;
 
         SetValues();
 
@@ -109,13 +102,7 @@ public class Values : MonoBehaviour
         levelButton.clicked += () => levelMenu.Open();
         energyButton.clicked += () => energyMenu.Open();
         goldButton.clicked += () => shopMenu.Open("Gold");
-        gemsButton.clicked += () => Test();
-    }
-
-    public void Test()
-    {
-        Debug.Log("AAA");
-        //shopMenu.Open("Gems");
+        gemsButton.clicked += () => shopMenu.Open("Gems");
     }
 
     public void UpdateValues()
@@ -225,5 +212,10 @@ public class Values : MonoBehaviour
         }
 
         enabledSet = false;
+    }
+
+    public void SetSortingOrder(int order)
+    {
+        GetComponent<UIDocument>().sortingOrder = order;
     }
 }

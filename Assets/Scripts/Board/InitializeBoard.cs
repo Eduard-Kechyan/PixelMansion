@@ -6,15 +6,19 @@ using UnityEngine.UIElements;
 
 public class InitializeBoard : MonoBehaviour
 {
-    public UIDocument uiDoc;
+    // Variables
     public GameObject tile;
     public float tileWidth = 24f;
     public float tileSize;
 
+// References
+    private BoardManager boardManager;
+
+    // Instances
     private DataManager dataManager;
     private GameData gameData;
     private ItemHandler itemHandler;
-    private BoardManager boardManager;
+    private GameplayUI gameplayUI;
 
     private GameObject board;
     private float singlePixelWidth;
@@ -29,20 +33,19 @@ public class InitializeBoard : MonoBehaviour
 
     void Start()
     {
-        // Cache the camera
+        // Cache
         cam = Camera.main;
+        boardManager = GetComponent<BoardManager>();
 
+        // Cache instances
         dataManager = DataManager.Instance;
         gameData = GameData.Instance;
         itemHandler = dataManager.GetComponent<ItemHandler>();
+        gameplayUI = GameRefs.Instance.gameplayUI;
+        safeAreaHandler = gameplayUI.GetComponent<SafeAreaHandler>();
 
-        boardManager = GetComponent<BoardManager>();
-
-        // Cache the SafeAreaHandler
-        safeAreaHandler = uiDoc.GetComponent<SafeAreaHandler>();
-
-        // Cache the SafeAreaHandler
-        root = uiDoc.rootVisualElement;
+        // Cache UI
+        root = gameplayUI.GetComponent<UIDocument>().rootVisualElement;
 
         // Set the gameObject
         board = gameObject;
@@ -61,14 +64,17 @@ public class InitializeBoard : MonoBehaviour
             root.RegisterCallback<GeometryChangedEvent>(SetBoard);
 
             set = true;
+
+            // Stop running the update function
+            enabled = false;
         }
     }
 
     void SetBoard(GeometryChangedEvent evt)
     {
-        // Ready the board
-
         root.UnregisterCallback<GeometryChangedEvent>(SetBoard);
+
+        // Ready the board
 
         // Get board sprite width
         float boardWidth = board.GetComponent<SpriteRenderer>().sprite.rect.width;
@@ -151,49 +157,11 @@ public class InitializeBoard : MonoBehaviour
                 newTile.transform.parent = boardManager.boardTiles.transform;
 
                 // Create item
-                Types.Board baordItem = gameData.boardData[x, y];
+                Types.Board boardItem = gameData.boardData[x, y];
 
-                if (baordItem != null && baordItem.sprite != null)
+                if (boardItem != null && boardItem.sprite != null)
                 {
-                    switch (baordItem.type)
-                    {
-                        case Types.Type.Item:
-                            itemHandler.CreateItem(
-                                newTile,
-                                tileSize,
-                                baordItem.group,
-                                baordItem.sprite.name,
-                                baordItem.state,
-                                baordItem.crate
-                            );
-
-                            break;
-                        case Types.Type.Gen:
-                            itemHandler.CreateGenerator(
-                                newTile,
-                                tileSize,
-                                baordItem.genGroup,
-                                baordItem.sprite.name,
-                                baordItem.state,
-                                baordItem.crate
-                            );
-
-                            break;
-                        case Types.Type.Coll:
-                            itemHandler.CreateCollection(
-                                newTile,
-                                tileSize,
-                                baordItem.collGroup,
-                                baordItem.sprite.name,
-                                baordItem.state,
-                                baordItem.crate
-                            );
-
-                            break;
-                        default:
-                            Debug.Log("Wrong type!");
-                            break;
-                    }
+                    itemHandler.CreateItem(newTile, tileSize, boardItem);
                 }
 
                 // Increase count for the next loop

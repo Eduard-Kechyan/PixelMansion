@@ -10,6 +10,8 @@ using UnityEngine.InputSystem;
 using UnityEditor;
 #endif
 
+//////// THIRD-PARTY SCRIPT ////////
+
 namespace Consolation
 {
     /// <summary>

@@ -7,12 +7,11 @@ using Locale;
 
 public class LoadingManager : MonoBehaviour
 {
+    // Variables
     public bool stayOnScene = false;
     public float fillSpeed = 3f;
     public SceneLoader sceneLoader;
     public GameObject uiDocument;
-
-    private DataManager dataManager;
 
     private Camera cam;
     private VisualElement fill;
@@ -20,16 +19,20 @@ public class LoadingManager : MonoBehaviour
     private Action callback;
     private bool loaded = false;
 
-    private I18n LOCALE = I18n.Instance;
+    // Instances
+    private DataManager dataManager;
+    private I18n LOCALE;
 
     void Start()
     {
         // Cache the camera
         cam = Camera.main;
 
+        // Cache instances
         dataManager = DataManager.Instance;
+        LOCALE = I18n.Instance;
 
-        // Cache UI elements
+        // Cache UI
         VisualElement root = uiDocument.GetComponent<UIDocument>().rootVisualElement;
 
         fill = root.Q<VisualElement>("Fill");

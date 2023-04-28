@@ -6,6 +6,7 @@ using Locale;
 
 public class InfoBox : MonoBehaviour
 {
+    // Variables
     public Sprite goldValue;
     public Sprite gemValue;
     public Color redColor;
@@ -20,6 +21,18 @@ public class InfoBox : MonoBehaviour
     public int sellAmount = 5;
 
     private Item item;
+    private string textToSet = "";
+
+    // References
+
+    private InfoMenu infoMenu;
+    private ShopMenu shopMenu;
+
+    // Instances
+    private GameData gameData;
+    private I18n LOCALE = I18n.Instance;
+
+    // UI
     private VisualElement root;
     private VisualElement infoItem;
     private VisualElement infoItemLocked;
@@ -29,13 +42,6 @@ public class InfoBox : MonoBehaviour
     private Label infoName;
     private Label infoData;
     private Sprite sprite;
-    private string textToSet = "";
-
-    private InfoMenu infoMenu;
-    private ShopMenu shopMenu;
-    private GameData gameData;
-
-    private I18n LOCALE = I18n.Instance;
 
     public enum ActionType
     {
@@ -51,6 +57,14 @@ public class InfoBox : MonoBehaviour
 
     void Start()
     {
+        // Cache
+        infoMenu =  GameRefs.Instance.infoMenu;
+        shopMenu =  GameRefs.Instance.shopMenu;
+
+        // Cache instances
+        gameData = GameData.Instance;
+
+        // UI
         root = GetComponent<UIDocument>().rootVisualElement;
 
         infoItem = root.Q<VisualElement>("InfoItem");
@@ -59,16 +73,10 @@ public class InfoBox : MonoBehaviour
         infoButton = root.Q<Button>("InfoButton");
 
         infoActionButton = root.Q<Button>("InfoActionButton");
-
         infoActionValue = infoActionButton.Q<VisualElement>("Value");
 
         infoName = root.Q<Label>("InfoName");
         infoData = root.Q<Label>("InfoData");
-
-        infoMenu = MenuManager.Instance.GetComponent<InfoMenu>();
-        shopMenu = MenuManager.Instance.GetComponent<ShopMenu>();
-
-        gameData = GameData.Instance;
 
         // Initiate info box
         infoName.text = "";
@@ -94,18 +102,14 @@ public class InfoBox : MonoBehaviour
             case Types.State.Crate: //////// CRATE ////////
                 infoName.text = LOCALE.Get("info_box_crate");
 
-                textToSet = LOCALE.Get("info_box_crate_text");
-
-                sprite = item.transform.Find("Crate").GetComponent<SpriteRenderer>().sprite;
+                sprite = item.crateChild.GetComponent<SpriteRenderer>().sprite;
 
                 actionType = ActionType.Open;
                 break;
             case Types.State.Locker: //////// LOCKER ////////
                 infoName.text = item.itemName + " " + LOCALE.Get("info_box_locker");
 
-                textToSet = LOCALE.Get("info_box_locker_text");
-
-                sprite = item.transform.Find("Item").GetComponent<SpriteRenderer>().sprite;
+                sprite = item.itemChild.GetComponent<SpriteRenderer>().sprite;
 
                 infoItemLocked.style.display = DisplayStyle.Flex;
 
@@ -114,54 +118,9 @@ public class InfoBox : MonoBehaviour
             default: //////// ITEM ////////
                 infoName.text = item.itemLevelName;
 
-                sprite = item.transform.Find("Item").GetComponent<SpriteRenderer>().sprite;
+                sprite = item.itemChild.GetComponent<SpriteRenderer>().sprite;
 
                 infoItemLocked.style.display = DisplayStyle.None;
-
-                switch (item.type)
-                {
-                    case Types.Type.Gen:
-                        if (item.isMaxLavel)
-                        {
-                            textToSet = LOCALE.Get("info_box_gen_max");
-                        }
-                        else
-                        {
-                            textToSet = LOCALE.Get("info_box_gen", item.nextName);
-                        }
-                        break;
-                    case Types.Type.Coll:
-                        int multipliedValue = GetMultipliedValue(item.level, item.collGroup);
-
-                        if (item.isMaxLavel)
-                        {
-                            textToSet = LOCALE.Get(
-                                "info_box_coll_max",
-                                multipliedValue,
-                                item.collGroup.ToString()
-                            );
-                        }
-                        else
-                        {
-                            textToSet = LOCALE.Get(
-                                "info_box_coll",
-                                multipliedValue,
-                                item.collGroup.ToString(),
-                                item.nextName
-                            );
-                        }
-                        break;
-                    default:
-                        if (item.isMaxLavel)
-                        {
-                            textToSet = LOCALE.Get("info_box_item_max");
-                        }
-                        else
-                        {
-                            textToSet = LOCALE.Get("info_box_item", item.nextName);
-                        }
-                        break;
-                }
 
                 infoButton.style.display = DisplayStyle.Flex;
 
@@ -291,6 +250,48 @@ public class InfoBox : MonoBehaviour
                         else
                         {
                             textToSet = LOCALE.Get("info_box_gen", newItem.nextName);
+                        }
+                        break;
+                    case Types.Type.Coll:
+                        int multipliedValue = GetMultipliedValue(item.level, item.collGroup);
+
+                        if (item.collGroup == Types.CollGroup.Gems)
+                        {
+                            if (item.isMaxLavel)
+                            {
+                                textToSet = LOCALE.Get(
+                                    "info_box_gems_max",
+                                    multipliedValue,
+                                    LOCALE.Get("Coll_Gems", item.level)
+                                );
+                            }
+                            else
+                            {
+                                textToSet = LOCALE.Get(
+                                    "info_box_gems",
+                                    multipliedValue,
+                                    LOCALE.Get("Coll_" + item.collGroup.ToString())
+                                );
+                            }
+                        }
+                        else
+                        {
+                            if (item.isMaxLavel)
+                            {
+                                textToSet = LOCALE.Get(
+                                    "info_box_coll_max",
+                                    multipliedValue,
+                                    LOCALE.Get("Coll_" + item.collGroup.ToString())
+                                );
+                            }
+                            else
+                            {
+                                textToSet = LOCALE.Get(
+                                    "info_box_coll",
+                                    multipliedValue,
+                                    LOCALE.Get("Coll_" + item.collGroup.ToString())
+                                );
+                            }
                         }
                         break;
                     default:

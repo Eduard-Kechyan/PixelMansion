@@ -3,51 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class MenuManager : MonoBehaviour
+public class MenuUI : MonoBehaviour
 {
-    public UIDocument menuUI;
-    public UIDocument valuesUI;
+    // Variables
     public BoardInteractions boardInteractions;
     public float transitionDuration = 0.5f;
     public float menuDecreaseOffset = 0.8f;
     public bool menuOpen;
 
+    private List<MenuItem> menus = new List<MenuItem>();
+    private VisualElement currentMenu;
+    private bool valuesShown;
+
+    // Classes
     private class MenuItem
     {
         public VisualElement menuItem;
         public bool showValues;
     }
 
-    public static MenuManager Instance;
+    // Instances
+    private ValuesUI valuesUI;
 
-    private Values values;
-
+    // UI
     private VisualElement background;
     private Label title;
 
-    private List<MenuItem> menus = new List<MenuItem>();
-    private VisualElement currentMenu;
-
-    private bool valuesShown;
-
-    // Set Singelton
-    void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            Instance = this;
-            //DontDestroyOnLoad(gameObject);
-        }
-    }
-
-    void Start()
-    {
-        // Cache
-        values = DataManager.Instance.GetComponent<Values>();
+    void Start() {
+        valuesUI = GameRefs.Instance.valuesUI;
     }
 
     public void OpenMenu(VisualElement newMenu, string newTitle, bool showValues = false)
@@ -196,9 +179,9 @@ public class MenuManager : MonoBehaviour
         // Show the values over the menu and disable the buttons
         valuesShown = true;
 
-        valuesUI.sortingOrder = 12;
+        valuesUI.SetSortingOrder(12);
 
-        values.DisableButtons();
+        valuesUI.DisableButtons();
     }
 
     void HideValues()
@@ -206,8 +189,8 @@ public class MenuManager : MonoBehaviour
         // Reset values order in hierarchy and enable the buttons
         valuesShown = false;
 
-        valuesUI.sortingOrder = 10;
+        valuesUI.SetSortingOrder(10);
 
-        values.EnableButtons();
+        valuesUI.EnableButtons();
     }
 }

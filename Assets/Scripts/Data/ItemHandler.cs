@@ -4,28 +4,27 @@ using UnityEngine;
 
 public class ItemHandler : MonoBehaviour
 {
+    // Variables
     public GameObject item;
-
     public Sprite[] crateSprites;
 
+// Isntances
     private GameData gameData;
 
     void Start()
     {
+        // Cache instances
         gameData = GameData.Instance;
     }
 
-    // Create a new item on the board
     public Item CreateItem(
         GameObject tile,
         float tileSize,
-        Types.Group group,
-        string spriteName,
-        Types.State state = Types.State.Default,
-        int crate = 0
+        Types.Board boardItem,
+        string spriteName = ""
     )
     {
-        Types.ItemsData itemData = FindItem(group, spriteName);
+        Types.ItemsData itemData = FindItem(boardItem, null, spriteName);
 
         // Instantiate item
         GameObject newItemPre = Instantiate(item, tile.transform.position, Quaternion.identity);
@@ -34,17 +33,20 @@ public class ItemHandler : MonoBehaviour
         newItem.sprite = itemData.sprite;
         newItem.itemName = itemData.itemName;
         newItem.level = itemData.level;
-        newItem.state = state; // From the board
-        newItem.type = Types.Type.Item;
+        newItem.state = boardItem.state;
+        newItem.type = itemData.type;
         newItem.hasLevel = itemData.hasLevel;
         newItem.parents = itemData.parents;
+        newItem.creates = itemData.creates;
         newItem.isMaxLavel = itemData.isMaxLavel;
-        newItem.group = group; // From the board
-        newItem.crateSprite = crateSprites[crate]; // From the board
+        newItem.group = itemData.group;
+        newItem.genGroup = itemData.genGroup;
+        newItem.collGroup = itemData.collGroup;
+        newItem.crateSprite = crateSprites[boardItem.crate];
 
         if (!itemData.isMaxLavel)
         {
-            newItem.nextName = GetNextItem(group, spriteName);
+            newItem.nextName = GetNextItem(boardItem);
         }
 
         // Set item scale
@@ -60,95 +62,9 @@ public class ItemHandler : MonoBehaviour
         return newItem;
     }
 
-    public Item CreateGenerator(
-        GameObject tile,
-        float tileSize,
-        Types.GenGroup genGroup,
-        string spriteName,
-        Types.State state = Types.State.Default,
-        int crate = 0
-    )
+    public Item CreateItemTemp(Types.ShopItemsContent shopItem)
     {
-        Types.GeneratorsData generatorData = FindGenerator(genGroup, spriteName);
-
-        // Instantiate item
-        GameObject newItemPre = Instantiate(item, tile.transform.position, Quaternion.identity);
-        Item newItem = newItemPre.GetComponent<Item>();
-
-        newItem.sprite = generatorData.sprite;
-        newItem.itemName = generatorData.itemName;
-        newItem.level = generatorData.level;
-        newItem.state = state; // From the board
-        newItem.type = Types.Type.Gen;
-        newItem.hasLevel = generatorData.hasLevel;
-        newItem.creates = generatorData.creates;
-        newItem.isMaxLavel = generatorData.isMaxLavel;
-        newItem.genGroup = genGroup; // From the board
-        newItem.crateSprite = crateSprites[crate]; // From the board
-
-        if (!generatorData.isMaxLavel)
-        {
-            newItem.nextName = GetNextGenerator(genGroup, spriteName);
-        }
-
-        // Set item scale
-        newItem.transform.localScale = new Vector3(
-            tileSize,
-            tileSize,
-            newItem.transform.localScale.y
-        );
-
-        // Set item position
-        newItem.transform.parent = tile.transform;
-
-        return newItem;
-    }
-
-    public Item CreateCollection(
-        GameObject tile,
-        float tileSize,
-        Types.CollGroup collGroup,
-        string spriteName,
-        Types.State state = Types.State.Default,
-        int crate = 0
-    )
-    {
-        Types.CollectablesData collectableData = FindCollectable(collGroup, spriteName);
-
-        // Instantiate item
-        GameObject newItemPre = Instantiate(item, tile.transform.position, Quaternion.identity);
-        Item newItem = newItemPre.GetComponent<Item>();
-
-        newItem.sprite = collectableData.sprite;
-        newItem.itemName = collectableData.itemName;
-        newItem.level = collectableData.level;
-        newItem.state = state; // From the board
-        newItem.type = Types.Type.Coll;
-        newItem.hasLevel = collectableData.hasLevel;
-        newItem.isMaxLavel = collectableData.isMaxLavel;
-        newItem.collGroup = collGroup; // From the board
-        newItem.crateSprite = crateSprites[crate]; // From the board
-
-        if (!collectableData.isMaxLavel)
-        {
-            newItem.nextName = GetNextCollectable(collGroup, spriteName);
-        }
-
-        // Set item scale
-        newItem.transform.localScale = new Vector3(
-            tileSize,
-            tileSize,
-            newItem.transform.localScale.y
-        );
-
-        // Set item position
-        newItem.transform.parent = tile.transform;
-
-        return newItem;
-    }
-
-    public Item CreateItemTemp(Types.Group group, Types.Type type,string spriteName){
-        Types.ItemsData itemData = FindItem(group, spriteName);
+        Types.ItemsData itemData = FindItem(null, shopItem);
 
         // Instantiate item
         GameObject newItemPre = Instantiate(item, Vector3.zero, Quaternion.identity);
@@ -161,161 +77,189 @@ public class ItemHandler : MonoBehaviour
         newItem.itemName = itemData.itemName;
         newItem.level = itemData.level;
         newItem.state = Types.State.Default;
-        newItem.type = type;
+        newItem.type = shopItem.type;
         newItem.hasLevel = itemData.hasLevel;
         newItem.parents = itemData.parents;
         newItem.isMaxLavel = itemData.isMaxLavel;
-        newItem.group = group;
+        newItem.group = shopItem.group;
+        newItem.genGroup = shopItem.genGroup;
 
         Destroy(newItemPre);
 
         return newItem;
     }
 
-    //////// FIND ////////
-    public Types.ItemsData FindItem(Types.Group group, string spriteName)
+    // Find the given item for the scritable object
+    public Types.ItemsData FindItem(
+        Types.Board boardItem = null,
+        Types.ShopItemsContent shopItem = null,
+        string newSpriteName = ""
+    )
     {
         Types.ItemsData foundItem = new Types.ItemsData();
 
-        Types.Items[] data = gameData.itemsData;
+        string spriteName;
+        Types.Type type;
+        Types.Group group;
+        Types.GenGroup genGroup;
+        Types.CollGroup collGroup = Types.CollGroup.Experience;
 
-        for (int i = 0; i < data.Length; i++)
+        if (boardItem == null)
         {
-            if (group == data[i].group)
-            {
-                for (int j = 0; j < data[i].content.Length; j++)
+            spriteName = shopItem.sprite.name;
+            type = shopItem.type;
+            group = shopItem.group;
+            genGroup = shopItem.genGroup;
+        }else{
+            spriteName = boardItem.sprite.name;
+            type = boardItem.type;
+            group = boardItem.group;
+            genGroup = boardItem.genGroup;
+            collGroup = boardItem.collGroup;
+        }
+
+        if (newSpriteName != "")
+        {
+            spriteName = newSpriteName;
+        }
+
+        switch (type)
+        {
+            case Types.Type.Item:
+                Types.Items[] itemsData = gameData.itemsData;
+
+                for (int i = 0; i < itemsData.Length; i++)
                 {
-                    if (spriteName == data[i].content[j].sprite.name)
+                    if (group == itemsData[i].group)
                     {
-                        foundItem = data[i].content[j];
+                        for (int j = 0; j < itemsData[i].content.Length; j++)
+                        {
+                            if (spriteName == itemsData[i].content[j].sprite.name)
+                            {
+                                foundItem = itemsData[i].content[j];
+                            }
+                        }
                     }
                 }
-            }
+                break;
+
+            case Types.Type.Gen:
+                Types.Items[] generatorsData = gameData.generatorsData;
+
+                for (int i = 0; i < generatorsData.Length; i++)
+                {
+                    if (genGroup == generatorsData[i].genGroup)
+                    {
+                        for (int j = 0; j < generatorsData[i].content.Length; j++)
+                        {
+                            if (spriteName == generatorsData[i].content[j].sprite.name)
+                            {
+                                foundItem = generatorsData[i].content[j];
+                            }
+                        }
+                    }
+                }
+                break;
+
+            case Types.Type.Coll:
+                Types.Items[] collectablesData = gameData.collectablesData;
+
+                for (int i = 0; i < collectablesData.Length; i++)
+                {
+                    if (collGroup == collectablesData[i].collGroup)
+                    {
+                        for (int j = 0; j < collectablesData[i].content.Length; j++)
+                        {
+                            if (spriteName == collectablesData[i].content[j].sprite.name)
+                            {
+                                foundItem = collectablesData[i].content[j];
+                            }
+                        }
+                    }
+                }
+                break;
+
+            default:
+                ErrorManager.Instance.Throw(Types.ErrorType.Code, "Wrong type: " + type);
+                break;
         }
 
         return foundItem;
     }
 
-    Types.GeneratorsData FindGenerator(Types.GenGroup genGroup, string spriteName)
-    {
-        Types.GeneratorsData foundItem = new Types.GeneratorsData();
-
-        Types.Generators[] data = gameData.generatorsData;
-
-        for (int i = 0; i < data.Length; i++)
-        {
-            if (genGroup == data[i].genGroup)
-            {
-                for (int j = 0; j < data[i].content.Length; j++)
-                {
-                    if (spriteName == data[i].content[j].sprite.name)
-                    {
-                        foundItem = data[i].content[j];
-                    }
-                }
-            }
-        }
-
-        return foundItem;
-    }
-
-    Types.CollectablesData FindCollectable(Types.CollGroup collGroup, string spriteName)
-    {
-        Types.CollectablesData foundItem = new Types.CollectablesData();
-
-        Types.Collectables[] data = gameData.collectablesData;
-
-        for (int i = 0; i < data.Length; i++)
-        {
-            if (collGroup == data[i].collGroup)
-            {
-                for (int j = 0; j < data[i].content.Length; j++)
-                {
-                    if (spriteName == data[i].content[j].sprite.name)
-                    {
-                        foundItem = data[i].content[j];
-                    }
-                }
-            }
-        }
-
-        return foundItem;
-    }
-
-    //////// NEXT NAME ////////
-    string GetNextItem(Types.Group group, string spriteName)
+    // Get the next item's name
+    string GetNextItem(Types.Board boardItem)
     {
         string nextName = "";
 
-        Types.Items[] data = gameData.itemsData;
-
-        for (int i = 0; i < data.Length; i++)
+        switch (boardItem.type)
         {
-            if (group == data[i].group)
-            {
-                for (int j = 0; j < data[i].content.Length; j++)
+            case Types.Type.Item:
+                Types.Items[] itemsData = gameData.itemsData;
+
+                for (int i = 0; i < itemsData.Length; i++)
                 {
-                    if (
-                        spriteName == data[i].content[j].sprite.name
-                        && data[i].content[j + 1] != null
-                    )
+                    if (boardItem.group == itemsData[i].group)
                     {
-                        nextName = data[i].content[j + 1].itemName;
+                        for (int j = 0; j < itemsData[i].content.Length; j++)
+                        {
+                            if (
+                                boardItem.sprite.name == itemsData[i].content[j].sprite.name
+                                && itemsData[i].content[j + 1] != null
+                            )
+                            {
+                                nextName = itemsData[i].content[j + 1].itemName;
+                            }
+                        }
                     }
                 }
-            }
-        }
+                break;
 
-        return nextName;
-    }
+            case Types.Type.Gen:
+                Types.Items[] generatorsData = gameData.generatorsData;
 
-    string GetNextGenerator(Types.GenGroup genGroup, string spriteName)
-    {
-        string nextName = "";
-
-        Types.Generators[] data = gameData.generatorsData;
-
-        for (int i = 0; i < data.Length; i++)
-        {
-            if (genGroup == data[i].genGroup)
-            {
-                for (int j = 0; j < data[i].content.Length; j++)
+                for (int i = 0; i < generatorsData.Length; i++)
                 {
-                    if (
-                        spriteName == data[i].content[j].sprite.name
-                        && data[i].content[j + 1] != null
-                    )
+                    if (boardItem.group == generatorsData[i].group)
                     {
-                        nextName = data[i].content[j + 1].itemName;
+                        for (int j = 0; j < generatorsData[i].content.Length; j++)
+                        {
+                            if (
+                                boardItem.sprite.name == generatorsData[i].content[j].sprite.name
+                                && generatorsData[i].content[j + 1] != null
+                            )
+                            {
+                                nextName = generatorsData[i].content[j + 1].itemName;
+                            }
+                        }
                     }
                 }
-            }
-        }
+                break;
 
-        return nextName;
-    }
+            case Types.Type.Coll:
+                Types.Items[] collectablesData = gameData.collectablesData;
 
-    string GetNextCollectable(Types.CollGroup collGroup, string spriteName)
-    {
-        string nextName = "";
-
-        Types.Collectables[] data = gameData.collectablesData;
-
-        for (int i = 0; i < data.Length; i++)
-        {
-            if (collGroup == data[i].collGroup)
-            {
-                for (int j = 0; j < data[i].content.Length; j++)
+                for (int i = 0; i < collectablesData.Length; i++)
                 {
-                    if (
-                        spriteName == data[i].content[j].sprite.name
-                        && data[i].content[j + 1] != null
-                    )
+                    if (boardItem.group == collectablesData[i].group)
                     {
-                        nextName = data[i].content[j + 1].itemName;
+                        for (int j = 0; j < collectablesData[i].content.Length; j++)
+                        {
+                            if (
+                                boardItem.sprite.name == collectablesData[i].content[j].sprite.name
+                                && collectablesData[i].content[j + 1] != null
+                            )
+                            {
+                                nextName = collectablesData[i].content[j + 1].itemName;
+                            }
+                        }
                     }
                 }
-            }
+                break;
+
+            default:
+                ErrorManager.Instance.Throw(Types.ErrorType.Code, "Wrong type: " + boardItem.type);
+                break;
         }
 
         return nextName;

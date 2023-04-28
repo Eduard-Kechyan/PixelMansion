@@ -6,8 +6,10 @@ using Locale;
 
 public class NoteMenu : MonoBehaviour
 {
-    private MenuManager menuManager;
+    // References
+    private MenuUI menuUI;
 
+// UI
     private VisualElement root;
     private VisualElement noteMenu;
     private VisualElement menuContent;
@@ -17,13 +19,12 @@ public class NoteMenu : MonoBehaviour
     void Start()
     {
         // Cache
-        menuManager = GetComponent<MenuManager>();
+        menuUI = GetComponent<MenuUI>();
 
         // Cache UI
-        root = menuManager.menuUI.rootVisualElement;
+        root = GetComponent<UIDocument>().rootVisualElement;
 
         noteMenu = root.Q<VisualElement>("NoteMenu");
-
         menuContent = noteMenu.Q<VisualElement>("Content");
     }
 
@@ -64,6 +65,6 @@ public class NoteMenu : MonoBehaviour
         }
 
         // Open menu
-        menuManager.OpenMenu(noteMenu, title);
+        menuUI.OpenMenu(noteMenu, title);
     }
 }

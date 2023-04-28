@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BoardManager : MonoBehaviour
 {
+    // Variables
     public float moveSpeed = 14f;
     public float scaleSpeed = 8f;
     public int experienceThreshold = 4;
@@ -11,24 +12,30 @@ public class BoardManager : MonoBehaviour
     [HideInInspector]
     public GameObject boardTiles;
 
-    private DataManager dataManager;
-    private GameData gameData;
-    private SoundManager soundManager;
+    // References
     private InitializeBoard initializeBoard;
     private BoardInteractions interactions;
+
+    // Instances
+    private DataManager dataManager;
+    private SoundManager soundManager;
+    private GameData gameData;
     private ItemHandler itemHandler;
     private ValuePop valuePop;
 
     void Start()
     {
+        // Cache
         boardTiles = transform.GetChild(0).gameObject;
         initializeBoard = GetComponent<InitializeBoard>();
         interactions = GetComponent<BoardInteractions>();
+
+        // Cache instances
         dataManager = DataManager.Instance;
         soundManager = SoundManager.Instance;
         gameData = GameData.Instance;
         itemHandler = dataManager.GetComponent<ItemHandler>();
-        valuePop = MenuManager.Instance.GetComponent<ValuePop>();
+        valuePop = GameRefs.Instance.valuePop;
     }
 
     /////// GET BOARD DATA ////////
@@ -252,9 +259,8 @@ public class BoardManager : MonoBehaviour
             {
                 if (gameData.collectablesData[i].collGroup == Types.CollGroup.Experience)
                 {
-                    CreateCollectableOnEmptyTile(
-                        gameData.collectablesData[i].content[0].sprite.name,
-                        gameData.collectablesData[i].content[0].collGroup,
+                    CreateItemOnEmptyTile(
+                        gameData.collectablesData[i].content[0],
                         emptyBoard[0],
                         tile.transform.position
                     );
@@ -270,22 +276,26 @@ public class BoardManager : MonoBehaviour
     }
 
     public void CreateItemOnEmptyTile(
-        string spriteName,
-        Types.Group group,
+        Types.ItemsData itemData,
         Types.BoardEmpty emptyBoard,
         Vector2 initialPosition,
-        bool useEnergy = true
+        bool canUnlock = true,
+        bool useEnergy = false
     )
     {
         GameObject emptyTile = boardTiles.transform.GetChild(emptyBoard.order).gameObject;
 
+        Types.Board boardItem = new Types.Board
+        {
+            sprite = itemData.sprite,
+            type = itemData.type,
+            group = itemData.group,
+            genGroup = itemData.genGroup,
+            collGroup = itemData.collGroup,
+        };
+
         // Create the item on the board
-        Item newItem = itemHandler.CreateItem(
-            emptyTile,
-            initializeBoard.tileSize,
-            group,
-            spriteName
-        );
+        Item newItem = itemHandler.CreateItem(emptyTile, initializeBoard.tileSize, boardItem);
 
         Vector2 tempScale = new Vector2(
             newItem.transform.localScale.x,
@@ -315,127 +325,26 @@ public class BoardManager : MonoBehaviour
             order = emptyBoard.order
         };
 
-        dataManager.UnlockItem(
-            newItem.sprite.name,
-            newItem.type,
-            newItem.group,
-            newItem.genGroup,
-            newItem.collGroup
-        );
-
-if(useEnergy){
-        gameData.UpdateEnergy(-1,true);
-}
-
-        dataManager.SaveBoard();
-    }
-
-    public void CreateGenOnEmptyTile(
-        string spriteName,
-        Types.GenGroup genGroup,
-        Types.BoardEmpty emptyBoard,
-        Vector2 initialPosition
-    )
-    {
-        GameObject emptyTile = boardTiles.transform.GetChild(emptyBoard.order).gameObject;
-
-        // Create the item on the board
-        Item newItem = itemHandler.CreateGenerator(
-            emptyTile,
-            initializeBoard.tileSize,
-            genGroup,
-            spriteName
-        );
-
-        Vector2 tempScale = new Vector2(
-            newItem.transform.localScale.x,
-            newItem.transform.localScale.y
-        );
-
-        newItem.transform.GetChild(3).GetComponent<SpriteRenderer>().sortingOrder = 2;
-        newItem.gameObject.layer = LayerMask.NameToLayer("ItemDragging");
-
-        // Play generating audio
-        soundManager.PlaySFX("Generate", 0.3f);
-
-        newItem.transform.position = initialPosition;
-
-        newItem.transform.localScale = Vector2.zero;
-
-        newItem.MoveAndScale(emptyTile.transform.position, tempScale, moveSpeed, scaleSpeed);
-
-        gameData.boardData[emptyBoard.loc.x, emptyBoard.loc.y] = new Types.Board
+        if (canUnlock)
         {
-            sprite = newItem.sprite,
-            type = newItem.type,
-            group = newItem.group,
-            genGroup = newItem.genGroup,
-            state = newItem.state,
-            crate = 0,
-            order = emptyBoard.order
-        };
+            dataManager.UnlockItem(
+                newItem.sprite.name,
+                newItem.type,
+                newItem.group,
+                newItem.genGroup,
+                newItem.collGroup
+            );
+        }
 
-        dataManager.UnlockItem(
-            newItem.sprite.name,
-            newItem.type,
-            newItem.group,
-            newItem.genGroup,
-            newItem.collGroup
-        );
-
-        dataManager.SaveBoard();
-    }
-
-    public void CreateCollectableOnEmptyTile(
-        string spriteName,
-        Types.CollGroup collGroup,
-        Types.BoardEmpty emptyBoard,
-        Vector2 initialPosition
-    )
-    {
-        GameObject emptyTile = boardTiles.transform.GetChild(emptyBoard.order).gameObject;
-
-        // Create the item on the board
-        Item newItem = itemHandler.CreateCollection(
-            emptyTile,
-            initializeBoard.tileSize,
-            collGroup,
-            spriteName
-        );
-
-        Vector2 tempScale = new Vector2(
-            newItem.transform.localScale.x,
-            newItem.transform.localScale.y
-        );
-
-        newItem.transform.GetChild(3).GetComponent<SpriteRenderer>().sortingOrder = 2;
-        newItem.gameObject.layer = LayerMask.NameToLayer("ItemDragging");
-
-        // Play generating audio
-        soundManager.PlaySFX("Experience", 0.3f);
-
-        newItem.transform.position = initialPosition;
-
-        newItem.transform.localScale = Vector2.zero;
-
-        newItem.MoveAndScale(emptyTile.transform.position, tempScale, moveSpeed, scaleSpeed);
-
-        gameData.boardData[emptyBoard.loc.x, emptyBoard.loc.y] = new Types.Board
+        if (useEnergy)
         {
-            sprite = newItem.sprite,
-            type = newItem.type,
-            group = newItem.group,
-            genGroup = newItem.genGroup,
-            collGroup = newItem.collGroup,
-            state = newItem.state,
-            crate = 0,
-            order = emptyBoard.order
-        };
+            gameData.UpdateEnergy(-1);
+        }
 
         dataManager.SaveBoard();
     }
 
-    public List<Types.BoardEmpty> GetEmptyBoardItems(Vector2Int tileLoc,bool useTileLoc = true)
+    public List<Types.BoardEmpty> GetEmptyBoardItems(Vector2Int tileLoc, bool useTileLoc = true)
     {
         List<Types.BoardEmpty> emptyBoard = new List<Types.BoardEmpty>();
 
@@ -450,7 +359,9 @@ if(useEnergy){
                         {
                             order = gameData.boardData[x, y].order,
                             loc = GetBoardLocation(gameData.boardData[x, y].order),
-                            distance = CalculateDistance(tileLoc.x, tileLoc.y, x, y),
+                            distance = useTileLoc
+                                ? CalculateDistance(tileLoc.x, tileLoc.y, x, y)
+                                : 0
                         }
                     );
                 }

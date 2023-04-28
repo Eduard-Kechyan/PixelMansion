@@ -116,7 +116,10 @@ namespace Locale
             }
             else if (isLoggingMissing)
             {
-                Debug.Log("Missing translation for:" + key);
+                ErrorManager.Instance.Throw(
+                    Types.ErrorType.Locale,
+                    "Missing translation for:" + key
+                );
             }
             return translation;
         }
@@ -141,7 +144,10 @@ namespace Locale
             }
             else if (isLoggingMissing)
             {
-                Debug.Log("Missing singPlurKey:" + singPlurKey + " for:" + key);
+                ErrorManager.Instance.Throw(
+                    Types.ErrorType.Locale,
+                    "Missing singPlurKey:" + singPlurKey + " for:" + key
+                );
             }
             return translation;
         }
