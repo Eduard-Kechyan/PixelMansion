@@ -6,9 +6,9 @@ using UnityEngine.UIElements;
 public class TransitionUI : MonoBehaviour
 {
     // Variables
-    public float duration = 5f;
+    public float duration = 0.5f;
     public bool loadingScene = false;
-    
+
     // UI
     private VisualElement root;
     private VisualElement transition;
@@ -20,7 +20,13 @@ public class TransitionUI : MonoBehaviour
 
         transition = root.Q<VisualElement>("Transition");
 
-        if (!loadingScene)
+        if (loadingScene)
+        {
+            transition.style.display = DisplayStyle.Flex;
+            transition.style.opacity = 0;
+            transition.style.visibility = Visibility.Hidden;
+        }
+        else
         {
             StartCoroutine(Close());
         }

@@ -72,10 +72,10 @@ public class GameplayUI : MonoBehaviour
             singlePixelWidth
                 * (
                     root.worldBound.width
-                    - (root.worldBound.width - (bonusButton.worldBound.position.x + (bonusButton.resolvedStyle.width/4)))
+                    - (root.worldBound.width - (bonusButton.worldBound.center.x + (bonusButton.resolvedStyle.width/4)))
                 ),
             singlePixelWidth
-                * (root.worldBound.height - (bonusButton.worldBound.position.y + (bonusButton.resolvedStyle.width/4)))
+                * (root.worldBound.height - (bonusButton.worldBound.center.y + (bonusButton.resolvedStyle.width/4)))
         );
 
         bonusButtonPosition = Camera.main.ScreenToWorldPoint(bonusButtonScreenPosition);

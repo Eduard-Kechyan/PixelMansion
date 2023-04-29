@@ -38,6 +38,8 @@ public class LoadingManager : MonoBehaviour
 
         fill = root.Q<VisualElement>("Fill");
 
+        settings.InitPre();
+
         // Check if data has already been loaded
         if (PlayerPrefs.HasKey("loaded") && PlayerPrefs.GetInt("loaded") == 1)
         {

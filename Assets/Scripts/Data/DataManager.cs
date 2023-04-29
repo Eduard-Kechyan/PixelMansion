@@ -185,7 +185,7 @@ public class DataManager : MonoBehaviour
         // Finish Task
         loaded = true;
 
-        settings.SetLocale(Types.Locale.English, true);
+        settings.Init();
 
         await Task.Delay(200);
     }

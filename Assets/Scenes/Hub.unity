@@ -598,9 +598,33 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2001333475}
     - target: {fileID: 2173840429000168136, guid: 6a4bd6a5611eb914ea950405a066bcd8, type: 3}
+      propertyPath: appleSignedIn
+      value: 
+      objectReference: {fileID: 21300000, guid: 81e6af183a35ab142887cc8e48c71d52, type: 3}
+    - target: {fileID: 2173840429000168136, guid: 6a4bd6a5611eb914ea950405a066bcd8, type: 3}
+      propertyPath: appleSignedOut
+      value: 
+      objectReference: {fileID: 21300000, guid: 6f3f0965340f96c479c9b740b5847968, type: 3}
+    - target: {fileID: 2173840429000168136, guid: 6a4bd6a5611eb914ea950405a066bcd8, type: 3}
+      propertyPath: googleSignedIn
+      value: 
+      objectReference: {fileID: 21300000, guid: d56b9e7b7e13f6d45a2204155465c581, type: 3}
+    - target: {fileID: 2173840429000168136, guid: 6a4bd6a5611eb914ea950405a066bcd8, type: 3}
+      propertyPath: googleSignedOut
+      value: 
+      objectReference: {fileID: 21300000, guid: 657a6e4d032b2fa478d3554a5478182e, type: 3}
+    - target: {fileID: 2173840429000168136, guid: 6a4bd6a5611eb914ea950405a066bcd8, type: 3}
       propertyPath: settingsManager
       value: 
       objectReference: {fileID: 2001333475}
+    - target: {fileID: 2173840429000168136, guid: 6a4bd6a5611eb914ea950405a066bcd8, type: 3}
+      propertyPath: facebookSignedIn
+      value: 
+      objectReference: {fileID: 21300000, guid: a71d1e3b0f1b5e44caacba019abe2c11, type: 3}
+    - target: {fileID: 2173840429000168136, guid: 6a4bd6a5611eb914ea950405a066bcd8, type: 3}
+      propertyPath: facebookSignedOut
+      value: 
+      objectReference: {fileID: 21300000, guid: d9c9b8e9bfdc6d9489ae1a33532a7023, type: 3}
     - target: {fileID: 2529494229858904796, guid: 6a4bd6a5611eb914ea950405a066bcd8, type: 3}
       propertyPath: m_Name
       value: MenuUI
@@ -690,8 +714,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings: {fileID: 2001333475}
-  localeButtonSprite: {fileID: 21300000, guid: 87cbc582557833941a6f802b7f286622, type: 3}
-  localeButtonColor: {r: 0.9333334, g: 0.8862746, b: 0.76470596, a: 1}
+  localeButtonSprite: {fileID: 21300000, guid: 0304752c32b7fb944a8dd2b0ceb68b4a, type: 3}
+  localeButtonColor: {r: 0.89019614, g: 0.8352942, b: 0.7019608, a: 1}
   localeButtonColorSelected: {r: 0.33333334, g: 0.7960785, b: 0.59607846, a: 1}
 --- !u!1001 &1957626348
 PrefabInstance:
@@ -788,6 +812,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65bf80fbd9c879f47b24966c30dfb945, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soundOn: 1
+  musicOn: 1
+  vibrationOn: 1
+  notificationsOn: 1
+  googleSignedIn: 0
+  facebookSignedIn: 0
+  appleSignedIn: 0
 --- !u!4 &2001333476
 Transform:
   m_ObjectHideFlags: 0

@@ -8,6 +8,8 @@ public class SettingsMenu : MonoBehaviour
 {
     // Variables
     public Settings settings;
+    public Color onColor;
+    public Color offColor;
 
     // References
     private MenuUI menuUI;
@@ -18,14 +20,34 @@ public class SettingsMenu : MonoBehaviour
     private VisualElement root;
     private VisualElement settingsMenu;
 
-    private Slider soundSlider;
-    private VisualElement soundDragger;
-    private Slider musicSlider;
-    private VisualElement musicDragger;
-    private VisualElement languageContainer;
-    private Label languageLabel;
+    private Button soundButton;
+    private Button musicButton;
+    private Button vibrationButton;
+    private Button notificationsButton;
+
+    private Button supportButton;
+    private Button privacyButton;
+    private Button termsButton;
     private Button languageButton;
-    private Toggle saveToggle;
+    private Button resetButton;
+    private Button exitButton;
+
+    private Button googleSignInButton;
+    private VisualElement googleSignInCheck;
+    private Button facebookSignInButton;
+    private VisualElement facebookSignInCheck;
+    private Button appleSignInButton;
+    private VisualElement appleSignInCheck;
+
+    private Button instagramFollowButton;
+    private Button facebookFollowButton;
+    private Button youtubeFollowButton;
+    private Button tikTokFollowButton;
+
+    private Label signInLabel;
+    private Label followLabel;
+    private Label idLabel;
+    private Label versionLabel;
 
     void Start()
     {
@@ -39,22 +61,58 @@ public class SettingsMenu : MonoBehaviour
 
         settingsMenu = root.Q<VisualElement>("SettingsMenu");
 
-        soundSlider = settingsMenu.Q<Slider>("SoundSlider");
-        soundDragger = soundSlider.Q<Slider>("unity-dragger");
+        soundButton = settingsMenu.Q<Button>("SoundButton");
+        musicButton = settingsMenu.Q<Button>("MusicButton");
+        vibrationButton = settingsMenu.Q<Button>("VibrationButton");
+        notificationsButton = settingsMenu.Q<Button>("NotificationsButton");
 
-        musicSlider = settingsMenu.Q<Slider>("MusicSlider");
-        musicDragger = musicSlider.Q<Slider>("unity-dragger");
+        supportButton = settingsMenu.Q<Button>("SupportButton");
+        privacyButton = settingsMenu.Q<Button>("PrivacyButton");
+        termsButton = settingsMenu.Q<Button>("TermsButton");
+        languageButton = settingsMenu.Q<Button>("LanguageButton");
+        resetButton = settingsMenu.Q<Button>("ResetButton");
+        exitButton = settingsMenu.Q<Button>("ExitButton");
 
-        languageContainer = settingsMenu.Q<VisualElement>("LanguageContainer");
-        languageLabel = languageContainer.Q<Label>("Label");
-        languageButton = languageContainer.Q<Button>("Button");
+        googleSignInButton = settingsMenu.Q<Button>("GoogleSignInButton");
+        facebookSignInButton = settingsMenu.Q<Button>("FacebookSignInButton");
+        appleSignInButton = settingsMenu.Q<Button>("AppleSignInButton");
 
-        saveToggle = settingsMenu.Q<Toggle>("SaveToggle");
-        // Callbacks
-        soundSlider.RegisterValueChangedCallback(SetSound);
-        musicSlider.RegisterValueChangedCallback(SetMusic);
+        googleSignInCheck = googleSignInButton.Q<VisualElement>("SignedInCheck");
+        facebookSignInCheck = facebookSignInButton.Q<VisualElement>("SignedInCheck");
+        appleSignInCheck = appleSignInButton.Q<VisualElement>("SignedInCheck");
+
+        instagramFollowButton = settingsMenu.Q<Button>("InstagramFollowButton");
+        facebookFollowButton = settingsMenu.Q<Button>("FacebookFollowButton");
+        youtubeFollowButton = settingsMenu.Q<Button>("YoutubeFollowButton");
+        tikTokFollowButton = settingsMenu.Q<Button>("TikTokFollowButton");
+
+        signInLabel = settingsMenu.Q<Label>("SignInLabel");
+        followLabel = settingsMenu.Q<Label>("FollowLabel");
+        idLabel = settingsMenu.Q<Label>("IDLabel");
+        versionLabel = settingsMenu.Q<Label>("VersionLabel");
+
+        soundButton.clicked += () => settings.ToggleSound();
+        musicButton.clicked += () => settings.ToggleMusic();
+        vibrationButton.clicked += () => settings.ToggleVibration();
+        notificationsButton.clicked += () => settings.ToggleNotifications();
+
+        // TODO - Add all button clicks to ////
+
+        supportButton.clicked += () => Debug.Log("Support Button Clicked!"); ////
+        privacyButton.clicked += () => Debug.Log("Privacy Button Clicked!"); ////
+        termsButton.clicked += () => Debug.Log("Terms Button Clicked!"); ////
         languageButton.clicked += () => localeMenu.Open();
-        saveToggle.RegisterValueChangedCallback(SetSave);
+        resetButton.clicked += () => Debug.Log("Reset Button Clicked!"); ////
+        exitButton.clicked += () => Debug.Log("Exit Button Clicked!"); ////
+
+        googleSignInButton.clicked += () => Debug.Log("Google Sing In Button Clicked!"); ////
+        facebookSignInButton.clicked += () => Debug.Log("Facebook Sing In Button Clicked!"); ////
+        appleSignInButton.clicked += () => Debug.Log("Apple Sing In Button Clicked!"); ////
+
+        instagramFollowButton.clicked += () => Debug.Log("Instagram Follow Button Clicked!"); ////
+        facebookFollowButton.clicked += () => Debug.Log("Facebook Follow Button Clicked!"); ////
+        youtubeFollowButton.clicked += () => Debug.Log("Youtube Follow Button Clicked!"); ////
+        tikTokFollowButton.clicked += () => Debug.Log("TikTok Follow Button Clicked!"); ////
 
         Init();
     }
@@ -71,58 +129,110 @@ public class SettingsMenu : MonoBehaviour
         // Set the title
         string title = LOCALE.Get("settings_menu_title");
 
-        SetUi();
+        // TODO - Get the user ID
+        idLabel.text = "UUID: " + "00010001000";
 
-        soundSlider.value = settings.GetSound();
-        musicSlider.value = settings.GetMusic();
-        languageButton.text = settings.GetLocale().ToString();
-        saveToggle.value = settings.GetSave();
+        versionLabel.text = "v." + Application.version;
+
+#if UNITY_ANDROID
+        appleSignInButton.style.display = DisplayStyle.None;
+#endif
+
+#if UNITY_IOS
+        googleSignInButton.style.display = DisplayStyle.None;
+#endif
+
+        SetUiText();
+
+        SetUIOptionsButtons();
+
+        SetUISignInButtons();
 
         // Open menu
         menuUI.OpenMenu(settingsMenu, title);
     }
 
-    void SetUi(bool update = false, Types.Locale newLocale = Types.Locale.English)
+    void SetUiText(bool update = false)
     {
-        soundSlider.label = LOCALE.Get("settings_menu_sound_label");
-        musicSlider.label = LOCALE.Get("settings_menu_music_label");
-        languageLabel.text = LOCALE.Get("settings_menu_language_label");
-        saveToggle.label = LOCALE.Get("settings_menu_save_label");
+        // Buttons
+        supportButton.text = LOCALE.Get("settings_menu_support_label");
+        privacyButton.text = LOCALE.Get("settings_menu_privacy_label");
+        termsButton.text = LOCALE.Get("settings_menu_terms_label");
+        languageButton.text = LOCALE.Get("settings_menu_language_label");
+        resetButton.text = LOCALE.Get("settings_menu_reset_label");
+        exitButton.text = LOCALE.Get("settings_menu_exit_label");
+
+        // Labels
+        signInLabel.text = LOCALE.Get("settings_menu_sign_in_label");
+        followLabel.text = LOCALE.Get("settings_menu_follow_label");
 
         if (update)
         {
+            // Title
             string title = LOCALE.Get("settings_menu_title");
-
-            languageButton.text = newLocale.ToString();
 
             menuUI.UpdateTitle(title);
         }
     }
 
-    //// SET ////
+    public void SetUIOptionsButtons(){
+        // Sound
+        soundButton.style.unityBackgroundImageTintColor = offColor;
+        if (settings.soundOn)
+        {
+            soundButton.style.unityBackgroundImageTintColor = onColor;
+        }
 
-    void SetSound(ChangeEvent<float> evt)
-    {
-        settings.SetSound(soundSlider.value);
+        // Music
+        musicButton.style.unityBackgroundImageTintColor = offColor;
+        if (settings.musicOn)
+        {
+            musicButton.style.unityBackgroundImageTintColor = onColor;
+        }
+
+        // Vibration
+        vibrationButton.style.unityBackgroundImageTintColor = offColor;
+        if (settings.vibrationOn)
+        {
+            vibrationButton.style.unityBackgroundImageTintColor = onColor;
+        }
+
+        // Notifications
+        notificationsButton.style.unityBackgroundImageTintColor = offColor;
+        if (settings.notificationsOn)
+        {
+            notificationsButton.style.unityBackgroundImageTintColor = onColor;
+        }
     }
 
-    void SetMusic(ChangeEvent<float> evt)
+    public void SetUISignInButtons()
     {
-        settings.SetMusic(musicSlider.value);
+        // Google sign in
+        googleSignInCheck.style.display = DisplayStyle.None;
+        if (settings.googleSignedIn)
+        {
+            googleSignInCheck.style.display = DisplayStyle.Flex;
+        }
+
+        // Facebook sign in
+        facebookSignInCheck.style.display = DisplayStyle.None;
+        if (settings.facebookSignedIn)
+        {
+            facebookSignInCheck.style.display = DisplayStyle.Flex;
+        }
+
+        // Facebook sign in
+        appleSignInCheck.style.display = DisplayStyle.None;
+        if (settings.appleSignedIn)
+        {
+            appleSignInCheck.style.display = DisplayStyle.Flex;
+        }
     }
 
     public void SetLocale(Types.Locale newLocale)
     {
         settings.SetLocale(newLocale);
 
-        SetUi(true, newLocale);
-    }
-
-    void SetSave(ChangeEvent<bool> evt)
-    {
-        if (saveToggle.resolvedStyle.width != 0)
-        {
-            settings.SetSave(evt.newValue);
-        }
+        SetUiText(true);
     }
 }

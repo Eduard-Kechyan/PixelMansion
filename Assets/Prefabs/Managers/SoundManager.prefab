@@ -32,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1888629426759165983
 MonoBehaviour:
@@ -46,22 +46,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fbb8f762516c304f9d15478c4025e82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sfxClips:
-  - {fileID: 8300000, guid: be59fa3cfd5dc97408fe790c9b9ae7fc, type: 3}
-  - {fileID: 8300000, guid: bd038163b09bb8f44b0bfee87acf4527, type: 3}
-  - {fileID: 8300000, guid: 713015114f231414ebf8b0b9297ee6ab, type: 3}
-  - {fileID: 8300000, guid: 9deeb94331cc6c34189bba62103e982b, type: 3}
-  - {fileID: 8300000, guid: 22ec3269f1cda4943ae06826f85b9c0e, type: 3}
-  - {fileID: 8300000, guid: e346cd270506370439664fd7b910894b, type: 3}
-  - {fileID: 8300000, guid: b325ca30b3007ea488ec9049fb29659d, type: 3}
-  - {fileID: 8300000, guid: 86bcfdc8ca7a6be46984995c262dee09, type: 3}
-  - {fileID: 8300000, guid: 9ea99671376d836408659e2ed74f865a, type: 3}
-  bgClips:
-  - {fileID: 8300000, guid: 78f963753dfba5b41873a35a705b4d6a, type: 3}
-  - {fileID: 8300000, guid: 8f5d6a2bd7f781c48ae24799746c60c8, type: 3}
+  soundClips:
+  - {fileID: 8300000, guid: b9e9300cfbd4d744398fa9f0734814af, type: 3}
+  - {fileID: 8300000, guid: 9c19f97c7362daf4f8669eada6db5697, type: 3}
+  - {fileID: 8300000, guid: 17088162524758f4989fbfbfc23c1f19, type: 3}
+  - {fileID: 8300000, guid: c91c60023ea7ac04aaf8db5e1aa02e91, type: 3}
+  - {fileID: 8300000, guid: 1cc72887610fa4341bdfb81b38e6aa55, type: 3}
+  - {fileID: 8300000, guid: dfc344e7c5889e042ae509663040c2b2, type: 3}
+  - {fileID: 8300000, guid: 237f49a584ca15a45bb2288a94d9dff7, type: 3}
+  - {fileID: 8300000, guid: 81a14e23751c7d54d839ac37f2be125c, type: 3}
+  - {fileID: 8300000, guid: 2c463166612f4a94da4e47427ee28ac8, type: 3}
+  musicClips:
+  - {fileID: 8300000, guid: 2ab3bcc626e255942ae2fe88c88d260a, type: 3}
+  - {fileID: 8300000, guid: 67a1155b7e4d51e44979e8baaa35d70e, type: 3}
   - {fileID: 8300000, guid: 629dbb8ea0ad13e4e886fd520d197e65, type: 3}
-  sourceSFX: {fileID: 2007152343}
-  sourceBG: {fileID: 2129766215703338103}
+  sourceSound: {fileID: 2007152343}
+  sourceMusic: {fileID: 2129766215703338103}
 --- !u!82 &2007152343
 AudioSource:
   m_ObjectHideFlags: 0

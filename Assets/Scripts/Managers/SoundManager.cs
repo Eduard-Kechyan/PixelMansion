@@ -5,10 +5,10 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour
 {
     // Variables
-    public AudioClip[] sfxClips;
-    public AudioClip[] bgClips;
-    public AudioSource sourceSFX;
-    public AudioSource sourceBG;
+    public AudioClip[] soundClips;
+    public AudioClip[] musicClips;
+    public AudioSource sourceSound;
+    public AudioSource sourceMusic;
 
     // Instance
     public static SoundManager Instance;
@@ -26,72 +26,75 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    //////// SFX ////////
+    //////// Sound ////////
 
-    public void SetVolumeSFX(float volume)
+    public void SetVolumeSound(float volume)
     {
-        sourceSFX.volume = volume;
+        sourceSound.volume = volume;
     }
 
-    public void PlaySFX(string clipName = "", float volume = 1f, AudioClip clip = null)
+    public void PlaySound(string clipName = "", float volume = 1f, AudioClip clip = null)
     {
-        sourceSFX.volume = volume;
+        //sourceSound.volume = volume;
 
         if (clip != null)
         {
-            sourceSFX.PlayOneShot(clip);
+            sourceSound.PlayOneShot(clip);
         }
         else
         {
-            ;
-            foreach (AudioClip i in sfxClips)
+            foreach (AudioClip i in soundClips)
             {
-                if (i.name == clipName + "SFX")
+                if (i.name == clipName + "Sound")
                 {
-                    sourceSFX.PlayOneShot(i);
+                    sourceSound.PlayOneShot(i);
                 }
             }
         }
     }
 
-    //////// BG ////////
+    //////// Music ////////
 
-    public void SetVolumeBG(float volume)
+    public void SetVolumeMusic(float volume)
     {
-        sourceBG.volume = volume;
+        sourceMusic.volume = volume;
     }
 
-    public void PlayBg(string clipName = "", float volume = 1f, AudioClip clip = null)
+    public void PlayMusic(string clipName = "", float volume = 1f, AudioClip clip = null)
     {
-        sourceBG.volume = volume;
+        //sourceMusic.volume = volume;
 
         if (clip != null)
         {
-            sourceBG.clip = clip;
+            sourceMusic.clip = clip;
         }
         else
         {
-            ;
-            foreach (AudioClip i in bgClips)
+            if (clipName == "Loading")
             {
-                if (i.name == clipName + "BG")
+                sourceMusic.volume = 1f;
+            }
+
+            foreach (AudioClip i in musicClips)
+            {
+                if (i.name == clipName + "Music")
                 {
-                    sourceBG.clip = i;
+                    sourceMusic.clip = i;
                 }
             }
         }
 
-        sourceBG.Play();
+        sourceMusic.Play();
     }
 
-    public void FadeInBg(float seconds)
+    public void FadeInMusic(float seconds)
     {
-        StartCoroutine(FadeCoroutine(seconds, sourceBG.volume, 1));
+        StartCoroutine(FadeCoroutine(seconds, sourceMusic.volume, 1));
     }
 
-    public void FadeOutBg(float seconds)
+    public void FadeOutMusic(float seconds)
     {
-        StartCoroutine(FadeCoroutine(seconds, sourceBG.volume, 0));
+        StartCoroutine(FadeCoroutine(seconds, sourceMusic.volume, 0));
     }
 
     IEnumerator FadeCoroutine(float seconds, float from, float to)
@@ -101,7 +104,7 @@ public class SoundManager : MonoBehaviour
         {
             var factor = timePassed / seconds;
 
-            sourceBG.volume = Mathf.Lerp(from, to, factor);
+            sourceMusic.volume = Mathf.Lerp(from, to, factor);
 
             timePassed += Mathf.Min(Time.deltaTime, seconds - timePassed);
 

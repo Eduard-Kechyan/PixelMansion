@@ -7,43 +7,93 @@ public class Settings : MonoBehaviour
 {
     // References
     private SoundManager soundManager;
-    private DataManager dataManager;
     private I18n LOCALE;
+    private SettingsMenu settingsMenu;
 
-    private void Start()
+    public bool soundOn = true;
+    public bool musicOn = true;
+    public bool vibrationOn = true;
+    public bool notificationsOn = true;
+
+    public bool googleSignedIn = false;
+    public bool facebookSignedIn = false;
+    public bool appleSignedIn = false;
+
+    private bool initialized = false;
+
+    public void InitPre()
     {
         soundManager = SoundManager.Instance;
-        dataManager = DataManager.Instance;
         LOCALE = I18n.Instance;
+
+        GetSound();
+        GetMusic();
+
+        initialized = true;
     }
 
-    //// SET ////
-    public void SetSound(float volume)
+    public void Init()
     {
-        soundManager.SetVolumeSFX(volume);
+        if (!initialized)
+        {
+            soundManager = SoundManager.Instance;
+            LOCALE = I18n.Instance;
 
-        PlayerPrefs.SetFloat("soundVolume", volume);
+            GetSound();
+            GetMusic();
+        }
+
+        settingsMenu = GameRefs.Instance.settingsMenu;
+        GetVibration();
+        GetNotifications();
+        SetLocale(Types.Locale.English, true);
     }
 
-    public void SetMusic(float volume)
+    public void ToggleSound()
     {
-        soundManager.SetVolumeBG(volume);
+        soundOn = !soundOn;
 
-        PlayerPrefs.SetFloat("musicVolume", volume);
+        soundManager.SetVolumeSound(soundOn ? 1 : 0);
+
+        PlayerPrefs.SetInt("sound", soundOn ? 1 : 0);
+
+        settingsMenu.SetUIOptionsButtons();
     }
 
-    public void SetSave(bool save)
+    public void ToggleMusic()
     {
-        PlayerPrefs.SetInt("saveData", save ? 1 : 0);
+        musicOn = !musicOn;
 
-        dataManager.ignoreInitialCheck = !save;
+        soundManager.SetVolumeMusic(musicOn ? 1 : 0);
+
+        PlayerPrefs.SetInt("music", musicOn ? 1 : 0);
+
+        settingsMenu.SetUIOptionsButtons();
     }
 
-    public void SetLocale(Types.Locale newLocale, bool fromDataManager = false)
+    public void ToggleVibration()
+    {
+        vibrationOn = !vibrationOn;
+
+        PlayerPrefs.SetInt("vibration", vibrationOn ? 1 : 0);
+
+        settingsMenu.SetUIOptionsButtons();
+    }
+
+    public void ToggleNotifications()
+    {
+        notificationsOn = !notificationsOn;
+
+        PlayerPrefs.SetInt("notifications", notificationsOn ? 1 : 0);
+
+        settingsMenu.SetUIOptionsButtons();
+    }
+
+    public void SetLocale(Types.Locale newLocale, bool initial = false)
     {
         string locale = "en-US";
 
-        if (fromDataManager)
+        if (initial)
         {
             if (PlayerPrefs.HasKey("locale"))
             {
@@ -76,69 +126,39 @@ public class Settings : MonoBehaviour
 
     //// GET ////
 
-    public float GetSound()
+    public void GetSound()
     {
-        if (PlayerPrefs.HasKey("soundVolume"))
+        if (PlayerPrefs.HasKey("sound"))
         {
-            float volume = PlayerPrefs.GetFloat("soundVolume");
+            soundOn = PlayerPrefs.GetInt("sound") == 1 ? true : false;
 
-            soundManager.SetVolumeSFX(volume);
-
-            return volume;
-        }
-        else
-        {
-            soundManager.SetVolumeSFX(1f);
-
-            return 1f;
+            soundManager.SetVolumeSound(soundOn ? 1 : 0);
         }
     }
 
-    public float GetMusic()
+    public void GetMusic()
     {
-        if (PlayerPrefs.HasKey("musicVolume"))
+        if (PlayerPrefs.HasKey("music"))
         {
-            float volume = PlayerPrefs.GetFloat("musicVolume");
+            musicOn = PlayerPrefs.GetInt("music") == 1 ? true : false;
 
-            soundManager.SetVolumeBG(volume);
-
-            return volume;
-        }
-        else
-        {
-            soundManager.SetVolumeBG(1f);
-
-            return 1f;
+            soundManager.SetVolumeSound(musicOn ? 1 : 0);
         }
     }
 
-    public bool GetSave()
+    public void GetVibration()
     {
-        if (PlayerPrefs.HasKey("saveData"))
+        if (PlayerPrefs.HasKey("vibration"))
         {
-            bool save = PlayerPrefs.GetInt("saveData") == 1 ? true : false;
-
-            dataManager.ignoreInitialCheck = !save;
-
-            return save;
-        }
-        else
-        {
-            dataManager.ignoreInitialCheck = false;
-
-            return true;
+            vibrationOn = PlayerPrefs.GetInt("vibration") == 1 ? true : false;
         }
     }
 
-    public Types.Locale GetLocale()
+    public void GetNotifications()
     {
-        if (PlayerPrefs.HasKey("locale"))
+        if (PlayerPrefs.HasKey("notifications"))
         {
-            return LOCALE.ConvertToLocale(PlayerPrefs.GetString("locale"));
-        }
-        else
-        {
-            return Types.Locale.English;
+            notificationsOn = PlayerPrefs.GetInt("notifications") == 1 ? true : false;
         }
     }
 }

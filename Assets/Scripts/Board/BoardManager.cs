@@ -223,7 +223,7 @@ public class BoardManager : MonoBehaviour
             gameData.boardData[x, y].state = Types.State.Locker;
 
             // Play crate opening audio
-            soundManager.PlaySFX("OpenCrate", 0.3f);
+            soundManager.PlaySound("OpenCrate", 0.3f);
 
             int order = GetBoardOrder(x, y);
 
@@ -306,7 +306,7 @@ public class BoardManager : MonoBehaviour
         newItem.gameObject.layer = LayerMask.NameToLayer("ItemDragging");
 
         // Play generating audio
-        soundManager.PlaySFX("Generate", 0.3f);
+        soundManager.PlaySound("Generate", 0.3f);
 
         newItem.transform.position = initialPosition;
 

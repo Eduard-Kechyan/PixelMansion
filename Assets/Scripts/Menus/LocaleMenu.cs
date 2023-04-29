@@ -52,8 +52,6 @@ public class LocaleMenu : MonoBehaviour
 
         content.Clear();
 
-        Debug.Log(I18n.GetLocale());
-
         Types.Locale currentLocale = LOCALE.ConvertToLocale(I18n.GetLocale());
 
         foreach (Types.Locale locale in System.Enum.GetValues(typeof(Types.Locale)))

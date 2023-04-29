@@ -137,7 +137,7 @@ public class ValuePop : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
 
         // Play value pop sound
-        soundManager.PlaySFX(valuePopSFX, 0.3f);
+        soundManager.PlaySound(valuePopSFX, 0.3f);
 
         // Hide the value pop
         valuePop.style.visibility = Visibility.Hidden;
@@ -206,7 +206,7 @@ public class ValuePop : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
 
         // Play value pop sound
-        soundManager.PlaySFX(valuePopSFX, 0.3f);
+        soundManager.PlaySound(valuePopSFX, 0.3f);
 
         // Hide the value pop
         valuePop.style.visibility = Visibility.Hidden;
@@ -278,7 +278,7 @@ public class ValuePop : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
 
         // Play value pop sound
-        soundManager.PlaySFX(valuePopSFX, 0.3f);
+        soundManager.PlaySound(valuePopSFX, 0.3f);
 
         // Hide the value pop
         valuePop.style.visibility = Visibility.Hidden;

@@ -169,6 +169,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings: {fileID: 0}
+  onColor: {r: 0.33333334, g: 0.79607844, b: 0.59607846, a: 1}
+  offColor: {r: 0.9254902, g: 0.4509804, b: 0.49803922, a: 1}
 --- !u!114 &3570785117545677035
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -68,11 +68,12 @@ public class InventoryMenu : MonoBehaviour
 
         buyMoreButton.clicked += () => BuyMoreSpace();
 
-        IniteMenu();
+        Init();
     }
 
-    void IniteMenu()
+    void Init()
     {
+        // Make sure the menu is closed
         inventoryMenu.style.display = DisplayStyle.None;
         inventoryMenu.style.opacity = 0;
     }
@@ -107,10 +108,9 @@ public class InventoryMenu : MonoBehaviour
             slot.style.width = 24f;
             slot.style.height = 24f;
             slot.style.backgroundImage = new StyleBackground(slotSprite);
-            slot.style.marginLeft = 3.5f;
-            slot.style.marginRight = 3.5f;
-            slot.style.marginTop = 0f;
-            slot.style.marginBottom = 7f;
+            slot.style.marginLeft = 2f;
+            slot.style.marginRight = 2f;
+            slot.style.marginBottom = 4f;
 
             if (gameData.inventoryData.Count > 0 && gameData.inventoryData.Count > i)
             {

@@ -35,7 +35,7 @@ public class SceneLoader : MonoBehaviour
     public void Load(int sceneIndex)
     {
         transitionUI.Open();
-        soundManager.FadeOutBg(fadeDuration);
+        soundManager.FadeOutMusic(fadeDuration);
         StartCoroutine(LoadScene(sceneIndex));
     }
 
@@ -49,7 +49,7 @@ public class SceneLoader : MonoBehaviour
     public void LoadAsync(int sceneIndex)
     {
         transitionUI.Open();
-        soundManager.FadeOutBg(fadeDuration);
+        soundManager.FadeOutMusic(fadeDuration);
         StartCoroutine(LoadAsyncScene(sceneIndex));
     }
 
@@ -74,15 +74,15 @@ public class SceneLoader : MonoBehaviour
         {
             case "Loading":
                 // Play background music
-                soundManager.PlayBg(sceneName, 0.7f);
+                soundManager.PlayMusic(sceneName, 0.7f);
 
                 break;
 
             case "Hub":
                 // Play background music
-                soundManager.PlayBg(sceneName);
+                soundManager.PlayMusic(sceneName);
 
-                soundManager.FadeInBg(fadeDuration);
+                soundManager.FadeInMusic(fadeDuration);
 
                 GameData.Instance.Init(sceneName);
 
@@ -90,9 +90,9 @@ public class SceneLoader : MonoBehaviour
 
             case "Gameplay":
                 // Play background music
-                soundManager.PlayBg(sceneName);
+                soundManager.PlayMusic(sceneName);
 
-                soundManager.FadeInBg(fadeDuration);
+                soundManager.FadeInMusic(fadeDuration);
 
                 GameData.Instance.Init(sceneName);
 

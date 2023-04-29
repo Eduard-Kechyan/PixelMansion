@@ -467,12 +467,12 @@ public class BoardInteractions : MonoBehaviour
         if (isLocked)
         {
             // Play unlocking audio
-            soundManager.PlaySFX("UnlockLock", 0.5f);
+            soundManager.PlaySound("UnlockLock", 0.5f);
         }
         else
         {
             // Play merge audio
-            soundManager.PlaySFX("Merge");
+            soundManager.PlaySound("Merge");
         }
 
         if (currentItem.type != Types.Type.Coll)
@@ -563,7 +563,7 @@ public class BoardInteractions : MonoBehaviour
                     currentItem.OpenCrate();
 
                     // Play crate opening audio
-                    soundManager.PlaySFX("OpenCrate", 0.3f);
+                    soundManager.PlaySound("OpenCrate", 0.3f);
 
                     OpenCrateCallback(currentItem);
                 }
@@ -572,7 +572,7 @@ public class BoardInteractions : MonoBehaviour
                     currentItem.UnlockLock();
 
                     // Play unlocking audio
-                    soundManager.PlaySFX("UnlockLock", 0.6f);
+                    soundManager.PlaySound("UnlockLock", 0.6f);
 
                     OpenLockCallback(currentItem);
                 }

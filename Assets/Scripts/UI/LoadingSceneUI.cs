@@ -18,7 +18,7 @@ public class LoadingSceneUI : MonoBehaviour
 // UI
     private VisualElement root;
     private VisualElement background;
-    private Label version;
+    private Label versionLabel;
     private VisualElement skyUp;
     private VisualElement skyDown;
 
@@ -31,7 +31,7 @@ public class LoadingSceneUI : MonoBehaviour
         root = GetComponent<UIDocument>().rootVisualElement;
 
         background = root.Q<VisualElement>("Background");
-        version = root.Q<Label>("Version");
+        versionLabel = root.Q<Label>("Version");
         skyUp = root.Q<VisualElement>("SkyUp");
         skyDown = root.Q<VisualElement>("SkyDown");
 
@@ -45,7 +45,7 @@ public class LoadingSceneUI : MonoBehaviour
 
     void SetVersion()
     {
-        version.text = "Version: " + Application.version;
+        versionLabel.text = "v." + Application.version;
     }
 
     void ChangeBackgroundSprite()
