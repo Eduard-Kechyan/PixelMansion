@@ -103,7 +103,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cae90e361364b694bb6d5aae463589ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiDoc: {fileID: 0}
   tile: {fileID: 3144219979623524005, guid: 2ac088b13948a194babd4a9e969ce74c, type: 3}
   tileWidth: 24
   tileSize: 0
@@ -147,7 +146,6 @@ MonoBehaviour:
   tempTile: {fileID: 0}
   canUndo: 0
   boardTiles: {fileID: 4861144735682741828}
-  uiDoc: {fileID: 0}
 --- !u!114 &7639113953969003286
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,7 +158,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1d4591c33604e8429bfe433f6e286c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiDoc: {fileID: 0}
   selectSpeed: 1.8
 --- !u!114 &8002734882105849631
 MonoBehaviour:
@@ -188,11 +185,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72f2c8a552d603c4db7160658b532958, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiDoc: {fileID: 0}
   textColor: {r: 1, g: 1, b: 1, a: 1}
   outlineColor: {r: 0, g: 0, b: 0, a: 1}
   shadowColor: {r: 0, g: 0, b: 0, a: 0.7058824}
-  textFont: {fileID: 12800000, guid: 24e07b59746f02a41ac76ddd36aaf378, type: 3}
+  armenianFont: {fileID: 12800000, guid: 862d51021fa09154dafa7534ec0ff638, type: 3}
+  japaneseFont: {fileID: 12800000, guid: a9bd224ce7c9a5b44b592bcb48ca9cb9, type: 3}
+  koreanFont: {fileID: 12800000, guid: 97fe985f9fe456140a5eb7e6620d28a5, type: 3}
+  chineseFont: {fileID: 12800000, guid: b662814ecbbd4a04e8e263f3f68ebfc6, type: 3}
+  latinFont: {fileID: 12800000, guid: 0435ef74bc89d2044a778758a25a13b0, type: 3}
   timeOut: 0.5
   positionOffset: 1.5
 --- !u!1 &4861144735682741828

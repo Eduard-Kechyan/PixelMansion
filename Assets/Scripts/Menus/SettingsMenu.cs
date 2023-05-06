@@ -7,7 +7,7 @@ using Locale;
 public class SettingsMenu : MonoBehaviour
 {
     // Variables
-    public Settings settings;
+    public CameraPinch cameraPinch;
     public Color onColor;
     public Color offColor;
 
@@ -15,6 +15,9 @@ public class SettingsMenu : MonoBehaviour
     private MenuUI menuUI;
     private LocaleMenu localeMenu;
     private I18n LOCALE;
+    private Settings settings;
+    private Notifics notifics;
+    private ResetHandler resetHandler;
 
     // UI
     private VisualElement root;
@@ -55,6 +58,9 @@ public class SettingsMenu : MonoBehaviour
         menuUI = GetComponent<MenuUI>();
         localeMenu = GetComponent<LocaleMenu>();
         LOCALE = I18n.Instance;
+        settings = Settings.Instance;
+        notifics = Notifics.Instance;
+        resetHandler = GetComponent<ResetHandler>();
 
         // Cache UI
         root = GetComponent<UIDocument>().rootVisualElement;
@@ -91,19 +97,19 @@ public class SettingsMenu : MonoBehaviour
         idLabel = settingsMenu.Q<Label>("IDLabel");
         versionLabel = settingsMenu.Q<Label>("VersionLabel");
 
+        // Button clicks // TODO - Add all button clicks to ////
         soundButton.clicked += () => settings.ToggleSound();
         musicButton.clicked += () => settings.ToggleMusic();
         vibrationButton.clicked += () => settings.ToggleVibration();
         notificationsButton.clicked += () => settings.ToggleNotifications();
 
-        // TODO - Add all button clicks to ////
-
-        supportButton.clicked += () => Debug.Log("Support Button Clicked!"); ////
+        // supportButton.clicked += () => Debug.Log("Support Button Clicked!"); ////
+        supportButton.clicked += () => notifics.Send(); ////
         privacyButton.clicked += () => Debug.Log("Privacy Button Clicked!"); ////
         termsButton.clicked += () => Debug.Log("Terms Button Clicked!"); ////
         languageButton.clicked += () => localeMenu.Open();
-        resetButton.clicked += () => Debug.Log("Reset Button Clicked!"); ////
-        exitButton.clicked += () => Debug.Log("Exit Button Clicked!"); ////
+        resetButton.clicked += () => resetHandler.RestartApp(true); // TODO - Add confirmation
+        exitButton.clicked += () => Application.Quit(); // TODO - Add confirmation
 
         googleSignInButton.clicked += () => Debug.Log("Google Sing In Button Clicked!"); ////
         facebookSignInButton.clicked += () => Debug.Log("Facebook Sing In Button Clicked!"); ////
@@ -136,9 +142,7 @@ public class SettingsMenu : MonoBehaviour
 
 #if UNITY_ANDROID
         appleSignInButton.style.display = DisplayStyle.None;
-#endif
-
-#if UNITY_IOS
+#elif UNITY_IOS
         googleSignInButton.style.display = DisplayStyle.None;
 #endif
 
@@ -175,7 +179,8 @@ public class SettingsMenu : MonoBehaviour
         }
     }
 
-    public void SetUIOptionsButtons(){
+    public void SetUIOptionsButtons()
+    {
         // Sound
         soundButton.style.unityBackgroundImageTintColor = offColor;
         if (settings.soundOn)
@@ -229,9 +234,9 @@ public class SettingsMenu : MonoBehaviour
         }
     }
 
-    public void SetLocale(Types.Locale newLocale)
+    public void SetLocale(Types.Locale newLocale, bool reset)
     {
-        settings.SetLocale(newLocale);
+        settings.SetLocale(newLocale, false, reset);
 
         SetUiText(true);
     }

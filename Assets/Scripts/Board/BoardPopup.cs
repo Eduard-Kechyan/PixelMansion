@@ -10,7 +10,6 @@ public class BoardPopup : MonoBehaviour
     public Color textColor;
     public Color outlineColor;
     public Color shadowColor;
-    public Font textFont;
     public float timeOut = 2f;
     public float positionOffset = 1.5f;
 
@@ -22,17 +21,18 @@ public class BoardPopup : MonoBehaviour
 
     private List<Pop> currentPops = new List<Pop>();
 
-    // Instances
-
+    // Reference
     private SoundManager soundManager;
+    private LocaleManager localeManager;
 
     // UI
     private VisualElement root;
 
     private void Start()
     {
-        // Cache instances
+        // Cache refernces
         soundManager = SoundManager.Instance;
+        localeManager = Settings.Instance.GetComponent<LocaleManager>();
 
         // UI
         root = GameRefs.Instance.gameplayUIDoc.rootVisualElement;
@@ -122,12 +122,38 @@ public class BoardPopup : MonoBehaviour
 
         popLabel.style.fontSize = 2;
         popLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
-        popLabel.style.unityFontDefinition = new StyleFontDefinition(textFont);
         popLabel.style.color = new StyleColor(textColor);
         popLabel.style.unityTextAlign = TextAnchor.MiddleCenter;
         popLabel.style.unityTextOutlineWidth = 0.1f;
         popLabel.style.unityTextOutlineColor = new StyleColor(outlineColor);
         popLabel.style.textShadow = new StyleTextShadow(textShadow);
+
+        int grownFontSize = 10;
+
+        switch (Settings.Instance.currentLocale)
+        {
+            case Types.Locale.Armenian:
+                popLabel.style.unityFontDefinition = new StyleFontDefinition(localeManager.hyFont);
+                grownFontSize = 8;
+                break;
+            case Types.Locale.Japanese:
+                popLabel.style.unityFontDefinition = new StyleFontDefinition(localeManager.jpFont);
+                break;
+            case Types.Locale.Korean:
+                popLabel.style.unityFontDefinition = new StyleFontDefinition(localeManager.krFont);
+                break;
+            case Types.Locale.Chinese:
+                popLabel.style.unityFontDefinition = new StyleFontDefinition(localeManager.cnFont);
+                break;
+            default:
+                popLabel.style.unityFontDefinition = new StyleFontDefinition(localeManager.enFont);
+
+                if (Settings.Instance.currentLocale != Types.Locale.German)
+                {
+                    grownFontSize = 12;
+                }
+                break;
+        }
 
         popLabel.style.marginLeft = 0;
         popLabel.style.marginTop = 0;
@@ -143,7 +169,7 @@ public class BoardPopup : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
 
         popLabel.style.opacity = 1;
-        popLabel.style.fontSize = 12;
+        popLabel.style.fontSize = grownFontSize;
 
         yield return new WaitForSeconds(timeOut / 2.5f); // 0.4f
 

@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7392285170386635990
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5592389593482467306}
+  - component: {fileID: 3287225785201382731}
+  - component: {fileID: 1299563994973655937}
+  m_Layer: 0
+  m_Name: Settings
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5592389593482467306
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7392285170386635990}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3287225785201382731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7392285170386635990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65bf80fbd9c879f47b24966c30dfb945, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundOn: 1
+  musicOn: 1
+  vibrationOn: 1
+  notificationsOn: 1
+  googleSignedIn: 0
+  facebookSignedIn: 0
+  appleSignedIn: 0
+  currentLocale: 0
+--- !u!114 &1299563994973655937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7392285170386635990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baa8dd430e2421349b55ce51aedde0cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hyFont: {fileID: 12800000, guid: 862d51021fa09154dafa7534ec0ff638, type: 3}
+  jpFont: {fileID: 12800000, guid: a9bd224ce7c9a5b44b592bcb48ca9cb9, type: 3}
+  krFont: {fileID: 12800000, guid: 97fe985f9fe456140a5eb7e6620d28a5, type: 3}
+  cnFont: {fileID: 12800000, guid: b662814ecbbd4a04e8e263f3f68ebfc6, type: 3}
+  enFont: {fileID: 12800000, guid: 0435ef74bc89d2044a778758a25a13b0, type: 3}

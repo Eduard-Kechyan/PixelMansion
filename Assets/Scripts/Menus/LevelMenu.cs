@@ -65,6 +65,15 @@ public class LevelMenu : MonoBehaviour
         levelUpLabel = levelUpButton.Q<Label>("LevelUpLabel");
 
         levelUpButton.clicked += () => UpdateLevel();
+
+        Init();
+    }
+
+    void Init()
+    {
+        // Make sure the menu is closed
+        levelMenu.style.display = DisplayStyle.None;
+        levelMenu.style.opacity = 0;
     }
 
     public void Open()

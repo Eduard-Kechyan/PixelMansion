@@ -7,13 +7,15 @@ public class MenuUI : MonoBehaviour
 {
     // Variables
     public BoardInteractions boardInteractions;
-    public float transitionDuration = 0.5f;
+    public float transitionDuration = 0.1f;
     public float menuDecreaseOffset = 0.8f;
-    public bool menuOpen;
+    public bool menuOpen = false;
 
     private List<MenuItem> menus = new List<MenuItem>();
-    private VisualElement currentMenu;
     private bool valuesShown;
+
+    // References
+    private ValuesUI valuesUI;
 
     // Classes
     private class MenuItem
@@ -22,21 +24,35 @@ public class MenuUI : MonoBehaviour
         public bool showValues;
     }
 
-    // Instances
-    private ValuesUI valuesUI;
-
     // UI
+    private VisualElement root;
+    private VisualElement menuLocaleWrapper;
     private VisualElement background;
+    private VisualElement currentMenu;
     private Label title;
 
     void Start()
     {
         valuesUI = GameRefs.Instance.valuesUI;
+
+        root = GetComponent<UIDocument>().rootVisualElement;
+
+        menuLocaleWrapper = root.Q<VisualElement>("LocaleWrapper");
+
+        Init();
+    }
+
+    void Init()
+    {
+        menuLocaleWrapper.style.display = DisplayStyle.None;
     }
 
     public void UpdateTitle(string newTitle)
     {
-        title.text = newTitle;
+        if (currentMenu.name == "LocaleMenu")
+        {
+            menus[0].menuItem.Q<VisualElement>("Title").Q<Label>("Value").text = newTitle;
+        }
     }
 
     public void OpenMenu(VisualElement newMenu, string newTitle, bool showValues = false)
@@ -63,6 +79,9 @@ public class MenuUI : MonoBehaviour
     {
         VisualElement newMenu = new VisualElement();
 
+        // Show the menu locale container
+        menuLocaleWrapper.style.display = DisplayStyle.Flex;
+
         // Show the menu
         currentMenu.style.display = DisplayStyle.Flex;
         currentMenu.style.opacity = 1f;
@@ -75,7 +94,7 @@ public class MenuUI : MonoBehaviour
         // Disable the close button
         currentMenu.Q<VisualElement>("Close").pickingMode = PickingMode.Ignore;
 
-        // Set the menu's itle
+        // Set the menu's title
         title = currentMenu.Q<VisualElement>("Title").Q<Label>("Value");
 
         title.text = newTitle;
@@ -166,6 +185,9 @@ public class MenuUI : MonoBehaviour
         {
             // Set open menu indicator to close
             menuOpen = false;
+
+            // Hide the menu locale container
+            menuLocaleWrapper.style.display = DisplayStyle.None;
 
             // Enable the board
             if (boardInteractions != null)

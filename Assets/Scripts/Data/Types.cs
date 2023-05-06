@@ -45,15 +45,14 @@ public class Types : MonoBehaviour
     {
         English,
         French,
-        Français,
-        Español,
-        Deutsch,
-        Italiano,
-        Русский,
-        Հայերեն,
-        日本語,
-        한국어,
-        中文
+        Spanish,
+        German,
+        Italian,
+        Russian,
+        Armenian,
+        Japanese,
+        Korean,
+        Chinese
     };
 
     //// TIMERS ///

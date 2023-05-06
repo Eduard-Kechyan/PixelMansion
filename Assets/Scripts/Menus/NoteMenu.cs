@@ -26,6 +26,14 @@ public class NoteMenu : MonoBehaviour
 
         noteMenu = root.Q<VisualElement>("NoteMenu");
         menuContent = noteMenu.Q<VisualElement>("Content");
+
+        Init();
+    }
+
+    void Init(){
+        // Make sure the menu is closed
+        noteMenu.style.display = DisplayStyle.None;
+        noteMenu.style.opacity = 0;
     }
 
     public void Open(string newTitle, string[] notes)

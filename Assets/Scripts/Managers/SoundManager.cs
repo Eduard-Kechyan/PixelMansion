@@ -10,6 +10,9 @@ public class SoundManager : MonoBehaviour
     public AudioSource sourceSound;
     public AudioSource sourceMusic;
 
+    // References
+    private Settings settings;
+
     // Instance
     public static SoundManager Instance;
 
@@ -24,6 +27,12 @@ public class SoundManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
+    }
+
+    void Start()
+    {
+        // Cache
+        settings = Settings.Instance;
     }
 
     //////// Sound ////////
@@ -70,7 +79,12 @@ public class SoundManager : MonoBehaviour
         }
         else
         {
-            if (clipName == "Loading")
+            if (settings == null)
+            {
+                settings = Settings.Instance;
+            }
+
+            if (clipName == "Loading" && settings.musicOn)
             {
                 sourceMusic.volume = 1f;
             }
@@ -89,7 +103,7 @@ public class SoundManager : MonoBehaviour
 
     public void FadeInMusic(float seconds)
     {
-        StartCoroutine(FadeCoroutine(seconds, sourceMusic.volume, 1));
+        StartCoroutine(FadeCoroutine(seconds, sourceMusic.volume, 1, true));
     }
 
     public void FadeOutMusic(float seconds)
@@ -97,14 +111,25 @@ public class SoundManager : MonoBehaviour
         StartCoroutine(FadeCoroutine(seconds, sourceMusic.volume, 0));
     }
 
-    IEnumerator FadeCoroutine(float seconds, float from, float to)
+    IEnumerator FadeCoroutine(float seconds, float from, float to, bool fadeIn = false)
     {
         var timePassed = 0f;
         while (timePassed < seconds)
         {
             var factor = timePassed / seconds;
 
-            sourceMusic.volume = Mathf.Lerp(from, to, factor);
+            if (fadeIn)
+            {
+                if (settings.musicOn)
+                {
+                    sourceMusic.volume = Mathf.Lerp(from, to, factor);
+                }
+            }
+            else
+            {
+                sourceMusic.volume = Mathf.Lerp(from, to, factor);
+            }
+
 
             timePassed += Mathf.Min(Time.deltaTime, seconds - timePassed);
 

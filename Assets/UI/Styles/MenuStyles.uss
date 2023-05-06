@@ -4,44 +4,11 @@
     max-height: 70%;
 }
 
-.inventory_more_button {
-    background-image: url('project://database/Assets/Sprites/Buttons/SellButton.png?fileID=2800000&guid=662692b9da6fe3e4697413d31ef49f69&type=3#SellButton');
-    width: 43px;
-    height: 18px;
-    margin-left: 0;
-    margin-right: 0;
-    margin-top: 0;
-    margin-bottom: 0;
-    padding-left: 12px;
-    padding-right: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    background-color: rgba(0, 0, 0, 0);
-    border-left-width: 0;
-    border-right-width: 0;
-    border-top-width: 0;
-    border-bottom-width: 0;
-    color: rgb(255, 255, 255);
-    font-size: 8px;
-    -unity-text-align: middle-center;
-    transition-duration: 0.1s;
-}
-
 .slot_item_hidden {
     scale: 0 0;
 }
 
-.energy_button {
-    font-size: 8px;
-    color: rgb(255, 255, 255);
-    right: 2px;
-    bottom: 2px;
-    position: absolute;
-    display: none;
-}
-
 .local_button {
-    font-size: 10px;
     margin-left: 4px;
     margin-right: 4px;
     margin-top: 0;
@@ -52,8 +19,6 @@
     padding-bottom: 0;
     height: 20px;
     width: 70px;
-    color: rgb(51, 51, 51);
-    -unity-text-align: middle-center;
     transition-duration: 0.1s;
     border-left-width: 0;
     border-right-width: 0;
@@ -61,7 +26,6 @@
     border-bottom-width: 0;
     background-color: rgba(0, 0, 0, 0);
     display: flex;
-    -unity-font-definition: url('project://database/Assets/Fonts/RobotoRegular%20SDF.asset?fileID=11400000&guid=427d0a4e242623a4b9ae76cc4639c62b&type=2#RobotoRegular SDF');
 }
 
 .local_button:disabled {
@@ -80,7 +44,6 @@
     padding-right: 0;
     padding-top: 0;
     padding-bottom: 0;
-    -unity-font-definition: url('project://database/Assets/Fonts/RobotoRegular%20SDF.asset?fileID=11400000&guid=427d0a4e242623a4b9ae76cc4639c62b&type=2#RobotoRegular SDF');
     font-size: 8px;
     -unity-text-align: middle-left;
     color: rgb(51, 51, 51);
@@ -138,7 +101,6 @@
     padding-top: 0;
     padding-bottom: 0;
     -unity-text-align: middle-left;
-    -unity-font-definition: url('project://database/Assets/Fonts/RobotoRegular%20SDF.asset?fileID=11400000&guid=427d0a4e242623a4b9ae76cc4639c62b&type=2#RobotoRegular SDF');
 }
 
 .menu_toggle .unity-toggle__input {

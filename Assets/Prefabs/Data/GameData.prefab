@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2656915087510296412}
   - component: {fileID: 7628476360138686812}
   - component: {fileID: 7608245173361121897}
-  - component: {fileID: 3467940804924618783}
   m_Layer: 0
   m_Name: GameData
   m_TagString: Untagged
@@ -48,6 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   valuesData: {fileID: 11400000, guid: e82c58a155150ca47be106027d9ca637, type: 2}
   maxExperience: 10
+  leftoverExperience: 0
   maxLevel: 99
   maxOther: 9999
   energyTime: 120
@@ -57,6 +57,8 @@ MonoBehaviour:
   energy: 100
   gold: 100
   gems: 100
+  canLevelUp: 0
+  inventorySpace: 7
   timers: []
   itemsData: []
   collectablesData: []
@@ -74,16 +76,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3e4614f32e736e4ab12bfb061afb02f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3467940804924618783
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6831382092569983105}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 656cade054fc22647b874535646fece0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneLoader: {fileID: 0}

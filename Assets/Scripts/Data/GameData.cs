@@ -64,8 +64,6 @@ public class GameData : MonoBehaviour
     private LevelMenu levelMenu;
     private ValuesUI valuesUI;
     private GameplayUI gameplayUI;
-
-    // Instances
     private DataManager dataManager;
 
     // Instance

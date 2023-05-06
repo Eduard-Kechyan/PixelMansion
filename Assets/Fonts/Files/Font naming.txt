@@ -1,0 +1,5 @@
+Nicolo Regular
+Noto Japanese Regular
+Noto Korean Regular
+Noto Simplified Chinese Regular
+Roboto Regular (Russian included)

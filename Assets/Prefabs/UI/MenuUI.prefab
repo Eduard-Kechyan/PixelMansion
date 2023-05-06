@@ -20,6 +20,7 @@ GameObject:
   - component: {fileID: 3570785117545677035}
   - component: {fileID: 990211674076651926}
   - component: {fileID: 269867168095586740}
+  - component: {fileID: 194810349795178729}
   m_Layer: 0
   m_Name: MenuUI
   m_TagString: Untagged
@@ -40,7 +41,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6890635896343097084
 MonoBehaviour:
@@ -168,7 +169,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 994a24be7a547c74093dc4ff16d1b2e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  settings: {fileID: 0}
   onColor: {r: 0.33333334, g: 0.79607844, b: 0.59607846, a: 1}
   offColor: {r: 0.9254902, g: 0.4509804, b: 0.49803922, a: 1}
 --- !u!114 &3570785117545677035
@@ -214,3 +214,16 @@ MonoBehaviour:
   gameplayScene: 1
   hubUI: {fileID: 0}
   shopData: {fileID: 11400000, guid: 9ccd7e0ffc1f88547b1138b322dfed0d, type: 2}
+--- !u!114 &194810349795178729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2529494229858904796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 656cade054fc22647b874535646fece0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneLoader: {fileID: 0}

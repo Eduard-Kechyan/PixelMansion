@@ -33,7 +33,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &-7698504415603008170
 MonoBehaviour:
@@ -47,7 +47,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32fa525191c09d74480ce81539a1c0f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  settings: {fileID: 0}
   ignoreInitialCheck: 0
   items: {fileID: 11400000, guid: c8cb055841d16d4418a75072be1f69f5, type: 2}
   generators: {fileID: 11400000, guid: c258775e13b5df74081b412b6f1f3947, type: 2}
@@ -104,5 +103,5 @@ MonoBehaviour:
   restrictLogCount: 0
   maxLogCount: 1000
   collapseLogOnStart: 0
-  logFontSize: 12
-  scaleFactor: 1
+  logFontSize: 14
+  scaleFactor: 2

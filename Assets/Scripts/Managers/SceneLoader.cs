@@ -16,11 +16,18 @@ public class SceneLoader : MonoBehaviour
 
     // References
     private SoundManager soundManager;
+    private LocaleManager localeManager;
 
     void Start()
     {
+        Init();
+    }
+
+    void Init()
+    {
         // Cache
         soundManager = SoundManager.Instance;
+        localeManager = Settings.Instance.GetComponent<LocaleManager>();
 
         InitializeScene();
 
@@ -32,10 +39,21 @@ public class SceneLoader : MonoBehaviour
         InitializeScene();
     }
 
-    public void Load(int sceneIndex)
+    public void Load(int sceneIndex, bool reset = false)
     {
         transitionUI.Open();
-        soundManager.FadeOutMusic(fadeDuration);
+
+        soundManager.FadeOutMusic(fadeDuration);///
+        if (!reset)
+        {
+          //  soundManager.FadeOutMusic(fadeDuration);
+
+           /* if (PlayerPrefs.HasKey("reseted"))
+            {
+                Init();
+            }*/
+        }
+
         StartCoroutine(LoadScene(sceneIndex));
     }
 
@@ -86,6 +104,10 @@ public class SceneLoader : MonoBehaviour
 
                 GameData.Instance.Init(sceneName);
 
+                Settings.Instance.Init();
+
+                localeManager.Init(sceneName);
+
                 break;
 
             case "Gameplay":
@@ -95,6 +117,8 @@ public class SceneLoader : MonoBehaviour
                 soundManager.FadeInMusic(fadeDuration);
 
                 GameData.Instance.Init(sceneName);
+
+                localeManager.Init(sceneName);
 
                 break;
 

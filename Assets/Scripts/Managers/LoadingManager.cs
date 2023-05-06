@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Locale;
+using System.Threading.Tasks;
 
 public class LoadingManager : MonoBehaviour
 {
@@ -11,122 +11,76 @@ public class LoadingManager : MonoBehaviour
     public bool stayOnScene = false;
     public float fillSpeed = 3f;
     public SceneLoader sceneLoader;
-    public Settings settings;
     public GameObject uiDocument;
 
-    private Camera cam;
     private VisualElement fill;
     private float fillCount = 0;
-    private Action callback;
-    private bool loaded = false;
+    private bool loading = false;
+    private bool startedLoading = false;
 
-    // Instances
+    // References
     private DataManager dataManager;
-    private I18n LOCALE;
+    private Notifics notifics;
 
     void Start()
     {
-        // Cache the camera
-        cam = Camera.main;
-
-        // Cache instances
+        // Cache
         dataManager = DataManager.Instance;
-        LOCALE = I18n.Instance;
+        notifics = Notifics.Instance;
 
         // Cache UI
         VisualElement root = uiDocument.GetComponent<UIDocument>().rootVisualElement;
 
         fill = root.Q<VisualElement>("Fill");
 
-        settings.InitPre();
-
-        // Check if data has already been loaded
-        if (PlayerPrefs.HasKey("loaded") && PlayerPrefs.GetInt("loaded") == 1)
-        {
-            loaded = true;
-            callback = LoadContentPre;
-            StartCoroutine(SetFill(70f, callback));
-        }
-        else
-        {
-            FirstLoading();
-        }
+        loading = true;
     }
 
-    //////// LOADING ////////
-
-    void FirstLoading()
+    void Update()
     {
-        SetPrefs(); // This goes last
-
-        // Next step
-        callback = LoadContentPre;
-        StartCoroutine(SetFill(70f, callback));
-    }
-
-    async void LoadContentPre()
-    {
-        await dataManager.CheckInitialData();
-
-        // Next step
-        HalfFinishedLoading();
-    }
-
-    void HalfFinishedLoading()
-    {
-        if (!loaded)
+        if (loading && fillCount < 100f)
         {
-            // Save the prefs to disk
-            PlayerPrefs.Save();
-        }
+            Vector2 current = new Vector2(fillCount, fillCount);
+            Vector2 to = new Vector2(100, 100);
 
-        // Next step
-        FinishedLoading();
-    }
-
-    void FinishedLoading()
-    {
-        if (fill.resolvedStyle.width >= 99f)
-        {
-            if (!stayOnScene)
-            {
-                sceneLoader.Load(1);
-            }
-        }
-        else
-        {
-            // Fill the loader to 100%
-            callback = FinishedLoading;
-            StartCoroutine(SetFill(100f, callback));
-        }
-    }
-
-    IEnumerator SetFill(float amount, Action callback)
-    {
-        while (fillCount < amount)
-        {
-            fillCount++;
+            fillCount = Vector2.MoveTowards(current, to, fillSpeed * Time.deltaTime).x;
 
             fill.style.width = new Length(fillCount, LengthUnit.Pixel);
 
-            yield return new WaitForSeconds(fillSpeed * Time.fixedDeltaTime);
-
-            if (fillCount == amount)
+            if (fillCount >= 10f && !startedLoading)
             {
-                callback();
-                yield break;
+                startedLoading = true;
+                LoadData();
+            }
+
+            if (fillCount >= 100f)
+            {
+                if (!stayOnScene)
+                {
+                    sceneLoader.Load(1);
+                }
             }
         }
     }
 
-    //////// STEPS ////////
-
-    void SetPrefs()
+    async void LoadData()
     {
-        // Set Loaded to 1 to make sure this callculations aren't run again
-        PlayerPrefs.SetInt("loaded", 1);
+        await Task.Delay(500);
 
-        // Save the prefs to disk
-        PlayerPrefs.Save();
+        // Get data
+        loading = false;
+        await dataManager.CheckInitialData();
+        loading = true;
+
+        await Task.Delay(1000);
+
+        // Check notifications
+        if (SystemInfo.operatingSystem.Contains("13")&&SystemInfo.operatingSystem.Contains("33"))
+        {
+            loading = false;
+            //StartCoroutine(notifics.RequestPermission()); await Task.Delay(750);
+            await notifics.CheckNotifications();
+            loading = true;
+        }
     }
 }

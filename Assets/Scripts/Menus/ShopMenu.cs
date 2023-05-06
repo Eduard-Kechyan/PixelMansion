@@ -78,11 +78,15 @@ public class ShopMenu : MonoBehaviour
         restoreGems = shopMenu.Q<Button>("RestoreGems");
         restoreGold = shopMenu.Q<Button>("RestoreGold");
 
-        InitMenu();
+        Init();
     }
 
-    void InitMenu()
+    void Init()
     {
+        // Make sure the menu is closed
+        shopMenu.style.display = DisplayStyle.None;
+        shopMenu.style.opacity = 0;
+
         // Subtitles
         dailySubtitle.text = LOCALE.Get("shop_menu_subtitle_daily");
         itemsSubtitle.text = LOCALE.Get("shop_menu_subtitle_items");
@@ -115,8 +119,8 @@ public class ShopMenu : MonoBehaviour
             VisualElement shopBox = dailyBoxes.Q<VisualElement>("DailyBox" + i);
             Label topLabel = shopBox.Q<Label>("TopLabel");
             VisualElement image = shopBox.Q<VisualElement>("Image");
-            Button infoButton = shopBox.Q<Button>("InfoButton" + i);
-            Button buyButton = shopBox.Q<Button>("BuyButton" + i);
+            Button infoButton = shopBox.Q<Button>("InfoButton");
+            Button buyButton = shopBox.Q<Button>("BuyButton");
             VisualElement buyButtonValue = buyButton.Q<VisualElement>("Value");
             Label buyButtonLabel = buyButton.Q<Label>("Label");
 
@@ -159,8 +163,8 @@ public class ShopMenu : MonoBehaviour
             VisualElement shopBox = itemsBoxes.Q<VisualElement>("ItemBox" + i);
             Label topLabel = shopBox.Q<Label>("TopLabel");
             VisualElement image = shopBox.Q<VisualElement>("Image");
-            Button infoButton = shopBox.Q<Button>("InfoButton" + i);
-            Button buyButton = shopBox.Q<Button>("BuyButton" + i);
+            Button infoButton = shopBox.Q<Button>("InfoButton" );
+            Button buyButton = shopBox.Q<Button>("BuyButton");
             VisualElement buyButtonValue = buyButton.Q<VisualElement>("Value");
             Label buyButtonLabel = buyButton.Q<Label>("Label");
 
@@ -192,11 +196,35 @@ public class ShopMenu : MonoBehaviour
             VisualElement shopBox = gemsBoxes.Q<VisualElement>("GemsBox" + i);
             Label topLabel = shopBox.Q<Label>("TopLabel");
             VisualElement image = shopBox.Q<VisualElement>("Image");
-            Button buyButton = shopBox.Q<Button>("BuyButton" + i);
+            Button buyButton = shopBox.Q<Button>("BuyButton");
             VisualElement bonus = shopBox.Q<VisualElement>("Bonus");
             Label bonusLabel = bonus.Q<Label>("BonusLabel");
             VisualElement popular = shopBox.Q<VisualElement>("Popular");
             Label popularLabel = popular.Q<Label>("PopularLabel");
+
+            switch (Settings.Instance.currentLocale)
+            {
+                case Types.Locale.Armenian:
+                    popularLabel.style.fontSize = 3;
+                    break;
+                case Types.Locale.Japanese:
+                    popularLabel.style.fontSize = 3;
+                    break;
+                case Types.Locale.Korean:
+                    popularLabel.style.fontSize = 3;
+                    break;
+                case Types.Locale.Chinese:
+                    popularLabel.style.fontSize = 3;
+                    break;
+                default:
+                    popularLabel.style.fontSize = 3;
+
+                    if (Settings.Instance.currentLocale != Types.Locale.German)
+                    {
+                        popularLabel.style.fontSize = 5;
+                    }
+                    break;
+            }
 
             topLabel.text = gemsContent[i].amount.ToString();
 
@@ -248,7 +276,7 @@ public class ShopMenu : MonoBehaviour
             VisualElement shopBox = goldBoxes.Q<VisualElement>("GoldBox" + i);
             Label topLabel = shopBox.Q<Label>("TopLabel");
             VisualElement image = shopBox.Q<VisualElement>("Image");
-            Button buyButton = shopBox.Q<Button>("BuyButton" + i);
+            Button buyButton = shopBox.Q<Button>("BuyButton");
             VisualElement popular = shopBox.Q<VisualElement>("Popular");
             Label popularLabel = popular.Q<Label>("PopularLabel");
 

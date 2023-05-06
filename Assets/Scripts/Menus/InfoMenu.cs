@@ -58,12 +58,15 @@ public class InfoMenu : MonoBehaviour
         itemName = infoMenu.Q<Label>("ItemName");
         itemData = infoMenu.Q<Label>("ItemData");
 
-        InitMenu();
+        Init();
     }
 
-    void InitMenu()
+    void Init()
     {
+        // Make sure the menu is closed
         infoMenu.style.display = DisplayStyle.None;
+        infoMenu.style.opacity = 0;
+
         infoParent.style.display = DisplayStyle.None;
     }
 

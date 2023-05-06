@@ -58,11 +58,15 @@ public class EnergyMenu : MonoBehaviour
         watchButton.clicked += () => WatchAdHandle();
         buyButton.clicked += () => BuyEnegyHandler();
 
-        InitMenu();
+        Init();
     }
 
-    void InitMenu()
+    void Init()
     {
+        // Make sure the menu is closed
+        energyMenu.style.display = DisplayStyle.None;
+        energyMenu.style.opacity = 0;
+
         energyLabelB.text = LOCALE.Get("energy_menu_label_b");
         energyLabelA.text = LOCALE.Get("energy_menu_label_a");
 

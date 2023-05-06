@@ -45,6 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stayOnScene: 0
-  fillSpeed: 2
+  fillSpeed: 30
   sceneLoader: {fileID: 0}
   uiDocument: {fileID: 0}

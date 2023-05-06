@@ -23,8 +23,20 @@ public class TransitionUI : MonoBehaviour
         if (loadingScene)
         {
             transition.style.display = DisplayStyle.Flex;
-            transition.style.opacity = 0;
-            transition.style.visibility = Visibility.Hidden;
+
+            if (PlayerPrefs.HasKey("reseted")){
+                PlayerPrefs.DeleteKey("reseted");
+
+                transition.style.opacity = 1;
+                transition.style.visibility = Visibility.Visible;
+
+                StartCoroutine(Close());
+            }
+            else
+            {
+                transition.style.opacity = 0;
+                transition.style.visibility = Visibility.Hidden;
+            }
         }
         else
         {

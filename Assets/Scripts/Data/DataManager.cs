@@ -10,8 +10,6 @@ using Locale;
 
 public class DataManager : MonoBehaviour
 {
-    public Settings settings;
-
     // Instance
     public static DataManager Instance;
 
@@ -26,7 +24,7 @@ public class DataManager : MonoBehaviour
 
     // Whether data has been fully loaded
     public bool loaded;
-    private bool isEditor = false;
+    //private bool isEditor = false;
 
     // Quick Save
     private QuickSaveSettings saveSettings;
@@ -62,7 +60,7 @@ public class DataManager : MonoBehaviour
     async void Start()
     {
         // Set up Quick Save
-        saveSettings = new QuickSaveSettings() { CompressionMode = CompressionMode.None }; //TODO -  Set CompressionMode to in the final game Gzip
+        saveSettings = new QuickSaveSettings() { CompressionMode = CompressionMode.None }; //TODO -  Set CompressionMode in the final game to Gzip
         writer = QuickSaveWriter.Create("Root", saveSettings);
 
         // Cache JsonHandler
@@ -75,9 +73,9 @@ public class DataManager : MonoBehaviour
         gameData.LoadSprites();
 
 #if UNITY_EDITOR
-        isEditor = true;
+       // isEditor = true;
 
-        // Make this script run if we not starting from the Losding scene
+        // Make this script run if we arn't starting from the Loading scene
         if (
             !loaded
             && (
@@ -94,7 +92,15 @@ public class DataManager : MonoBehaviour
     // Check if we need to save initial data to disk
     public async Task CheckInitialData()
     {
-        if (!writer.Exists("rootSet") || (ignoreInitialCheck && isEditor))
+        Debug.Log("DataManager: "+writer.Exists("rootSet"));
+
+        if (writer.Exists("rootSet"))
+        {
+            reader = QuickSaveReader.Create("Root", saveSettings);
+
+            await GetData(false);
+        }
+        else
         {
             initialJsonData = jsonHandler.ConvertBoardToJson(initialItems.content, true);
             bonusData = jsonHandler.ConvertBonusToJson(gameData.bonusData);
@@ -121,12 +127,16 @@ public class DataManager : MonoBehaviour
 
             await GetData(true);
         }
+        /*if (!writer.Exists("rootSet") || (ignoreInitialCheck && isEditor))
+        {
+            
+        }
         else
         {
             reader = QuickSaveReader.Create("Root", saveSettings);
 
             await GetData(false);
-        }
+        }*/
     }
 
     // Get object data from the initial data
@@ -185,9 +195,7 @@ public class DataManager : MonoBehaviour
         // Finish Task
         loaded = true;
 
-        settings.Init();
-
-        await Task.Delay(200);
+        await Task.Delay(500);
     }
 
     Types.Items[] ConvertItems(Types.Items[] itemsContent)

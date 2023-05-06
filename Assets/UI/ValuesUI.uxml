@@ -1,6 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI/Styles.uss?fileID=7433441132597879392&amp;guid=08bd5a37430981141894ccf8bf0316db&amp;type=3#Styles" />
-    <ui:VisualElement name="ValuesBox" style="position: absolute; left: 0; top: 0; right: 0; padding-left: 3px; padding-right: 3px; flex-direction: column; justify-content: space-between; opacity: 1; margin-top: 3px; display: flex;">
+    <Style src="project://database/Assets/UI/Styles/Styles.uss?fileID=7433441132597879392&amp;guid=08bd5a37430981141894ccf8bf0316db&amp;type=3#Styles" />
+    <ui:VisualElement name="ValuesBox" style="position: absolute; left: 0; top: 0; right: 0; padding-left: 3px; padding-right: 3px; flex-direction: column; justify-content: space-between; opacity: 1; margin-top: 3px; display: flex; transition-duration: 0.2s; transition-timing-function: ease-in-out-cubic;">
         <ui:VisualElement name="Values" style="width: 100%; flex-direction: row; align-items: stretch; justify-content: space-between;">
             <ui:Button display-tooltip-when-elided="true" name="LevelButton" class="value_button" style="background-image: url(&apos;project://database/Assets/Sprites/Values/ValueLevel.png?fileID=2800000&amp;guid=db2a0b434fd00d148947a026afc58439&amp;type=3#ValueLevel&apos;); width: 37px; height: 17px; overflow: visible;">
                 <ui:VisualElement name="FillContainer" style="position: absolute; width: 19px; height: 7px; top: 5px; left: 17px;">

@@ -57,7 +57,7 @@ public class HubUI : MonoBehaviour
     {
         root.UnregisterCallback<GeometryChangedEvent>(Init);
 
-        topBox.style.paddingTop = safeAreaHandler.GetTopOffset() + extraTopPadding;
+        topBox.style.top = safeAreaHandler.GetTopOffset() + extraTopPadding;
 
         CalcPlayButtonPosition();
     }

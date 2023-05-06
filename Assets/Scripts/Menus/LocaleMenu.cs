@@ -7,7 +7,6 @@ using Locale;
 public class LocaleMenu : MonoBehaviour
 {
     // Variables
-    public Settings settings;
     public Sprite localeButtonSprite;
     public Color localeButtonColor;
     public Color localeButtonColorSelected;
@@ -16,6 +15,8 @@ public class LocaleMenu : MonoBehaviour
     private MenuUI menuUI;
     private SettingsMenu settingsMenu;
     private I18n LOCALE;
+    private Settings settings;
+    private LocaleManager localeManager;
 
     // UI
     private VisualElement root;
@@ -28,6 +29,8 @@ public class LocaleMenu : MonoBehaviour
         menuUI = GetComponent<MenuUI>();
         settingsMenu = GetComponent<SettingsMenu>();
         LOCALE = I18n.Instance;
+        settings = Settings.Instance;
+        localeManager = settings.GetComponent<LocaleManager>();
 
         // Cache UI
         root = GetComponent<UIDocument>().rootVisualElement;
@@ -58,7 +61,7 @@ public class LocaleMenu : MonoBehaviour
         {
             string localeString = locale.ToString();
 
-            Button localeButton = new Button { name = "LocaleButton" + localeString, text = localeString };
+            Button localeButton = new Button { name = "LocaleButton" + localeString };
 
             localeButton.style.backgroundImage = new StyleBackground(localeButtonSprite);
 
@@ -76,8 +79,52 @@ public class LocaleMenu : MonoBehaviour
 
             localeButton.clicked += () => SetLocale(localeString);
 
-            // TODO - Remove this line after adding all the necesary lanugages
-            if (locale != Types.Locale.English && locale != Types.Locale.Հայերեն)
+            switch (locale)
+            {
+                case Types.Locale.Armenian:
+                    localeButton.AddToClassList("locale_hy");
+                    localeButton.text = "Հայերեն";
+                    break;
+                case Types.Locale.Japanese:
+                    localeButton.AddToClassList("locale_jp");
+                    localeButton.text = "日本語";
+                    break;
+                case Types.Locale.Korean:
+                    localeButton.AddToClassList("locale_kr");
+                    localeButton.text = "한국어";
+                    break;
+                case Types.Locale.Chinese:
+                    localeButton.AddToClassList("locale_cn");
+                    localeButton.text = "中文";
+                    break;
+                case Types.Locale.Russian:
+                    localeButton.AddToClassList("locale_en");
+                    localeButton.text = "Русский";
+                    break;
+                case Types.Locale.French:
+                    localeButton.AddToClassList("locale_en");
+                    localeButton.text = "Français";
+                    break;
+                case Types.Locale.German:
+                    localeButton.AddToClassList("locale_en");
+                    localeButton.text = "Deutsch";
+                    break;
+                case Types.Locale.Spanish:
+                    localeButton.AddToClassList("locale_en");
+                    localeButton.text = "Español";
+                    break;
+                case Types.Locale.Italian:
+                    localeButton.AddToClassList("locale_en");
+                    localeButton.text = "Italiano";
+                    break;
+                default: // English
+                    localeButton.AddToClassList("locale_en");
+                    localeButton.text = localeString;
+                    break;
+            }
+
+            // TODO - Remove this line after adding all the necessary lanugages
+            if (locale != Types.Locale.English && locale != Types.Locale.Armenian)
             {
                 localeButton.SetEnabled(false);
             }
@@ -91,8 +138,12 @@ public class LocaleMenu : MonoBehaviour
 
     void SetLocale(string newLocale)
     {
-        settingsMenu.SetLocale((Types.Locale)System.Enum.Parse(typeof(Types.Locale), newLocale));
+        Types.Locale locale = (Types.Locale)System.Enum.Parse(typeof(Types.Locale), newLocale);
 
-        menuUI.CloseMenu(localeMenu.name);
+        settingsMenu.SetLocale(locale, true);
+
+        /* menuUI.CloseMenu(localeMenu.name);
+
+         localeManager.UpdateUILocale(locale,true);*/
     }
 }

@@ -28,6 +28,15 @@ public class TaskMenu : MonoBehaviour
         root = GetComponent<UIDocument>().rootVisualElement;
 
         taskMenu = root.Q<VisualElement>("TaskMenu");
+
+        Init();
+    }
+
+    void Init()
+    {
+        // Make sure the menu is closed
+        taskMenu.style.display = DisplayStyle.None;
+        taskMenu.style.opacity = 0;
     }
 
     public void Open()

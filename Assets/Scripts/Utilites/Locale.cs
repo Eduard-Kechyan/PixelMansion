@@ -14,9 +14,9 @@ namespace Locale
         private static readonly string[] locales = new string[]
         {
             "en-US", // English - English
-            "fr-FR", // French - Français
-            "es-ES", // Spanish - Español
-            "de-DE", // German - Deutsch
+            "fr-FR", // French - French
+            "es-ES", // Spanish - Spanish
+            "de-DE", // German - German
             "it-IT", // Italian - Utaliano
             "ru-RU", // Russian - Русский
             "hy-HY", // Armenian - Հայերեն
@@ -60,31 +60,31 @@ namespace Locale
 
             switch (newLocale)
             {
-                case Types.Locale.Français:
+                case Types.Locale.French:
                     locale = "fr-FR";
                     break;
-                case Types.Locale.Español:
+                case Types.Locale.Spanish:
                     locale = "es-ES";
                     break;
-                case Types.Locale.Deutsch:
+                case Types.Locale.German:
                     locale = "de-DE";
                     break;
-                case Types.Locale.Italiano:
+                case Types.Locale.Italian:
                     locale = "it-IT";
                     break;
-                case Types.Locale.Русский: // Russian
+                case Types.Locale.Russian:
                     locale = "ru-RU";
                     break;
-                case Types.Locale.Հայերեն: // Armenian
+                case Types.Locale.Armenian:
                     locale = "hy-HY";
                     break;
-                case Types.Locale.日本語: // Japanese
+                case Types.Locale.Japanese:
                     locale = "ja-JP";
                     break;
-                case Types.Locale.한국어: // Korean
+                case Types.Locale.Korean:
                     locale = "ko-KR";
                     break;
-                case Types.Locale.中文: // Chinese
+                case Types.Locale.Chinese:
                     locale = "zh-CN";
                     break;
                 default:
@@ -103,31 +103,31 @@ namespace Locale
             {
 
                 case "fr-FR":
-                    locale = Types.Locale.Français;
+                    locale = Types.Locale.French;
                     break;
                 case "es-ES":
-                    locale = Types.Locale.Español;
+                    locale = Types.Locale.Spanish;
                     break;
                 case "de-DE":
-                    locale = Types.Locale.Deutsch;
+                    locale = Types.Locale.German;
                     break;
                 case "it-IT":
-                    locale = Types.Locale.Italiano;
+                    locale = Types.Locale.Italian;
                     break;
                 case "ru-RU":
-                    locale = Types.Locale.Русский;// Russian
+                    locale = Types.Locale.Russian; 
                     break;
                 case "hy-HY":
-                    locale = Types.Locale.Հայերեն;// Armenian
+                    locale = Types.Locale.Armenian;
                     break;
                 case "ja-JP":
-                    locale = Types.Locale.日本語;// Japanese
+                    locale = Types.Locale.Japanese;
                     break;
                 case "ko-KR":
-                    locale = Types.Locale.한국어; // Korean
+                    locale = Types.Locale.Korean;
                     break;
                 case "zh-CN":
-                    locale = Types.Locale.中文; // Chinese
+                    locale = Types.Locale.Chinese;
                     break;
                 default:
                     locale = Types.Locale.English;

@@ -118,7 +118,7 @@ public class BoardInteractions : MonoBehaviour
                 // See when the touch has been moved
                 if (Input.GetTouch(0).phase == TouchPhase.Moved)
                 {
-                    // Comapare the current position to the initial position
+                    // Compare the current position to the initial position
                     Vector2 diff = touch.position - initialTouchPos;
 
                     if (
