@@ -96,7 +96,7 @@ public class Settings : MonoBehaviour
         settingsMenu.SetUIOptionsButtons();
     }
 
-    public void SetLocale(Types.Locale newLocale, bool initial = false,bool reset=false)
+    public void SetLocale(Types.Locale newLocale, bool initial = false, bool restart = false)
     {
         string localeCode = "en-US";
 
@@ -144,7 +144,8 @@ public class Settings : MonoBehaviour
             I18n.SetLocale(localeCode);
             PlayerPrefs.SetString("locale", localeCode);
 
-            if(reset){
+            if (restart && I18n.GetLocale() == localeCode)
+            {
                 resetHandler.RestartApp();
             }
         }

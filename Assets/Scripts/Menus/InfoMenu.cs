@@ -35,15 +35,13 @@ public class InfoMenu : MonoBehaviour
     {
         // Cache
         menuUI = GetComponent<MenuUI>();
+        gameData = GameData.Instance;
+        LOCALE = I18n.Instance;
 
         if (SceneManager.GetActiveScene().name == "Gameplay")
         {
             infoBox = GameRefs.Instance.gameplayUI.GetComponent<InfoBox>();
         }
-
-        // Cache instances
-        gameData = GameData.Instance;
-        LOCALE = I18n.Instance;
 
         // Cache UI
         root = GetComponent<UIDocument>().rootVisualElement;

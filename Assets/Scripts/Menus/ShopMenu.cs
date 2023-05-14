@@ -116,6 +116,8 @@ public class ShopMenu : MonoBehaviour
 
         for (int i = 0; i < dailyContent.Length; i++)
         {
+            string nameOrder = i.ToString();
+            
             VisualElement shopBox = dailyBoxes.Q<VisualElement>("DailyBox" + i);
             Label topLabel = shopBox.Q<Label>("TopLabel");
             VisualElement image = shopBox.Q<VisualElement>("Image");
@@ -148,9 +150,9 @@ public class ShopMenu : MonoBehaviour
                 buyButtonLabel.text = dailyContent[i].price.ToString();
             }
 
-            infoButton.clicked += () => ShowInfo(infoButton.name);
+            infoButton.clicked += () => ShowInfo(nameOrder);
 
-            buyButton.clicked += () => BuyItem(buyButton.name, "Daily");
+            buyButton.clicked += () => BuyItem(nameOrder, "Daily");
         }
     }
 
@@ -160,6 +162,8 @@ public class ShopMenu : MonoBehaviour
 
         for (int i = 0; i < itemsContent.Length; i++)
         {
+            string nameOrder = i.ToString();
+
             VisualElement shopBox = itemsBoxes.Q<VisualElement>("ItemBox" + i);
             Label topLabel = shopBox.Q<Label>("TopLabel");
             VisualElement image = shopBox.Q<VisualElement>("Image");
@@ -181,9 +185,9 @@ public class ShopMenu : MonoBehaviour
 
             buyButtonLabel.text = itemsContent[i].price.ToString();
 
-            infoButton.clicked += () => ShowInfo(infoButton.name);
+            infoButton.clicked += () => ShowInfo(nameOrder);
 
-            buyButton.clicked += () => BuyItem(buyButton.name);
+            buyButton.clicked += () => BuyItem(nameOrder);
         }
     }
 
@@ -193,6 +197,8 @@ public class ShopMenu : MonoBehaviour
 
         for (int i = 0; i < gemsContent.Length; i++)
         {
+            string nameOrder = i.ToString();
+
             VisualElement shopBox = gemsBoxes.Q<VisualElement>("GemsBox" + i);
             Label topLabel = shopBox.Q<Label>("TopLabel");
             VisualElement image = shopBox.Q<VisualElement>("Image");
@@ -232,7 +238,7 @@ public class ShopMenu : MonoBehaviour
 
             buyButton.text = GetPrice(gemsContent[i].price, gemsContent[i].type);
 
-            buyButton.clicked += () => BuyGems(buyButton.name);
+            buyButton.clicked += () => BuyGems(nameOrder);
 
             // Bonus
             if (gemsContent[i].hasBonus)
@@ -273,6 +279,8 @@ public class ShopMenu : MonoBehaviour
 
         for (int i = 0; i < goldContent.Length; i++)
         {
+            string nameOrder = i.ToString();
+
             VisualElement shopBox = goldBoxes.Q<VisualElement>("GoldBox" + i);
             Label topLabel = shopBox.Q<Label>("TopLabel");
             VisualElement image = shopBox.Q<VisualElement>("Image");
@@ -286,7 +294,7 @@ public class ShopMenu : MonoBehaviour
 
             buyButton.text = GetPrice(goldContent[i].price, goldContent[i].type);
 
-            buyButton.clicked += () => BuyGold(buyButton.name);
+            buyButton.clicked += () => BuyGold(nameOrder);
 
             // Popular
             if (goldContent[i].isPopular)
@@ -388,18 +396,18 @@ public class ShopMenu : MonoBehaviour
         );
     }
 
-    void ShowInfo(string buttonName)
+    void ShowInfo(string nameOrder)
     {
-        int order = int.Parse(buttonName[(buttonName.LastIndexOf('n') + 1)..]);
+        int order = int.Parse(nameOrder);
 
         Types.ShopItemsContent shopItemsContent = shopData.itemsContent[order];
 
         infoMenu.Open(itemHandler.CreateItemTemp(shopItemsContent));
     }
 
-    void BuyItem(string buttonName, string type = "Items")
+    void BuyItem(string nameOrder, string type = "Items")
     {
-        int order = int.Parse(buttonName[(buttonName.LastIndexOf('n') + 1)..]);
+        int order = int.Parse(nameOrder);
 
         if (shopData.itemsContent[order].price != 0)
         {
@@ -443,9 +451,9 @@ public class ShopMenu : MonoBehaviour
         menuUI.CloseMenu(shopMenu.name);
     }
 
-    void BuyGems(string buttonName)
+    void BuyGems(string nameOrder)
     {
-        int order = int.Parse(buttonName[(buttonName.LastIndexOf('n') + 1)..]);
+        int order = int.Parse(nameOrder);
 
         Types.ShopValuesContent shopGem = shopData.gemsContent[order];
 
@@ -471,9 +479,9 @@ public class ShopMenu : MonoBehaviour
         }
     }
 
-    void BuyGold(string buttonName)
+    void BuyGold(string nameOrder)
     {
-        int order = int.Parse(buttonName[(buttonName.LastIndexOf('n') + 1)..]);
+        int order = int.Parse(nameOrder);
 
         Types.ShopValuesContent shopGold = shopData.goldContent[order];
 

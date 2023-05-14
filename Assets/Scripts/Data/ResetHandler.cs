@@ -35,7 +35,7 @@ public class ResetHandler : MonoBehaviour
 #elif UNITY_IOS
         // TODO - Show a message that says the following: 
         // The game will be closing, please open it up again!
-        // OR - Find a way to reset the game
+        // OR - Find a way to restart the game
 #endif
     }
 

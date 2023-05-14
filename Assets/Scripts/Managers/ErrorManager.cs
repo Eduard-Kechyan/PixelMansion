@@ -49,7 +49,12 @@ public class ErrorManager : MonoBehaviour
         }
         else
         {
-            Debug.Log(type.ToString() + " Error: " + errorCode);
+            Debug.LogWarning(type.ToString() + " Error: " + errorCode);
         }
+    }
+
+    public void FindUsed(string objectName)
+    {
+        Debug.LogWarning("FIND was used for " + objectName + ", which was NULL! That's a performance hit and needs to be FIXED!");
     }
 }

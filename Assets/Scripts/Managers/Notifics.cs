@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Android;
+/*using UnityEngine.Android;
 using Unity.Notifications.Android;
-using NotificationSamples;
+using NotificationSamples;*/
 using System.Threading.Tasks;
 
 /*#if UNITY_ANDROID
@@ -23,7 +23,7 @@ public class Notifics : MonoBehaviour
 
     // References
     //private GameNotificationsManager gameNotificationsManager;
-    private GameNotificationsManager manager;
+    //private GameNotificationsManager manager;
 
     // Instance
     public static Notifics Instance;
@@ -79,7 +79,7 @@ public class Notifics : MonoBehaviour
     {
         //AndroidNotificationCenter.CancelAllScheduledNotifications();
 
-        AndroidNotificationChannel chanel = new AndroidNotificationChannel()
+        /*AndroidNotificationChannel chanel = new AndroidNotificationChannel()
         {
             Id = "main_notifications_chanel",
             Name = "Main Channel",
@@ -87,7 +87,7 @@ public class Notifics : MonoBehaviour
             Description = "Main Notifications",
             CanShowBadge = true,
             EnableVibration = true
-        };
+        };*/
 
         /*AndroidNotification notification = new AndroidNotification
        {
@@ -145,7 +145,7 @@ public class Notifics : MonoBehaviour
     {
         if (allowed)
         {
-            var notification = new AndroidNotification
+           /* var notification = new AndroidNotification
             {
                 Title = "Hello!",
                 Text = "It's working! Yeah!",
@@ -158,14 +158,14 @@ public class Notifics : MonoBehaviour
                 // ShowInForeground = false
             };
 
-            AndroidNotificationCenter.SendNotification(notification, "main_notifications_chanel");
+            AndroidNotificationCenter.SendNotification(notification, "main_notifications_chanel");*/
         }
     }
 
     public async Task CheckNotifications()
     {
 #if UNITY_ANDROID
-        if (!Permission.HasUserAuthorizedPermission("android.permission.POST_NOTIFICATIONS"))
+       /* if (!Permission.HasUserAuthorizedPermission("android.permission.POST_NOTIFICATIONS"))
         {
             var callbacks = new PermissionCallbacks();
             callbacks.PermissionGranted += PermissionGranted;
@@ -175,7 +175,7 @@ public class Notifics : MonoBehaviour
         else
         {
             allowed = true;
-        }
+        }*/
 #elif UNITY_IOS
         // Check IOS notifications
 #endif

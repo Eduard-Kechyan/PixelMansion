@@ -15,6 +15,7 @@ public class GameData : MonoBehaviour
     public const int ITEM_COUNT = WIDTH * HEIGHT;
     public const int MAX_ENERGY = 100;
     public const float GAME_PIXEL_WIDTH = 180f;
+    public static float GAME_PIXEL_HEIGHT = 0f;
 
     public int maxExperience = 10;
     public int leftoverExperience = 0;
@@ -95,6 +96,8 @@ public class GameData : MonoBehaviour
         canLevelUp = PlayerPrefs.GetInt("canLevelUp") == 1 ? true : false;
 
         CalcMaxExperience();
+
+        CalcGamePixelHeight();
     }
 
     public void Init(string sceneName)
@@ -127,6 +130,11 @@ public class GameData : MonoBehaviour
      }*/
 
     //////// SET ////////
+
+    void CalcGamePixelHeight()
+    {
+        GAME_PIXEL_HEIGHT = Screen.height / (Screen.width / GAME_PIXEL_WIDTH);
+    }
 
     public void SetExperience(int amount, bool initial = false)
     {

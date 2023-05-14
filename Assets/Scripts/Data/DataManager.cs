@@ -73,7 +73,7 @@ public class DataManager : MonoBehaviour
         gameData.LoadSprites();
 
 #if UNITY_EDITOR
-       // isEditor = true;
+        // isEditor = true;
 
         // Make this script run if we arn't starting from the Loading scene
         if (
@@ -92,9 +92,9 @@ public class DataManager : MonoBehaviour
     // Check if we need to save initial data to disk
     public async Task CheckInitialData()
     {
-        Debug.Log("DataManager: "+writer.Exists("rootSet"));
+        // Debug.Log("DataManager: "+writer.Exists("rootSet"));
 
-        if (writer.Exists("rootSet"))
+        if (PlayerPrefs.HasKey("Loaded") && writer.Exists("rootSet"))
         {
             reader = QuickSaveReader.Create("Root", saveSettings);
 
@@ -194,6 +194,11 @@ public class DataManager : MonoBehaviour
 
         // Finish Task
         loaded = true;
+
+        if (initialLoad)
+        {
+            PlayerPrefs.SetInt("Loaded", 1);
+        }
 
         await Task.Delay(500);
     }

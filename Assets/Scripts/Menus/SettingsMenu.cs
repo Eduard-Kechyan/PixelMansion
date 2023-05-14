@@ -7,7 +7,6 @@ using Locale;
 public class SettingsMenu : MonoBehaviour
 {
     // Variables
-    public CameraPinch cameraPinch;
     public Color onColor;
     public Color offColor;
 
@@ -234,9 +233,9 @@ public class SettingsMenu : MonoBehaviour
         }
     }
 
-    public void SetLocale(Types.Locale newLocale, bool reset)
+    public void SetLocale(Types.Locale newLocale, bool restart)
     {
-        settings.SetLocale(newLocale, false, reset);
+        settings.SetLocale(newLocale, false, restart);
 
         SetUiText(true);
     }

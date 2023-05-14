@@ -17,9 +17,9 @@ TagManager:
   - ItemDragging
   - ItemBusy
   - 
-  - World
+  - Selectable
   - 
-  - 
+  - Character
   - 
   - 
   - 

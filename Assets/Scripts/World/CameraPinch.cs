@@ -22,9 +22,12 @@ public class CameraPinch : MonoBehaviour
     public float resetMinSpeed = 300f;
     public float resetMaxSpeed = 500f;
 
-    [Header("Mouse control")]
+    [Header("Mouse debug")]
     public float scrollSpeed = 1.1f;
     public float clickDelay = 0.5f;
+    [ReadOnly]
+    [SerializeField]
+    private bool canUseMouse = false;
 
     [Header("States")]
     [ReadOnly]
@@ -33,9 +36,6 @@ public class CameraPinch : MonoBehaviour
     public bool isResetting = false;
     [ReadOnly]
     public bool isRebounding = false;
-    [ReadOnly]
-    [SerializeField]
-    private bool canUseMouse = false;
 
     private float initialCamSize = 0;
     private float initialCamSizeRebound = 0;
@@ -47,15 +47,19 @@ public class CameraPinch : MonoBehaviour
     // References
     private Camera cam;
     private MenuUI menuUI;
+    private CameraPan cameraPan;
 
     void Start()
     {
         // Cache
         cam = Camera.main;
         menuUI = GameRefs.Instance.menuUI;
+        cameraPan = GetComponent<CameraPan>();
 
         // Get the camera's initial orthographic size
-        initialCamSize = cam.orthographicSize;
+        initialCamSize = CalcInitialCamSize();
+
+        cameraPan.initialCamSize = initialCamSize;
 
         // Check if we even can use the mouse/scroll wheel
         canUseMouse = Application.platform != RuntimePlatform.Android && Application.platform != RuntimePlatform.IPhonePlayer && Input.mousePresent;
@@ -175,7 +179,18 @@ public class CameraPinch : MonoBehaviour
                 isResetting = false;
             }
         }
-}
+    }
+
+    float CalcInitialCamSize()
+    {
+        float singlePixelWidth = Screen.width / GameData.GAME_PIXEL_WIDTH;
+
+        float halfScreenHeight = (Screen.height / singlePixelWidth) / 2;
+
+        cam.orthographicSize = halfScreenHeight;
+
+        return halfScreenHeight;
+    }
 
     void Pinch(Vector2 center, float oldDistance, float newDistance)
     {
@@ -193,7 +208,7 @@ public class CameraPinch : MonoBehaviour
         transform.position -= newPinchPosition - currentPinchPosition;
     }
 
-    public void CalcReboundSize()
+    void CalcReboundSize()
     {
         if (cam.orthographicSize > (maxClamp - rebound))
         {

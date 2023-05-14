@@ -5,22 +5,18 @@ using UnityEngine;
 public class CameraPan : MonoBehaviour
 {
     // Variables
+    public Sprite rootSprite;
     public Selector selector;
-    
+
+    [Header("Pan")]
     public bool canPan = true;
     public float touchThreshold = 20f;
-
-    public float slideSpeed = 10f;
-    public bool isSliding = false;
-    private Vector2 slideDirection;
-    public float slideDistance;
+    public float velocityStep = 0.35f;
 
     [Header("Clamp")]
     public bool shouldClamp = true;
-    public float clampMinX = -150;
-    public float clampMaxX = 150;
-    public float clampMinY = -150;
-    public float clampMaxY = 150;
+    [ReadOnly]
+    public Vector2 clamp;
 
     [Header("Rebound")]
     public bool shouldRebound = true;
@@ -31,6 +27,12 @@ public class CameraPan : MonoBehaviour
     public bool shouldReset = true;
     public float resetSpeed = 10f;
 
+    [Header("Gizmos debug")]
+    public bool showClamp = false;
+    public bool showRebound = false;
+    public bool showRealClamp = false;
+    public bool showRealRebound = false;
+
     [Header("States")]
     [ReadOnly]
     public bool isPanning = false;
@@ -39,25 +41,31 @@ public class CameraPan : MonoBehaviour
     [ReadOnly]
     public bool isReseting = false;
 
-    private Vector2 touchPosition { get { return lastTouchPos; } }
     private Vector3 initialPos;
     private Vector2 initialTouchPos;
     private Vector2 lastTouchPos;
     private float touchStartTime;
-    private Vector2 reboundPos;
     private Vector2 deltaPos;
+    private Vector2 panVelocity;
+    private float camDiffX;
+    private float camDiffY;
+    [HideInInspector]
+    public float initialCamSize = 0;
 
     // References
     private Camera cam;
-    private Rigidbody2D rigidBody;
     private MenuUI menuUI;
 
     void Start()
     {
         // Cache
         cam = Camera.main;
-        rigidBody = GetComponent<Rigidbody2D>();
         menuUI = GameRefs.Instance.menuUI;
+
+        if (selector == null)
+        {
+            selector = GameObject.Find("World").GetComponent<Selector>();
+        }
 
         // Set the camera's initial position
         initialPos = new Vector3(
@@ -66,9 +74,57 @@ public class CameraPan : MonoBehaviour
             transform.position.z
         );
 
-        clampMinX = -clampMinX;
-        clampMinY = -clampMinY;
+        // Initialize clamp
+        clamp = CalcClamp();
     }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        if (Application.isPlaying)
+        {
+            if (showClamp)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawLine(new Vector3(-clamp.x, -clamp.y), new Vector3(-clamp.x, clamp.y));
+                Gizmos.DrawLine(new Vector3(-clamp.x, clamp.y), new Vector3(clamp.x, clamp.y));
+                Gizmos.DrawLine(new Vector3(clamp.x, clamp.y), new Vector3(clamp.x, -clamp.y));
+                Gizmos.DrawLine(new Vector3(clamp.x, -clamp.y), new Vector3(-clamp.x, -clamp.y));
+            }
+
+            if (showRebound)
+            {
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawLine(new Vector3(-clamp.x + rebound, -clamp.y + rebound), new Vector3(-clamp.x + rebound, clamp.y - rebound));
+                Gizmos.DrawLine(new Vector3(-clamp.x + rebound, clamp.y - rebound), new Vector3(clamp.x - rebound, clamp.y - rebound));
+                Gizmos.DrawLine(new Vector3(clamp.x - rebound, clamp.y - rebound), new Vector3(clamp.x - rebound, -clamp.y + rebound));
+                Gizmos.DrawLine(new Vector3(clamp.x - rebound, -clamp.y + rebound), new Vector3(-clamp.x + rebound, -clamp.y + rebound));
+            }
+
+            if (showRealClamp)
+            {
+                Vector2 newClamp = new Vector2(rootSprite.rect.width / 2, rootSprite.rect.height / 2);
+
+                Gizmos.color = Color.cyan;
+                Gizmos.DrawLine(new Vector3(-newClamp.x, -newClamp.y), new Vector3(-newClamp.x, newClamp.y));
+                Gizmos.DrawLine(new Vector3(-newClamp.x, newClamp.y), new Vector3(newClamp.x, newClamp.y));
+                Gizmos.DrawLine(new Vector3(newClamp.x, newClamp.y), new Vector3(newClamp.x, -newClamp.y));
+                Gizmos.DrawLine(new Vector3(newClamp.x, -newClamp.y), new Vector3(-newClamp.x, -newClamp.y));
+            }
+
+            if (showRealRebound)
+            {
+                Vector2 newClamp = new Vector2(rootSprite.rect.width / 2, rootSprite.rect.height / 2);
+
+                Gizmos.color = Color.blue;
+                Gizmos.DrawLine(new Vector3(-newClamp.x + rebound, -newClamp.y + rebound), new Vector3(-newClamp.x + rebound, newClamp.y - rebound));
+                Gizmos.DrawLine(new Vector3(-newClamp.x + rebound, newClamp.y - rebound), new Vector3(newClamp.x - rebound, newClamp.y - rebound));
+                Gizmos.DrawLine(new Vector3(newClamp.x - rebound, newClamp.y - rebound), new Vector3(newClamp.x - rebound, -newClamp.y + rebound));
+                Gizmos.DrawLine(new Vector3(newClamp.x - rebound, -newClamp.y + rebound), new Vector3(-newClamp.x + rebound, -newClamp.y + rebound));
+            }
+        }
+    }
+#endif
 
     void Update()
     {
@@ -86,17 +142,15 @@ public class CameraPan : MonoBehaviour
                         touchStartTime = Time.time;
                         lastTouchPos = initialTouchPos;
 
+                        panVelocity = Vector2.zero;
+
                         isPanning = false;
                         isReseting = false;
                         isRebounding = false;
 
-                        rigidBody.velocity = Vector2.zero;
-                        rigidBody.Sleep();
-
                         break;
 
                     case TouchPhase.Moved:
-                        lastTouchPos = touch.position;
 
                         // Compare the current position to the initial position
                         Vector2 diffMoved = touch.position - initialTouchPos;
@@ -108,12 +162,23 @@ public class CameraPan : MonoBehaviour
                             || diffMoved.y < -touchThreshold
                         )
                         {
-                            isPanning = true;
-
-                            if (touch.deltaPosition != Vector2.zero)
+                            if (!selector.isSelecting)
                             {
-                                deltaPos = touch.deltaPosition;
-                                Pan(deltaPos);
+                                isPanning = true;
+
+                                if (touch.deltaPosition != Vector2.zero)
+                                {
+                                    deltaPos = touch.deltaPosition;
+
+                                    panVelocity = deltaPos;
+
+                                    Pan(deltaPos);
+
+                                    if (selector.isSelecting && !selector.isSelected)
+                                    {
+                                        selector.CancelSelecting();
+                                    }
+                                }
                             }
                         }
 
@@ -122,13 +187,17 @@ public class CameraPan : MonoBehaviour
                     case TouchPhase.Ended:
                         isPanning = false;
 
-                        Slide();
-
                         ResetPan(true);
 
-                        if (shouldRebound && !isPanning)
+                        if (selector.isSelecting && !selector.isSelected)
                         {
-                            isRebounding = true;
+                            selector.CancelSelecting();
+                        }
+
+                        // Tapped
+                        if (Time.time - touchStartTime >= selector.secondTapDuration && !selector.isSelecting && !selector.isSelected)
+                        {
+                            selector.StartSelecting(touch.position, true);
                         }
 
                         break;
@@ -137,15 +206,24 @@ public class CameraPan : MonoBehaviour
                         // Compare the current position to the initial position
                         Vector2 diffStationary = touch.position - initialTouchPos;
 
+                        panVelocity = Vector2.zero;
+
                         if (diffStationary.x < touchThreshold
                             || diffStationary.x > -touchThreshold
                             || diffStationary.y < touchThreshold
                             || diffStationary.y > -touchThreshold
                         )
                         {
-                            if (Time.time - touchStartTime >= selector.tapDuration && !isPanning)
+                            // Start selecting
+                            if (Time.time - touchStartTime >= selector.tapDuration && !isPanning && !selector.isSelecting)
                             {
-                                selector.Select(touch.position);
+                                selector.StartSelecting(touch.position);
+                            }
+
+                            // Select the next one
+                            if (Time.time - touchStartTime >= selector.secondTapDuration && !isPanning && !selector.isSelecting && selector.isSelected)
+                            {
+                                selector.StartSelecting(touch.position);
                             }
                         }
 
@@ -154,12 +232,26 @@ public class CameraPan : MonoBehaviour
             }
         }
 
+        // Check for inertia
+        if (!isPanning)
+        {
+            AddInertia();
+        }
+
         // Check for rebounding
         if (isRebounding && !isPanning)
         {
+            if (transform.position.x < -clamp.x - camDiffX + rebound
+                || transform.position.x > clamp.x + camDiffX - rebound
+                || transform.position.y < -clamp.y - camDiffY + rebound
+                || transform.position.y > clamp.y + camDiffY - rebound)
+            {
+                panVelocity = Vector2.zero;
+            }
+
             Vector3 clampedPos = new Vector3(
-                Mathf.Clamp(transform.position.x, clampMinX + rebound, clampMaxX - rebound),
-                Mathf.Clamp(transform.position.y, clampMinY + rebound, clampMaxY - rebound),
+                Mathf.Clamp(transform.position.x, -clamp.x - camDiffX + rebound, clamp.x + camDiffX - rebound),
+                Mathf.Clamp(transform.position.y, -clamp.y - camDiffY + rebound, clamp.y + camDiffY - rebound),
                 transform.position.z);
 
             transform.position = Vector3.MoveTowards(transform.position, clampedPos, reboundSpeed * Time.deltaTime);
@@ -184,29 +276,6 @@ public class CameraPan : MonoBehaviour
                 isReseting = false;
             }
         }
-
-        if (isSliding && !isPanning)
-        {
-            /*transform.position = Vector3.MoveTowards(
-                transform.position,
-                initialPos,
-                resetSpeed * Time.deltaTime
-            );*/
-
-            //rigidBody.AddForce(slideDirection);
-            /* if (transform.position.x == initialPos.x && transform.position.y == initialPos.y)
-             {
-                 isReseting = false;
-             }*/
-        }
-    }
-
-    void Slide()
-    {
-        slideDirection = (cam.ScreenToWorldPoint(initialTouchPos) - cam.ScreenToWorldPoint(deltaPos));
-        slideDistance = Vector2.Distance(cam.ScreenToWorldPoint(initialTouchPos), cam.ScreenToWorldPoint(deltaPos));
-
-        isSliding = true;
     }
 
     void LateUpdate()
@@ -214,20 +283,57 @@ public class CameraPan : MonoBehaviour
         ClampCamera();
     }
 
-    public void Pan(Vector2 deltaPosition)
+    Vector2 CalcClamp()
+    {
+        float singlePixelWidth = Screen.width / GameData.GAME_PIXEL_WIDTH;
+
+        float halfScreenWidth = GameData.GAME_PIXEL_WIDTH / 2;
+        float halfScreenHeight = (Screen.height / singlePixelWidth) / 2;
+
+        Vector2 newClamp = new Vector2((rootSprite.rect.width / 2) - halfScreenWidth, (rootSprite.rect.height / 2) - halfScreenHeight);
+
+        return newClamp;
+    }
+
+    void Pan(Vector2 deltaPosition)
     {
         transform.position -= (cam.ScreenToWorldPoint(deltaPosition) - cam.ScreenToWorldPoint(Vector2.zero));
     }
 
+    void AddInertia()
+    {
+        if (panVelocity.magnitude < 0.02f)
+        {
+            panVelocity = Vector2.zero;
+        }
+
+        if (panVelocity != Vector2.zero)
+        {
+            panVelocity = Vector2.Lerp(panVelocity, Vector2.zero, velocityStep);
+            transform.position += new Vector3(-panVelocity.x / (500 * (1 / cam.orthographicSize)), -panVelocity.y / (500 * (1 / cam.orthographicSize)), 0);
+        }
+    }
+
     void ClampCamera()
     {
+        camDiffY = initialCamSize - cam.orthographicSize;
+
+        float screenDiff = ((float)Screen.height) / ((float)Screen.width);
+
+        camDiffX = camDiffY / screenDiff;
+
         if (shouldClamp)
         {
             transform.position = new Vector3(
-                Mathf.Clamp(transform.position.x, clampMinX, clampMaxX),
-                Mathf.Clamp(transform.position.y, clampMinY, clampMaxY),
+                Mathf.Clamp(transform.position.x, -clamp.x - camDiffX, clamp.x + camDiffX),
+                Mathf.Clamp(transform.position.y, -clamp.y - camDiffY, clamp.y + camDiffY),
                 transform.position.z
             );
+        }
+
+        if (shouldRebound && !isPanning)
+        {
+            isRebounding = true;
         }
     }
 
@@ -235,8 +341,7 @@ public class CameraPan : MonoBehaviour
     {
         if (shouldReset)
         {
-            rigidBody.velocity = Vector2.zero;
-            rigidBody.Sleep();
+            panVelocity = Vector2.zero;
 
             if (overtime)
             {
