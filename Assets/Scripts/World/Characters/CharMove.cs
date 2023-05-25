@@ -6,7 +6,9 @@ using UnityEngine.AI;
 public class CharMove : MonoBehaviour
 {
     // Variables
-    public bool useMouse = true;
+    public bool debug = false;
+    [Condition("debug", true)]
+    public bool useMouse = false;
 
     [Header("States")]
     [ReadOnly]
@@ -30,6 +32,7 @@ public class CharMove : MonoBehaviour
     };
 
     // References
+    private CharOrderer charOrderer;
     private NavMeshAgent agent;
     private Animator animator;
     private Camera cam;
@@ -38,6 +41,7 @@ public class CharMove : MonoBehaviour
     void Start()
     {
         // Cache
+        charOrderer = GetComponent<CharOrderer>();
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         cam = Camera.main;
@@ -63,11 +67,15 @@ public class CharMove : MonoBehaviour
             animator.SetFloat("Direction", direction);
 
             animator.SetBool("Walking", true);
+
+            charOrderer.CheckArea();
         }
         else
         {
             animator.SetBool("Walking", false);
         }
+
+        GetTouchPos();
 
         // Debug
 #if UNITY_EDITOR
@@ -165,11 +173,21 @@ public class CharMove : MonoBehaviour
         return false;
     }
 
+    void GetTouchPos()
+    {
+        if (debug && !useMouse && Input.touchCount == 1)
+        {
+            Vector2 touchPos = cam.ScreenToWorldPoint(Input.GetTouch(0).position);
+
+            SetDestination(touchPos);
+        }
+    }
+
     //// DEBUG ////
 #if UNITY_EDITOR
     void GetMousePos()
     {
-        if (useMouse && Input.GetMouseButtonDown(0))
+        if (debug & useMouse && Input.GetMouseButtonDown(0))
         {
             Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
 

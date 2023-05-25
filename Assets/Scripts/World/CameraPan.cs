@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class CameraPan : MonoBehaviour
 {
@@ -49,6 +50,7 @@ public class CameraPan : MonoBehaviour
     private Vector2 panVelocity;
     private float camDiffX;
     private float camDiffY;
+    private bool beganOutOfUI = true;
     [HideInInspector]
     public float initialCamSize = 0;
 
@@ -56,11 +58,17 @@ public class CameraPan : MonoBehaviour
     private Camera cam;
     private MenuUI menuUI;
 
+    // UI
+    private VisualElement root;
+
     void Start()
     {
         // Cache
         cam = Camera.main;
         menuUI = GameRefs.Instance.menuUI;
+
+        // Cache UI
+        root = GameRefs.Instance.hubUIDoc.rootVisualElement;
 
         if (selector == null)
         {
@@ -135,99 +143,108 @@ public class CameraPan : MonoBehaviour
             {
                 Touch touch = Input.GetTouch(0);
 
-                switch (touch.phase)
+                // Check if we are touching out of the UI
+                if (touch.phase == TouchPhase.Began)
                 {
-                    case TouchPhase.Began:
-                        initialTouchPos = touch.position;
-                        touchStartTime = Time.time;
-                        lastTouchPos = initialTouchPos;
+                    beganOutOfUI = CheckOutOfUITouch(touch.position);
+                }
 
-                        panVelocity = Vector2.zero;
+                if (beganOutOfUI)
+                {
+                    switch (touch.phase)
+                    {
+                        case TouchPhase.Began:
+                            initialTouchPos = touch.position;
+                            touchStartTime = Time.time;
+                            lastTouchPos = initialTouchPos;
 
-                        isPanning = false;
-                        isReseting = false;
-                        isRebounding = false;
+                            panVelocity = Vector2.zero;
 
-                        break;
+                            isPanning = false;
+                            isReseting = false;
+                            isRebounding = false;
 
-                    case TouchPhase.Moved:
+                            break;
 
-                        // Compare the current position to the initial position
-                        Vector2 diffMoved = touch.position - initialTouchPos;
+                        case TouchPhase.Moved:
+                            // Compare the current position to the initial position
+                            Vector2 diffMoved = touch.position - initialTouchPos;
 
-                        if (
-                            diffMoved.x > touchThreshold
-                            || diffMoved.x < -touchThreshold
-                            || diffMoved.y > touchThreshold
-                            || diffMoved.y < -touchThreshold
-                        )
-                        {
-                            if (!selector.isSelecting)
+                            if (
+                                diffMoved.x > touchThreshold
+                                || diffMoved.x < -touchThreshold
+                                || diffMoved.y > touchThreshold
+                                || diffMoved.y < -touchThreshold
+                            )
                             {
-                                isPanning = true;
-
-                                if (touch.deltaPosition != Vector2.zero)
+                                if (!selector.isSelecting)
                                 {
-                                    deltaPos = touch.deltaPosition;
+                                    isPanning = true;
 
-                                    panVelocity = deltaPos;
-
-                                    Pan(deltaPos);
-
-                                    if (selector.isSelecting && !selector.isSelected)
+                                    if (touch.deltaPosition != Vector2.zero)
                                     {
-                                        selector.CancelSelecting();
+                                        deltaPos = touch.deltaPosition;
+
+                                        panVelocity = deltaPos;
+
+                                        Pan(deltaPos);
+
+                                        if (selector.isSelecting && !selector.isSelected)
+                                        {
+                                            selector.CancelSelecting();
+                                        }
                                     }
                                 }
                             }
-                        }
 
-                        break;
+                            break;
 
-                    case TouchPhase.Ended:
-                        isPanning = false;
+                        case TouchPhase.Ended:
+                            isPanning = false;
 
-                        ResetPan(true);
+                            ResetPan(true);
 
-                        if (selector.isSelecting && !selector.isSelected)
-                        {
-                            selector.CancelSelecting();
-                        }
-
-                        // Tapped
-                        if (Time.time - touchStartTime >= selector.secondTapDuration && !selector.isSelecting && !selector.isSelected)
-                        {
-                            selector.StartSelecting(touch.position, true);
-                        }
-
-                        break;
-
-                    case TouchPhase.Stationary:
-                        // Compare the current position to the initial position
-                        Vector2 diffStationary = touch.position - initialTouchPos;
-
-                        panVelocity = Vector2.zero;
-
-                        if (diffStationary.x < touchThreshold
-                            || diffStationary.x > -touchThreshold
-                            || diffStationary.y < touchThreshold
-                            || diffStationary.y > -touchThreshold
-                        )
-                        {
-                            // Start selecting
-                            if (Time.time - touchStartTime >= selector.tapDuration && !isPanning && !selector.isSelecting)
+                            if (selector.isSelecting && !selector.isSelected)
                             {
-                                selector.StartSelecting(touch.position);
+                                selector.CancelSelecting();
                             }
 
-                            // Select the next one
-                            if (Time.time - touchStartTime >= selector.secondTapDuration && !isPanning && !selector.isSelecting && selector.isSelected)
+                            // Tapped
+                            if (Time.time - touchStartTime >= selector.secondTapDuration && !selector.isSelecting && !selector.isSelected)
                             {
-                                selector.StartSelecting(touch.position);
+                                selector.StartSelecting(touch.position, true);
                             }
-                        }
 
-                        break;
+                            break;
+
+                        case TouchPhase.Stationary:
+                            // Compare the current position to the initial position
+                            Vector2 diffStationary = touch.position - initialTouchPos;
+
+                            panVelocity = Vector2.zero;
+
+                            if (diffStationary.x < touchThreshold
+                                || diffStationary.x > -touchThreshold
+                                || diffStationary.y < touchThreshold
+                                || diffStationary.y > -touchThreshold
+                            )
+                            {
+                                // Start selecting
+                                if (Time.time - touchStartTime >= selector.tapDuration && !isPanning && !selector.isSelecting)
+                                {
+                                    selector.StartSelecting(touch.position);
+                                }
+
+                                // Select the next one
+                                if (Time.time - touchStartTime >= selector.secondTapDuration && !isPanning && !selector.isSelecting && selector.isSelected)
+                                {
+                                    selector.StartSelecting(touch.position);
+                                }
+
+                            }
+
+                            break;
+                    }
                 }
             }
         }
@@ -355,6 +372,26 @@ public class CameraPan : MonoBehaviour
                     initialPos.z
                 );
             }
+        }
+    }
+
+    bool CheckOutOfUITouch(Vector2 touchPos)
+    {
+        Vector2 newUIPos = RuntimePanelUtils.CameraTransformWorldToPanel(
+            root.panel,
+            cam.ScreenToWorldPoint(touchPos),
+            cam
+        );
+
+        var pickedElement = root.panel.Pick(newUIPos);
+
+        if (pickedElement == null)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 }

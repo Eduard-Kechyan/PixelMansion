@@ -30,8 +30,8 @@ public class Selector : MonoBehaviour
     private Camera cam;
     private SoundManager soundManager;
     private SelectorUIHandler selectorUIHandler;
-   /* private CharMove charMoveMain;
-    private CharSpeech charSpeechMain;*/
+    /* private CharMove charMoveMain;
+     private CharSpeech charSpeechMain;*/
 
     // UI
     private VisualElement root;
@@ -43,8 +43,8 @@ public class Selector : MonoBehaviour
         cam = Camera.main;
         soundManager = SoundManager.Instance;
         selectorUIHandler = hubGameUiDoc.GetComponent<SelectorUIHandler>();
-      /*  charMoveMain = CharMain.Instance.charMove;
-        charSpeechMain = CharMain.Instance.charSpeech;*/
+        /*  charMoveMain = CharMain.Instance.charMove;
+          charSpeechMain = CharMain.Instance.charSpeech;*/
 
         // Calc duration
         duration = arrowDuration / 6;
@@ -79,7 +79,23 @@ public class Selector : MonoBehaviour
                        Mathf.Infinity
                    );
 
-        hits.Sort(SortBySortingOrder);
+        hits.Sort(SortColliders);
+
+        //  Debug.Log(hits[0].transform.name);
+        // Debug.Log(hits[0].transform.position.z);
+
+        /*   Vector3 worldPoint = cam.ScreenToWorldPoint(position);
+
+           worldPoint.z = cam.transform.position.z;
+
+           Ray ray = new Ray(worldPoint, new Vector3(0, 0, 1));
+
+           RaycastHit2D hitInfo = Physics2D.GetRayIntersection(ray, Mathf.Infinity, LayerMask.GetMask("Selectable"));
+
+           Debug.Log(hitInfo);
+           Debug.Log(hitInfo.transform.name);
+           Debug.Log(hitInfo.transform.position.z);
+           Debug.Log(hitInfo.transform.localPosition.z);*/
 
         if (hits.Count > 0 && (hits[0] || hits[0].collider != null))
         {
@@ -102,7 +118,7 @@ public class Selector : MonoBehaviour
                 selectable = newSelectable;
             }
 
-            lastSpriteOrder = selectable.GetSprite();
+            lastSpriteOrder = selectable.GetSprites();
 
             // Check if we can select the selectable
             if (selectable.canBeSelected)
@@ -113,14 +129,14 @@ public class Selector : MonoBehaviour
                     {
                         soundManager.PlaySound("", 0f, swapSound);
 
-                       /* charMoveMain.SetDestination(selectable.transform.position);
+                        //charMoveMain.SetDestination(selectable.transform.position);
 
-                        if (!charSpeechMain.isSpeaking && !charSpeechMain.isTimeOut)
-                        {
-                            SelectableSpeech selectableSpeech = selectable.GetComponent<SelectableSpeech>();
+                        //  if (!charSpeechMain.isSpeaking && !charSpeechMain.isTimeOut)
+                        //   {
+                        //  SelectableSpeech selectableSpeech = selectable.GetComponent<SelectableSpeech>();
 
-                            charSpeechMain.TryToSpeak(selectableSpeech.GetSpeech(), false);
-                        }*/
+                        //  charSpeechMain.TryToSpeak(selectableSpeech.GetSpeech(), false);
+                        // }
 
                         isTapping = true;
                     }
@@ -157,7 +173,7 @@ public class Selector : MonoBehaviour
 
     public void SelectOption(int option)
     {
-        selectable.SetSprite(option);
+        selectable.SetSprites(option);
 
         soundManager.PlaySound("", 0f, swapSound);
     }
@@ -177,7 +193,7 @@ public class Selector : MonoBehaviour
 
         if (denied)
         {
-            selectable.SetSprite(lastSpriteOrder);
+            selectable.CancelSpriteChange(lastSpriteOrder);
         }
     }
 
@@ -185,6 +201,8 @@ public class Selector : MonoBehaviour
     {
         isSelecting = false;
         isSelected = false;
+
+        selectable.ConfirmSpriteChange(lastSpriteOrder);
 
         selectable.Unselect();
     }
@@ -243,7 +261,7 @@ public class Selector : MonoBehaviour
 
         selectable.Select();
 
-        if (Settings.Instance.vibrationOn)
+        if (Settings.Instance.vibrationOn && (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer))
         {
             Handheld.Vibrate();
         }
@@ -251,11 +269,8 @@ public class Selector : MonoBehaviour
         yield return new WaitForSeconds(duration);
     }
 
-    int SortBySortingOrder(RaycastHit2D hit1, RaycastHit2D hit2)
+    int SortColliders(RaycastHit2D hit1, RaycastHit2D hit2)
     {
-        float hit1Order = hit1.transform.GetComponent<SpriteRenderer>().sortingOrder;
-        float hit2Order = hit2.transform.GetComponent<SpriteRenderer>().sortingOrder;
-
-        return hit2Order.CompareTo(hit1Order);
+        return hit2.transform.position.z.CompareTo(hit1.transform.position.z);
     }
 }

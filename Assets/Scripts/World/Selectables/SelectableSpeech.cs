@@ -32,7 +32,7 @@ public class SelectableSpeech : MonoBehaviour
     public string GetSpeech()
     {
         bool canBeTapped = selectable.canBeTapped;
-        int spriteOrder = selectable.GetSprite();
+        int spriteOrder = selectable.GetSprites();
 
         if (canBeTapped && speechTimeOutInner <= 0)
         {

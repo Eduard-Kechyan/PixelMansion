@@ -76,21 +76,7 @@ public class Selectable : MonoBehaviour
         }
     }
 
-    public void SetSprite(int order)
-    {
-        switch (type)
-        {
-            case Type.Floor:
-                changerFloor.Change(order);
-                break;
-
-            case Type.Wall:
-                changerWall.Change(order);
-                break;
-        }
-    }
-
-    public int GetSprite()
+    public int GetSprites()
     {
         int order = 0;
 
@@ -116,7 +102,6 @@ public class Selectable : MonoBehaviour
         {
             case Type.Floor:
                 sprites = changerFloor.optionSprites;
-                Debug.Log(changerFloor);
                 break;
 
             case Type.Wall:
@@ -125,6 +110,48 @@ public class Selectable : MonoBehaviour
         }
 
         return sprites;
+    }
+
+    public void SetSprites(int order)
+    {
+        switch (type)
+        {
+            case Type.Floor:
+                changerFloor.SetSprites(order);
+                break;
+
+            case Type.Wall:
+                changerWall.SetSprites(order);
+                break;
+        }
+    }
+
+    public void CancelSpriteChange(int order)
+    {
+        switch (type)
+        {
+            case Type.Floor:
+                changerFloor.Cancel(order);
+                break;
+
+            case Type.Wall:
+                changerWall.Cancel(order);
+                break;
+        }
+    }
+
+    public void ConfirmSpriteChange(int order)
+    {
+        switch (type)
+        {
+            case Type.Floor:
+                changerFloor.Confirm();
+                break;
+
+            case Type.Wall:
+                changerWall.Confirm();
+                break;
+        }
     }
 
     public void Select()

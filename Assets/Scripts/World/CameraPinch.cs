@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class CameraPinch : MonoBehaviour
 {
@@ -40,6 +41,7 @@ public class CameraPinch : MonoBehaviour
     private float initialCamSize = 0;
     private float initialCamSizeRebound = 0;
     private bool lastCanPinch = true;
+    private bool beganOutOfUI = true;
 
     private float clicked = 0;
     private float clickTime = 0;
@@ -49,12 +51,18 @@ public class CameraPinch : MonoBehaviour
     private MenuUI menuUI;
     private CameraPan cameraPan;
 
+    // UI
+    private VisualElement root;
+
     void Start()
     {
         // Cache
         cam = Camera.main;
         menuUI = GameRefs.Instance.menuUI;
         cameraPan = GetComponent<CameraPan>();
+
+        // Cache UI
+        root = GameRefs.Instance.hubUIDoc.rootVisualElement;
 
         // Get the camera's initial orthographic size
         initialCamSize = CalcInitialCamSize();
@@ -106,26 +114,35 @@ public class CameraPinch : MonoBehaviour
                     Touch touch1 = Input.touches[0];
                     Touch touch2 = Input.touches[1];
 
-                    float previousDistance = Vector2.Distance(touch1.position - touch1.deltaPosition, touch2.position - touch2.deltaPosition);
-
-                    float currentDistance = Vector2.Distance(touch1.position, touch2.position);
-
-                    if (previousDistance != currentDistance)
+                    // Check if we are touching out of the UI
+                    if (touch1.phase == TouchPhase.Began && touch2.phase == TouchPhase.Began)
                     {
-                        Pinch((touch1.position + touch2.position) / 2, previousDistance, currentDistance);
-
-                        isPinching = true;
-                    }
-                    else
-                    {
-                        isPinching = false;
+                        beganOutOfUI = CheckOutOfUITouch(touch1.position, touch2.position);
                     }
 
-                    if (touch1.phase == TouchPhase.Ended || touch2.phase == TouchPhase.Ended)
+                    if (beganOutOfUI)
                     {
-                        if (shouldClamp && shouldRebound)
+                        float previousDistance = Vector2.Distance(touch1.position - touch1.deltaPosition, touch2.position - touch2.deltaPosition);
+
+                        float currentDistance = Vector2.Distance(touch1.position, touch2.position);
+
+                        if (previousDistance != currentDistance)
                         {
-                            CalcReboundSize();
+                            Pinch((touch1.position + touch2.position) / 2, previousDistance, currentDistance);
+
+                            isPinching = true;
+                        }
+                        else
+                        {
+                            isPinching = false;
+                        }
+
+                        if (touch1.phase == TouchPhase.Ended || touch2.phase == TouchPhase.Ended)
+                        {
+                            if (shouldClamp && shouldRebound)
+                            {
+                                CalcReboundSize();
+                            }
                         }
                     }
                 }
@@ -265,6 +282,33 @@ public class CameraPinch : MonoBehaviour
         {
             canPinch = false;
             lastCanPinch = true;
+        }
+    }
+
+    bool CheckOutOfUITouch(Vector2 touchPos1, Vector2 touchPos2)
+    {
+        Vector2 newUIPos1 = RuntimePanelUtils.CameraTransformWorldToPanel(
+            root.panel,
+            cam.ScreenToWorldPoint(touchPos1),
+            cam
+        );
+
+        Vector2 newUIPos2 = RuntimePanelUtils.CameraTransformWorldToPanel(
+            root.panel,
+            cam.ScreenToWorldPoint(touchPos2),
+            cam
+        );
+
+        var pickedElement1 = root.panel.Pick(newUIPos1);
+        var pickedElement2 = root.panel.Pick(newUIPos2);
+
+        if (pickedElement1 == null && pickedElement2 == null)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 }
