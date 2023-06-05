@@ -39,6 +39,7 @@ public class Selectable : MonoBehaviour
 
     private ChangeFloor changerFloor;
     private ChangeWall changerWall;
+    private ChangeFurniture changeFurniture;
 
     void Start()
     {
@@ -73,7 +74,33 @@ public class Selectable : MonoBehaviour
             case Type.Wall:
                 changerWall = GetComponent<ChangeWall>();
                 break;
+
+            case Type.Furniture:
+                changeFurniture = GetComponent<ChangeFurniture>();
+                break;
         }
+    }
+
+    public bool GetOld()
+    {
+        bool isOld = true;
+
+        switch (type)
+        {
+            case Type.Floor:
+                isOld = changerFloor.isOld;
+                break;
+
+            case Type.Wall:
+                isOld = changerWall.isOld;
+                break;
+
+            case Type.Furniture:
+                isOld = changeFurniture.isOld;
+                break;
+        }
+
+        return isOld;
     }
 
     public int GetSprites()
@@ -88,6 +115,10 @@ public class Selectable : MonoBehaviour
 
             case Type.Wall:
                 order = changerWall.spriteOrder;
+                break;
+
+            case Type.Furniture:
+                order = changeFurniture.spriteOrder;
                 break;
         }
 
@@ -107,6 +138,10 @@ public class Selectable : MonoBehaviour
             case Type.Wall:
                 sprites = changerWall.optionSprites;
                 break;
+
+            case Type.Furniture:
+                sprites = changeFurniture.optionSprites;
+                break;
         }
 
         return sprites;
@@ -123,6 +158,10 @@ public class Selectable : MonoBehaviour
             case Type.Wall:
                 changerWall.SetSprites(order);
                 break;
+
+            case Type.Furniture:
+                changeFurniture.SetSprites(order);
+                break;
         }
     }
 
@@ -136,6 +175,10 @@ public class Selectable : MonoBehaviour
 
             case Type.Wall:
                 changerWall.Cancel(order);
+                break;
+
+            case Type.Furniture:
+                changeFurniture.Cancel(order);
                 break;
         }
     }
@@ -151,6 +194,10 @@ public class Selectable : MonoBehaviour
             case Type.Wall:
                 changerWall.Confirm();
                 break;
+
+            case Type.Furniture:
+                changeFurniture.Confirm();
+                break;
         }
     }
 
@@ -165,6 +212,10 @@ public class Selectable : MonoBehaviour
             case Type.Wall:
                 changerWall.Select();
                 break;
+
+            case Type.Furniture:
+                changeFurniture.Select();
+                break;
         }
     }
 
@@ -178,6 +229,10 @@ public class Selectable : MonoBehaviour
 
             case Type.Wall:
                 changerWall.Unselect();
+                break;
+
+            case Type.Furniture:
+                changeFurniture.Unselect();
                 break;
         }
     }

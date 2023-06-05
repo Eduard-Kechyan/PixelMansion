@@ -54,6 +54,11 @@ namespace Locale
             }
         }
 
+        public string[] GetLocales()
+        {
+            return locales;
+        }
+
         public string ConvertToCode(Types.Locale newLocale)
         {
             string locale;
@@ -115,7 +120,7 @@ namespace Locale
                     locale = Types.Locale.Italian;
                     break;
                 case "ru-RU":
-                    locale = Types.Locale.Russian; 
+                    locale = Types.Locale.Russian;
                     break;
                 case "hy-HY":
                     locale = Types.Locale.Armenian;

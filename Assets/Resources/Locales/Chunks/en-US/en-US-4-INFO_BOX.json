@@ -1,0 +1,30 @@
+{
+    "________ INFO_BOX ________": "________________",
+    "info_box_default": "TAP an item to see it's info.",
+    "info_box_undo": "TAP Undo to bring back your item.",
+    "info_box_crate": "Crate",
+    "info_box_crate_text": "There is something inside the crate! MERGE next to it or use Gems to open it.",
+    "info_box_locker": "(Locked)",
+    "info_box_locker_text": "This item is locked! MERGE with it or use Gems to unlock it.",
+    "info_box_gen": "TAP to get new items. MERGE with the same item to get the next level of {0}.",
+    "info_box_gen_max": "TAP to get new items. This item is at MAX level, it can't be MERGED!",
+    "info_box_item": "MERGE with the same item to get {0}.",
+    "info_box_item_max": "This item is at MAX level, it can't be MERGED!",
+    "info_box_coll": "TAP to collect {0} {1}. MERGE with the same item to get more {1}.",
+    "info_box_coll_max": "TAP to collect {0} {1}. This item is at MAX level, it can't be MERGED!",
+    "info_box_gems": {
+        "zero": "TAP to collect {0} Gem. MERGE with the same item to get more Gems.",
+        "one": "TAP to collect {0} Gem. MERGE with the same item to get more Gems.",
+        "other": "TAP to collect {0} Gems. MERGE with the same item to get more Gems."
+    },
+    "info_box_gems_max": {
+        "zero": "TAP to collect {0} Gem. This item is at MAX level, it can't be MERGED!",
+        "one": "TAP to collect {0} Gem. This item is at MAX level, it can't be MERGED!",
+        "other": "TAP to collect {0} Gems. This item is at MAX level, it can't be MERGED!"
+    },
+    "info_box_button_remove": "Remove",
+    "info_box_button_undo": "Undo",
+    "info_box_coll_Experience": "Experience",
+    "info_box_coll_Gold": "Gold",
+    "info_box_coll_Gems": "Gems"
+}

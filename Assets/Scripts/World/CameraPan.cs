@@ -13,6 +13,7 @@ public class CameraPan : MonoBehaviour
     public bool canPan = true;
     public float touchThreshold = 20f;
     public float velocityStep = 0.35f;
+    public List<string> uiToAccept;
 
     [Header("Clamp")]
     public bool shouldClamp = true;
@@ -23,6 +24,11 @@ public class CameraPan : MonoBehaviour
     public bool shouldRebound = true;
     public float rebound = 10f;
     public float reboundSpeed = 1f;
+
+    [Header("Character Debug")]
+    public bool debugCharacterMovement = false;
+    [Condition("debugCharacterMovement", true)]
+    public CharMove debugCharMove;
 
     [Header("Reset debug")]
     public bool shouldReset = true;
@@ -53,6 +59,7 @@ public class CameraPan : MonoBehaviour
     private bool beganOutOfUI = true;
     [HideInInspector]
     public float initialCamSize = 0;
+    private bool moved = false;
 
     // References
     private Camera cam;
@@ -164,6 +171,8 @@ public class CameraPan : MonoBehaviour
                             isReseting = false;
                             isRebounding = false;
 
+                            moved = false;
+
                             break;
 
                         case TouchPhase.Moved:
@@ -195,6 +204,8 @@ public class CameraPan : MonoBehaviour
                                         }
                                     }
                                 }
+
+                                moved = true;
                             }
 
                             break;
@@ -209,10 +220,25 @@ public class CameraPan : MonoBehaviour
                                 selector.CancelSelecting();
                             }
 
-                            // Tapped
-                            if (Time.time - touchStartTime >= selector.secondTapDuration && !selector.isSelecting && !selector.isSelected)
+                            if (!moved && Time.time - touchStartTime >= selector.secondTapDuration)
                             {
-                                selector.StartSelecting(touch.position, true);
+                                // Tapped
+                                if (!selector.isSelecting && !selector.isSelected)
+                                {
+                                    selector.StartSelecting(touch.position, true);
+
+                                    // Debug character movement
+                                    if (debugCharacterMovement)
+                                    {
+                                        debugCharMove.SetDestination(cam.ScreenToWorldPoint(touch.position));
+                                    }
+                                }
+
+                                // Select the next one
+                                if (!selector.isSelecting && selector.isSelected)
+                                {
+                                    selector.StartSelecting(touch.position);
+                                }
                             }
 
                             break;
@@ -234,13 +260,6 @@ public class CameraPan : MonoBehaviour
                                 {
                                     selector.StartSelecting(touch.position);
                                 }
-
-                                // Select the next one
-                                if (Time.time - touchStartTime >= selector.secondTapDuration && !isPanning && !selector.isSelecting && selector.isSelected)
-                                {
-                                    selector.StartSelecting(touch.position);
-                                }
-
                             }
 
                             break;
@@ -385,7 +404,7 @@ public class CameraPan : MonoBehaviour
 
         var pickedElement = root.panel.Pick(newUIPos);
 
-        if (pickedElement == null)
+        if (pickedElement == null||  uiToAccept.Contains(pickedElement.name))
         {
             return true;
         }

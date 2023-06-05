@@ -5,11 +5,6 @@ using UnityEngine.AI;
 
 public class CharMove : MonoBehaviour
 {
-    // Variables
-    public bool debug = false;
-    [Condition("debug", true)]
-    public bool useMouse = false;
-
     [Header("States")]
     [ReadOnly]
     public Dir direction;
@@ -32,19 +27,17 @@ public class CharMove : MonoBehaviour
     };
 
     // References
-    private CharOrderer charOrderer;
+    private CharOrderSetter charOrderSetter;
     private NavMeshAgent agent;
     private Animator animator;
-    private Camera cam;
 
     // Start is called before the first frame update
     void Start()
     {
         // Cache
-        charOrderer = GetComponent<CharOrderer>();
+        charOrderSetter = GetComponent<CharOrderSetter>();
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
-        cam = Camera.main;
 
         // Initialize the character nav mesh agent
         agent.updateRotation = false;
@@ -68,19 +61,12 @@ public class CharMove : MonoBehaviour
 
             animator.SetBool("Walking", true);
 
-            charOrderer.CheckArea();
+            charOrderSetter.CheckArea();
         }
         else
         {
             animator.SetBool("Walking", false);
         }
-
-        GetTouchPos();
-
-        // Debug
-#if UNITY_EDITOR
-        GetMousePos();
-#endif
     }
 
     void MoveChar()
@@ -172,27 +158,4 @@ public class CharMove : MonoBehaviour
 
         return false;
     }
-
-    void GetTouchPos()
-    {
-        if (debug && !useMouse && Input.touchCount == 1)
-        {
-            Vector2 touchPos = cam.ScreenToWorldPoint(Input.GetTouch(0).position);
-
-            SetDestination(touchPos);
-        }
-    }
-
-    //// DEBUG ////
-#if UNITY_EDITOR
-    void GetMousePos()
-    {
-        if (debug & useMouse && Input.GetMouseButtonDown(0))
-        {
-            Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
-
-            SetDestination(mousePos);
-        }
-    }
-#endif
 }

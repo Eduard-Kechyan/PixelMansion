@@ -8,6 +8,7 @@ public class Selector : MonoBehaviour
     // Variables
     public UIDocument hubGameUiDoc;
     public CameraPan cameraPan;
+    public bool checkForOld = true;
     public float tapDuration = 0.2f;
     public float secondTapDuration = 0.1f;
     public float arrowDuration = 1f;
@@ -81,22 +82,6 @@ public class Selector : MonoBehaviour
 
         hits.Sort(SortColliders);
 
-        //  Debug.Log(hits[0].transform.name);
-        // Debug.Log(hits[0].transform.position.z);
-
-        /*   Vector3 worldPoint = cam.ScreenToWorldPoint(position);
-
-           worldPoint.z = cam.transform.position.z;
-
-           Ray ray = new Ray(worldPoint, new Vector3(0, 0, 1));
-
-           RaycastHit2D hitInfo = Physics2D.GetRayIntersection(ray, Mathf.Infinity, LayerMask.GetMask("Selectable"));
-
-           Debug.Log(hitInfo);
-           Debug.Log(hitInfo.transform.name);
-           Debug.Log(hitInfo.transform.position.z);
-           Debug.Log(hitInfo.transform.localPosition.z);*/
-
         if (hits.Count > 0 && (hits[0] || hits[0].collider != null))
         {
             RaycastHit2D hit = hits[0];
@@ -104,15 +89,22 @@ public class Selector : MonoBehaviour
             Selectable newSelectable = hit.transform.GetComponent<Selectable>();
 
             // Check if the selected selectable is the same
-            if (!tapped && isSelected && selectable != null && selectable.id == newSelectable.id)
+            if (!tapped && isSelected && selectable != null && (selectable.id == newSelectable.id || (checkForOld && newSelectable.GetOld())))
             {
+                Debug.Log("A");
                 return;
             }
             else
             {
-                if (selectable != null)
+                if (checkForOld && selectable != null && selectable.GetOld())
                 {
-                    selectable.Unselect();
+                    return;
+                }
+
+                // There is already a selectable, so cancel it
+                if (isSelected && selectable != null)
+                {
+                    CancelSelectingAlt();
                 }
 
                 selectable = newSelectable;
@@ -195,6 +187,17 @@ public class Selector : MonoBehaviour
         {
             selectable.CancelSpriteChange(lastSpriteOrder);
         }
+
+        selectable = null;
+    }
+
+    void CancelSelectingAlt()
+    {
+        selectable.Unselect();
+
+        selectable.CancelSpriteChange(lastSpriteOrder);
+
+        selectable = null;
     }
 
     public void SelectionConfirmed()
@@ -205,6 +208,8 @@ public class Selector : MonoBehaviour
         selectable.ConfirmSpriteChange(lastSpriteOrder);
 
         selectable.Unselect();
+
+        selectable = null;
     }
 
     IEnumerator ShowArrow(Vector2 newUIPos, Selectable selectable)
@@ -260,11 +265,6 @@ public class Selector : MonoBehaviour
         isSelected = true;
 
         selectable.Select();
-
-        if (Settings.Instance.vibrationOn && (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer))
-        {
-            Handheld.Vibrate();
-        }
 
         yield return new WaitForSeconds(duration);
     }

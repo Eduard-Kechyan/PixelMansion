@@ -246,6 +246,11 @@ public class ChangeFloor : MonoBehaviour
 
             StartCoroutine(ChangeFloorTiles());
 
+            if (Settings.Instance.vibrationOn && (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer))
+            {
+                Handheld.Vibrate();
+            }
+
             // Reset overlay flashing
             ResetOverlay();
 
@@ -282,7 +287,7 @@ public class ChangeFloor : MonoBehaviour
     //// OVERLAY ////
     void HandleOverlay()
     {
-        // Flash if selected and isn'y changing the tiles
+        // Flash if selected and isn't changing the tiles
         if (isSelected && !isChanging)
         {
             float alphaAmount = overlay.color.a;

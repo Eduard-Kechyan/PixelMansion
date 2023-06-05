@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7909715890153256614}
   - component: {fileID: 5078321261058977465}
-  - component: {fileID: 4806283771396507958}
+  - component: {fileID: -1739915418161028762}
   m_Layer: 0
   m_Name: WalkableArea3
   m_TagString: Untagged
@@ -73,7 +73,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -100
+  m_SortingOrder: 1000
   m_Sprite: {fileID: 21300000, guid: 2097cc19212220448b72b0be28cb9cd2, type: 3}
   m_Color: {r: 0.20465466, g: 0.6886792, b: 0.44689682, a: 0.6156863}
   m_FlipX: 0
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4806283771396507958
+--- !u!114 &-1739915418161028762
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,13 +94,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8876000061548527792}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Script: {fileID: 11500000, guid: 9809bf1345abc5648af68b3a82653f08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_OverrideArea: 1
   m_Area: 0
-  m_OverrideGenerateLinks: 0
-  m_GenerateLinks: 0
   m_IgnoreFromBuild: 0
-  m_ApplyToChildren: 1
   m_AffectedAgents: ffffffff

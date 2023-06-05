@@ -50,3 +50,33 @@ TagManager:
   - name: Item
     uniqueID: 562084113
     locked: 0
+  - name: Root
+    uniqueID: 920455487
+    locked: 0
+  - name: Base
+    uniqueID: 3853535551
+    locked: 0
+  - name: OuterWallsBack
+    uniqueID: 78008319
+    locked: 0
+  - name: BedRoom
+    uniqueID: 1718166325
+    locked: 0
+  - name: Kitchen
+    uniqueID: 792623699
+    locked: 0
+  - name: LivingRoom
+    uniqueID: 696617917
+    locked: 0
+  - name: OuterWallsFront
+    uniqueID: 198848411
+    locked: 0
+  - name: OuterStairs
+    uniqueID: 2841718309
+    locked: 0
+  - name: GardenDummy
+    uniqueID: 3088312485
+    locked: 0
+  - name: NavMeshArea
+    uniqueID: 3312263077
+    locked: 0

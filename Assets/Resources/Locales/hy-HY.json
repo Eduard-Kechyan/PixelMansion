@@ -2,16 +2,20 @@
     "________ MAIN ________": "________________",
     "localeName": "Armenian",
     "altName": "Հայերեն",
-    "code": "hy-HY",
-    "________ BOARD ________": "________________",
+    "code": "hy-HY"
+,
+    "________ POP ________": "________________",
     "pop_board_full": "Տաղտակը Լիքն Է",
-    "pop_inventory_full": "Պահեստ Լիքն Է",
+    "pop_inventory_full": "Պահեստ Լիքն Է"
+,
     "________ ERRORS ________": "________________",
     "error_type_Code": "Կոդային Սխալ",
     "error_type_Gameplay": "Խաղային Սխալ",
     "error_type_Locale": "Լեզվական Սխալ",
     "error_type_Network": "Ցանցային Սխալ",
     "error_loc_name": "Չհաջողվեց ցուցադրել իրի ճիշտ անունը:",
+    "Item_error_name": "Իր"
+,
     "________ INFO_BOX ________": "________________",
     "info_box_default": "ՀՊԵՔ որևէ իրի՝ դրա տեղեկատվությունը տեսնելու համար:",
     "info_box_undo": "ՀՊԵՔ Հետ ձեր իրիը հետ բերելու համար։",
@@ -39,8 +43,8 @@
     "info_box_button_undo": "Հետ",
     "info_box_coll_Experience": "Experience",
     "info_box_coll_Gold": "Gold",
-    "info_box_coll_Gems": "Gems",
-    "________ INFO_MENU ________": "________________",
+    "info_box_coll_Gems": "Gems"
+,
     "info_menu_found_in": "Գտնվում է՝",
     "info_menu_can_generate": "Սարքում է:",
     "menu_inventory_title": "Պահեստ",
@@ -87,9 +91,9 @@
     "________ TASK_MENU ________": "________________",
     "task_menu_title": "Առաջադրանքներ",
     "________ LOCALE_MENU ________": "________________",
-    "locale_menu_title": "Լեզուներ",
+    "locale_menu_title": "Լեզուներ"
+,
     "________ ITEMS ________": "________________",
-    "Item_error_name": "Իր",
     "Item_Metals_0": "Հող",
     "Item_Metals_1": "Հողի Կույտ",
     "Item_Metals_2": "Հանքաքար",
@@ -102,8 +106,6 @@
     "Item_Coals_0": "Ածուխ",
     "Item_Coals_1": "Ածուխով Պարկ",
     "Item_Coals_2": "Ածուխով Արկղ",
-    "________ GENERATORS ________": "________________",
-    "Gen_MineCart_0": "Հանքային Սայլ",
     "________ COLLECTABLES ________": "________________",
     "Coll_Experience": "Փորձ",
     "Coll_Gold": "Ոսկի",
@@ -112,4 +114,7 @@
         "one": "Գոհար",
         "other": "Գոհարներ"
     }
+,
+    "________ GENERATORS ________": "________________",
+    "Gen_MineCart_0": "Հանքային Սայլ"
 }

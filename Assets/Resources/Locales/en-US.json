@@ -2,16 +2,20 @@
     "________ MAIN ________": "________________",
     "localeName": "English",
     "altName": "English",
-    "code": "en-US",
-    "________ BOARD ________": "________________",
+    "code": "en-US"
+,
+    "________ POP ________": "________________",
     "pop_board_full": "Board Full",
-    "pop_inventory_full": "Inventory Full",
+    "pop_inventory_full": "Inventory Full"
+,
     "________ ERRORS ________": "________________",
     "error_type_Code": "Code Error",
     "error_type_Gameplay": "Gameplay Error",
     "error_type_Locale": "Language Error",
     "error_type_Network": "Network Error",
     "error_loc_name": "Failed to display correct item name!",
+    "Item_error_name": "Item"
+,
     "________ INFO_BOX ________": "________________",
     "info_box_default": "TAP an item to see it's info.",
     "info_box_undo": "TAP Undo to bring back your item.",
@@ -39,7 +43,8 @@
     "info_box_button_undo": "Undo",
     "info_box_coll_Experience": "Experience",
     "info_box_coll_Gold": "Gold",
-    "info_box_coll_Gems": "Gems",
+    "info_box_coll_Gems": "Gems"
+,
     "________ INFO_MENU ________": "________________",
     "info_menu_found_in": "Found in:",
     "info_menu_can_generate": "Generates:",
@@ -87,9 +92,9 @@
     "________ TASK_MENU ________": "________________",
     "task_menu_title": "Tasks",
     "________ LOCALE_MENU ________": "________________",
-    "locale_menu_title": "Languages",
+    "locale_menu_title": "Languages"
+,
     "________ ITEMS ________": "________________",
-    "Item_error_name": "Item",
     "Item_Metals_0": "Dirt",
     "Item_Metals_1": "Dirt Clump",
     "Item_Metals_2": "Ore",
@@ -102,8 +107,6 @@
     "Item_Coals_0": "Coal",
     "Item_Coals_1": "Sack of Coal",
     "Item_Coals_2": "Crate of Coal",
-    "________ GENERATORS ________": "________________",
-    "Gen_MineCart_0": "Mine Cart",
     "________ COLLECTABLES ________": "________________",
     "Coll_Experience": "Experience",
     "Coll_Gold": "Gold",
@@ -112,4 +115,7 @@
         "one": "Gem",
         "other": "Gems"
     }
+,
+    "________ GENERATORS ________": "________________",
+    "Gen_MineCart_0": "Mine Cart"
 }

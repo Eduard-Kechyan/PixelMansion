@@ -1,0 +1,23 @@
+{
+    "________ ITEMS ________": "________________",
+    "Item_Metals_0": "Dirt",
+    "Item_Metals_1": "Dirt Clump",
+    "Item_Metals_2": "Ore",
+    "Item_Metals_3": "Iron Ore",
+    "Item_Metals_4": "Iron Ingot",
+    "Item_Metals_5": "Gold Ingot",
+    "Item_Crystals_0": "Crystals",
+    "Item_Crystal": "Crystal",
+    "Item_CrystalShards": "Crystal Shards",
+    "Item_Coals_0": "Coal",
+    "Item_Coals_1": "Sack of Coal",
+    "Item_Coals_2": "Crate of Coal",
+    "________ COLLECTABLES ________": "________________",
+    "Coll_Experience": "Experience",
+    "Coll_Gold": "Gold",
+    "Coll_Gems": {
+        "zero": "Gem",
+        "one": "Gem",
+        "other": "Gems"
+    }
+}
