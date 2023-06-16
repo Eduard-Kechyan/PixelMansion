@@ -19585,6 +19585,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1013622152}
   - component: {fileID: 1013622156}
+  - component: {fileID: 1013622157}
   m_Layer: 0
   m_Name: World
   m_TagString: Untagged
@@ -19638,6 +19639,24 @@ MonoBehaviour:
   isSelecting: 0
   isSelected: 0
   isTapping: 0
+--- !u!114 &1013622157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1013622151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1347648b0f6d42241a4f4f5f7af22295, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  worldRoot: {fileID: 1161568285}
+  roomInHierarchyOffset: 2
+  saveAreaData: 0
+  loadAreaData: 0
+  logAreaData: 0
+  clearAreaData: 0
 --- !u!1001 &1044337813
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27413,7 +27432,7 @@ GameObject:
   - component: {fileID: 1466917380}
   - component: {fileID: 1466917381}
   m_Layer: 16
-  m_Name: GardenDummy
+  m_Name: DummyGardenArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35602,7 +35621,7 @@ GameObject:
   - component: {fileID: 1930958382}
   - component: {fileID: 1930958383}
   m_Layer: 16
-  m_Name: LivingRoom
+  m_Name: LivingRoomArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35888,7 +35907,7 @@ GameObject:
   - component: {fileID: 1939843986}
   - component: {fileID: 1939843987}
   m_Layer: 16
-  m_Name: BedRoom
+  m_Name: BedRoomArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36009,7 +36028,7 @@ GameObject:
   - component: {fileID: 1940573199}
   - component: {fileID: 1940573200}
   m_Layer: 16
-  m_Name: Kitchen
+  m_Name: KitchenArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36030,8 +36049,8 @@ Transform:
   - {fileID: 1046531277}
   - {fileID: 39679232}
   - {fileID: 641491560}
-  - {fileID: 775458645}
   - {fileID: 132424207}
+  - {fileID: 775458645}
   m_Father: {fileID: 1161568285}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

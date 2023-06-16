@@ -8,6 +8,7 @@ using System.IO;
 public class LocaleCombiner : MonoBehaviour
 {
     public bool combine = false;
+    public bool log = false;
 
     private Object[] chunks;
 
@@ -64,22 +65,28 @@ public class LocaleCombiner : MonoBehaviour
             }
         }
 
-        if (isBuilding)
+        if (log)
         {
-            Debug.Log("Build combining!");
-        }
-        else if (isPlaying)
-        {
-            Debug.Log("Play combining!");
-        }
-        else
-        {
-            Debug.Log("Manual combining!");
+            if (isBuilding)
+            {
+                Debug.Log("Build combining!");
+            }
+            else if (isPlaying)
+            {
+                Debug.Log("Play combining!");
+            }
+            else
+            {
+                Debug.Log("Manual combining!");
+            }
         }
 
         if (count > 0)
         {
-            Debug.Log("Combined successful!");
+            if (log)
+            {
+                Debug.Log("Combined successful!");
+            }
         }
         else
         {
