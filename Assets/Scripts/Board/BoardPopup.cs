@@ -178,7 +178,7 @@ public class BoardPopup : MonoBehaviour
         // Play audio
         if (sfxName != "")
         {
-            soundManager.PlaySound(sfxName, 0.2f);
+            soundManager.PlaySound(sfxName);
         }
 
         yield return new WaitForSeconds(timeOut * 2);

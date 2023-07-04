@@ -268,7 +268,7 @@ public class ChangeFloor : MonoBehaviour
             {
                 tiles[i][j].material.SetFloat("_FlashAmount", 1);
 
-                SoundManager.Instance.PlaySound("", 0, changeSound);
+                SoundManager.Instance.PlaySound("", changeSound);
 
                 tiles[i][j].sprite = sprites[spriteOrder];
             }

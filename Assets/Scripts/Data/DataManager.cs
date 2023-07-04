@@ -24,7 +24,7 @@ public class DataManager : MonoBehaviour
 
     // Whether data has been fully loaded
     public bool loaded;
-    //private bool isEditor = false;
+    private bool isEditor = false;
 
     // Quick Save
     private QuickSaveSettings saveSettings;
@@ -73,7 +73,7 @@ public class DataManager : MonoBehaviour
         gameData.LoadSprites();
 
 #if UNITY_EDITOR
-        // isEditor = true;
+        isEditor = true;
 
         // Make this script run if we arn't starting from the Loading scene
         if (
@@ -92,15 +92,7 @@ public class DataManager : MonoBehaviour
     // Check if we need to save initial data to disk
     public async Task CheckInitialData()
     {
-        // Debug.Log("DataManager: "+writer.Exists("rootSet"));
-
-        if (PlayerPrefs.HasKey("Loaded") && writer.Exists("rootSet"))
-        {
-            reader = QuickSaveReader.Create("Root", saveSettings);
-
-            await GetData(false);
-        }
-        else
+        if ((ignoreInitialCheck && isEditor) || (!PlayerPrefs.HasKey("Loaded") && !writer.Exists("rootSet")))
         {
             initialJsonData = jsonHandler.ConvertBoardToJson(initialItems.content, true);
             bonusData = jsonHandler.ConvertBonusToJson(gameData.bonusData);
@@ -127,16 +119,12 @@ public class DataManager : MonoBehaviour
 
             await GetData(true);
         }
-        /*if (!writer.Exists("rootSet") || (ignoreInitialCheck && isEditor))
-        {
-            
-        }
         else
         {
             reader = QuickSaveReader.Create("Root", saveSettings);
 
             await GetData(false);
-        }*/
+        }
     }
 
     // Get object data from the initial data

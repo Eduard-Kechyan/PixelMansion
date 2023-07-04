@@ -137,7 +137,7 @@ public class ValuePop : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
 
         // Play value pop sound
-        soundManager.PlaySound(valuePopSFX, 0.3f);
+        soundManager.PlaySound(valuePopSFX);
 
         // Hide the value pop
         valuePop.style.visibility = Visibility.Hidden;
@@ -206,7 +206,7 @@ public class ValuePop : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
 
         // Play value pop sound
-        soundManager.PlaySound(valuePopSFX, 0.3f);
+        soundManager.PlaySound(valuePopSFX);
 
         // Hide the value pop
         valuePop.style.visibility = Visibility.Hidden;
@@ -227,8 +227,8 @@ public class ValuePop : MonoBehaviour
     )
     {
         Vector2 initialPosition = new Vector2(
-            Mathf.Ceil(valuesUI.levelButton.layout.x + offset),
-            safeAreaHandler.topPadding + offset
+            Mathf.Ceil(valuesUI.levelButton.layout.x),
+            safeAreaHandler.topPadding 
         );
 
         if (useCenter)
@@ -278,7 +278,7 @@ public class ValuePop : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
 
         // Play value pop sound
-        soundManager.PlaySound(valuePopSFX, 0.3f);
+        soundManager.PlaySound(valuePopSFX);
 
         // Hide the value pop
         valuePop.style.visibility = Visibility.Hidden;

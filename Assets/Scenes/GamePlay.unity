@@ -359,6 +359,10 @@ PrefabInstance:
       propertyPath: settings
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: -7698504415603008170, guid: af9e0bfb46c520a4fac5c30843ed2d4e, type: 3}
+      propertyPath: ignoreInitialCheck
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 961345630706959843, guid: af9e0bfb46c520a4fac5c30843ed2d4e, type: 3}
       propertyPath: m_RootOrder
       value: 9
@@ -950,6 +954,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: SoundManager
       objectReference: {fileID: 0}
+    - target: {fileID: 1888629426759165983, guid: 3745bd78f7038594bb16e1e12adb1156, type: 3}
+      propertyPath: soundClips.Array.data[6].volume
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1888629426759165983, guid: 3745bd78f7038594bb16e1e12adb1156, type: 3}
+      propertyPath: soundClips.Array.data[8].volume
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 2493642430407458550, guid: 3745bd78f7038594bb16e1e12adb1156, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -1146,6 +1158,34 @@ PrefabInstance:
       propertyPath: menuUI
       value: 
       objectReference: {fileID: 2529494230138778357}
+    - target: {fileID: 5620125642504170655, guid: e40cfcf418a8eb04ca91a1f444eb3a9f, type: 3}
+      propertyPath: levelUpIndicatorSprites.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5620125642504170655, guid: e40cfcf418a8eb04ca91a1f444eb3a9f, type: 3}
+      propertyPath: levelUpIndicatorSprites.Array.data[0]
+      value: 
+      objectReference: {fileID: -448423610, guid: 0779a5ff798d5fc4e9e6b9d19fc1e35e, type: 3}
+    - target: {fileID: 5620125642504170655, guid: e40cfcf418a8eb04ca91a1f444eb3a9f, type: 3}
+      propertyPath: levelUpIndicatorSprites.Array.data[1]
+      value: 
+      objectReference: {fileID: 1912430233, guid: 0779a5ff798d5fc4e9e6b9d19fc1e35e, type: 3}
+    - target: {fileID: 5620125642504170655, guid: e40cfcf418a8eb04ca91a1f444eb3a9f, type: 3}
+      propertyPath: levelUpIndicatorSprites.Array.data[2]
+      value: 
+      objectReference: {fileID: -430561725, guid: 0779a5ff798d5fc4e9e6b9d19fc1e35e, type: 3}
+    - target: {fileID: 5620125642504170655, guid: e40cfcf418a8eb04ca91a1f444eb3a9f, type: 3}
+      propertyPath: levelUpIndicatorSprites.Array.data[3]
+      value: 
+      objectReference: {fileID: -78041159, guid: 0779a5ff798d5fc4e9e6b9d19fc1e35e, type: 3}
+    - target: {fileID: 5620125642504170655, guid: e40cfcf418a8eb04ca91a1f444eb3a9f, type: 3}
+      propertyPath: levelUpIndicatorSprites.Array.data[4]
+      value: 
+      objectReference: {fileID: 579244564, guid: 0779a5ff798d5fc4e9e6b9d19fc1e35e, type: 3}
+    - target: {fileID: 5620125642504170655, guid: e40cfcf418a8eb04ca91a1f444eb3a9f, type: 3}
+      propertyPath: levelUpIndicatorSprites.Array.data[5]
+      value: 
+      objectReference: {fileID: -1459763292, guid: 0779a5ff798d5fc4e9e6b9d19fc1e35e, type: 3}
     - target: {fileID: 6853033041420144743, guid: e40cfcf418a8eb04ca91a1f444eb3a9f, type: 3}
       propertyPath: m_RootOrder
       value: 4

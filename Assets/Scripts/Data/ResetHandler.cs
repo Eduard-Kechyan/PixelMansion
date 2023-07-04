@@ -48,5 +48,7 @@ public class ResetHandler : MonoBehaviour
         {
             Directory.Delete(folderPath, true);
         }
+
+        PlayerPrefs.DeleteAll();
     }
 }

@@ -5,6 +5,8 @@ using UnityEngine.UIElements;
 
 public class ValuesUI : MonoBehaviour
 {
+    public Sprite[] levelUpIndicatorSprites = new Sprite[0];
+
     // Variables
     private bool levelEnabled = false;
     private bool energyEnabled = false;
@@ -33,6 +35,7 @@ public class ValuesUI : MonoBehaviour
     public Button levelButton;
     private VisualElement levelFill;
     private Label levelValue;
+    private VisualElement levelUpIndicator;
 
     public Button energyButton;
     private VisualElement energyPlus;
@@ -63,6 +66,7 @@ public class ValuesUI : MonoBehaviour
         levelButton = valuesBox.Q<Button>("LevelButton");
         levelFill = levelButton.Q<VisualElement>("Fill");
         levelValue = levelButton.Q<Label>("Value");
+        levelUpIndicator = valuesBox.Q<VisualElement>("Indicator");
 
         energyButton = valuesBox.Q<Button>("EnergyButton");
         energyPlus = energyButton.Q<VisualElement>("Plus");
@@ -140,9 +144,50 @@ public class ValuesUI : MonoBehaviour
 
         gameData.experience = gameData.leftoverExperience;
 
+        DataManager.Instance.writer.Write("experience", gameData.experience).Commit();
+
         gameData.leftoverExperience = 0;
 
         levelFill.style.width = CalcLevelFill();
+    }
+
+    public void ToggleLevelUp(bool canLevelUp)
+    {
+        if (canLevelUp)
+        {
+            levelUpIndicator.style.opacity = 1;
+            levelUpIndicator.style.visibility = Visibility.Visible;
+
+            StartCoroutine("BlipLevelUpIndicator");
+        }
+        else
+        {
+            levelUpIndicator.style.opacity = 0;
+            levelUpIndicator.style.visibility = Visibility.Hidden;
+
+            StopCoroutine("BlipLevelUpIndicator");
+        }
+    }
+
+    IEnumerator BlipLevelUpIndicator()
+    {
+        int count = 0;
+
+        while (true)
+        {
+            yield return new WaitForSeconds(0.2f);
+
+            levelUpIndicator.style.backgroundImage = new StyleBackground(levelUpIndicatorSprites[count]);
+
+            if (count == 5)
+            {
+                count = 0;
+            }
+            else
+            {
+                count++;
+            }
+        }
     }
 
     public Length CalcLevelFill()
@@ -152,7 +197,16 @@ public class ValuesUI : MonoBehaviour
             gameData = GameData.Instance;
         }
 
-        float fillPercent = (100f / (float)gameData.maxExperience) * (float)gameData.experience;
+        float fillPercent;
+
+        if (gameData.experience < gameData.maxExperience)
+        {
+            fillPercent = (100f / (float)gameData.maxExperience) * (float)gameData.experience;
+        }
+        else
+        {
+            fillPercent = 100f;
+        }
 
         return Length.Percent(fillPercent);
     }

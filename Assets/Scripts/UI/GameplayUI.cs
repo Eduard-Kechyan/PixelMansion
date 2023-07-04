@@ -67,15 +67,15 @@ public class GameplayUI : MonoBehaviour
 
         // Calculate the button position on the screen and the world space
         float singlePixelWidth = Camera.main.pixelWidth / GameData.GAME_PIXEL_WIDTH;
-        
+
         Vector2 bonusButtonScreenPosition = new Vector2(
             singlePixelWidth
                 * (
                     root.worldBound.width
-                    - (root.worldBound.width - (bonusButton.worldBound.center.x + (bonusButton.resolvedStyle.width/4)))
+                    - (root.worldBound.width - (bonusButton.worldBound.center.x - (bonusButton.resolvedStyle.width / 4)))
                 ),
             singlePixelWidth
-                * (root.worldBound.height - (bonusButton.worldBound.center.y + (bonusButton.resolvedStyle.width/4)))
+                * (root.worldBound.height - (bonusButton.worldBound.center.y - (bonusButton.resolvedStyle.width / 4)))
         );
 
         bonusButtonPosition = Camera.main.ScreenToWorldPoint(bonusButtonScreenPosition);

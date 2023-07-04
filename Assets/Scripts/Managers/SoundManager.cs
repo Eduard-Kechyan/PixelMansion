@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,10 +6,18 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour
 {
     // Variables
-    public AudioClip[] soundClips;
-    public AudioClip[] musicClips;
+    public SoundClip[] soundClips;
+    public SoundClip[] musicClips;
     public AudioSource sourceSound;
     public AudioSource sourceMusic;
+
+
+    [Serializable]
+    public class SoundClip
+    {
+        public AudioClip clip;
+        public float volume = 1f;
+    }
 
     // References
     private Settings settings;
@@ -42,21 +51,24 @@ public class SoundManager : MonoBehaviour
         sourceSound.volume = volume;
     }
 
-    public void PlaySound(string clipName = "", float volume = 1f, AudioClip clip = null)
+    public void PlaySound(string clipName = "", AudioClip clip = null)
     {
-        //sourceSound.volume = volume;
-
         if (clip != null)
         {
             sourceSound.PlayOneShot(clip);
         }
         else
         {
-            foreach (AudioClip i in soundClips)
+            foreach (SoundClip i in soundClips)
             {
-                if (i.name == clipName + "Sound")
+                if (i.clip.name == clipName + "Sound")
                 {
-                    sourceSound.PlayOneShot(i);
+                    if (settings.soundOn)
+                    {
+                        sourceSound.volume = i.volume;
+                    }
+
+                    sourceSound.PlayOneShot(i.clip);
                 }
             }
         }
@@ -69,10 +81,8 @@ public class SoundManager : MonoBehaviour
         sourceMusic.volume = volume;
     }
 
-    public void PlayMusic(string clipName = "", float volume = 1f, AudioClip clip = null)
+    public void PlayMusic(string clipName = "", AudioClip clip = null)
     {
-        //sourceMusic.volume = volume;
-
         if (clip != null)
         {
             sourceMusic.clip = clip;
@@ -89,11 +99,16 @@ public class SoundManager : MonoBehaviour
                 sourceMusic.volume = 1f;
             }
 
-            foreach (AudioClip i in musicClips)
+            foreach (SoundClip i in musicClips)
             {
-                if (i.name == clipName + "Music")
+                if (i.clip.name == clipName + "Music")
                 {
-                    sourceMusic.clip = i;
+                    if (settings.soundOn)
+                    {
+                        sourceMusic.volume = i.volume;
+                    }
+
+                    sourceSound.PlayOneShot(i.clip);
                 }
             }
         }

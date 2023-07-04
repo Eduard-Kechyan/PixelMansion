@@ -467,7 +467,7 @@ public class BoardInteractions : MonoBehaviour
         if (isLocked)
         {
             // Play unlocking audio
-            soundManager.PlaySound("UnlockLock", 0.5f);
+            soundManager.PlaySound("UnlockLock");
         }
         else
         {
@@ -563,7 +563,7 @@ public class BoardInteractions : MonoBehaviour
                     currentItem.OpenCrate();
 
                     // Play crate opening audio
-                    soundManager.PlaySound("OpenCrate", 0.3f);
+                    soundManager.PlaySound("OpenCrate");
 
                     OpenCrateCallback(currentItem);
                 }
@@ -572,7 +572,7 @@ public class BoardInteractions : MonoBehaviour
                     currentItem.UnlockLock();
 
                     // Play unlocking audio
-                    soundManager.PlaySound("UnlockLock", 0.6f);
+                    soundManager.PlaySound("UnlockLock");
 
                     OpenLockCallback(currentItem);
                 }

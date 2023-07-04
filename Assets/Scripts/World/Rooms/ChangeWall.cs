@@ -250,7 +250,7 @@ public class ChangeWall : MonoBehaviour
         {
             chunks[i].material.SetFloat("_FlashAmount", 1);
 
-            SoundManager.Instance.PlaySound("", 0, changeSound);
+            SoundManager.Instance.PlaySound("", changeSound);
 
             chunks[i].sprite = ConvertOrder(spriteOrder, chunks[i].name);
 

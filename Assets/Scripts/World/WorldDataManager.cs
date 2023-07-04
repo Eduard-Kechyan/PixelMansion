@@ -271,17 +271,25 @@ public class WorldDataManager : MonoBehaviour
                     {
                         if (areas[i].wallLeftOrder != loadedAreas[g].wallLeftOrder)
                         {
-                            worldRoot.GetChild(i + roomInHierarchyOffset).GetChild(0).GetComponent<ChangeWall>().SetSprites(loadedAreas[g].wallLeftOrder);
+                            if(loadedAreas[g].wallLeftOrder >=0){
+                                worldRoot.GetChild(i + roomInHierarchyOffset).GetChild(0).GetComponent<ChangeWall>().SetSprites(loadedAreas[g].wallLeftOrder);
+                            }
                         }
 
                         if (areas[i].wallRightOrder != loadedAreas[g].wallRightOrder)
                         {
-                            worldRoot.GetChild(i + roomInHierarchyOffset).GetChild(1).GetComponent<ChangeWall>().SetSprites(loadedAreas[g].wallRightOrder);
+                            if (loadedAreas[g].wallRightOrder >= 0)
+                            {
+                                worldRoot.GetChild(i + roomInHierarchyOffset).GetChild(1).GetComponent<ChangeWall>().SetSprites(loadedAreas[g].wallRightOrder);
+                            }
                         }
 
                         if (areas[i].floorOrder != loadedAreas[g].floorOrder)
                         {
-                            worldRoot.GetChild(i + roomInHierarchyOffset).GetChild(2).GetComponent<ChangeWall>().SetSprites(loadedAreas[g].floorOrder);
+                            if (loadedAreas[g].floorOrder >= 0)
+                            {
+                                worldRoot.GetChild(i + roomInHierarchyOffset).GetChild(2).GetComponent<ChangeWall>().SetSprites(loadedAreas[g].floorOrder);
+                            }
                         }
 
                         for (int j = 0; j < areas[i].furniture.Count; j++)
@@ -290,7 +298,9 @@ public class WorldDataManager : MonoBehaviour
                             {
                                 if (areas[i].furniture[j].name != loadedAreas[g].furniture[h].name)
                                 {
-                                    worldRoot.GetChild(i + roomInHierarchyOffset).GetChild(3).GetChild(h).GetComponent<ChangeFurniture>().SetSprites(loadedAreas[g].furniture[h].order);
+                                    if(loadedAreas[g].furniture[h].order>=0){
+                                        worldRoot.GetChild(i + roomInHierarchyOffset).GetChild(3).GetChild(h).GetComponent<ChangeFurniture>().SetSprites(loadedAreas[g].furniture[h].order);
+                                    }
                                 }
                             }
                         }

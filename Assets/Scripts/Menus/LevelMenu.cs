@@ -22,6 +22,7 @@ public class LevelMenu : MonoBehaviour
     // Instances
     private GameData gameData;
     private ItemHandler itemHandler;
+    private SoundManager soundManager;
     private I18n LOCALE;
 
     // UI
@@ -48,6 +49,7 @@ public class LevelMenu : MonoBehaviour
         // Cache instances
         gameData = GameData.Instance;
         itemHandler = DataManager.Instance.GetComponent<ItemHandler>();
+        soundManager = SoundManager.Instance;
         LOCALE = I18n.Instance;
 
         // Cache UI
@@ -142,6 +144,8 @@ public class LevelMenu : MonoBehaviour
             {
                 check = true;
             }
+
+            soundManager.PlaySound("LevelUp");
 
             StartCoroutine(PopOutBonus(i * 0.2f, i, check));
         }

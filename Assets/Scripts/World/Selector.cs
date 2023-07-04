@@ -119,7 +119,7 @@ public class Selector : MonoBehaviour
                 {
                     if (selectable.Tapped())
                     {
-                        soundManager.PlaySound("", 0f, swapSound);
+                        soundManager.PlaySound("", swapSound);
 
                         //charMoveMain.SetDestination(selectable.transform.position);
 
@@ -141,7 +141,7 @@ public class Selector : MonoBehaviour
 
                         selectable.Select();
 
-                        soundManager.PlaySound("", 0f, swapSound);
+                        soundManager.PlaySound("", swapSound);
 
                         selectorUIHandler.Open(selectable.GetSpriteOptions(), false);
                     }
@@ -167,7 +167,7 @@ public class Selector : MonoBehaviour
     {
         selectable.SetSprites(option);
 
-        soundManager.PlaySound("", 0f, swapSound);
+        soundManager.PlaySound("", swapSound);
     }
 
     public void CancelSelecting(bool denied = false)
@@ -227,31 +227,31 @@ public class Selector : MonoBehaviour
 
         selectorArrow.style.backgroundImage = new StyleBackground(arrowSprites[1]);
 
-        soundManager.PlaySound("", 0f, arrowSound);
+        soundManager.PlaySound("", arrowSound);
 
         yield return new WaitForSeconds(duration);
 
         selectorArrow.style.backgroundImage = new StyleBackground(arrowSprites[2]);
 
-        soundManager.PlaySound("", 0f, arrowSound);
+        soundManager.PlaySound("", arrowSound);
 
         yield return new WaitForSeconds(duration);
 
         selectorArrow.style.backgroundImage = new StyleBackground(arrowSprites[3]);
 
-        soundManager.PlaySound("", 0f, arrowSound);
+        soundManager.PlaySound("", arrowSound);
 
         yield return new WaitForSeconds(duration);
 
         selectorArrow.style.backgroundImage = new StyleBackground(arrowSprites[4]);
 
-        soundManager.PlaySound("", 0f, arrowSound);
+        soundManager.PlaySound("", arrowSound);
 
         yield return new WaitForSeconds(duration);
 
         selectorArrow.style.backgroundImage = new StyleBackground(arrowSprites[5]);
 
-        soundManager.PlaySound("", 0f, arrowSound);
+        soundManager.PlaySound("", arrowSound);
 
         yield return new WaitForSeconds(duration);
 

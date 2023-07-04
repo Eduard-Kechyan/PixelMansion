@@ -92,7 +92,7 @@ public class SceneLoader : MonoBehaviour
         {
             case "Loading":
                 // Play background music
-                soundManager.PlayMusic(sceneName, 0.7f);
+                soundManager.PlayMusic(sceneName);
 
                 break;
 

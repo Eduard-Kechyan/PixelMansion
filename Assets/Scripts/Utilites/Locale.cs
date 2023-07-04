@@ -14,10 +14,10 @@ namespace Locale
         private static readonly string[] locales = new string[]
         {
             "en-US", // English - English
-            "fr-FR", // French - French
-            "es-ES", // Spanish - Spanish
-            "de-DE", // German - German
-            "it-IT", // Italian - Utaliano
+            "fr-FR", // French - Français
+            "es-ES", // Spanish - Española
+            "de-DE", // German - Deutsch
+            "it-IT", // Italian - Italiano
             "ru-RU", // Russian - Русский
             "hy-HY", // Armenian - Հայերեն
             "ja-JP", // Japanese - 日本語

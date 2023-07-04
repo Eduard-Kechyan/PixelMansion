@@ -40824,7 +40824,7 @@ MonoBehaviour:
   shouldRebound: 1
   rebound: 20
   reboundSpeed: 100
-  debugCharacterMovement: 0
+  debugCharacterMovement: 1
   debugCharMove: {fileID: 1571421247}
   shouldReset: 0
   resetSpeed: 300

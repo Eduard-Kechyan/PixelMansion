@@ -66,6 +66,7 @@ public class GameData : MonoBehaviour
     private ValuesUI valuesUI;
     private GameplayUI gameplayUI;
     private DataManager dataManager;
+    private SoundManager soundManager;
 
     // Instance
     public static GameData Instance;
@@ -87,9 +88,8 @@ public class GameData : MonoBehaviour
     {
         // Cache
         timeManager = GetComponent<TimeManager>();
-
-        // Cache instances
         dataManager = DataManager.Instance;
+        soundManager= SoundManager.Instance;
 
         energyTimeOut = energyTime;
 
@@ -220,9 +220,13 @@ public class GameData : MonoBehaviour
             {
                 leftoverExperience = experience - maxExperience;
 
-                experience = maxExperience;
+              //  experience = maxExperience;
 
                 ToggleCanLevelUpCheck(true);
+
+                soundManager.PlaySound("LevelUpIndicator");
+
+                valuesUI.ToggleLevelUp(true);
             }
         }
 
@@ -244,9 +248,9 @@ public class GameData : MonoBehaviour
 
         dataManager.writer.Write("level", level).Commit();
 
-        experience = leftoverExperience;
-
         ToggleCanLevelUpCheck(false);
+
+        valuesUI.ToggleLevelUp(false);
 
         CalcMaxExperience();
 

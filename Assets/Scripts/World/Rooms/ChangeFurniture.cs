@@ -84,6 +84,8 @@ public class ChangeFurniture : MonoBehaviour
         // Set the sprite order
         spriteOrder = order;
 
+        Debug.Log(order);
+
         // Set the sprite
         spriteRenderer.sprite = sprites[order];
     }
