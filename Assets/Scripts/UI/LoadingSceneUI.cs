@@ -1,7 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Locale;
 
 public class LoadingSceneUI : MonoBehaviour
 {
@@ -14,16 +17,33 @@ public class LoadingSceneUI : MonoBehaviour
     private float skyUpCount = 0;
     private float skyDownCount = 0;
     private Sprite[] backgroundSprites;
+    private Action loadingCallback;
 
-// UI
+    // References
+    private I18n LOCALE;
+
+    // UI
     private VisualElement root;
+
     private VisualElement background;
     private Label versionLabel;
     private VisualElement skyUp;
     private VisualElement skyDown;
 
+    private VisualElement overlayBackground;
+
+    private VisualElement termsMenu;
+    private Label termsLabel;
+    private Label termsTitleLabel;
+    private Button termsAcceptButton;
+    private Button termsTermsButton;
+    private Button termsPrivacyButton;
+
     private void Start()
     {
+        // Instances
+        LOCALE = I18n.Instance;
+
         // Load the sprites
         backgroundSprites = Resources.LoadAll<Sprite>("Scenes/Loading/Scene");
 
@@ -35,7 +55,26 @@ public class LoadingSceneUI : MonoBehaviour
         skyUp = root.Q<VisualElement>("SkyUp");
         skyDown = root.Q<VisualElement>("SkyDown");
 
-        SetVersion();
+        overlayBackground = root.Q<VisualElement>("OverlayBackground");
+
+        termsMenu = root.Q<VisualElement>("TermsMenu");
+        termsLabel = termsMenu.Q<Label>("TermsLabel");
+        termsTitleLabel = termsMenu.Q<Label>("TitleLabel");
+        termsAcceptButton = termsMenu.Q<Button>("AcceptButton");
+        termsTermsButton = termsMenu.Q<Button>("TermsButton");
+        termsPrivacyButton = termsMenu.Q<Button>("PrivacyButton");
+
+        termsAcceptButton.clicked += () => AcceptTerms();
+        termsTermsButton.clicked += () =>
+        {
+            Application.OpenURL(GameData.WEB_ADDRESS + "/terms");
+        };
+        termsPrivacyButton.clicked += () =>
+        {
+            Application.OpenURL(GameData.WEB_ADDRESS + "/privacy");
+        };
+
+        Init();
 
         // Start the animation
         InvokeRepeating("ChangeBackgroundSprite", 0.0f, backgroundDelay * Time.fixedDeltaTime);
@@ -43,9 +82,11 @@ public class LoadingSceneUI : MonoBehaviour
         InvokeRepeating("MoveSkyDownSprite", 0.0f, skyDownDelay * Time.fixedDeltaTime);
     }
 
-    void SetVersion()
+    void Init()
     {
         versionLabel.text = "v." + Application.version;
+
+        HideTermsMenu();
     }
 
     void ChangeBackgroundSprite()
@@ -88,5 +129,48 @@ public class LoadingSceneUI : MonoBehaviour
         {
             skyDownCount -= 0.1f;
         }
+    }
+
+    public void CheckTerms(Action callback = null)
+    {
+        loadingCallback = callback;
+
+        // Show the overlay
+        overlayBackground.style.display = DisplayStyle.Flex;
+        overlayBackground.style.opacity = 1;
+
+        // Show the menu
+        termsMenu.style.display = DisplayStyle.Flex;
+        termsMenu.style.opacity = 1f;
+
+        termsTitleLabel.text = LOCALE.Get("terms_menu_title");
+        termsLabel.text = LOCALE.Get("terms_menu_label");
+
+        termsAcceptButton.text = LOCALE.Get("terms_accept");
+        termsTermsButton.text = LOCALE.Get("terms_terms_button");
+        termsPrivacyButton.text = LOCALE.Get("terms_privacy_button");
+    }
+
+    void AcceptTerms()
+    {
+        HideTermsMenu();
+
+        PlayerPrefs.SetInt("termsAccepted", 1);
+
+        if (loadingCallback != null)
+        {
+            loadingCallback();
+        }
+    }
+
+    void HideTermsMenu()
+    {
+        // Hide the overlay
+        overlayBackground.style.display = DisplayStyle.None;
+        overlayBackground.style.opacity = 0;
+
+        // Hide the menu
+        termsMenu.style.display = DisplayStyle.None;
+        termsMenu.style.opacity = 0;
     }
 }

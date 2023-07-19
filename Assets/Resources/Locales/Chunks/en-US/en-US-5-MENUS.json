@@ -46,5 +46,11 @@
     "________ TASK_MENU ________": "________________",
     "task_menu_title": "Tasks",
     "________ LOCALE_MENU ________": "________________",
-    "locale_menu_title": "Languages"
+    "locale_menu_title": "Languages", 
+    "________ TERMS_MENU ________": "________________",
+    "terms_menu_title": "Importan Notice",
+    "terms_menu_label": "By tapping the \"Accept\" button, you agree with our Terms of Service and Privacy Policy.",
+    "terms_accept": "Accept",
+    "terms_terms_button": "Terms of Service",
+    "terms_privacy_button": "Privacy Policy"
 }

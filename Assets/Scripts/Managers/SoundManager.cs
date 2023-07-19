@@ -108,7 +108,9 @@ public class SoundManager : MonoBehaviour
                         sourceMusic.volume = i.volume;
                     }
 
-                    sourceSound.PlayOneShot(i.clip);
+                    sourceMusic.clip = i.clip;
+
+                    sourceMusic.Play();
                 }
             }
         }

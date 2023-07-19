@@ -865,15 +865,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3376659920091939738, guid: 0f321621033fa8c4c8321a5344743d7c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.7519037
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3376659920091939738, guid: 0f321621033fa8c4c8321a5344743d7c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.9822059
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3376659920091939738, guid: 0f321621033fa8c4c8321a5344743d7c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.0004795118
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3376659920091939738, guid: 0f321621033fa8c4c8321a5344743d7c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -953,14 +953,6 @@ PrefabInstance:
     - target: {fileID: 243338010137091312, guid: 3745bd78f7038594bb16e1e12adb1156, type: 3}
       propertyPath: m_Name
       value: SoundManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 1888629426759165983, guid: 3745bd78f7038594bb16e1e12adb1156, type: 3}
-      propertyPath: soundClips.Array.data[6].volume
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1888629426759165983, guid: 3745bd78f7038594bb16e1e12adb1156, type: 3}
-      propertyPath: soundClips.Array.data[8].volume
-      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 2493642430407458550, guid: 3745bd78f7038594bb16e1e12adb1156, type: 3}
       propertyPath: m_RootOrder

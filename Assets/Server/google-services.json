@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "148453384497",
+    "project_id": "pixelmergegame",
+    "storage_bucket": "pixelmergegame.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:148453384497:android:3fe62422e8bb4e71741010",
+        "android_client_info": {
+          "package_name": "com.EduardKechyan.PixelMerge"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "148453384497-o1lih32htbsm7rh48nom5lur5la4od72.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZUV_oFOMnCAIDQX7zKU2RepZ27dZpE3E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "148453384497-o1lih32htbsm7rh48nom5lur5la4od72.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

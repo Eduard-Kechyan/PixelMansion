@@ -34,12 +34,14 @@ public class DataManager : MonoBehaviour
     private JsonHandler jsonHandler;
     private GameData gameData;
     private TimeManager timeManager;
+    private ApiCalls apiCalls;
 
     private string initialJsonData;
     private string bonusData;
     private string inventoryData;
     private string timersJsonData;
     private string unlockedJsonData;
+    private string unsentJsonData;
 
     private I18n LOCALE = I18n.Instance;
 
@@ -57,11 +59,12 @@ public class DataManager : MonoBehaviour
         }
     }
 
-    async void Start()
+    void Start()
     {
         // Set up Quick Save
         saveSettings = new QuickSaveSettings() { CompressionMode = CompressionMode.None }; //TODO -  Set CompressionMode in the final game to Gzip
         writer = QuickSaveWriter.Create("Root", saveSettings);
+        apiCalls = ApiCalls.Instance;
 
         // Cache JsonHandler
         jsonHandler = GetComponent<JsonHandler>();
@@ -84,20 +87,27 @@ public class DataManager : MonoBehaviour
             )
         )
         {
-            await CheckInitialData();
+            CheckInitialData();
+        }
+
+        if (PlayerPrefs.HasKey("userId"))
+        {
+            GameData.Instance.userId = PlayerPrefs.GetString("userId");
         }
 #endif
     }
 
     // Check if we need to save initial data to disk
-    public async Task CheckInitialData()
+    public void CheckInitialData(Action callback = null)
     {
+
         if ((ignoreInitialCheck && isEditor) || (!PlayerPrefs.HasKey("Loaded") && !writer.Exists("rootSet")))
         {
             initialJsonData = jsonHandler.ConvertBoardToJson(initialItems.content, true);
             bonusData = jsonHandler.ConvertBonusToJson(gameData.bonusData);
             inventoryData = jsonHandler.ConvertInventoryToJson(gameData.inventoryData);
             timersJsonData = jsonHandler.ConvertTimersToJson(gameData.timers);
+            unsentJsonData = jsonHandler.ConvertUnsentToson(apiCalls.unsentData);
 
             writer
                 .Write("rootSet", true)
@@ -115,26 +125,28 @@ public class DataManager : MonoBehaviour
                 .Write("timers", timersJsonData)
                 // Other
                 .Write("inventorySpace", gameData.inventorySpace)
+                .Write("unsentData", apiCalls.unsentData)
                 .Commit();
 
-            await GetData(true);
+            GetData(true, callback);
         }
         else
         {
             reader = QuickSaveReader.Create("Root", saveSettings);
 
-            await GetData(false);
+            GetData(false, callback);
         }
     }
 
     // Get object data from the initial data
-    async Task GetData(bool initialLoad)
+    void GetData(bool initialLoad, Action callback = null)
     {
         string newBoardData = "";
         string newBonusData = "";
         string newInventoryData = "";
         string newTimersData = "";
         string newUnlockedData = "";
+        string newUnsentData = "";
 
         if (initialLoad)
         {
@@ -144,6 +156,7 @@ public class DataManager : MonoBehaviour
             newInventoryData = inventoryData;
             newTimersData = timersJsonData;
             newUnlockedData = unlockedJsonData;
+            newUnsentData = unsentJsonData;
         }
         else
         {
@@ -159,6 +172,7 @@ public class DataManager : MonoBehaviour
             reader.Read<string>("inventoryData", r => newInventoryData = r);
             reader.Read<string>("timers", r => newTimersData = r);
             reader.Read<string>("unlockedData", r => newUnlockedData = r);
+            reader.Read<string>("unsentData", r => newUnsentData = r);
 
             gameData.inventorySpace = reader.Read<int>("inventorySpace");
         }
@@ -178,6 +192,8 @@ public class DataManager : MonoBehaviour
         gameData.bonusData = jsonHandler.ConvertBonusFromJson(newBonusData);
         gameData.inventoryData = jsonHandler.ConvertInventoryFromJson(newInventoryData);
 
+        apiCalls.unsentData = jsonHandler.ConvertUnsentFromJson(newUnsentData);
+
         //timeManager.CheckTimers();
 
         // Finish Task
@@ -188,7 +204,10 @@ public class DataManager : MonoBehaviour
             PlayerPrefs.SetInt("Loaded", 1);
         }
 
-        await Task.Delay(500);
+        if (callback != null)
+        {
+            callback();
+        }
     }
 
     Types.Items[] ConvertItems(Types.Items[] itemsContent)
@@ -493,6 +512,13 @@ public class DataManager : MonoBehaviour
         string newBonusData = jsonHandler.ConvertBonusToJson(gameData.bonusData);
 
         writer.Write("bonusData", newBonusData).Commit();
+    }
+
+    public void SaveUnsentData()
+    {
+        string newUnsentData = jsonHandler.ConvertUnsentToson(apiCalls.unsentData);
+
+        writer.Write("unsentData", newUnsentData).Commit();
     }
 
     public void SaveInventory(bool saveSpace = false)

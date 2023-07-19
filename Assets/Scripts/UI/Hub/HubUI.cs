@@ -46,7 +46,7 @@ public class HubUI : MonoBehaviour
 
         settingsButton.clicked += () => settingsMenu.Open();
         shopButton.clicked += () => shopMenu.Open();
-        
+
         taskButton.clicked += () => taskMenu.Open();
         playButton.clicked += () => sceneLoader.Load(2);
 
@@ -70,9 +70,9 @@ public class HubUI : MonoBehaviour
         Vector2 playButtonScreenPosition = new Vector2(
             singlePixelWidth
                 * (
-                    root.worldBound.width - (root.worldBound.width - (playButton.worldBound.center.x-(playButton.resolvedStyle.width/4)))
+                    root.worldBound.width - (root.worldBound.width - (playButton.worldBound.center.x - (playButton.resolvedStyle.width / 4)))
                 ),
-            singlePixelWidth * (root.worldBound.height - (playButton.worldBound.center.y+(playButton.resolvedStyle.width/4)))
+            singlePixelWidth * (root.worldBound.height - (playButton.worldBound.center.y - (playButton.resolvedStyle.width / 4)))
         );
 
         playButtonPosition = Camera.main.ScreenToWorldPoint(playButtonScreenPosition);

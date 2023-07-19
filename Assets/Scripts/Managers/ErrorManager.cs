@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Newtonsoft.Json;
 using Locale;
 
 public class ErrorManager : MonoBehaviour
@@ -10,9 +12,21 @@ public class ErrorManager : MonoBehaviour
 
     // Instances
     private I18n LOCALE;
+    private ApiCalls apiCalls;
 
     // Instance
     public static ErrorManager Instance;
+
+    [Serializable]
+    public class FullError
+    {
+        public string userId;
+        public string source;
+        public string message;
+        public string code;
+        public string type;
+        public string created;
+    }
 
     void Awake()
     {
@@ -37,9 +51,10 @@ public class ErrorManager : MonoBehaviour
 
         // Cache instances
         LOCALE = I18n.Instance;
+        apiCalls = ApiCalls.Instance;
     }
 
-    public void Throw(Types.ErrorType type, string errorCode, bool showToUser = false)
+    public void Throw(Types.ErrorType type, string errorCode, bool showToUser = false, bool sendError = false)
     {
         if (showToUser && noteMenu != null)
         {
@@ -50,6 +65,31 @@ public class ErrorManager : MonoBehaviour
         else
         {
             Debug.LogWarning(type.ToString() + " Error: " + errorCode);
+        }
+
+        if (sendError)
+        {
+            apiCalls.SendError("\"code\": \"" + errorCode + "\"");
+        }
+    }
+
+    public void ThrowFull(Types.ErrorType type, string errorSource,string errorMessage, string errorCode, bool sendError = false)
+    {
+        Debug.LogWarning(type.ToString() + " Error, Code: " + errorCode + ", Message:" + errorMessage);
+
+        FullError newFullerror = new FullError
+        {
+            userId = GameData.Instance.userId,
+            source = errorSource,
+            message = errorMessage,
+            code = errorCode,
+            type = type.ToString(),
+            created = DateTime.UtcNow.ToString()
+        };
+
+        if (sendError)
+        {
+            apiCalls.SendError(JsonConvert.SerializeObject(newFullerror));
         }
     }
 

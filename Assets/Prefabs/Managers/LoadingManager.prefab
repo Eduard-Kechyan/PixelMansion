@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4308663436815015815}
   - component: {fileID: 6666298423405771595}
+  - component: {fileID: 17699005712081010}
   m_Layer: 0
   m_Name: LoadingManager
   m_TagString: Untagged
@@ -45,6 +46,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stayOnScene: 0
+  logPhases: 0
   fillSpeed: 30
   sceneLoader: {fileID: 0}
   uiDocument: {fileID: 0}
+  loadingSceneUI: {fileID: 0}
+  loading: 0
+  phase: 1
+--- !u!114 &17699005712081010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2766446888630418134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea0b99c2b969697409f93bb32ce1b33a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  saveUserId: 1

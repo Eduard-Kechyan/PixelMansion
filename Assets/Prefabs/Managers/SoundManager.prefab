@@ -60,11 +60,11 @@ MonoBehaviour:
   - clip: {fileID: 8300000, guid: 3ec3e4d5663e5fa4e83b1e9d9909f319, type: 3}
     volume: 1
   - clip: {fileID: 8300000, guid: b2a05aa60a3e51e4ab9cb5dabf05f7cc, type: 3}
-    volume: 0.5
+    volume: 0.1
   - clip: {fileID: 8300000, guid: dfc344e7c5889e042ae509663040c2b2, type: 3}
     volume: 1
   - clip: {fileID: 8300000, guid: 237f49a584ca15a45bb2288a94d9dff7, type: 3}
-    volume: 1
+    volume: 0.3
   - clip: {fileID: 8300000, guid: 81a14e23751c7d54d839ac37f2be125c, type: 3}
     volume: 1
   - clip: {fileID: 8300000, guid: 2c463166612f4a94da4e47427ee28ac8, type: 3}

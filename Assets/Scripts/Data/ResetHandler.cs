@@ -5,6 +5,18 @@ using System.IO;
 
 public class ResetHandler : MonoBehaviour
 {
+    public bool resetData = false;
+
+    void OnValidate()
+    {
+        if (resetData)
+        {
+            resetData = false;
+
+            ResetData();
+        }
+    }
+
     public void RestartApp(bool reset = false)
     {
         //if(Application.isEditor) return;
@@ -39,7 +51,6 @@ public class ResetHandler : MonoBehaviour
 #endif
     }
 
-    [ContextMenu("Reset Data")]
     public void ResetData()
     {
         string folderPath = Application.persistentDataPath + "/QuickSave";

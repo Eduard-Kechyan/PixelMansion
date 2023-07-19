@@ -17,6 +17,8 @@ public class GameData : MonoBehaviour
     public const float GAME_PIXEL_WIDTH = 180f;
     public static float GAME_PIXEL_HEIGHT = 0f;
 
+    public const string WEB_ADDRESS="https://WEBSITE.com"; // Replace WEBSITE with proper website name
+
     public int maxExperience = 10;
     public int leftoverExperience = 0;
     public int maxLevel = 99;
@@ -55,6 +57,9 @@ public class GameData : MonoBehaviour
     //public  Types.Items[] storageData;
     public Types.Board[,] boardData;
     public string[] unlockedData = new string[0];
+
+    // User
+    public string userId;
 
     private Sprite[] itemsSprites;
     private Sprite[] generatorsSprites;

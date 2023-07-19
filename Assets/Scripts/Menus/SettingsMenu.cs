@@ -48,8 +48,11 @@ public class SettingsMenu : MonoBehaviour
 
     private Label signInLabel;
     private Label followLabel;
-    private Label idLabel;
     private Label versionLabel;
+
+    private Label idLabel;
+    private Button idCopyButton;
+    private VisualElement copyCheck;
 
     void Start()
     {
@@ -93,8 +96,11 @@ public class SettingsMenu : MonoBehaviour
 
         signInLabel = settingsMenu.Q<Label>("SignInLabel");
         followLabel = settingsMenu.Q<Label>("FollowLabel");
-        idLabel = settingsMenu.Q<Label>("IDLabel");
         versionLabel = settingsMenu.Q<Label>("VersionLabel");
+
+        idLabel = settingsMenu.Q<Label>("IDLabel");
+        idCopyButton = settingsMenu.Q<Button>("IDCopyButton");
+        copyCheck = settingsMenu.Q<VisualElement>("CopyCheck");
 
         // Button clicks // TODO - Add all button clicks to ////
         soundButton.clicked += () => settings.ToggleSound();
@@ -119,6 +125,8 @@ public class SettingsMenu : MonoBehaviour
         youtubeFollowButton.clicked += () => Debug.Log("Youtube Follow Button Clicked!"); ////
         tikTokFollowButton.clicked += () => Debug.Log("TikTok Follow Button Clicked!"); ////
 
+        idCopyButton.clicked += () => CopyIdToClipboard();
+
         Init();
     }
 
@@ -135,7 +143,7 @@ public class SettingsMenu : MonoBehaviour
         string title = LOCALE.Get("settings_menu_title");
 
         // TODO - Get the user ID
-        idLabel.text = "UUID: " + "00010001000";
+        idLabel.text = "User ID: " + GameData.Instance.userId;
 
         versionLabel.text = "v." + Application.version;
 
@@ -238,5 +246,22 @@ public class SettingsMenu : MonoBehaviour
         settings.SetLocale(newLocale, false, restart);
 
         SetUiText(true);
+    }
+
+    void CopyIdToClipboard()
+    {
+        GUIUtility.systemCopyBuffer = GameData.Instance.userId;
+
+        copyCheck.style.display = DisplayStyle.Flex;
+        copyCheck.style.opacity = 1;
+
+        StartCoroutine(RemoveCopyCheck());
+    }
+
+    IEnumerator RemoveCopyCheck(){
+        yield return new WaitForSeconds(2f);
+
+        copyCheck.style.display = DisplayStyle.None;
+        copyCheck.style.opacity = 0;
     }
 }

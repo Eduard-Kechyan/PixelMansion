@@ -9,14 +9,18 @@ public class LoadingManager : MonoBehaviour
 {
     // Variables
     public bool stayOnScene = false;
+    public bool logPhases = false;
     public float fillSpeed = 3f;
     public SceneLoader sceneLoader;
     public GameObject uiDocument;
+    public LoadingSceneUI loadingSceneUI;
+    public bool loading = false;
+    public int phase = 1;
 
     private VisualElement fill;
     private float fillCount = 0;
-    private bool loading = false;
-    private bool startedLoading = false;
+    private Action callback;
+    private UserDataHandler userDataHandler;
 
     // References
     private DataManager dataManager;
@@ -27,6 +31,7 @@ public class LoadingManager : MonoBehaviour
         // Cache
         dataManager = DataManager.Instance;
         notifics = Notifics.Instance;
+        userDataHandler = GetComponent<UserDataHandler>();
 
         // Cache UI
         VisualElement root = uiDocument.GetComponent<UIDocument>().rootVisualElement;
@@ -34,24 +39,76 @@ public class LoadingManager : MonoBehaviour
         fill = root.Q<VisualElement>("Fill");
 
         loading = true;
+
+        callback += ContinueLoading;
     }
 
     void Update()
     {
         if (loading && fillCount < 100f)
         {
-            Vector2 current = new Vector2(fillCount, fillCount);
-            Vector2 to = new Vector2(100, 100);
-
-            fillCount = Vector2.MoveTowards(current, to, fillSpeed * Time.deltaTime).x;
+            fillCount = Mathf.MoveTowards(fillCount, 100, fillSpeed * Time.deltaTime);
 
             fill.style.width = new Length(fillCount, LengthUnit.Pixel);
 
-            if (fillCount >= 10f && !startedLoading)
+            if (fillCount >= 20f && phase == 1)
             {
-                startedLoading = true;
-                LoadData();
+                loading = false;
+                if (PlayerPrefs.HasKey("termsAccepted"))
+                {
+                    ContinueLoading();
+                }
+                else
+                {
+                    loadingSceneUI.CheckTerms(callback);
+                }
+
+                if (logPhases)
+                {
+                    Debug.Log("Phase 1");
+                }
             }
+
+            if (fillCount >= 40f && phase == 2)
+            {
+                loading = false;
+                dataManager.CheckInitialData(callback);
+
+                if (logPhases)
+                {
+                    Debug.Log("Phase 2");
+                }
+            }
+
+            if (fillCount >= 60f && phase == 3)
+            {
+                loading = false;
+                userDataHandler.CheckUser(callback);
+
+                if (logPhases)
+                {
+                    Debug.Log("Phase 3");
+                }
+            }
+
+            /*if (fillCount >= 80f && phase==4)
+            {
+                loading = false;
+
+                // Check notifications
+                if (SystemInfo.operatingSystem.Contains("13") && SystemInfo.operatingSystem.Contains("33"))
+                {
+                    loading = false;
+                    //StartCoroutine(notifics.RequestPermission()); await Task.Delay(750);
+                    notifics.CheckNotifications();
+                    loading = true;
+                }
+
+                if (logPhases)
+                {
+                    Debug.Log("Phase 4");
+                }
+            }*/
 
             if (fillCount >= 100f)
             {
@@ -59,28 +116,17 @@ public class LoadingManager : MonoBehaviour
                 {
                     sceneLoader.Load(1);
                 }
+                else
+                {
+                    Debug.Log("Skipping Next scene!");
+                }
             }
         }
     }
 
-    async void LoadData()
+    void ContinueLoading()
     {
-        await Task.Delay(500);
-
-        // Get data
-        loading = false;
-        await dataManager.CheckInitialData();
         loading = true;
-
-        await Task.Delay(1000);
-
-        // Check notifications
-        if (SystemInfo.operatingSystem.Contains("13")&&SystemInfo.operatingSystem.Contains("33"))
-        {
-            loading = false;
-            //StartCoroutine(notifics.RequestPermission()); await Task.Delay(750);
-            await notifics.CheckNotifications();
-            loading = true;
-        }
+        phase++;
     }
 }
