@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 9208330620282697053}
   - component: {fileID: 5899287849079459285}
-  - component: {fileID: 5142194623617893830}
   m_Layer: 0
   m_Name: Notifics
   m_TagString: Untagged
@@ -31,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5899287849079459285
 MonoBehaviour:
@@ -46,17 +45,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   accentColor: {r: 0.23344605, g: 0.8113208, b: 0.7705192, a: 1}
---- !u!114 &5142194623617893830
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2422922118333141129}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8cee98b792935d2499e84d5f659c1895, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mode: -1
-  autoBadging: 1

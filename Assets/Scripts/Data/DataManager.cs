@@ -125,7 +125,7 @@ public class DataManager : MonoBehaviour
                 .Write("timers", timersJsonData)
                 // Other
                 .Write("inventorySpace", gameData.inventorySpace)
-                .Write("unsentData", apiCalls.unsentData)
+                .Write("unsentData", unsentJsonData)
                 .Commit();
 
             GetData(true, callback);
@@ -193,6 +193,8 @@ public class DataManager : MonoBehaviour
         gameData.inventoryData = jsonHandler.ConvertInventoryFromJson(newInventoryData);
 
         apiCalls.unsentData = jsonHandler.ConvertUnsentFromJson(newUnsentData);
+
+        apiCalls.canCheckForUnsent = true;
 
         //timeManager.CheckTimers();
 

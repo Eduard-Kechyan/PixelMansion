@@ -169,3 +169,50 @@
 .speech_bubble:active {
     scale: 0.8 0.8;
 }
+
+.age_slider .unity-slider-int__label {
+    margin-left: 0;
+    margin-right: 10px;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    width: 20px;
+    height: 26px;
+    -unity-font-definition: url('project://database/Assets/Fonts/Roboto%20SDF.asset?fileID=11400000&guid=1c5dedeb0ccefb74ebe6e5ff0a6f7e56&type=2#Roboto SDF');
+    color: rgb(51, 51, 51);
+    font-size: 14px;
+    -unity-text-align: middle-center;
+    min-width: 20px;
+}
+
+.age_slider .unity-base-slider__tracker {
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    background-color: rgb(197, 188, 163);
+    height: 6px;
+    max-height: 6px;
+    min-height: 6px;
+}
+
+.age_slider .unity-base-slider__dragger {
+    width: 20px;
+    height: 20px;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    margin-top: -10px;
+    background-image: url('project://database/Assets/Sprites/Scenes/Loading/Menu/SliderDragger.png?fileID=2800000&guid=aecefaf87cdaa094fb9f95ad7c7f400c&type=3#SliderDragger');
+    background-color: rgba(0, 0, 0, 0);
+    -unity-background-image-tint-color: rgb(85, 203, 152);
+    transition-duration: 0.3s;
+}
+
+.age_slider .unity-base-slider__dragger:active {
+    -unity-background-image-tint-color: rgb(59, 159, 116);
+}

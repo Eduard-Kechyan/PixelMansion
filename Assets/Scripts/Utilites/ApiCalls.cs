@@ -10,15 +10,16 @@ public class ApiCalls : MonoBehaviour
     public bool getData = false;
     public bool logConnection = false;
 
-    private string URL = "https://server.com"; // TODO - Add real api address
+    private string URL = "http://192.168.18.164:7007/api"; // TODO - Add real api address
 
     public bool isConnected = false;
+    public bool canCheckForUnsent = false;
 
     // Enums
     public enum UnsentType
     {
         NewUser,
-        Terms
+        Error
     };
 
     public class UnsentData
@@ -38,6 +39,10 @@ public class ApiCalls : MonoBehaviour
     public List<UnsentData> unsentData = new List<UnsentData>(0);
 
     private bool sendingUnsentData = false;
+
+    private List<UnityWebRequest> requests = new List<UnityWebRequest>();
+
+    private bool waitingForUnsentData = true;
 
     // References
     private DataManager dataManager;
@@ -67,8 +72,6 @@ public class ApiCalls : MonoBehaviour
     void Start()
     {
         dataManager = DataManager.Instance;
-
-        CheckForUnsentData();
     }
 
     void OnValidate()
@@ -125,7 +128,7 @@ public class ApiCalls : MonoBehaviour
                         {
                             isConnected = true;
 
-                            if (!sendingUnsentData)
+                            if (!sendingUnsentData && canCheckForUnsent)
                             {
                                 CheckForUnsentData();
                             }
@@ -159,20 +162,21 @@ public class ApiCalls : MonoBehaviour
         {
             yield return request.SendWebRequest();
 
+            requests.Add(request);
+
             if (request.result == UnityWebRequest.Result.Success)
             {
-
-                // Checked
                 if (callback != null)
                 {
                     callback();
                 }
+
+                PlayerPrefs.DeleteKey("tempAge");
             }
             else
             {
                 SetUnsentData(UnsentType.NewUser, jsonData);
 
-                // Checked
                 if (callback != null)
                 {
                     callback();
@@ -191,6 +195,8 @@ public class ApiCalls : MonoBehaviour
         using (UnityWebRequest request = UnityWebRequest.Post(URL + "/system/error", jsonData, "application/json"))
         {
             yield return request.SendWebRequest();
+
+            requests.Add(request);
 
             if (request.result != UnityWebRequest.Result.Success)
             {
@@ -218,14 +224,62 @@ public class ApiCalls : MonoBehaviour
         if (PlayerPrefs.HasKey("hasUnsentData") || unsentData.Count > 0)
         {
             sendingUnsentData = true;
-            // Send unsent data
-            Debug.Log("Trying to send unsent data!");
+
+            if (unsentData.Count > 0)
+            {
+                // Send unsent data
+                for (int i = 0; i < unsentData.Count; i++)
+                {
+                    switch (unsentData[i].unsentType)
+                    {
+                        case UnsentType.NewUser:
+                            StartCoroutine(CreateUser(unsentData[i].jsonData, null));
+                            break;
+
+                        default: // Error
+                            StartCoroutine(SendError(unsentData[i].jsonData));
+                            break;
+                    }
+                }
+
+                StartCoroutine(CheckDoneRequests());
+            }
+
 
             return true;
         }
         else
         {
             return false;
+        }
+    }
+
+    IEnumerator CheckDoneRequests()
+    {
+        while (waitingForUnsentData)
+        {
+            bool done = true;
+
+            foreach (UnityWebRequest request in requests)
+            {
+                if (!request.isDone) done = false;
+            }
+
+            if (done)
+            {
+                waitingForUnsentData = false;
+
+                sendingUnsentData = false;
+
+                unsentData = new List<UnsentData>();
+                requests = new List<UnityWebRequest>();
+
+                dataManager.SaveUnsentData();
+            }
+            else
+            {
+                yield return null;
+            }
         }
     }
 }

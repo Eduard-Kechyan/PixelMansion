@@ -48,9 +48,13 @@
     "________ LOCALE_MENU ________": "________________",
     "locale_menu_title": "Languages", 
     "________ TERMS_MENU ________": "________________",
-    "terms_menu_title": "Importan Notice",
+    "terms_menu_title": "Important Notice",
     "terms_menu_label": "By tapping the \"Accept\" button, you agree with our Terms of Service and Privacy Policy.",
     "terms_accept": "Accept",
     "terms_terms_button": "Terms of Service",
-    "terms_privacy_button": "Privacy Policy"
+    "terms_privacy_button": "Privacy Policy",
+    "________ AGE_MENU ________": "________________",
+    "age_menu_title": "Age Notice",
+    "age_menu_label": "Please select your age to continue.",
+    "age_accept": "Accept"
 }

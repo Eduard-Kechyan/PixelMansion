@@ -16,21 +16,25 @@ public class LoadingManager : MonoBehaviour
     public LoadingSceneUI loadingSceneUI;
     public bool loading = false;
     public int phase = 1;
+    public float maxPhase = 5;
 
     private VisualElement fill;
     private float fillCount = 0;
     private Action callback;
+    private Action<int> callbackAge;
     private UserDataHandler userDataHandler;
+    private float singlePhasePercent = 10f;
+    private int tempAge = 0;
 
     // References
     private DataManager dataManager;
-    private Notifics notifics;
+    //private Notifics notifics;
 
     void Start()
     {
         // Cache
         dataManager = DataManager.Instance;
-        notifics = Notifics.Instance;
+        //notifics = Notifics.Instance;
         userDataHandler = GetComponent<UserDataHandler>();
 
         // Cache UI
@@ -40,7 +44,12 @@ public class LoadingManager : MonoBehaviour
 
         loading = true;
 
+        singlePhasePercent = 100f / (maxPhase + 1);
+
         callback += ContinueLoading;
+        callbackAge += HandleAge;
+
+        tempAge = PlayerPrefs.GetInt("tempAge");
     }
 
     void Update()
@@ -51,7 +60,7 @@ public class LoadingManager : MonoBehaviour
 
             fill.style.width = new Length(fillCount, LengthUnit.Pixel);
 
-            if (fillCount >= 20f && phase == 1)
+            if (fillCount >= singlePhasePercent * 1 && phase == 1)
             {
                 loading = false;
                 if (PlayerPrefs.HasKey("termsAccepted"))
@@ -69,10 +78,17 @@ public class LoadingManager : MonoBehaviour
                 }
             }
 
-            if (fillCount >= 40f && phase == 2)
+            if (fillCount >= singlePhasePercent * 2 && phase == 2)
             {
                 loading = false;
-                dataManager.CheckInitialData(callback);
+                if (PlayerPrefs.HasKey("ageAccepted"))
+                {
+                    ContinueLoading();
+                }
+                else
+                {
+                    loadingSceneUI.CheckAge(callbackAge);
+                }
 
                 if (logPhases)
                 {
@@ -80,10 +96,10 @@ public class LoadingManager : MonoBehaviour
                 }
             }
 
-            if (fillCount >= 60f && phase == 3)
+            if (fillCount >= singlePhasePercent * 3 && phase == 3)
             {
                 loading = false;
-                userDataHandler.CheckUser(callback);
+                dataManager.CheckInitialData(callback);
 
                 if (logPhases)
                 {
@@ -91,7 +107,18 @@ public class LoadingManager : MonoBehaviour
                 }
             }
 
-            /*if (fillCount >= 80f && phase==4)
+            if (fillCount >= singlePhasePercent * 4 && phase == 4)
+            {
+                loading = false;
+                userDataHandler.CheckUser(callback, tempAge);
+
+                if (logPhases)
+                {
+                    Debug.Log("Phase 4");
+                }
+            }
+
+            /*if (fillCount >= singlePhasePercent*5 && phase==5)
             {
                 loading = false;
 
@@ -106,7 +133,7 @@ public class LoadingManager : MonoBehaviour
 
                 if (logPhases)
                 {
-                    Debug.Log("Phase 4");
+                    Debug.Log("Phase 5");
                 }
             }*/
 
@@ -122,6 +149,15 @@ public class LoadingManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    void HandleAge(int newValue)
+    {
+        tempAge = newValue;
+
+        PlayerPrefs.SetInt("tempAge", newValue);
+
+        ContinueLoading();
     }
 
     void ContinueLoading()

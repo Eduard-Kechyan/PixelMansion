@@ -17,7 +17,8 @@ public class LoadingSceneUI : MonoBehaviour
     private float skyUpCount = 0;
     private float skyDownCount = 0;
     private Sprite[] backgroundSprites;
-    private Action loadingCallback;
+    private Action termsCallback;
+    private Action<int> ageCallback;
 
     // References
     private I18n LOCALE;
@@ -32,12 +33,20 @@ public class LoadingSceneUI : MonoBehaviour
 
     private VisualElement overlayBackground;
 
+    // Terms
     private VisualElement termsMenu;
-    private Label termsLabel;
     private Label termsTitleLabel;
+    private Label termsLabel;
     private Button termsAcceptButton;
     private Button termsTermsButton;
     private Button termsPrivacyButton;
+
+    // Age
+    private VisualElement ageMenu;
+    private Label ageTitleLabel;
+    private Label ageLabel;
+    private SliderInt ageSlider;
+    private Button ageAcceptButton;
 
     private void Start()
     {
@@ -58,11 +67,17 @@ public class LoadingSceneUI : MonoBehaviour
         overlayBackground = root.Q<VisualElement>("OverlayBackground");
 
         termsMenu = root.Q<VisualElement>("TermsMenu");
-        termsLabel = termsMenu.Q<Label>("TermsLabel");
         termsTitleLabel = termsMenu.Q<Label>("TitleLabel");
+        termsLabel = termsMenu.Q<Label>("TermsLabel");
         termsAcceptButton = termsMenu.Q<Button>("AcceptButton");
         termsTermsButton = termsMenu.Q<Button>("TermsButton");
         termsPrivacyButton = termsMenu.Q<Button>("PrivacyButton");
+
+        ageMenu = root.Q<VisualElement>("AgeMenu");
+        ageTitleLabel = ageMenu.Q<Label>("TitleLabel");
+        ageLabel = ageMenu.Q<Label>("AgeLabel");
+        ageSlider = ageMenu.Q<SliderInt>("AgeSlider");
+        ageAcceptButton = ageMenu.Q<Button>("AcceptButton");
 
         termsAcceptButton.clicked += () => AcceptTerms();
         termsTermsButton.clicked += () =>
@@ -73,6 +88,9 @@ public class LoadingSceneUI : MonoBehaviour
         {
             Application.OpenURL(GameData.WEB_ADDRESS + "/privacy");
         };
+
+        ageAcceptButton.clicked += () => AcceptAge();
+        ageSlider.RegisterValueChangedCallback(AgeSliderHandle);
 
         Init();
 
@@ -131,9 +149,10 @@ public class LoadingSceneUI : MonoBehaviour
         }
     }
 
+    //// TERMS ////
     public void CheckTerms(Action callback = null)
     {
-        loadingCallback = callback;
+        termsCallback = callback;
 
         // Show the overlay
         overlayBackground.style.display = DisplayStyle.Flex;
@@ -157,9 +176,9 @@ public class LoadingSceneUI : MonoBehaviour
 
         PlayerPrefs.SetInt("termsAccepted", 1);
 
-        if (loadingCallback != null)
+        if (termsCallback != null)
         {
-            loadingCallback();
+            termsCallback();
         }
     }
 
@@ -172,5 +191,62 @@ public class LoadingSceneUI : MonoBehaviour
         // Hide the menu
         termsMenu.style.display = DisplayStyle.None;
         termsMenu.style.opacity = 0;
+    }
+
+    //// AGE ////
+    public void CheckAge(Action<int> callback = null)
+    {
+        ageCallback = callback;
+
+        // Show the overlay
+        overlayBackground.style.display = DisplayStyle.Flex;
+        overlayBackground.style.opacity = 1;
+
+        // Show the menu
+        ageMenu.style.display = DisplayStyle.Flex;
+        ageMenu.style.opacity = 1f;
+
+        ageTitleLabel.text = LOCALE.Get("age_menu_title");
+        ageLabel.text = LOCALE.Get("age_menu_label", 12); // TODO - Change 12 to the propper age
+
+        ageAcceptButton.text = LOCALE.Get("age_accept");
+        ageAcceptButton.SetEnabled(false);
+    }
+
+    void AcceptAge()
+    {
+        HideAgeMenu();
+
+        PlayerPrefs.SetInt("ageAccepted", 1);
+
+        if (ageCallback != null)
+        {
+            ageCallback(ageSlider.value);
+        }
+    }
+
+    void HideAgeMenu()
+    {
+        // Hide the overlay
+        overlayBackground.style.display = DisplayStyle.None;
+        overlayBackground.style.opacity = 0;
+
+        // Hide the menu
+        ageMenu.style.display = DisplayStyle.None;
+        ageMenu.style.opacity = 0;
+    }
+
+    void AgeSliderHandle(ChangeEvent<int> newData)
+    {
+        ageSlider.label = newData.newValue.ToString();
+
+        if (newData.newValue > 0f)
+        {
+            ageAcceptButton.SetEnabled(true);
+        }
+        else
+        {
+            ageAcceptButton.SetEnabled(false);
+        }
     }
 }

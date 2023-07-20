@@ -17,6 +17,7 @@ public class UserDataHandler : MonoBehaviour
         public string email;
         public string location;
         public string language;
+        public int age;
     }
 
     private ApiCalls apiCalls;
@@ -26,15 +27,14 @@ public class UserDataHandler : MonoBehaviour
         apiCalls = ApiCalls.Instance;
     }
 
-    public void CheckUser(Action callback)
+    public void CheckUser(Action callback, int tempAge)
     {
-        loadingCallback = callback;
-
-        string userId;
 
         if (PlayerPrefs.HasKey("userId"))
         {
-            userId = PlayerPrefs.GetString("userId");
+            GameData.Instance.userId = PlayerPrefs.GetString("userId");
+
+            callback();
         }
         else
         {
@@ -42,27 +42,30 @@ public class UserDataHandler : MonoBehaviour
 
             string base64 = Convert.ToBase64String(guidByteArray);
 
-            userId = base64.Substring(0, base64.Length - 2);
+            string userId = base64.Substring(0, base64.Length - 2);
 
-            GetReadyToCreateUser(userId);
+            loadingCallback = callback;
+
+            GetReadyToCreateUser(userId, tempAge);
 
             if (saveUserId)
             {
                 PlayerPrefs.SetString("userId", userId);
             }
-        }
 
-        GameData.Instance.userId = userId;
+            GameData.Instance.userId = userId;
+        }
     }
 
-    void GetReadyToCreateUser(string userId)
+    void GetReadyToCreateUser(string userId, int tempAge)
     {
         UserData newUserData = new()
         {
             userId = userId,
             email = "test@gmail.com",
             location = "USA",
-            language = "en-US"
+            language = "en-US",
+            age = tempAge
         };
 
         // deviceId = SystemInfo.deviceUniqueIdentifier,
