@@ -39,20 +39,11 @@ public class SceneLoader : MonoBehaviour
         InitializeScene();
     }
 
-    public void Load(int sceneIndex, bool reset = false)
+    public void Load(int sceneIndex)
     {
         transitionUI.Open();
 
-        soundManager.FadeOutMusic(fadeDuration);///
-        if (!reset)
-        {
-          //  soundManager.FadeOutMusic(fadeDuration);
-
-           /* if (PlayerPrefs.HasKey("reseted"))
-            {
-                Init();
-            }*/
-        }
+        soundManager.FadeOutMusic(fadeDuration);
 
         StartCoroutine(LoadScene(sceneIndex));
     }

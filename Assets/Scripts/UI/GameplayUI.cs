@@ -17,6 +17,7 @@ public class GameplayUI : MonoBehaviour
     private InventoryMenu inventoryMenu;
     private ShopMenu shopMenu;
     private TaskMenu taskMenu;
+    private SoundManager soundManager;
 
     // UI
     private VisualElement root;
@@ -35,6 +36,7 @@ public class GameplayUI : MonoBehaviour
         inventoryMenu = GameRefs.Instance.inventoryMenu;
         shopMenu = GameRefs.Instance.shopMenu;
         taskMenu = GameRefs.Instance.taskMenu;
+        soundManager = SoundManager.Instance;
 
         // UI
         root = GetComponent<UIDocument>().rootVisualElement;
@@ -50,7 +52,11 @@ public class GameplayUI : MonoBehaviour
         inventoryButton.Q<VisualElement>("Border").pickingMode = PickingMode.Ignore;
 
         // Button taps
-        homeButton.clicked += () => sceneLoader.Load(1);
+        homeButton.clicked += () =>
+        {
+            soundManager.PlaySound("Transition");
+            sceneLoader.Load(1);
+        };
         inventoryButton.clicked += () => inventoryMenu.Open();
         bonusButton.clicked += () => bonusManager.GetBonus();
         shopButton.clicked += () => shopMenu.Open();

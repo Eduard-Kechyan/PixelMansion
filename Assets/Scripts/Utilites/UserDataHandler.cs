@@ -59,10 +59,14 @@ public class UserDataHandler : MonoBehaviour
 
     void GetReadyToCreateUser(string userId, int tempAge)
     {
+        string dummyEmail = RandomEmailDummy(); // Or use test@gmail.com
+
+        Debug.Log(dummyEmail);
+
         UserData newUserData = new()
         {
             userId = userId,
-            email = "test@gmail.com",
+            email = dummyEmail, //TODO - Email should be empty and should only be filled if the player signs ins using social media
             location = "USA",
             language = "en-US",
             age = tempAge
@@ -87,5 +91,21 @@ public class UserDataHandler : MonoBehaviour
          Debug.Log(Application.installMode);*/
 
         StartCoroutine(apiCalls.CreateUser(JsonConvert.SerializeObject(newUserData), loadingCallback));
+    }
+
+    string RandomEmailDummy()
+    {
+        string randomText = "";
+
+        const string glyphs = "abcdefghijklmnopqrstuvwxyz";
+
+        int charAmount = UnityEngine.Random.Range(3, 6);
+
+        for (int i = 0; i < charAmount; i++)
+        {
+            randomText += glyphs[UnityEngine.Random.Range(0, glyphs.Length)];
+        }
+
+        return randomText + "@" + randomText + ".com";
     }
 }

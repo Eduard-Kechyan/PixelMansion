@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.SceneManagement;
 
 public class TransitionUI : MonoBehaviour
 {
     // Variables
     public float duration = 0.5f;
-    public bool loadingScene = false;
+    public Color[] backgroundColors = new Color[0];
+    public Sprite[] iconSprites = new Sprite[0];
 
     // UI
     private VisualElement root;
@@ -20,23 +22,11 @@ public class TransitionUI : MonoBehaviour
 
         transition = root.Q<VisualElement>("Transition");
 
-        if (loadingScene)
+        if (SceneManager.GetActiveScene().name == "Loading")
         {
             transition.style.display = DisplayStyle.Flex;
-
-            if (PlayerPrefs.HasKey("reseted")){
-                PlayerPrefs.DeleteKey("reseted");
-
-                transition.style.opacity = 1;
-                transition.style.visibility = Visibility.Visible;
-
-                StartCoroutine(Close());
-            }
-            else
-            {
-                transition.style.opacity = 0;
-                transition.style.visibility = Visibility.Hidden;
-            }
+            transition.style.opacity = 0;
+            transition.style.visibility = Visibility.Hidden;
         }
         else
         {
@@ -46,6 +36,13 @@ public class TransitionUI : MonoBehaviour
 
     public void Open()
     {
+        if (backgroundColors.Length > 0)
+        {
+            transition.style.backgroundColor = backgroundColors[Random.Range(0, backgroundColors.Length)];
+        }
+
+        // Do the rest afterwards
+
         transition.style.opacity = 1;
         transition.style.visibility = Visibility.Visible;
     }

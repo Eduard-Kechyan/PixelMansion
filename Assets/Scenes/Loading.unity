@@ -250,10 +250,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4479317755097273465, guid: 02afc034eec9a314b97f987fe6c69102, type: 3}
-      propertyPath: loadingScene
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7504682329703976227, guid: 02afc034eec9a314b97f987fe6c69102, type: 3}
       propertyPath: m_Name
       value: TransitionUI
@@ -707,14 +703,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SoundManager
       objectReference: {fileID: 0}
-    - target: {fileID: 1888629426759165983, guid: 3745bd78f7038594bb16e1e12adb1156, type: 3}
-      propertyPath: soundClips.Array.data[9]
-      value: 
-      objectReference: {fileID: 8300000, guid: b9e9300cfbd4d744398fa9f0734814af, type: 3}
-    - target: {fileID: 2129766215703338103, guid: 3745bd78f7038594bb16e1e12adb1156, type: 3}
-      propertyPath: m_Volume
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2493642430407458550, guid: 3745bd78f7038594bb16e1e12adb1156, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -865,6 +853,10 @@ PrefabInstance:
       propertyPath: loadingSceneUI
       value: 
       objectReference: {fileID: 57463800}
+    - target: {fileID: 6666298423405771595, guid: a255d925b90a92e418c669c0cfae21e9, type: 3}
+      propertyPath: fillSpeedInEditor
+      value: 30
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -925,6 +917,10 @@ PrefabInstance:
     - target: {fileID: 7472463700673464612, guid: 0289cc21cc6746447a77de1bc5bff923, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050900026113403551, guid: 0289cc21cc6746447a77de1bc5bff923, type: 3}
+      propertyPath: useDevUrl
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

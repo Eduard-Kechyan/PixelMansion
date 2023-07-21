@@ -31,7 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2295170619679281268
 MonoBehaviour:
@@ -62,4 +62,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   duration: 0.5
-  loadingScene: 0
+  backgroundColors:
+  - {r: 0.30588236, g: 0.5529412, b: 0.5764706, a: 1}
+  - {r: 0.5943396, g: 0.2719384, b: 0.2859558, a: 1}
+  - {r: 0.26966894, g: 0.5660378, b: 0.34694105, a: 1}
+  - {r: 0.606935, g: 0.6226415, b: 0.26139194, a: 1}
+  - {r: 0.69803923, g: 0.5020379, b: 0.18039216, a: 1}
+  - {r: 0.5862841, g: 0.2627451, b: 0.62352943, a: 1}
+  - {r: 0.2627451, g: 0.2766628, b: 0.62352943, a: 1}
+  - {r: 0.2627451, g: 0.40662313, b: 0.62352943, a: 1}
+  iconSprites: []

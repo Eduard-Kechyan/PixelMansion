@@ -10,7 +10,7 @@ public class LoadingManager : MonoBehaviour
     // Variables
     public bool stayOnScene = false;
     public bool logPhases = false;
-    public float fillSpeed = 3f;
+    public float fillSpeed = 30f;
     public SceneLoader sceneLoader;
     public GameObject uiDocument;
     public LoadingSceneUI loadingSceneUI;
@@ -18,8 +18,10 @@ public class LoadingManager : MonoBehaviour
     public int phase = 1;
     public float maxPhase = 5;
 
-    private VisualElement fill;
+    [ReadOnly]
+    [SerializeField]
     private float fillCount = 0;
+    private VisualElement fill;
     private Action callback;
     private Action<int> callbackAge;
     private UserDataHandler userDataHandler;
@@ -139,13 +141,13 @@ public class LoadingManager : MonoBehaviour
 
             if (fillCount >= 100f)
             {
-                if (!stayOnScene)
+                if (stayOnScene && Application.isEditor)
                 {
-                    sceneLoader.Load(1);
+                    Debug.Log("Skipping Next scene!");
                 }
                 else
                 {
-                    Debug.Log("Skipping Next scene!");
+                    sceneLoader.Load(1);
                 }
             }
         }

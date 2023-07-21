@@ -17,6 +17,7 @@ public class HubUI : MonoBehaviour
     private SettingsMenu settingsMenu;
     private ShopMenu shopMenu;
     private TaskMenu taskMenu;
+    private SoundManager soundManager;
 
     // UI
     private VisualElement root;
@@ -33,6 +34,7 @@ public class HubUI : MonoBehaviour
         settingsMenu = GameRefs.Instance.settingsMenu;
         shopMenu = GameRefs.Instance.shopMenu;
         taskMenu = GameRefs.Instance.taskMenu;
+        soundManager = SoundManager.Instance;
 
         // UI
         root = GetComponent<UIDocument>().rootVisualElement;
@@ -48,7 +50,10 @@ public class HubUI : MonoBehaviour
         shopButton.clicked += () => shopMenu.Open();
 
         taskButton.clicked += () => taskMenu.Open();
-        playButton.clicked += () => sceneLoader.Load(2);
+        playButton.clicked += () => {
+            soundManager.PlaySound("Transition");
+            sceneLoader.Load(2);
+        };
 
         root.RegisterCallback<GeometryChangedEvent>(Init);
     }

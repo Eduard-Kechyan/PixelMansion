@@ -6,11 +6,10 @@ using UnityEngine.Networking;
 
 public class ApiCalls : MonoBehaviour
 {
-    public bool postData = false;
-    public bool getData = false;
     public bool logConnection = false;
+    public bool useDevUrl = false;
 
-    private string URL = "http://192.168.18.164:7007/api"; // TODO - Add real api address
+    private string URL = "https://game-dev-backup.onrender.com/api"; // TODO - Add real api address
 
     public bool isConnected = false;
     public bool canCheckForUnsent = false;
@@ -53,7 +52,10 @@ public class ApiCalls : MonoBehaviour
     void Awake()
     {
 #if UNITY_EDITOR
-        URL = "http://192.168.18.164:7007/api";
+        if (useDevUrl)
+        {
+            URL = "http://192.168.18.164:7007/api"; // Dev server
+        }
 #endif
 
         if (Instance != null && Instance != this)
@@ -66,35 +68,12 @@ public class ApiCalls : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
 
-        StartCoroutine(CheckConnection());
+        // StartCoroutine(CheckConnection());
     }
 
     void Start()
     {
         dataManager = DataManager.Instance;
-    }
-
-    void OnValidate()
-    {
-        if (postData)
-        {
-            postData = false;
-
-            if (Application.isPlaying && isConnected)
-            {
-                StartCoroutine(CreateUser(""));
-            }
-        }
-        if (getData)
-        {
-            getData = false;
-
-            if (Application.isPlaying && isConnected)
-            {
-                StartCoroutine(GetData("/users/_id/" + "64a47313420305bb515d8b8b"));
-            }
-        }
-
     }
 
     IEnumerator GetData(string path = "")
@@ -156,6 +135,11 @@ public class ApiCalls : MonoBehaviour
         }
     }
 
+    public void CheckIfUserExists()
+    {
+
+    }
+
     public IEnumerator CreateUser(string jsonData, Action callback = null)
     {
         using (UnityWebRequest request = UnityWebRequest.Post(URL + "/users", jsonData, "application/json"))
@@ -166,6 +150,8 @@ public class ApiCalls : MonoBehaviour
 
             if (request.result == UnityWebRequest.Result.Success)
             {
+                requests.RemoveAt(requests.Count - 1);
+
                 if (callback != null)
                 {
                     callback();
@@ -184,8 +170,8 @@ public class ApiCalls : MonoBehaviour
 
                 if (isConnected)
                 {
-                    ErrorManager.Instance.ThrowFull(Types.ErrorType.Network, "ApiCalls.cs -> CreateUser()", request.result.ToString(), request.responseCode.ToString(), true);
                 }
+                ErrorManager.Instance.ThrowFull(Types.ErrorType.Network, "ApiCalls.cs -> CreateUser()", request.result.ToString(), request.responseCode.ToString(), true);
             }
         }
     }
@@ -198,7 +184,11 @@ public class ApiCalls : MonoBehaviour
 
             requests.Add(request);
 
-            if (request.result != UnityWebRequest.Result.Success)
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                requests.RemoveAt(requests.Count - 1);
+            }
+            else
             {
                 ErrorManager.Instance.ThrowFull(Types.ErrorType.Network, "ApiCalls.cs -> SendError()", request.result.ToString(), request.responseCode.ToString(), true);
             }
@@ -219,7 +209,7 @@ public class ApiCalls : MonoBehaviour
         dataManager.SaveUnsentData();
     }
 
-    bool CheckForUnsentData()
+    void CheckForUnsentData()
     {
         if (PlayerPrefs.HasKey("hasUnsentData") || unsentData.Count > 0)
         {
@@ -244,13 +234,6 @@ public class ApiCalls : MonoBehaviour
 
                 StartCoroutine(CheckDoneRequests());
             }
-
-
-            return true;
-        }
-        else
-        {
-            return false;
         }
     }
 
