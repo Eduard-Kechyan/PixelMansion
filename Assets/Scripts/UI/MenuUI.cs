@@ -13,6 +13,8 @@ public class MenuUI : MonoBehaviour
 
     private List<MenuItem> menus = new List<MenuItem>();
     private bool valuesShown;
+    private bool closeAllMenus = false;
+    private bool closeingAllMenus = false;
 
     // References
     private ValuesUI valuesUI;
@@ -55,13 +57,15 @@ public class MenuUI : MonoBehaviour
         }
     }
 
-    public void OpenMenu(VisualElement newMenu, string newTitle, bool showValues = false)
+    public void OpenMenu(VisualElement newMenu, string newTitle, bool showValues = false, bool closeAll = false)
     {
         // Add the menu to the menu list
         menus.Add(new MenuItem { menuItem = newMenu, showValues = showValues });
 
         // Set the current menu
         currentMenu = newMenu;
+
+        closeAllMenus = closeAll;
 
         currentMenu.SetEnabled(true);
 
@@ -89,7 +93,17 @@ public class MenuUI : MonoBehaviour
         // Add background click handler
         background = currentMenu.Q<VisualElement>("Background");
 
-        background.AddManipulator(new Clickable(evt => CloseMenu(currentMenu.name)));
+        background.AddManipulator(new Clickable(evt =>
+        {
+            if (closeAllMenus)
+            {
+                CloseAllMenus();
+            }
+            else
+            {
+                CloseMenu(currentMenu.name);
+            }
+        }));
 
         // Disable the close button
         currentMenu.Q<VisualElement>("Close").pickingMode = PickingMode.Ignore;
@@ -133,14 +147,23 @@ public class MenuUI : MonoBehaviour
         StartCoroutine(HideMenuAfter());
     }
 
-    IEnumerator HideMenuAfter()
+    IEnumerator HideMenuAfter(MenuItem menuItem = null, int index = 0)
     {
         yield return new WaitForSeconds(transitionDuration);
 
         // Hide and remove the current menu
-        currentMenu.style.display = DisplayStyle.None;
+        if (menuItem == null)
+        {
+            currentMenu.style.display = DisplayStyle.None;
 
-        currentMenu = null;
+            currentMenu = null;
+        }
+        else
+        {
+            menuItem.menuItem.style.display = DisplayStyle.None;
+            
+            menus.RemoveAt(index);
+        }
 
         CheckMenuClosed();
     }
@@ -200,6 +223,34 @@ public class MenuUI : MonoBehaviour
                 HideValues();
             }
         }
+    }
+
+    public void CloseAllMenus()
+    {
+        if (!closeingAllMenus)
+        {
+            closeingAllMenus = true;
+
+            StartCoroutine(CloseAllAfter());
+        }
+    }
+
+    IEnumerator CloseAllAfter()
+    {
+        for (int i = menus.Count - 1; i > -1; i--) // NOTE - We are counting backwards
+        {
+            menus[i].menuItem.SetEnabled(false);
+            menus[i].menuItem.style.opacity = 0f;
+            StartCoroutine(HideMenuAfter(menus[i], i));
+            yield return new WaitForSeconds(transitionDuration * 2);
+        }
+
+        closeAllMenus = false;
+        closeingAllMenus = false;
+
+        CheckMenuClosed();
+
+        yield return null;
     }
 
     void ShowValues()

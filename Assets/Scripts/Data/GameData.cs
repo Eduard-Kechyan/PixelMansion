@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 // TODO - Kaleidoscope
 
@@ -9,6 +8,7 @@ public class GameData : MonoBehaviour
 {
     // Variables
     public ValuesData valuesData;
+    public EnergyTimer energyTimer;
 
     public const int WIDTH = 7;
     public const int HEIGHT = 9;
@@ -17,20 +17,10 @@ public class GameData : MonoBehaviour
     public const float GAME_PIXEL_WIDTH = 180f;
     public static float GAME_PIXEL_HEIGHT = 0f;
 
-    public const string WEB_ADDRESS="https://WEBSITE.com"; // Replace WEBSITE with proper website name
+    public const string WEB_ADDRESS = "https://WEBSITE.com"; // Replace WEBSITE with proper website name
 
     public int maxExperience = 10;
     public int leftoverExperience = 0;
-    public int maxLevel = 99;
-    public int maxOther = 9999;
-
-    public float energyTime = 120f;
-    private float energyTimeOut;
-
-    //private bool energyTimerOn = false;
-
-    [SerializeField]
-    private string energyTimerText = "00:00";
 
     // Values
     public int experience = 0; // 0% - 100%
@@ -41,8 +31,13 @@ public class GameData : MonoBehaviour
 
     public bool canLevelUp = false;
 
+    // Inventory
     public int inventorySpace = 7;
     public const int maxInventorySpace = 50;
+    public int inventorySlotPrice = 50;
+
+    [HideInInspector]
+    public int initialInventorySpace = 7;
 
     // Timers
     public List<Types.Timer> timers;
@@ -94,11 +89,11 @@ public class GameData : MonoBehaviour
         // Cache
         timeManager = GetComponent<TimeManager>();
         dataManager = DataManager.Instance;
-        soundManager= SoundManager.Instance;
-
-        energyTimeOut = energyTime;
+        soundManager = SoundManager.Instance;
 
         canLevelUp = PlayerPrefs.GetInt("canLevelUp") == 1 ? true : false;
+
+        initialInventorySpace = inventorySpace;
 
         CalcMaxExperience();
 
@@ -116,24 +111,6 @@ public class GameData : MonoBehaviour
         }
     }
 
-    /* void Update()
-     {
-         if (energyTimerOn)
-         {
-             if (energyTimeOut > 0)
-             {
-                 energyTimeOut -= Time.deltaTime;
-                 UpdateEnergyTimer(energyTimeOut);
-             }
-             else
-             {
-                 UpdateEnergy();
- 
-                 CheckEnergy(true);
-             }
-         }
-     }*/
-
     //////// SET ////////
 
     void CalcGamePixelHeight()
@@ -141,13 +118,18 @@ public class GameData : MonoBehaviour
         GAME_PIXEL_HEIGHT = Screen.height / (Screen.width / GAME_PIXEL_WIDTH);
     }
 
-    public void SetExperience(int amount, bool initial = false)
+    public void SetExperience(int amount, bool initial = false, bool checkCanLevelUp = false)
     {
         experience = amount;
 
         if (!initial)
         {
             valuesUI.UpdateValues();
+        }
+
+        if (checkCanLevelUp)
+        {
+            SetExperienceReady();
         }
     }
 
@@ -170,8 +152,6 @@ public class GameData : MonoBehaviour
         if (!initial)
         {
             valuesUI.UpdateValues();
-
-            CheckEnergy();
         }
     }
 
@@ -225,13 +205,9 @@ public class GameData : MonoBehaviour
             {
                 leftoverExperience = experience - maxExperience;
 
-              //  experience = maxExperience;
+                //  experience = maxExperience;
 
-                ToggleCanLevelUpCheck(true);
-
-                soundManager.PlaySound("LevelUpIndicator");
-
-                valuesUI.ToggleLevelUp(true);
+                SetExperienceReady();
             }
         }
 
@@ -245,6 +221,15 @@ public class GameData : MonoBehaviour
         levelMenu.UpdateLevelMenu();
 
         dataManager.writer.Write("experience", experience).Commit();
+    }
+
+    void SetExperienceReady()
+    {
+        ToggleCanLevelUpCheck(true);
+
+        soundManager.PlaySound("LevelUpIndicator");
+
+        valuesUI.ToggleLevelUp(true);
     }
 
     public void UpdateLevel()
@@ -264,8 +249,10 @@ public class GameData : MonoBehaviour
 
     public bool UpdateEnergy(int amount = 1, bool useMultiplier = false)
     {
-        if (amount > 0 && energy < maxOther || amount < 0 && energy >= amount)
+        if (amount < 0 && gems + energy < 0)
         {
+            return false;
+        }else{
             if (useMultiplier)
             {
                 energy += valuesData.energyMultiplier[amount - 1];
@@ -275,17 +262,12 @@ public class GameData : MonoBehaviour
                 energy += amount;
             }
 
-            if (energy > maxOther)
-            {
-                energy = maxOther;
-            }
-
             if (energy < 0)
             {
                 energy = 0;
             }
 
-            CheckEnergy();
+            energyTimer.CheckEnergy();
 
             dataManager.writer.Write("energy", energy).Commit();
 
@@ -293,13 +275,15 @@ public class GameData : MonoBehaviour
 
             return true;
         }
-
-        return false;
     }
 
     public bool UpdateGold(int amount = 1, bool useMultiplier = false)
     {
-        if (amount > 0 && gold < maxOther || amount < 0 && gold >= amount)
+        if (amount < 0 && gold + amount < 0)
+        {
+            return false;
+        }
+        else
         {
             if (useMultiplier)
             {
@@ -308,11 +292,6 @@ public class GameData : MonoBehaviour
             else
             {
                 gold += amount;
-            }
-
-            if (gold > maxOther)
-            {
-                gold = maxOther;
             }
 
             if (gold < 0)
@@ -326,13 +305,15 @@ public class GameData : MonoBehaviour
 
             return true;
         }
-
-        return false;
     }
 
     public bool UpdateGems(int amount = 1, bool useMultiplier = false)
     {
-        if (amount > 0 && gems < maxOther || amount < 0 && gems >= amount)
+        if (amount < 0 && gems + amount < 0)
+        {
+            return false;
+        }
+        else
         {
             if (useMultiplier)
             {
@@ -341,11 +322,6 @@ public class GameData : MonoBehaviour
             else
             {
                 gems += amount;
-            }
-
-            if (gems > maxOther)
-            {
-                gems = maxOther;
             }
 
             if (gems < 0)
@@ -359,8 +335,6 @@ public class GameData : MonoBehaviour
 
             return true;
         }
-
-        return false;
     }
 
     //////// BONUS ////////
@@ -415,6 +389,7 @@ public class GameData : MonoBehaviour
         canLevelUp = canLevelUpCheck;
 
         PlayerPrefs.SetInt("canLevelUp", canLevelUp ? 1 : 0);
+        PlayerPrefs.Save();
     }
 
     // Get Sprite from sprite name
@@ -458,60 +433,6 @@ public class GameData : MonoBehaviour
         }
 
         return null;
-    }
-
-    public void CheckEnergy(bool fromTimer = false)
-    {
-        /*if(energy < MAX_ENERGY){
-            timeManager.AddEnergyTimer();
-        }*/
-
-
-        energyTimeOut = energyTime;
-
-        // Increase energy after set time if energy is less than 100
-        if (energy < 100)
-        {
-            // energyTimerOn = true;
-        }
-        else
-        {
-            // End the timer and notify the plat that the energy is full
-            // energyTimerOn = false;
-
-            if (fromTimer)
-            {
-                if (energy >= 100)
-                {
-                    Debug.Log("Energy full!");
-
-                    // TODO = Add notification for a full energy
-                }
-            }
-            else
-            {
-                if (valuesUI.energyTimer != null)
-                {
-                    valuesUI.energyTimer.style.display = DisplayStyle.None;
-                }
-            }
-        }
-    }
-
-    void UpdateEnergyTimer(float currentTime)
-    {
-        currentTime++;
-
-        float minutes = Mathf.FloorToInt(currentTime / 60);
-        float seconds = Mathf.FloorToInt(currentTime % 60);
-
-        string minutesText = minutes < 10 ? "0" + minutes : minutes.ToString();
-        string secondsText = seconds < 10 ? "0" + seconds : seconds.ToString();
-
-        energyTimerText = minutesText + ":" + secondsText;
-
-        valuesUI.energyTimer.text = energyTimerText;
-        valuesUI.energyTimer.style.display = DisplayStyle.Flex;
     }
 
     void CalcMaxExperience()

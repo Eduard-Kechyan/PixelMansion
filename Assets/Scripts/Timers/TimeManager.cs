@@ -8,12 +8,14 @@ public class TimeManager : MonoBehaviour
 {
     private DataManager dataManager;
     private GameData gameData;
+    private EnergyTimer energyTimer;
+
 
     void Start()
     {
         dataManager = DataManager.Instance;
-
         gameData = GameData.Instance;
+        energyTimer = GetComponent<EnergyTimer>();
     }
 
     public void AddTimer(Types.TimerType type, string timerName = "")
@@ -36,7 +38,7 @@ public class TimeManager : MonoBehaviour
     {
         int energyNeeded = GameData.MAX_ENERGY - gameData.energy;
 
-        int totalSeconds = (int)Mathf.Floor(energyNeeded * gameData.energyTime);
+        int totalSeconds = (int)Mathf.Floor(energyNeeded * energyTimer.energyTime);
 
         Debug.Log(totalSeconds);
 

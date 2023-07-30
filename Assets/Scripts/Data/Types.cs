@@ -30,7 +30,8 @@ public class Types : MonoBehaviour
     {
         Default,
         Crate,
-        Locker
+        Locker,
+        Bubble
     };
 
     public enum Type

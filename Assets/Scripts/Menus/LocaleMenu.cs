@@ -13,6 +13,7 @@ public class LocaleMenu : MonoBehaviour
 
     // References
     private MenuUI menuUI;
+    private ConfirmMenu confirmMenu;
     private SettingsMenu settingsMenu;
     private I18n LOCALE;
     private Settings settings;
@@ -28,6 +29,7 @@ public class LocaleMenu : MonoBehaviour
         // Cache
         menuUI = GetComponent<MenuUI>();
         settingsMenu = GetComponent<SettingsMenu>();
+        confirmMenu = GetComponent<ConfirmMenu>();
         LOCALE = I18n.Instance;
         settings = Settings.Instance;
         localeManager = settings.GetComponent<LocaleManager>();
@@ -76,6 +78,8 @@ public class LocaleMenu : MonoBehaviour
 
             localeButton.AddToClassList("local_button");
             localeButton.AddToClassList("button_active");
+            localeButton.RemoveFromClassList("local_button_disabled");
+
 
             localeButton.clicked += () => SetLocale(localeString);
 
@@ -129,6 +133,13 @@ public class LocaleMenu : MonoBehaviour
                 localeButton.SetEnabled(false);
             }
 
+            // Indicating the currently selected locale
+            if (locale == currentLocale)
+            {
+                localeButton.SetEnabled(false);
+                localeButton.AddToClassList("local_button_selected");
+            }
+
             content.Add(localeButton);
         }
 
@@ -140,10 +151,8 @@ public class LocaleMenu : MonoBehaviour
     {
         Types.Locale locale = (Types.Locale)System.Enum.Parse(typeof(Types.Locale), newLocale);
 
-        settingsMenu.SetLocale(locale, true);
+        settingsMenu.SetLocale(locale);
 
-        /* menuUI.CloseMenu(localeMenu.name);
-
-         localeManager.UpdateUILocale(locale,true);*/
+        confirmMenu.Open("locale", Application.Quit, menuUI.CloseAllMenus, true, true);
     }
 }

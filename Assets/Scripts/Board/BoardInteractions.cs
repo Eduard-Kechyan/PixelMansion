@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Locale;
+
 
 public class BoardInteractions : MonoBehaviour
 {
@@ -39,11 +41,14 @@ public class BoardInteractions : MonoBehaviour
     private SelectionManager selectionManager;
     private BoardManager boardManager;
     private InitializeBoard initializeBoard;
+    private BoardIndication boardIndication;
+    private BoardPopup boardPopup;
     private InventoryMenu inventoryMenu;
     private DataManager dataManager;
     private GameData gameData;
     private ItemHandler itemHandler;
     private SoundManager soundManager;
+    private I18n LOCALE;
 
     // UI
     private VisualElement root;
@@ -56,15 +61,18 @@ public class BoardInteractions : MonoBehaviour
 
     private void Start()
     {
-        // Cache
+        // References
         initializeBoard = GetComponent<InitializeBoard>();
         selectionManager = GetComponent<SelectionManager>();
         boardManager = GetComponent<BoardManager>();
+        boardIndication = GetComponent<BoardIndication>();
+        boardPopup = GetComponent<BoardPopup>();
         inventoryMenu = GameRefs.Instance.inventoryMenu;
         soundManager = SoundManager.Instance;
         dataManager = DataManager.Instance;
         gameData = GameData.Instance;
         itemHandler = dataManager.GetComponent<ItemHandler>();
+        LOCALE = I18n.Instance;
 
         // Cache root and dragOverlay
         root = GameRefs.Instance.gameplayUIDoc.rootVisualElement;
@@ -251,6 +259,8 @@ public class BoardInteractions : MonoBehaviour
             currentItem.transform.position.x,
             currentItem.transform.position.y
         );
+
+        boardIndication.StopPossibleMergeCheck();
     }
 
     void Drag()
@@ -377,14 +387,21 @@ public class BoardInteractions : MonoBehaviour
                     sameGroup
                     && otherItem.type == currentItem.type
                     && otherItem.level == currentItem.level
-                    && !otherItem.isMaxLavel
+                    && (otherItem.state != Types.State.Bubble || currentItem.state != Types.State.Bubble)
                 )
                 {
-                    if (otherItem.state != Types.State.Crate)
+                    if (otherItem.isMaxLavel)
                     {
-                        Merge(otherItem);
+                        boardPopup.AddPop(LOCALE.Get("pop_max_level"), otherItem.transform.position, true);
+                    }
+                    else
+                    {
+                        if (otherItem.state != Types.State.Crate)
+                        {
+                            Merge(otherItem);
 
-                        return;
+                            return;
+                        }
                     }
                 }
                 else
@@ -500,6 +517,8 @@ public class BoardInteractions : MonoBehaviour
         currentItem.ScaleToSize(initialScale, scaleSpeed, false, callback);
 
         boardManager.CheckForCrate(otherTile);
+
+        boardManager.CheckForBubble(currentItem);
     }
 
     void MergeBackCallback()
@@ -552,29 +571,40 @@ public class BoardInteractions : MonoBehaviour
 
     //////// INFO ACTION ////////
 
-    public void OpenItem(Item item, int amount, bool open)
+    public void OpenItem(Item item, int amount, Types.State state)
     {
         if (item.name == currentItem.name)
         {
             if (gameData.UpdateGems(-amount))
             {
-                if (open)
+                switch (state)
                 {
-                    currentItem.OpenCrate();
+                    case Types.State.Crate:
+                        currentItem.OpenCrate();
 
-                    // Play crate opening audio
-                    soundManager.PlaySound("OpenCrate");
+                        // Play crate opening audio
+                        soundManager.PlaySound("OpenCrate");
 
-                    OpenCrateCallback(currentItem);
-                }
-                else
-                {
-                    currentItem.UnlockLock();
+                        OpenCrateCallback(currentItem);
+                        break;
 
-                    // Play unlocking audio
-                    soundManager.PlaySound("UnlockLock");
+                    case Types.State.Bubble:
+                        currentItem.PopBubble();
 
-                    OpenLockCallback(currentItem);
+                        // Play crate opening audio
+                        soundManager.PlaySound("PopBubble" + UnityEngine.Random.Range(0, 3));
+
+                        PopBubbleCallback(currentItem);
+                        break;
+
+                    default:
+                        currentItem.UnlockLock();
+
+                        // Play unlocking audio
+                        soundManager.PlaySound("UnlockLock");
+
+                        OpenLockCallback(currentItem);
+                        break;
                 }
             }
         }
@@ -601,6 +631,20 @@ public class BoardInteractions : MonoBehaviour
         Vector2Int loc = boardManager.GetBoardLocation(0, itemTile);
 
         if (gameData.boardData[loc.x, loc.y].state == Types.State.Locker)
+        {
+            gameData.boardData[loc.x, loc.y].state = Types.State.Default;
+
+            dataManager.SaveBoard();
+        }
+    }
+
+    void PopBubbleCallback(Item item)
+    {
+        GameObject itemTile = item.transform.parent.gameObject;
+
+        Vector2Int loc = boardManager.GetBoardLocation(0, itemTile);
+
+        if (gameData.boardData[loc.x, loc.y].state == Types.State.Bubble)
         {
             gameData.boardData[loc.x, loc.y].state = Types.State.Default;
 

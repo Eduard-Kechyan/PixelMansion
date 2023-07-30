@@ -51,6 +51,7 @@ public class UserDataHandler : MonoBehaviour
             if (saveUserId)
             {
                 PlayerPrefs.SetString("userId", userId);
+                PlayerPrefs.Save();
             }
 
             GameData.Instance.userId = userId;
@@ -60,8 +61,6 @@ public class UserDataHandler : MonoBehaviour
     void GetReadyToCreateUser(string userId, int tempAge)
     {
         string dummyEmail = RandomEmailDummy(); // Or use test@gmail.com
-
-        Debug.Log(dummyEmail);
 
         UserData newUserData = new()
         {

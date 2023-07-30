@@ -17,6 +17,10 @@ public class ResetHandler : MonoBehaviour
         }
     }
 
+    public void RestartAndResetApp(){
+        RestartApp(true);
+    }
+
     public void RestartApp(bool reset = false)
     {
         //if(Application.isEditor) return;
@@ -27,7 +31,9 @@ public class ResetHandler : MonoBehaviour
             ResetData();
         }
 
-#if UNITY_ANDROID
+#if UNITY_EDITOR             
+        Debug.Log("Restarting application!");
+#elif UNITY_ANDROID
         using (var unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
         {
             const int kIntent_FLAG_ACTIVITY_CLEAR_TASK = 0x00008000;
@@ -61,5 +67,6 @@ public class ResetHandler : MonoBehaviour
         }
 
         PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save();
     }
 }

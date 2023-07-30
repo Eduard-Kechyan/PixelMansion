@@ -155,7 +155,7 @@ public class CharSpeech : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
 
-        int randomGreeting = Random.Range(0, greetings.Length - 1);
+        int randomGreeting = Random.Range(0, greetings.Length);
 
         Speak(greetings[randomGreeting]);
     }
@@ -190,7 +190,7 @@ public class CharSpeech : MonoBehaviour
 
     int GetRandomInt()
     {
-        int randomContent = Random.Range(0, randomSpeech.Length - 1);
+        int randomContent = Random.Range(0, randomSpeech.Length );
 
         if (lastRandomContent == randomContent)
         {

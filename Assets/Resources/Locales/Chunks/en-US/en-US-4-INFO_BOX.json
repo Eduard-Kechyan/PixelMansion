@@ -6,6 +6,8 @@
     "info_box_crate_text": "There is something inside the crate! MERGE next to it or use Gems to open it.",
     "info_box_locker": "(Locked)",
     "info_box_locker_text": "This item is locked! MERGE with it or use Gems to unlock it.",
+    "info_box_bubble":"(Bubble)",
+    "info_box_bubble_text": "To get this item, use Gems to pop the bubble.",
     "info_box_gen": "TAP to get new items. MERGE with the same item to get the next level of {0}.",
     "info_box_gen_max": "TAP to get new items. This item is at MAX level, it can't be MERGED!",
     "info_box_item": "MERGE with the same item to get {0}.",

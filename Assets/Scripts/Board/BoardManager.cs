@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,12 @@ public class BoardManager : MonoBehaviour
     public float moveSpeed = 14f;
     public float scaleSpeed = 8f;
     public int experienceThreshold = 4;
+
+    [Header("Bubbles")]
+    public int minBubbleLevel = 4; // TODO - Change this to 6 or higher
+    public int bubbleChance = 30; // In %
+    public int bubbleCount = 1000;
+    public bool popBubbles = false;
 
     [HideInInspector]
     public GameObject boardTiles;
@@ -38,9 +45,19 @@ public class BoardManager : MonoBehaviour
         valuePop = GameRefs.Instance.valuePop;
     }
 
+    private void OnValidate()
+    {
+        if (popBubbles)
+        {
+            popBubbles = false;
+
+            CheckForBubble();
+        }
+    }
+
     /////// GET BOARD DATA ////////
 
-    int GetBoardOrder(int checkX, int checkY)
+    public int GetBoardOrder(int checkX, int checkY)
     {
         // Get the item's order from the board by its location
 
@@ -238,6 +255,48 @@ public class BoardManager : MonoBehaviour
 
             dataManager.SaveBoard();
         }
+    }
+
+    /////// BUBBLE ////////
+
+    public void CheckForBubble(Item item = null)
+    {
+        float a = 0;
+        float b = 0;
+
+        float single = 100f / (float)bubbleCount;
+
+        // Check if it's a high level item
+        /* if (item.level >= minBubbleLevel)
+         {
+             float randomNum = UnityEngine.Random.Range(0, 101);
+
+             if (randomNum <= bubbleChance)
+             {
+                 a++;
+             }else{
+                 b++;
+             }
+         }*/
+
+        for (int i = 0; i < bubbleCount; i++)
+        {
+            float randomNum = UnityEngine.Random.Range(0, 101);
+
+            if (randomNum <= bubbleChance)
+            {
+                a += 1f;
+            }
+            else
+            {
+                b += 1f;
+            }
+        }
+
+        Debug.Log(a * single + ":" + b * single);
+
+
+        // TODO - Add timer for bubble
     }
 
     /////// CREATE ITEM ON THE BOARD ////////

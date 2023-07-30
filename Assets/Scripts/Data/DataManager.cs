@@ -100,7 +100,6 @@ public class DataManager : MonoBehaviour
     // Check if we need to save initial data to disk
     public void CheckInitialData(Action callback = null)
     {
-
         if ((ignoreInitialCheck && isEditor) || (!PlayerPrefs.HasKey("Loaded") && !writer.Exists("rootSet")))
         {
             initialJsonData = jsonHandler.ConvertBoardToJson(initialItems.content, true);
@@ -125,6 +124,7 @@ public class DataManager : MonoBehaviour
                 .Write("timers", timersJsonData)
                 // Other
                 .Write("inventorySpace", gameData.inventorySpace)
+                .Write("inventorySlotPrice", gameData.inventorySlotPrice)
                 .Write("unsentData", unsentJsonData)
                 .Commit();
 
@@ -174,7 +174,9 @@ public class DataManager : MonoBehaviour
             reader.Read<string>("unlockedData", r => newUnlockedData = r);
             reader.Read<string>("unsentData", r => newUnsentData = r);
 
+            // Other
             gameData.inventorySpace = reader.Read<int>("inventorySpace");
+            gameData.inventorySlotPrice = reader.Read<int>("inventorySlotPrice");
         }
 
         string[] unlockedDataTemp = JsonConvert.DeserializeObject<string[]>(newUnlockedData);
@@ -204,6 +206,7 @@ public class DataManager : MonoBehaviour
         if (initialLoad)
         {
             PlayerPrefs.SetInt("Loaded", 1);
+            PlayerPrefs.Save();
         }
 
         if (callback != null)
@@ -528,12 +531,14 @@ public class DataManager : MonoBehaviour
         if (saveSpace)
         {
             writer.Write("inventorySpace", gameData.inventorySpace).Commit();
+            writer.Write("inventorySlotPrice", gameData.inventorySlotPrice).Commit();
         }
         else
         {
-            string newInventoryData = jsonHandler.ConvertInventoryToJson(gameData.inventoryData);
+            //inventorySlotPrice
+            string newInventorySpace = jsonHandler.ConvertInventoryToJson(gameData.inventoryData);
 
-            writer.Write("inventoryData", newInventoryData).Commit();
+            writer.Write("inventoryData", newInventorySpace).Commit();
         }
     }
 

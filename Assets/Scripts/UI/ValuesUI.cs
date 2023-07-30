@@ -113,6 +113,8 @@ public class ValuesUI : MonoBehaviour
     {
         levelFill.style.width = CalcLevelFill();
 
+        Debug.Log(gameData.energy.ToString());
+
         levelValue.text = gameData.level.ToString();
         energyButton.text = gameData.energy.ToString();
         goldButton.text = gameData.gold.ToString();
@@ -142,7 +144,7 @@ public class ValuesUI : MonoBehaviour
 
         levelFill.style.transitionDuration = new StyleList<TimeValue>(durationsFull);
 
-        gameData.experience = gameData.leftoverExperience;
+        gameData.SetExperience(gameData.leftoverExperience, false, true);
 
         DataManager.Instance.writer.Write("experience", gameData.experience).Commit();
 
@@ -158,14 +160,14 @@ public class ValuesUI : MonoBehaviour
             levelUpIndicator.style.opacity = 1;
             levelUpIndicator.style.visibility = Visibility.Visible;
 
-            StartCoroutine("BlipLevelUpIndicator");
+            StartCoroutine(BlipLevelUpIndicator());
         }
         else
         {
             levelUpIndicator.style.opacity = 0;
             levelUpIndicator.style.visibility = Visibility.Hidden;
 
-            StopCoroutine("BlipLevelUpIndicator");
+            StopCoroutine(BlipLevelUpIndicator());
         }
     }
 

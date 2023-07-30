@@ -16,7 +16,7 @@ public class LoadingManager : MonoBehaviour
     public LoadingSceneUI loadingSceneUI;
     public bool loading = false;
     public int phase = 1;
-    public float maxPhase = 5;
+    public float maxPhase = 6;
 
     [ReadOnly]
     [SerializeField]
@@ -27,6 +27,7 @@ public class LoadingManager : MonoBehaviour
     private UserDataHandler userDataHandler;
     private float singlePhasePercent = 10f;
     private int tempAge = 0;
+    private bool initial = true;
 
     // References
     private DataManager dataManager;
@@ -52,6 +53,8 @@ public class LoadingManager : MonoBehaviour
         callbackAge += HandleAge;
 
         tempAge = PlayerPrefs.GetInt("tempAge");
+
+        initial = !PlayerPrefs.HasKey("InitialLoaded"); // Notice the "!"
     }
 
     void Update()
@@ -62,6 +65,7 @@ public class LoadingManager : MonoBehaviour
 
             fill.style.width = new Length(fillCount, LengthUnit.Pixel);
 
+            // Terms of Service and Privacy Policy notice
             if (fillCount >= singlePhasePercent * 1 && phase == 1)
             {
                 loading = false;
@@ -80,6 +84,7 @@ public class LoadingManager : MonoBehaviour
                 }
             }
 
+            // Age notice
             if (fillCount >= singlePhasePercent * 2 && phase == 2)
             {
                 loading = false;
@@ -98,6 +103,7 @@ public class LoadingManager : MonoBehaviour
                 }
             }
 
+            // Check and get game data
             if (fillCount >= singlePhasePercent * 3 && phase == 3)
             {
                 loading = false;
@@ -109,6 +115,7 @@ public class LoadingManager : MonoBehaviour
                 }
             }
 
+            // Check and create user
             if (fillCount >= singlePhasePercent * 4 && phase == 4)
             {
                 loading = false;
@@ -120,6 +127,22 @@ public class LoadingManager : MonoBehaviour
                 }
             }
 
+            // Check for updates
+            if (fillCount >= singlePhasePercent * 5 && phase == 5)
+            {
+                if (!initial)
+                {
+                    loading = false;
+                    loadingSceneUI.CheckForUpdates(callback);
+
+                    if (logPhases)
+                    {
+                        Debug.Log("Phase 5");
+                    }
+                }
+            }
+
+            // get notification permission
             /*if (fillCount >= singlePhasePercent*5 && phase==5)
             {
                 loading = false;
@@ -139,8 +162,12 @@ public class LoadingManager : MonoBehaviour
                 }
             }*/
 
+            // Load next scene
             if (fillCount >= 100f)
             {
+                PlayerPrefs.SetInt("InitialLoaded", 1);
+                PlayerPrefs.Save();
+
                 if (stayOnScene && Application.isEditor)
                 {
                     Debug.Log("Skipping Next scene!");

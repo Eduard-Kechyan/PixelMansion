@@ -10,9 +10,12 @@ public class SettingsMenu : MonoBehaviour
     public Color onColor;
     public Color offColor;
 
+    private bool externalAppOpened = false;
+
     // References
     private MenuUI menuUI;
     private LocaleMenu localeMenu;
+    private ConfirmMenu confirmMenu;
     private I18n LOCALE;
     private Settings settings;
     private Notifics notifics;
@@ -43,8 +46,7 @@ public class SettingsMenu : MonoBehaviour
 
     private Button instagramFollowButton;
     private Button facebookFollowButton;
-    private Button youtubeFollowButton;
-    private Button tikTokFollowButton;
+    //private Button youtubeFollowButton;
 
     private Label signInLabel;
     private Label followLabel;
@@ -54,11 +56,20 @@ public class SettingsMenu : MonoBehaviour
     private Button idCopyButton;
     private VisualElement copyCheck;
 
+    // Enums
+    enum SocialMediaType
+    {
+        Instagram,
+        Facebook,
+        Youtube
+    }
+
     void Start()
     {
         // Cache
         menuUI = GetComponent<MenuUI>();
         localeMenu = GetComponent<LocaleMenu>();
+        confirmMenu = GetComponent<ConfirmMenu>();
         LOCALE = I18n.Instance;
         settings = Settings.Instance;
         notifics = Notifics.Instance;
@@ -91,8 +102,7 @@ public class SettingsMenu : MonoBehaviour
 
         instagramFollowButton = settingsMenu.Q<Button>("InstagramFollowButton");
         facebookFollowButton = settingsMenu.Q<Button>("FacebookFollowButton");
-        youtubeFollowButton = settingsMenu.Q<Button>("YoutubeFollowButton");
-        tikTokFollowButton = settingsMenu.Q<Button>("TikTokFollowButton");
+        //youtubeFollowButton = settingsMenu.Q<Button>("YoutubeFollowButton");
 
         signInLabel = settingsMenu.Q<Label>("SignInLabel");
         followLabel = settingsMenu.Q<Label>("FollowLabel");
@@ -108,26 +118,29 @@ public class SettingsMenu : MonoBehaviour
         vibrationButton.clicked += () => settings.ToggleVibration();
         notificationsButton.clicked += () => settings.ToggleNotifications();
 
-        // supportButton.clicked += () => Debug.Log("Support Button Clicked!"); ////
-        supportButton.clicked += () => notifics.Send(); ////
-        privacyButton.clicked += () => Debug.Log("Privacy Button Clicked!"); ////
-        termsButton.clicked += () => Debug.Log("Terms Button Clicked!"); ////
+        supportButton.clicked += () => Application.OpenURL(GameData.WEB_ADDRESS + "/support");
+        privacyButton.clicked += () => Application.OpenURL(GameData.WEB_ADDRESS + "/privacy");
+        termsButton.clicked += () => Application.OpenURL(GameData.WEB_ADDRESS + "/terms");
         languageButton.clicked += () => localeMenu.Open();
-        resetButton.clicked += () => resetHandler.RestartApp(true); // TODO - Add confirmation
-        exitButton.clicked += () => Application.Quit(); // TODO - Add confirmation
+        resetButton.clicked += () => confirmMenu.Open("reset", resetHandler.RestartAndResetApp);
+        exitButton.clicked += () => confirmMenu.Open("exit", Application.Quit);
 
         googleSignInButton.clicked += () => Debug.Log("Google Sing In Button Clicked!"); ////
         facebookSignInButton.clicked += () => Debug.Log("Facebook Sing In Button Clicked!"); ////
         appleSignInButton.clicked += () => Debug.Log("Apple Sing In Button Clicked!"); ////
 
-        instagramFollowButton.clicked += () => Debug.Log("Instagram Follow Button Clicked!"); ////
-        facebookFollowButton.clicked += () => Debug.Log("Facebook Follow Button Clicked!"); ////
-        youtubeFollowButton.clicked += () => Debug.Log("Youtube Follow Button Clicked!"); ////
-        tikTokFollowButton.clicked += () => Debug.Log("TikTok Follow Button Clicked!"); ////
+        instagramFollowButton.clicked += () => OpenSocialMediaLink(SocialMediaType.Instagram);
+        facebookFollowButton.clicked += () => OpenSocialMediaLink(SocialMediaType.Facebook);
+       // youtubeFollowButton.clicked += () => OpenSocialMediaLink(SocialMediaType.Youtube);
 
         idCopyButton.clicked += () => CopyIdToClipboard();
 
         Init();
+    }
+
+    void OnApplicationPause(bool pauseStatus)
+    {
+        externalAppOpened = true;
     }
 
     void Init()
@@ -163,7 +176,7 @@ public class SettingsMenu : MonoBehaviour
         menuUI.OpenMenu(settingsMenu, title);
     }
 
-    void SetUiText(bool update = false)
+    void SetUiText()
     {
         // Buttons
         supportButton.text = LOCALE.Get("settings_menu_support_label");
@@ -176,14 +189,6 @@ public class SettingsMenu : MonoBehaviour
         // Labels
         signInLabel.text = LOCALE.Get("settings_menu_sign_in_label");
         followLabel.text = LOCALE.Get("settings_menu_follow_label");
-
-        if (update)
-        {
-            // Title
-            string title = LOCALE.Get("settings_menu_title");
-
-            menuUI.UpdateTitle(title);
-        }
     }
 
     public void SetUIOptionsButtons()
@@ -241,11 +246,9 @@ public class SettingsMenu : MonoBehaviour
         }
     }
 
-    public void SetLocale(Types.Locale newLocale, bool restart)
+    public void SetLocale(Types.Locale newLocale)
     {
-        settings.SetLocale(newLocale, false, restart);
-
-        SetUiText(true);
+        settings.SetLocale(newLocale, false);
     }
 
     void CopyIdToClipboard()
@@ -258,10 +261,57 @@ public class SettingsMenu : MonoBehaviour
         StartCoroutine(RemoveCopyCheck());
     }
 
-    IEnumerator RemoveCopyCheck(){
+    IEnumerator RemoveCopyCheck()
+    {
         yield return new WaitForSeconds(2f);
 
         copyCheck.style.display = DisplayStyle.None;
         copyCheck.style.opacity = 0;
+    }
+
+    void OpenSocialMediaLink(SocialMediaType type)
+    {
+        switch (type)
+        {
+            case SocialMediaType.Instagram:
+                Application.OpenURL("instragram://user?username=" + "nasa");
+
+                break;
+            case SocialMediaType.Facebook:
+                Application.OpenURL("https://facebook.com/" + "nasa");
+
+                break;
+            case SocialMediaType.Youtube:
+                Application.OpenURL("https://youtube.com/@" + "nasa");
+
+                break;
+        }
+        externalAppOpened = false;
+
+        StartCoroutine(CheckSocialMediaLink(type));
+    }
+
+    IEnumerator CheckSocialMediaLink(SocialMediaType type)
+    {
+        yield return new WaitForSeconds(1f);
+
+        if (!externalAppOpened)
+        {
+            switch (type)
+            {
+                case SocialMediaType.Instagram:
+                    Application.OpenURL("https://instagram.com/" + "nasa");
+
+                    break;
+                case SocialMediaType.Facebook:
+                    Application.OpenURL("https://facebook.com/" + "nasa");
+
+                    break;
+                case SocialMediaType.Youtube:
+                    Application.OpenURL("https://youtube.com/@" + "nasa");
+
+                    break;
+            }
+        }
     }
 }

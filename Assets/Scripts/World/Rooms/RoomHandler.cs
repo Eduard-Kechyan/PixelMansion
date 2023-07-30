@@ -8,13 +8,46 @@ public class RoomHandler : MonoBehaviour
     public float unlockSpeed = 3f;
     public Color lockOverlayColor;
 
+    public bool showNav = false;
+    [SortingLayer]
+    public string navSortingLayer;
+
     [Header("Debug")]
     public bool debugOn = false;
     [Condition("debugOn", true)]
     public bool unlock = false;
 
+    private LockedOverlayPH lockedOverlayPH;
+    private NavPH tempNavPH;
+    private GameObject lockedOverlay;
+    private GameObject nav;
+
+    // References
+    private NavMeshManager navMeshManager;
+
     void Start()
     {
+        navMeshManager = NavMeshManager.Instance;
+
+        lockedOverlayPH = transform.GetComponentInChildren<LockedOverlayPH>();
+
+        tempNavPH = transform.GetComponentInChildren<NavPH>();
+        tempNavPH = transform.GetComponentInChildren<NavPH>();
+
+        if (lockedOverlayPH != null)
+        {
+            lockedOverlay = lockedOverlayPH.gameObject;
+        }
+
+        if (tempNavPH != null)
+        {
+            nav = tempNavPH.gameObject;
+        }
+
+        showNav = false;
+
+        ToggleNav();
+
         if (locked)
         {
             Lock();
@@ -25,6 +58,8 @@ public class RoomHandler : MonoBehaviour
     {
         if (debugOn && unlock)
         {
+            unlock = false;
+
             // Debug
             if (locked)
             {
@@ -34,41 +69,71 @@ public class RoomHandler : MonoBehaviour
             {
                 Lock();
             }
+        }
 
-            unlock = false;
+        ToggleNav();
+    }
+
+    void ToggleNav()
+    {
+        if (nav == null)
+        {
+            tempNavPH = transform.GetComponentInChildren<NavPH>();
+
+            if (tempNavPH != null)
+            {
+                nav = tempNavPH.gameObject;
+
+                Transform walkable = nav.transform.GetChild(0);
+                Transform notWalkable = nav.transform.GetChild(1);
+
+                for (int i = 0; i < walkable.childCount; i++)
+                {
+                    walkable.GetChild(i).GetComponent<SpriteRenderer>().sortingOrder = 0;
+                    walkable.GetChild(i).GetComponent<SpriteRenderer>().sortingLayerName = showNav ? navSortingLayer : "Default";
+                }
+
+                for (int i = 0; i < notWalkable.childCount; i++)
+                {
+                    notWalkable.GetChild(i).GetComponent<SpriteRenderer>().sortingOrder = 1;
+                    walkable.GetChild(i).GetComponent<SpriteRenderer>().sortingLayerName = showNav ? navSortingLayer : "Default";
+                }
+            }
         }
     }
 
     void Lock()
     {
-        SpriteRenderer[] spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
-
-        Debug.Log(spriteRenderers.Length);
-
-        foreach (SpriteRenderer renderer in spriteRenderers)
+        if (lockedOverlay != null)
         {
-            // renderer.color = Color.Lerp(renderer.color, lockOverlayColor, unlockSpeed * Time.deltaTime);
+            lockedOverlay.GetComponent<SpriteRenderer>().color = lockOverlayColor;
+        }
 
-            renderer.color += Color.red;
+        if (nav != null)
+        {
+            nav.SetActive(false);
         }
 
         locked = true;
     }
 
-    void Unlock()
+    public void Unlock()
     {
         if (locked)
         {
-            SpriteRenderer[] spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
-
-            foreach (SpriteRenderer renderer in spriteRenderers)
+            if (lockedOverlay != null)
             {
-                // renderer.color = Color.Lerp(renderer.color, lockOverlayColor, unlockSpeed * Time.deltaTime);
-
-                renderer.color -= lockOverlayColor;
+                lockedOverlay.SetActive(false);
             }
-        }
 
-        locked = false;
+            if (nav != null)
+            {
+                nav.SetActive(true);
+
+                navMeshManager.Bake();
+            }
+
+            locked = false;
+        }
     }
 }

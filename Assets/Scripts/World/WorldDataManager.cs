@@ -103,6 +103,7 @@ public class WorldDataManager : MonoBehaviour
             }
 
             PlayerPrefs.DeleteKey("AreaLoaded");
+            PlayerPrefs.Save();
         }
     }
 
@@ -241,6 +242,7 @@ public class WorldDataManager : MonoBehaviour
         if (initial)
         {
             PlayerPrefs.SetInt("AreaLoaded", 1);
+            PlayerPrefs.Save();
         }
     }
 

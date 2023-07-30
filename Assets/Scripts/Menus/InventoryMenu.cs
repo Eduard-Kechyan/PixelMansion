@@ -10,10 +10,13 @@ public class InventoryMenu : MonoBehaviour
     public BoardManager boardManager;
     public Sprite slotSprite;
     public Color slotItemColor;
-    public int newSlotPrice = 10;
+    public int newSlotPrice = 50;
+    public float slotPriceMultiplier = 0.5f;
 
     // References
     private MenuUI menuUI;
+    private ShopMenu shopMenu;
+    private ConfirmMenu confirmMenu;
     private GameData gameData;
     private DataManager dataManager;
     private BoardPopup boardPopup;
@@ -38,6 +41,8 @@ public class InventoryMenu : MonoBehaviour
     {
         // Cache
         menuUI = GetComponent<MenuUI>();
+        shopMenu = GetComponent<ShopMenu>();
+        confirmMenu = GetComponent<ConfirmMenu>();
         gameData = GameData.Instance;
         dataManager = DataManager.Instance;
         valuePop = GameRefs.Instance.valuePop;
@@ -148,25 +153,70 @@ public class InventoryMenu : MonoBehaviour
         {
             buyMoreContainer.style.display = DisplayStyle.Flex;
 
-            buyMoreButton.text = newSlotPrice.ToString();
+            buyMoreButton.text = CalcNewSlotPrice();
 
             buyMoreLabel.text = LOCALE.Get("menu_inventory_buy_more");
         }
         else
         {
-            buyMoreContainer.style.display = DisplayStyle.None;
+            buyMoreButton.style.display = DisplayStyle.None;
+
+            buyMoreLabel.text = LOCALE.Get("menu_inventory_max_slots");
         }
     }
 
     void BuyMoreSpace()
     {
-        gameData.inventorySpace++;
+        int amount = int.Parse(buyMoreButton.text);
 
-        ClearData();
+        if (gameData.UpdateGold(-amount))
+        {
+            gameData.inventorySpace++;
 
-        SetUI();
+            ClearData();
 
-        dataManager.SaveInventory(true);
+            SetUI();
+
+            dataManager.SaveInventory(true);
+        }
+        else
+        {
+            confirmMenu.Open("need_gold", () => {
+                confirmMenu.Close();
+
+                Glob.SetTimout(()=>{
+                    shopMenu.Open();
+                },0.35f);
+            });
+        }
+    }
+
+    string CalcNewSlotPrice()
+    {
+        int boughtSlots = gameData.inventorySpace - gameData.initialInventorySpace;
+
+        int newPrice = gameData.inventorySlotPrice;
+
+        if (boughtSlots > 0)
+        {
+            if (boughtSlots % 2 == 1)
+            {
+                newPrice += 7 * boughtSlots;
+            }
+            else
+            {
+                newPrice += 10 * (boughtSlots-1);
+            }
+
+            if (gameData.inventorySlotPrice != newPrice)
+            {
+                gameData.inventorySlotPrice = newPrice;
+
+                dataManager.SaveInventory(true);
+            }
+        }
+
+        return newPrice.ToString();
     }
 
     void AddItemToBoard(string nameOrder)

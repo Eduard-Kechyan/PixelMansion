@@ -14,6 +14,7 @@ public class DoubleTapManager : MonoBehaviour
     private BoardInteractions interactions;
     private BoardManager boardManager;
     private BoardPopup boardPopup;
+    private BoardIndication boardIndication;
 
     // Instances
     private GameData gameData;
@@ -31,6 +32,7 @@ public class DoubleTapManager : MonoBehaviour
         interactions = GetComponent<BoardInteractions>();
         boardManager = GetComponent<BoardManager>();
         boardPopup = GetComponent<BoardPopup>();
+        boardIndication= GetComponent<BoardIndication>();
 
         // Cache instances
         gameData = GameData.Instance;
@@ -74,6 +76,8 @@ public class DoubleTapManager : MonoBehaviour
                 if (emptyBoard.Count > 0)
                 {
                     emptyBoard.Sort((p1, p2) => p1.distance.CompareTo(p2.distance));
+
+                    boardIndication.StopPossibleMergeCheck();
 
                     SelectRadnomGroupAndItem(emptyBoard[0], tile.transform.position);
                 }

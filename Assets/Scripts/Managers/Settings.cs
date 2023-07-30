@@ -14,7 +14,7 @@ public class Settings : MonoBehaviour
     public bool soundOn = true;
     public bool musicOn = true;
     public bool vibrationOn = true;
-    public bool notificationsOn = true;
+    public bool notificationsOn = false;
 
     public bool googleSignedIn = false;
     public bool facebookSignedIn = false;
@@ -60,9 +60,10 @@ public class Settings : MonoBehaviour
     {
         soundOn = !soundOn;
 
-        soundManager.SetVolumeSound(soundOn ? 1 : 0);
+        soundManager.sourceSound.enabled = soundOn;
 
         PlayerPrefs.SetInt("sound", soundOn ? 1 : 0);
+        PlayerPrefs.Save();
 
         settingsMenu.SetUIOptionsButtons();
     }
@@ -71,9 +72,10 @@ public class Settings : MonoBehaviour
     {
         musicOn = !musicOn;
 
-        soundManager.SetVolumeMusic(musicOn ? 1 : 0);
+        soundManager.sourceMusic.enabled = soundOn;
 
         PlayerPrefs.SetInt("music", musicOn ? 1 : 0);
+        PlayerPrefs.Save();
 
         settingsMenu.SetUIOptionsButtons();
     }
@@ -83,6 +85,7 @@ public class Settings : MonoBehaviour
         vibrationOn = !vibrationOn;
 
         PlayerPrefs.SetInt("vibration", vibrationOn ? 1 : 0);
+        PlayerPrefs.Save();
 
         settingsMenu.SetUIOptionsButtons();
     }
@@ -92,11 +95,12 @@ public class Settings : MonoBehaviour
         notificationsOn = !notificationsOn;
 
         PlayerPrefs.SetInt("notifications", notificationsOn ? 1 : 0);
+        PlayerPrefs.Save();
 
         settingsMenu.SetUIOptionsButtons();
     }
 
-    public void SetLocale(Types.Locale newLocale, bool initial = false, bool restart = false)
+    public void SetLocale(Types.Locale newLocale, bool initial = false)
     {
         string localeCode = "en-US";
 
@@ -133,6 +137,8 @@ public class Settings : MonoBehaviour
                     I18n.SetLocale(localeCode);
                     PlayerPrefs.SetString("locale", localeCode);
                 }
+
+                PlayerPrefs.Save();
             }
         }
         else
@@ -141,13 +147,9 @@ public class Settings : MonoBehaviour
 
             localeCode = LOCALE.ConvertToCode(newLocale);
 
-            I18n.SetLocale(localeCode);
             PlayerPrefs.SetString("locale", localeCode);
 
-            if (restart && I18n.GetLocale() == localeCode)
-            {
-                resetHandler.RestartApp();
-            }
+            PlayerPrefs.Save();
         }
     }
 

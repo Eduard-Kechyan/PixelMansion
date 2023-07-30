@@ -59,6 +59,7 @@ public class Item : MonoBehaviour
     private GameObject selectionChild;
     public GameObject crateChild;
     private GameObject lockerChild;
+    private GameObject bubbleChild;
     public GameObject itemChild;
     private GameObject completionChild;
 
@@ -71,8 +72,9 @@ public class Item : MonoBehaviour
         selectionChild = transform.GetChild(0).gameObject; // Selection
         crateChild = transform.GetChild(1).gameObject; // Crate
         lockerChild = transform.GetChild(2).gameObject; // Locker
-        itemChild = transform.GetChild(3).gameObject; // Item
-        completionChild = transform.GetChild(4).gameObject; // Completion
+        bubbleChild = transform.GetChild(3).gameObject; // Bubble
+        itemChild = transform.GetChild(4).gameObject; // Item
+        completionChild = transform.GetChild(5).gameObject; // Completion
 
         CheckChildren();
 
@@ -215,6 +217,7 @@ public class Item : MonoBehaviour
         {
             crateChild.SetActive(true);
             itemChild.SetActive(false);
+            bubbleChild.SetActive(false);
         }
 
         if (state == Types.State.Locker)
@@ -222,6 +225,7 @@ public class Item : MonoBehaviour
             lockerChild.SetActive(true);
             crateChild.SetActive(false);
             itemChild.SetActive(true);
+            bubbleChild.SetActive(false);
         }
 
         if (state == Types.State.Default)
@@ -229,11 +233,22 @@ public class Item : MonoBehaviour
             lockerChild.SetActive(false);
             crateChild.SetActive(false);
             itemChild.SetActive(true);
+            bubbleChild.SetActive(false);
+        }
+
+        if (state == Types.State.Bubble)
+        {
+            lockerChild.SetActive(false);
+            crateChild.SetActive(false);
+            itemChild.SetActive(false);
+            bubbleChild.SetActive(true);
         }
 
         if (isCompleted)
         {
             completionChild.SetActive(true);
+        }else{
+            completionChild.SetActive(false);
         }
     }
 
@@ -250,6 +265,15 @@ public class Item : MonoBehaviour
     public void UnlockLock()
     {
         if (state == Types.State.Locker)
+        {
+            state = Types.State.Default;
+
+            CheckChildren();
+        }
+    }
+
+    public void PopBubble(){
+        if (state == Types.State.Bubble)
         {
             state = Types.State.Default;
 
@@ -295,10 +319,7 @@ public class Item : MonoBehaviour
 
         if (animate)
         {
-            anim["ItemSelect"].speed = newSpeed;
-            anim.Play("ItemSelect");
-
-            isPlaying = true;
+            Animate(newSpeed);
         }
     }
 
@@ -307,6 +328,28 @@ public class Item : MonoBehaviour
         isSelected = false;
 
         selectionChild.SetActive(false);
+
+        StopAnimate();
+    }
+
+    public void Animate(float newSpeed)
+    {
+        anim["ItemSelect"].speed = newSpeed;
+        anim.Play("ItemSelect");
+
+        isPlaying = true;
+    }
+
+    public void StopAnimate()
+    {
+        isPlaying = false;
+
+        // These 4 steps rewind and stop the animator
+        // Just stopping or rewinding doesn't seem to work
+        anim.Rewind();
+        anim.Play();
+        anim.Sample();
+        anim.Stop();
     }
 
     public void MoveToPos(Vector2 newPos, float newSpeed, Action newCallback = null)

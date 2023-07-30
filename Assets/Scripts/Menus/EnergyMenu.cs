@@ -7,7 +7,7 @@ using Locale;
 public class EnergyMenu : MonoBehaviour
 {
     // Variables
-    public int energyBuyAmount = 100;
+    public int energyBuyAmount = 50;
     public int energyWatchAmount = 20;
     public int gemsCost = 5;
 
@@ -70,6 +70,12 @@ public class EnergyMenu : MonoBehaviour
         energyLabelB.text = LOCALE.Get("energy_menu_label_b");
         energyLabelA.text = LOCALE.Get("energy_menu_label_a");
 
+        if(gameData.energy==0){
+            energyLabelB.style.display =DisplayStyle.Flex;
+        }else{
+            energyLabelB.style.display = DisplayStyle.None;
+        }
+
         energyWatchLabel.text = "+" + energyWatchAmount;
         energyBuyLabel.text = "+" + energyBuyAmount;
 
@@ -106,6 +112,7 @@ public class EnergyMenu : MonoBehaviour
         // Check if we have enough energy
         if (gameData.gems >= gemsCost)
         {
+            // TODO - Put this together with the UpdateEnergy. In case something goes they both will not fire
             gameData.UpdateGems(-gemsCost); // Note the -
 
             valuePop.PopValue(energyBuyAmount, "Energy");

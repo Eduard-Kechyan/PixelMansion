@@ -158,6 +158,7 @@ public class ApiCalls : MonoBehaviour
                 }
 
                 PlayerPrefs.DeleteKey("tempAge");
+                PlayerPrefs.Save();
             }
             else
             {
@@ -198,6 +199,7 @@ public class ApiCalls : MonoBehaviour
     void SetUnsentData(UnsentType newUnsentType, string newJsonData)
     {
         PlayerPrefs.SetInt("hasUnsentData", 1);
+        PlayerPrefs.Save();
 
         unsentData.Add(new UnsentData
         {

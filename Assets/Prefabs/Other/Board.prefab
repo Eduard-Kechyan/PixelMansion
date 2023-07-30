@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 7639113953969003286}
   - component: {fileID: 8002734882105849631}
   - component: {fileID: 1919697231713209127}
+  - component: {fileID: 3064645934079383963}
   m_Layer: 0
   m_Name: Board
   m_TagString: Untagged
@@ -188,13 +189,22 @@ MonoBehaviour:
   textColor: {r: 1, g: 1, b: 1, a: 1}
   outlineColor: {r: 0, g: 0, b: 0, a: 1}
   shadowColor: {r: 0, g: 0, b: 0, a: 0.7058824}
-  armenianFont: {fileID: 12800000, guid: 862d51021fa09154dafa7534ec0ff638, type: 3}
-  japaneseFont: {fileID: 12800000, guid: a9bd224ce7c9a5b44b592bcb48ca9cb9, type: 3}
-  koreanFont: {fileID: 12800000, guid: 97fe985f9fe456140a5eb7e6620d28a5, type: 3}
-  chineseFont: {fileID: 12800000, guid: b662814ecbbd4a04e8e263f3f68ebfc6, type: 3}
-  latinFont: {fileID: 12800000, guid: 0435ef74bc89d2044a778758a25a13b0, type: 3}
   timeOut: 0.5
   positionOffset: 1.5
+--- !u!114 &3064645934079383963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4494591135200674788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17a8aee079b12bc47b48d260a234f5a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  indicateDelay: 2
+  indicateSpeed: 1
 --- !u!1 &4861144735682741828
 GameObject:
   m_ObjectHideFlags: 0

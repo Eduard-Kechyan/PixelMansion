@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class TransitionUI : MonoBehaviour
 {
     // Variables
+    public TransitionData transitionData;
     public float duration = 0.5f;
     public Color[] backgroundColors = new Color[0];
     public Sprite[] iconSprites = new Sprite[0];
@@ -14,6 +15,7 @@ public class TransitionUI : MonoBehaviour
     // UI
     private VisualElement root;
     private VisualElement transition;
+
 
     void Start()
     {
@@ -38,7 +40,11 @@ public class TransitionUI : MonoBehaviour
     {
         if (backgroundColors.Length > 0)
         {
-            transition.style.backgroundColor = backgroundColors[Random.Range(0, backgroundColors.Length)];
+            int randomBackgroundColor = Random.Range(0, backgroundColors.Length);
+
+            transitionData.backgroundColor = randomBackgroundColor;
+
+            transition.style.backgroundColor = backgroundColors[randomBackgroundColor];
         }
 
         // Do the rest afterwards
@@ -49,6 +55,13 @@ public class TransitionUI : MonoBehaviour
 
     IEnumerator Close()
     {
+        if (transitionData.backgroundColor != -1 && backgroundColors.Length > 0)
+        {
+            transition.style.backgroundColor = backgroundColors[transitionData.backgroundColor];
+        }
+
+        transition.style.opacity = 1;
+        transition.style.visibility = Visibility.Visible;
         transition.style.display = DisplayStyle.Flex;
 
         yield return new WaitForSeconds(duration);

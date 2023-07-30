@@ -59,6 +59,8 @@ public class SoundManager : MonoBehaviour
         }
         else
         {
+            bool found = false;
+
             foreach (SoundClip i in soundClips)
             {
                 if (i.clip.name == clipName + "Sound")
@@ -69,7 +71,14 @@ public class SoundManager : MonoBehaviour
                     }
 
                     sourceSound.PlayOneShot(i.clip);
+
+                    found = true;
                 }
+            }
+
+            if (!found)
+            {
+            Debug.Log("Sound \"" + clipName + "\" not found!");
             }
         }
     }
@@ -89,6 +98,8 @@ public class SoundManager : MonoBehaviour
         }
         else
         {
+            bool found = false;
+
             if (settings == null)
             {
                 settings = Settings.Instance;
@@ -111,11 +122,18 @@ public class SoundManager : MonoBehaviour
                     sourceMusic.clip = i.clip;
 
                     sourceMusic.Play();
+
+                    found = true;
                 }
+            }
+
+            if (!found)
+            {
+                Debug.Log("Music \"" + clipName + "\" not found!");
             }
         }
 
-        sourceMusic.Play();
+        // sourceMusic.Play(); // TODO - Check if we need this
     }
 
     public void FadeInMusic(float seconds)

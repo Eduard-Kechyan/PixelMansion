@@ -18,6 +18,7 @@ public class InfoBox : MonoBehaviour
     public SelectionManager selectionManager;
     public int openAmount = 10;
     public int unlockAmount = 5;
+    public int popAmount = 5;
     public int sellAmount = 5;
 
     private Item item;
@@ -36,6 +37,7 @@ public class InfoBox : MonoBehaviour
     private VisualElement root;
     private VisualElement infoItem;
     private VisualElement infoItemLocked;
+    private VisualElement infoItemBubble;
     private Button infoButton;
     private Button infoActionButton;
     private VisualElement infoActionValue;
@@ -47,6 +49,7 @@ public class InfoBox : MonoBehaviour
     {
         Open,
         Unlock,
+        Pop,
         Sell,
         Remove,
         Undo,
@@ -69,6 +72,7 @@ public class InfoBox : MonoBehaviour
 
         infoItem = root.Q<VisualElement>("InfoItem");
         infoItemLocked = root.Q<VisualElement>("InfoItemLocked");
+        infoItemBubble = root.Q<VisualElement>("InfoItemBubble");
 
         infoButton = root.Q<Button>("InfoButton");
 
@@ -115,12 +119,22 @@ public class InfoBox : MonoBehaviour
 
                 actionType = ActionType.Unlock;
                 break;
+            case Types.State.Bubble: //////// BUBBLE ////////
+                infoName.text = item.itemName + " " + LOCALE.Get("info_box_bubble");
+
+                sprite = item.itemChild.GetComponent<SpriteRenderer>().sprite;
+
+                infoItemBubble.style.display = DisplayStyle.Flex;
+
+                actionType = ActionType.Pop;
+                break;
             default: //////// ITEM ////////
                 infoName.text = item.itemLevelName;
 
                 sprite = item.itemChild.GetComponent<SpriteRenderer>().sprite;
 
                 infoItemLocked.style.display = DisplayStyle.None;
+                infoItemBubble.style.display = DisplayStyle.None;
 
                 infoButton.style.display = DisplayStyle.Flex;
 
@@ -239,6 +253,10 @@ public class InfoBox : MonoBehaviour
 
                 textToSet = LOCALE.Get("info_box_locker_text");
                 break;
+            case Types.State.Bubble:
+
+                textToSet = LOCALE.Get("info_box_bubble_text");
+                break;
             default:
                 switch (newItem.type)
                 {
@@ -322,7 +340,7 @@ public class InfoBox : MonoBehaviour
                 }
                 else
                 {
-                    boardInteractions.OpenItem(item, openAmount, true);
+                    boardInteractions.OpenItem(item, openAmount, Types.State.Crate);
                     Select(item);
                     selectionManager.Select("both", false);
                 }
@@ -334,7 +352,19 @@ public class InfoBox : MonoBehaviour
                 }
                 else
                 {
-                    boardInteractions.OpenItem(item, unlockAmount, false);
+                    boardInteractions.OpenItem(item, unlockAmount, Types.State.Locker);
+                    Select(item);
+                    selectionManager.Select("both", false);
+                }
+                break;
+            case ActionType.Pop:
+                if (gameData.gems < popAmount)
+                {
+                    shopMenu.Open("Gems");
+                }
+                else
+                {
+                    boardInteractions.OpenItem(item, unlockAmount, Types.State.Bubble);
                     Select(item);
                     selectionManager.Select("both", false);
                 }

@@ -216,3 +216,55 @@
 .age_slider .unity-base-slider__dragger:active {
     -unity-background-image-tint-color: rgb(59, 159, 116);
 }
+
+.scroller .unity-scroller {
+    width: 4px;
+    overflow: hidden;
+    margin-right: 4px;
+    position: absolute;
+    top: 0;
+    right: -12px;
+    bottom: 0;
+}
+
+.scroller .unity-scroller__low-button {
+    display: none;
+    opacity: 0;
+}
+
+.scroller .unity-scroller__high-button {
+    display: none;
+    opacity: 0;
+}
+
+.scroller .unity-scroller__slider {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    width: 4px;
+    overflow: hidden;
+}
+
+.scroller .unity-base-slider__tracker {
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    background-color: rgb(227, 213, 179);
+    width: 4px;
+}
+
+.scroller .unity-base-slider__dragger {
+    width: 4px;
+    left: 0;
+    background-color: rgb(202, 186, 148);
+}
+
+.scroller .unity-base-slider__dragger-border {
+    background-color: rgba(166, 151, 117, 0);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+}

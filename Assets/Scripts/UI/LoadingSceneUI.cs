@@ -19,6 +19,7 @@ public class LoadingSceneUI : MonoBehaviour
     private Sprite[] backgroundSprites;
     private Action termsCallback;
     private Action<int> ageCallback;
+    private Action updateCallback;
 
     // References
     private I18n LOCALE;
@@ -47,6 +48,13 @@ public class LoadingSceneUI : MonoBehaviour
     private Label ageLabel;
     private SliderInt ageSlider;
     private Button ageAcceptButton;
+
+    // Update
+    private VisualElement updateMenu;
+    private Label updateTitleLabel;
+    private Label updateLabel;
+    private Button updateButton;
+    private Button updateExitButton;
 
     private void Start()
     {
@@ -79,6 +87,12 @@ public class LoadingSceneUI : MonoBehaviour
         ageSlider = ageMenu.Q<SliderInt>("AgeSlider");
         ageAcceptButton = ageMenu.Q<Button>("AcceptButton");
 
+        updateMenu = root.Q<VisualElement>("UpdateMenu");
+        updateTitleLabel = updateMenu.Q<Label>("TitleLabel");
+        updateLabel = updateMenu.Q<Label>("UpdateLabel");
+        updateButton = updateMenu.Q<Button>("UpdateButton");
+        updateExitButton = updateMenu.Q<Button>("ExitButton");
+
         termsAcceptButton.clicked += () => AcceptTerms();
         termsTermsButton.clicked += () =>
         {
@@ -91,6 +105,9 @@ public class LoadingSceneUI : MonoBehaviour
 
         ageAcceptButton.clicked += () => AcceptAge();
         ageSlider.RegisterValueChangedCallback(AgeSliderHandle);
+
+        updateButton.clicked += () => UpdateGame();
+        updateExitButton.clicked += () => Application.Quit();
 
         Init();
 
@@ -175,6 +192,7 @@ public class LoadingSceneUI : MonoBehaviour
         HideTermsMenu();
 
         PlayerPrefs.SetInt("termsAccepted", 1);
+        PlayerPrefs.Save();
 
         if (termsCallback != null)
         {
@@ -218,6 +236,7 @@ public class LoadingSceneUI : MonoBehaviour
         HideAgeMenu();
 
         PlayerPrefs.SetInt("ageAccepted", 1);
+        PlayerPrefs.Save();
 
         if (ageCallback != null)
         {
@@ -249,4 +268,41 @@ public class LoadingSceneUI : MonoBehaviour
             ageAcceptButton.SetEnabled(false);
         }
     }
+
+    public void CheckForUpdates(Action callback = null)
+    {
+        updateCallback = callback;
+
+        // TODO - Check here if the game version matches the latest available version on the app store
+        if (true)
+        {
+            if (updateCallback != null)
+            {
+                updateCallback();
+            }
+        }
+        else
+        {
+            // Show the overlay
+            //overlayBackground.style.display = DisplayStyle.Flex;
+           // overlayBackground.style.opacity = 1;
+
+            // Show the menu
+           /* updateMenu.style.display = DisplayStyle.Flex;
+            updateMenu.style.opacity = 1f;
+
+            updateTitleLabel.text = LOCALE.Get("update_menu_title");
+            updateLabel.text = LOCALE.Get("update_menu_label");
+
+            updateButton.text = LOCALE.Get("update_button");
+            updateExitButton.text = LOCALE.Get("update_exit_button");*/
+        }
+    }
+
+    void UpdateGame()
+    {
+        // TODO - Open the app store here, or update in game
+        Debug.Log("Updating!");
+    }
+
 }

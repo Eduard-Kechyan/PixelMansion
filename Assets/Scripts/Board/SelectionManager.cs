@@ -46,9 +46,9 @@ public class SelectionManager : MonoBehaviour
             if (item != null)
             {
                 // See if the same exact item was double tapped
-                if (interactions.currentItem != null&&interactions.currentItem.isSelected && interactions.currentItem.id == item.id)
+                if (interactions.currentItem != null && interactions.currentItem.isSelected && interactions.currentItem.id == item.id)
                 {
-                        doubleTapManager.CheckForDoubleTaps();
+                    doubleTapManager.CheckForDoubleTaps();
                 }
 
                 if (!item.isPlaying)
@@ -132,9 +132,9 @@ public class SelectionManager : MonoBehaviour
             {
                 interactions.currentItem.isSelected = false;
 
-                interactions.currentItem?.Unselect(); // Null propagation
+                interactions.currentItem.Unselect();
             }
-            
+
             infoBox.Unselect();
         }
     }
