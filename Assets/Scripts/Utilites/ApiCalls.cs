@@ -51,12 +51,16 @@ public class ApiCalls : MonoBehaviour
 
     void Awake()
     {
-#if UNITY_EDITOR
-        if (useDevUrl)
+        /*#if UNITY_EDITOR
+        #endif*/
+        // TODO - Use the #if above here
+        if (Application.isEditor || Debug.isDebugBuild)
         {
-            URL = "http://192.168.18.164:7007/api"; // Dev server
+            if (useDevUrl)
+            {
+                URL = "http://192.168.18.164:7007/api"; // Dev server
+            }
         }
-#endif
 
         if (Instance != null && Instance != this)
         {

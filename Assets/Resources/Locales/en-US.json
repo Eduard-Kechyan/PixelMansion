@@ -18,6 +18,7 @@
     "Item_error_name": "Item"
 ,
     "________ INFO_BOX ________": "________________",
+    "info_box_null": "Information not found!",
     "info_box_default": "TAP an item to see it's info.",
     "info_box_undo": "TAP Undo to bring back your item.",
     "info_box_crate": "Crate",

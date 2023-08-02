@@ -199,6 +199,7 @@ public class SpeechBubble : MonoBehaviour
                     tail.style.left = Mathf.Clamp(diff, 0, speechBubble.resolvedStyle.width + tailRightOffset - (tailDiffOffset * 2));
 
                     // Check if the tail is halfway the bubble
+
                     if ((tail.resolvedStyle.left + (tail.resolvedStyle.width / 2)) > ((speechBubble.resolvedStyle.width / 2) + tailRightOffset))
                     {
                         isOnTheLeft = false;

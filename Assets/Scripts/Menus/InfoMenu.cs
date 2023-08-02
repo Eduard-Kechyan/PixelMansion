@@ -97,15 +97,19 @@ public class InfoMenu : MonoBehaviour
             }
             else
             {
-                // TODO - Change this DUMMY
-                itemData.text = "DUMMY";
+                itemData.text = LOCALE.Get("info_box_null");
+
+                ErrorManager.Instance.ThrowFull(Types.ErrorType.Code, "InfoMenu.cs -> Open()", "InfoBox is null!", "0", true);
             }
 
             // Unlocked items
             GetUnlockedItems(item);
 
-            // Check info parent
-            CheckInfoParent(item);
+            if (item.type != Types.Type.Coll)
+            {
+                // Check info parent
+                CheckInfoParent(item);
+            }
 
             // Open menu
             menuUI.OpenMenu(infoMenu, title);

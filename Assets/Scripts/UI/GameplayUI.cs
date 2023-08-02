@@ -7,9 +7,14 @@ public class GameplayUI : MonoBehaviour
 {
     // Variables
     public SceneLoader sceneLoader;
+    public Sprite[] inventoryIndicatorSprites;
 
     [HideInInspector]
     public Vector2 bonusButtonPosition;
+    [HideInInspector]
+    public Vector2 inventoryButtonPosition;
+
+    private bool blippingInventoryIndicator = false;
 
     // References
     private BonusManager bonusManager;
@@ -27,6 +32,7 @@ public class GameplayUI : MonoBehaviour
     private VisualElement bonusButtonImage;
     private Button shopButton;
     private Button taskButton;
+    private VisualElement inventoryIndicator;
 
     void Start()
     {
@@ -51,6 +57,8 @@ public class GameplayUI : MonoBehaviour
         // Disable inventory button border
         inventoryButton.Q<VisualElement>("Border").pickingMode = PickingMode.Ignore;
 
+        inventoryIndicator = inventoryButton.Q<VisualElement>("Indicator");
+
         // Button taps
         homeButton.clicked += () =>
         {
@@ -63,6 +71,7 @@ public class GameplayUI : MonoBehaviour
         taskButton.clicked += () => taskMenu.Open();
 
         root.RegisterCallback<GeometryChangedEvent>(CalcBonusButtonPosition);
+        root.RegisterCallback<GeometryChangedEvent>(CalcInventoryButtonPosition);
 
         CheckBonusButton();
     }
@@ -85,6 +94,62 @@ public class GameplayUI : MonoBehaviour
         );
 
         bonusButtonPosition = Camera.main.ScreenToWorldPoint(bonusButtonScreenPosition);
+    }
+
+    public void CalcInventoryButtonPosition(GeometryChangedEvent evt)
+    {
+        root.UnregisterCallback<GeometryChangedEvent>(CalcInventoryButtonPosition);
+
+        // Calculate the button position on the screen and the world space
+        float singlePixelWidth = Camera.main.pixelWidth / GameData.GAME_PIXEL_WIDTH;
+
+        Vector2 inventoryButtonScreenPosition = new Vector2(
+            singlePixelWidth
+                * (
+                    root.worldBound.width
+                    - (root.worldBound.width - (inventoryButton.worldBound.center.x - (inventoryButton.resolvedStyle.width / 4)))
+                ),
+            singlePixelWidth
+                * (root.worldBound.height - (inventoryButton.worldBound.center.y - (inventoryButton.resolvedStyle.width / 4)))
+        );
+
+        inventoryButtonPosition = Camera.main.ScreenToWorldPoint(inventoryButtonScreenPosition);
+    }
+
+    public void BlipInventoryIndicator()
+    {
+        if (!blippingInventoryIndicator)
+        {
+            blippingInventoryIndicator = true;
+
+            StartCoroutine(InventoryIndicatorBlip());
+        }
+    }
+
+    IEnumerator InventoryIndicatorBlip()
+    {
+        int count = 0;
+
+        inventoryIndicator.style.display = DisplayStyle.Flex;
+        inventoryIndicator.style.backgroundImage = new StyleBackground(inventoryIndicatorSprites[0]);
+
+        while (blippingInventoryIndicator)
+        {
+            yield return new WaitForSeconds(0.1f);
+
+            inventoryIndicator.style.backgroundImage = new StyleBackground(inventoryIndicatorSprites[count]);
+
+            count++;
+
+            if (count == inventoryIndicatorSprites.Length-1)
+            {
+                blippingInventoryIndicator = false;
+
+                inventoryIndicator.style.display = DisplayStyle.None;
+
+                yield return null;
+            }
+        }
     }
 
     public void CheckBonusButton()

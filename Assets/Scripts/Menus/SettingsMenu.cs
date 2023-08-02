@@ -274,15 +274,15 @@ public class SettingsMenu : MonoBehaviour
         switch (type)
         {
             case SocialMediaType.Instagram:
-                Application.OpenURL("instragram://user?username=" + "nasa");
+                Application.OpenURL("instragram://user?username=" + GameData.STUDIO_NAME);
 
                 break;
             case SocialMediaType.Facebook:
-                Application.OpenURL("https://facebook.com/" + "nasa");
+                Application.OpenURL("https://facebook.com/" + GameData.STUDIO_NAME);
 
                 break;
             case SocialMediaType.Youtube:
-                Application.OpenURL("https://youtube.com/@" + "nasa");
+                Application.OpenURL("https://youtube.com/@" + GameData.STUDIO_NAME);
 
                 break;
         }

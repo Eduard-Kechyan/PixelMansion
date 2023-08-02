@@ -554,8 +554,13 @@ public class BoardInteractions : MonoBehaviour
     {
         callback += MoveBackCallback;
 
+        // Show the drag overlay in UI
+        dragOverlay.style.visibility = Visibility.Visible;
+
         // Reset item to its initial position
         currentItem.GetComponent<Item>().MoveToPos(initialPos, moveSpeed, callback);
+
+        StartCoroutine(MoveBackOverlay(currentItem));
 
         currentItem.transform.parent = initialTile.transform;
 
@@ -567,6 +572,33 @@ public class BoardInteractions : MonoBehaviour
     {
         // Select item
         selectionManager.Select("both");
+    }
+
+    IEnumerator MoveBackOverlay(Item item)
+    {
+        while (item.isMoving)
+        {
+            // Get position on the UI from the scene
+            Vector2 newUIPos = RuntimePanelUtils.CameraTransformWorldToPanel(
+                root.panel,
+                currentItem.transform.position,
+                Camera.main
+            );
+
+            // Move the drag overlay
+            dragOverlay.style.left = newUIPos.x - (dragOverlay.resolvedStyle.width / 2);
+            dragOverlay.style.top = newUIPos.y - (dragOverlay.resolvedStyle.width / 2);
+            
+            yield return null;
+        }
+
+        // Show the drag overlay in UI
+        if (!isDragging)
+        {
+            dragOverlay.style.visibility = Visibility.Hidden;
+        }
+
+        yield return null;
     }
 
     //////// INFO ACTION ////////

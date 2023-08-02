@@ -1018,14 +1018,6 @@ PrefabInstance:
       propertyPath: boardManager
       value: 
       objectReference: {fileID: 639326507}
-    - target: {fileID: 3570785117545677035, guid: 6a4bd6a5611eb914ea950405a066bcd8, type: 3}
-      propertyPath: newSlotPrice
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 3570785117545677035, guid: 6a4bd6a5611eb914ea950405a066bcd8, type: 3}
-      propertyPath: slotPriceMultiplier
-      value: 2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1132,7 +1124,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneLoader: {fileID: 2129448916}
+  inventoryIndicatorSprites:
+  - {fileID: -2105459946, guid: 4d91f211f5df6004391e14554e998da1, type: 3}
+  - {fileID: 1011929985, guid: 4d91f211f5df6004391e14554e998da1, type: 3}
+  - {fileID: 831119007, guid: 4d91f211f5df6004391e14554e998da1, type: 3}
+  - {fileID: 1160936470, guid: 4d91f211f5df6004391e14554e998da1, type: 3}
+  - {fileID: -1328195891, guid: 4d91f211f5df6004391e14554e998da1, type: 3}
   bonusButtonPosition: {x: 0, y: 0}
+  inventoryButtonPosition: {x: 0, y: 0}
 --- !u!1001 &4478108654298253390
 PrefabInstance:
   m_ObjectHideFlags: 0

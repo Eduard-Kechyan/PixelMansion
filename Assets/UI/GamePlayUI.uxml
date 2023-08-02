@@ -20,6 +20,7 @@
                 </ui:Button>
                 <ui:Button display-tooltip-when-elided="true" name="InventoryButton" class="gameplay_button" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Main/InventoryButton.png?fileID=21300000&amp;guid=62dfccefaa5458b45aec73dac04a76d9&amp;type=3#InventoryButton&apos;); width: 28px; height: 28px; overflow: visible;">
                     <ui:VisualElement name="Border" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/GamePlayButtonBorder.png?fileID=21300000&amp;guid=b8f07174fd6f28542a9560db033f8d3e&amp;type=3#GamePlayButtonBorder&apos;); width: 23px; height: 23px; position: absolute; right: -1px; bottom: -1px; overflow: visible;" />
+                    <ui:VisualElement name="Indicator" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); position: absolute; width: 38px; height: 38px; left: 50%; top: 50%; translate: -50% -50%; display: none;" />
                 </ui:Button>
                 <ui:Button display-tooltip-when-elided="true" name="BonusButton" class="gameplay_button" style="background-image: none; width: 28px; height: 28px; opacity: 1; overflow: visible;">
                     <ui:VisualElement name="Image" style="width: 24px; height: 24px; position: absolute; left: 2px; top: 2px;" />

@@ -104,7 +104,7 @@ public class ValuePop : MonoBehaviour
             default: // Experience
                 valuePopSprite = experienceSprite;
                 valuePopOffset = valuesUI.levelButton.layout.x;
-                valuePopSFX = "Experience";
+                valuePopSFX = "Experience"; // TODO - Check this
                 break;
         }
 
@@ -169,7 +169,6 @@ public class ValuePop : MonoBehaviour
     public IEnumerator HandlePopInventoryItem(Sprite sprite, Vector2 initialPosition, Vector2 position)
     {
         Sprite valuePopSprite = sprite;
-        string valuePopSFX = "Experience";
 
         // Add value pop element to the root
         VisualElement valuePop = InitializePopValueElement(valuePopSprite, initialPosition, false);
@@ -204,9 +203,6 @@ public class ValuePop : MonoBehaviour
         valuePop.style.scale = new StyleScale(scale);
 
         yield return new WaitForSeconds(0.1f);
-
-        // Play value pop sound
-        soundManager.PlaySound(valuePopSFX);
 
         // Hide the value pop
         valuePop.style.visibility = Visibility.Hidden;

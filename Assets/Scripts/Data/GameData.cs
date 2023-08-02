@@ -18,6 +18,7 @@ public class GameData : MonoBehaviour
     public static float GAME_PIXEL_HEIGHT = 0f;
 
     public const string WEB_ADDRESS = "https://WEBSITE.com"; // Replace WEBSITE with proper website name
+    public const string STUDIO_NAME = "unonodegames"; // Replace SOCIAL_MEDIA_NAME with proper sudio name
 
     public int maxExperience = 10;
     public int leftoverExperience = 0;

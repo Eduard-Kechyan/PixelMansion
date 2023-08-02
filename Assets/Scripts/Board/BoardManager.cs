@@ -430,6 +430,13 @@ public class BoardManager : MonoBehaviour
         return emptyBoard;
     }
 
+    public bool IsThereAnEmptyBoardSpace()
+    {
+        List<Types.BoardEmpty> emptyBoard = GetEmptyBoardItems(Vector2Int.zero, false);
+
+        return emptyBoard.Count > 0;
+    }
+
     // Calculate the distance between two points in a 2d array
     float CalculateDistance(int currentX, int currentY, int otherX, int otherY)
     {

@@ -56,6 +56,8 @@ public class JsonHandler : MonoBehaviour
 
         for (int i = 0; i < boardData.Length; i++)
         {
+            int randomInt = Random.Range(0, itemHandler.crateSprites.Length);
+
             Types.BoardJson newBoardJson = new Types.BoardJson
             {
                 sprite = boardData[i].sprite == null ? "" : boardData[i].sprite.name,
@@ -64,7 +66,7 @@ public class JsonHandler : MonoBehaviour
                 group = boardData[i].group.ToString(),
                 genGroup = boardData[i].genGroup.ToString(),
                 collGroup = boardData[i].collGroup.ToString(),
-                crate = initialLoop ? RandomCrateInt() : boardData[i].crate,
+                crate = initialLoop ? randomInt : boardData[i].crate,
             };
 
             boardJson[i] = newBoardJson;
@@ -190,7 +192,7 @@ public class JsonHandler : MonoBehaviour
             {
                 unsentType = newUnsentType,
                 jsonData = unsentJson[i].jsonData,
-                priority =unsentJson[i].priority
+                priority = unsentJson[i].priority
             };
 
             unsentData.Add(newUnsentData);
@@ -199,7 +201,7 @@ public class JsonHandler : MonoBehaviour
         return unsentData;
 
     }
-    
+
     public string ConvertUnsentToson(List<ApiCalls.UnsentData> unsentData)
     {
         ApiCalls.UnsentDataJson[] unsentJson = new ApiCalls.UnsentDataJson[unsentData.Count];
@@ -266,13 +268,7 @@ public class JsonHandler : MonoBehaviour
 
     //// OTHER ////
 
-    int RandomCrateInt()
-    {
-        int randomInt = Random.Range(0, itemHandler.crateSprites.Length);
-
-        return randomInt;
-    }
-
+    // TODO - Are these functions needed?
     Types.GenGroup[] LoopParentsToObject(string[] newParents)
     {
         Types.GenGroup[] parents = new Types.GenGroup[newParents.Length];

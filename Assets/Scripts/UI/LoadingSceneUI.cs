@@ -46,7 +46,7 @@ public class LoadingSceneUI : MonoBehaviour
     private VisualElement ageMenu;
     private Label ageTitleLabel;
     private Label ageLabel;
-    private SliderInt ageSlider;
+    private IntegerField ageInteger;
     private Button ageAcceptButton;
 
     // Update
@@ -84,7 +84,7 @@ public class LoadingSceneUI : MonoBehaviour
         ageMenu = root.Q<VisualElement>("AgeMenu");
         ageTitleLabel = ageMenu.Q<Label>("TitleLabel");
         ageLabel = ageMenu.Q<Label>("AgeLabel");
-        ageSlider = ageMenu.Q<SliderInt>("AgeSlider");
+        ageInteger = ageMenu.Q<IntegerField>("AgeInteger");
         ageAcceptButton = ageMenu.Q<Button>("AcceptButton");
 
         updateMenu = root.Q<VisualElement>("UpdateMenu");
@@ -104,7 +104,7 @@ public class LoadingSceneUI : MonoBehaviour
         };
 
         ageAcceptButton.clicked += () => AcceptAge();
-        ageSlider.RegisterValueChangedCallback(AgeSliderHandle);
+        ageInteger.RegisterValueChangedCallback(AgeIntegerHandle);
 
         updateButton.clicked += () => UpdateGame();
         updateExitButton.clicked += () => Application.Quit();
@@ -120,6 +120,8 @@ public class LoadingSceneUI : MonoBehaviour
     void Init()
     {
         versionLabel.text = "v." + Application.version;
+
+        ageInteger.value = 0;
 
         HideTermsMenu();
     }
@@ -240,7 +242,7 @@ public class LoadingSceneUI : MonoBehaviour
 
         if (ageCallback != null)
         {
-            ageCallback(ageSlider.value);
+            ageCallback(ageInteger.value);
         }
     }
 
@@ -255,11 +257,17 @@ public class LoadingSceneUI : MonoBehaviour
         ageMenu.style.opacity = 0;
     }
 
-    void AgeSliderHandle(ChangeEvent<int> newData)
+    void AgeIntegerHandle(ChangeEvent<int> newData)
     {
-        ageSlider.label = newData.newValue.ToString();
+        if (newData.newValue < 0)
+        {
+            ageInteger.value = 0;
+        }else if (newData.newValue > 100)
+        {
+            ageInteger.value = 100;
+        }
 
-        if (newData.newValue > 0f)
+        if (newData.newValue > 0)
         {
             ageAcceptButton.SetEnabled(true);
         }
@@ -285,17 +293,17 @@ public class LoadingSceneUI : MonoBehaviour
         {
             // Show the overlay
             //overlayBackground.style.display = DisplayStyle.Flex;
-           // overlayBackground.style.opacity = 1;
+            // overlayBackground.style.opacity = 1;
 
             // Show the menu
-           /* updateMenu.style.display = DisplayStyle.Flex;
-            updateMenu.style.opacity = 1f;
+            /* updateMenu.style.display = DisplayStyle.Flex;
+             updateMenu.style.opacity = 1f;
 
-            updateTitleLabel.text = LOCALE.Get("update_menu_title");
-            updateLabel.text = LOCALE.Get("update_menu_label");
+             updateTitleLabel.text = LOCALE.Get("update_menu_title");
+             updateLabel.text = LOCALE.Get("update_menu_label");
 
-            updateButton.text = LOCALE.Get("update_button");
-            updateExitButton.text = LOCALE.Get("update_exit_button");*/
+             updateButton.text = LOCALE.Get("update_button");
+             updateExitButton.text = LOCALE.Get("update_exit_button");*/
         }
     }
 

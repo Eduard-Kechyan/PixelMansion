@@ -268,3 +268,23 @@
     border-top-width: 0;
     border-bottom-width: 0;
 }
+
+.age_input .unity-base-field__input {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    -unity-text-align: middle-center;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    background-color: rgb(219, 205, 168);
+    color: rgb(255, 255, 255);
+    font-size: 16px;
+    -unity-font: url('project://database/Assets/Fonts/Files/Roboto.ttf?fileID=12800000&guid=0435ef74bc89d2044a778758a25a13b0&type=3#Roboto');
+}

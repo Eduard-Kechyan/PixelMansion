@@ -32,31 +32,31 @@ public class DoubleTapManager : MonoBehaviour
         interactions = GetComponent<BoardInteractions>();
         boardManager = GetComponent<BoardManager>();
         boardPopup = GetComponent<BoardPopup>();
-        boardIndication= GetComponent<BoardIndication>();
+        boardIndication = GetComponent<BoardIndication>();
 
         // Cache instances
         gameData = GameData.Instance;
         LOCALE = I18n.Instance;
-        energyMenu=GameRefs.Instance.energyMenu;
-        valuePop=GameRefs.Instance.valuePop;
+        energyMenu = GameRefs.Instance.energyMenu;
+        valuePop = GameRefs.Instance.valuePop;
     }
 
     public bool CheckForDoubleTaps()
     {
         switch (interactions.currentItem.type)
-            {
-                case Types.Type.Gen:
-                    DoubleTappedGenerator();
-                    return true;
+        {
+            case Types.Type.Gen:
+                DoubleTappedGenerator();
+                return true;
 
-                case Types.Type.Coll:
-                    DoubleTappedCollectable();
-                    return true;
+            case Types.Type.Coll:
+                DoubleTappedCollectable();
+                return true;
 
-                default:
+            default:
 
-                    return false;
-            }
+                return false;
+        }
     }
 
     void DoubleTappedGenerator()

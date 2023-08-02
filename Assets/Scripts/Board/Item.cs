@@ -47,10 +47,12 @@ public class Item : MonoBehaviour
 
     private float moveSpeed;
     private float scaleSpeed;
-    private bool isMoving = false;
+    [HideInInspector]
+    public bool isMoving = false;
     private bool isScaling = false;
     private bool isMovingAndScaling = false;
     private bool destroy;
+    public bool useOverlay = false;
     private Vector2 position;
     private Vector2 scale;
     private Animation anim;
@@ -247,7 +249,9 @@ public class Item : MonoBehaviour
         if (isCompleted)
         {
             completionChild.SetActive(true);
-        }else{
+        }
+        else
+        {
             completionChild.SetActive(false);
         }
     }
@@ -272,7 +276,8 @@ public class Item : MonoBehaviour
         }
     }
 
-    public void PopBubble(){
+    public void PopBubble()
+    {
         if (state == Types.State.Bubble)
         {
             state = Types.State.Default;

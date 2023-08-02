@@ -23,6 +23,7 @@ public class InventoryMenu : MonoBehaviour
     private SelectionManager selectionManager;
     private ValuePop valuePop;
     private GameplayUI gameplayUI;
+    private SoundManager soundManager;
 
     // Instances
     private I18n LOCALE;
@@ -47,6 +48,7 @@ public class InventoryMenu : MonoBehaviour
         dataManager = DataManager.Instance;
         valuePop = GameRefs.Instance.valuePop;
         gameplayUI = GameRefs.Instance.gameplayUI;
+        soundManager = SoundManager.Instance;
 
         if (boardManager != null)
         {
@@ -181,12 +183,14 @@ public class InventoryMenu : MonoBehaviour
         }
         else
         {
-            confirmMenu.Open("need_gold", () => {
+            confirmMenu.Open("need_gold", () =>
+            {
                 confirmMenu.Close();
 
-                Glob.SetTimout(()=>{
+                Glob.SetTimout(() =>
+                {
                     shopMenu.Open();
-                },0.35f);
+                }, 0.35f);
             });
         }
     }
@@ -205,7 +209,7 @@ public class InventoryMenu : MonoBehaviour
             }
             else
             {
-                newPrice += 10 * (boughtSlots-1);
+                newPrice += 10 * (boughtSlots - 1);
             }
 
             if (gameData.inventorySlotPrice != newPrice)
@@ -221,7 +225,7 @@ public class InventoryMenu : MonoBehaviour
 
     void AddItemToBoard(string nameOrder)
     {
-        List<Types.BoardEmpty> emptyBoard = boardManager.GetEmptyBoardItems(Vector2Int.zero, false);
+        List<Types.BoardEmpty> emptyBoard = boardManager.GetEmptyBoardItems(Vector2Int.zero, true);
 
         if (emptyBoard.Count > 0)
         {
@@ -238,7 +242,11 @@ public class InventoryMenu : MonoBehaviour
                 gameplayUI.bonusButtonPosition
             );
 
+            Types.ItemsData itemData = GetItemData(gameData.inventoryData[order]);
+
             gameData.inventoryData.RemoveAt(order);
+
+            boardManager.CreateItemOnEmptyTile(itemData, emptyBoard[0], gameplayUI.bonusButtonPosition, false);
 
             dataManager.SaveInventory();
 
@@ -248,6 +256,49 @@ public class InventoryMenu : MonoBehaviour
 
             StartCoroutine(ClearSlot(slot));
         }
+    }
+
+    Types.ItemsData GetItemData(Types.Inventory inventoryItem)
+    {
+        Types.ItemsData newItemData = new Types.ItemsData();
+
+        if (inventoryItem.type == Types.Type.Item)
+        {
+            for (int i = 0; i < gameData.itemsData.Length; i++)
+            {
+                if (gameData.itemsData[i].group == inventoryItem.group)
+                {
+                    for (int j = 0; j < gameData.itemsData[i].content.Length; j++)
+                    {
+                        if (gameData.itemsData[i].content[j].sprite == inventoryItem.sprite)
+                        {
+                            newItemData = gameData.itemsData[i].content[j];
+                        }
+                    }
+                }
+            }
+        }
+
+        if (inventoryItem.type == Types.Type.Gen)
+        {
+            for (int i = 0; i < gameData.generatorsData.Length; i++)
+            {
+                if (gameData.generatorsData[i].group == inventoryItem.group)
+                {
+                    for (int j = 0; j < gameData.generatorsData[i].content.Length; j++)
+                    {
+                        if (gameData.generatorsData[i].content[j].sprite == inventoryItem.sprite)
+                        {
+                            newItemData = gameData.generatorsData[i].content[j];
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+        return newItemData;
     }
 
     IEnumerator ClearSlot(VisualElement slot)
@@ -299,6 +350,10 @@ public class InventoryMenu : MonoBehaviour
 
                     dataManager.SaveInventory();
 
+                    soundManager.PlaySound("OpenCrate"); // TODO - Set proper sound
+
+                    gameplayUI.BlipInventoryIndicator();
+
                     // Remove and unselect the item
                     item.ScaleToSize(Vector2.zero, scaleSpeed, false);
 
@@ -320,6 +375,7 @@ public class InventoryMenu : MonoBehaviour
                         true,
                         "Buzz"
                     );
+
                     return false;
                 }
             }
