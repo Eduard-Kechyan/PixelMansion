@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2647993437880791096}
   - component: {fileID: 5574773175297324107}
   - component: {fileID: 2928596913998717830}
+  - component: {fileID: 5752427193134997273}
   m_Layer: 0
   m_Name: DataManager
   m_TagString: Untagged
@@ -33,7 +34,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &-7698504415603008170
 MonoBehaviour:
@@ -53,6 +54,8 @@ MonoBehaviour:
   collectables: {fileID: 11400000, guid: bed7c08ca8af31748b66ffc88a9a245e, type: 2}
   initialItems: {fileID: 11400000, guid: 4e4dfc5175592b245906d52a6ec1dcd6, type: 2}
   loaded: 0
+  initialJsonData: 
+  unlockedJsonData: 
 --- !u!114 &2647993437880791096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105,3 +108,15 @@ MonoBehaviour:
   collapseLogOnStart: 0
   logFontSize: 14
   scaleFactor: 2
+--- !u!114 &5752427193134997273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2434679965947527676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9baa39e5b3db28d41b766732ca37294d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using CI.QuickSave;
+using Newtonsoft.Json;
 
 public class TimeManager : MonoBehaviour
 {
@@ -10,6 +11,28 @@ public class TimeManager : MonoBehaviour
     private GameData gameData;
     private EnergyTimer energyTimer;
 
+    [Serializable]
+    public class EnergyTimerClass
+    {
+        public DateTime startDate;
+        public int seconds;
+    }
+
+    // Instance
+    public static TimeManager Instance;
+
+    void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
 
     void Start()
     {
@@ -25,7 +48,7 @@ public class TimeManager : MonoBehaviour
         gameData.timers.Add(
             new Types.Timer
             {
-                dateTime = newTimer,
+                startDate = newTimer,
                 type = type,
                 timerName = timerName
             }
@@ -34,18 +57,6 @@ public class TimeManager : MonoBehaviour
         dataManager.SaveTimers();
     }
 
-    public void AddEnergyTimer()
-    {
-        int energyNeeded = GameData.MAX_ENERGY - gameData.energy;
-
-        int totalSeconds = (int)Mathf.Floor(energyNeeded * energyTimer.energyTime);
-
-        Debug.Log(totalSeconds);
-
-        AddTimer(Types.TimerType.Energy, "Energy");
-
-        // gameData.UpdateEnergy(1);
-    }
 
     public void RemoveTimer(string timerName)
     {
@@ -75,9 +86,9 @@ public class TimeManager : MonoBehaviour
         {
             if (gameData.timers[i].timerName == timerName)
             {
-                DateTime dateTime = gameData.timers[i].dateTime;
+                DateTime startDate = gameData.timers[i].startDate;
 
-                TimeSpan diff = DateTime.Now - dateTime;
+                TimeSpan diff = DateTime.Now - startDate;
 
                 int seconds = diff.Seconds + (diff.Minutes * 60);
 
@@ -116,5 +127,82 @@ public class TimeManager : MonoBehaviour
     void CheckItemTimer(Types.Timer timer)
     {
         //RemoveTimer(timer.timerName);
+    }
+
+    public void SetEnergyTimer(int newSeconds)
+    {
+        RemoveEnergyTimer(false);
+
+        Types.Timer newEnergyTimer = new()
+        {
+            startDate = DateTime.UtcNow,
+            seconds = newSeconds,
+            on = true,
+            type = Types.TimerType.Energy
+        };
+
+        gameData.timers.Add(newEnergyTimer);
+
+        dataManager.SaveTimers();
+    }
+
+    public Types.Timer GetEnergyTimer()
+    {
+        Types.Timer newEnergyTimer = new()
+        {
+            on = false,
+        };
+
+        if (gameData.timers.Count > 0)
+        {
+            int index = -1;
+
+            for (int i = 0; i < gameData.timers.Count; i++)
+            {
+                if (gameData.timers[i].type == Types.TimerType.Energy)
+                {
+                    index = i;
+                }
+            }
+
+            if (index >= 0)
+            {
+                return gameData.timers[index];
+            }
+            else
+            {
+                return newEnergyTimer;
+            }
+        }
+        else
+        {
+            return newEnergyTimer;
+        }
+    }
+
+    public void RemoveEnergyTimer(bool save = true)
+    {
+        if (gameData.timers.Count > 0)
+        {
+            int index = -1;
+
+            for (int i = 0; i < gameData.timers.Count; i++)
+            {
+                if (gameData.timers[i].type == Types.TimerType.Energy)
+                {
+                    index = i;
+                }
+            }
+
+            if (index >= 0)
+            {
+                gameData.timers.RemoveAt(index);
+
+                if (save)
+                {
+                    dataManager.SaveTimers();
+                }
+            }
+        }
     }
 }

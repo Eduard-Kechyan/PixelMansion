@@ -9,9 +9,14 @@ using Locale;
 public class LoadingSceneUI : MonoBehaviour
 {
     // Variables
+    [Header("background")]
     public float backgroundDelay = 15f;
     public float skyUpDelay = 0.1f;
     public float skyDownDelay = 1f;
+
+    [Header("Title")]
+    public Color titleColor;
+    public LocaleManager localeManager;
 
     private int backgroundCount = 0;
     private float skyUpCount = 0;
@@ -28,6 +33,7 @@ public class LoadingSceneUI : MonoBehaviour
     private VisualElement root;
 
     private VisualElement background;
+    private VisualElement mainTitle;
     private Label versionLabel;
     private VisualElement skyUp;
     private VisualElement skyDown;
@@ -68,6 +74,7 @@ public class LoadingSceneUI : MonoBehaviour
         root = GetComponent<UIDocument>().rootVisualElement;
 
         background = root.Q<VisualElement>("Background");
+        mainTitle = root.Q<VisualElement>("MainTitle");
         versionLabel = root.Q<Label>("Version");
         skyUp = root.Q<VisualElement>("SkyUp");
         skyDown = root.Q<VisualElement>("SkyDown");
@@ -123,7 +130,46 @@ public class LoadingSceneUI : MonoBehaviour
 
         ageInteger.value = 0;
 
+        SetTitle();
+
         HideTermsMenu();
+    }
+
+    void SetTitle()
+    {
+        string[] gameTitleChunks = GameData.GAME_TITLE.Split(" "[0]);
+
+        mainTitle.Clear();
+
+        for (int i = 0; i < gameTitleChunks.Length; i++)
+        {
+            // Create title chunk with name and title
+            Label titleChunk = new() { name = "TitleChunk" + i, text = gameTitleChunks[i] };
+
+            // Set the styles
+            titleChunk.style.marginTop = 0;
+            titleChunk.style.marginLeft = 0;
+            titleChunk.style.marginRight = 0;
+            titleChunk.style.marginBottom = -15f;
+            titleChunk.style.paddingTop = 0;
+            titleChunk.style.paddingLeft = 0;
+            titleChunk.style.paddingRight = 0;
+            titleChunk.style.paddingBottom = 0;
+
+            titleChunk.style.unityFontDefinition = new StyleFontDefinition(localeManager.titleFont);
+            titleChunk.style.fontSize = 40f;
+            titleChunk.style.unityTextAlign = TextAnchor.MiddleCenter;
+            titleChunk.style.color = titleColor;
+            titleChunk.style.textShadow = new StyleTextShadow(new TextShadow()
+            {
+                offset = new Vector2(1, 1),
+                blurRadius = 0,
+                color = Color.white
+            });
+
+            // Add to the title container
+            mainTitle.Add(titleChunk);
+        }
     }
 
     void ChangeBackgroundSprite()
@@ -262,7 +308,8 @@ public class LoadingSceneUI : MonoBehaviour
         if (newData.newValue < 0)
         {
             ageInteger.value = 0;
-        }else if (newData.newValue > 100)
+        }
+        else if (newData.newValue > 100)
         {
             ageInteger.value = 100;
         }
@@ -312,5 +359,4 @@ public class LoadingSceneUI : MonoBehaviour
         // TODO - Open the app store here, or update in game
         Debug.Log("Updating!");
     }
-
 }

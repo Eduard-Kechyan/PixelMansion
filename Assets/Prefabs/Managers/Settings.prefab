@@ -31,7 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3287225785201382731
 MonoBehaviour:
@@ -70,3 +70,4 @@ MonoBehaviour:
   krFont: {fileID: 12800000, guid: 97fe985f9fe456140a5eb7e6620d28a5, type: 3}
   cnFont: {fileID: 12800000, guid: b662814ecbbd4a04e8e263f3f68ebfc6, type: 3}
   enFont: {fileID: 12800000, guid: 0435ef74bc89d2044a778758a25a13b0, type: 3}
+  titleFont: {fileID: 12800000, guid: 73c6b2ef5b4ed2442836c772323f47ab, type: 3}

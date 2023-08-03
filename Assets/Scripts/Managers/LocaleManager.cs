@@ -11,6 +11,7 @@ public class LocaleManager : MonoBehaviour
     public Font krFont;
     public Font cnFont;
     public Font enFont;
+    public Font titleFont;
 
     // References
     private GameRefs gameRefs;

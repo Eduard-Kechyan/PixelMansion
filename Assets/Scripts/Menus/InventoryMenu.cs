@@ -229,7 +229,7 @@ public class InventoryMenu : MonoBehaviour
 
         if (emptyBoard.Count > 0)
         {
-            Button slotItem = slotsContainer.Q<Button>("InventorySlotItem" + nameOrder);
+            //Button slotItem = slotsContainer.Q<Button>("InventorySlotItem" + nameOrder);
 
             int order = int.Parse(nameOrder);
 

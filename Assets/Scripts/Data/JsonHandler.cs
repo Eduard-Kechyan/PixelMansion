@@ -236,10 +236,12 @@ public class JsonHandler : MonoBehaviour
             timers.Add(
                 new Types.Timer
                 {
-                    timerName = timerJson[i].timerName,
+                    startDate = System.DateTime.Parse(timerJson[i].startDate),
+                    seconds = timerJson[i].seconds,
+                    on = timerJson[i].on,
                     type = (Types.TimerType)
                         System.Enum.Parse(typeof(Types.TimerType), timerJson[i].type),
-                    dateTime = System.DateTime.Parse(timerJson[i].dateTime),
+                    timerName = timerJson[i].timerName,
                 }
             );
         }
@@ -255,9 +257,11 @@ public class JsonHandler : MonoBehaviour
         {
             Types.TimerJson newTimerJson = new Types.TimerJson
             {
-                timerName = timers[i].timerName,
+                startDate = timers[i].startDate.ToString(),
+                seconds = timers[i].seconds,
+                on = timers[i].on,
                 type = timers[i].type.ToString(),
-                dateTime = timers[i].dateTime.ToString(),
+                timerName = timers[i].timerName,
             };
 
             timerJson[i] = newTimerJson;

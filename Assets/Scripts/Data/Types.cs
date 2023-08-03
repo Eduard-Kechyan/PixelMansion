@@ -66,7 +66,9 @@ public class Types : MonoBehaviour
     [Serializable]
     public class Timer
     {
-        public DateTime dateTime;
+        public DateTime startDate;
+        public int seconds;
+        public bool on;
         public TimerType type;
         public string timerName;
     }
@@ -74,7 +76,9 @@ public class Types : MonoBehaviour
     [Serializable]
     public class TimerJson
     {
-        public string dateTime;
+        public string startDate;
+        public int seconds;
+        public bool on;
         public string type;
         public string timerName;
     }

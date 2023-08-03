@@ -17,8 +17,9 @@ public class GameData : MonoBehaviour
     public const float GAME_PIXEL_WIDTH = 180f;
     public static float GAME_PIXEL_HEIGHT = 0f;
 
-    public const string WEB_ADDRESS = "https://WEBSITE.com"; // Replace WEBSITE with proper website name
-    public const string STUDIO_NAME = "unonodegames"; // Replace SOCIAL_MEDIA_NAME with proper sudio name
+    public const string WEB_ADDRESS = "https://WEBSITE.com"; // TODO - Replace WEBSITE with proper the website name
+    public const string STUDIO_NAME = "unonodegames"; // TODO - Replace SOCIAL_MEDIA_NAME with the proper sudio name
+    public const string GAME_TITLE = "Pixel Merge"; // TODO - Replace GAME_TITLE with the proper game title
 
     public int maxExperience = 10;
     public int leftoverExperience = 0;
@@ -62,7 +63,6 @@ public class GameData : MonoBehaviour
     private Sprite[] collectablesSprites;
 
     // References
-    private TimeManager timeManager;
     private LevelMenu levelMenu;
     private ValuesUI valuesUI;
     private GameplayUI gameplayUI;
@@ -88,7 +88,6 @@ public class GameData : MonoBehaviour
     void Start()
     {
         // Cache
-        timeManager = GetComponent<TimeManager>();
         dataManager = DataManager.Instance;
         soundManager = SoundManager.Instance;
 
@@ -268,7 +267,7 @@ public class GameData : MonoBehaviour
                 energy = 0;
             }
 
-            energyTimer.CheckEnergy();
+            energyTimer.Check();
 
             dataManager.writer.Write("energy", energy).Commit();
 

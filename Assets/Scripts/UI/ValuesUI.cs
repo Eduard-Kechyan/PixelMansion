@@ -19,10 +19,13 @@ public class ValuesUI : MonoBehaviour
 
     private bool enabledSet = false;
 
+    private Coroutine energyCoroutine;
+
     // References
     private LevelMenu levelMenu;
     private EnergyMenu energyMenu;
     private ShopMenu shopMenu;
+    private EnergyTimer energyTimer;
 
     // Instances
     private GameData gameData;
@@ -40,7 +43,7 @@ public class ValuesUI : MonoBehaviour
     public Button energyButton;
     private VisualElement energyPlus;
 
-    public Label energyTimer;
+    private Label energyTimerLabel;
 
     public Button goldButton;
     private VisualElement goldPlus;
@@ -54,6 +57,7 @@ public class ValuesUI : MonoBehaviour
         levelMenu = GameRefs.Instance.levelMenu;
         energyMenu = GameRefs.Instance.energyMenu;
         shopMenu = GameRefs.Instance.shopMenu;
+        energyTimer = TimeManager.Instance.GetComponent<EnergyTimer>();
 
         // Cache instances
         gameData = GameData.Instance;
@@ -70,9 +74,9 @@ public class ValuesUI : MonoBehaviour
 
         energyButton = valuesBox.Q<Button>("EnergyButton");
         energyPlus = energyButton.Q<VisualElement>("Plus");
-        energyTimer = energyButton.Q<Label>("EnergyTimer");
+        energyTimerLabel = energyButton.Q<Label>("EnergyTimer");
 
-        energyTimer.style.display = DisplayStyle.None;
+        energyTimerLabel.style.display = DisplayStyle.None;
 
         goldButton = valuesBox.Q<Button>("GoldButton");
         goldPlus = goldButton.Q<VisualElement>("Plus");
@@ -83,6 +87,11 @@ public class ValuesUI : MonoBehaviour
         SetValues();
 
         CheckForTaps();
+    }
+
+    void Update()
+    {
+        CheckTimer();
     }
 
     void SetValues()
@@ -109,16 +118,66 @@ public class ValuesUI : MonoBehaviour
         gemsButton.clicked += () => shopMenu.Open("Gems");
     }
 
+    void CheckTimer()
+    {
+        if (energyTimer.timerOn)
+        {
+            Glob.StopTimeout(energyCoroutine);
+
+            energyTimerLabel.style.display = DisplayStyle.Flex;
+
+            float newTimeout = energyTimer.timeOut;
+
+            newTimeout++;
+
+            float minutes = Mathf.FloorToInt(newTimeout / 60);
+            float seconds = Mathf.FloorToInt(newTimeout % 60);
+
+            string minutesText = minutes < 10 ? "0" + minutes : minutes.ToString();
+            string secondsText = seconds < 10 ? "0" + seconds : seconds.ToString();
+
+            energyTimerLabel.text = string.Format("{0}:{1}", minutesText, secondsText);
+        }
+        else if (!energyTimer.waiting)
+        {
+            energyCoroutine = Glob.SetTimout(() =>
+            {
+                energyTimerLabel.style.display = DisplayStyle.None;
+            }, 1f);
+        }
+    }
+
     public void UpdateValues()
     {
         levelFill.style.width = CalcLevelFill();
 
-        Debug.Log(gameData.energy.ToString());
+        // Debug.Log(gameData.energy.ToString());
 
         levelValue.text = gameData.level.ToString();
         energyButton.text = gameData.energy.ToString();
         goldButton.text = gameData.gold.ToString();
         gemsButton.text = gameData.gems.ToString();
+
+        energyButton.style.fontSize = CheckFontSize(energyButton);
+        goldButton.style.fontSize = CheckFontSize(goldButton);
+        gemsButton.style.fontSize = CheckFontSize(gemsButton);
+    }
+
+    float CheckFontSize(Button button)
+    {
+        float newFontSize = button.resolvedStyle.fontSize;
+
+        if (button.text.Length > 6)
+        {
+            newFontSize = 4f;
+        }
+
+        if (button.text.Length > 8)
+        {
+            newFontSize = 3f;
+        }
+
+        return newFontSize;
     }
 
     public void UpdateLevel()

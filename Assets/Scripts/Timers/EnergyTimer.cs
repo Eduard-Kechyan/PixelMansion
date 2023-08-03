@@ -7,183 +7,155 @@ using UnityEngine.UIElements;
 public class EnergyTimer : MonoBehaviour
 {
     // Variables
-    public int energyTime = 120;
-    private float energyTimeOut;
-    //private float singleMinuteInSeconds = 60f;
+    public int time = 120;
 
-    //private bool energyTimerOn = false;
-
-    private DateTime dateStart;
-
+    [Header("Debug")]
     public bool devMode = false;
     [Condition("devMode", true)]
     public int energyTimeDevMode = 10;
 
-    private Coroutine innerTimer = null;
+    [Header("Stats")]
+    [ReadOnly]
+    public bool timerOn = false;
+    [ReadOnly]
+    public bool waiting = false;
+    [ReadOnly]
+    public float timeOut;
 
-    [SerializeField]
-    private string energyTimerText = "00:00";
+    private DateTime startDate;
+    private int startSeconds = 0;
+    
+    private Coroutine energyCoroutine;
+    private bool gottenData = false;
 
     // References
+    private TimeManager timeManager;
     private GameData gameData;
-    private ValuesUI valuesUI;
 
     void Start()
     {
         // References
-       /* gameData = GameData.Instance;
-        valuesUI = GameRefs.Instance.valuesUI;
+        timeManager = GetComponent<TimeManager>();
+        gameData = GameData.Instance;
 
-        energyTimerOn = PlayerPrefs.HasKey("energyTimerOn");
-
-        if (PlayerPrefs.HasKey("energyTimerStart"))
-        {
-            dateStart = DateTime.Parse(PlayerPrefs.GetString("energyTimerStart"));
-        }
-
+        // Change the time if we are in dev mode
 #if UNITY_EDITOR
         if (devMode)
         {
-            energyTime = energyTimeDevMode;
-            singleMinuteInSeconds = 6f;
+            time = energyTimeDevMode;
         }
 #endif
 
-        energyTimeOut = energyTime;
+        // Set the time
+        timeOut = time;
 
-        CalcCurrentData();*/
+        GetTimerDate();
     }
 
-   /* void Update()
+    void Update()
     {
-        if (energyTimerOn)
+        if (timerOn)
         {
-            if (energyTimeOut > 0)
+            if (timeOut > 0)
             {
-                energyTimeOut -= Time.deltaTime;
-                UpdateEnergyTimer(energyTimeOut);
+                timeOut -= Time.deltaTime;
             }
             else
             {
-                gameData.UpdateEnergy();
+                // Stop the timer here is important
+                timerOn = false;
+                waiting = true;
 
-                CheckEnergy(true);
+                energyCoroutine=Glob.SetTimout(() =>
+                {
+                    waiting = false;
+                    gameData.UpdateEnergy();
+                }, 0.5f);
             }
         }
-    }*/
+    }
 
-    public void CheckEnergy(bool fromTimer = false)
+    // Check if there is a need for the timer to be on
+    public void Check(int newTimeOut = -1)
     {
-        /*if(energy < MAX_ENERGY){
-            timeManager.AddEnergyTimer();
-        }*/
-
-       /* if (fromTimer)
+        // Reset the time out
+        if (newTimeOut == -1)
         {
-            energyTimeOut = energyTime;
-        }
-        else if (!energyTimerOn || energyTimeOut <= 0)
-        {
-            energyTimeOut = energyTime;
-        }
-
-        // Increase energy after set time if energy is less than 100
-        if (gameData.energy < 100)
-        {
-            if (!energyTimerOn)
+            if (!timerOn || timeOut <= 0)
             {
-                PlayerPrefs.SetInt("energyTimerOn", 1);
+                timeOut = time;
             }
-            else
-            {
-                CalcCurrentData();
-            }
-
-            SetCounter();
-
-            energyTimerOn = true;
         }
         else
         {
-            // End the timer and notify the player that the energy is full
-            energyTimerOn = false;
-
-            if (fromTimer)
-            {
-                if (gameData.energy >= 100)
-                {
-                    Debug.Log("Energy full!");
-
-                    ResetCurrentData();
-                }
-            }
-            else
-            {
-                if (valuesUI.energyTimer != null)
-                {
-                    Glob.SetTimout(() =>
-                    {
-                        valuesUI.energyTimer.style.display = DisplayStyle.None;
-                    }, 1f);
-                }
-            }
-
-            PlayerPrefs.DeleteKey("energyTimerOn");
-        }*/
-    }
-
-    void UpdateEnergyTimer(float currentTime)
-    {
-        currentTime++;
-
-        float minutes = Mathf.FloorToInt(currentTime / 60);
-        float seconds = Mathf.FloorToInt(currentTime % 60);
-
-        string minutesText = minutes < 10 ? "0" + minutes : minutes.ToString();
-        string secondsText = seconds < 10 ? "0" + seconds : seconds.ToString();
-
-        energyTimerText = minutesText + ":" + secondsText;
-
-        valuesUI.energyTimer.text = energyTimerText;
-        valuesUI.energyTimer.style.display = DisplayStyle.Flex;
-    }
-
-    // Dates
-    void SetCounter()
-    {
-        float energyToGetLeft = 100 - gameData.energy;
-
-        if (innerTimer != null)
-        {
-            Glob.StopTimeout(innerTimer);
+            timeOut = newTimeOut;
         }
 
-        // TODO - Add notification for a full energy when the app is closed after the "timeLeft" in seconds
-
-       /* Debug.Log(energyToGetLeft);
-        Debug.Log(energyTime);
-        Debug.Log(singleMinuteInSeconds);
-        Debug.Log(energyToGetLeft * (energyTime / singleMinuteInSeconds));
-
-        innerTimer = Glob.SetTimout(() =>
+        // Check if energy is less than the maximum amount
+        if (gameData.energy < GameData.MAX_ENERGY)
         {
-            Debug.Log("Energy full B!");
-        }, energyToGetLeft * (energyTime / singleMinuteInSeconds));*/
+            // Enable the timer
+            timerOn = true;
 
-        /*dateStart = DateTime.UtcNow;
+            Glob.StopTimeout(energyCoroutine);
 
-        PlayerPrefs.SetString("energyTimerStart", dateStart.ToString());*/
+            SetTimerDate();
+        }
+        else
+        {
+            // Disable the timer
+            timerOn = false;
+
+            // TODO - Notifiy the player that energy is full, and remove this line after that
+            Debug.Log("Energy full!");
+
+            ClearTimerDate();
+        }
+
     }
 
-    void CalcCurrentData()
+    void SetTimerDate()
     {
-        DateTime dateNow = DateTime.UtcNow;
+        startDate = DateTime.UtcNow;
+        startSeconds = ((time * (GameData.MAX_ENERGY - gameData.energy)) - time) + (int)timeOut;
 
-        //Debug.Log(dateNow - dateStart);
+        timeManager.SetEnergyTimer(startSeconds);
     }
 
-    void ResetCurrentData()
+    public void GetTimerDate(GeometryChangedEvent evt = null)
     {
-        PlayerPrefs.DeleteKey("energyTimerStart");
+        if (!gottenData)
+        {
+            gottenData = true;
+
+            DateTime endDate = DateTime.UtcNow;
+
+            Types.Timer timerData = timeManager.GetEnergyTimer();
+
+            if (timerData.on)
+            {
+                startDate = timerData.startDate;
+                startSeconds = timerData.seconds;
+
+                TimeSpan difference = endDate - startDate;
+
+                if (difference.Seconds >= startSeconds)
+                {
+                    timeManager.RemoveEnergyTimer();
+                }
+                else
+                {
+                    int test1 = startSeconds / time;
+                    int test2 = startSeconds - ((time - 1) * test1);
+
+                    Check(test2);
+                }
+            }
+        }
+    }
+
+    void ClearTimerDate()
+    {
+        timeManager.RemoveEnergyTimer();
     }
 }
