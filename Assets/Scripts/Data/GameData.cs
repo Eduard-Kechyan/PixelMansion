@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,7 @@ public class GameData : MonoBehaviour
     // Variables
     public ValuesData valuesData;
     public EnergyTimer energyTimer;
+    public ShopData shopData;
 
     public const int WIDTH = 7;
     public const int HEIGHT = 9;
@@ -24,6 +26,11 @@ public class GameData : MonoBehaviour
     public int maxExperience = 10;
     public int leftoverExperience = 0;
 
+    public int dailyDate = DateTime.UtcNow.Day;
+    public bool dailyItem1 = false;
+    public bool dailyItem2 = false;
+    public Types.ShopItemsContent[] dailyContent;
+
     // Values
     public int experience = 0; // 0% - 100%
     public int level = 0;
@@ -31,6 +38,7 @@ public class GameData : MonoBehaviour
     public int gold = 100;
     public int gems = 100;
 
+    public bool levelTen;
     public bool canLevelUp = false;
 
     // Inventory
@@ -48,10 +56,10 @@ public class GameData : MonoBehaviour
     public Types.Items[] itemsData;
     public Types.Items[] collectablesData;
     public Types.Items[] generatorsData;
+    public Types.Items[] chestsData;
     public List<Types.Bonus> bonusData = new List<Types.Bonus>();
     public List<Types.Inventory> inventoryData = new List<Types.Inventory>();
 
-    //public  Types.Items[] storageData;
     public Types.Board[,] boardData;
     public string[] unlockedData = new string[0];
 
@@ -61,6 +69,7 @@ public class GameData : MonoBehaviour
     private Sprite[] itemsSprites;
     private Sprite[] generatorsSprites;
     private Sprite[] collectablesSprites;
+    private Sprite[] chestsSprites;
 
     // References
     private LevelMenu levelMenu;
@@ -68,6 +77,7 @@ public class GameData : MonoBehaviour
     private GameplayUI gameplayUI;
     private DataManager dataManager;
     private SoundManager soundManager;
+    private JsonHandler jsonHandler;
 
     // Instance
     public static GameData Instance;
@@ -90,14 +100,17 @@ public class GameData : MonoBehaviour
         // Cache
         dataManager = DataManager.Instance;
         soundManager = SoundManager.Instance;
+        jsonHandler = dataManager.GetComponent<JsonHandler>();
 
-        canLevelUp = PlayerPrefs.GetInt("canLevelUp") == 1 ? true : false;
+        canLevelUp = PlayerPrefs.GetInt("canLevelUp") == 1;
 
         initialInventorySpace = inventorySpace;
 
         CalcMaxExperience();
 
         CalcGamePixelHeight();
+
+        CheckDailyItems();
     }
 
     public void Init(string sceneName)
@@ -136,6 +149,8 @@ public class GameData : MonoBehaviour
     public void SetLevel(int amount, bool initial = false)
     {
         level = amount;
+
+        SetTenthLevel();
 
         CalcMaxExperience();
 
@@ -236,6 +251,8 @@ public class GameData : MonoBehaviour
     {
         level++;
 
+        SetTenthLevel();
+
         dataManager.writer.Write("level", level).Commit();
 
         ToggleCanLevelUpCheck(false);
@@ -252,7 +269,9 @@ public class GameData : MonoBehaviour
         if (amount < 0 && gems + energy < 0)
         {
             return false;
-        }else{
+        }
+        else
+        {
             if (useMultiplier)
             {
                 energy += valuesData.energyMultiplier[amount - 1];
@@ -382,6 +401,7 @@ public class GameData : MonoBehaviour
         itemsSprites = Resources.LoadAll<Sprite>("Sprites/Items");
         generatorsSprites = Resources.LoadAll<Sprite>("Sprites/Generators");
         collectablesSprites = Resources.LoadAll<Sprite>("Sprites/Collectables");
+        chestsSprites = Resources.LoadAll<Sprite>("Sprites/Chests");
     }
 
     void ToggleCanLevelUpCheck(bool canLevelUpCheck)
@@ -427,6 +447,15 @@ public class GameData : MonoBehaviour
                     }
                 }
                 break;
+            case Types.Type.Chest:
+                foreach (Sprite sprite in chestsSprites)
+                {
+                    if (sprite.name == name)
+                    {
+                        return sprite;
+                    }
+                }
+                break;
             default:
                 ErrorManager.Instance.Throw(Types.ErrorType.Code, "Wrong type: " + type);
                 break;
@@ -438,5 +467,64 @@ public class GameData : MonoBehaviour
     void CalcMaxExperience()
     {
         maxExperience = valuesData.maxExperienceMultiplier[level];
+    }
+
+    void CheckDailyItems()
+    {
+        dailyDate = DateTime.UtcNow.Day;
+
+        if (PlayerPrefs.HasKey("dailyDate"))
+        {
+            if (dailyDate == PlayerPrefs.GetInt("dailyDate"))
+            {
+                GetDailyContent();
+                dailyItem1 = PlayerPrefs.GetInt("dailyItem1") == 1;
+                dailyItem2 = PlayerPrefs.GetInt("dailyItem2") == 1;
+            }
+            else
+            {
+                // A new day
+                SetDailyContent();
+                dailyItem1 = false;
+                dailyItem2 = false;
+            }
+        }
+        else
+        {
+            PlayerPrefs.SetInt("dailyDate", DateTime.UtcNow.Day);
+            PlayerPrefs.SetInt("dailyItem1", 0);
+            PlayerPrefs.SetInt("dailyItem2", 0);
+            SetDailyContent();
+        }
+    }
+
+
+    public void SetDailyContent()
+    {
+        Types.ShopItemsContent[] dailyContent = new Types.ShopItemsContent[shopData.dailyContent.Length];
+
+        dailyContent[0] = shopData.dailyContent[0];
+        dailyContent[1] = shopData.dailyContent[UnityEngine.Random.Range(1, 3)];
+
+        PlayerPrefs.SetString("dailyContent", jsonHandler.ConvertShopItemContentToJson(dailyContent));
+    }
+
+    public void GetDailyContent()
+    {
+        dailyContent = jsonHandler.ConvertShopItemContentFromJson(PlayerPrefs.GetString("dailyContent"));
+    }
+
+
+    void SetTenthLevel()
+    {
+
+        if (level > 1 && level % 10 == 0)
+        {
+            levelTen = true;
+        }
+        else
+        {
+            levelTen = false;
+        }
     }
 }

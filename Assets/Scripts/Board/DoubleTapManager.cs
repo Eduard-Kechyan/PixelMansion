@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,19 +9,26 @@ public class DoubleTapManager : MonoBehaviour
     public float moveSpeed = 14f;
     public float scaleSpeed = 8f;
 
+    [Tooltip("Will automaticaly adjust")]
+    public AnimationCurve[] randomGoldCurves;
+    [Tooltip("Will automaticaly adjust")]
+    public AnimationCurve[] generationCurves;
+
+    [Tooltip("Lower values, higher chance. Default is 8")]
+    public int gemChance = 8;
+
     // References
     private BoardInteractions interactions;
     private BoardManager boardManager;
     private BoardPopup boardPopup;
     private BoardIndication boardIndication;
+    private DataManager dataManager;
 
     // Instances
     private GameData gameData;
     private I18n LOCALE;
     private EnergyMenu energyMenu;
     private ValuePop valuePop;
-
-    private Action callback;
 
     private GameObject itemParent;
 
@@ -33,6 +39,7 @@ public class DoubleTapManager : MonoBehaviour
         boardManager = GetComponent<BoardManager>();
         boardPopup = GetComponent<BoardPopup>();
         boardIndication = GetComponent<BoardIndication>();
+        dataManager = DataManager.Instance;
 
         // Cache instances
         gameData = GameData.Instance;
@@ -53,6 +60,10 @@ public class DoubleTapManager : MonoBehaviour
                 DoubleTappedCollectable();
                 return true;
 
+            case Types.Type.Chest:
+                DoubleTappedChest();
+                return true;
+
             default:
 
                 return false;
@@ -61,9 +72,9 @@ public class DoubleTapManager : MonoBehaviour
 
     void DoubleTappedGenerator()
     {
-        if (interactions.currentItem.creates.Length > 0)
+        if (interactions.currentItem.creates.Length > 0 && interactions.currentItem.level >= interactions.currentItem.generatesAt)
         {
-            // Check if we have enough enrgy to generate an item
+            // Check if we have enough energy to generate an item
             if (gameData.energy >= 1)
             {
                 GameObject tile = interactions.currentItem.transform.parent.gameObject;
@@ -79,7 +90,7 @@ public class DoubleTapManager : MonoBehaviour
 
                     boardIndication.StopPossibleMergeCheck();
 
-                    SelectRadnomGroupAndItem(emptyBoard[0], tile.transform.position);
+                    SelectRandomGroupAndItem(emptyBoard[0], tile.transform.position);
                 }
                 else
                 {
@@ -100,27 +111,57 @@ public class DoubleTapManager : MonoBehaviour
 
     void DoubleTappedCollectable()
     {
-        valuePop.PopExperience(
+        valuePop.PopColl(
             interactions.currentItem.level,
-            "Experience",
+            interactions.currentItem.collGroup.ToString(),
             interactions.currentItem.transform.position
         );
 
-        callback = RemoveCollectableFromTheBoard;
-
         itemParent = interactions.currentItem.transform.parent.gameObject;
 
-        interactions.currentItem.ScaleToSize(Vector2.zero, scaleSpeed, true, callback);
+        interactions.currentItem.ScaleToSize(Vector2.zero, scaleSpeed, true, RemoveCollectableFromTheBoard);
     }
 
-    void RemoveCollectableFromTheBoard()
+    void DoubleTappedChest()
     {
-        boardManager.RemoveBoardData(itemParent);
+        if (!interactions.currentItem.chestLocked && !interactions.currentItem.timerOn)
+        {
+            // Check if we have enough energy to generate an item
+            if (gameData.energy >= 1)
+            {
+                GameObject tile = interactions.currentItem.transform.parent.gameObject;
 
-        itemParent = null;
+                Vector2Int tileLoc = boardManager.GetBoardLocation(0, tile);
+
+                List<Types.BoardEmpty> emptyBoard = boardManager.GetEmptyBoardItems(tileLoc);
+
+                // Check if the board is full
+                if (emptyBoard.Count > 0)
+                {
+                    emptyBoard.Sort((p1, p2) => p1.distance.CompareTo(p2.distance));
+
+                    boardIndication.StopPossibleMergeCheck();
+
+                    SelectRandomItemFromChest(emptyBoard[0], tile.transform.position, interactions.currentItem.chestItems == 1);
+                }
+                else
+                {
+                    boardPopup.AddPop(
+                        LOCALE.Get("pop_board_full"),
+                        interactions.currentItem.transform.position,
+                        true,
+                        "Buzz"
+                    );
+                }
+            }
+            else
+            {
+                energyMenu.Open();
+            }
+        }
     }
 
-    void SelectRadnomGroupAndItem(Types.BoardEmpty emptyBoard, Vector2 initialPosition)
+    void SelectRandomGroupAndItem(Types.BoardEmpty emptyBoard, Vector2 initialPosition)
     {
         Types.Creates[] creates = interactions.currentItem.creates;
 
@@ -128,7 +169,7 @@ public class DoubleTapManager : MonoBehaviour
         double diceRoll = random.NextDouble();
         double cumulative = 0.0;
 
-        Types.Group selectedGroup = new Types.Group();
+        ItemTypes.Group selectedGroup = new ItemTypes.Group();
 
         // Randomly select a group of items to choose from
         for (int i = 0; i < creates.Length; i++)
@@ -142,7 +183,14 @@ public class DoubleTapManager : MonoBehaviour
             }
         }
 
-        // TODO - Randomly create an item from the selected group
+        int selectedItem;
+
+        // Randomly create an item from the selected group
+        Debug.Log(interactions.currentItem.level - interactions.currentItem.generatesAt);
+        Debug.Log(dataManager.GetGroupCount(selectedGroup));
+        generationCurves[interactions.currentItem.level - interactions.currentItem.generatesAt].keys[^1].value = dataManager.GetGroupCount(selectedGroup);
+
+        selectedItem = Mathf.FloorToInt(Glob.CalcCurvedChances(generationCurves[interactions.currentItem.level - interactions.currentItem.generatesAt]));
 
         // Create item from selected group
         for (int i = 0; i < gameData.itemsData.Length; i++)
@@ -150,13 +198,115 @@ public class DoubleTapManager : MonoBehaviour
             if (gameData.itemsData[i].group == selectedGroup)
             {
                 boardManager.CreateItemOnEmptyTile(
-                    gameData.itemsData[i].content[0],
+                    gameData.itemsData[i].content[selectedItem],
                     emptyBoard,
                     initialPosition,
                     true,
                     true
                 );
             }
+        }
+    }
+
+    void RemoveCollectableFromTheBoard()
+    {
+        boardManager.RemoveBoardData(itemParent);
+
+        itemParent = null;
+    }
+
+    void SelectRandomItemFromChest(Types.BoardEmpty emptyBoard, Vector2 initialPosition, bool last = false)
+    {
+        if (interactions.currentItem.chestGroup == Types.ChestGroup.Energy)
+        {
+            int energyCollCount = 0;
+            int randomEnergyOrder;
+
+            Types.Items energyItems = new Types.Items();
+
+            for (int i = 0; i < gameData.collectablesData.Length; i++)
+            {
+                if (gameData.collectablesData[i].collGroup == Types.CollGroup.Energy)
+                {
+                    energyItems = gameData.collectablesData[i];
+
+                    energyCollCount = gameData.collectablesData[i].content.Length;
+                }
+            }
+
+            randomGoldCurves[interactions.currentItem.level - 1].keys[^1].value = energyCollCount;
+
+            randomEnergyOrder = Mathf.FloorToInt(Glob.CalcCurvedChances(randomGoldCurves[interactions.currentItem.level - 1]));
+
+            boardManager.RemoveItemForChest(interactions.currentItem);
+
+            boardManager.CreateItemOnEmptyTile(
+                energyItems.content[randomEnergyOrder],
+                emptyBoard,
+                initialPosition,
+                true,
+                true
+            );
+        }
+        else if (interactions.currentItem.chestGroup == Types.ChestGroup.Piggy)
+        {
+            int randomCollTypeOrder = Random.Range(0, gemChance - interactions.currentItem.level);
+            int collCount = 0;
+            int randomCollOrder = 0;
+
+            Types.Items collItems = new Types.Items();
+
+            // Make sure at least once a gem is created
+            if (last && !interactions.currentItem.gemPoped)
+            {
+                randomCollTypeOrder = gemChance - interactions.currentItem.level - 1;
+            }
+
+            if (randomCollTypeOrder == gemChance - interactions.currentItem.level - 1)
+            {
+                // Get random gem
+                for (int i = 0; i < gameData.collectablesData.Length; i++)
+                {
+                    if (gameData.collectablesData[i].collGroup == Types.CollGroup.Gems)
+                    {
+                        collItems = gameData.collectablesData[i];
+
+                        interactions.currentItem.gemPoped = true;
+                    }
+                }
+            }
+            else
+            {
+                // Get random gold
+                for (int i = 0; i < gameData.collectablesData.Length; i++)
+                {
+                    if (gameData.collectablesData[i].collGroup == Types.CollGroup.Gold)
+                    {
+                        collItems = gameData.collectablesData[i];
+
+                        collCount = gameData.collectablesData[i].content.Length;
+                    }
+                }
+
+                randomGoldCurves[interactions.currentItem.level - 1].keys[^1].value = collCount;
+
+                randomCollOrder = Mathf.FloorToInt(Glob.CalcCurvedChances(randomGoldCurves[interactions.currentItem.level - 1]));
+            }
+
+            boardManager.RemoveItemForChest(interactions.currentItem);
+
+            boardManager.CreateItemOnEmptyTile(
+                collItems.content[randomCollOrder],
+                emptyBoard,
+                initialPosition,
+                true,
+                true
+            );
+        }
+        else
+        {
+            //interactions.currentItem.chestItems--;
+            // TODO - Create items on the board
         }
     }
 }

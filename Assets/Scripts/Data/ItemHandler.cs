@@ -8,7 +8,7 @@ public class ItemHandler : MonoBehaviour
     public GameObject item;
     public Sprite[] crateSprites;
 
-// Isntances
+    // Instances
     private GameData gameData;
 
     void Start()
@@ -42,7 +42,15 @@ public class ItemHandler : MonoBehaviour
         newItem.group = itemData.group;
         newItem.genGroup = itemData.genGroup;
         newItem.collGroup = itemData.collGroup;
+        newItem.chestGroup = itemData.chestGroup;
+        newItem.hasTimer = itemData.hasTimer;
+        newItem.startTime = itemData.startTime;
+        newItem.seconds = itemData.seconds;
+        newItem.generatesAt = itemData.generatesAt;
+        newItem.chestItems = itemData.chestItems;
+        newItem.chestItemsSet = itemData.chestItemsSet;
         newItem.crateSprite = crateSprites[boardItem.crate];
+        newItem.gemPoped = itemData.gemPoped;
 
         if (!itemData.isMaxLavel)
         {
@@ -83,6 +91,10 @@ public class ItemHandler : MonoBehaviour
         newItem.isMaxLavel = itemData.isMaxLavel;
         newItem.group = shopItem.group;
         newItem.genGroup = shopItem.genGroup;
+        newItem.chestGroup = itemData.chestGroup;
+        newItem.hasTimer = itemData.hasTimer;
+        newItem.startTime = itemData.startTime;
+        newItem.seconds = itemData.seconds;
 
         Destroy(newItemPre);
 
@@ -100,9 +112,10 @@ public class ItemHandler : MonoBehaviour
 
         string spriteName;
         Types.Type type;
-        Types.Group group;
-        Types.GenGroup genGroup;
+        ItemTypes.Group group;
+        ItemTypes.GenGroup genGroup;
         Types.CollGroup collGroup = Types.CollGroup.Experience;
+        Types.ChestGroup chestGroup;
 
         if (boardItem == null)
         {
@@ -110,12 +123,16 @@ public class ItemHandler : MonoBehaviour
             type = shopItem.type;
             group = shopItem.group;
             genGroup = shopItem.genGroup;
-        }else{
+            chestGroup = shopItem.chestGroup;
+        }
+        else
+        {
             spriteName = boardItem.sprite.name;
             type = boardItem.type;
             group = boardItem.group;
             genGroup = boardItem.genGroup;
             collGroup = boardItem.collGroup;
+            chestGroup = boardItem.chestGroup;
         }
 
         if (newSpriteName != "")
@@ -137,8 +154,12 @@ public class ItemHandler : MonoBehaviour
                             if (spriteName == itemsData[i].content[j].sprite.name)
                             {
                                 foundItem = itemsData[i].content[j];
+
+                                break;
                             }
                         }
+
+                        break;
                     }
                 }
                 break;
@@ -155,8 +176,12 @@ public class ItemHandler : MonoBehaviour
                             if (spriteName == generatorsData[i].content[j].sprite.name)
                             {
                                 foundItem = generatorsData[i].content[j];
+
+                                break;
                             }
                         }
+
+                        break;
                     }
                 }
                 break;
@@ -173,8 +198,34 @@ public class ItemHandler : MonoBehaviour
                             if (spriteName == collectablesData[i].content[j].sprite.name)
                             {
                                 foundItem = collectablesData[i].content[j];
+
+                                break;
                             }
                         }
+
+                        break;
+                    }
+                }
+                break;
+
+            case Types.Type.Chest:
+                Types.Items[] chestData = gameData.chestsData;
+
+                for (int i = 0; i < chestData.Length; i++)
+                {
+                    if (chestGroup == chestData[i].chestGroup)
+                    {
+                        for (int j = 0; j < chestData[i].content.Length; j++)
+                        {
+                            if (spriteName == chestData[i].content[j].sprite.name)
+                            {
+                                foundItem = chestData[i].content[j];
+
+                                break;
+                            }
+                        }
+
+                        break;
                     }
                 }
                 break;
@@ -209,8 +260,12 @@ public class ItemHandler : MonoBehaviour
                             )
                             {
                                 nextName = itemsData[i].content[j + 1].itemName;
+
+                                break;
                             }
                         }
+
+                        break;
                     }
                 }
                 break;
@@ -230,8 +285,12 @@ public class ItemHandler : MonoBehaviour
                             )
                             {
                                 nextName = generatorsData[i].content[j + 1].itemName;
+
+                                break;
                             }
                         }
+
+                        break;
                     }
                 }
                 break;
@@ -251,8 +310,37 @@ public class ItemHandler : MonoBehaviour
                             )
                             {
                                 nextName = collectablesData[i].content[j + 1].itemName;
+
+                                break;
                             }
                         }
+
+                        break;
+                    }
+                }
+                break;
+
+            case Types.Type.Chest:
+                Types.Items[] chestsData = gameData.chestsData;
+
+                for (int i = 0; i < chestsData.Length; i++)
+                {
+                    if (boardItem.group == chestsData[i].group)
+                    {
+                        for (int j = 0; j < chestsData[i].content.Length; j++)
+                        {
+                            if (
+                                boardItem.sprite.name == chestsData[i].content[j].sprite.name
+                                && chestsData[i].content[j + 1] != null
+                            )
+                            {
+                                nextName = chestsData[i].content[j + 1].itemName;
+
+                                break;
+                            }
+                        }
+
+                        break;
                     }
                 }
                 break;

@@ -9,9 +9,6 @@ using Newtonsoft.Json;
 
 public class DataManager : MonoBehaviour
 {
-    // Instance
-    public static DataManager Instance;
-
     // For testing only
     public bool ignoreInitialCheck = false;
 
@@ -19,7 +16,9 @@ public class DataManager : MonoBehaviour
     public Items items;
     public Items generators;
     public Items collectables;
+    public Items chests;
     public InitialItems initialItems;
+    public LocaleCombiner localeCombiner;
 
     // Whether data has been fully loaded
     public bool loaded;
@@ -36,7 +35,7 @@ public class DataManager : MonoBehaviour
     private ApiCalls apiCalls;
     private DataConverter dataConverter;
 
-[HideInInspector]
+    [HideInInspector]
     public string initialJsonData;
     private string bonusData;
     private string inventoryData;
@@ -44,6 +43,9 @@ public class DataManager : MonoBehaviour
     [HideInInspector]
     public string unlockedJsonData;
     private string unsentJsonData;
+
+    // Instance
+    public static DataManager Instance;
 
     // Handle instance
     void Awake()
@@ -56,23 +58,23 @@ public class DataManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+
+            localeCombiner.Combine(false, true);
         }
     }
 
     void Start()
     {
+        // References
+        gameData = GameData.Instance;
+        apiCalls = ApiCalls.Instance;
+        dataConverter = GetComponent<DataConverter>();
+        jsonHandler = GetComponent<JsonHandler>();
+        timeManager = gameData.GetComponent<TimeManager>();
+
         // Set up Quick Save
         saveSettings = new QuickSaveSettings() { CompressionMode = CompressionMode.None }; //TODO -  Set CompressionMode in the final game to Gzip
         writer = QuickSaveWriter.Create("Root", saveSettings);
-        apiCalls = ApiCalls.Instance;
-        dataConverter=GetComponent<DataConverter>();
-
-        // Cache JsonHandler
-        jsonHandler = GetComponent<JsonHandler>();
-
-        gameData = GameData.Instance;
-
-        timeManager = gameData.GetComponent<TimeManager>();
 
         gameData.LoadSprites();
 
@@ -189,6 +191,7 @@ public class DataManager : MonoBehaviour
         gameData.itemsData = dataConverter.ConvertItems(items.content);
         gameData.generatorsData = dataConverter.ConvertItems(generators.content);
         gameData.collectablesData = dataConverter.ConvertItems(collectables.content);
+        gameData.chestsData = dataConverter.ConvertItems(chests.content);
 
         gameData.timers = jsonHandler.ConvertTimersFromJson(newTimersData);
         gameData.boardData = dataConverter.ConvertArrayToBoard(jsonHandler.ConvertBoardFromJson(newBoardData));
@@ -270,9 +273,10 @@ public class DataManager : MonoBehaviour
     public bool UnlockItem(
         string spriteName,
         Types.Type type,
-        Types.Group group,
-        Types.GenGroup genGroup,
-        Types.CollGroup collGroup
+        ItemTypes.Group group,
+        ItemTypes.GenGroup genGroup,
+        Types.CollGroup collGroup,
+        Types.ChestGroup chestGroup
     )
     {
         bool found = false;
@@ -352,11 +356,41 @@ public class DataManager : MonoBehaviour
                     }
                 }
                 break;
+            case Types.Type.Chest:
+                for (int i = 0; i < gameData.chestsData.Length; i++)
+                {
+                    if (gameData.chestsData[i].chestGroup == chestGroup)
+                    {
+                        for (int j = 0; j < gameData.chestsData[i].content.Length; j++)
+                        {
+                            if (gameData.chestsData[i].content[j].sprite.name == spriteName)
+                            {
+                                gameData.chestsData[i].content[j].unlocked = true;
+                            }
+                        }
+                    }
+                }
+                break;
             default:
                 ErrorManager.Instance.Throw(Types.ErrorType.Code, "Wrong type: " + type);
                 break;
         }
 
         return found;
+    }
+
+    public int GetGroupCount(ItemTypes.Group group)
+    {
+        int count = 0;
+
+        for (int i = 0; i < gameData.itemsData.Length; i++)
+        {
+            if (gameData.itemsData[i].group == group)
+            {
+                count = gameData.itemsData[i].content.Length;
+            }
+        }
+
+        return count;
     }
 }

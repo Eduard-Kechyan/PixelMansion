@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -93,7 +94,7 @@ public class InfoMenu : MonoBehaviour
 
             if (infoBox != null)
             {
-                itemData.text = infoBox.GetItemData(item);
+                itemData.text = infoBox.GetItemData(item, true);
             }
             else
             {
@@ -103,9 +104,25 @@ public class InfoMenu : MonoBehaviour
             }
 
             // Unlocked items
-            GetUnlockedItems(item);
+            if (item.type == Types.Type.Chest)
+            {
+                if (item.chestGroup == Types.ChestGroup.Item)
+                {
+                    GetUnlockedItems(item);
+                }
+                else
+                {
+                    infoParent.style.display = DisplayStyle.None;
 
-            if (item.type != Types.Type.Coll)
+                    GetChestItems(item);
+                }
+            }
+            else
+            {
+                GetUnlockedItems(item);
+            }
+
+            if (item.type != Types.Type.Coll && item.type != Types.Type.Chest)
             {
                 // Check info parent
                 CheckInfoParent(item);
@@ -118,13 +135,40 @@ public class InfoMenu : MonoBehaviour
 
     void GetUnlockedItems(Item item)
     {
-        for (int i = 0; i < gameData.itemsData.Length; i++)
-        {
-            if (item.group == gameData.itemsData[i].group)
-            {
-                int count = 0;
+        Types.Items[] items;
+        bool isGroup = false;
+        bool isGenGroup = false;
+        bool isCollGroup = false;
+        bool isChestGroup = false;
 
-                for (int j = 0; j < gameData.itemsData[i].content.Length; j++)
+        switch (item.type)
+        {
+            case Types.Type.Item:
+                items = gameData.itemsData;
+                isGroup = true;
+                break;
+            case Types.Type.Gen:
+                items = gameData.generatorsData;
+                isGenGroup = true;
+                break;
+            case Types.Type.Coll:
+                items = gameData.collectablesData;
+                isCollGroup = true;
+                break;
+            default: // Types.Type.Chest
+                items = gameData.chestsData;
+                isChestGroup = true;
+                break;
+        }
+
+        for (int i = 0; i < items.Length; i++)
+        {
+            if ((isGroup && item.group == items[i].group)
+            || (isGenGroup && item.genGroup == items[i].genGroup)
+            || (isCollGroup && item.collGroup == items[i].collGroup)
+            || (isChestGroup && item.chestGroup == items[i].chestGroup)
+            )
+            {                for (int j = 0; j < items[i].content.Length; j++)
                 {
                     VisualElement current = new VisualElement { name = "Current" };
                     VisualElement unlockedItem = new VisualElement { name = "UnlockedItem" + i };
@@ -137,7 +181,7 @@ public class InfoMenu : MonoBehaviour
                     current.style.marginRight = 4f;
                     current.style.marginBottom = 10f;
 
-                    if (item.sprite == gameData.itemsData[i].content[j].sprite)
+                    if (item.sprite == items[i].content[j].sprite)
                     {
                         current.style.backgroundImage = new StyleBackground(infoCurrentSprite);
                     }
@@ -156,18 +200,18 @@ public class InfoMenu : MonoBehaviour
                         line.style.display = DisplayStyle.None;
                     }
 
-                    if (count == gameData.itemsData[i].content.Length)
+                    if (j == items[i].content.Length - 1)
                     {
                         line.style.display = DisplayStyle.None;
                     }
 
                     if (
-                        gameData.itemsData[i].content[j].unlocked
-                        || gameData.itemsData[i].content[j].sprite.name == item.sprite.name
+                        items[i].content[j].unlocked
+                        || items[i].content[j].sprite.name == item.sprite.name
                     )
                     {
                         unlockedItem.style.backgroundImage = new StyleBackground(
-                            gameData.itemsData[i].content[j].sprite
+                            items[i].content[j].sprite
                         );
                     }
                     else
@@ -209,10 +253,98 @@ public class InfoMenu : MonoBehaviour
                     current.Add(unlockedItem);
 
                     unlockedItems.Add(current);
-
-                    count++;
                 }
             }
+        }
+    }
+
+    void GetChestItems(Item item)
+    {
+        List<Sprite> itemSprites = new();
+
+        if (item.chestGroup == Types.ChestGroup.Item)
+        {
+            // TODO - Handle item chests
+            // Have a list of possible items that the chest might hold
+        }
+        else if (item.chestGroup == Types.ChestGroup.Piggy)
+        {
+            for (int i = 0; i < gameData.collectablesData.Length; i++)
+            {
+                if (gameData.collectablesData[i].collGroup == Types.CollGroup.Gold || gameData.collectablesData[i].collGroup == Types.CollGroup.Gems)
+                {
+                    for (int j = 0; j < gameData.collectablesData[i].content.Length; j++)
+                    {
+                        itemSprites.Add(gameData.collectablesData[i].content[j].sprite);
+                    }
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < gameData.collectablesData.Length; i++)
+            {
+                if (gameData.collectablesData[i].collGroup == Types.CollGroup.Energy)
+                {
+                    for (int j = 0; j < gameData.collectablesData[i].content.Length; j++)
+                    {
+                        itemSprites.Add(gameData.collectablesData[i].content[j].sprite);
+                    }
+                }
+            }
+        }
+
+        // Show the items
+        for (int i = 0; i < itemSprites.Count; i++)
+        {
+            VisualElement current = new VisualElement { name = "Current" };
+            VisualElement unlockedItem = new VisualElement { name = "UnlockedItem" + i };
+            VisualElement line = new VisualElement { name = "Line" };
+
+            // Current
+            current.style.width = 24f;
+            current.style.height = 24f;
+            current.style.marginRight = 4f;
+            current.style.marginBottom = 10f;
+
+            // Item
+            unlockedItem.style.width = 24f;
+            unlockedItem.style.height = 24f;
+            unlockedItem.style.position = Position.Absolute;
+            unlockedItem.style.left = 0;
+            unlockedItem.style.top = 0;
+
+            if (i % 5 == 4)
+            {
+                current.style.marginRight = 0;
+
+                line.style.display = DisplayStyle.None;
+            }
+
+            if (i == itemSprites.Count - 1)
+            {
+                line.style.display = DisplayStyle.None;
+            }
+
+            unlockedItem.style.backgroundImage = new StyleBackground(
+                itemSprites[i]
+            );
+
+            // Line
+            line.style.width = 2f;
+            line.style.height = 1f;
+            line.style.position = Position.Absolute;
+            line.style.left = 25f;
+            line.style.top = Length.Percent(50);
+            line.style.translate = new Translate(0f, Length.Percent(-50));
+            line.style.backgroundColor = new StyleColor(lineColor);
+
+            // Add to UI
+            unlockedItem.Add(line);
+
+            current.Add(unlockedItem);
+
+            unlockedItems.Add(current);
         }
     }
 
@@ -273,7 +405,7 @@ public class InfoMenu : MonoBehaviour
         }
     }
 
-    Sprite GetParentSprite(Types.GenGroup parentGroup)
+    Sprite GetParentSprite(ItemTypes.GenGroup parentGroup)
     {
         Sprite sprite = null;
 

@@ -149,7 +149,7 @@ public class LocaleMenu : MonoBehaviour
 
     void SetLocale(string newLocale)
     {
-        Types.Locale locale = (Types.Locale)System.Enum.Parse(typeof(Types.Locale), newLocale);
+        Types.Locale locale = Glob.ParseEnum<Types.Locale>(newLocale);
 
         settingsMenu.SetLocale(locale);
 

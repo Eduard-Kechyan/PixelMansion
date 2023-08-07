@@ -15,76 +15,117 @@ MonoBehaviour:
   levelRewardContent:
   - left: 0
     price: 0
+    type: 3
     group: 2
-    type: 0
+    genGroup: 0
+    chestGroup: 1
     priceType: 0
-    sprite: {fileID: 21300000, guid: abe7830432310fb468f41afb4956f8f1, type: 3}
+    sprite: {fileID: 21300000, guid: 148bffa316f33b94b87dacbf79f875c8, type: 3}
   - left: 0
     price: 0
+    type: 3
     group: 0
-    type: 0
+    genGroup: 0
+    chestGroup: 0
     priceType: 0
-    sprite: {fileID: 21300000, guid: fd096c8b290cb704999c39616ea7fd1b, type: 3}
+    sprite: {fileID: 21300000, guid: ad22a0c7abb0b994babf951ccee30852, type: 3}
+  levelTenRewardContent:
   - left: 0
     price: 0
-    group: 1
-    type: 0
+    type: 3
+    group: 0
+    genGroup: 0
+    chestGroup: 1
     priceType: 0
-    sprite: {fileID: 21300000, guid: 9eafaf7b521bfcc4f9444072175c26fd, type: 3}
+    sprite: {fileID: 21300000, guid: 148bffa316f33b94b87dacbf79f875c8, type: 3}
+  - left: 0
+    price: 0
+    type: 3
+    group: 0
+    genGroup: 0
+    chestGroup: 1
+    priceType: 0
+    sprite: {fileID: 21300000, guid: 148bffa316f33b94b87dacbf79f875c8, type: 3}
+  - left: 0
+    price: 0
+    type: 3
+    group: 0
+    genGroup: 0
+    chestGroup: 0
+    priceType: 0
+    sprite: {fileID: 21300000, guid: ad22a0c7abb0b994babf951ccee30852, type: 3}
   dailyContent:
   - left: 1
     price: 0
+    type: 3
     group: 0
-    type: 0
+    genGroup: 0
+    chestGroup: 1
     priceType: 0
-    sprite: {fileID: 21300000, guid: 5969744d358437a4bba773c368ef04ae, type: 3}
+    sprite: {fileID: 21300000, guid: 148bffa316f33b94b87dacbf79f875c8, type: 3}
   - left: 1
     price: 10
+    type: 3
     group: 0
-    type: 0
+    genGroup: 0
+    chestGroup: 2
     priceType: 0
-    sprite: {fileID: 21300000, guid: 9eafaf7b521bfcc4f9444072175c26fd, type: 3}
+    sprite: {fileID: 21300000, guid: da6874323b904f447a71d7619a151c71, type: 3}
   - left: 1
     price: 20
+    type: 3
     group: 0
-    type: 0
+    genGroup: 0
+    chestGroup: 0
     priceType: 0
-    sprite: {fileID: 21300000, guid: 5d65fadcbddf0ab49bfefa54a92f663d, type: 3}
+    sprite: {fileID: 21300000, guid: ad22a0c7abb0b994babf951ccee30852, type: 3}
   itemsContent:
   - left: 5
     price: 5
-    group: 0
     type: 0
+    group: 0
+    genGroup: 0
+    chestGroup: 0
     priceType: 1
     sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
   - left: 3
     price: 10
-    group: 0
     type: 0
+    group: 0
+    genGroup: 0
+    chestGroup: 0
     priceType: 1
     sprite: {fileID: 21300000, guid: 90365727a4c01584a8e05ed14c547ece, type: 3}
   - left: 1
     price: 15
-    group: 0
     type: 0
+    group: 0
+    genGroup: 0
+    chestGroup: 0
     priceType: 1
     sprite: {fileID: 21300000, guid: fd096c8b290cb704999c39616ea7fd1b, type: 3}
   - left: 5
     price: 5
-    group: 1
     type: 0
+    group: 1
+    genGroup: 0
+    chestGroup: 0
     priceType: 1
     sprite: {fileID: 21300000, guid: 576b12ed504b2c9468bddc262bd49b63, type: 3}
   - left: 3
     price: 10
-    group: 1
     type: 0
+    group: 1
+    genGroup: 0
+    chestGroup: 0
     priceType: 1
     sprite: {fileID: 21300000, guid: 5f8be899b45e92540b530fe59dbaa56b, type: 3}
   - left: 1
     price: 15
-    group: 2
     type: 0
+    group: 2
+    genGroup: 0
+    chestGroup: 0
     priceType: 1
     sprite: {fileID: 21300000, guid: 79eddbaa4d73237478e8e3ea9e2976f4, type: 3}
   gemsContent:

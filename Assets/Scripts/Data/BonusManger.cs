@@ -43,6 +43,7 @@ public class BonusManager : MonoBehaviour
                 type = latestBonus.type,
                 group = latestBonus.group,
                 genGroup = latestBonus.genGroup,
+                chestGroup = latestBonus.chestGroup,
                 collGroup = Types.CollGroup.Experience,
             };
 

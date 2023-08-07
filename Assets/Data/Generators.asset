@@ -17,24 +17,24 @@ MonoBehaviour:
     group: 0
     genGroup: 0
     collGroup: 0
-    hasLevel: 1
+    chestGroup: 0
+    hasLevel: 0
     customName: 0
+    hasTimer: 0
+    generatesAt: 5
     parents: 
-    createsTotal: 0
     creates:
     - group: 0
-      chance: 60
-    - group: 1
-      chance: 25
-    - group: 2
-      chance: 15
+      chance: 0
     content:
-    - sprite: {fileID: 21300000, guid: 1c8d58bf4c3b7e2488afd145982b99f9, type: 3}
+    - sprite: {fileID: 21300000, guid: 5843d96ae1fcc884080d43667c5b79b9, type: 3}
       customName: 0
       itemName: 
       level: 0
       group: 0
       type: 0
+      chestGroup: 0
+      generatesAt: 0
       genGroup: 0
       collGroup: 0
       parents: 
@@ -42,12 +42,19 @@ MonoBehaviour:
       unlocked: 0
       isMaxLavel: 0
       hasLevel: 0
-    - sprite: {fileID: 21300000, guid: 1bf4f76a1d40efe46895638509bc28eb, type: 3}
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPoped: 0
+    - sprite: {fileID: 21300000, guid: 72c12047381ac164bacebf632ab19986, type: 3}
       customName: 0
       itemName: 
       level: 0
       group: 0
       type: 0
+      chestGroup: 0
+      generatesAt: 0
       genGroup: 0
       collGroup: 0
       parents: 
@@ -55,12 +62,19 @@ MonoBehaviour:
       unlocked: 0
       isMaxLavel: 0
       hasLevel: 0
-    - sprite: {fileID: 21300000, guid: f491d68830cf4a446a648b756a31882a, type: 3}
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPoped: 0
+    - sprite: {fileID: 21300000, guid: 528913ed5f5ea1e4f9001ccdbfd74204, type: 3}
       customName: 0
       itemName: 
       level: 0
       group: 0
       type: 0
+      chestGroup: 0
+      generatesAt: 0
       genGroup: 0
       collGroup: 0
       parents: 
@@ -68,12 +82,19 @@ MonoBehaviour:
       unlocked: 0
       isMaxLavel: 0
       hasLevel: 0
-    - sprite: {fileID: 21300000, guid: df90985ff27e1fc45bec432fbfce5b67, type: 3}
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPoped: 0
+    - sprite: {fileID: 21300000, guid: 47920b00aa2d3be49a5e4d6ec621c353, type: 3}
       customName: 0
       itemName: 
       level: 0
       group: 0
       type: 0
+      chestGroup: 0
+      generatesAt: 0
       genGroup: 0
       collGroup: 0
       parents: 
@@ -81,12 +102,19 @@ MonoBehaviour:
       unlocked: 0
       isMaxLavel: 0
       hasLevel: 0
-    - sprite: {fileID: 21300000, guid: 9f4fc4eb18b8e2d4887b78e9df6b5587, type: 3}
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPoped: 0
+    - sprite: {fileID: 21300000, guid: 42bead8e5cf2e514785ce37d0791b327, type: 3}
       customName: 0
       itemName: 
       level: 0
       group: 0
       type: 0
+      chestGroup: 0
+      generatesAt: 0
       genGroup: 0
       collGroup: 0
       parents: 
@@ -94,3 +122,28 @@ MonoBehaviour:
       unlocked: 0
       isMaxLavel: 0
       hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPoped: 0
+    - sprite: {fileID: 21300000, guid: 61b6c1b4a68790a4a85c26fdd18031fa, type: 3}
+      customName: 0
+      itemName: 
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      generatesAt: 0
+      genGroup: 0
+      collGroup: 0
+      parents: 
+      creates: []
+      unlocked: 0
+      isMaxLavel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPoped: 0

@@ -6,24 +6,19 @@ using UnityEngine;
 public class Types : MonoBehaviour
 {
     //// ITEMS ///
-    public enum GenGroup
+    public enum ChestGroup
     {
-        MineCart,
+        Item,
+        Piggy,
+        Energy
     }
 
     public enum CollGroup
     {
         Experience,
         Gold,
-        Gems
-    };
-
-    public enum Group
-    {
-        Metals,
-        Crystals,
-        Coals,
-        Tree
+        Gems,
+        Energy
     };
 
     public enum State
@@ -38,8 +33,16 @@ public class Types : MonoBehaviour
     {
         Item,
         Gen,
-        Coll
+        Coll,
+        Chest
     };
+
+    [Serializable]
+    public class Creates
+    {
+        public ItemTypes.Group group;
+        public float chance;
+    }
 
     //// OTHER ////
     public enum Locale
@@ -83,28 +86,22 @@ public class Types : MonoBehaviour
         public string timerName;
     }
 
-    [Serializable]
-    public class Creates
-    {
-        public Group group;
-        public float chance;
-    }
-
     //// ITEMS DATA ////
 
     [Serializable]
     public class Items
     {
         public Type type;
-        public Group group;
-        public GenGroup genGroup;
+        public ItemTypes.Group group;
+        public ItemTypes.GenGroup genGroup;
         public CollGroup collGroup;
+        public ChestGroup chestGroup;
         public bool hasLevel;
         public bool customName;
-        public GenGroup[] parents;
+        public bool hasTimer;
+        public int generatesAt;
+        public ItemTypes.GenGroup[] parents;
 
-        [ReadOnly]
-        public int createsTotal;
         public Creates[] creates;
 
         public ItemsData[] content;
@@ -121,19 +118,25 @@ public class Types : MonoBehaviour
         public int level;
 
         [HideInInspector]
-        public Group group;
+        public ItemTypes.Group group;
 
         [HideInInspector]
         public Type type;
 
         [HideInInspector]
-        public GenGroup genGroup;
+        public ChestGroup chestGroup;
+
+        [HideInInspector]
+        public int generatesAt;
+
+        [HideInInspector]
+        public ItemTypes.GenGroup genGroup;
 
         [HideInInspector]
         public CollGroup collGroup;
 
         [HideInInspector]
-        public GenGroup[] parents;
+        public ItemTypes.GenGroup[] parents;
 
         [HideInInspector]
         public Creates[] creates;
@@ -146,6 +149,24 @@ public class Types : MonoBehaviour
 
         [HideInInspector]
         public bool hasLevel;
+
+        [HideInInspector]
+        public bool hasTimer;
+
+        [HideInInspector]
+        public int chestItems;
+
+        [HideInInspector]
+        public bool chestItemsSet;
+
+        [HideInInspector]
+        public DateTime startTime;
+
+        [HideInInspector]
+        public int seconds;
+
+        [HideInInspector]
+        public bool gemPoped;
     }
 
     //// BOARD ////
@@ -158,6 +179,40 @@ public class Types : MonoBehaviour
     }
 
     [Serializable]
+    public class Board
+    {
+        public Sprite sprite;
+        public Type type;
+        public State state;
+        public ItemTypes.Group group;
+        public ItemTypes.GenGroup genGroup;
+        public CollGroup collGroup;
+        public ChestGroup chestGroup;
+
+        [HideInInspector]
+        public int generatesAt;
+
+        [HideInInspector]
+        public int crate;
+
+        [HideInInspector]
+        public int order;
+
+        [HideInInspector]
+        public int chestItems;
+
+        [HideInInspector]
+        public bool chestItemsSet;
+
+        [HideInInspector]
+        public bool gemPoped;
+
+        /*public bool hasTimer;
+        public string startTime;
+        public int seconds;*/
+    }
+
+    [Serializable]
     public class BoardJson
     {
         public string sprite;
@@ -165,21 +220,16 @@ public class Types : MonoBehaviour
         public string group;
         public string genGroup;
         public string collGroup;
+        public string chestGroup;
+        public int crate;
         public string state;
-        public int crate;
-    }
-
-    [Serializable]
-    public class Board
-    {
-        public Sprite sprite;
-        public Type type;
-        public Group group;
-        public GenGroup genGroup;
-        public CollGroup collGroup;
-        public State state;
-        public int crate;
-        public int order;
+        public int chestItems;
+        public int generatesAt;
+        public bool chestItemsSet;
+        public bool gemPoped;
+        /*public string startTime;
+        public bool hasTimer;
+        public int seconds;*/
     }
 
     //// BONUS ////
@@ -189,14 +239,16 @@ public class Types : MonoBehaviour
         public string type;
         public string group;
         public string genGroup;
+        public string chestGroup;
     }
 
     public class Bonus
     {
         public Sprite sprite;
         public Type type;
-        public Group group;
-        public GenGroup genGroup;
+        public ItemTypes.Group group;
+        public ItemTypes.GenGroup genGroup;
+        public ChestGroup chestGroup;
     }
 
     //// INVENTORY ////
@@ -212,8 +264,8 @@ public class Types : MonoBehaviour
     {
         public Sprite sprite;
         public Type type;
-        public Group group;
-        public GenGroup genGroup;
+        public ItemTypes.Group group;
+        public ItemTypes.GenGroup genGroup;
     }
 
     //// ERROR ////
@@ -238,10 +290,24 @@ public class Types : MonoBehaviour
         public int left;
         public int price;
         public Type type;
-        public Group group;
-        public GenGroup genGroup;
+        public ItemTypes.Group group;
+        public ItemTypes.GenGroup genGroup;
+        public ChestGroup chestGroup;
         public ShopValuesType priceType;
         public Sprite sprite;
+    }
+
+    [Serializable]
+    public class ShopItemsContentJson
+    {
+        public int left;
+        public int price;
+        public string type;
+        public string group;
+        public string genGroup;
+        public string chestGroup;
+        public string priceType;
+        public string sprite;
     }
 
     [Serializable]

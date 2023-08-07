@@ -28,20 +28,22 @@ public class JsonHandler : MonoBehaviour
 
         for (int i = 0; i < boardJson.Length; i++)
         {
-            Types.Type newType = (Types.Type)
-                System.Enum.Parse(typeof(Types.Type), boardJson[i].type);
+            Types.Type newType = Glob.ParseEnum<Types.Type>(boardJson[i].type);
 
             Types.Board newBoardData = new Types.Board
             {
                 sprite = gameData.GetSprite(boardJson[i].sprite, newType),
-                state = (Types.State)System.Enum.Parse(typeof(Types.State), boardJson[i].state),
+                state = Glob.ParseEnum<Types.State>(boardJson[i].state),
                 type = newType,
-                group = (Types.Group)System.Enum.Parse(typeof(Types.Group), boardJson[i].group),
-                genGroup = (Types.GenGroup)
-                    System.Enum.Parse(typeof(Types.GenGroup), boardJson[i].genGroup),
-                collGroup = (Types.CollGroup)
-                    System.Enum.Parse(typeof(Types.CollGroup), boardJson[i].collGroup),
+                group = Glob.ParseEnum<ItemTypes.Group>(boardJson[i].group),
+                genGroup = Glob.ParseEnum<ItemTypes.GenGroup>(boardJson[i].genGroup),
+                collGroup = Glob.ParseEnum<Types.CollGroup>(boardJson[i].collGroup),
+                chestGroup = Glob.ParseEnum<Types.ChestGroup>(boardJson[i].chestGroup),
+                chestItems = boardJson[i].chestItems,
+                chestItemsSet = boardJson[i].chestItemsSet,
+                generatesAt = boardJson[i].generatesAt,
                 crate = boardJson[i].crate,
+                gemPoped = boardJson[i].gemPoped,
             };
 
             boardData[i] = newBoardData;
@@ -66,7 +68,12 @@ public class JsonHandler : MonoBehaviour
                 group = boardData[i].group.ToString(),
                 genGroup = boardData[i].genGroup.ToString(),
                 collGroup = boardData[i].collGroup.ToString(),
+                chestGroup = boardData[i].chestGroup.ToString(),
+                chestItems = boardData[i].chestItems,
+                generatesAt = boardData[i].generatesAt,
+                chestItemsSet = boardData[i].chestItemsSet,
                 crate = initialLoop ? randomInt : boardData[i].crate,
+                gemPoped = boardData[i].gemPoped,
             };
 
             boardJson[i] = newBoardJson;
@@ -85,16 +92,14 @@ public class JsonHandler : MonoBehaviour
 
         for (int i = 0; i < bonusJson.Length; i++)
         {
-            Types.Type newType = (Types.Type)
-                System.Enum.Parse(typeof(Types.Type), bonusJson[i].type);
+            Types.Type newType = Glob.ParseEnum<Types.Type>(bonusJson[i].type);
 
             Types.Bonus newBonusData = new Types.Bonus
             {
                 sprite = gameData.GetSprite(bonusJson[i].sprite, newType),
                 type = newType,
-                group = (Types.Group)System.Enum.Parse(typeof(Types.Group), bonusJson[i].group),
-                genGroup = (Types.GenGroup)
-                    System.Enum.Parse(typeof(Types.GenGroup), bonusJson[i].genGroup),
+                group = Glob.ParseEnum<ItemTypes.Group>(bonusJson[i].group),
+                genGroup = Glob.ParseEnum<ItemTypes.GenGroup>(bonusJson[i].genGroup)
             };
 
             bonusData.Add(newBonusData);
@@ -135,16 +140,14 @@ public class JsonHandler : MonoBehaviour
 
         for (int i = 0; i < inventoryJson.Length; i++)
         {
-            Types.Type newType = (Types.Type)
-                System.Enum.Parse(typeof(Types.Type), inventoryJson[i].type);
+            Types.Type newType = Glob.ParseEnum<Types.Type>(inventoryJson[i].type);
 
             Types.Inventory newInventoryData = new Types.Inventory
             {
                 sprite = gameData.GetSprite(inventoryJson[i].sprite, newType),
                 type = newType,
-                group = (Types.Group)System.Enum.Parse(typeof(Types.Group), inventoryJson[i].group),
-                genGroup = (Types.GenGroup)
-                    System.Enum.Parse(typeof(Types.GenGroup), inventoryJson[i].genGroup),
+                group = Glob.ParseEnum<ItemTypes.Group>(inventoryJson[i].group),
+                genGroup = Glob.ParseEnum<ItemTypes.GenGroup>(inventoryJson[i].genGroup)
             };
 
             inventoryData.Add(newInventoryData);
@@ -185,8 +188,7 @@ public class JsonHandler : MonoBehaviour
 
         for (int i = 0; i < unsentJson.Length; i++)
         {
-            ApiCalls.UnsentType newUnsentType = (ApiCalls.UnsentType)
-                System.Enum.Parse(typeof(ApiCalls.UnsentType), unsentJson[i].unsentType);
+            ApiCalls.UnsentType newUnsentType = Glob.ParseEnum<ApiCalls.UnsentType>(unsentJson[i].unsentType);
 
             ApiCalls.UnsentData newUnsentData = new ApiCalls.UnsentData
             {
@@ -239,8 +241,7 @@ public class JsonHandler : MonoBehaviour
                     startDate = System.DateTime.Parse(timerJson[i].startDate),
                     seconds = timerJson[i].seconds,
                     on = timerJson[i].on,
-                    type = (Types.TimerType)
-                        System.Enum.Parse(typeof(Types.TimerType), timerJson[i].type),
+                    type = Glob.ParseEnum<Types.TimerType>(timerJson[i].type),
                     timerName = timerJson[i].timerName,
                 }
             );
@@ -270,22 +271,80 @@ public class JsonHandler : MonoBehaviour
         return JsonConvert.SerializeObject(timerJson);
     }
 
+    //// SHOP CONTENT ////
+
+    public Types.ShopItemsContent[] ConvertShopItemContentFromJson(string shopContentString)
+    {
+        Types.ShopItemsContentJson[] shopContentJson = JsonConvert.DeserializeObject<Types.ShopItemsContentJson[]>(shopContentString);
+
+        Types.ShopItemsContent[] shopContentData = new Types.ShopItemsContent[shopContentJson.Length];
+
+        for (int i = 0; i < shopContentJson.Length; i++)
+        {
+            Types.Type newType = Glob.ParseEnum<Types.Type>(shopContentJson[i].type);
+
+            Types.ShopItemsContent newShopContentDataData = new Types.ShopItemsContent
+            {
+                left = shopContentJson[i].left,
+                price = shopContentJson[i].price,
+                type = newType,
+                group = Glob.ParseEnum<ItemTypes.Group>(shopContentJson[i].group),
+                genGroup = Glob.ParseEnum<ItemTypes.GenGroup>(shopContentJson[i].genGroup),
+                chestGroup = Glob.ParseEnum<Types.ChestGroup>(shopContentJson[i].chestGroup),
+                sprite = gameData.GetSprite(shopContentJson[i].sprite, newType),
+                priceType = Glob.ParseEnum<Types.ShopValuesType>(shopContentJson[i].priceType),
+            };
+
+            shopContentData[i] = newShopContentDataData;
+        }
+
+        return shopContentData;
+    }
+
+    public string ConvertShopItemContentToJson(Types.ShopItemsContent[] shopContentData)
+    {
+        Debug.Log(shopContentData[0]);
+        Debug.Log(shopContentData[0].sprite);
+
+        Types.ShopItemsContentJson[] shopContentJson = new Types.ShopItemsContentJson[shopContentData.Length];
+
+        for (int i = 0; i < shopContentData.Length; i++)
+        {
+            Types.ShopItemsContentJson newShopContentJson = new()
+            {
+                left = shopContentData[i].left,
+                price = shopContentData[i].price,
+                type = shopContentData[i].type.ToString(),
+                group = shopContentData[i].group.ToString(),
+                genGroup = shopContentData[i].genGroup.ToString(),
+                chestGroup = shopContentData[i].chestGroup.ToString(),
+                priceType = shopContentData[i].priceType.ToString(),
+                sprite = shopContentData[i].sprite.name,
+            };
+
+            shopContentJson[i] = newShopContentJson;
+        }
+
+        return JsonConvert.SerializeObject(shopContentJson);
+    }
+
+
     //// OTHER ////
 
     // TODO - Are these functions needed?
-    Types.GenGroup[] LoopParentsToObject(string[] newParents)
+    ItemTypes.GenGroup[] LoopParentsToObject(string[] newParents)
     {
-        Types.GenGroup[] parents = new Types.GenGroup[newParents.Length];
+        ItemTypes.GenGroup[] parents = new ItemTypes.GenGroup[newParents.Length];
 
         for (int i = 0; i < newParents.Length; i++)
         {
-            parents[i] = (Types.GenGroup)System.Enum.Parse(typeof(Types.GenGroup), newParents[i]);
+            parents[i] = Glob.ParseEnum<ItemTypes.GenGroup>(newParents[i]);
         }
 
         return parents;
     }
 
-    string[] LoopParentsToJson(Types.GenGroup[] newParents)
+    string[] LoopParentsToJson(ItemTypes.GenGroup[] newParents)
     {
         string[] parents = new string[newParents.Length];
 
@@ -309,7 +368,7 @@ public class JsonHandler : MonoBehaviour
 
                 creates[i] = new Types.Creates
                 {
-                    group = (Types.Group)System.Enum.Parse(typeof(Types.Group), splitString[0]),
+                    group = Glob.ParseEnum<ItemTypes.Group>(splitString[i]),
                     chance = float.Parse(splitString[1])
                 };
             }

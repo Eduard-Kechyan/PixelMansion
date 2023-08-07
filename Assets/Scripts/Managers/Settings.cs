@@ -125,8 +125,7 @@ public class Settings : MonoBehaviour
 
                 if (locales.Contains(Application.systemLanguage.ToString()))
                 {
-                    Types.Locale locale = (Types.Locale)
-                        System.Enum.Parse(typeof(Types.Locale), Application.systemLanguage.ToString());
+                    Types.Locale locale =Glob.ParseEnum<Types.Locale>(Application.systemLanguage.ToString());
 
                     localeCode = LOCALE.ConvertToCode(locale);
                     I18n.SetLocale(localeCode);

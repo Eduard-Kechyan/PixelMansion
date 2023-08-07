@@ -51,7 +51,8 @@ public class SelectionManager : MonoBehaviour
                     doubleTapManager.CheckForDoubleTaps();
                 }
 
-                if (!item.isPlaying)
+                //item.gameObject.layer == LayerMask.NameToLayer("Item")
+                if (item.isIndicating || !item.isPlaying) // TODO - This was "!item.isPlaying", check if it's good now
                 {
                     // Unselect other items if they exist
                     Unselect("both");

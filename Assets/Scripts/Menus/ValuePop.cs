@@ -49,7 +49,7 @@ public class ValuePop : MonoBehaviour
         StartCoroutine(HandlePopValue(amount, type, Vector2.zero));
     }
 
-    public void PopExperience(int level, string type, Vector2 position)
+    public void PopColl(int level, string type, Vector2 position)
     {
         StartCoroutine(HandlePopValue(level, type, position, true));
     }
@@ -152,16 +152,16 @@ public class ValuePop : MonoBehaviour
         switch (type)
         {
             case "Energy":
-                gameData.UpdateEnergy(amount);
+                gameData.UpdateEnergy(amount, true);
                 break;
             case "Gold":
-                gameData.UpdateGold(amount);
+                gameData.UpdateGold(amount, true);
                 break;
             case "Gems":
-                gameData.UpdateGems(amount);
+                gameData.UpdateGems(amount, true);
                 break;
             default: // Experience
-                gameData.UpdateExperience(amount, useOffset);
+                gameData.UpdateExperience(amount, true);
                 break;
         }
     }
@@ -224,7 +224,7 @@ public class ValuePop : MonoBehaviour
     {
         Vector2 initialPosition = new Vector2(
             Mathf.Ceil(valuesUI.levelButton.layout.x),
-            safeAreaHandler.topPadding 
+            safeAreaHandler.topPadding
         );
 
         if (useCenter)

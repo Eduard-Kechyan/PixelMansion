@@ -17,10 +17,11 @@ MonoBehaviour:
     group: 0
     genGroup: 0
     collGroup: 0
+    chestGroup: 0
     hasLevel: 1
     customName: 0
+    hasTimer: 0
     parents: 
-    createsTotal: 0
     creates: []
     content:
     - sprite: {fileID: 21300000, guid: f8b66945f5e9ea248bad5cafefe4b8d5, type: 3}
@@ -29,6 +30,7 @@ MonoBehaviour:
       level: 0
       group: 0
       type: 0
+      chestGroup: 0
       genGroup: 0
       collGroup: 0
       parents: 
@@ -36,12 +38,17 @@ MonoBehaviour:
       unlocked: 0
       isMaxLavel: 0
       hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
     - sprite: {fileID: 21300000, guid: 4249019a1f0651f42b68810168bb6ade, type: 3}
       customName: 0
       itemName: 
       level: 0
       group: 0
       type: 0
+      chestGroup: 0
       genGroup: 0
       collGroup: 0
       parents: 
@@ -49,12 +56,17 @@ MonoBehaviour:
       unlocked: 0
       isMaxLavel: 0
       hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
     - sprite: {fileID: 21300000, guid: 69417eebe82810f43876239658178873, type: 3}
       customName: 0
       itemName: 
       level: 0
       group: 0
       type: 0
+      chestGroup: 0
       genGroup: 0
       collGroup: 0
       parents: 
@@ -62,14 +74,19 @@ MonoBehaviour:
       unlocked: 0
       isMaxLavel: 0
       hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
   - type: 2
     group: 0
     genGroup: 0
     collGroup: 1
+    chestGroup: 0
     hasLevel: 1
     customName: 0
+    hasTimer: 0
     parents: 
-    createsTotal: 0
     creates: []
     content:
     - sprite: {fileID: 21300000, guid: 57ad0ef4820afde4f8afb343ae1b5083, type: 3}
@@ -78,6 +95,7 @@ MonoBehaviour:
       level: 0
       group: 0
       type: 0
+      chestGroup: 0
       genGroup: 0
       collGroup: 0
       parents: 
@@ -85,12 +103,17 @@ MonoBehaviour:
       unlocked: 0
       isMaxLavel: 0
       hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
     - sprite: {fileID: 21300000, guid: ca3a280a957839843b47b3b96175df80, type: 3}
       customName: 0
       itemName: 
       level: 0
       group: 0
       type: 0
+      chestGroup: 0
       genGroup: 0
       collGroup: 0
       parents: 
@@ -98,12 +121,17 @@ MonoBehaviour:
       unlocked: 0
       isMaxLavel: 0
       hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
     - sprite: {fileID: 21300000, guid: 7a2ac0667b8c36b4aa5641e6d10a9fc1, type: 3}
       customName: 0
       itemName: 
       level: 0
       group: 0
       type: 0
+      chestGroup: 0
       genGroup: 0
       collGroup: 0
       parents: 
@@ -111,14 +139,19 @@ MonoBehaviour:
       unlocked: 0
       isMaxLavel: 0
       hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
   - type: 2
     group: 0
     genGroup: 0
     collGroup: 2
+    chestGroup: 0
     hasLevel: 1
     customName: 0
+    hasTimer: 0
     parents: 
-    createsTotal: 0
     creates: []
     content:
     - sprite: {fileID: 21300000, guid: d9aa7229a4950d74195693da1dd5f82c, type: 3}
@@ -127,6 +160,7 @@ MonoBehaviour:
       level: 0
       group: 0
       type: 0
+      chestGroup: 0
       genGroup: 0
       collGroup: 0
       parents: 
@@ -134,12 +168,17 @@ MonoBehaviour:
       unlocked: 0
       isMaxLavel: 0
       hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
     - sprite: {fileID: 21300000, guid: efe79adffec4b6c4abc7e59b6b0629c7, type: 3}
       customName: 0
       itemName: 
       level: 0
       group: 0
       type: 0
+      chestGroup: 0
       genGroup: 0
       collGroup: 0
       parents: 
@@ -147,12 +186,17 @@ MonoBehaviour:
       unlocked: 0
       isMaxLavel: 0
       hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
     - sprite: {fileID: 21300000, guid: d58e076bfa16ab84ca83c028755c7917, type: 3}
       customName: 0
       itemName: 
       level: 0
       group: 0
       type: 0
+      chestGroup: 0
       genGroup: 0
       collGroup: 0
       parents: 
@@ -160,3 +204,72 @@ MonoBehaviour:
       unlocked: 0
       isMaxLavel: 0
       hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+  - type: 2
+    group: 0
+    genGroup: 0
+    collGroup: 3
+    chestGroup: 0
+    hasLevel: 1
+    customName: 0
+    hasTimer: 0
+    parents: 
+    creates: []
+    content:
+    - sprite: {fileID: 21300000, guid: 21d21c3ce2f226544ae36351b749377c, type: 3}
+      customName: 0
+      itemName: 
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      genGroup: 0
+      collGroup: 0
+      parents: 
+      creates: []
+      unlocked: 0
+      isMaxLavel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+    - sprite: {fileID: 21300000, guid: 1a3c4383959c4c34999c11a5d86e9606, type: 3}
+      customName: 0
+      itemName: 
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      genGroup: 0
+      collGroup: 0
+      parents: 
+      creates: []
+      unlocked: 0
+      isMaxLavel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+    - sprite: {fileID: 21300000, guid: 9248f883107471145b9e3db8f5d3ec1a, type: 3}
+      customName: 0
+      itemName: 
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      genGroup: 0
+      collGroup: 0
+      parents: 
+      creates: []
+      unlocked: 0
+      isMaxLavel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0

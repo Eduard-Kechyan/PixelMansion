@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Locale;
 
-
 public class BoardInteractions : MonoBehaviour
 {
     // Variables
@@ -375,6 +374,12 @@ public class BoardInteractions : MonoBehaviour
                             sameGroup = true;
                         }
                         break;
+                    case Types.Type.Chest:
+                        if (otherItem.chestGroup == currentItem.chestGroup)
+                        {
+                            sameGroup = true;
+                        }
+                        break;
                     default:
                         ErrorManager.Instance.Throw(
                             Types.ErrorType.Code,
@@ -390,18 +395,16 @@ public class BoardInteractions : MonoBehaviour
                     && (otherItem.state != Types.State.Bubble || currentItem.state != Types.State.Bubble)
                 )
                 {
-                    if (otherItem.isMaxLavel)
+                    if (!otherItem.isMaxLavel&& otherItem.state != Types.State.Crate)
                     {
-                        boardPopup.AddPop(LOCALE.Get("pop_max_level"), otherItem.transform.position, true);
+                        Merge(otherItem);
+
+                        return;
                     }
                     else
                     {
-                        if (otherItem.state != Types.State.Crate)
-                        {
-                            Merge(otherItem);
-
-                            return;
-                        }
+                        // TODO - Check if we need this
+                        // boardPopup.AddPop(LOCALE.Get("pop_max_level"), otherItem.transform.position, true);
                     }
                 }
                 else
@@ -458,6 +461,8 @@ public class BoardInteractions : MonoBehaviour
             group = item.group,
             genGroup = item.genGroup,
             collGroup = item.collGroup,
+            chestGroup = item.chestGroup,
+            gemPoped=item.gemPoped,
         };
 
         string spriteName = otherItem.nextSpriteName;
@@ -500,7 +505,8 @@ public class BoardInteractions : MonoBehaviour
                 currentItem.type,
                 currentItem.group,
                 currentItem.genGroup,
-                currentItem.collGroup
+                currentItem.collGroup,
+                currentItem.chestGroup
             );
         }
 
@@ -588,7 +594,7 @@ public class BoardInteractions : MonoBehaviour
             // Move the drag overlay
             dragOverlay.style.left = newUIPos.x - (dragOverlay.resolvedStyle.width / 2);
             dragOverlay.style.top = newUIPos.y - (dragOverlay.resolvedStyle.width / 2);
-            
+
             yield return null;
         }
 
@@ -642,6 +648,46 @@ public class BoardInteractions : MonoBehaviour
         }
     }
 
+    public void UnlockChest(Item item)
+    {
+        if (item.name == currentItem.name && item.type == Types.Type.Chest)
+        {
+            currentItem.UnlockChest();
+
+            // Play unlocking audio
+            soundManager.PlaySound("UnlockLock");
+
+            // TODO - Create this function if we need it
+            // UnlockChestCallback(currentItem);
+        }
+    }
+
+    public void SpeedUpItem(Item item, int amount)
+    {
+        if (item.name == currentItem.name)
+        {
+            if (gameData.UpdateGems(-amount))
+            {
+                switch (currentItem.type)
+                {
+                    case Types.Type.Chest:
+                        currentItem.SpeedUpChest();
+
+                        // Play speeding up audio
+                        soundManager.PlaySound("SpeedUpItem");
+
+                        // TODO - Create this function if we need it
+                        // SpeedUpChestCallback(currentItem);
+                        break;
+
+                    default:
+                        Debug.Log("????");
+                        break;
+                }
+            }
+        }
+    }
+
     void OpenCrateCallback(Item item)
     {
         GameObject itemTile = item.transform.parent.gameObject;
@@ -684,34 +730,51 @@ public class BoardInteractions : MonoBehaviour
         }
     }
 
-    public void RemoveItem(Item item, int amount = 0)
+    public void RemoveItem(Item item, int amount = 0, bool canUndoPre = true)
     {
-        CancelUndo();
-
         if (item.name == currentItem.name)
         {
-            canUndo = true;
-
-            if (amount > 0)
+            if (canUndoPre)
             {
-                gameData.UpdateGold(amount);
+                CancelUndo();
 
-                sellUndoAmount = amount;
+                canUndo = true;
+
+                if (amount > 0)
+                {
+                    gameData.UpdateGold(amount);
+
+                    sellUndoAmount = amount;
+                }
+
+                undoItem = currentItem;
+                undoTile = undoItem.transform.parent.gameObject;
+                undoScale = undoItem.transform.localScale;
+
+                Vector2Int loc = boardManager.GetBoardLocation(0, undoTile);
+
+                undoBoardItem = gameData.boardData[loc.x, loc.y];
+
+                undoItem.transform.parent = null;
+
+                undoItem.ScaleToSize(Vector2.zero, scaleSpeed, false);
+
+                gameData.boardData[loc.x, loc.y] = new Types.Board { order = undoBoardItem.order };
             }
+            else
+            {
+                Vector2Int loc = boardManager.GetBoardLocation(0, currentItem.transform.parent.gameObject);
 
-            undoItem = currentItem;
-            undoTile = undoItem.transform.parent.gameObject;
-            undoScale = undoItem.transform.localScale;
+                Types.Board removeBoardItem = gameData.boardData[loc.x, loc.y];
 
-            Vector2Int loc = boardManager.GetBoardLocation(0, undoTile);
+                currentItem.transform.parent = null;
 
-            undoBoardItem = gameData.boardData[loc.x, loc.y];
+                selectionManager.Unselect("info");
 
-            undoItem.transform.parent = null;
+                currentItem.ScaleToSize(Vector2.zero, scaleSpeed, true);
 
-            undoItem.ScaleToSize(Vector2.zero, scaleSpeed, false);
-
-            gameData.boardData[loc.x, loc.y] = new Types.Board { order = undoBoardItem.order };
+                gameData.boardData[loc.x, loc.y] = new Types.Board { order = removeBoardItem.order };
+            }
         }
     }
 
@@ -720,10 +783,11 @@ public class BoardInteractions : MonoBehaviour
         if (canUndo)
         {
             currentItem = undoItem;
-
             currentItem.transform.parent = undoTile.transform;
 
-            undoItem.ScaleToSize(undoScale, scaleSpeed, false);
+            currentItem.ScaleToSize(undoScale, scaleSpeed, false,()=>{
+                CancelUndo();
+            });
 
             Vector2Int loc = boardManager.GetBoardLocation(0, undoTile);
 
@@ -743,8 +807,6 @@ public class BoardInteractions : MonoBehaviour
                 gameData.UpdateGold(-sellUndoAmount);
                 sellUndoAmount = 0;
             }
-
-            CancelUndo();
         }
     }
 
@@ -752,9 +814,12 @@ public class BoardInteractions : MonoBehaviour
     {
         canUndo = false;
 
-        undoItem = null;
-        undoBoardItem = null;
-        undoTile = null;
-        undoScale = Vector2.zero;
+        if (undoItem != null)
+        {
+            undoItem=null;
+            undoBoardItem = null;
+            undoTile = null;
+            undoScale = Vector2.zero;
+        }
     }
 }

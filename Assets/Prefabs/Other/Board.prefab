@@ -122,6 +122,10 @@ MonoBehaviour:
   moveSpeed: 14
   scaleSpeed: 8
   experienceThreshold: 4
+  minBubbleLevel: 4
+  bubbleChance: 30
+  bubbleCount: 1000
+  popBubbles: 0
   boardTiles: {fileID: 0}
 --- !u!114 &6103699518242801327
 MonoBehaviour:
@@ -174,6 +178,77 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 14
   scaleSpeed: 8
+  randomGoldCurves:
+  - serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 3
+      inSlope: 7.8800592
+      outSlope: 7.8800592
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.10818815
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  - serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.09296357
+      outSlope: 0.09296357
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.23288289
+    - serializedVersion: 3
+      time: 1
+      value: 3
+      inSlope: 3.3387656
+      outSlope: 3.3387656
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.10678017
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  - serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.5727774
+      outSlope: 0.5727774
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.20461765
+    - serializedVersion: 3
+      time: 1
+      value: 3
+      inSlope: 2.8094912
+      outSlope: 2.8094912
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.12290192
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  gemChance: 8
 --- !u!114 &1919697231713209127
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -204,7 +279,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   indicateDelay: 2
-  indicateSpeed: 1
+  indicateSpeed: 0.5
 --- !u!1 &4861144735682741828
 GameObject:
   m_ObjectHideFlags: 0

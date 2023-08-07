@@ -23,6 +23,7 @@
     "shop_menu_restore": "Restore",
     "shop_menu_popular": "Popular",
     "shop_menu_free": "Free",
+    "shop_menu_free_gotten": "Bought",
     "________ NOTE_MENU ________": "________________",
     "note_menu_purchase_failed_title": "Purchase Failed",
     "note_menu_purchase_failed_text": "Failed to purchase the selected product.",

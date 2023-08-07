@@ -131,9 +131,11 @@ public class BoardManager : MonoBehaviour
             group = newItem.group,
             genGroup = newItem.genGroup,
             collGroup = newItem.collGroup,
+            chestGroup = newItem.chestGroup,
             state = newItem.state,
             crate = newItem.crate,
             order = oldItem.order,
+            gemPoped=newItem.gemPoped
         };
 
         gameData.boardData[newLoc.x, newLoc.y] = new Types.Board
@@ -142,10 +144,12 @@ public class BoardManager : MonoBehaviour
             type = oldItem.type,
             group = oldItem.group,
             genGroup = oldItem.genGroup,
-            collGroup = newItem.collGroup,
+            collGroup = oldItem.collGroup,
+            chestGroup = oldItem.chestGroup,
             state = oldItem.state,
             crate = oldItem.crate,
             order = newItem.order,
+            gemPoped=newItem.gemPoped
         };
 
         // Save the board to disk
@@ -172,11 +176,13 @@ public class BoardManager : MonoBehaviour
             group = newItem.group,
             genGroup = newItem.genGroup,
             collGroup = newItem.collGroup,
+            chestGroup = newItem.chestGroup,
             state = newItem.state,
             crate = int.Parse(
                 newItem.crateSprite.name[(newItem.crateSprite.name.LastIndexOf('e') + 1)..]
             ),
-            order = newOrder
+            order = newOrder,
+            gemPoped=newItem.gemPoped
         };
 
         // Save the board to disk
@@ -330,7 +336,7 @@ public class BoardManager : MonoBehaviour
         }
         else
         {
-            valuePop.PopExperience(1, "Experience", tile.transform.position);
+            valuePop.PopColl(1, "Experience", tile.transform.position);
         }
     }
 
@@ -351,6 +357,8 @@ public class BoardManager : MonoBehaviour
             group = itemData.group,
             genGroup = itemData.genGroup,
             collGroup = itemData.collGroup,
+            chestGroup = itemData.chestGroup,
+            gemPoped=itemData.gemPoped
         };
 
         // Create the item on the board
@@ -379,6 +387,9 @@ public class BoardManager : MonoBehaviour
             type = newItem.type,
             group = newItem.group,
             genGroup = newItem.genGroup,
+            collGroup = newItem.collGroup,
+            chestGroup = newItem.chestGroup,
+            gemPoped=newItem.gemPoped,
             state = newItem.state,
             crate = 0,
             order = emptyBoard.order
@@ -391,7 +402,8 @@ public class BoardManager : MonoBehaviour
                 newItem.type,
                 newItem.group,
                 newItem.genGroup,
-                newItem.collGroup
+                newItem.collGroup,
+                newItem.chestGroup
             );
         }
 
@@ -435,6 +447,24 @@ public class BoardManager : MonoBehaviour
         List<Types.BoardEmpty> emptyBoard = GetEmptyBoardItems(Vector2Int.zero, false);
 
         return emptyBoard.Count > 0;
+    }
+
+    public void RemoveItemForChest(Item item)
+    {
+        if (item.chestItems > 1)
+        {
+            item.chestItems -= 1;
+
+            Vector2Int loc = GetBoardLocation(0, item.transform.parent.gameObject);
+
+            gameData.boardData[loc.x, loc.y].chestItems -= 1;
+
+            dataManager.SaveBoard();
+        }
+        else
+        {
+            interactions.RemoveItem(item, 0, false);
+        }
     }
 
     // Calculate the distance between two points in a 2d array

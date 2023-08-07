@@ -27,17 +27,31 @@ public class Item : MonoBehaviour
     public bool isDragging;
     public bool isPlaying;
     public bool isMaxLavel;
+    public bool isIndicating;
     public bool hasLevel;
 
     public int level = 1;
+    public int generatesAt = 0;
 
     public Types.Type type = Types.Type.Item;
-    public Types.Group group;
-    public Types.GenGroup genGroup;
+    public ItemTypes.Group group;
+    public ItemTypes.GenGroup genGroup;
     public Types.CollGroup collGroup;
+    public Types.ChestGroup chestGroup;
     public Types.State state = Types.State.Default;
     public Types.Creates[] creates;
-    public Types.GenGroup[] parents;
+    public ItemTypes.GenGroup[] parents;
+
+    // Timer and Chest
+    public bool chestLocked; // TODO - Check this
+    public bool timerOn; // TODO - Check this
+    public bool hasTimer;
+    public DateTime startTime;
+    public int seconds;
+    private Coroutine chestCoroutine;
+    public int chestItems;
+    public bool chestItemsSet;
+    public bool gemPoped = false;
 
     [HideInInspector]
     public Sprite sprite = null;
@@ -181,7 +195,18 @@ public class Item : MonoBehaviour
     {
         if (hasLevel)
         {
-            itemLevelName = itemName + " (Level " + level + ")";
+            if (isMaxLavel)
+            {
+                itemLevelName = itemName + " (Max Level " + level + ")";
+            }
+            else
+            {
+                itemLevelName = itemName + " (Level " + level + ")";
+            }
+        }
+        else
+        {
+            itemLevelName = itemName;
         }
 
         switch (type)
@@ -194,6 +219,9 @@ public class Item : MonoBehaviour
                 break;
             case Types.Type.Coll:
                 nextSpriteName = collGroup + "Coll" + (level + 1);
+                break;
+            case Types.Type.Chest:
+                nextSpriteName = chestGroup + "Chest" + (level + 1);
                 break;
             default:
                 ErrorManager.Instance.Throw(Types.ErrorType.Code, "Wrong type: " + type);
@@ -286,6 +314,30 @@ public class Item : MonoBehaviour
         }
     }
 
+    public void UnlockChest()
+    {
+        if (chestLocked)
+        {
+            chestLocked = false;
+
+            // TODO - Start the timer
+            timerOn = true;
+
+            chestCoroutine = Glob.SetTimout(() =>
+            {
+                SpeedUpChest();
+            }, 5f);
+        }
+    }
+
+    public void SpeedUpChest()
+    {
+        // TODO - Stop the timer
+        timerOn = false;
+
+        Glob.StopTimeout(chestCoroutine);
+    }
+
     public void Dragging()
     {
         isDragging = true;
@@ -337,17 +389,27 @@ public class Item : MonoBehaviour
         StopAnimate();
     }
 
-    public void Animate(float newSpeed)
+    public void Animate(float newSpeed, bool indicating = false)
     {
         anim["ItemSelect"].speed = newSpeed;
         anim.Play("ItemSelect");
 
+        if (indicating)
+        {
+            isIndicating = true;
+        }
+
         isPlaying = true;
     }
 
-    public void StopAnimate()
+    public void StopAnimate(bool indicating = false)
     {
         isPlaying = false;
+
+        if (indicating)
+        {
+            isIndicating = false;
+        }
 
         // These 4 steps rewind and stop the animator
         // Just stopping or rewinding doesn't seem to work

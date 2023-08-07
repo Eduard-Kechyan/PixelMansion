@@ -112,12 +112,12 @@ public class ShopMenu : MonoBehaviour
 
     void InitializeDaily()
     {
-        Types.ShopItemsContent[] dailyContent = shopData.dailyContent;
+        Types.ShopItemsContent[] dailyContent = gameData.dailyContent;
 
         for (int i = 0; i < dailyContent.Length; i++)
         {
             string nameOrder = i.ToString();
-            
+
             VisualElement shopBox = dailyBoxes.Q<VisualElement>("DailyBox" + i);
             Label topLabel = shopBox.Q<Label>("TopLabel");
             VisualElement image = shopBox.Q<VisualElement>("Image");
@@ -152,7 +152,15 @@ public class ShopMenu : MonoBehaviour
 
             infoButton.clicked += () => ShowInfo(nameOrder);
 
-            buyButton.clicked += () => BuyItem(nameOrder, "Daily");
+            if (i == 0 && gameData.dailyItem1 || i == 1 && gameData.dailyItem2)
+            {
+                buyButton.SetEnabled(false);
+                buyButtonLabel.text = LOCALE.Get("shop_menu_free_gotten");
+            }
+            else
+            {
+                buyButton.clicked += () => BuyItem(nameOrder, "Daily");
+            }
         }
     }
 
@@ -167,7 +175,7 @@ public class ShopMenu : MonoBehaviour
             VisualElement shopBox = itemsBoxes.Q<VisualElement>("ItemBox" + i);
             Label topLabel = shopBox.Q<Label>("TopLabel");
             VisualElement image = shopBox.Q<VisualElement>("Image");
-            Button infoButton = shopBox.Q<Button>("InfoButton" );
+            Button infoButton = shopBox.Q<Button>("InfoButton");
             Button buyButton = shopBox.Q<Button>("BuyButton");
             VisualElement buyButtonValue = buyButton.Q<VisualElement>("Value");
             Label buyButtonLabel = buyButton.Q<Label>("Label");
@@ -439,6 +447,11 @@ public class ShopMenu : MonoBehaviour
             }
         }
 
+        if (type == "Daily")
+        {
+            HandleDailyItem(order);
+        }
+
         if (sceneLoader.sceneName == "Gameplay")
         {
             StartCoroutine(AddItemToBoardOrBonusButton(order, type));
@@ -508,6 +521,20 @@ public class ShopMenu : MonoBehaviour
         Debug.Log("Restore " + type);
     }
 
+    void HandleDailyItem(int order)
+    {
+        PlayerPrefs.SetInt("dailyItem" + order, 1);
+
+        if (order == 0)
+        {
+            gameData.dailyItem1 = true;
+        }
+        else
+        {
+            gameData.dailyItem2 = true;
+        }
+    }
+
     IEnumerator AddItemToBoardOrBonusButton(int order, string type)
     {
         yield return new WaitForSeconds(0.5f);
@@ -526,6 +553,7 @@ public class ShopMenu : MonoBehaviour
                 type = shopData.itemsContent[order].type,
                 group = shopData.itemsContent[order].group,
                 genGroup = shopData.itemsContent[order].genGroup,
+                chestGroup = shopData.itemsContent[order].chestGroup,
                 collGroup = Types.CollGroup.Experience,
             };
 
@@ -539,6 +567,7 @@ public class ShopMenu : MonoBehaviour
                 type = shopData.dailyContent[order].type,
                 group = shopData.dailyContent[order].group,
                 genGroup = shopData.dailyContent[order].genGroup,
+                chestGroup = shopData.dailyContent[order].chestGroup,
                 collGroup = Types.CollGroup.Experience,
             };
 

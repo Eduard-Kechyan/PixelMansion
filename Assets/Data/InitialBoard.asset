@@ -13,507 +13,759 @@ MonoBehaviour:
   m_Name: InitialBoard
   m_EditorClassIdentifier: 
   content:
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 0
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 0
-    crate: 2
-    order: 0
-  - sprite: {fileID: 0}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 0
-    crate: 0
-    order: 0
-  - sprite: {fileID: 0}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 0
-    crate: 0
-    order: 0
-  - sprite: {fileID: 0}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 0
-    crate: 0
-    order: 0
-  - sprite: {fileID: 0}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 0
-    crate: 0
-    order: 0
-  - sprite: {fileID: 0}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 0
-    crate: 0
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 0
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 0
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 0
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 0
-    crate: 2
-    order: 0
-  - sprite: {fileID: 0}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 0
-    crate: 0
-    order: 0
-  - sprite: {fileID: 0}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 0
-    crate: 2
-    order: 0
-  - sprite: {fileID: 0}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 0
-    crate: 2
-    order: 0
-  - sprite: {fileID: 0}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 0
-    crate: 2
-    order: 0
-  - sprite: {fileID: 0}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 0
-    crate: 0
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 0
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 0
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: 0b77e89831834594099e8bd21d26eb9d, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 0
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: 0b77e89831834594099e8bd21d26eb9d, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 0
-    crate: 2
-    order: 0
-  - sprite: {fileID: 0}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 0
-    crate: 0
-    order: 0
-  - sprite: {fileID: 0}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 0
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: 1c8d58bf4c3b7e2488afd145982b99f9, type: 3}
+  - sprite: {fileID: 21300000, guid: 5843d96ae1fcc884080d43667c5b79b9, type: 3}
     type: 1
+    state: 0
     group: 0
     genGroup: 0
     collGroup: 0
-    state: 0
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: 4249019a1f0651f42b68810168bb6ade, type: 3}
-    type: 2
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 0
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: 4249019a1f0651f42b68810168bb6ade, type: 3}
-    type: 2
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 0
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: 0b77e89831834594099e8bd21d26eb9d, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 0
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: 0b77e89831834594099e8bd21d26eb9d, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 0
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 0
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 0
-    crate: 2
-    order: 0
-  - sprite: {fileID: 0}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 0
+    chestGroup: 0
     crate: 0
     order: 0
-  - sprite: {fileID: 21300000, guid: 4249019a1f0651f42b68810168bb6ade, type: 3}
-    type: 2
-    group: 0
-    genGroup: 0
-    collGroup: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 21300000, guid: 72c12047381ac164bacebf632ab19986, type: 3}
+    type: 1
     state: 0
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: 4249019a1f0651f42b68810168bb6ade, type: 3}
-    type: 2
     group: 0
     genGroup: 0
     collGroup: 0
-    state: 0
-    crate: 2
-    order: 0
-  - sprite: {fileID: 0}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 1
-    crate: 2
-    order: 0
-  - sprite: {fileID: 0}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 0
+    chestGroup: 0
     crate: 0
     order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 21300000, guid: 528913ed5f5ea1e4f9001ccdbfd74204, type: 3}
+    type: 1
+    state: 0
     group: 0
     genGroup: 0
     collGroup: 0
-    state: 0
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 0
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 0
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 0
-    crate: 2
-    order: 0
-  - sprite: {fileID: 0}
-    type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
-    state: 0
+    chestGroup: 0
     crate: 0
     order: 0
-  - sprite: {fileID: 0}
-    type: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 21300000, guid: 47920b00aa2d3be49a5e4d6ec621c353, type: 3}
+    type: 1
+    state: 0
     group: 0
     genGroup: 0
     collGroup: 0
-    state: 0
+    chestGroup: 0
     crate: 0
     order: 0
-  - sprite: {fileID: 0}
-    type: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 21300000, guid: 42bead8e5cf2e514785ce37d0791b327, type: 3}
+    type: 1
+    state: 0
     group: 0
     genGroup: 0
     collGroup: 0
-    state: 0
+    chestGroup: 0
     crate: 0
     order: 0
-  - sprite: {fileID: 0}
-    type: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 21300000, guid: 61b6c1b4a68790a4a85c26fdd18031fa, type: 3}
+    type: 1
+    state: 0
     group: 0
     genGroup: 0
     collGroup: 0
-    state: 0
+    chestGroup: 0
     crate: 0
     order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
   - sprite: {fileID: 0}
     type: 0
+    state: 0
     group: 0
     genGroup: 0
     collGroup: 0
-    state: 0
+    chestGroup: 0
     crate: 0
     order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
     type: 0
-    group: 0
-    genGroup: 0
-    collGroup: 0
     state: 0
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
     group: 0
     genGroup: 0
     collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
     state: 0
-    crate: 2
-    order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
-    type: 0
     group: 0
     genGroup: 0
     collGroup: 0
-    state: 1
-    crate: 2
+    chestGroup: 0
+    crate: 0
     order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
     type: 0
+    state: 0
     group: 0
     genGroup: 0
     collGroup: 0
-    state: 1
-    crate: 2
+    chestGroup: 0
+    crate: 0
     order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
     type: 0
+    state: 0
     group: 0
     genGroup: 0
     collGroup: 0
-    state: 1
-    crate: 2
+    chestGroup: 0
+    crate: 0
     order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
     type: 0
+    state: 0
     group: 0
     genGroup: 0
     collGroup: 0
-    state: 1
-    crate: 2
+    chestGroup: 0
+    crate: 0
     order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
     type: 0
+    state: 0
     group: 0
     genGroup: 0
     collGroup: 0
-    state: 1
-    crate: 2
+    chestGroup: 0
+    crate: 0
     order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
     type: 0
+    state: 0
     group: 0
     genGroup: 0
     collGroup: 0
-    state: 1
-    crate: 2
+    chestGroup: 0
+    crate: 0
     order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
     type: 0
+    state: 0
     group: 0
     genGroup: 0
     collGroup: 0
-    state: 1
-    crate: 2
+    chestGroup: 0
+    crate: 0
     order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
     type: 0
+    state: 0
     group: 0
     genGroup: 0
     collGroup: 0
-    state: 1
-    crate: 2
+    chestGroup: 0
+    crate: 0
     order: 0
-  - sprite: {fileID: 21300000, guid: dcda2cc884d2dbf45b2851b91d4849a7, type: 3}
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
     type: 0
+    state: 0
     group: 0
     genGroup: 0
     collGroup: 0
-    state: 1
-    crate: 2
+    chestGroup: 0
+    crate: 0
     order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0
+  - sprite: {fileID: 0}
+    type: 0
+    state: 0
+    group: 0
+    genGroup: 0
+    collGroup: 0
+    chestGroup: 0
+    crate: 0
+    order: 0
+    chestItems: 0
+    chestItemsSet: 0
+    gemPoped: 0

@@ -11,9 +11,10 @@ public class DataConverter : MonoBehaviour
     private GameData gameData;
     private I18n LOCALE = I18n.Instance;
 
-    void Start() {
-        dataManager=GetComponent<DataManager>();
-        gameData=GameData.Instance;
+    void Start()
+    {
+        dataManager = GetComponent<DataManager>();
+        gameData = GameData.Instance;
     }
 
     public Types.Items[] ConvertItems(Types.Items[] itemsContent)
@@ -30,7 +31,10 @@ public class DataConverter : MonoBehaviour
                 group = itemsContent[i].group,
                 genGroup = itemsContent[i].genGroup,
                 collGroup = itemsContent[i].collGroup,
+                chestGroup = itemsContent[i].chestGroup,
                 hasLevel = itemsContent[i].hasLevel,
+                hasTimer = itemsContent[i].hasTimer,
+                generatesAt = itemsContent[i].generatesAt,
                 customName = itemsContent[i].customName,
                 parents = itemsContent[i].parents,
                 creates = itemsContent[i].creates,
@@ -45,15 +49,23 @@ public class DataConverter : MonoBehaviour
                     group = itemsContent[i].group,
                     genGroup = itemsContent[i].genGroup,
                     collGroup = itemsContent[i].collGroup,
+                    chestGroup = itemsContent[i].chestGroup,
                     creates = itemsContent[i].creates,
                     customName = itemsContent[i].content[j].customName,
                     parents = itemsContent[i].parents,
                     hasLevel = itemsContent[i].hasLevel,
+                    hasTimer = itemsContent[i].hasTimer,
+                    generatesAt = itemsContent[i].generatesAt,
                     itemName = GetItemName(itemsContent[i].content[j], newObjectData, count),
                     level = count,
                     sprite = itemsContent[i].content[j].sprite,
                     unlocked = CheckUnlocked(itemsContent[i].content[j].sprite.name),
-                    isMaxLavel = count == itemsContent[i].content.Length
+                    startTime = itemsContent[i].content[j].startTime,
+                    seconds = itemsContent[i].content[j].seconds,
+                    isMaxLavel = count == itemsContent[i].content.Length,
+                    chestItems = InitChestItems(itemsContent[i].content[j], itemsContent[i], count),
+                    chestItemsSet = itemsContent[i].content[j].chestItemsSet,
+                    gemPoped = itemsContent[i].content[j].gemPoped,
                 };
 
                 newObjectData.content[j] = newInnerObjectData;
@@ -67,13 +79,15 @@ public class DataConverter : MonoBehaviour
         return convertedItems;
     }
 
-    public string GetItemName(Types.ItemsData itemSingle, Types.Items itemsData, int count)
+    string GetItemName(Types.ItemsData itemSingle, Types.Items itemsData, int count)
     {
+        // Get name based on custom item name
         if (itemSingle.customName && itemSingle.itemName != "")
         {
             return LOCALE.Get(itemsData.type + "_" + itemSingle.itemName);
         }
 
+        // Get name based on item order
         if (itemsData.customName)
         {
             switch (itemsData.type)
@@ -88,7 +102,10 @@ public class DataConverter : MonoBehaviour
                     );
                 case Types.Type.Coll:
                     return "";
-
+                case Types.Type.Chest:
+                    return LOCALE.Get(
+                        itemsData.type + "_" + itemsData.chestGroup
+                    );
                 default:
                     ErrorManager.Instance.Throw(
                         Types.ErrorType.Code,
@@ -99,14 +116,18 @@ public class DataConverter : MonoBehaviour
             }
         }
 
+        // Get name based on he type
         if (itemsData.type == Types.Type.Item)
         {
-            return LOCALE.Get("Item_" + itemsData.group.ToString() + "_" + 0);
+            Debug.Log("Item_" + itemsData.group.ToString());
+            Debug.Log("Item_" + itemsData.group); // TODO - Check if enums need to be converted to strings
+            return LOCALE.Get("Item_" + itemsData.group.ToString());
         }
 
         if (itemsData.type == Types.Type.Gen)
         {
-            return LOCALE.Get("Gen_" + itemsData.genGroup.ToString() + "_" + 0);
+
+            return LOCALE.Get("Gen_" + itemsData.genGroup.ToString());
         }
 
         if (itemsData.type == Types.Type.Coll)
@@ -114,9 +135,43 @@ public class DataConverter : MonoBehaviour
             return LOCALE.Get("Coll_" + itemsData.collGroup.ToString(), count);
         }
 
+        if (itemsData.type == Types.Type.Chest)
+        {
+            return LOCALE.Get("Chest_" + itemsData.chestGroup.ToString());
+        }
+
+        // No valid name was found
         ErrorManager.Instance.Throw(Types.ErrorType.Locale, "error_loc_name");
 
         return LOCALE.Get("Item_error_name");
+    }
+
+    int InitChestItems(Types.ItemsData itemSingle, Types.Items itemsData, int count)
+    {
+        int chestItemsCount;
+
+        if (itemsData.type == Types.Type.Chest && !itemSingle.chestItemsSet)
+        {
+            switch (itemsData.chestGroup)
+            {
+                case Types.ChestGroup.Piggy:
+                    chestItemsCount = Random.Range(6 + count, 8 + count);
+                    break;
+                case Types.ChestGroup.Energy:
+                    chestItemsCount = Random.Range(4 + count, 6 + count);
+                    break;
+                default: // Types.ChestGroup.Item
+                    chestItemsCount = Random.Range(3 + count, 5 + count);
+                    break;
+            }
+
+        }
+        else
+        {
+            chestItemsCount = itemSingle.chestItems;
+        }
+
+        return chestItemsCount;
     }
 
     // Check if item is unlocked
@@ -140,13 +195,10 @@ public class DataConverter : MonoBehaviour
     public string GetInitialUnlocked()
     {
         // Get all item unlocks
-        dataManager=GetComponent<DataManager>();
         string[] initialUnlockedPre = new string[dataManager.initialItems.content.Length];
 
-        dataManager=GetComponent<DataManager>();
         for (int i = 0; i < dataManager.initialItems.content.Length; i++)
         {
-        dataManager=GetComponent<DataManager>();
             if (dataManager.initialItems.content[i].sprite != null)
             {
                 bool found = false;
@@ -219,9 +271,15 @@ public class DataConverter : MonoBehaviour
                     type = boardArray[count].type,
                     group = boardArray[count].group,
                     genGroup = boardArray[count].genGroup,
+                    collGroup = boardArray[count].collGroup,
+                    chestGroup = boardArray[count].chestGroup,
                     state = boardArray[count].state,
                     crate = boardArray[count].crate,
-                    order = count
+                    order = count,
+                    chestItems = boardArray[count].chestItems,
+                    chestItemsSet = boardArray[count].chestItemsSet,
+                    generatesAt = boardArray[count].generatesAt,
+                    gemPoped = boardArray[count].gemPoped
                 };
 
                 count++;
@@ -246,8 +304,13 @@ public class DataConverter : MonoBehaviour
                 group = boardItem.group,
                 genGroup = boardItem.genGroup,
                 collGroup = boardItem.collGroup,
+                chestGroup = boardItem.chestGroup,
                 state = boardItem.state,
-                crate = boardItem.crate
+                crate = boardItem.crate,
+                chestItems = boardItem.chestItems,
+                chestItemsSet = boardItem.chestItemsSet,
+                generatesAt = boardItem.generatesAt,
+                gemPoped = boardItem.gemPoped
             };
 
             count++;

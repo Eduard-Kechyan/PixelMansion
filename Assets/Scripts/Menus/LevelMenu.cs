@@ -12,6 +12,8 @@ public class LevelMenu : MonoBehaviour
     public HubUI hubUI;
     public ShopData shopData;
 
+    private Types.ShopItemsContent[] rewardContent = new Types.ShopItemsContent[0];
+
     // References
     private MenuUI menuUI;
     private InfoMenu infoMenu;
@@ -91,6 +93,15 @@ public class LevelMenu : MonoBehaviour
 
         UpdateLevelMenu();
 
+        if (gameData.levelTen)
+        {
+            rewardContent = shopData.levelTenRewardContent;
+        }
+        else
+        {
+            rewardContent = shopData.levelRewardContent;
+        }
+
         HandleRewards();
 
         // Open menu
@@ -110,7 +121,12 @@ public class LevelMenu : MonoBehaviour
 
     void HandleRewards()
     {
-        Types.ShopItemsContent[] rewardContent = shopData.levelRewardContent;
+        if (rewardContent.Length == 2)
+        {
+            VisualElement lastLevelRewardBox = levelRewards.Q<VisualElement>("LevelReward2");
+
+            lastLevelRewardBox.style.display = DisplayStyle.None;
+        }
 
         for (int i = 0; i < rewardContent.Length; i++)
         {
@@ -127,20 +143,18 @@ public class LevelMenu : MonoBehaviour
     {
         int order = int.Parse(name[(name.LastIndexOf(nameChar) + 1)..]);
 
-        Types.ShopItemsContent rewardContent = shopData.levelRewardContent[order];
-
-        infoMenu.Open(itemHandler.CreateItemTemp(rewardContent));
+        infoMenu.Open(itemHandler.CreateItemTemp(rewardContent[order]));
     }
 
     void UpdateLevel()
     {
         gameData.UpdateLevel();
 
-        for (int i = 0; i < shopData.levelRewardContent.Length; i++)
+        for (int i = 0; i < rewardContent.Length; i++)
         {
             bool check = false;
 
-            if (shopData.levelRewardContent.Length - 1 == i)
+            if (rewardContent.Length - 1 == i)
             {
                 check = true;
             }
@@ -159,7 +173,7 @@ public class LevelMenu : MonoBehaviour
 
         bool check = newCheck;
 
-        Item newItem = itemHandler.CreateItemTemp(shopData.levelRewardContent[order]);
+        Item newItem = itemHandler.CreateItemTemp(rewardContent[order]);
 
         Vector2 buttonPosition;
 

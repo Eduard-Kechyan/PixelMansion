@@ -67,24 +67,24 @@ public class BoardIndication : MonoBehaviour
             {
                 if (item1 != null && !item1.isPlaying)
                 {
-                    item1.Animate(indicateSpeed);
+                    item1.Animate(indicateSpeed,true);
                 }
 
                 if (item2 != null && !item2.isPlaying)
                 {
-                    item2.Animate(indicateSpeed);
+                    item2.Animate(indicateSpeed,true);
                 }
             }
             else
             {
                 if (item1 != null)
                 {
-                    item1.StopAnimate();
+                    item1.StopAnimate(true);
                 }
 
                 if (item2 != null)
                 {
-                    item2.StopAnimate();
+                    item2.StopAnimate(true);
                 }
             }
         }
@@ -104,12 +104,12 @@ public class BoardIndication : MonoBehaviour
         {
             if (item1 != null)
             {
-                item1.StopAnimate();
+                item1.StopAnimate(true);
             }
 
             if (item2 != null)
             {
-                item2.StopAnimate();
+                item2.StopAnimate(true);
             }
         }
 

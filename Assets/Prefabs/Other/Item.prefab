@@ -123,17 +123,28 @@ MonoBehaviour:
   isDragging: 0
   isPlaying: 0
   isMaxLavel: 0
+  isIndicating: 0
   hasLevel: 0
   level: 1
   type: 0
   group: 0
   genGroup: 0
   collGroup: 0
+  chestGroup: 0
   state: 0
   creates: []
   parents: 
+  chestLocked: 0
+  timerOn: 0
+  hasTimer: 0
+  seconds: 0
+  chestItems: 0
+  chestItemsSet: 0
+  gemPoped: 0
   sprite: {fileID: 0}
   crateSprite: {fileID: 0}
+  isMoving: 0
+  useOverlay: 0
   crateChild: {fileID: 0}
   itemChild: {fileID: 0}
 --- !u!1 &2437546720063912707

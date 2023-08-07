@@ -8,7 +8,7 @@ public class InitializeBoard : MonoBehaviour
 {
     // Variables
     public GameObject tile;
-    public float tileWidth = 24f;
+    public float tileWidth = 48f;
     public float tileSize;
 
 // References
@@ -161,7 +161,19 @@ public class InitializeBoard : MonoBehaviour
 
                 if (boardItem != null && boardItem.sprite != null)
                 {
-                    itemHandler.CreateItem(newTile, tileSize, boardItem);
+                    Item newItem =itemHandler.CreateItem(newTile, tileSize, boardItem);
+
+                    if (newItem) /////////////
+                    {
+                        dataManager.UnlockItem(
+                            newItem.sprite.name,
+                            newItem.type,
+                            newItem.group,
+                            newItem.genGroup,
+                            newItem.collGroup,
+                            newItem.chestGroup
+                        );
+                    }
                 }
 
                 // Increase count for the next loop

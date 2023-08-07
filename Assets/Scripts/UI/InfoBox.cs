@@ -18,6 +18,7 @@ public class InfoBox : MonoBehaviour
     public SelectionManager selectionManager;
     public int openAmount = 10;
     public int unlockAmount = 5;
+    public int speedUpAmount = 5;
     public int popAmount = 5;
     public int sellAmount = 5;
 
@@ -49,6 +50,8 @@ public class InfoBox : MonoBehaviour
     {
         Open,
         Unlock,
+        UnlockChest,
+        SpeedUp,
         Pop,
         Sell,
         Remove,
@@ -61,8 +64,8 @@ public class InfoBox : MonoBehaviour
     void Start()
     {
         // Cache
-        infoMenu =  GameRefs.Instance.infoMenu;
-        shopMenu =  GameRefs.Instance.shopMenu;
+        infoMenu = GameRefs.Instance.infoMenu;
+        shopMenu = GameRefs.Instance.shopMenu;
 
         // Cache instances
         gameData = GameData.Instance;
@@ -138,14 +141,30 @@ public class InfoBox : MonoBehaviour
 
                 infoButton.style.display = DisplayStyle.Flex;
 
-                if (item.level > 3 || item.isMaxLavel)
+                if (item.type == Types.Type.Chest)
                 {
-                    actionType = ActionType.Sell;
+                    if (item.chestLocked)
+                    {
+                        actionType = ActionType.UnlockChest;
+                    }
+                    else if (item.hasTimer && item.timerOn)
+                    {
+                        actionType = ActionType.SpeedUp;
+                    }
+                    else
+                    {
+                        actionType = ActionType.None;
+                        // infoButton.style.display = DisplayStyle.None;
+                    }
                 }
                 else if (item.type == Types.Type.Coll)
                 {
                     actionType = ActionType.None;
                     infoButton.style.display = DisplayStyle.None;
+                }
+                else if (item.level > 3 || item.isMaxLavel)
+                {
+                    actionType = ActionType.Sell;
                 }
                 else
                 {
@@ -180,6 +199,22 @@ public class InfoBox : MonoBehaviour
                 infoActionButton.AddToClassList("info_box_button_value");
                 infoActionButton.style.display = DisplayStyle.Flex;
                 infoActionButton.style.backgroundColor = blueColor;
+
+                infoActionValue.style.backgroundImage = new StyleBackground(gemValue);
+                infoActionValue.style.display = DisplayStyle.Flex;
+                break;
+            case ActionType.UnlockChest:
+                infoActionButton.RemoveFromClassList("info_box_button_value");
+                infoActionButton.style.display = DisplayStyle.Flex;
+                infoActionButton.style.backgroundColor = blueColor;
+
+                infoActionValue.style.display = DisplayStyle.None;
+                break;
+            case ActionType.SpeedUp:
+                infoActionButton.text = speedUpAmount.ToString();
+                infoActionButton.AddToClassList("info_box_button_value");
+                infoActionButton.style.display = DisplayStyle.Flex;
+                infoActionButton.style.backgroundColor = greenColor;
 
                 infoActionValue.style.backgroundImage = new StyleBackground(gemValue);
                 infoActionValue.style.display = DisplayStyle.Flex;
@@ -242,7 +277,7 @@ public class InfoBox : MonoBehaviour
         }
     }
 
-    public string GetItemData(Item newItem)
+    public string GetItemData(Item newItem, bool alt = false)
     {
         switch (newItem.state)
         {
@@ -312,6 +347,53 @@ public class InfoBox : MonoBehaviour
                             }
                         }
                         break;
+                    case Types.Type.Chest:
+                        if (alt)
+                        {
+                            textToSet = LOCALE.Get("info_box_chest_alt_" + newItem.chestGroup); // Note the +
+                        }
+                        else
+                        {
+                            if (newItem.chestLocked)
+                            {
+                                if (newItem.isMaxLavel)
+                                {
+                                    textToSet = LOCALE.Get("info_box_chest_max_locked");
+                                }
+                                else
+                                {
+                                    textToSet = LOCALE.Get("info_box_chest_locked", newItem.nextName);
+                                }
+                            }
+                            else if (newItem.hasTimer && newItem.timerOn)
+                            {
+                                if (newItem.isMaxLavel)
+                                {
+                                    textToSet = LOCALE.Get("info_box_chest_max_timer");
+                                }
+                                else
+                                {
+                                    textToSet = LOCALE.Get("info_box_chest_timer", newItem.nextName);
+                                }
+                            }
+                            else
+                            {
+                                if (!newItem.hasLevel)
+                                {
+                                    textToSet = LOCALE.Get("info_box_chest_single_" + newItem.chestGroup); // Note the +
+                                }
+                                else if (newItem.isMaxLavel)
+                                {
+                                    textToSet = LOCALE.Get("info_box_chest_max_" + newItem.chestGroup); // Note the +
+                                }
+                                else
+                                {
+                                    textToSet = LOCALE.Get("info_box_chest_" + newItem.chestGroup, newItem.chestGroup.ToString(), newItem.nextName); // Note the +
+                                }
+                            }
+                        }
+
+                        break;
                     default:
                         if (newItem.isMaxLavel)
                         {
@@ -353,6 +435,23 @@ public class InfoBox : MonoBehaviour
                 else
                 {
                     boardInteractions.OpenItem(item, unlockAmount, Types.State.Locker);
+                    Select(item);
+                    selectionManager.Select("both", false);
+                }
+                break;
+            case ActionType.UnlockChest:
+                boardInteractions.UnlockChest(item);
+                Select(item);
+                selectionManager.Select("both", false);
+                break;
+            case ActionType.SpeedUp:
+                if (gameData.gems < speedUpAmount)
+                {
+                    shopMenu.Open("Gems");
+                }
+                else
+                {
+                    boardInteractions.SpeedUpItem(item, speedUpAmount);
                     Select(item);
                     selectionManager.Select("both", false);
                 }
@@ -429,6 +528,9 @@ public class InfoBox : MonoBehaviour
                 break;
             case Types.CollGroup.Gems:
                 multipliedValue = gameData.valuesData.gemsMultiplier[level - 1];
+                break;
+            case Types.CollGroup.Energy:
+                multipliedValue = gameData.valuesData.energyMultiplier[level - 1];
                 break;
             default:
                 Debug.Log("Wrong collectables group");
