@@ -288,3 +288,8 @@
     font-size: 16px;
     -unity-font: url('project://database/Assets/Fonts/Files/Roboto.ttf?fileID=12800000&guid=0435ef74bc89d2044a778758a25a13b0&type=3#Roboto');
 }
+
+.age_button:disabled {
+    color: rgb(219, 205, 168);
+    opacity: 0.4;
+}

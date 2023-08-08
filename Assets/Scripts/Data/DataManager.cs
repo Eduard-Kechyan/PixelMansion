@@ -76,7 +76,7 @@ public class DataManager : MonoBehaviour
         saveSettings = new QuickSaveSettings() { CompressionMode = CompressionMode.None }; //TODO -  Set CompressionMode in the final game to Gzip
         writer = QuickSaveWriter.Create("Root", saveSettings);
 
-        gameData.LoadSprites();
+        gameData.InitAlt();
 
 #if UNITY_EDITOR
         isEditor = true;

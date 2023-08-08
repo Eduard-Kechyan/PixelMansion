@@ -6,9 +6,12 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour
 {
     // Variables
+    [Header("Sound")]
     public SoundClip[] soundClips;
-    public SoundClip[] musicClips;
     public AudioSource sourceSound;
+    
+    [Header("Music")]
+    public SoundClip[] musicClips;
     public AudioSource sourceMusic;
 
 

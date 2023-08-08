@@ -66,7 +66,7 @@ public class EnergyTimer : MonoBehaviour
                 timerOn = false;
                 waiting = true;
 
-                energyCoroutine=Glob.SetTimout(() =>
+                energyCoroutine=Glob.SetTimeout(() =>
                 {
                     waiting = false;
                     gameData.UpdateEnergy();

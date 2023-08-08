@@ -23,10 +23,6 @@ public class NavMeshManager : MonoBehaviour
 
     public void Bake()
     {
-        Debug.Log("Started Baking!");
-
         navMeshSurface.BuildNavMeshAsync();
-
-        Debug.Log("Finished Baking!");
     }
 }

@@ -20,7 +20,7 @@ public class DoubleTapManager : MonoBehaviour
     // References
     private BoardInteractions interactions;
     private BoardManager boardManager;
-    private BoardPopup boardPopup;
+    private PopupManager popupManager;
     private BoardIndication boardIndication;
     private DataManager dataManager;
 
@@ -37,7 +37,7 @@ public class DoubleTapManager : MonoBehaviour
         // Cache
         interactions = GetComponent<BoardInteractions>();
         boardManager = GetComponent<BoardManager>();
-        boardPopup = GetComponent<BoardPopup>();
+        popupManager = Glob.popupManager;
         boardIndication = GetComponent<BoardIndication>();
         dataManager = DataManager.Instance;
 
@@ -94,7 +94,7 @@ public class DoubleTapManager : MonoBehaviour
                 }
                 else
                 {
-                    boardPopup.AddPop(
+                    popupManager.AddPop(
                         LOCALE.Get("pop_board_full"),
                         interactions.currentItem.transform.position,
                         true,
@@ -146,7 +146,7 @@ public class DoubleTapManager : MonoBehaviour
                 }
                 else
                 {
-                    boardPopup.AddPop(
+                    popupManager.AddPop(
                         LOCALE.Get("pop_board_full"),
                         interactions.currentItem.transform.position,
                         true,
@@ -186,8 +186,6 @@ public class DoubleTapManager : MonoBehaviour
         int selectedItem;
 
         // Randomly create an item from the selected group
-        Debug.Log(interactions.currentItem.level - interactions.currentItem.generatesAt);
-        Debug.Log(dataManager.GetGroupCount(selectedGroup));
         generationCurves[interactions.currentItem.level - interactions.currentItem.generatesAt].keys[^1].value = dataManager.GetGroupCount(selectedGroup);
 
         selectedItem = Mathf.FloorToInt(Glob.CalcCurvedChances(generationCurves[interactions.currentItem.level - interactions.currentItem.generatesAt]));

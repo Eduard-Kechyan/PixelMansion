@@ -120,7 +120,7 @@ public class Item : MonoBehaviour
             return;
         }
 
-        if (isScaling)
+        if (isScaling)              
         {
             transform.localScale = Vector2.MoveTowards(
                 transform.localScale,
@@ -323,7 +323,7 @@ public class Item : MonoBehaviour
             // TODO - Start the timer
             timerOn = true;
 
-            chestCoroutine = Glob.SetTimout(() =>
+            chestCoroutine = Glob.SetTimeout(() =>
             {
                 SpeedUpChest();
             }, 5f);

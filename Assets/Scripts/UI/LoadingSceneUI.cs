@@ -53,6 +53,8 @@ public class LoadingSceneUI : MonoBehaviour
     private Label ageTitleLabel;
     private Label ageLabel;
     private IntegerField ageInteger;
+    private Button ageDownButton;
+    private Button ageUpButton;
     private Button ageAcceptButton;
 
     // Update
@@ -92,6 +94,8 @@ public class LoadingSceneUI : MonoBehaviour
         ageTitleLabel = ageMenu.Q<Label>("TitleLabel");
         ageLabel = ageMenu.Q<Label>("AgeLabel");
         ageInteger = ageMenu.Q<IntegerField>("AgeInteger");
+        ageDownButton = ageMenu.Q<Button>("AgeDown");
+        ageUpButton = ageMenu.Q<Button>("AgeUp");
         ageAcceptButton = ageMenu.Q<Button>("AcceptButton");
 
         updateMenu = root.Q<VisualElement>("UpdateMenu");
@@ -112,6 +116,8 @@ public class LoadingSceneUI : MonoBehaviour
 
         ageAcceptButton.clicked += () => AcceptAge();
         ageInteger.RegisterValueChangedCallback(AgeIntegerHandle);
+        ageUpButton.clicked += () => UpdateAge(1);
+        ageDownButton.clicked += () => UpdateAge(-1);
 
         updateButton.clicked += () => UpdateGame();
         updateExitButton.clicked += () => Application.Quit();
@@ -286,10 +292,14 @@ public class LoadingSceneUI : MonoBehaviour
         PlayerPrefs.SetInt("ageAccepted", 1);
         PlayerPrefs.Save();
 
-        if (ageCallback != null)
-        {
-            ageCallback(ageInteger.value);
-        }
+        ageCallback?.Invoke(ageInteger.value);
+    }
+
+    void UpdateAge(int newValue)
+    {
+        ageInteger.value += newValue;
+
+        CheckAgeButtons(ageInteger.value);
     }
 
     void HideAgeMenu()
@@ -314,14 +324,31 @@ public class LoadingSceneUI : MonoBehaviour
             ageInteger.value = 100;
         }
 
-        if (newData.newValue > 0)
+        CheckAgeButtons(newData.newValue);
+    }
+
+    void CheckAgeButtons(int newValue)
+    {
+        if (newValue > 0)
         {
             ageAcceptButton.SetEnabled(true);
+            ageDownButton.SetEnabled(true);
         }
         else
         {
             ageAcceptButton.SetEnabled(false);
+            ageDownButton.SetEnabled(false);
         }
+
+        if (newValue < 100)
+        {
+            ageUpButton.SetEnabled(true);
+        }
+        else
+        {
+            ageUpButton.SetEnabled(false);
+        }
+
     }
 
     public void CheckForUpdates(Action callback = null)

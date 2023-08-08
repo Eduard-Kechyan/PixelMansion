@@ -25,22 +25,6 @@ public class Notifics : MonoBehaviour
     //private GameNotificationsManager gameNotificationsManager;
     //private GameNotificationsManager manager;
 
-    // Instance
-    public static Notifics Instance;
-
-    void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-    }
-
     void Starppt()
     {
         /*manager = GetComponent<GameNotificationsManager>();

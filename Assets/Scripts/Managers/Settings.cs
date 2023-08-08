@@ -9,7 +9,6 @@ public class Settings : MonoBehaviour
     private SoundManager soundManager;
     private I18n LOCALE;
     private SettingsMenu settingsMenu;
-    private ResetHandler resetHandler;
 
     public bool soundOn = true;
     public bool musicOn = true;
@@ -52,7 +51,6 @@ public class Settings : MonoBehaviour
 
     public void Init()
     {
-        resetHandler = GameRefs.Instance.menuUI.GetComponent<ResetHandler>();
         settingsMenu = GameRefs.Instance.settingsMenu;
     }
 
@@ -72,7 +70,7 @@ public class Settings : MonoBehaviour
     {
         musicOn = !musicOn;
 
-        soundManager.sourceMusic.enabled = soundOn;
+        soundManager.sourceMusic.enabled = musicOn;
 
         PlayerPrefs.SetInt("music", musicOn ? 1 : 0);
         PlayerPrefs.Save();
@@ -158,9 +156,11 @@ public class Settings : MonoBehaviour
     {
         if (PlayerPrefs.HasKey("sound"))
         {
-            soundOn = PlayerPrefs.GetInt("sound") == 1 ? true : false;
+            soundOn = PlayerPrefs.GetInt("sound") == 1;
 
             soundManager.SetVolumeSound(soundOn ? 1 : 0);
+
+            soundManager.sourceSound.enabled = soundOn;
         }
     }
 
@@ -168,9 +168,11 @@ public class Settings : MonoBehaviour
     {
         if (PlayerPrefs.HasKey("music"))
         {
-            musicOn = PlayerPrefs.GetInt("music") == 1 ? true : false;
+            musicOn = PlayerPrefs.GetInt("music") == 1;
 
             soundManager.SetVolumeMusic(musicOn ? 1 : 0);
+
+            soundManager.sourceMusic.enabled = musicOn;
         }
     }
 
@@ -178,7 +180,7 @@ public class Settings : MonoBehaviour
     {
         if (PlayerPrefs.HasKey("vibration"))
         {
-            vibrationOn = PlayerPrefs.GetInt("vibration") == 1 ? true : false;
+            vibrationOn = PlayerPrefs.GetInt("vibration") == 1;
         }
     }
 

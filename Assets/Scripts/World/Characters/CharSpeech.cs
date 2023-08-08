@@ -36,11 +36,13 @@ public class CharSpeech : MonoBehaviour
 
     // References
     private Camera cam;
+    private SelectorUIHandler selectorUIHandler;
 
     void Start()
     {
         // Cache
         cam = Camera.main;
+        selectorUIHandler = speechBubble.GetComponent<SelectorUIHandler>();
 
         // Say Hello
         if (greet)
@@ -53,7 +55,7 @@ public class CharSpeech : MonoBehaviour
 
     void Update()
     {
-        if (Input.touchCount == 1)
+        if (Input.touchCount == 1 && !selectorUIHandler.isSelectorOpen)
         {
             Touch touch = Input.GetTouch(0);
 
@@ -72,10 +74,13 @@ public class CharSpeech : MonoBehaviour
                 }
             }
         }
-
-        if (canSpeakRandomly && !isRandomSpeechTimeOut && !isSpeaking && !isTimeOut)
+        else if (canSpeakRandomly && !isRandomSpeechTimeOut && !isSpeaking && !isTimeOut)
         {
             StartCoroutine(RandomSpeech());
+        }
+        else if (selectorUIHandler.isSelectorOpen)
+        {
+            speechBubble.Close();
         }
 
         // Send the position of the character to the bubble if it's speaking
@@ -190,7 +195,7 @@ public class CharSpeech : MonoBehaviour
 
     int GetRandomInt()
     {
-        int randomContent = Random.Range(0, randomSpeech.Length );
+        int randomContent = Random.Range(0, randomSpeech.Length);
 
         if (lastRandomContent == randomContent)
         {

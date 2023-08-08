@@ -1,4 +1,5 @@
 {
+    "________ GROUP ________": "________________",
     "________ COLLECTABLES ________": "________________",
     "Coll_Experience": "Experience",
     "Coll_Gold": "Gold",
@@ -15,11 +16,11 @@
     "________ GENS ________": "________________",
     "Gen_Toolbox": "Toolbox",
     "________ ITEMS ________": "________________",
-    "Item_Tools_0": "Screwdriver",
-    "Item_Tools_1": "Wrench",
-    "Item_Tools_2": "Pliers",
-    "Item_Tools_3": "Hammer",
-    "Item_Tools_4": "Jaw Wrench",
-    "Item_Tools_5": "Saw",
-    "Item_Tools_6": "Axe"
+    "Item_Tools_1": "Screwdriver",
+    "Item_Tools_2": "Wrench",
+    "Item_Tools_3": "Pliers",
+    "Item_Tools_4": "Hammer",
+    "Item_Tools_5": "Jaw Wrench",
+    "Item_Tools_6": "Saw",
+    "Item_Tools_7": "Axe"
 }

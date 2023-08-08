@@ -94,11 +94,11 @@ public class DataConverter : MonoBehaviour
             {
                 case Types.Type.Item:
                     return LOCALE.Get(
-                        itemsData.type + "_" + itemsData.group.ToString() + "_" + (count - 1)
+                        itemsData.type + "_" + itemsData.group.ToString() + "_" + count 
                     );
                 case Types.Type.Gen:
                     return LOCALE.Get(
-                        itemsData.type + "_" + itemsData.genGroup.ToString() + "_" + (count - 1)
+                        itemsData.type + "_" + itemsData.genGroup.ToString() + "_" + count 
                     );
                 case Types.Type.Coll:
                     return "";
@@ -116,12 +116,12 @@ public class DataConverter : MonoBehaviour
             }
         }
 
-        // Get name based on he type
+        // Get name based on the type
         if (itemsData.type == Types.Type.Item)
         {
             Debug.Log("Item_" + itemsData.group.ToString());
             Debug.Log("Item_" + itemsData.group); // TODO - Check if enums need to be converted to strings
-            return LOCALE.Get("Item_" + itemsData.group.ToString());
+            return LOCALE.Get("Item_" + itemsData.group.ToString() + "_" + count);
         }
 
         if (itemsData.type == Types.Type.Gen)
@@ -164,7 +164,6 @@ public class DataConverter : MonoBehaviour
                     chestItemsCount = Random.Range(3 + count, 5 + count);
                     break;
             }
-
         }
         else
         {

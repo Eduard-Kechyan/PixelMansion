@@ -7,6 +7,7 @@ public class Glob : MonoBehaviour
 {
     // Variables
     public static AnimationCurve defaultChanceCurve;
+    public static PopupManager popupManager;
 
     // Instance
     public static Glob Instance;
@@ -17,19 +18,21 @@ public class Glob : MonoBehaviour
     void Awake()
     {
         Instance = this;
+
+        popupManager = GetComponent<PopupManager>();
     }
 
     //// TIMEOUT ////
-    public static Coroutine SetTimout(Action function, float seconds = 1f)
+    public static Coroutine SetTimeout(Action function, float seconds = 1f)
     {
-        Coroutine newTimeout = Instance.StartCoroutine(SetTimoutCoroutine(function, seconds));
+        Coroutine newTimeout = Instance.StartCoroutine(SetTimeoutCoroutine(function, seconds));
 
         timeouts.Add(newTimeout);
 
         return newTimeout;
     }
 
-    private static IEnumerator SetTimoutCoroutine(Action function, float seconds = 1f)
+    private static IEnumerator SetTimeoutCoroutine(Action function, float seconds = 1f)
     {
         yield return new WaitForSeconds(seconds);
 
@@ -44,7 +47,7 @@ public class Glob : MonoBehaviour
     //// INTERVALS ////
     public static Coroutine SetInterval(Action function, float seconds = 1f, bool callOnce = true)
     {
-        Coroutine newInterval = Instance.StartCoroutine(SetTimoutCoroutine(function, seconds));
+        Coroutine newInterval = Instance.StartCoroutine(SetTimeoutCoroutine(function, seconds));
 
         intervals.Add(newInterval);
 

@@ -91,7 +91,7 @@ public class ItemHandler : MonoBehaviour
         newItem.isMaxLavel = itemData.isMaxLavel;
         newItem.group = shopItem.group;
         newItem.genGroup = shopItem.genGroup;
-        newItem.chestGroup = itemData.chestGroup;
+        newItem.chestGroup = shopItem.chestGroup;
         newItem.hasTimer = itemData.hasTimer;
         newItem.startTime = itemData.startTime;
         newItem.seconds = itemData.seconds;

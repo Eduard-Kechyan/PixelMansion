@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5574773175297324107}
   - component: {fileID: 2928596913998717830}
   - component: {fileID: 5752427193134997273}
+  - component: {fileID: 8380244147946217097}
   m_Layer: 0
   m_Name: DataManager
   m_TagString: Untagged
@@ -55,7 +56,6 @@ MonoBehaviour:
   chests: {fileID: 11400000, guid: 4269ec268f2435744bcb14fe4886b718, type: 2}
   initialItems: {fileID: 11400000, guid: 4e4dfc5175592b245906d52a6ec1dcd6, type: 2}
   localeCombiner: {fileID: 0}
-  shopData: {fileID: 11400000, guid: 9ccd7e0ffc1f88547b1138b322dfed0d, type: 2}
   loaded: 0
   initialJsonData: 
   unlockedJsonData: 
@@ -123,3 +123,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9baa39e5b3db28d41b766732ca37294d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8380244147946217097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2434679965947527676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcb6fb8e8686cc947bead74eb429e63b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shopData: {fileID: 11400000, guid: 9ccd7e0ffc1f88547b1138b322dfed0d, type: 2}
+  dailyDate: 8
+  dailyItem1: 0
+  dailyItem2: 0
+  dailyContent: []

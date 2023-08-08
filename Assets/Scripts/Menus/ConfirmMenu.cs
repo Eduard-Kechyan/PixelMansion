@@ -12,6 +12,8 @@ public class ConfirmMenu : MonoBehaviour
     private I18n LOCALE;
 
     private bool denyTapped = false;
+    private Action callback;
+    private Action callbackAlt;
 
     // UI
     private VisualElement root;
@@ -38,6 +40,9 @@ public class ConfirmMenu : MonoBehaviour
         confirmButton = menuContent.Q<Button>("ConfirmButton");
         denyButton = menuContent.Q<Button>("DenyButton");
 
+        confirmButton.clicked += () => ConfirmButtonClicked();
+        denyButton.clicked += () => DenyButtonClicked();
+
         Init();
     }
 
@@ -48,30 +53,20 @@ public class ConfirmMenu : MonoBehaviour
         confirmMenu.style.opacity = 0;
     }
 
-    public void Open(string preFix, Action callback, Action callbackAlt = null, bool alt = false, bool closeAll = false)
+    public void Open(string preFix, Action newCllback, Action newCallbackAlt = null, bool alt = false, bool closeAll = false)
     {
-        confirmButton.clicked += () => callback();
-        Debug.Log("aaa");
+        callback = newCllback;
 
         if (!denyTapped)
         {
-            Debug.Log("aa");
-            if (callbackAlt == null)
+            if (newCallbackAlt != null)
             {
-                Debug.Log("a");
-                denyButton.clicked += () =>{
-                    Debug.Log("b");
-                    menuUI.CloseMenu(confirmMenu.name);
-                };
-            }
-            else
-            {
-                denyButton.clicked += () => callbackAlt();
+                callbackAlt = newCallbackAlt;
             }
 
             denyTapped = true;
 
-            Glob.SetTimout(() =>
+            Glob.SetTimeout(() =>
             {
                 denyTapped = false;
             }, 0.35f);
@@ -95,6 +90,23 @@ public class ConfirmMenu : MonoBehaviour
 
         // Open menu
         menuUI.OpenMenu(confirmMenu, title, false, closeAll);
+    }
+
+    void ConfirmButtonClicked()
+    {
+        callback?.Invoke();
+    }
+
+    void DenyButtonClicked()
+    {
+        if (callbackAlt != null)
+        {
+            callbackAlt();
+        }
+        else
+        {
+            Close();
+        }
     }
 
     public void Close()

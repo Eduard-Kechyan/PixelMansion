@@ -44,14 +44,14 @@ public class ValuePop : MonoBehaviour
         root = GetComponent<UIDocument>().rootVisualElement;
     }
 
-    public void PopValue(int amount, string type)
+    public void PopValue(int amount, string type, bool multiply = false)
     {
-        StartCoroutine(HandlePopValue(amount, type, Vector2.zero));
+        StartCoroutine(HandlePopValue(amount, type, Vector2.zero, false,multiply));
     }
 
     public void PopColl(int level, string type, Vector2 position)
     {
-        StartCoroutine(HandlePopValue(level, type, position, true));
+        StartCoroutine(HandlePopValue(level, type, position, true,true));
     }
 
     public void PopInventoryItem(Sprite sprite, Vector2 initialPosition, Vector2 position)
@@ -76,7 +76,8 @@ public class ValuePop : MonoBehaviour
         int amount,
         string type,
         Vector2 position,
-        bool useOffset = false
+        bool useOffset = false,
+        bool multiply=false
     )
     {
         Sprite valuePopSprite;
@@ -152,16 +153,16 @@ public class ValuePop : MonoBehaviour
         switch (type)
         {
             case "Energy":
-                gameData.UpdateEnergy(amount, true);
+                gameData.UpdateEnergy(amount, multiply);
                 break;
             case "Gold":
-                gameData.UpdateGold(amount, true);
+                gameData.UpdateGold(amount, multiply);
                 break;
             case "Gems":
-                gameData.UpdateGems(amount, true);
+                gameData.UpdateGems(amount, multiply);
                 break;
             default: // Experience
-                gameData.UpdateExperience(amount, true);
+                gameData.UpdateExperience(amount, multiply);
                 break;
         }
     }

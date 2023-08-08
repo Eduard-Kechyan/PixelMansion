@@ -7,10 +7,10 @@ public class BonusManager : MonoBehaviour
 {
     // Variables
     public BoardManager boardManager;
-    public BoardPopup boardPopup;
 
     // References
     private GameplayUI gameplayUI;
+    private PopupManager popupManager;
 
     // Instances
     private GameData gameData;
@@ -20,6 +20,7 @@ public class BonusManager : MonoBehaviour
     {
         // References
         gameplayUI = GetComponent<GameplayUI>();
+        popupManager=Glob.popupManager;
 
         // Cache instances
         gameData = GameData.Instance;
@@ -56,7 +57,7 @@ public class BonusManager : MonoBehaviour
         }
         else
         {
-            boardPopup.AddPop(
+            popupManager.AddPop(
                 LOCALE.Get("pop_board_full"),
                 gameplayUI.bonusButtonPosition,
                 true,

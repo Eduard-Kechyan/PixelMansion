@@ -20,6 +20,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -32,6 +33,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -44,6 +46,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -56,6 +59,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -68,6 +72,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -80,6 +85,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -92,6 +98,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -104,6 +111,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -116,6 +124,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -128,6 +137,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -140,6 +150,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -152,6 +163,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -164,6 +176,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -176,6 +189,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -188,6 +202,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -200,6 +215,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -212,6 +228,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -224,6 +241,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -236,6 +254,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -248,6 +267,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -260,6 +280,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -272,6 +293,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -284,6 +306,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -296,6 +319,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -308,6 +332,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -320,6 +345,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -332,6 +358,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -344,6 +371,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -356,6 +384,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -368,6 +397,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -380,6 +410,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -392,6 +423,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -404,6 +436,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -416,6 +449,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -428,6 +462,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -440,6 +475,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -452,6 +488,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -464,6 +501,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -476,6 +514,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -488,6 +527,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -500,6 +540,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -512,6 +553,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -524,6 +566,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -536,6 +579,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -548,6 +592,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -560,6 +605,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -572,6 +618,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -584,6 +631,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -596,6 +644,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -608,6 +657,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -620,6 +670,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -632,6 +683,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -644,6 +696,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -656,6 +709,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -668,6 +722,7 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -680,90 +735,98 @@ MonoBehaviour:
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
     chestItemsSet: 0
     gemPoped: 0
-  - sprite: {fileID: 0}
-    type: 0
+  - sprite: {fileID: 21300000, guid: 69417eebe82810f43876239658178873, type: 3}
+    type: 2
     state: 0
     group: 0
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
     chestItemsSet: 0
     gemPoped: 0
-  - sprite: {fileID: 0}
-    type: 0
+  - sprite: {fileID: 21300000, guid: 69417eebe82810f43876239658178873, type: 3}
+    type: 2
     state: 0
     group: 0
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
     chestItemsSet: 0
     gemPoped: 0
-  - sprite: {fileID: 0}
-    type: 0
+  - sprite: {fileID: 21300000, guid: 69417eebe82810f43876239658178873, type: 3}
+    type: 2
     state: 0
     group: 0
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
     chestItemsSet: 0
     gemPoped: 0
-  - sprite: {fileID: 0}
-    type: 0
+  - sprite: {fileID: 21300000, guid: 69417eebe82810f43876239658178873, type: 3}
+    type: 2
     state: 0
     group: 0
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
     chestItemsSet: 0
     gemPoped: 0
-  - sprite: {fileID: 0}
-    type: 0
+  - sprite: {fileID: 21300000, guid: 69417eebe82810f43876239658178873, type: 3}
+    type: 2
     state: 0
     group: 0
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
     chestItemsSet: 0
     gemPoped: 0
-  - sprite: {fileID: 0}
-    type: 0
+  - sprite: {fileID: 21300000, guid: 69417eebe82810f43876239658178873, type: 3}
+    type: 2
     state: 0
     group: 0
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0
     chestItemsSet: 0
     gemPoped: 0
-  - sprite: {fileID: 0}
-    type: 0
+  - sprite: {fileID: 21300000, guid: 69417eebe82810f43876239658178873, type: 3}
+    type: 2
     state: 0
     group: 0
     genGroup: 0
     collGroup: 0
     chestGroup: 0
+    generatesAt: 0
     crate: 0
     order: 0
     chestItems: 0

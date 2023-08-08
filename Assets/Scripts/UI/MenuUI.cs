@@ -11,7 +11,7 @@ public class MenuUI : MonoBehaviour
     public float menuDecreaseOffset = 0.8f;
     public bool menuOpen = false;
 
-    private List<MenuItem> menus = new List<MenuItem>();
+    private List<MenuItem> menus = new ();
     private bool valuesShown;
     private bool closeAllMenus = false;
     private bool closeingAllMenus = false;
@@ -81,7 +81,7 @@ public class MenuUI : MonoBehaviour
 
     void ShowMenu(string newTitle)
     {
-        VisualElement newMenu = new VisualElement();
+        VisualElement newMenu = new ();
 
         // Show the menu locale container
         menuLocaleWrapper.style.display = DisplayStyle.Flex;

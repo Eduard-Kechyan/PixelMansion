@@ -78,13 +78,20 @@ public class InfoMenu : MonoBehaviour
             // Title
             string title;
 
-            if (item.type == Types.Type.Gen)
+            switch (item.type)
             {
-                title = item.itemLevelName;
-            }
-            else
-            {
-                title = item.group.ToString();
+                case Types.Type.Item:
+                    title = LOCALE.Get("Item_" + item.group + "_" + item.level);
+                    break;
+                case Types.Type.Gen:
+                    title = LOCALE.Get("Gen_" + item.genGroup);
+                    break;
+                case Types.Type.Coll:
+                    title = LOCALE.Get("Coll_" + item.collGroup);
+                    break;
+                default: // Types.Type.Chest
+                    title = LOCALE.Get("Chest_" + item.chestGroup);
+                    break;
             }
 
             // Item data
@@ -168,7 +175,8 @@ public class InfoMenu : MonoBehaviour
             || (isCollGroup && item.collGroup == items[i].collGroup)
             || (isChestGroup && item.chestGroup == items[i].chestGroup)
             )
-            {                for (int j = 0; j < items[i].content.Length; j++)
+            {
+                for (int j = 0; j < items[i].content.Length; j++)
                 {
                     VisualElement current = new VisualElement { name = "Current" };
                     VisualElement unlockedItem = new VisualElement { name = "UnlockedItem" + i };

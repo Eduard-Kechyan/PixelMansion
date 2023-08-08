@@ -71,6 +71,9 @@ TagManager:
   - name: OuterWallsFront
     uniqueID: 198848411
     locked: 0
+  - name: Doors
+    uniqueID: 961909709
+    locked: 0
   - name: OuterStairs
     uniqueID: 2841718309
     locked: 0
@@ -79,4 +82,7 @@ TagManager:
     locked: 0
   - name: NavMeshArea
     uniqueID: 3312263077
+    locked: 0
+  - name: Overlay
+    uniqueID: 2027826095
     locked: 0

@@ -140,7 +140,7 @@ public class ValuesUI : MonoBehaviour
         }
         else if (!energyTimer.waiting)
         {
-            energyCoroutine = Glob.SetTimout(() =>
+            energyCoroutine = Glob.SetTimeout(() =>
             {
                 energyTimerLabel.style.display = DisplayStyle.None;
             }, 1f);

@@ -47,13 +47,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   valuesData: {fileID: 11400000, guid: e82c58a155150ca47be106027d9ca637, type: 2}
   energyTimer: {fileID: 0}
-  shopData: {fileID: 11400000, guid: 9ccd7e0ffc1f88547b1138b322dfed0d, type: 2}
   maxExperience: 10
   leftoverExperience: 0
-  dailyDate: 7
-  dailyItem1: 0
-  dailyItem2: 0
-  dailyContent: []
   experience: 0
   level: 0
   energy: 100

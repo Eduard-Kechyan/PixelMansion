@@ -15,20 +15,19 @@ public class ShopMenu : MonoBehaviour
     public ShopData shopData;
     public Sprite smallGoldSprite;
     public Sprite smallGemSprite;
-    public bool purchaseFailed = false;
 
     private string scrollLocation;
 
     // References
+    private GameData gameData;
+    private DailyData dailyData;
+    private ItemHandler itemHandler;
+    private I18n LOCALE;
     private MenuUI menuUI;
     private NoteMenu noteMenu;
     private InfoMenu infoMenu;
     private ValuePop valuePop;
-
-    // Instances
-    private GameData gameData;
-    private ItemHandler itemHandler;
-    private I18n LOCALE;
+    private PaymentsManager paymentsManager;
 
     // UI
     private VisualElement root;
@@ -48,15 +47,15 @@ public class ShopMenu : MonoBehaviour
     void Start()
     {
         // Cache
+        gameData = GameData.Instance;
+        dailyData = DataManager.Instance.GetComponent<DailyData>();
+        LOCALE = I18n.Instance;
+        itemHandler = DataManager.Instance.GetComponent<ItemHandler>();
         menuUI = GetComponent<MenuUI>();
         noteMenu = GetComponent<NoteMenu>();
         infoMenu = GetComponent<InfoMenu>();
         valuePop = GetComponent<ValuePop>();
-
-        // Cache instances
-        gameData = GameData.Instance;
-        LOCALE = I18n.Instance;
-        itemHandler = DataManager.Instance.GetComponent<ItemHandler>();
+        paymentsManager = Services.Instance.GetComponent<PaymentsManager>();
 
         // Cache UI
         root = GetComponent<UIDocument>().rootVisualElement;
@@ -112,7 +111,7 @@ public class ShopMenu : MonoBehaviour
 
     void InitializeDaily()
     {
-        Types.ShopItemsContent[] dailyContent = gameData.dailyContent;
+        Types.ShopItemsContent[] dailyContent = dailyData.dailyContent;
 
         for (int i = 0; i < dailyContent.Length; i++)
         {
@@ -152,7 +151,7 @@ public class ShopMenu : MonoBehaviour
 
             infoButton.clicked += () => ShowInfo(nameOrder);
 
-            if (i == 0 && gameData.dailyItem1 || i == 1 && gameData.dailyItem2)
+            if (i == 0 && dailyData.dailyItem1 || i == 1 && dailyData.dailyItem2)
             {
                 buyButton.SetEnabled(false);
                 buyButtonLabel.text = LOCALE.Get("shop_menu_free_gotten");
@@ -470,10 +469,7 @@ public class ShopMenu : MonoBehaviour
 
         Types.ShopValuesContent shopGem = shopData.gemsContent[order];
 
-        // shopGem.price;
-
-        // TODO - Check if successfuly bought
-        if (!purchaseFailed) // NOTE
+        paymentsManager.Purchase(shopGem.price, () =>
         {
             valuePop.PopValue(shopGem.amount, "Gems");
 
@@ -483,13 +479,12 @@ public class ShopMenu : MonoBehaviour
             }
 
             menuUI.CloseMenu(shopMenu.name);
-        }
-        else
+        }, () =>
         {
             string[] notes = new string[] { "note_menu_purchase_failed_text" };
 
-            noteMenu.Open("note_menu_purchase_failed_title", notes);
-        }
+            noteMenu.Open("note_menu_purchase_failed", notes);
+        });
     }
 
     void BuyGold(string nameOrder)
@@ -498,22 +493,17 @@ public class ShopMenu : MonoBehaviour
 
         Types.ShopValuesContent shopGold = shopData.goldContent[order];
 
-        // shopGold.price;
-
-        // TODO - Check if successfuly bought
-        if (!purchaseFailed) // NOTE
+        paymentsManager.Purchase(shopGold.price, () =>
         {
             valuePop.PopValue(shopGold.amount, "Gold");
 
             menuUI.CloseMenu(shopMenu.name);
-            ;
-        }
-        else
+        }, () =>
         {
             string[] notes = new string[] { "note_menu_purchase_failed_text" };
 
             noteMenu.Open("note_menu_purchase_failed", notes);
-        }
+        });
     }
 
     void Restore(string type)
@@ -527,11 +517,11 @@ public class ShopMenu : MonoBehaviour
 
         if (order == 0)
         {
-            gameData.dailyItem1 = true;
+            dailyData.dailyItem1 = true;
         }
         else
         {
-            gameData.dailyItem2 = true;
+            dailyData.dailyItem2 = true;
         }
     }
 

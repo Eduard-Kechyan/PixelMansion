@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Locale;
 
 public class Selector : MonoBehaviour
 {
@@ -31,6 +32,8 @@ public class Selector : MonoBehaviour
     private Camera cam;
     private SoundManager soundManager;
     private SelectorUIHandler selectorUIHandler;
+   // private PopupManager popupManager;
+    private I18n LOCALE;
     /* private CharMove charMoveMain;
      private CharSpeech charSpeechMain;*/
 
@@ -44,6 +47,8 @@ public class Selector : MonoBehaviour
         cam = Camera.main;
         soundManager = SoundManager.Instance;
         selectorUIHandler = hubGameUiDoc.GetComponent<SelectorUIHandler>();
+        //popupManager = GetComponent<PopupManager>();
+        LOCALE = I18n.Instance;
         /*  charMoveMain = CharMain.Instance.charMove;
           charSpeechMain = CharMain.Instance.charSpeech;*/
 
@@ -70,6 +75,46 @@ public class Selector : MonoBehaviour
 
         ContactFilter2D contactFilter2D = new ContactFilter2D();
 
+        contactFilter2D.SetLayerMask(LayerMask.GetMask("Room"));
+
+        Physics2D.Raycast(
+                       cam.ScreenToWorldPoint(position),
+                       Vector2.zero,
+                       contactFilter2D,
+                       hits,
+                       Mathf.Infinity
+                   );
+
+        hits.Sort(SortColliders);
+
+        if (hits.Count > 0 && (hits[0] || hits[0].collider != null))
+        {
+            if (hits[0].transform.GetComponent<RoomHandler>().locked)
+            {
+                LockedRoomSelecting(position);
+            }
+            else
+            {
+                DefaultSelecting(position, tapped);
+            }
+        }
+        else
+        {
+            DefaultSelecting(position, tapped);
+        }
+    }
+
+    void LockedRoomSelecting(Vector2 position)
+    {
+       // popupManager.AddPop(LOCALE.Get("pop_room_locked"), position, true);
+    }
+
+    void DefaultSelecting(Vector2 position, bool tapped = false)
+    {
+        List<RaycastHit2D> hits = new List<RaycastHit2D>();
+
+        ContactFilter2D contactFilter2D = new ContactFilter2D();
+
         contactFilter2D.SetLayerMask(LayerMask.GetMask("Selectable"));
 
         Physics2D.Raycast(
@@ -91,7 +136,6 @@ public class Selector : MonoBehaviour
             // Check if the selected selectable is the same
             if (!tapped && isSelected && selectable != null && (selectable.id == newSelectable.id || (checkForOld && newSelectable.GetOld())))
             {
-                Debug.Log("A");
                 return;
             }
             else
@@ -161,6 +205,7 @@ public class Selector : MonoBehaviour
                 }
             }
         }
+
     }
 
     public void SelectOption(int option)

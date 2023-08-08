@@ -41,7 +41,7 @@ public class BoardInteractions : MonoBehaviour
     private BoardManager boardManager;
     private InitializeBoard initializeBoard;
     private BoardIndication boardIndication;
-    private BoardPopup boardPopup;
+    private PopupManager popupManager;
     private InventoryMenu inventoryMenu;
     private DataManager dataManager;
     private GameData gameData;
@@ -65,7 +65,7 @@ public class BoardInteractions : MonoBehaviour
         selectionManager = GetComponent<SelectionManager>();
         boardManager = GetComponent<BoardManager>();
         boardIndication = GetComponent<BoardIndication>();
-        boardPopup = GetComponent<BoardPopup>();
+        popupManager = Glob.popupManager;
         inventoryMenu = GameRefs.Instance.inventoryMenu;
         soundManager = SoundManager.Instance;
         dataManager = DataManager.Instance;
@@ -404,7 +404,7 @@ public class BoardInteractions : MonoBehaviour
                     else
                     {
                         // TODO - Check if we need this
-                        // boardPopup.AddPop(LOCALE.Get("pop_max_level"), otherItem.transform.position, true);
+                        // popupManager.AddPop(LOCALE.Get("pop_max_level"), otherItem.transform.position, true);
                     }
                 }
                 else

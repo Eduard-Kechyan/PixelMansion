@@ -72,7 +72,7 @@ public class SettingsMenu : MonoBehaviour
         confirmMenu = GetComponent<ConfirmMenu>();
         LOCALE = I18n.Instance;
         settings = Settings.Instance;
-        notifics = Notifics.Instance;
+        notifics = Services.Instance.GetComponent<Notifics>();
         resetHandler = GetComponent<ResetHandler>();
 
         // Cache UI

@@ -19,7 +19,7 @@ public class InventoryMenu : MonoBehaviour
     private ConfirmMenu confirmMenu;
     private GameData gameData;
     private DataManager dataManager;
-    private BoardPopup boardPopup;
+    private PopupManager popupManager;
     private SelectionManager selectionManager;
     private ValuePop valuePop;
     private GameplayUI gameplayUI;
@@ -46,13 +46,13 @@ public class InventoryMenu : MonoBehaviour
         confirmMenu = GetComponent<ConfirmMenu>();
         gameData = GameData.Instance;
         dataManager = DataManager.Instance;
+        popupManager = Glob.popupManager;
         valuePop = GameRefs.Instance.valuePop;
         gameplayUI = GameRefs.Instance.gameplayUI;
         soundManager = SoundManager.Instance;
 
         if (boardManager != null)
         {
-            boardPopup = boardManager.GetComponent<BoardPopup>();
             selectionManager = boardManager.GetComponent<SelectionManager>();
         }
 
@@ -187,9 +187,9 @@ public class InventoryMenu : MonoBehaviour
             {
                 confirmMenu.Close();
 
-                Glob.SetTimout(() =>
+                Glob.SetTimeout(() =>
                 {
-                    shopMenu.Open();
+                    shopMenu.Open("Gold");
                 }, 0.35f);
             });
         }
@@ -369,7 +369,7 @@ public class InventoryMenu : MonoBehaviour
                 }
                 else
                 {
-                    boardPopup.AddPop(
+                    popupManager.AddPop(
                         LOCALE.Get("pop_inventory_full"),
                         item.transform.position,
                         true,

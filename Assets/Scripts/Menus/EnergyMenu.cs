@@ -15,6 +15,7 @@ public class EnergyMenu : MonoBehaviour
     private MenuUI menuUI;
     private ShopMenu shopMenu;
     private ValuePop valuePop;
+    private AdsManager adsManager;
 
     // Instances
     private GameData gameData;
@@ -36,6 +37,7 @@ public class EnergyMenu : MonoBehaviour
         menuUI = GetComponent<MenuUI>();
         shopMenu = GetComponent<ShopMenu>();
         valuePop = GetComponent<ValuePop>();
+        adsManager = Services.Instance.GetComponent<AdsManager>();
 
         // Cache instances
         gameData = GameData.Instance;
@@ -88,8 +90,6 @@ public class EnergyMenu : MonoBehaviour
         // Title
         string title = LOCALE.Get("energy_menu_title");
 
-        watchButton.SetEnabled(false);
-
         // Open menu
         menuUI.OpenMenu(energyMenu, title, true);
     }
@@ -97,13 +97,11 @@ public class EnergyMenu : MonoBehaviour
     // Add energy after successfuly watching an ad
     void WatchAdHandle()
     {
-        // TODO - Add a check here to see if the ad was successfuly watched
+        adsManager.WatchAd(()=>{
+            gameData.UpdateEnergy(energyWatchAmount);
 
-        Debug.Log("Ad watched!");
-
-        gameData.UpdateEnergy(energyWatchAmount);
-
-        menuUI.CloseMenu(energyMenu.name);
+            menuUI.CloseMenu(energyMenu.name);
+        });        
     }
 
     // Add energy after buyinh it

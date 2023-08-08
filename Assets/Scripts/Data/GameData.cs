@@ -10,7 +10,6 @@ public class GameData : MonoBehaviour
     // Variables
     public ValuesData valuesData;
     public EnergyTimer energyTimer;
-    public ShopData shopData;
 
     public const int WIDTH = 7;
     public const int HEIGHT = 9;
@@ -25,11 +24,6 @@ public class GameData : MonoBehaviour
 
     public int maxExperience = 10;
     public int leftoverExperience = 0;
-
-    public int dailyDate = DateTime.UtcNow.Day;
-    public bool dailyItem1 = false;
-    public bool dailyItem2 = false;
-    public Types.ShopItemsContent[] dailyContent;
 
     // Values
     public int experience = 0; // 0% - 100%
@@ -77,7 +71,6 @@ public class GameData : MonoBehaviour
     private GameplayUI gameplayUI;
     private DataManager dataManager;
     private SoundManager soundManager;
-    private JsonHandler jsonHandler;
 
     // Instance
     public static GameData Instance;
@@ -100,7 +93,6 @@ public class GameData : MonoBehaviour
         // Cache
         dataManager = DataManager.Instance;
         soundManager = SoundManager.Instance;
-        jsonHandler = dataManager.GetComponent<JsonHandler>();
 
         canLevelUp = PlayerPrefs.GetInt("canLevelUp") == 1;
 
@@ -109,8 +101,6 @@ public class GameData : MonoBehaviour
         CalcMaxExperience();
 
         CalcGamePixelHeight();
-
-        CheckDailyItems();
     }
 
     public void Init(string sceneName)
@@ -122,6 +112,15 @@ public class GameData : MonoBehaviour
         {
             gameplayUI = GameRefs.Instance.gameplayUI;
         }
+    }
+
+    public void InitAlt()
+    {
+        // Load spirtes from resources
+        itemsSprites = Resources.LoadAll<Sprite>("Sprites/Items");
+        generatorsSprites = Resources.LoadAll<Sprite>("Sprites/Generators");
+        collectablesSprites = Resources.LoadAll<Sprite>("Sprites/Collectables");
+        chestsSprites = Resources.LoadAll<Sprite>("Sprites/Chests");
     }
 
     //////// SET ////////
@@ -142,7 +141,7 @@ public class GameData : MonoBehaviour
 
         if (checkCanLevelUp)
         {
-            SetExperienceReady();
+           // SetExperienceReady();
         }
     }
 
@@ -365,7 +364,8 @@ public class GameData : MonoBehaviour
             sprite = item.sprite,
             type = item.type,
             group = item.group,
-            genGroup = item.genGroup
+            genGroup = item.genGroup,
+            chestGroup = item.chestGroup
         };
 
         bonusData.Add(newBonus);
@@ -394,15 +394,6 @@ public class GameData : MonoBehaviour
     }
 
     //////// OTHER ////////
-
-    public void LoadSprites()
-    {
-        // Load spirtes from resources
-        itemsSprites = Resources.LoadAll<Sprite>("Sprites/Items");
-        generatorsSprites = Resources.LoadAll<Sprite>("Sprites/Generators");
-        collectablesSprites = Resources.LoadAll<Sprite>("Sprites/Collectables");
-        chestsSprites = Resources.LoadAll<Sprite>("Sprites/Chests");
-    }
 
     void ToggleCanLevelUpCheck(bool canLevelUpCheck)
     {
@@ -468,52 +459,6 @@ public class GameData : MonoBehaviour
     {
         maxExperience = valuesData.maxExperienceMultiplier[level];
     }
-
-    void CheckDailyItems()
-    {
-        dailyDate = DateTime.UtcNow.Day;
-
-        if (PlayerPrefs.HasKey("dailyDate"))
-        {
-            if (dailyDate == PlayerPrefs.GetInt("dailyDate"))
-            {
-                GetDailyContent();
-                dailyItem1 = PlayerPrefs.GetInt("dailyItem1") == 1;
-                dailyItem2 = PlayerPrefs.GetInt("dailyItem2") == 1;
-            }
-            else
-            {
-                // A new day
-                SetDailyContent();
-                dailyItem1 = false;
-                dailyItem2 = false;
-            }
-        }
-        else
-        {
-            PlayerPrefs.SetInt("dailyDate", DateTime.UtcNow.Day);
-            PlayerPrefs.SetInt("dailyItem1", 0);
-            PlayerPrefs.SetInt("dailyItem2", 0);
-            SetDailyContent();
-        }
-    }
-
-
-    public void SetDailyContent()
-    {
-        Types.ShopItemsContent[] dailyContent = new Types.ShopItemsContent[shopData.dailyContent.Length];
-
-        dailyContent[0] = shopData.dailyContent[0];
-        dailyContent[1] = shopData.dailyContent[UnityEngine.Random.Range(1, 3)];
-
-        PlayerPrefs.SetString("dailyContent", jsonHandler.ConvertShopItemContentToJson(dailyContent));
-    }
-
-    public void GetDailyContent()
-    {
-        dailyContent = jsonHandler.ConvertShopItemContentFromJson(PlayerPrefs.GetString("dailyContent"));
-    }
-
 
     void SetTenthLevel()
     {

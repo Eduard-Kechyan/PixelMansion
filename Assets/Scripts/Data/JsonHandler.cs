@@ -276,14 +276,14 @@ public class JsonHandler : MonoBehaviour
     public Types.ShopItemsContent[] ConvertShopItemContentFromJson(string shopContentString)
     {
         Types.ShopItemsContentJson[] shopContentJson = JsonConvert.DeserializeObject<Types.ShopItemsContentJson[]>(shopContentString);
-
+        
         Types.ShopItemsContent[] shopContentData = new Types.ShopItemsContent[shopContentJson.Length];
 
         for (int i = 0; i < shopContentJson.Length; i++)
         {
             Types.Type newType = Glob.ParseEnum<Types.Type>(shopContentJson[i].type);
 
-            Types.ShopItemsContent newShopContentDataData = new Types.ShopItemsContent
+            Types.ShopItemsContent newShopContentDataData = new ()
             {
                 left = shopContentJson[i].left,
                 price = shopContentJson[i].price,
@@ -294,21 +294,19 @@ public class JsonHandler : MonoBehaviour
                 sprite = gameData.GetSprite(shopContentJson[i].sprite, newType),
                 priceType = Glob.ParseEnum<Types.ShopValuesType>(shopContentJson[i].priceType),
             };
-
             shopContentData[i] = newShopContentDataData;
         }
 
         return shopContentData;
     }
 
-    public string ConvertShopItemContentToJson(Types.ShopItemsContent[] shopContentData)
+    public string ConvertShopItemContentToJson(Types.ShopItemsContent[] shopContentData, bool ignoreLast = false)
     {
-        Debug.Log(shopContentData[0]);
-        Debug.Log(shopContentData[0].sprite);
+        int length = ignoreLast ? shopContentData.Length - 1 : shopContentData.Length;
 
-        Types.ShopItemsContentJson[] shopContentJson = new Types.ShopItemsContentJson[shopContentData.Length];
+        Types.ShopItemsContentJson[] shopContentJson = new Types.ShopItemsContentJson[length];
 
-        for (int i = 0; i < shopContentData.Length; i++)
+        for (int i = 0; i < length; i++)
         {
             Types.ShopItemsContentJson newShopContentJson = new()
             {
@@ -327,7 +325,6 @@ public class JsonHandler : MonoBehaviour
 
         return JsonConvert.SerializeObject(shopContentJson);
     }
-
 
     //// OTHER ////
 

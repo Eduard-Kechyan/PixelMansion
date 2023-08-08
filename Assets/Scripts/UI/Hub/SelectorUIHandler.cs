@@ -72,7 +72,7 @@ public class SelectorUIHandler : MonoBehaviour
         }
     }
 
-    public void ToggleSelector()
+    void ToggleSelector()
     {
         isSelectorOpen = !isSelectorOpen;
 

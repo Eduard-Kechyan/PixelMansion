@@ -12,6 +12,10 @@ public class LocaleCombiner : MonoBehaviour
 
     private Object[] chunks;
 
+    void Awake(){
+        Combine();
+    }
+
     void OnValidate()
     {
         if (combine)

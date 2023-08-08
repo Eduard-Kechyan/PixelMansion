@@ -6,8 +6,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "ShopData", menuName = "ScriptableObject/ShopData", order = 2)]
 public class ShopData : ScriptableObject
 {
-    public Types.ShopItemsContent[] levelRewardContent;
-    public Types.ShopItemsContent[] levelTenRewardContent;
     public Types.ShopItemsContent[] dailyContent;
     public Types.ShopItemsContent[] itemsContent;
     public Types.ShopValuesContent[] gemsContent;

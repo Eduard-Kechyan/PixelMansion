@@ -7,7 +7,12 @@ public class GameplayUI : MonoBehaviour
 {
     // Variables
     public SceneLoader sceneLoader;
+
+    [Header("Indicators")]
     public Sprite[] inventoryIndicatorSprites;
+    public Sprite[] bonusIndicatorSprites;
+    public float inventoryIndicatorSpeed = 5f;
+    public float bonusIndicatorSpeed = 0.05f;
 
     [HideInInspector]
     public Vector2 bonusButtonPosition;
@@ -15,6 +20,7 @@ public class GameplayUI : MonoBehaviour
     public Vector2 inventoryButtonPosition;
 
     private bool blippingInventoryIndicator = false;
+    private bool blippingBonusIndicator = false;
 
     // References
     private BonusManager bonusManager;
@@ -33,6 +39,7 @@ public class GameplayUI : MonoBehaviour
     private Button shopButton;
     private Button taskButton;
     private VisualElement inventoryIndicator;
+    private VisualElement bonusIndicator;
 
     void Start()
     {
@@ -58,6 +65,7 @@ public class GameplayUI : MonoBehaviour
         inventoryButton.Q<VisualElement>("Border").pickingMode = PickingMode.Ignore;
 
         inventoryIndicator = inventoryButton.Q<VisualElement>("Indicator");
+        bonusIndicator = bonusButton.Q<VisualElement>("Indicator");
 
         // Button taps
         homeButton.clicked += () =>
@@ -135,13 +143,13 @@ public class GameplayUI : MonoBehaviour
 
         while (blippingInventoryIndicator)
         {
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(inventoryIndicatorSpeed);
 
             inventoryIndicator.style.backgroundImage = new StyleBackground(inventoryIndicatorSprites[count]);
 
             count++;
 
-            if (count == inventoryIndicatorSprites.Length-1)
+            if (count == inventoryIndicatorSprites.Length - 1)
             {
                 blippingInventoryIndicator = false;
 
@@ -176,6 +184,13 @@ public class GameplayUI : MonoBehaviour
                     gameData.bonusData[lastIndex].sprite
                 );
             }
+
+            if (!blippingBonusIndicator)
+            {
+                blippingBonusIndicator = true;
+
+                StartCoroutine(BonusIndicatorBlip());
+            }
         }
         else
         {
@@ -185,6 +200,36 @@ public class GameplayUI : MonoBehaviour
                 bonusButton.style.visibility = Visibility.Hidden;
                 bonusButton.style.opacity = 0f;
             }
+
+            if (blippingBonusIndicator)
+            {
+                blippingBonusIndicator = false;
+
+                StopCoroutine(BonusIndicatorBlip());
+            }
         }
     }
+
+    IEnumerator BonusIndicatorBlip()
+    {
+        int count = 0;
+
+        bonusIndicator.style.display = DisplayStyle.Flex;
+        bonusIndicator.style.backgroundImage = new StyleBackground(bonusIndicatorSprites[0]);
+
+        while (blippingBonusIndicator)
+        {
+            yield return new WaitForSeconds(bonusIndicatorSpeed);
+
+            if (count == bonusIndicatorSprites.Length)
+            {
+                count = 0;
+            }
+
+            bonusIndicator.style.backgroundImage = new StyleBackground(bonusIndicatorSprites[count]);
+
+            count++;
+        }
+    }
+
 }

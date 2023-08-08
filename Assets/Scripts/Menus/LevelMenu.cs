@@ -10,9 +10,13 @@ public class LevelMenu : MonoBehaviour
     // Variables
     public bool gameplayScene = false;
     public HubUI hubUI;
-    public ShopData shopData;
+    public LevelData levelData;
 
     private Types.ShopItemsContent[] rewardContent = new Types.ShopItemsContent[0];
+
+    private string levelRewardText0;
+    private string levelRewardText1;
+    private string levelRewardText2;
 
     // References
     private MenuUI menuUI;
@@ -33,11 +37,18 @@ public class LevelMenu : MonoBehaviour
     private Label levelLabel;
     private Label levelValue;
     private VisualElement levelFill;
-    private Label levelFillLabel;
-    private VisualElement levelRewards;
     private Label levelRewardsLabel;
     private Button levelUpButton;
     private Label levelUpLabel;
+
+    private Label levelFillLabel;
+    private VisualElement levelRewards;
+    private VisualElement levelReward0;
+    private Button levelRewardButton0;
+    private VisualElement levelReward1;
+    private Button levelRewardButton1;
+    private VisualElement levelReward2;
+    private Button levelRewardButton2;
 
     void Start()
     {
@@ -63,10 +74,32 @@ public class LevelMenu : MonoBehaviour
         levelValue = levelMenu.Q<VisualElement>("LevelIndicator").Q<Label>("Value");
         levelFill = levelMenu.Q<VisualElement>("Fill");
         levelFillLabel = levelMenu.Q<Label>("FillLabel");
-        levelRewards = levelMenu.Q<VisualElement>("LevelRewards");
-        levelRewardsLabel = levelRewards.Q<Label>("Label");
         levelUpButton = levelMenu.Q<Button>("LevelUpButton");
         levelUpLabel = levelUpButton.Q<Label>("LevelUpLabel");
+
+        levelRewards = levelMenu.Q<VisualElement>("LevelRewards");
+        levelRewardsLabel = levelRewards.Q<Label>("Label");
+        levelReward0 = levelRewards.Q<VisualElement>("LevelReward0");
+        levelRewardButton0 = levelReward0.Q<Button>("InfoButton");
+        levelReward1 = levelRewards.Q<VisualElement>("LevelReward1");
+        levelRewardButton1 = levelReward1.Q<Button>("InfoButton");
+        levelReward2 = levelRewards.Q<VisualElement>("LevelReward2");
+        levelRewardButton2 = levelReward2.Q<Button>("InfoButton");
+
+        levelRewardButton0.clicked += () =>
+        {
+            ShowInfo(levelRewardText0, 'd');
+        };
+
+        levelRewardButton1.clicked += () =>
+        {
+            ShowInfo(levelRewardText1, 'd');
+        };
+
+        levelRewardButton2.clicked += () =>
+        {
+            ShowInfo(levelRewardText2, 'd');
+        };
 
         levelUpButton.clicked += () => UpdateLevel();
 
@@ -95,11 +128,11 @@ public class LevelMenu : MonoBehaviour
 
         if (gameData.levelTen)
         {
-            rewardContent = shopData.levelTenRewardContent;
+            rewardContent = levelData.levelTenRewardContent;
         }
         else
         {
-            rewardContent = shopData.levelRewardContent;
+            rewardContent = levelData.levelRewardContent;
         }
 
         HandleRewards();
@@ -121,21 +154,20 @@ public class LevelMenu : MonoBehaviour
 
     void HandleRewards()
     {
+        levelReward0.style.backgroundImage = new StyleBackground(rewardContent[0].sprite);
+        levelReward1.style.backgroundImage = new StyleBackground(rewardContent[1].sprite);
+
+        levelRewardText0 = levelReward0.name;
+        levelRewardText1 = levelReward1.name;
+
         if (rewardContent.Length == 2)
         {
-            VisualElement lastLevelRewardBox = levelRewards.Q<VisualElement>("LevelReward2");
-
-            lastLevelRewardBox.style.display = DisplayStyle.None;
+            levelReward2.style.display = DisplayStyle.None;
         }
-
-        for (int i = 0; i < rewardContent.Length; i++)
+        else
         {
-            VisualElement levelRewardBox = levelRewards.Q<VisualElement>("LevelReward" + i);
-            Button infoButton = levelRewardBox.Q<Button>("InfoButton");
-
-            levelRewardBox.style.backgroundImage = new StyleBackground(rewardContent[i].sprite);
-
-            infoButton.clicked += () => ShowInfo(levelRewardBox.name, 'd');
+            levelReward2.style.backgroundImage = new StyleBackground(rewardContent[2].sprite);
+            levelRewardText2 = levelReward2.name;
         }
     }
 
@@ -161,10 +193,12 @@ public class LevelMenu : MonoBehaviour
 
             soundManager.PlaySound("LevelUp");
 
-            StartCoroutine(PopOutBonus(i * 0.2f, i, check));
+            StartCoroutine(PopOutBonus(i * 0.4f, i, check));
         }
 
-        menuUI.CloseMenu(levelMenu.name);
+        UpdateLevelMenu();
+
+        HandleRewards();
     }
 
     IEnumerator PopOutBonus(float seconds, int order, bool newCheck = true)

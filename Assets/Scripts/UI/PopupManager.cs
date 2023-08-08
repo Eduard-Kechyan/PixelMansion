@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
-using TMPro;
 
-public class BoardPopup : MonoBehaviour
+public class PopupManager : MonoBehaviour
 {
     // Varaibles
+    public SceneLoader sceneLoader;
     public Color textColor;
     public Color outlineColor;
     public Color shadowColor;
@@ -35,7 +35,10 @@ public class BoardPopup : MonoBehaviour
         localeManager = Settings.Instance.GetComponent<LocaleManager>();
 
         // UI
-        root = GameRefs.Instance.gameplayUIDoc.rootVisualElement;
+        if (sceneLoader.sceneName == "Gameplay")
+        {
+            root = GameRefs.Instance.gameplayUIDoc.rootVisualElement;
+        }
     }
 
     public void AddPop(string newText, Vector2 position, bool single = true, string sfxName = "")
@@ -57,7 +60,14 @@ public class BoardPopup : MonoBehaviour
             currentPops.Add(new Pop { text = newText, single = false });
         }
 
-        StartCoroutine(PopTextToBoard(newText, position, single, sfxName));
+        if (sceneLoader.sceneName == "Gameplay")
+        {
+            StartCoroutine(PopTextToBoard(newText, position, single, sfxName));
+        }
+        else
+        {
+            Debug.Log("Popup: " + newText);
+        }
     }
 
     void RemovePop(string oldText, bool single)
