@@ -46,7 +46,7 @@ public class InventoryMenu : MonoBehaviour
         confirmMenu = GetComponent<ConfirmMenu>();
         gameData = GameData.Instance;
         dataManager = DataManager.Instance;
-        popupManager = Glob.popupManager;
+        popupManager = GameRefs.Instance.popupManager;
         valuePop = GameRefs.Instance.valuePop;
         gameplayUI = GameRefs.Instance.gameplayUI;
         soundManager = SoundManager.Instance;

@@ -64,6 +64,7 @@ public class CameraPan : MonoBehaviour
     // References
     private Camera cam;
     private MenuUI menuUI;
+    private PopupManager popupManager;
 
     // UI
     private VisualElement root;
@@ -73,6 +74,7 @@ public class CameraPan : MonoBehaviour
         // Cache
         cam = Camera.main;
         menuUI = GameRefs.Instance.menuUI;
+        popupManager=GameRefs.Instance.popupManager;
 
         // Cache UI
         root = GameRefs.Instance.hubUIDoc.rootVisualElement;
@@ -256,7 +258,7 @@ public class CameraPan : MonoBehaviour
                             )
                             {
                                 // Start selecting
-                                if (Time.time - touchStartTime >= selector.tapDuration && !isPanning && !selector.isSelecting)
+                                if (Time.time - touchStartTime >= selector.tapDuration && !isPanning && !selector.isSelecting &&!popupManager.isSelectorPopup)
                                 {
                                     selector.StartSelecting(touch.position);
                                 }

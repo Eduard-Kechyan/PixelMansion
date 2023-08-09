@@ -7,7 +7,6 @@ public class Glob : MonoBehaviour
 {
     // Variables
     public static AnimationCurve defaultChanceCurve;
-    public static PopupManager popupManager;
 
     // Instance
     public static Glob Instance;
@@ -18,8 +17,6 @@ public class Glob : MonoBehaviour
     void Awake()
     {
         Instance = this;
-
-        popupManager = GetComponent<PopupManager>();
     }
 
     //// TIMEOUT ////

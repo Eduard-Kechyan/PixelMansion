@@ -74,6 +74,10 @@ public class SceneLoader : MonoBehaviour
         }
     }
 
+    public string GetSceneName(){
+        return SceneManager.GetActiveScene().name;
+    }
+
     void InitializeScene()
     {
         // Play background music when the scene starts from the editor

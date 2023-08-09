@@ -18,6 +18,10 @@ public class LoadingSceneUI : MonoBehaviour
     public Color titleColor;
     public LocaleManager localeManager;
 
+    [Header("Age")]
+    public int startAge = 16;
+    public int ageHeight = 24;
+
     private int backgroundCount = 0;
     private float skyUpCount = 0;
     private float skyDownCount = 0;
@@ -25,6 +29,8 @@ public class LoadingSceneUI : MonoBehaviour
     private Action termsCallback;
     private Action<int> ageCallback;
     private Action updateCallback;
+    private bool isAgeScrolling;
+    private int currentAge;
 
     // References
     private I18n LOCALE;
@@ -52,10 +58,8 @@ public class LoadingSceneUI : MonoBehaviour
     private VisualElement ageMenu;
     private Label ageTitleLabel;
     private Label ageLabel;
-    private IntegerField ageInteger;
-    private Button ageDownButton;
-    private Button ageUpButton;
     private Button ageAcceptButton;
+    private ScrollView ageScrollView;
 
     // Update
     private VisualElement updateMenu;
@@ -93,10 +97,8 @@ public class LoadingSceneUI : MonoBehaviour
         ageMenu = root.Q<VisualElement>("AgeMenu");
         ageTitleLabel = ageMenu.Q<Label>("TitleLabel");
         ageLabel = ageMenu.Q<Label>("AgeLabel");
-        ageInteger = ageMenu.Q<IntegerField>("AgeInteger");
-        ageDownButton = ageMenu.Q<Button>("AgeDown");
-        ageUpButton = ageMenu.Q<Button>("AgeUp");
         ageAcceptButton = ageMenu.Q<Button>("AcceptButton");
+        ageScrollView = ageMenu.Q<ScrollView>("AgeScrollView");
 
         updateMenu = root.Q<VisualElement>("UpdateMenu");
         updateTitleLabel = updateMenu.Q<Label>("TitleLabel");
@@ -115,12 +117,11 @@ public class LoadingSceneUI : MonoBehaviour
         };
 
         ageAcceptButton.clicked += () => AcceptAge();
-        ageInteger.RegisterValueChangedCallback(AgeIntegerHandle);
-        ageUpButton.clicked += () => UpdateAge(1);
-        ageDownButton.clicked += () => UpdateAge(-1);
 
         updateButton.clicked += () => UpdateGame();
         updateExitButton.clicked += () => Application.Quit();
+
+        ageScrollView.verticalScroller.valueChanged += newValue => AgeScrollerHandle(newValue);
 
         Init();
 
@@ -134,11 +135,13 @@ public class LoadingSceneUI : MonoBehaviour
     {
         versionLabel.text = "v." + Application.version;
 
-        ageInteger.value = 0;
+        currentAge = startAge;
 
         SetTitle();
 
         HideTermsMenu();
+
+        HideAgeMenu();
     }
 
     void SetTitle()
@@ -270,6 +273,8 @@ public class LoadingSceneUI : MonoBehaviour
     {
         ageCallback = callback;
 
+        SetAgeScroller();
+
         // Show the overlay
         overlayBackground.style.display = DisplayStyle.Flex;
         overlayBackground.style.opacity = 1;
@@ -285,6 +290,46 @@ public class LoadingSceneUI : MonoBehaviour
         ageAcceptButton.SetEnabled(false);
     }
 
+    void SetAgeScroller()
+    {
+        for (int i = 0; i < 100; i++)
+        {
+            Label ageLabel = new() { name = "AgeLabel" + i, text = i.ToString() };
+
+            ageLabel.style.width = 50;
+            ageLabel.style.height = ageHeight;
+            ageLabel.style.borderTopWidth = 1;
+            ageLabel.style.borderBottomWidth = 1;
+            ageLabel.style.borderTopColor = new Color(0, 0, 0, 0.1f);
+            ageLabel.style.borderBottomColor = new Color(0, 0, 0, 0.1f);
+            ageLabel.style.unityTextAlign = TextAnchor.MiddleCenter;
+            ageLabel.style.fontSize = 14;
+
+            ageLabel.style.marginLeft = 10;
+            ageLabel.style.marginTop = 0;
+            ageLabel.style.marginRight = 10;
+            ageLabel.style.marginBottom = 0;
+            ageLabel.style.paddingLeft = 0;
+            ageLabel.style.paddingTop = 0;
+            ageLabel.style.paddingRight = 0;
+            ageLabel.style.paddingBottom = 0;
+
+            if (i == 0)
+            {
+                ageLabel.style.borderTopWidth = 0;
+            }
+
+            if (i == 100)
+            {
+                ageLabel.style.borderBottomWidth = 0;
+            }
+            
+            ageScrollView.Add(ageLabel);
+        }
+        
+        ageScrollView.verticalScroller.value = startAge * ageHeight;
+    }
+
     void AcceptAge()
     {
         HideAgeMenu();
@@ -292,14 +337,7 @@ public class LoadingSceneUI : MonoBehaviour
         PlayerPrefs.SetInt("ageAccepted", 1);
         PlayerPrefs.Save();
 
-        ageCallback?.Invoke(ageInteger.value);
-    }
-
-    void UpdateAge(int newValue)
-    {
-        ageInteger.value += newValue;
-
-        CheckAgeButtons(ageInteger.value);
+        ageCallback?.Invoke(currentAge);
     }
 
     void HideAgeMenu()
@@ -313,44 +351,28 @@ public class LoadingSceneUI : MonoBehaviour
         ageMenu.style.opacity = 0;
     }
 
-    void AgeIntegerHandle(ChangeEvent<int> newData)
+    void AgeScrollerHandle(float newValue)
     {
-        if (newData.newValue < 0)
+        if (Input.touchCount == 0 && isAgeScrolling)
         {
-            ageInteger.value = 0;
-        }
-        else if (newData.newValue > 100)
-        {
-            ageInteger.value = 100;
-        }
+            ageScrollView.scrollDecelerationRate = 0f;
+            isAgeScrolling = false;
 
-        CheckAgeButtons(newData.newValue);
-    }
+            int rounded = (int)Mathf.Round(newValue / ageHeight);
 
-    void CheckAgeButtons(int newValue)
-    {
-        if (newValue > 0)
-        {
-            ageAcceptButton.SetEnabled(true);
-            ageDownButton.SetEnabled(true);
+            ageScrollView.verticalScroller.value = rounded * ageHeight;
+
+            currentAge = int.Parse(ageScrollView.contentContainer.Q<Label>("AgeLabel" + rounded).text);
+
+            ageScrollView.scrollDecelerationRate = 0.135f;
         }
         else
         {
-            ageAcceptButton.SetEnabled(false);
-            ageDownButton.SetEnabled(false);
+            isAgeScrolling = true;
         }
-
-        if (newValue < 100)
-        {
-            ageUpButton.SetEnabled(true);
-        }
-        else
-        {
-            ageUpButton.SetEnabled(false);
-        }
-
     }
 
+    //// UPDATE ////
     public void CheckForUpdates(Action callback = null)
     {
         updateCallback = callback;

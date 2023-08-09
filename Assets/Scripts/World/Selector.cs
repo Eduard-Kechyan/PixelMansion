@@ -32,7 +32,7 @@ public class Selector : MonoBehaviour
     private Camera cam;
     private SoundManager soundManager;
     private SelectorUIHandler selectorUIHandler;
-   // private PopupManager popupManager;
+    private PopupManager popupManager;
     private I18n LOCALE;
     /* private CharMove charMoveMain;
      private CharSpeech charSpeechMain;*/
@@ -47,7 +47,7 @@ public class Selector : MonoBehaviour
         cam = Camera.main;
         soundManager = SoundManager.Instance;
         selectorUIHandler = hubGameUiDoc.GetComponent<SelectorUIHandler>();
-        //popupManager = GetComponent<PopupManager>();
+        popupManager = GameRefs.Instance.popupManager;
         LOCALE = I18n.Instance;
         /*  charMoveMain = CharMain.Instance.charMove;
           charSpeechMain = CharMain.Instance.charSpeech;*/
@@ -91,7 +91,10 @@ public class Selector : MonoBehaviour
         {
             if (hits[0].transform.GetComponent<RoomHandler>().locked)
             {
-                LockedRoomSelecting(position);
+                if (!tapped)
+                {
+                    LockedRoomSelecting(position);
+                }
             }
             else
             {
@@ -106,7 +109,7 @@ public class Selector : MonoBehaviour
 
     void LockedRoomSelecting(Vector2 position)
     {
-       // popupManager.AddPop(LOCALE.Get("pop_room_locked"), position, true);
+        popupManager.AddPop(LOCALE.Get("pop_room_locked"), position, true,"",true);
     }
 
     void DefaultSelecting(Vector2 position, bool tapped = false)

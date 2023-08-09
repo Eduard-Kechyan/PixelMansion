@@ -65,7 +65,7 @@ public class BoardInteractions : MonoBehaviour
         selectionManager = GetComponent<SelectionManager>();
         boardManager = GetComponent<BoardManager>();
         boardIndication = GetComponent<BoardIndication>();
-        popupManager = Glob.popupManager;
+        popupManager = GameRefs.Instance.popupManager;
         inventoryMenu = GameRefs.Instance.inventoryMenu;
         soundManager = SoundManager.Instance;
         dataManager = DataManager.Instance;

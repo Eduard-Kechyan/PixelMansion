@@ -20,7 +20,7 @@ public class BonusManager : MonoBehaviour
     {
         // References
         gameplayUI = GetComponent<GameplayUI>();
-        popupManager=Glob.popupManager;
+        popupManager= GameRefs.Instance.popupManager;
 
         // Cache instances
         gameData = GameData.Instance;

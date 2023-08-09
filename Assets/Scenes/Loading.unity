@@ -219,6 +219,8 @@ MonoBehaviour:
   skyDownDelay: 1
   titleColor: {r: 0.03137255, g: 0.30980393, b: 0.6117647, a: 1}
   localeManager: {fileID: 677788980}
+  startAge: 16
+  ageHeight: 34
 --- !u!114 &57463801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -630,11 +632,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameplayUI: {fileID: 0}
   hubUI: {fileID: 0}
+  hubGameUI: {fileID: 0}
   menuUI: {fileID: 0}
   valuesUI: {fileID: 0}
   safeAreaHandler: {fileID: 0}
   gameplayUIDoc: {fileID: 0}
   hubUIDoc: {fileID: 0}
+  hubGameUIDoc: {fileID: 0}
   menuUIDoc: {fileID: 0}
   valuesUIDoc: {fileID: 0}
   energyMenu: {fileID: 0}
@@ -647,6 +651,7 @@ MonoBehaviour:
   taskMenu: {fileID: 0}
   valuePop: {fileID: 0}
   initialized: 0
+  popupManager: {fileID: 0}
 --- !u!4 &993497632
 Transform:
   m_ObjectHideFlags: 0

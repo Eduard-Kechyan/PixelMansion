@@ -305,6 +305,10 @@ PrefabInstance:
       propertyPath: localeCombiner
       value: 
       objectReference: {fileID: 1591459346}
+    - target: {fileID: -7698504415603008170, guid: af9e0bfb46c520a4fac5c30843ed2d4e, type: 3}
+      propertyPath: ignoreInitialCheck
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 961345630706959843, guid: af9e0bfb46c520a4fac5c30843ed2d4e, type: 3}
       propertyPath: m_RootOrder
       value: 9
@@ -437,6 +441,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1583934745}
   - component: {fileID: 1583934746}
+  - component: {fileID: 1583934747}
   m_Layer: 0
   m_Name: GameRefs
   m_TagString: Untagged
@@ -473,11 +478,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameplayUI: {fileID: 3894635478175162773}
   hubUI: {fileID: 0}
+  hubGameUI: {fileID: 0}
   menuUI: {fileID: 2529494230138778357}
   valuesUI: {fileID: 7866921526989002608}
   safeAreaHandler: {fileID: 0}
   gameplayUIDoc: {fileID: 0}
   hubUIDoc: {fileID: 0}
+  hubGameUIDoc: {fileID: 0}
   menuUIDoc: {fileID: 0}
   valuesUIDoc: {fileID: 0}
   energyMenu: {fileID: 0}
@@ -490,6 +497,26 @@ MonoBehaviour:
   taskMenu: {fileID: 0}
   valuePop: {fileID: 0}
   initialized: 0
+  popupManager: {fileID: 0}
+--- !u!114 &1583934747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1583934743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ec7e51b4e672aa4d8f51402c4f49a18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneLoader: {fileID: 2129448916}
+  textColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineColor: {r: 0, g: 0, b: 0, a: 1}
+  shadowColor: {r: 0, g: 0, b: 0, a: 0.7058824}
+  timeOut: 0.5
+  positionOffset: 1.5
+  isSelectorPopup: 0
 --- !u!114 &1591459346 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3855041189197795527, guid: c3cc768196d3556488631ff1157afa84, type: 3}
@@ -2914,17 +2941,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb6bd1ade9d0e614da3b3eabc6c46c06, type: 3}
---- !u!114 &8488441445584660633 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1919697231713209127, guid: fb6bd1ade9d0e614da3b3eabc6c46c06, type: 3}
-  m_PrefabInstance: {fileID: 8488441445584660632}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72f2c8a552d603c4db7160658b532958, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &8763348161959856568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2938,4 +2954,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boardManager: {fileID: 639326507}
-  boardPopup: {fileID: 8488441445584660633}

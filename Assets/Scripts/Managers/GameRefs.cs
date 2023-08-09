@@ -8,6 +8,7 @@ public class GameRefs : MonoBehaviour
     // UI
     public GameplayUI gameplayUI;
     public HubUI hubUI;
+    public HubGameUI hubGameUI;
     public MenuUI menuUI;
     public ValuesUI valuesUI;
 
@@ -20,6 +21,9 @@ public class GameRefs : MonoBehaviour
 
     [HideInInspector]
     public UIDocument hubUIDoc;
+
+    [HideInInspector]
+    public UIDocument hubGameUIDoc;
 
     [HideInInspector]
     public UIDocument menuUIDoc;
@@ -55,12 +59,16 @@ public class GameRefs : MonoBehaviour
     [HideInInspector]
     public ValuePop valuePop;
 
-    // Instance
-    public static GameRefs Instance;
-
+    // Other
     [HideInInspector]
     public bool initialized = false;
 
+    // References
+    [HideInInspector]
+    public PopupManager popupManager;
+
+    // Instance
+    public static GameRefs Instance;
 
     void Awake()
     {
@@ -71,6 +79,9 @@ public class GameRefs : MonoBehaviour
 
     void Init()
     {
+        // References
+        popupManager = GetComponent<PopupManager>();
+
         // UI documents
         if (gameplayUI != null)
         {
@@ -81,6 +92,10 @@ public class GameRefs : MonoBehaviour
         {
             hubUIDoc = hubUI.GetComponent<UIDocument>();
             safeAreaHandler = hubUI.GetComponent<SafeAreaHandler>();
+        }
+        if (hubGameUI != null)
+        {
+            hubGameUIDoc = hubGameUI.GetComponent<UIDocument>();
         }
         if (valuesUI != null)
         {

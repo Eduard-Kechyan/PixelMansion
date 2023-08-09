@@ -37,7 +37,7 @@ public class DoubleTapManager : MonoBehaviour
         // Cache
         interactions = GetComponent<BoardInteractions>();
         boardManager = GetComponent<BoardManager>();
-        popupManager = Glob.popupManager;
+        popupManager = GameRefs.Instance.popupManager;
         boardIndication = GetComponent<BoardIndication>();
         dataManager = DataManager.Instance;
 
