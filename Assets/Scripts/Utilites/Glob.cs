@@ -1,7 +1,9 @@
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class Glob : MonoBehaviour
 {
@@ -109,5 +111,32 @@ public class Glob : MonoBehaviour
     public static T ParseEnum<T>(string value)
     {
         return (T)Enum.Parse(typeof(T), value, true);
+    }
+
+    public static void Validate(Action callback, params UnityEngine.Object[] newObjects)
+    {
+        void NextUpdate()
+        {
+            EditorApplication.update -= NextUpdate;
+
+            if (newObjects.Any(c => !c))
+            {
+                return;
+            }
+
+            if (newObjects.All(c => !EditorUtility.IsDirty(c)))
+            {
+                return;
+            }
+
+            callback?.Invoke();
+
+            foreach (UnityEngine.Object component in newObjects)
+            {
+                EditorUtility.SetDirty(component);
+            }
+        }
+
+        EditorApplication.update += NextUpdate;
     }
 }

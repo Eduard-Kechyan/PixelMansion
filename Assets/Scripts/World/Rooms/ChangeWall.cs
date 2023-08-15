@@ -47,6 +47,8 @@ public class ChangeWall : MonoBehaviour
     private bool alphaUp = true;
     private float alphaDelayTemp = 0f;
 
+    private bool chunksSet = false;
+
     // Enums
     public enum Side
     {
@@ -62,7 +64,12 @@ public class ChangeWall : MonoBehaviour
         // Cache
         selectable = GetComponent<Selectable>();
 
-        GetChunks();
+        if (!chunksSet)
+        {
+            GetChunks();
+        }
+
+        SetPositionZ();
     }
 
     void Update()
@@ -70,10 +77,12 @@ public class ChangeWall : MonoBehaviour
         HandleOverlay();
     }
 
+#if UNITY_EDITOR
     void OnValidate()
     {
         isRight = side == Side.Right;
     }
+#endif
 
     void GetChunks()
     {
@@ -128,7 +137,18 @@ public class ChangeWall : MonoBehaviour
                     oldChunkSprites.Add(tempOldChunks[i].sprite);
                 }
             }
+
+            chunksSet = true;
         }
+    }
+
+    void SetPositionZ()
+    {
+        int parentLayerOrder = SortingLayer.GetLayerValueFromName(transform.parent.gameObject.GetComponent<RoomHandler>().roomSortingLayer);
+
+        int z = parentLayerOrder + (isRight ? 1 : 0); // 0 or 1 is for this gameObjects' order in it's parent
+
+        transform.position = new Vector3(transform.position.x, transform.position.y, z);
     }
 
     //// SELECT ////
@@ -163,7 +183,7 @@ public class ChangeWall : MonoBehaviour
         }
     }
 
-    public void SetSprites(int order)
+    public void SetSprites(int order, bool alt = false)
     {
         // Stop changing if we are changing
         if (isChanging)
@@ -173,6 +193,11 @@ public class ChangeWall : MonoBehaviour
 
         // Set the sprite order
         spriteOrder = order;
+
+        if (alt)
+        {
+            GetChunks();
+        }
 
         // Set the sprites
         for (int i = 0; i < chunks.Count; i++)

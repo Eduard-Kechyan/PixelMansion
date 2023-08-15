@@ -19,7 +19,6 @@ public class LoadingSceneUI : MonoBehaviour
     public LocaleManager localeManager;
 
     [Header("Age")]
-    public int startAge = 16;
     public int ageHeight = 24;
 
     private int backgroundCount = 0;
@@ -30,7 +29,7 @@ public class LoadingSceneUI : MonoBehaviour
     private Action<int> ageCallback;
     private Action updateCallback;
     private bool isAgeScrolling;
-    private int currentAge;
+    private int currentAge = 0;
 
     // References
     private I18n LOCALE;
@@ -68,7 +67,7 @@ public class LoadingSceneUI : MonoBehaviour
     private Button updateButton;
     private Button updateExitButton;
 
-    private void Start()
+    void Start()
     {
         // Instances
         LOCALE = I18n.Instance;
@@ -134,8 +133,6 @@ public class LoadingSceneUI : MonoBehaviour
     void Init()
     {
         versionLabel.text = "v." + Application.version;
-
-        currentAge = startAge;
 
         SetTitle();
 
@@ -317,17 +314,17 @@ public class LoadingSceneUI : MonoBehaviour
             if (i == 0)
             {
                 ageLabel.style.borderTopWidth = 0;
+
+                ageLabel.style.marginTop = 5;
             }
 
             if (i == 100)
             {
                 ageLabel.style.borderBottomWidth = 0;
             }
-            
+
             ageScrollView.Add(ageLabel);
         }
-        
-        ageScrollView.verticalScroller.value = startAge * ageHeight;
     }
 
     void AcceptAge()
@@ -369,6 +366,20 @@ public class LoadingSceneUI : MonoBehaviour
         else
         {
             isAgeScrolling = true;
+        }
+
+        CheckAgeButton();
+    }
+
+    void CheckAgeButton()
+    {
+        if (currentAge > 0)
+        {
+            ageAcceptButton.SetEnabled(true);
+        }
+        else
+        {
+            ageAcceptButton.SetEnabled(false);
         }
     }
 

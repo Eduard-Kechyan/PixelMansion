@@ -24,7 +24,8 @@ public class OrderSetter : MonoBehaviour
     }
 
     private List<string> roomParts = new List<string>();
-
+    
+#if UNITY_EDITOR
     void OnValidate()
     {
         if (set)
@@ -45,6 +46,7 @@ public class OrderSetter : MonoBehaviour
 
         SetSpriteOrders();
     }
+#endif
 
     void ToggleNavArea()
     {

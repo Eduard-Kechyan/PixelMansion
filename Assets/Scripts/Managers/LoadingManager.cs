@@ -107,7 +107,6 @@ public class LoadingManager : MonoBehaviour
             if (fillCount >= singlePhasePercent * 3 && phase == 3)
             {
                 loading = false;
-                Debug.Log(dataManager);
                 dataManager.CheckInitialData(callback);
 
                 if (logPhases)
@@ -120,7 +119,6 @@ public class LoadingManager : MonoBehaviour
             if (fillCount >= singlePhasePercent * 4 && phase == 4)
             {
                 loading = false;
-                Debug.Log(userDataHandler);
                 userDataHandler.CheckUser(callback, tempAge);
 
                 if (logPhases)
@@ -135,7 +133,6 @@ public class LoadingManager : MonoBehaviour
                 if (!initial)
                 {
                     loading = false;
-                    Debug.Log(loadingSceneUI);
                     loadingSceneUI.CheckForUpdates(callback);
 
                     if (logPhases)

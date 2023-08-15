@@ -15,7 +15,8 @@ public class LocaleCombiner : MonoBehaviour
     void Awake(){
         Combine();
     }
-
+    
+#if UNITY_EDITOR
     void OnValidate()
     {
         if (combine)
@@ -25,7 +26,7 @@ public class LocaleCombiner : MonoBehaviour
             Combine();
         }
     }
-
+#endif
     public void Combine(bool isBuilding = false, bool isPlaying = false)
     {
         string[] locales = I18n.Instance.GetLocales();

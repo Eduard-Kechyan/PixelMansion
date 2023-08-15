@@ -24,6 +24,9 @@ public class Selector : MonoBehaviour
     [ReadOnly]
     public bool isTapping = false;
 
+    [Header("Character Debug")]
+    public bool debugCharacterMovement = false;
+
     private float duration;
     private Selectable selectable;
     private int lastSpriteOrder;
@@ -34,8 +37,8 @@ public class Selector : MonoBehaviour
     private SelectorUIHandler selectorUIHandler;
     private PopupManager popupManager;
     private I18n LOCALE;
-    /* private CharMove charMoveMain;
-     private CharSpeech charSpeechMain;*/
+    private WorldDataManager WorldDataManager;
+    private CharMain charMain;
 
     // UI
     private VisualElement root;
@@ -49,8 +52,8 @@ public class Selector : MonoBehaviour
         selectorUIHandler = hubGameUiDoc.GetComponent<SelectorUIHandler>();
         popupManager = GameRefs.Instance.popupManager;
         LOCALE = I18n.Instance;
-        /*  charMoveMain = CharMain.Instance.charMove;
-          charSpeechMain = CharMain.Instance.charSpeech;*/
+        WorldDataManager = GetComponent<WorldDataManager>();
+        charMain = CharMain.Instance;
 
         // Calc duration
         duration = arrowDuration / 6;
@@ -75,7 +78,7 @@ public class Selector : MonoBehaviour
 
         ContactFilter2D contactFilter2D = new ContactFilter2D();
 
-        contactFilter2D.SetLayerMask(LayerMask.GetMask("Room"));
+        contactFilter2D.SetLayerMask(LayerMask.GetMask("RoomLocked"));
 
         Physics2D.Raycast(
                        cam.ScreenToWorldPoint(position),
@@ -89,16 +92,9 @@ public class Selector : MonoBehaviour
 
         if (hits.Count > 0 && (hits[0] || hits[0].collider != null))
         {
-            if (hits[0].transform.GetComponent<RoomHandler>().locked)
+            if (!tapped)
             {
-                if (!tapped)
-                {
-                    LockedRoomSelecting(position);
-                }
-            }
-            else
-            {
-                DefaultSelecting(position, tapped);
+                LockedRoomSelecting(position);
             }
         }
         else
@@ -109,7 +105,7 @@ public class Selector : MonoBehaviour
 
     void LockedRoomSelecting(Vector2 position)
     {
-        popupManager.AddPop(LOCALE.Get("pop_room_locked"), position, true,"",true);
+        popupManager.AddPop(LOCALE.Get("pop_room_locked"), position, true, "", true);
     }
 
     void DefaultSelecting(Vector2 position, bool tapped = false)
@@ -168,16 +164,20 @@ public class Selector : MonoBehaviour
                     {
                         soundManager.PlaySound("", swapSound);
 
-                        //charMoveMain.SetDestination(selectable.transform.position);
-
-                        //  if (!charSpeechMain.isSpeaking && !charSpeechMain.isTimeOut)
-                        //   {
-                        //  SelectableSpeech selectableSpeech = selectable.GetComponent<SelectableSpeech>();
-
-                        //  charSpeechMain.TryToSpeak(selectableSpeech.GetSpeech(), false);
-                        // }
+                        if (debugCharacterMovement)
+                        {
+                            charMain.SelectableTapped(position, selectable);
+                        }
+                        else
+                        {
+                            charMain.SelectableTapped(selectable.transform.position, selectable);
+                        }
 
                         isTapping = true;
+                    }
+                    else if (debugCharacterMovement)
+                    {
+                        charMain.SelectableTapped(position);
                     }
                 }
                 else
@@ -254,6 +254,8 @@ public class Selector : MonoBehaviour
         isSelected = false;
 
         selectable.ConfirmSpriteChange(lastSpriteOrder);
+
+        WorldDataManager.SetSelectable(selectable);
 
         selectable.Unselect();
 

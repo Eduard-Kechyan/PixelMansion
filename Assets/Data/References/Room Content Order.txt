@@ -1,0 +1,6 @@
+0 = Back wall
+1 = Front wall
+2 = Overlay (wall)
+3-7 = Doors, Decorations and Furniture
+8-10 = Characters
+11 and up =  Extras

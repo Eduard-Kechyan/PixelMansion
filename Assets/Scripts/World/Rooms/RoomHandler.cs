@@ -11,7 +11,6 @@ public class RoomHandler : MonoBehaviour
     public Color lockOverlayColor;
 
     public bool showOverlay = false;
-    public bool showNav = false;
 
     [Header("Sorting Layers")]
     [SortingLayer]
@@ -53,21 +52,20 @@ public class RoomHandler : MonoBehaviour
             nav = navPH.gameObject;
         }
 
-        showNav = false;
-
-        ToggleNav();
-
         ToggleOverlay();
 
         if (locked)
         {
             Lock();
+        }else{
+            UnlockAlt();
         }
     }
 
+#if UNITY_EDITOR
     void OnValidate()
     {
-        if (debugOn && unlock)
+        if (unlock)
         {
             unlock = false;
 
@@ -87,38 +85,12 @@ public class RoomHandler : MonoBehaviour
             Debug.LogWarning("The room sorting layer of this room handler ins't selected: " + gameObject.name);
         }
 
-        ToggleNav();
-
-        ToggleOverlay();
-    }
-
-    void ToggleNav()
-    {
-        if (nav == null)
+        Glob.Validate(() =>
         {
-            navPH = transform.GetComponentInChildren<NavPH>();
-        }
-
-        if (navPH != null)
-        {
-            nav = navPH.gameObject;
-
-            Transform walkable = nav.transform.GetChild(0);
-            Transform notWalkable = nav.transform.GetChild(1);
-
-            for (int i = 0; i < walkable.childCount; i++)
-            {
-                walkable.GetChild(i).GetComponent<SpriteRenderer>().sortingOrder = 0;
-                walkable.GetChild(i).GetComponent<SpriteRenderer>().sortingLayerName = showNav ? navSortingLayer : "Default";
-            }
-
-            for (int i = 0; i < notWalkable.childCount; i++)
-            {
-                notWalkable.GetChild(i).GetComponent<SpriteRenderer>().sortingOrder = 1;
-                walkable.GetChild(i).GetComponent<SpriteRenderer>().sortingLayerName = showNav ? navSortingLayer : "Default";
-            }
-        }
+            ToggleOverlay();
+        }, this);
     }
+#endif    
 
     void ToggleOverlay()
     {
@@ -133,8 +105,41 @@ public class RoomHandler : MonoBehaviour
 
             for (int i = 0; i < lockedOverlay.transform.childCount; i++)
             {
-                lockedOverlay.transform.GetChild(i).GetComponent<SpriteRenderer>().sortingLayerName = showOverlay ? overlaySortingLayer : "Default";
+                if(lockedOverlay.transform.GetChild(i).TryGetComponent(out SpriteRenderer spriteRenderer))
+                {
+                    spriteRenderer.sortingLayerName = showOverlay ? overlaySortingLayer : "Default";
+                }
             }
+        }
+    }
+
+    public void EnableNav()
+    {
+        if (nav == null)
+        {
+            navPH = transform.GetComponentInChildren<NavPH>();
+        }
+
+        if (navPH != null)
+        {
+            nav = navPH.gameObject;
+
+            nav.SetActive(true);
+        }
+    }
+
+    public void DisableNav()
+    {
+        if (nav == null)
+        {
+            navPH = transform.GetComponentInChildren<NavPH>();
+        }
+
+        if (navPH != null)
+        {
+            nav = navPH.gameObject;
+
+            nav.SetActive(false);
         }
     }
 
@@ -144,8 +149,11 @@ public class RoomHandler : MonoBehaviour
         {
             for (int i = 0; i < lockedOverlay.transform.childCount; i++)
             {
-                lockedOverlay.transform.GetChild(i).GetComponent<SpriteRenderer>().color = lockOverlayColor;
-                lockedOverlay.transform.GetChild(i).GetComponent<SpriteRenderer>().sortingLayerName = overlaySortingLayer;
+                if (lockedOverlay.transform.GetChild(i).TryGetComponent(out SpriteRenderer spriteRenderer))
+                {
+                    spriteRenderer.color = lockOverlayColor;
+                    spriteRenderer.sortingLayerName =  overlaySortingLayer;
+                }
             }
         }
 
@@ -193,6 +201,13 @@ public class RoomHandler : MonoBehaviour
             }
 
             locked = false;
+        }
+    }
+
+    void UnlockAlt(){
+        if (lockedOverlay != null)
+        {
+            lockedOverlay.SetActive(false);
         }
     }
 }

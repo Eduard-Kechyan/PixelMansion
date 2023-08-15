@@ -25,11 +25,6 @@ public class CameraPan : MonoBehaviour
     public float rebound = 10f;
     public float reboundSpeed = 1f;
 
-    [Header("Character Debug")]
-    public bool debugCharacterMovement = false;
-    [Condition("debugCharacterMovement", true)]
-    public CharMove debugCharMove;
-
     [Header("Reset debug")]
     public bool shouldReset = true;
     public float resetSpeed = 10f;
@@ -228,12 +223,6 @@ public class CameraPan : MonoBehaviour
                                 if (!selector.isSelecting && !selector.isSelected)
                                 {
                                     selector.StartSelecting(touch.position, true);
-
-                                    // Debug character movement
-                                    if (debugCharacterMovement)
-                                    {
-                                        debugCharMove.SetDestination(cam.ScreenToWorldPoint(touch.position));
-                                    }
                                 }
 
                                 // Select the next one

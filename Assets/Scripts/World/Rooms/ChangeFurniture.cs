@@ -43,11 +43,22 @@ public class ChangeFurniture : MonoBehaviour
             oldSprite = spriteRenderer.sprite;
             selectable.order = spriteRenderer.sortingOrder;
         }
+
+        SetPositionZ();
     }
 
     void Update()
     {
         HandleOverlay();
+    }
+
+    void SetPositionZ()
+    {
+        int parentLayerOrder = SortingLayer.GetLayerValueFromName(transform.parent.transform.parent.gameObject.GetComponent<RoomHandler>().roomSortingLayer);
+
+        int z = parentLayerOrder + spriteRenderer.sortingOrder + 3; // 3 is for this gameObjects' order in it's parent
+
+        transform.position = new Vector3(transform.position.x, transform.position.y, z);
     }
 
     //// SELECT ////
@@ -84,7 +95,10 @@ public class ChangeFurniture : MonoBehaviour
         // Set the sprite order
         spriteOrder = order;
 
-        Debug.Log(order);
+        if (spriteRenderer == null)
+        {
+            spriteRenderer = GetComponent<SpriteRenderer>();
+        }
 
         // Set the sprite
         spriteRenderer.sprite = sprites[order];

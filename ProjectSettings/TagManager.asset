@@ -22,7 +22,7 @@ TagManager:
   - Character
   - 
   - Room
-  - 
+  - RoomLocked
   - 
   - 
   - 
@@ -70,9 +70,6 @@ TagManager:
     locked: 0
   - name: OuterWallsFront
     uniqueID: 198848411
-    locked: 0
-  - name: Doors
-    uniqueID: 961909709
     locked: 0
   - name: OuterStairs
     uniqueID: 2841718309

@@ -73,7 +73,7 @@ NavMeshProjectSettings:
   m_Settings:
   - serializedVersion: 3
     agentTypeID: 0
-    agentRadius: 10
+    agentRadius: 7
     agentHeight: 50
     agentSlope: 35
     agentClimb: 45
@@ -90,4 +90,4 @@ NavMeshProjectSettings:
     debug:
       m_Flags: 0
   m_SettingNames:
-  - Humanoid
+  - Character

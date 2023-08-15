@@ -5,10 +5,8 @@ using UnityEngine;
 public class CharMain : MonoBehaviour
 {
     // References
-    [HideInInspector]
-    public CharSpeech charSpeech;
-    [HideInInspector]
-    public CharMove charMove;
+    private CharSpeech charSpeech;
+    private CharMove charMove;
 
     // Instance
     public static CharMain Instance;
@@ -26,5 +24,20 @@ public class CharMain : MonoBehaviour
 
         charSpeech = GetComponent<CharSpeech>();
         charMove = GetComponent<CharMove>();
+    }
+
+    public void SelectableTapped(Vector2 position, Selectable selectable = null)
+    {
+        charMove.SetDestination(position);
+
+        if (selectable != null)
+        {
+            if (!charSpeech.isSpeaking && !charSpeech.isTimeOut)
+            {
+                SelectableSpeech selectableSpeech = selectable.GetComponent<SelectableSpeech>();
+
+                charSpeech.TryToSpeak(selectableSpeech.GetSpeech(), false);
+            }
+        }
     }
 }

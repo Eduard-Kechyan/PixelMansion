@@ -37,9 +37,12 @@ public class Selectable : MonoBehaviour
     // References
     private Animation anim;
 
-    private ChangeFloor changerFloor;
-    private ChangeWall changerWall;
-    private ChangeFurniture changeFurniture;
+    [HideInInspector]
+    public ChangeFloor changeFloor;
+    [HideInInspector]
+    public ChangeWall changeWall;
+    [HideInInspector]
+    public ChangeFurniture changeFurniture;
 
     void Start()
     {
@@ -68,11 +71,11 @@ public class Selectable : MonoBehaviour
         switch (type)
         {
             case Type.Floor:
-                changerFloor = GetComponent<ChangeFloor>();
+                changeFloor = GetComponent<ChangeFloor>();
                 break;
 
             case Type.Wall:
-                changerWall = GetComponent<ChangeWall>();
+                changeWall = GetComponent<ChangeWall>();
                 break;
 
             case Type.Furniture:
@@ -88,11 +91,11 @@ public class Selectable : MonoBehaviour
         switch (type)
         {
             case Type.Floor:
-                isOld = changerFloor.isOld;
+                isOld = changeFloor.isOld;
                 break;
 
             case Type.Wall:
-                isOld = changerWall.isOld;
+                isOld = changeWall.isOld;
                 break;
 
             case Type.Furniture:
@@ -110,11 +113,11 @@ public class Selectable : MonoBehaviour
         switch (type)
         {
             case Type.Floor:
-                order = changerFloor.spriteOrder;
+                order = changeFloor.spriteOrder;
                 break;
 
             case Type.Wall:
-                order = changerWall.spriteOrder;
+                order = changeWall.spriteOrder;
                 break;
 
             case Type.Furniture:
@@ -132,11 +135,11 @@ public class Selectable : MonoBehaviour
         switch (type)
         {
             case Type.Floor:
-                sprites = changerFloor.optionSprites;
+                sprites = changeFloor.optionSprites;
                 break;
 
             case Type.Wall:
-                sprites = changerWall.optionSprites;
+                sprites = changeWall.optionSprites;
                 break;
 
             case Type.Furniture:
@@ -152,11 +155,11 @@ public class Selectable : MonoBehaviour
         switch (type)
         {
             case Type.Floor:
-                changerFloor.SetSprites(order);
+                changeFloor.SetSprites(order);
                 break;
 
             case Type.Wall:
-                changerWall.SetSprites(order);
+                changeWall.SetSprites(order);
                 break;
 
             case Type.Furniture:
@@ -170,11 +173,11 @@ public class Selectable : MonoBehaviour
         switch (type)
         {
             case Type.Floor:
-                changerFloor.Cancel(order);
+                changeFloor.Cancel(order);
                 break;
 
             case Type.Wall:
-                changerWall.Cancel(order);
+                changeWall.Cancel(order);
                 break;
 
             case Type.Furniture:
@@ -188,11 +191,11 @@ public class Selectable : MonoBehaviour
         switch (type)
         {
             case Type.Floor:
-                changerFloor.Confirm();
+                changeFloor.Confirm();
                 break;
 
             case Type.Wall:
-                changerWall.Confirm();
+                changeWall.Confirm();
                 break;
 
             case Type.Furniture:
@@ -206,11 +209,11 @@ public class Selectable : MonoBehaviour
         switch (type)
         {
             case Type.Floor:
-                changerFloor.Select();
+                changeFloor.Select();
                 break;
 
             case Type.Wall:
-                changerWall.Select();
+                changeWall.Select();
                 break;
 
             case Type.Furniture:
@@ -224,11 +227,11 @@ public class Selectable : MonoBehaviour
         switch (type)
         {
             case Type.Floor:
-                changerFloor.Unselect();
+                changeFloor.Unselect();
                 break;
 
             case Type.Wall:
-                changerWall.Unselect();
+                changeWall.Unselect();
                 break;
 
             case Type.Furniture:

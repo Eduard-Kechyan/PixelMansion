@@ -41,18 +41,12 @@ public class SceneLoader : MonoBehaviour
 
     public void Load(int sceneIndex)
     {
-        transitionUI.Open();
-
         soundManager.FadeOutMusic(fadeDuration);
 
-        StartCoroutine(LoadScene(sceneIndex));
-    }
-
-    IEnumerator LoadScene(int sceneIndex)
-    {
-        yield return new WaitForSeconds(duration);
-
-        SceneManager.LoadScene(sceneIndex);
+        transitionUI.Open(()=>
+        {
+            SceneManager.LoadScene(sceneIndex);
+        });
     }
 
     public void LoadAsync(int sceneIndex)

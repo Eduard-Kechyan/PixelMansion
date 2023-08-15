@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -36,11 +37,11 @@ public class TransitionUI : MonoBehaviour
         }
     }
 
-    public void Open()
+    public void Open(Action callback = null)
     {
         if (backgroundColors.Length > 0)
         {
-            int randomBackgroundColor = Random.Range(0, backgroundColors.Length);
+            int randomBackgroundColor = UnityEngine.Random.Range(0, backgroundColors.Length);
 
             transitionData.backgroundColor = randomBackgroundColor;
 
@@ -51,6 +52,14 @@ public class TransitionUI : MonoBehaviour
 
         transition.style.opacity = 1;
         transition.style.visibility = Visibility.Visible;
+
+        if (callback != null)
+        {
+            Glob.SetTimeout(() =>
+            {
+                callback();
+            }, duration);
+        }
     }
 
     IEnumerator Close()

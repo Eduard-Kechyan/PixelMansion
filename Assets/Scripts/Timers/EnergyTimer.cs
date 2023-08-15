@@ -119,6 +119,8 @@ public class EnergyTimer : MonoBehaviour
         startDate = DateTime.UtcNow;
         startSeconds = ((time * (GameData.MAX_ENERGY - gameData.energy)) - time) + (int)timeOut;
 
+        Debug.Log("AAAAAAAAAA");
+
         timeManager.SetEnergyTimer(startSeconds);
     }
 

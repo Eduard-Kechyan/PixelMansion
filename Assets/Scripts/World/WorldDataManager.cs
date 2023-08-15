@@ -15,11 +15,11 @@ public class WorldDataManager : MonoBehaviour
     private List<Area> loadedAreas = new List<Area>();
     private bool initial = true;
 
-    public bool saveAreaData = false;
-    public bool loadAreaData = false;
-    public bool logAreaData = false;
+    public bool canLog = false;
 
-    public bool clearAreaData = false;
+    public bool saveData = false;
+    public bool loadData = false;
+    public bool clearData = false;
 
     [Serializable]
     public class Area
@@ -59,6 +59,38 @@ public class WorldDataManager : MonoBehaviour
 
     void Start()
     {
+        Init();
+    }
+
+#if UNITY_EDITOR
+    void OnValidate()
+    {
+        if (saveData)
+        {
+            saveData = false;
+
+            GetDataFromRoot(true);
+        }
+
+        if (loadData)
+        {
+            loadData = false;
+
+            LoadData();
+        }
+
+        if (clearData)
+        {
+            clearData = false;
+
+            ClearData();
+        }
+    }
+#endif
+
+    void Init()
+    {
+        // Check world root
         if (worldRoot == null)
         {
             ErrorManager.Instance.FindUsed("the World Root");
@@ -66,63 +98,34 @@ public class WorldDataManager : MonoBehaviour
             worldRoot = GameObject.Find("World").transform.Find("Root");
         }
 
-        InitData();
-
-        Load();
-    }
-
-    void OnValidate()
-    {
-        if (saveAreaData)
-        {
-            saveAreaData = false;
-
-            InitData();
-
-            GetInitialData();
-        }
-
-        if (loadAreaData)
-        {
-            loadAreaData = false;
-
-            InitData();
-
-            LoadAreaData();
-        }
-
-        if (clearAreaData)
-        {
-            clearAreaData = false;
-
-            string folderPath = Application.persistentDataPath + "/QuickSave/Areas.json";
-
-            if (File.Exists(folderPath))
-            {
-                File.Delete(folderPath);
-            }
-
-            PlayerPrefs.DeleteKey("AreaLoaded");
-            PlayerPrefs.Save();
-        }
-    }
-
-    void InitData()
-    {
-        saveSettings = new QuickSaveSettings() { CompressionMode = CompressionMode.None };
+        // Set up the writer
+        saveSettings = new QuickSaveSettings() { CompressionMode = CompressionMode.None }; // Chage compression mode from None to Gzip on release
         writer = QuickSaveWriter.Create("Areas", saveSettings);
 
-        if (PlayerPrefs.HasKey("AreaLoaded") && writer.Exists("areaSet"))
+        if (PlayerPrefs.HasKey("areaSet") && writer.Exists("areaSet"))
         {
+            // Set up the reader
             reader = QuickSaveReader.Create("Areas", saveSettings);
 
             initial = false;
         }
+
+        GetDataFromRoot();
+
+        if (!initial)
+        {
+            SetDataToRoot();
+        }
+
+        if (initial)
+        {
+            initial = false;
+        }
     }
 
-    void GetInitialData()
+    void GetDataFromRoot(bool alt = false)
     {
-        areas = new List<Area>();
+        areas = new();
 
         for (int i = 0; i < worldRoot.childCount; i++)
         {
@@ -130,16 +133,104 @@ public class WorldDataManager : MonoBehaviour
 
             if (worldItem.name.Contains("Area"))
             {
-                HandleArea(worldItem);
+                areas.Add(HandleArea(worldItem));
             }
         }
 
-        LogAreaData();
+        LogData();
 
-        SaveAreaData();
+        if (initial || alt)
+        {
+            SaveData();
+        }
     }
 
-    void HandleArea(Transform area)
+    void SetDataToRoot()
+    {
+        LoadData();
+
+        for (int i = 0; i < loadedAreas.Count; i++)
+        {
+            for (int j = 0; j < worldRoot.childCount; j++)
+            {
+                Transform worldArea = worldRoot.GetChild(j);
+
+                if (worldArea.name == loadedAreas[i].name)
+                {
+                    // Rooms
+                    if (loadedAreas[i].isRoom)
+                    {
+                        // Wall left
+                        if (loadedAreas[i].wallLeftOrder >= 0 && worldArea.GetChild(0).TryGetComponent(out ChangeWall changeWallLeft))
+                        {
+                            changeWallLeft.SetSprites(loadedAreas[i].wallLeftOrder, true);
+                        }
+
+                        // Wall right
+                        if (loadedAreas[i].wallRightOrder >= 0 && worldArea.GetChild(1).TryGetComponent(out ChangeWall changeWallRight))
+                        {
+                            changeWallRight.SetSprites(loadedAreas[i].wallRightOrder, true);
+                        }
+
+                        // Floor
+                        if (loadedAreas[i].floorOrder >= 0 && worldArea.GetChild(2).TryGetComponent(out ChangeFloor changeFloor))
+                        {
+                            changeFloor.SetSprites(loadedAreas[i].floorOrder, true);
+                        }
+
+                        // Furniture
+                        for (int k = 0; k < loadedAreas[i].furniture.Count; k++)
+                        {
+                            Transform furniture = worldArea.GetChild(3).GetChild(k);
+
+                            if (furniture.name == loadedAreas[i].furniture[k].name)
+                            {
+                                if (loadedAreas[i].furniture[k].order >= 0 && furniture.TryGetComponent(out ChangeFurniture changeFurniture))
+                                {
+                                    changeFurniture.SetSprites(loadedAreas[i].furniture[k].order);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        areas = loadedAreas;
+    }
+
+    void SaveData()
+    {
+        if (initial)
+        {
+            writer
+            .Write("areaSet", true)
+            .Write("areas", ConvertAreaToJson(areas))
+            .Commit();
+
+            PlayerPrefs.SetInt("areaSet", 1);
+            PlayerPrefs.Save();
+        }
+        else
+        {
+            writer
+            .Write("areas", ConvertAreaToJson(areas))
+            .Commit();
+        }
+    }
+
+    void LoadData()
+    {
+        string newAreasData = "";
+
+        reader.Read<string>("areas", r => newAreasData = r);
+
+        loadedAreas = ConvertJsonToArea(newAreasData);
+
+        LogData();
+    }
+
+    Area HandleArea(Transform area)
     {
         bool isRoom;
         bool isLocked;
@@ -206,12 +297,25 @@ public class WorldDataManager : MonoBehaviour
             furniture = furniture
         };
 
-        areas.Add(newArea);
+        return newArea;
     }
 
-    void LogAreaData()
+    void ClearData()
     {
-        if (logAreaData)
+        string folderPath = Application.persistentDataPath + "/QuickSave/Areas.json";
+
+        if (File.Exists(folderPath))
+        {
+            File.Delete(folderPath);
+        }
+
+        PlayerPrefs.DeleteKey("AreaLoaded");
+        PlayerPrefs.Save();
+    }
+
+    void LogData()
+    {
+        if (canLog)
         {
             for (int i = 0; i < areas.Count; i++)
             {
@@ -232,86 +336,55 @@ public class WorldDataManager : MonoBehaviour
         }
     }
 
-    void SaveAreaData()
+    // Public methods
+    public void SetSelectable(Selectable selectable)
     {
-        writer
-        .Write("areaSet", true)
-       .Write("areas", ConvertAreaToJson(areas))
-        .Commit();
-
-        if (initial)
-        {
-            PlayerPrefs.SetInt("AreaLoaded", 1);
-            PlayerPrefs.Save();
-        }
-    }
-
-    void LoadAreaData()
-    {
-        string newAreasData = "";
-
-        reader.Read<string>("areas", r => newAreasData = r);
-
-        loadedAreas = ConvertJsonToArea(newAreasData);
-
-        LogAreaData();
-    }
-
-    void Load()
-    {
-        GetInitialData();
-
-        LoadAreaData();
-
         for (int i = 0; i < areas.Count; i++)
         {
-            for (int g = 0; g < loadedAreas.Count; g++)
+            // Walls
+            if (selectable.type == Selectable.Type.Wall && areas[i].name == selectable.transform.parent.name)
             {
-                if (areas[i].name == loadedAreas[g].name)
+                if (selectable.name.Contains("Left"))
                 {
-                    if (areas[i].isRoom)
+                    areas[i].wallLeftOrder = selectable.changeWall.spriteOrder;
+                }
+                else
+                {
+                    areas[i].wallRightOrder = selectable.changeWall.spriteOrder;
+                }
+
+                break;
+            }
+
+            // Floor
+            if (selectable.type == Selectable.Type.Floor && areas[i].name == selectable.transform.parent.name)
+            {
+                areas[i].floorOrder = selectable.changeFloor.spriteOrder;
+
+                break;
+            }
+
+            // Furniture
+            if (selectable.type == Selectable.Type.Furniture && areas[i].name == selectable.transform.parent.transform.parent.name)
+            {
+                for (int j = 0; j < areas[i].furniture.Count; j++)
+                {
+                    if (areas[i].furniture[j].name == selectable.name)
                     {
-                        if (areas[i].wallLeftOrder != loadedAreas[g].wallLeftOrder)
-                        {
-                            if(loadedAreas[g].wallLeftOrder >=0){
-                                worldRoot.GetChild(i + roomInHierarchyOffset).GetChild(0).GetComponent<ChangeWall>().SetSprites(loadedAreas[g].wallLeftOrder);
-                            }
-                        }
+                        areas[i].furniture[j].order = selectable.changeFurniture.spriteOrder;
 
-                        if (areas[i].wallRightOrder != loadedAreas[g].wallRightOrder)
-                        {
-                            if (loadedAreas[g].wallRightOrder >= 0)
-                            {
-                                worldRoot.GetChild(i + roomInHierarchyOffset).GetChild(1).GetComponent<ChangeWall>().SetSprites(loadedAreas[g].wallRightOrder);
-                            }
-                        }
-
-                        if (areas[i].floorOrder != loadedAreas[g].floorOrder)
-                        {
-                            if (loadedAreas[g].floorOrder >= 0)
-                            {
-                                worldRoot.GetChild(i + roomInHierarchyOffset).GetChild(2).GetComponent<ChangeWall>().SetSprites(loadedAreas[g].floorOrder);
-                            }
-                        }
-
-                        for (int j = 0; j < areas[i].furniture.Count; j++)
-                        {
-                            for (int h = 0; h < loadedAreas[g].furniture.Count; h++)
-                            {
-                                if (areas[i].furniture[j].name != loadedAreas[g].furniture[h].name)
-                                {
-                                    if(loadedAreas[g].furniture[h].order>=0){
-                                        worldRoot.GetChild(i + roomInHierarchyOffset).GetChild(3).GetChild(h).GetComponent<ChangeFurniture>().SetSprites(loadedAreas[g].furniture[h].order);
-                                    }
-                                }
-                            }
-                        }
+                        break;
                     }
                 }
+
+                break;
             }
         }
+
+        SaveData();
     }
 
+    // Conversion
     string ConvertAreaToJson(List<Area> areasData)
     {
         AreaJson[] areaJson = new AreaJson[areasData.Count];
@@ -359,5 +432,4 @@ public class WorldDataManager : MonoBehaviour
 
         return areasData;
     }
-
 }

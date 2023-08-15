@@ -37,6 +37,8 @@ public class ChangeFloor : MonoBehaviour
     private bool alphaUp = true;
     private float alphaDelayTemp = 0f;
 
+    private bool tilesSet = false;
+
     // References
     private Selectable selectable;
 
@@ -45,7 +47,12 @@ public class ChangeFloor : MonoBehaviour
         // Cache
         selectable = GetComponent<Selectable>();
 
-        GetTiles();
+        if (!tilesSet)
+        {
+            GetTiles();
+        }
+
+        SetPositionZ();
     }
 
     void Update()
@@ -134,6 +141,17 @@ public class ChangeFloor : MonoBehaviour
                 }
             }
         }
+
+        tilesSet = true;
+    }
+
+    void SetPositionZ()
+    {
+        int parentLayerOrder = SortingLayer.GetLayerValueFromName(transform.parent.gameObject.GetComponent<RoomHandler>().roomSortingLayer);
+
+        int z = parentLayerOrder + 2; // 2 is for this gameObjects' order in it's parent
+
+        transform.position = new Vector3(transform.position.x, transform.position.y, z);
     }
 
     //// SELECT ////
@@ -171,7 +189,7 @@ public class ChangeFloor : MonoBehaviour
         }
     }
 
-    public void SetSprites(int order)
+    public void SetSprites(int order, bool alt = false)
     {
         // Stop changing if we are changing
         if (isChanging)
@@ -181,6 +199,11 @@ public class ChangeFloor : MonoBehaviour
 
         // Set the sprite order
         spriteOrder = order;
+
+        if (alt)
+        {
+            GetTiles();
+        }
 
         // Set the sprites
         for (int i = 0; i < tiles.Count; i++)

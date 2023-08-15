@@ -7,6 +7,7 @@ public class ResetHandler : MonoBehaviour
 {
     public bool resetData = false;
 
+#if UNITY_EDITOR
     void OnValidate()
     {
         if (resetData)
@@ -16,6 +17,7 @@ public class ResetHandler : MonoBehaviour
             ResetData();
         }
     }
+#endif
 
     public void RestartAndResetApp(){
         RestartApp(true);

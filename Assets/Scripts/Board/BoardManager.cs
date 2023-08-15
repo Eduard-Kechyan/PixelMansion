@@ -44,8 +44,8 @@ public class BoardManager : MonoBehaviour
         itemHandler = dataManager.GetComponent<ItemHandler>();
         valuePop = GameRefs.Instance.valuePop;
     }
-
-    private void OnValidate()
+#if UNITY_EDITOR
+     void OnValidate()
     {
         if (popBubbles)
         {
@@ -54,6 +54,7 @@ public class BoardManager : MonoBehaviour
             CheckForBubble();
         }
     }
+#endif
 
     /////// GET BOARD DATA ////////
 
