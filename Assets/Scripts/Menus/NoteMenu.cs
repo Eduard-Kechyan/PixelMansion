@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Locale;
 
-public class NoteMenu : MonoBehaviour
+
+namespace Merge
+{
+    public class NoteMenu : MonoBehaviour
 {
     // References
     private MenuUI menuUI;
@@ -75,4 +77,5 @@ public class NoteMenu : MonoBehaviour
         // Open menu
         menuUI.OpenMenu(noteMenu, title);
     }
+}
 }

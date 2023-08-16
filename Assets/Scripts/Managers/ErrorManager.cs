@@ -3,9 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
-using Locale;
 
-public class ErrorManager : MonoBehaviour
+namespace Merge
+{
+    public class ErrorManager : MonoBehaviour
 {
     // References
     private NoteMenu noteMenu;
@@ -97,4 +98,5 @@ public class ErrorManager : MonoBehaviour
     {
         Debug.LogWarning("FIND was used for " + objectName + ", which was NULL! That's a performance hit and needs to be FIXED!");
     }
+}
 }

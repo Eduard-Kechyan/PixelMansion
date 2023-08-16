@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Locale;
 
-public class Settings : MonoBehaviour
+
+namespace Merge
+{
+    public class Settings : MonoBehaviour
 {
     // References
     private SoundManager soundManager;
@@ -191,4 +193,5 @@ public class Settings : MonoBehaviour
             notificationsOn = PlayerPrefs.GetInt("notifications") == 1 ? true : false;
         }
     }
+}
 }

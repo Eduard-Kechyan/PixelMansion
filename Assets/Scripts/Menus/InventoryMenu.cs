@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Locale;
 
-public class InventoryMenu : MonoBehaviour
+
+namespace Merge
+{
+    public class InventoryMenu : MonoBehaviour
 {
     // Variables
     public BoardManager boardManager;
@@ -383,4 +385,5 @@ public class InventoryMenu : MonoBehaviour
 
         return false;
     }
+}
 }

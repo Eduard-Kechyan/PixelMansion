@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class LocaleManager : MonoBehaviour
+namespace Merge
+{
+    public class LocaleManager : MonoBehaviour
 {
     // Varaibles
     public Font hyFont;
@@ -100,4 +102,5 @@ public class LocaleManager : MonoBehaviour
             }
         }
     }
+}
 }

@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class InitializeBoard : MonoBehaviour
+namespace Merge
+{
+    public class InitializeBoard : MonoBehaviour
 {
     // Variables
     public GameObject tile;
@@ -181,4 +183,5 @@ public class InitializeBoard : MonoBehaviour
             }
         }
     }
+}
 }

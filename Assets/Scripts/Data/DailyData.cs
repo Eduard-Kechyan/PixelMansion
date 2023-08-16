@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DailyData : MonoBehaviour
+namespace Merge
+{
+    public class DailyData : MonoBehaviour
 {
     // Variables
     public ShopData shopData;
@@ -72,4 +74,5 @@ public class DailyData : MonoBehaviour
     {
         dailyContent = jsonHandler.ConvertShopItemContentFromJson(PlayerPrefs.GetString("dailyContent"));
     }
+}
 }

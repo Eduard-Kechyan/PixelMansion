@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
 
-public class UserDataHandler : MonoBehaviour
+namespace Merge
+{
+    public class UserDataHandler : MonoBehaviour
 {
     public bool saveUserId = true;
 
@@ -107,4 +109,5 @@ public class UserDataHandler : MonoBehaviour
 
         return randomText + "@" + randomText + ".com";
     }
+}
 }

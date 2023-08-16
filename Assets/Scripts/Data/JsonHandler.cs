@@ -5,7 +5,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Newtonsoft.Json;
 
-public class JsonHandler : MonoBehaviour
+namespace Merge
+{
+    public class JsonHandler : MonoBehaviour
 {
     // Isntances
     private GameData gameData;
@@ -204,7 +206,7 @@ public class JsonHandler : MonoBehaviour
 
     }
 
-    public string ConvertUnsentToson(List<ApiCalls.UnsentData> unsentData)
+    public string ConvertUnsentToJson(List<ApiCalls.UnsentData> unsentData)
     {
         ApiCalls.UnsentDataJson[] unsentJson = new ApiCalls.UnsentDataJson[unsentData.Count];
 
@@ -398,4 +400,5 @@ public class JsonHandler : MonoBehaviour
             return new string[0];
         }
     }
+}
 }

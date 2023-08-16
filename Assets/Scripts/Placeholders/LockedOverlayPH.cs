@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LockedOverlayPH : MonoBehaviour
+namespace Merge
+{
+    public class LockedOverlayPH : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -15,4 +17,5 @@ public class LockedOverlayPH : MonoBehaviour
     {
         
     }
+}
 }

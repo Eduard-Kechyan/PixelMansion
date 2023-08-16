@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class GameRefs : MonoBehaviour
+namespace Merge
+{
+    public class GameRefs : MonoBehaviour
 {
     // UI
     public GameplayUI gameplayUI;
@@ -121,4 +123,5 @@ public class GameRefs : MonoBehaviour
 
         initialized = true;
     }
+}
 }

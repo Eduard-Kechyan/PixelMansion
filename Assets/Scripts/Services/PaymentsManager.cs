@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PaymentsManager : MonoBehaviour
+namespace Merge
+{
+    public class PaymentsManager : MonoBehaviour
 {
     void Start()
     {
@@ -18,4 +20,5 @@ public class PaymentsManager : MonoBehaviour
 
         //failCallback?.Invoke();
     }
+}
 }

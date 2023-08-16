@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Locale;
 
-public class Selector : MonoBehaviour
+namespace Merge
+{
+    public class Selector : MonoBehaviour
 {
     // Variables
     public UIDocument hubGameUiDoc;
@@ -23,10 +24,6 @@ public class Selector : MonoBehaviour
     public bool isSelected = false;
     [ReadOnly]
     public bool isTapping = false;
-
-    [Header("Character Debug")]
-    public bool debugCharacterMovement = false;
-
     private float duration;
     private Selectable selectable;
     private int lastSpriteOrder;
@@ -66,7 +63,7 @@ public class Selector : MonoBehaviour
 
     void Update()
     {
-        if (isTapping && (selectable == null && !selectable.isPlaying))
+        if (isTapping && (selectable == null || !selectable.isPlaying))
         {
             isTapping = false;
         }
@@ -164,28 +161,21 @@ public class Selector : MonoBehaviour
                     {
                         soundManager.PlaySound("", swapSound);
 
-                        if (debugCharacterMovement)
-                        {
-                            charMain.SelectableTapped(position, selectable);
-                        }
-                        else
-                        {
-                            charMain.SelectableTapped(selectable.transform.position, selectable);
-                        }
+                        Vector2 newPos = new Vector2(selectable.transform.position.x, selectable.transform.position.y - selectable.charMoveOffset);
+
+                        charMain.SelectableTapped(newPos, selectable);
 
                         isTapping = true;
                     }
-                    else if (debugCharacterMovement)
-                    {
-                        charMain.SelectableTapped(position);
-                    }
+
+                    isSelecting = false;
+                    isSelected = false;
+                    selectable = null;
                 }
                 else
                 {
                     if (isSelected)
                     {
-                        isSelected = true;
-
                         selectable.Select();
 
                         soundManager.PlaySound("", swapSound);
@@ -323,4 +313,5 @@ public class Selector : MonoBehaviour
     {
         return hit2.transform.position.z.CompareTo(hit1.transform.position.z);
     }
+}
 }

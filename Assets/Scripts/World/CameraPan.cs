@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class CameraPan : MonoBehaviour
+namespace Merge
+{
+    public class CameraPan : MonoBehaviour
 {
     // Variables
     public Sprite rootSprite;
@@ -35,6 +37,9 @@ public class CameraPan : MonoBehaviour
     public bool showRealClamp = false;
     public bool showRealRebound = false;
 
+    [Header("Character Debug")]
+    public bool debugCharacterMovement = false;
+
     [Header("States")]
     [ReadOnly]
     public bool isPanning = false;
@@ -60,6 +65,7 @@ public class CameraPan : MonoBehaviour
     private Camera cam;
     private MenuUI menuUI;
     private PopupManager popupManager;
+    private CharMove charMove;
 
     // UI
     private VisualElement root;
@@ -69,7 +75,8 @@ public class CameraPan : MonoBehaviour
         // Cache
         cam = Camera.main;
         menuUI = GameRefs.Instance.menuUI;
-        popupManager=GameRefs.Instance.popupManager;
+        popupManager = GameRefs.Instance.popupManager;
+        charMove = CharMain.Instance.charMove;
 
         // Cache UI
         root = GameRefs.Instance.hubUIDoc.rootVisualElement;
@@ -217,18 +224,26 @@ public class CameraPan : MonoBehaviour
                                 selector.CancelSelecting();
                             }
 
-                            if (!moved && Time.time - touchStartTime >= selector.secondTapDuration)
+                            if (!moved)
                             {
-                                // Tapped
-                                if (!selector.isSelecting && !selector.isSelected)
+                                if (debugCharacterMovement && !selector.isSelected)
                                 {
-                                    selector.StartSelecting(touch.position, true);
+                                    charMove.SetDestination(cam.ScreenToWorldPoint(touch.position));
                                 }
 
-                                // Select the next one
-                                if (!selector.isSelecting && selector.isSelected)
+                                if (Time.time - touchStartTime >= selector.secondTapDuration)
                                 {
-                                    selector.StartSelecting(touch.position);
+                                    // Tapped
+                                    if (!debugCharacterMovement && !selector.isSelecting && !selector.isSelected)
+                                    {
+                                        selector.StartSelecting(touch.position, true);
+                                    }
+
+                                    // Select the next one
+                                    if (!selector.isSelecting && selector.isSelected)
+                                    {
+                                        selector.StartSelecting(touch.position);
+                                    }
                                 }
                             }
 
@@ -247,7 +262,7 @@ public class CameraPan : MonoBehaviour
                             )
                             {
                                 // Start selecting
-                                if (Time.time - touchStartTime >= selector.tapDuration && !isPanning && !selector.isSelecting &&!popupManager.isSelectorPopup)
+                                if (Time.time - touchStartTime >= selector.tapDuration && !isPanning && !selector.isSelecting && !popupManager.isSelectorPopup)
                                 {
                                     selector.StartSelecting(touch.position);
                                 }
@@ -395,7 +410,7 @@ public class CameraPan : MonoBehaviour
 
         var pickedElement = root.panel.Pick(newUIPos);
 
-        if (pickedElement == null||  uiToAccept.Contains(pickedElement.name))
+        if (pickedElement == null || uiToAccept.Contains(pickedElement.name))
         {
             return true;
         }
@@ -404,4 +419,5 @@ public class CameraPan : MonoBehaviour
             return false;
         }
     }
+}
 }

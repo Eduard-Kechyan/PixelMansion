@@ -5,7 +5,9 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using System.Threading.Tasks;
 
-public class LoadingManager : MonoBehaviour
+namespace Merge
+{
+    public class LoadingManager : MonoBehaviour
 {
     // Variables
     public bool stayOnScene = false;
@@ -194,4 +196,5 @@ public class LoadingManager : MonoBehaviour
         loading = true;
         phase++;
     }
+}
 }

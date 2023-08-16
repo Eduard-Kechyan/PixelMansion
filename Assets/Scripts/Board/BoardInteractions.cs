@@ -3,9 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Locale;
 
-public class BoardInteractions : MonoBehaviour
+namespace Merge
+{
+    public class BoardInteractions : MonoBehaviour
 {
     // Variables
     public bool interactionsEnabled = true; // Is the board currently interactable
@@ -56,7 +57,7 @@ public class BoardInteractions : MonoBehaviour
     // Positions
     private Vector3 worldPos;
     private Vector2 initialPos;
-    private Vector2 initialTouchPos = Vector2.zero;
+    private Vector2 initialTouchPos = Vector2.zero; 
 
     private void Start()
     {
@@ -822,4 +823,5 @@ public class BoardInteractions : MonoBehaviour
             undoScale = Vector2.zero;
         }
     }
+}
 }

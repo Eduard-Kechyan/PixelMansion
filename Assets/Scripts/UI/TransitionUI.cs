@@ -5,7 +5,9 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
 
-public class TransitionUI : MonoBehaviour
+namespace Merge
+{
+    public class TransitionUI : MonoBehaviour
 {
     // Variables
     public TransitionData transitionData;
@@ -78,4 +80,5 @@ public class TransitionUI : MonoBehaviour
         transition.style.opacity = 0;
         transition.style.visibility = Visibility.Hidden;
     }
+}
 }

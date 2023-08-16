@@ -21,7 +21,7 @@
  * Features / attributes:
  * - provides strongly typed node classes and lists / dictionaries
  * - provides easy access to class members / array items / data values
- * - the parser ignores data types. Each value is a string.
+ * - the parser ignores data Types. Each value is a string.
  * - only double quotes (") are used for quoting strings.
  * - values and names are not restricted to quoted strings. They simply add up and are trimmed.
  * - There are only 3 types: arrays(JSONArray), objects(JSONClass) and values(JSONData)

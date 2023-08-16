@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace Merge
+{
 public class DoorManager : MonoBehaviour
 {
     // Variables
@@ -25,4 +27,5 @@ public class DoorManager : MonoBehaviour
             doors[i] = transform.GetChild(i).GetComponent<DoorPH>();
         }
     }
+}
 }

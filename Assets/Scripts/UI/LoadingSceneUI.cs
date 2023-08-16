@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Locale;
 
-public class LoadingSceneUI : MonoBehaviour
+
+namespace Merge
+{
+    public class LoadingSceneUI : MonoBehaviour
 {
     // Variables
     [Header("background")]
@@ -419,4 +421,5 @@ public class LoadingSceneUI : MonoBehaviour
         // TODO - Open the app store here, or update in game
         Debug.Log("Updating!");
     }
+}
 }

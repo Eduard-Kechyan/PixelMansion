@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[CustomPropertyDrawer(typeof(ReadOnlyAttribute))]
+namespace Merge
+{
+    [CustomPropertyDrawer(typeof(ReadOnlyAttribute))]
 public class ReadOnlyDrawer : PropertyDrawer
 {
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
@@ -17,4 +19,5 @@ public class ReadOnlyDrawer : PropertyDrawer
         EditorGUI.PropertyField(position, property, label, true);
         GUI.enabled = true;
     }
+}
 }

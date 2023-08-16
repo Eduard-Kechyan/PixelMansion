@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class GameplayUI : MonoBehaviour
+namespace Merge
+{
+    public class GameplayUI : MonoBehaviour
 {
     // Variables
     public SceneLoader sceneLoader;
@@ -232,4 +234,5 @@ public class GameplayUI : MonoBehaviour
         }
     }
 
+}
 }

@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoardIndication : MonoBehaviour
+namespace Merge
+{
+    public class BoardIndication : MonoBehaviour
 {
     // Variables
     public float indicateDelay = 2f;
@@ -319,4 +321,5 @@ public class BoardIndication : MonoBehaviour
                 item2.transform.position = selectedPairs.pos2;
             }
         }*/
+}
 }

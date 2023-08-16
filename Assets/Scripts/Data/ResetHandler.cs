@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
-public class ResetHandler : MonoBehaviour
+namespace Merge
+{
+    public class ResetHandler : MonoBehaviour
 {
     public bool resetData = false;
 
@@ -71,4 +73,5 @@ public class ResetHandler : MonoBehaviour
         PlayerPrefs.DeleteAll();
         PlayerPrefs.Save();
     }
+}
 }

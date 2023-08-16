@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharSpeech : MonoBehaviour
+namespace Merge
+{
+    public class CharSpeech : MonoBehaviour
 {
     // Variables
     public SpeechBubble speechBubble;
@@ -114,6 +116,8 @@ public class CharSpeech : MonoBehaviour
 
     public void TryToSpeak(string content = "", bool speakIfEmpty = true)
     {
+        // TODO - Check for (-) and split the content into multiple marts
+
         if (!isSpeaking && !isTimeOut)
         {
             Speak(content, speakIfEmpty);
@@ -205,4 +209,5 @@ public class CharSpeech : MonoBehaviour
 
         return randomContent;
     }
+}
 }

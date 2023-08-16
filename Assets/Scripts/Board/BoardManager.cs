@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoardManager : MonoBehaviour
+namespace Merge
+{
+    public class BoardManager : MonoBehaviour
 {
     // Variables
     public float moveSpeed = 14f;
@@ -477,4 +479,5 @@ public class BoardManager : MonoBehaviour
 
         return distance;
     }
+}
 }

@@ -4,7 +4,9 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
 
-public class SafeAreaHandler : MonoBehaviour
+namespace Merge
+{
+    public class SafeAreaHandler : MonoBehaviour
 {
     // Variables
     public float manualSizes = 0f;
@@ -102,4 +104,5 @@ public class SafeAreaHandler : MonoBehaviour
 
         return topOffset;
     }
+}
 }

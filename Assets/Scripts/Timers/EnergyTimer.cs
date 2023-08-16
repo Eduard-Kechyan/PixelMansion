@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class EnergyTimer : MonoBehaviour
+namespace Merge
+{
+    public class EnergyTimer : MonoBehaviour
 {
     // Variables
     public int time = 120;
@@ -160,4 +162,5 @@ public class EnergyTimer : MonoBehaviour
     {
         timeManager.RemoveEnergyTimer();
     }
+}
 }

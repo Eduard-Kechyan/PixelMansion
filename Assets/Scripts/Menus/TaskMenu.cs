@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Locale;
 
-public class TaskMenu : MonoBehaviour
+
+namespace Merge
+{
+    public class TaskMenu : MonoBehaviour
 {
     // References
     private MenuUI menuUI;
@@ -47,4 +49,5 @@ public class TaskMenu : MonoBehaviour
         // Open menu
         menuUI.OpenMenu(taskMenu, title);
     }
+}
 }

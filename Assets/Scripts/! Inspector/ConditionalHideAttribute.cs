@@ -5,7 +5,9 @@ using System.Collections;
 //Original version of the ConditionAttribute created by Brecht Lecluyse (www.brechtos.com)
 //Modified by: -
 
-[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property |
+namespace Merge
+{
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property |
     AttributeTargets.Class | AttributeTargets.Struct, Inherited = true)]
 public class ConditionAttribute : PropertyAttribute
 {
@@ -66,6 +68,4 @@ public class ConditionAttribute : PropertyAttribute
     }
 
 }
-
-
-
+}

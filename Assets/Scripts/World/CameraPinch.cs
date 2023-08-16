@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class CameraPinch : MonoBehaviour
+namespace Merge
+{
+    public class CameraPinch : MonoBehaviour
 {
     // Variables
     public bool canPinch = true;
@@ -311,4 +313,5 @@ public class CameraPinch : MonoBehaviour
             return false;
         }
     }
+}
 }

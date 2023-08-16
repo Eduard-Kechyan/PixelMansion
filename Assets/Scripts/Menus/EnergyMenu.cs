@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Locale;
 
-public class EnergyMenu : MonoBehaviour
+
+namespace Merge
+{
+    public class EnergyMenu : MonoBehaviour
 {
     // Variables
     public int energyBuyAmount = 50;
@@ -38,8 +40,6 @@ public class EnergyMenu : MonoBehaviour
         shopMenu = GetComponent<ShopMenu>();
         valuePop = GetComponent<ValuePop>();
         adsManager = Services.Instance.GetComponent<AdsManager>();
-
-        // Cache instances
         gameData = GameData.Instance;
         LOCALE = I18n.Instance;
 
@@ -122,4 +122,5 @@ public class EnergyMenu : MonoBehaviour
             shopMenu.Open("Gems");
         }
     }
+}
 }

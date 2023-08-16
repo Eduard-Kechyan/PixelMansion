@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class ValuesUI : MonoBehaviour
+namespace Merge
+{
+    public class ValuesUI : MonoBehaviour
 {
     public Sprite[] levelUpIndicatorSprites = new Sprite[0];
 
@@ -333,4 +335,5 @@ public class ValuesUI : MonoBehaviour
     {
         GetComponent<UIDocument>().sortingOrder = order;
     }
+}
 }

@@ -5,7 +5,9 @@ using UnityEngine;
 using CI.QuickSave;
 using Newtonsoft.Json;
 
-public class TimeManager : MonoBehaviour
+namespace Merge
+{
+    public class TimeManager : MonoBehaviour
 {
     private DataManager dataManager;
     private GameData gameData;
@@ -205,4 +207,5 @@ public class TimeManager : MonoBehaviour
             }
         }
     }
+}
 }

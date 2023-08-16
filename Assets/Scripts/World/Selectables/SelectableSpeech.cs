@@ -2,72 +2,55 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SelectableSpeech : MonoBehaviour
+namespace Merge
 {
-    // Variables
-    [Condition("canBeTapped", true)]
-    public float speechTimeOut = 5f;
-    [Condition("canBeTapped", true)]
-    public string speechOld;
-    [Condition("canBeTapped", true)]
-    public string speechNew1;
-    [Condition("canBeTapped", true)]
-    public string speechNew2;
-    [Condition("canBeTapped", true)]
-    public string speechNew3;
-
-    [Header("States")]
-    [SerializeField]
-    [ReadOnly]
-    private float speechTimeOutInner;
-
-    // References
-    private Selectable selectable;
-
-    void Start()
+    public class SelectableSpeech : MonoBehaviour
     {
-        selectable = GetComponent<Selectable>();
-    }
+        // Variables
+        public float speechTimeOut = 3f;
+        public string speechCode = "";
 
-    public string GetSpeech()
-    {
-        bool canBeTapped = selectable.canBeTapped;
-        int spriteOrder = selectable.GetSprites();
+        // References
+        private Selectable selectable;
+        private I18n LOCALE;
+        private CharSpeech charSpeech;
 
-        if (canBeTapped && speechTimeOutInner <= 0)
+        void Start()
         {
-            if (spriteOrder == -1 && speechOld != "")
-            {
-                speechTimeOutInner = speechTimeOut;
+            // References
+            selectable = GetComponent<Selectable>();
+            LOCALE = I18n.Instance;
+            charSpeech = CharMain.Instance.charSpeech;
 
-                return speechOld;
+            if (speechCode == "")
+            {
+                speechCode = gameObject.name;
             }
-            if (spriteOrder == 0 && speechNew1 != "")
-            {
-                speechTimeOutInner = speechTimeOut;
+        }
 
-                return speechNew1;
-            }
-            if (spriteOrder == 1 && speechNew2 != "")
+        public string GetSpeech()
+        {
+            if (selectable.canBeTapped && charSpeech.canSpeakRandomly && !charSpeech.isSpeaking && !charSpeech.isTimeOut)
             {
-                speechTimeOutInner = speechTimeOut;
+                string newSpeechCode = "speech_" + speechCode + "_" + selectable.GetSprites();
 
-                return speechNew2;
-            }
-            if (spriteOrder == 2 && speechNew3 != "")
-            {
-                speechTimeOutInner = speechTimeOut;
+                int speechCount = LOCALE.GetNestedLength(newSpeechCode);
 
-                return speechNew3;
+                if (speechCount >= 0)
+                {
+                    int randomInt = Random.Range(0, speechCount);
+
+                    return LOCALE.Get(newSpeechCode, randomInt);
+                }
+                else
+                {
+                    return LOCALE.Get(newSpeechCode);
+                }
             }
             else
             {
                 return "";
             }
-        }
-        else
-        {
-            return "";
         }
     }
 }

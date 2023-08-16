@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemHandler : MonoBehaviour
+namespace Merge
+{
+    public class ItemHandler : MonoBehaviour
 {
     // Variables
     public GameObject item;
@@ -352,4 +354,5 @@ public class ItemHandler : MonoBehaviour
 
         return nextName;
     }
+}
 }

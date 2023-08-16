@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraMotion : MonoBehaviour
+namespace Merge
+{
+    public class CameraMotion : MonoBehaviour
 {
     // Variables
     public float speed = 100f;
@@ -63,4 +65,5 @@ public class CameraMotion : MonoBehaviour
             useAltSpeed = false;
         }
     }
+}
 }

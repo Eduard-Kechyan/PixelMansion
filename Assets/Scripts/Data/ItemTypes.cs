@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemTypes : MonoBehaviour
+namespace Merge
+{
+    public class ItemTypes : MonoBehaviour
 {
     public enum GenGroup
     {
@@ -13,4 +15,5 @@ public class ItemTypes : MonoBehaviour
     {
         Tools
     };
+}
 }

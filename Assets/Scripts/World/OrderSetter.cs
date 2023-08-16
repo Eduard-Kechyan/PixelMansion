@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OrderSetter : MonoBehaviour
+namespace Merge
+{
+    public class OrderSetter : MonoBehaviour
 {
     public Type type = Type.Single;
     [SortingLayer]
@@ -44,7 +46,7 @@ public class OrderSetter : MonoBehaviour
 
         ToggleNavArea();
 
-        SetSpriteOrders();
+      //  SetSpriteOrders();
     }
 #endif
 
@@ -156,4 +158,5 @@ public class OrderSetter : MonoBehaviour
                 break;
         }
     }
+}
 }

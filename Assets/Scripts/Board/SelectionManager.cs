@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class SelectionManager : MonoBehaviour
+namespace Merge
+{
+    public class SelectionManager : MonoBehaviour
 {
     // Variables
     public float selectSpeed = 1.8f;
@@ -151,4 +153,5 @@ public class SelectionManager : MonoBehaviour
             interactions.currentItem.Unselect();
         }
     }
+}
 }

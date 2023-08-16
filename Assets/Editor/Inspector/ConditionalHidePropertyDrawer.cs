@@ -5,7 +5,9 @@ using System.Collections.Generic;
 //Original version of the ConditionAttribute created by Brecht Lecluyse (www.brechtos.com)
 //Modified by: -
 
-[CustomPropertyDrawer(typeof(ConditionAttribute))]
+namespace Merge
+{
+    [CustomPropertyDrawer(typeof(ConditionAttribute))]
 public class ConditionPropertyDrawer : PropertyDrawer
 {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -194,4 +196,5 @@ public class ConditionPropertyDrawer : PropertyDrawer
                 return true;
         }
     }
+}
 }

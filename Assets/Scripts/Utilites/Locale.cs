@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 using System.Linq;
 
-namespace Locale
+namespace Merge
 {
     public sealed class I18n
     {
@@ -184,7 +184,9 @@ namespace Locale
             {
                 InitConfig();
             }
+
             string translation = key;
+
             if (config[key] != null)
             {
                 // if this key is a direct string
@@ -196,6 +198,7 @@ namespace Locale
                 {
                     translation = FindSingularOrPlural(key, args);
                 }
+
                 // check if we have embeddable data
                 if (args.Length > 0)
                 {
@@ -206,10 +209,33 @@ namespace Locale
             {
                 ErrorManager.Instance.Throw(
                     Types.ErrorType.Locale,
-                    "Missing translation for:" + key
+                    "Missing translation for: " + key
                 );
             }
             return translation;
+        }
+
+        public int GetNestedLength(string key)
+        {
+            int count = -1;
+            if (config == null)
+            {
+                InitConfig();
+            }
+
+            if (config[key] != null)
+            {
+                count = config[key].Count;
+            }
+            else if (isLoggingMissing)
+            {
+                ErrorManager.Instance.Throw(
+                    Types.ErrorType.Locale,
+                    "Missing translation for: " + key + ", in GetNestedLength()"
+                );
+            }
+
+            return count;
         }
 
         string FindSingularOrPlural(string key, object[] args)

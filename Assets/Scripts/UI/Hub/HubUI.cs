@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class HubUI : MonoBehaviour
+namespace Merge
+{
+    public class HubUI : MonoBehaviour
 {
     // Variables
     public SceneLoader sceneLoader;
@@ -82,4 +84,5 @@ public class HubUI : MonoBehaviour
 
         playButtonPosition = Camera.main.ScreenToWorldPoint(playButtonScreenPosition);
     }
+}
 }

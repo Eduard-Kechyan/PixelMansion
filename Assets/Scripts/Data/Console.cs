@@ -12,7 +12,7 @@ using UnityEditor;
 
 //////// THIRD-PARTY SCRIPT ////////
 
-namespace Consolation
+namespace Merge
 {
     /// <summary>
     /// A console to display Unity's debug logs in-game.

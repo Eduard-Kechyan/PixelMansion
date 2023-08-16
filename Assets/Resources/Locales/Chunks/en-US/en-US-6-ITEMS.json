@@ -1,5 +1,8 @@
 {
-    "________ GROUP ________": "________________",
+    "________ CHESTS ________": "________________",
+    "Chest_Item": "Chest",
+    "Chest_Piggy": "Piggy Bank",
+    "Chest_Energy": "Energetic Chest",
     "________ COLLECTABLES ________": "________________",
     "Coll_Experience": "Experience",
     "Coll_Gold": "Gold",
@@ -9,10 +12,6 @@
         "other": "Gems"
     },
     "Coll_Energy": "Energy",
-    "________ CHESTS ________": "________________",
-    "Chest_Item": "Chest",
-    "Chest_Piggy": "Piggy Bank",
-    "Chest_Energy": "Energetic Chest",
     "________ GENS ________": "________________",
     "Gen_Toolbox": "Toolbox",
     "________ ITEMS ________": "________________",

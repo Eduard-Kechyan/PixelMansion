@@ -3,9 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Locale;
 
-public class ConfirmMenu : MonoBehaviour
+
+namespace Merge
+{
+    public class ConfirmMenu : MonoBehaviour
 {
     // References
     private MenuUI menuUI;
@@ -113,4 +115,5 @@ public class ConfirmMenu : MonoBehaviour
     {
         menuUI.CloseMenu(confirmMenu.name);
     }
+}
 }

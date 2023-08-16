@@ -12,7 +12,9 @@ using Unity.Notifications.Android;
 using Unity.Notifications.iOS;
 #endif*/
 
-public class Notifics : MonoBehaviour
+namespace Merge
+{
+    public class Notifics : MonoBehaviour
 {
     // Variables
     public Color accentColor;
@@ -177,4 +179,5 @@ public class Notifics : MonoBehaviour
         //Debug.Log(permissionName + " permission denied!");
         allowed = false;
     }
+}
 }

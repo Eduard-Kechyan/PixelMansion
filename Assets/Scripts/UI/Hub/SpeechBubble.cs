@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Locale;
 
-public class SpeechBubble : MonoBehaviour
+
+namespace Merge
+{
+    public class SpeechBubble : MonoBehaviour
 {
     public Vector2 posOffset;
     public float closeDelay = 0.5f;
@@ -331,4 +333,5 @@ public class SpeechBubble : MonoBehaviour
             charSpeech.Closed();
         }
     }
+}
 }

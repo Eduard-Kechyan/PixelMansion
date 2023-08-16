@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Types : MonoBehaviour
+namespace Merge
+{
+    public class Types : MonoBehaviour
 {
     //// ITEMS ///
     public enum ChestGroup
@@ -321,4 +323,5 @@ public class Types : MonoBehaviour
         public bool hasBonus;
         public bool isPopular;
     }
+}
 }

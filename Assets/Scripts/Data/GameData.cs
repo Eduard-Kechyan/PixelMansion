@@ -5,7 +5,9 @@ using UnityEngine;
 
 // TODO - Kaleidoscope
 
-public class GameData : MonoBehaviour
+namespace Merge
+{
+    public class GameData : MonoBehaviour
 {
     // Variables
     public ValuesData valuesData;
@@ -472,4 +474,5 @@ public class GameData : MonoBehaviour
             levelTen = false;
         }
     }
+}
 }

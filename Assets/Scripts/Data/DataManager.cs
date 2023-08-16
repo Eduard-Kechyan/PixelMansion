@@ -7,7 +7,9 @@ using CI.QuickSave;
 using UnityEngine.SceneManagement;
 using Newtonsoft.Json;
 
-public class DataManager : MonoBehaviour
+namespace Merge
+{
+    public class DataManager : MonoBehaviour
 {
     // For testing only
     public bool ignoreInitialCheck = false;
@@ -81,7 +83,7 @@ public class DataManager : MonoBehaviour
 #if UNITY_EDITOR
         isEditor = true;
 
-        // Make this script run if we arn't starting from the Loading scene
+        // Make this script run if we aren't starting from the Loading scene
         if (
             !loaded
             && (
@@ -109,7 +111,7 @@ public class DataManager : MonoBehaviour
             bonusData = jsonHandler.ConvertBonusToJson(gameData.bonusData);
             inventoryData = jsonHandler.ConvertInventoryToJson(gameData.inventoryData);
             timersJsonData = jsonHandler.ConvertTimersToJson(gameData.timers);
-            unsentJsonData = jsonHandler.ConvertUnsentToson(apiCalls.unsentData);
+            unsentJsonData = jsonHandler.ConvertUnsentToJson(apiCalls.unsentData);
 
             writer
                 .Write("rootSet", true)
@@ -246,7 +248,7 @@ public class DataManager : MonoBehaviour
 
     public void SaveUnsentData()
     {
-        string newUnsentData = jsonHandler.ConvertUnsentToson(apiCalls.unsentData);
+        string newUnsentData = jsonHandler.ConvertUnsentToJson(apiCalls.unsentData);
 
         writer.Write("unsentData", newUnsentData).Commit();
     }
@@ -393,4 +395,5 @@ public class DataManager : MonoBehaviour
 
         return count;
     }
+}
 }

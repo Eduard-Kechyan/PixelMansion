@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Locale;
 
-public class ShopMenu : MonoBehaviour
+
+namespace Merge
+{
+    public class ShopMenu : MonoBehaviour
 {
     // Variables
     public bool gameplayScene = false;
@@ -605,4 +607,5 @@ public class ShopMenu : MonoBehaviour
 
         valuePop.PopBonus(newItem, hubUI.playButtonPosition, false, true);
     }
+}
 }

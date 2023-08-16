@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChangeFloor : MonoBehaviour
+namespace Merge
+{
+    public class ChangeFloor : MonoBehaviour
 {
     // Variables
     public float changeSpeed = 0.1f;
@@ -361,4 +363,4 @@ public class ChangeFloor : MonoBehaviour
         overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, 0);
     }
 }
-
+}

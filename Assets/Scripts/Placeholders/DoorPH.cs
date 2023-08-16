@@ -2,18 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DoorPH : MonoBehaviour
+namespace Merge
 {
-    [SortingLayer]
-    public string roomSortingLayer;
+    public class DoorPH : MonoBehaviour
+    {
+        [SortingLayer]
+        public string roomSortingLayer;
 
 #if UNITY_EDITOR
-    void OnValidate()
-    {
-        if (roomSortingLayer == "")
+        void OnValidate()
         {
-            Debug.LogWarning("The room sorting layer of this door placeholder ins't selected: " + gameObject.name);
+            if (roomSortingLayer == "")
+            {
+                Debug.LogWarning("The room sorting layer of this door placeholder ins't selected: " + gameObject.name);
+            }
         }
+#endif
     }
-#endif    
 }

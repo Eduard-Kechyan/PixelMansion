@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NavPH : MonoBehaviour
+namespace Merge
+{
+    public class NavPH : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -15,4 +17,5 @@ public class NavPH : MonoBehaviour
     {
         
     }
+}
 }

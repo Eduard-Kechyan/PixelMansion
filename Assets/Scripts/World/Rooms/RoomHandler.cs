@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace Merge
+{
 public class RoomHandler : MonoBehaviour
 {
     // Variables
@@ -210,4 +212,5 @@ public class RoomHandler : MonoBehaviour
             lockedOverlay.SetActive(false);
         }
     }
+}
 }

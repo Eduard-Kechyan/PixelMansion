@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Locale;
 
-public class DoubleTapManager : MonoBehaviour
+namespace Merge
+{
+    public class DoubleTapManager : MonoBehaviour
 {
     // Variables
     public float moveSpeed = 14f;
@@ -307,4 +308,5 @@ public class DoubleTapManager : MonoBehaviour
             // TODO - Create items on the board
         }
     }
+}
 }

@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Locale;
+
 using Newtonsoft.Json;
 
-public class DataConverter : MonoBehaviour
+namespace Merge
+{
+    public class DataConverter : MonoBehaviour
 {
     // References
     private DataManager dataManager;
@@ -317,4 +319,5 @@ public class DataConverter : MonoBehaviour
 
         return newBoardArray;
     }
+}
 }

@@ -4,7 +4,9 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
 
-public class SceneLoader : MonoBehaviour
+namespace Merge
+{
+    public class SceneLoader : MonoBehaviour
 {
     // Variables
     public TransitionUI transitionUI;
@@ -117,4 +119,5 @@ public class SceneLoader : MonoBehaviour
                 break;
         }
     }
+}
 }

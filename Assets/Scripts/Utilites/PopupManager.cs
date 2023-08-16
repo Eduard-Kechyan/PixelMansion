@@ -4,7 +4,9 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
 
-public class PopupManager : MonoBehaviour
+namespace Merge
+{
+    public class PopupManager : MonoBehaviour
 {
     // Varaibles
     public SceneLoader sceneLoader;
@@ -35,7 +37,7 @@ public class PopupManager : MonoBehaviour
 
     private void Start()
     {
-        // Cache refernces
+        // Cache references
         soundManager = SoundManager.Instance;
         localeManager = Settings.Instance.GetComponent<LocaleManager>();
 
@@ -307,4 +309,5 @@ public class PopupManager : MonoBehaviour
 
         currentPops.RemoveAt(index);
     }
+}
 }

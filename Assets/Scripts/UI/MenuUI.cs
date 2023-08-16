@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class MenuUI : MonoBehaviour
+namespace Merge
+{
+    public class MenuUI : MonoBehaviour
 {
     // Variables
     public BoardInteractions boardInteractions;
@@ -14,7 +16,7 @@ public class MenuUI : MonoBehaviour
     private List<MenuItem> menus = new ();
     private bool valuesShown;
     private bool closeAllMenus = false;
-    private bool closeingAllMenus = false;
+    private bool closingAllMenus = false;
 
     // References
     private ValuesUI valuesUI;
@@ -227,9 +229,9 @@ public class MenuUI : MonoBehaviour
 
     public void CloseAllMenus()
     {
-        if (!closeingAllMenus)
+        if (!closingAllMenus)
         {
-            closeingAllMenus = true;
+            closingAllMenus = true;
 
             StartCoroutine(CloseAllAfter());
         }
@@ -246,7 +248,7 @@ public class MenuUI : MonoBehaviour
         }
 
         closeAllMenus = false;
-        closeingAllMenus = false;
+        closingAllMenus = false;
 
         CheckMenuClosed();
 
@@ -272,4 +274,5 @@ public class MenuUI : MonoBehaviour
 
         valuesUI.EnableButtons();
     }
+}
 }

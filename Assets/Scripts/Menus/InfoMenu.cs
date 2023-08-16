@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Locale;
 using UnityEngine.SceneManagement;
 
-public class InfoMenu : MonoBehaviour
+namespace Merge
+{
+    public class InfoMenu : MonoBehaviour
 {
     // Variables
     public Sprite unlockedQuestionMarkSprite;
@@ -457,4 +458,5 @@ public class InfoMenu : MonoBehaviour
 
         infoParent.style.display = DisplayStyle.None;
     }
+}
 }

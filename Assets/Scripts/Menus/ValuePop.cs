@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class ValuePop : MonoBehaviour
+namespace Merge
+{
+    public class ValuePop : MonoBehaviour
 {
     // Variables
     public float offset = 3f;
@@ -351,4 +353,5 @@ public class ValuePop : MonoBehaviour
 
         return newValuePop;
     }
+}
 }

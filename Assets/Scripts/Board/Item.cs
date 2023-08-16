@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Item : MonoBehaviour
+namespace Merge
+{
+    public class Item : MonoBehaviour
 {
     // Names
     [ReadOnly]
@@ -461,4 +463,5 @@ public class Item : MonoBehaviour
         moveSpeed = newMoveSpeed;
         scaleSpeed = newScaleSpeed;
     }
+}
 }

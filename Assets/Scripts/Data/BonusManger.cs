@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Locale;
 
-public class BonusManager : MonoBehaviour
+namespace Merge
+{
+    public class BonusManager : MonoBehaviour
 {
     // Variables
     public BoardManager boardManager;
@@ -65,4 +66,5 @@ public class BonusManager : MonoBehaviour
             );
         }
     }
+}
 }

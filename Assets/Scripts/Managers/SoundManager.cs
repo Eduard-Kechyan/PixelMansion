@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SoundManager : MonoBehaviour
+namespace Merge
+{
+    public class SoundManager : MonoBehaviour
 {
     // Variables
     [Header("Sound")]
@@ -174,4 +176,5 @@ public class SoundManager : MonoBehaviour
             yield return null;
         }
     }
+}
 }

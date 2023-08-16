@@ -2,14 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharOrderSetter : MonoBehaviour
+namespace Merge
+{
+    public class CharOrderSetter : MonoBehaviour
 {
     // Variables
     public int radius;
     public int sortingOrderOffset = 7;
 
     private SpriteRenderer spriteRenderer;
-    private string currentRoomName = "";
+    [HideInInspector]
+    public string currentRoomName = "";
 
     void Start()
     {
@@ -45,4 +48,5 @@ public class CharOrderSetter : MonoBehaviour
             }
         }
     }
+}
 }

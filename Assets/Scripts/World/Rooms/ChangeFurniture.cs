@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChangeFurniture : MonoBehaviour
+namespace Merge
+{
+    public class ChangeFurniture : MonoBehaviour
 {
     // Variables
     public int spriteOrder = -1;
@@ -31,12 +33,14 @@ public class ChangeFurniture : MonoBehaviour
     // References
     private Selectable selectable;
     private SpriteRenderer spriteRenderer;
+    private NavMeshManager navMeshManager;
 
     void Start()
     {
         // Cache
         selectable = GetComponent<Selectable>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        navMeshManager = NavMeshManager.Instance;
 
         if (isOld)
         {
@@ -90,7 +94,7 @@ public class ChangeFurniture : MonoBehaviour
         spriteRenderer.sprite = sprites[spriteOrder];
     }
 
-    public void SetSprites(int order)
+    public void SetSprites(int order, bool alt = false)
     {
         // Set the sprite order
         spriteOrder = order;
@@ -98,6 +102,11 @@ public class ChangeFurniture : MonoBehaviour
         if (spriteRenderer == null)
         {
             spriteRenderer = GetComponent<SpriteRenderer>();
+        }
+
+        if (alt)
+        {
+            CheckNavAreas(true);
         }
 
         // Set the sprite
@@ -136,7 +145,60 @@ public class ChangeFurniture : MonoBehaviour
             // Reset overlay flashing
             ResetOverlay();
 
+            CheckNavAreas();
+
             isOld = false;
+        }
+    }
+
+    void CheckNavAreas(bool alt = false)
+    {
+        if (spriteOrder > 0)
+        {
+            // Nav areas
+            if (transform.childCount == 3)
+            {
+                bool found = false;
+
+                for (int i = 0; i < transform.childCount; i++)
+                {
+                    Transform navArea = transform.GetChild(i);
+
+                    if (navArea != null && i == spriteOrder)
+                    {
+                        navArea.gameObject.SetActive(true);
+
+                        found = true;
+                    }
+                    else
+                    {
+                        navArea.gameObject.SetActive(false);
+                    }
+                }
+
+                if (found && !alt)
+                {
+                    navMeshManager.Bake();
+                }
+            }
+
+            // Colliders
+            PolygonCollider2D[] colliders = gameObject.GetComponents<PolygonCollider2D>();
+
+            if (colliders.Length == 3)
+            {
+                for (int i = 0; i < colliders.Length; i++)
+                {
+                    if (i == spriteOrder)
+                    {
+                        colliders[i].enabled = true;
+                    }
+                    else
+                    {
+                        colliders[i].enabled = false;
+                    }
+                }
+            }
         }
     }
 
@@ -193,4 +255,5 @@ public class ChangeFurniture : MonoBehaviour
     {
         spriteRenderer.material.SetFloat("_FlashAmount", 0);
     }
+}
 }

@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AdsManager : MonoBehaviour
+namespace Merge
+{
+    public class AdsManager : MonoBehaviour
 {
     void Start()
     {
@@ -18,4 +20,5 @@ public class AdsManager : MonoBehaviour
 
         //failCallback?.Invoke();
     }
+}
 }

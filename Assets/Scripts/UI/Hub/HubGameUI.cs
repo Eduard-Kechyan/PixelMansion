@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+namespace Merge
+{
 public class HubGameUI : MonoBehaviour
 {
     // UI
@@ -13,4 +15,5 @@ public class HubGameUI : MonoBehaviour
         // UI
         root = GetComponent<UIDocument>().rootVisualElement;        
     }
+}
 }

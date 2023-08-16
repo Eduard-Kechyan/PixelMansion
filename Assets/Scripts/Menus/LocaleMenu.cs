@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Locale;
 
-public class LocaleMenu : MonoBehaviour
+
+namespace Merge
+{
+    public class LocaleMenu : MonoBehaviour
 {
     // Variables
     public Sprite localeButtonSprite;
@@ -155,4 +157,5 @@ public class LocaleMenu : MonoBehaviour
 
         confirmMenu.Open("locale", Application.Quit, menuUI.CloseAllMenus, true, true);
     }
+}
 }

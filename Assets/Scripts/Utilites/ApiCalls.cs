@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class ApiCalls : MonoBehaviour
+namespace Merge
+{
+    public class ApiCalls : MonoBehaviour
 {
     public bool logConnection = false;
     public bool useDevUrl = false;
@@ -271,4 +273,5 @@ public class ApiCalls : MonoBehaviour
             }
         }
     }
+}
 }

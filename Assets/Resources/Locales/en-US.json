@@ -79,7 +79,7 @@
     "________ ENERGY_MENU ________": "________________",
     "energy_menu_title": "Buy Energy",
     "energy_menu_label_a": "You are out of Energy!",
-    "energy_menu_label_b": "Generating new items costs energy. Buy more Energy by wathcing an Ad or by using Gems.",
+    "energy_menu_label_b": "Generating new items costs energy. Buy more Energy by watching an Ad or by using Gems.",
     "energy_menu_watch_ad": "Watch",
     "________ SHOP_MENU ________": "________________",
     "shop_menu_title": "Shop",
@@ -150,7 +150,10 @@
     "update_button": "Update",
     "update_exit_button": "Exit"
 ,
-    "________ GROUP ________": "________________",
+    "________ CHESTS ________": "________________",
+    "Chest_Item": "Chest",
+    "Chest_Piggy": "Piggy Bank",
+    "Chest_Energy": "Energetic Chest",
     "________ COLLECTABLES ________": "________________",
     "Coll_Experience": "Experience",
     "Coll_Gold": "Gold",
@@ -160,10 +163,6 @@
         "other": "Gems"
     },
     "Coll_Energy": "Energy",
-    "________ CHESTS ________": "________________",
-    "Chest_Item": "Chest",
-    "Chest_Piggy": "Piggy Bank",
-    "Chest_Energy": "Energetic Chest",
     "________ GENS ________": "________________",
     "Gen_Toolbox": "Toolbox",
     "________ ITEMS ________": "________________",
@@ -175,6 +174,37 @@
     "Item_Tools_6": "Saw",
     "Item_Tools_7": "Axe"
 ,
-    "________ GENERATORS ________": "________________",
-    "Gen_MineCart_0": "Mine Cart"
+    "________ PAINTING ________": "________________",
+    "speech_Painting_-1": "Is it a cat or a dog? I can't see through the dust!",
+    "speech_Painting_0": {
+        "zero": "Sure looks familiar.",
+        "one": "Ooh, it's just me younger.",
+        "other": "I have had better photos taken of me."
+    },
+    "speech_Painting_1": {
+        "zero": "The pixels are so small, I can't see what it is. (-) Well at least it looks nice.",
+        "one": "Quantity over speech, huh?"
+    },
+    "speech_Painting_2": {
+        "zero": "Aah, yes. Abstract art. (-) Nope, don't get it",
+        "one": "They say it's not about the beauty, but about the feeling when it comes to abstract art. (-) Well, I feel beautiful. What does that mean?"
+    },
+    "________ BOOKCASE ________": "________________",
+    "speech_Bookcase_-1": {
+        "zero":"I can't put anything in here, it will break",
+        "one":"This thing has been in a better state."
+    },
+    "speech_Bookcase_0": {
+        "zero": "Aah, much better",
+        "one": "What should i put in here?",
+        "other": "It's the same, but better"
+    },
+    "speech_Bookcase_1": {
+        "zero": "Interesting color, but not my taste",
+        "one": "Hum?"
+    },
+    "speech_Bookcase_2": {
+        "zero": "Red? Really?",
+        "one": "For my monster stories!"
+    }
 }

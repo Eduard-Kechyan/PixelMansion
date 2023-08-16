@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using Locale;
+
 using System.IO;
 
-public class LocaleCombiner : MonoBehaviour
+namespace Merge
+{
+    public class LocaleCombiner : MonoBehaviour
 {
     public bool combine = false;
     public bool log = false;
@@ -27,6 +29,7 @@ public class LocaleCombiner : MonoBehaviour
         }
     }
 #endif
+
     public void Combine(bool isBuilding = false, bool isPlaying = false)
     {
         string[] locales = I18n.Instance.GetLocales();
@@ -113,4 +116,5 @@ public class LocaleCombiner : MonoBehaviour
             writer.Close();
         }
     }
+}
 }

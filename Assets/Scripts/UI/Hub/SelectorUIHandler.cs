@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class SelectorUIHandler : MonoBehaviour
+namespace Merge
+{
+    public class SelectorUIHandler : MonoBehaviour
 {
     // Variables
     public Selector selector;
@@ -128,4 +130,5 @@ public class SelectorUIHandler : MonoBehaviour
 
         ToggleSelector();
     }
+}
 }

@@ -3,255 +3,260 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Selectable : MonoBehaviour
+namespace Merge
 {
-    // Variables
-    public Type type;
-    [Header("Selection")]
-    public bool canBeSelected = false;
-    [Condition("canBeSelected", true)]
-    public float selectSpeed = 1.8f;
-
-    [Header("Taps")]
-    public bool canBeTapped = false;
-
-    [Header("States")]
-    [SerializeField]
-    [ReadOnly]
-    public bool isPlaying = false;
-
-    [HideInInspector]
-    public string id;
-    [HideInInspector]
-    public int order = 0;
-
-    // Enums
-    public enum Type
+    public class Selectable : MonoBehaviour
     {
-        Floor,
-        Wall,
-        Furniture,
-        Item,
-    }
+        // Variables
+        public Type type;
+        [Header("Selection")]
+        public bool canBeSelected = false;
+        [Condition("canBeSelected", true)]
+        public float selectSpeed = 1.8f;
 
-    // References
-    private Animation anim;
+        [Header("Taps")]
+        public bool canBeTapped = false;
+        [Condition("canBeTapped", true)]
+        public float charMoveOffset = 0f;
 
-    [HideInInspector]
-    public ChangeFloor changeFloor;
-    [HideInInspector]
-    public ChangeWall changeWall;
-    [HideInInspector]
-    public ChangeFurniture changeFurniture;
+        [Header("States")]
+        [SerializeField]
+        [ReadOnly]
+        public bool isPlaying = false;
 
-    void Start()
-    {
-        // Cache
-        anim = GetComponent<Animation>();
+        [HideInInspector]
+        public string id;
+        [HideInInspector]
+        public int order = 0;
 
-        Initialize();
-    }
-
-    void Update()
-    {
-        if (isPlaying && !anim.isPlaying)
+        // Enums
+        public enum Type
         {
-            isPlaying = false;
-        }
-    }
-
-    void Initialize()
-    {
-        // Gererate random id for comparison
-        Guid guid = Guid.NewGuid();
-
-        id = guid.ToString();
-
-        // Get the correct changer
-        switch (type)
-        {
-            case Type.Floor:
-                changeFloor = GetComponent<ChangeFloor>();
-                break;
-
-            case Type.Wall:
-                changeWall = GetComponent<ChangeWall>();
-                break;
-
-            case Type.Furniture:
-                changeFurniture = GetComponent<ChangeFurniture>();
-                break;
-        }
-    }
-
-    public bool GetOld()
-    {
-        bool isOld = true;
-
-        switch (type)
-        {
-            case Type.Floor:
-                isOld = changeFloor.isOld;
-                break;
-
-            case Type.Wall:
-                isOld = changeWall.isOld;
-                break;
-
-            case Type.Furniture:
-                isOld = changeFurniture.isOld;
-                break;
+            Floor,
+            Wall,
+            Furniture,
+            Item,
         }
 
-        return isOld;
-    }
+        // References
+        private Animation anim;
 
-    public int GetSprites()
-    {
-        int order = 0;
+        [HideInInspector]
+        public ChangeFloor changeFloor;
+        [HideInInspector]
+        public ChangeWall changeWall;
+        [HideInInspector]
+        public ChangeFurniture changeFurniture;
 
-        switch (type)
+        void Start()
         {
-            case Type.Floor:
-                order = changeFloor.spriteOrder;
-                break;
+            // Cache
+            anim = GetComponent<Animation>();
 
-            case Type.Wall:
-                order = changeWall.spriteOrder;
-                break;
-
-            case Type.Furniture:
-                order = changeFurniture.spriteOrder;
-                break;
+            Initialize();
         }
 
-        return order;
-    }
-
-    public Sprite[] GetSpriteOptions()
-    {
-        Sprite[] sprites = new Sprite[0];
-
-        switch (type)
+        void Update()
         {
-            case Type.Floor:
-                sprites = changeFloor.optionSprites;
-                break;
-
-            case Type.Wall:
-                sprites = changeWall.optionSprites;
-                break;
-
-            case Type.Furniture:
-                sprites = changeFurniture.optionSprites;
-                break;
+            if (isPlaying && !anim.IsPlaying("SelectableSelect"))
+            {
+                isPlaying = false;
+            }
         }
 
-        return sprites;
-    }
-
-    public void SetSprites(int order)
-    {
-        switch (type)
+        void Initialize()
         {
-            case Type.Floor:
-                changeFloor.SetSprites(order);
-                break;
+            // Generate random id for comparison
+            Guid guid = Guid.NewGuid();
 
-            case Type.Wall:
-                changeWall.SetSprites(order);
-                break;
+            id = guid.ToString();
 
-            case Type.Furniture:
-                changeFurniture.SetSprites(order);
-                break;
-        }
-    }
+            // Get the correct changer
+            switch (type)
+            {
+                case Type.Floor:
+                    changeFloor = GetComponent<ChangeFloor>();
+                    break;
 
-    public void CancelSpriteChange(int order)
-    {
-        switch (type)
-        {
-            case Type.Floor:
-                changeFloor.Cancel(order);
-                break;
+                case Type.Wall:
+                    changeWall = GetComponent<ChangeWall>();
+                    break;
 
-            case Type.Wall:
-                changeWall.Cancel(order);
-                break;
-
-            case Type.Furniture:
-                changeFurniture.Cancel(order);
-                break;
-        }
-    }
-
-    public void ConfirmSpriteChange(int order)
-    {
-        switch (type)
-        {
-            case Type.Floor:
-                changeFloor.Confirm();
-                break;
-
-            case Type.Wall:
-                changeWall.Confirm();
-                break;
-
-            case Type.Furniture:
-                changeFurniture.Confirm();
-                break;
-        }
-    }
-
-    public void Select()
-    {
-        switch (type)
-        {
-            case Type.Floor:
-                changeFloor.Select();
-                break;
-
-            case Type.Wall:
-                changeWall.Select();
-                break;
-
-            case Type.Furniture:
-                changeFurniture.Select();
-                break;
-        }
-    }
-
-    public void Unselect()
-    {
-        switch (type)
-        {
-            case Type.Floor:
-                changeFloor.Unselect();
-                break;
-
-            case Type.Wall:
-                changeWall.Unselect();
-                break;
-
-            case Type.Furniture:
-                changeFurniture.Unselect();
-                break;
-        }
-    }
-
-    public bool Tapped()
-    {
-        if (canBeTapped && anim != null)
-        {
-            anim["SelectableSelect"].speed = selectSpeed;
-            anim.Play("SelectableSelect");
-
-            isPlaying = true;
-
-            return true;
+                case Type.Furniture:
+                    changeFurniture = GetComponent<ChangeFurniture>();
+                    break;
+            }
         }
 
-        return false;
+        public bool GetOld()
+        {
+            bool isOld = true;
+
+            switch (type)
+            {
+                case Type.Floor:
+                    isOld = changeFloor.isOld;
+                    break;
+
+                case Type.Wall:
+                    isOld = changeWall.isOld;
+                    break;
+
+                case Type.Furniture:
+                    isOld = changeFurniture.isOld;
+                    break;
+            }
+
+            return isOld;
+        }
+
+        public int GetSprites()
+        {
+            int order = 0;
+
+            switch (type)
+            {
+                case Type.Floor:
+                    order = changeFloor.spriteOrder;
+                    break;
+
+                case Type.Wall:
+                    order = changeWall.spriteOrder;
+                    break;
+
+                case Type.Furniture:
+                    order = changeFurniture.spriteOrder;
+                    break;
+            }
+
+            return order;
+        }
+
+        public Sprite[] GetSpriteOptions()
+        {
+            Sprite[] sprites = new Sprite[0];
+
+            switch (type)
+            {
+                case Type.Floor:
+                    sprites = changeFloor.optionSprites;
+                    break;
+
+                case Type.Wall:
+                    sprites = changeWall.optionSprites;
+                    break;
+
+                case Type.Furniture:
+                    sprites = changeFurniture.optionSprites;
+                    break;
+            }
+
+            return sprites;
+        }
+
+        public void SetSprites(int order)
+        {
+            switch (type)
+            {
+                case Type.Floor:
+                    changeFloor.SetSprites(order);
+                    break;
+
+                case Type.Wall:
+                    changeWall.SetSprites(order);
+                    break;
+
+                case Type.Furniture:
+                    changeFurniture.SetSprites(order);
+                    break;
+            }
+        }
+
+        public void CancelSpriteChange(int order)
+        {
+            switch (type)
+            {
+                case Type.Floor:
+                    changeFloor.Cancel(order);
+                    break;
+
+                case Type.Wall:
+                    changeWall.Cancel(order);
+                    break;
+
+                case Type.Furniture:
+                    changeFurniture.Cancel(order);
+                    break;
+            }
+        }
+
+        public void ConfirmSpriteChange(int order)
+        {
+            switch (type)
+            {
+                case Type.Floor:
+                    changeFloor.Confirm();
+                    break;
+
+                case Type.Wall:
+                    changeWall.Confirm();
+                    break;
+
+                case Type.Furniture:
+                    changeFurniture.Confirm();
+                    break;
+            }
+        }
+
+        public void Select()
+        {
+            switch (type)
+            {
+                case Type.Floor:
+                    changeFloor.Select();
+                    break;
+
+                case Type.Wall:
+                    changeWall.Select();
+                    break;
+
+                case Type.Furniture:
+                    changeFurniture.Select();
+                    break;
+            }
+        }
+
+        public void Unselect()
+        {
+            switch (type)
+            {
+                case Type.Floor:
+                    changeFloor.Unselect();
+                    break;
+
+                case Type.Wall:
+                    changeWall.Unselect();
+                    break;
+
+                case Type.Furniture:
+                    changeFurniture.Unselect();
+                    break;
+            }
+        }
+
+        public bool Tapped()
+        {
+            if (canBeTapped && anim != null)
+            {
+                anim["SelectableSelect"].speed = selectSpeed;
+                anim.Play("SelectableSelect");
+
+                isPlaying = true;
+
+                return true;
+            }
+
+            return false;
+        }
     }
 }

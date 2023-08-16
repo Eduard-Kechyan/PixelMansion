@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Locale;
 
-public class InfoBox : MonoBehaviour
+
+namespace Merge
+{
+    public class InfoBox : MonoBehaviour
 {
     // Variables
     public Sprite goldValue;
@@ -539,4 +541,5 @@ public class InfoBox : MonoBehaviour
 
         return multipliedValue;
     }
+}
 }

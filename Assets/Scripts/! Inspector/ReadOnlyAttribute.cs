@@ -1,3 +1,6 @@
 using UnityEngine;
 
-public class ReadOnlyAttribute : PropertyAttribute { }
+namespace Merge
+{
+    public class ReadOnlyAttribute : PropertyAttribute { }
+}

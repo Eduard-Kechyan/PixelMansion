@@ -4,78 +4,81 @@ using System.Collections.Generic;
 using UnityEngine;
 using NavMeshPlus.Components;
 
-public class NavMeshManager : MonoBehaviour
+namespace Merge
 {
-    // Variables
-    public bool bake;
-    public Transform worldRoot;
-
-    // References
-    private NavMeshSurface navMeshSurface;
-
-    // Instance
-    public static NavMeshManager Instance;
-
-    void Awake()
+    public class NavMeshManager : MonoBehaviour
     {
-        Instance = this;
-    }
+        // Variables
+        public bool bake;
+        public Transform worldRoot;
 
-    void Start()
-    {
         // References
-        navMeshSurface = GetComponent<NavMeshSurface>();
+        private NavMeshSurface navMeshSurface;
 
-        CheckRooms();
-    }
+        // Instance
+        public static NavMeshManager Instance;
+
+        void Awake()
+        {
+            Instance = this;
+        }
+
+        void Start()
+        {
+            // References
+            navMeshSurface = GetComponent<NavMeshSurface>();
+
+            CheckRooms();
+        }
 
 #if UNITY_EDITOR
-    void OnValidate()
-    {
-        if (bake)
+        void OnValidate()
         {
-            bake = false;
-
-            Glob.Validate(() =>
+            if (bake)
             {
-                CheckRooms(() =>
-                {
-                    Bake();
-                });
-            }, this);
-        }
-    }
-#endif
+                bake = false;
 
-    public void CheckRooms(Action callback = null)
-    {
-        for (int i = 0; i < worldRoot.childCount; i++)
-        {
-            RoomHandler room = worldRoot.GetChild(i).GetComponent<RoomHandler>();
-
-            if (room != null)
-            {
-                if (room.locked)
+                Glob.Validate(() =>
                 {
-                    room.DisableNav();
-                }
-                else
-                {
-                    room.EnableNav();
-                }
+                    CheckRooms(() =>
+                    {
+                        Bake();
+                    });
+                }, this);
             }
         }
+#endif
 
-        callback?.Invoke();
-    }
-
-    public void Bake()
-    {
-        if (navMeshSurface == null)
+        public void CheckRooms(Action callback = null)
         {
-            navMeshSurface = GetComponent<NavMeshSurface>();
+            for (int i = 0; i < worldRoot.childCount; i++)
+            {
+                RoomHandler room = worldRoot.GetChild(i).GetComponent<RoomHandler>();
+
+                if (room != null)
+                {
+                    if (room.locked)
+                    {
+                        room.DisableNav();
+                    }
+                    else
+                    {
+                        room.EnableNav();
+                    }
+                }
+            }
+
+            callback?.Invoke();
         }
 
-        navMeshSurface.BuildNavMesh();
+        public void Bake()
+        {
+            if (navMeshSurface == null)
+            {
+                navMeshSurface = GetComponent<NavMeshSurface>();
+            }
+
+            navMeshSurface.BuildNavMesh();
+        }
     }
 }

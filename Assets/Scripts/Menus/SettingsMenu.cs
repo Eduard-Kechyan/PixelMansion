@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Locale;
 
-public class SettingsMenu : MonoBehaviour
+
+namespace Merge
+{
+    public class SettingsMenu : MonoBehaviour
 {
     // Variables
     public Color onColor;
@@ -314,4 +316,5 @@ public class SettingsMenu : MonoBehaviour
             }
         }
     }
+}
 }

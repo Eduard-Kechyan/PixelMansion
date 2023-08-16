@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Locale;
+
 using UnityEngine.SceneManagement;
 
-public class LevelMenu : MonoBehaviour
+namespace Merge
+{
+    public class LevelMenu : MonoBehaviour
 {
     // Variables
     public bool gameplayScene = false;
@@ -224,4 +226,5 @@ public class LevelMenu : MonoBehaviour
 
         valuePop.PopBonus(newItem, buttonPosition, check, false, false);
     }
+}
 }
