@@ -346,6 +346,7 @@ namespace Merge
                         type = item.type,
                         group = item.group,
                         genGroup = item.genGroup,
+                        chestGroup = item.chestGroup,
                     };
 
                     gameData.inventoryData.Add(newInventoryItem);

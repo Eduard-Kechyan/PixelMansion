@@ -52,7 +52,7 @@ namespace Merge
         newItem.chestItems = itemData.chestItems;
         newItem.chestItemsSet = itemData.chestItemsSet;
         newItem.crateSprite = crateSprites[boardItem.crate];
-        newItem.gemPoped = itemData.gemPoped;
+        newItem.gemPopped = itemData.gemPopped;
 
         if (!itemData.isMaxLavel)
         {

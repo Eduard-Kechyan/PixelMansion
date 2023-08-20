@@ -67,7 +67,7 @@ namespace Merge
                     isMaxLavel = count == itemsContent[i].content.Length,
                     chestItems = InitChestItems(itemsContent[i].content[j], itemsContent[i], count),
                     chestItemsSet = itemsContent[i].content[j].chestItemsSet,
-                    gemPoped = itemsContent[i].content[j].gemPoped,
+                    gemPopped = itemsContent[i].content[j].gemPopped,
                 };
 
                 newObjectData.content[j] = newInnerObjectData;
@@ -280,7 +280,7 @@ namespace Merge
                     chestItems = boardArray[count].chestItems,
                     chestItemsSet = boardArray[count].chestItemsSet,
                     generatesAt = boardArray[count].generatesAt,
-                    gemPoped = boardArray[count].gemPoped
+                    gemPopped = boardArray[count].gemPopped
                 };
 
                 count++;
@@ -311,7 +311,7 @@ namespace Merge
                 chestItems = boardItem.chestItems,
                 chestItemsSet = boardItem.chestItemsSet,
                 generatesAt = boardItem.generatesAt,
-                gemPoped = boardItem.gemPoped
+                gemPopped = boardItem.gemPopped
             };
 
             count++;

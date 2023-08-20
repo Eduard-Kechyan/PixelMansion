@@ -54,7 +54,7 @@ namespace Merge
         topBox = hubUIDoc.rootVisualElement.Q<VisualElement>("TopBox");
         bottomBox = hubUIDoc.rootVisualElement.Q<VisualElement>("BottomBox");
 
-        denyButton.clicked += () => DenySlection();
+        denyButton.clicked += () => DenySelection();
         confirmButton.clicked += () => ConfirmSelection();
 
         option1Button.clicked += () => selector.SelectOption(0);
@@ -83,8 +83,8 @@ namespace Merge
 
     void UpdateSelector()
     {
-        List<TimeValue> nullDelay = new List<TimeValue>();
-        List<TimeValue> fullDelay = new List<TimeValue>();
+        List<TimeValue> nullDelay = new ();
+        List<TimeValue> fullDelay = new ();
 
         nullDelay.Add(new TimeValue(0.0f));
         fullDelay.Add(new TimeValue(0.3f));
@@ -117,7 +117,7 @@ namespace Merge
         }
     }
 
-    void DenySlection()
+    void DenySelection()
     {
         selector.CancelSelecting(true);
 

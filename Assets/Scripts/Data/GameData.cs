@@ -21,7 +21,7 @@ namespace Merge
     public static float GAME_PIXEL_HEIGHT = 0f;
 
     public const string WEB_ADDRESS = "https://WEBSITE.com"; // TODO - Replace WEBSITE with proper the website name
-    public const string STUDIO_NAME = "unonodegames"; // TODO - Replace SOCIAL_MEDIA_NAME with the proper sudio name
+    public const string STUDIO_NAME = "unonodegames"; // TODO - Replace SOCIAL_MEDIA_NAME with the proper studio name
     public const string GAME_TITLE = "Pixel Merge"; // TODO - Replace GAME_TITLE with the proper game title
 
     public int maxExperience = 10;
@@ -48,13 +48,14 @@ namespace Merge
     // Timers
     public List<Types.Timer> timers;
 
-    // Items data
+    // Main data
     public Types.Items[] itemsData;
     public Types.Items[] collectablesData;
     public Types.Items[] generatorsData;
     public Types.Items[] chestsData;
-    public List<Types.Bonus> bonusData = new List<Types.Bonus>();
-    public List<Types.Inventory> inventoryData = new List<Types.Inventory>();
+    public List<Types.Bonus> bonusData = new ();
+    public List<Types.Inventory> inventoryData = new ();
+    public List<Types.Tasks> tasksData = new();
 
     public Types.Board[,] boardData;
     public string[] unlockedData = new string[0];
@@ -118,7 +119,7 @@ namespace Merge
 
     public void InitAlt()
     {
-        // Load spirtes from resources
+        // Load sprites from resources
         itemsSprites = Resources.LoadAll<Sprite>("Sprites/Items");
         generatorsSprites = Resources.LoadAll<Sprite>("Sprites/Generators");
         collectablesSprites = Resources.LoadAll<Sprite>("Sprites/Collectables");
@@ -361,7 +362,7 @@ namespace Merge
 
     public void AddToBonus(Item item, bool check = true)
     {
-        Types.Bonus newBonus = new Types.Bonus
+        Types.Bonus newBonus = new ()
         {
             sprite = item.sprite,
             type = item.type,

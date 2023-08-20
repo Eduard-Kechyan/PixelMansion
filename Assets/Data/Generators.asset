@@ -46,7 +46,7 @@ MonoBehaviour:
       chestItems: 0
       chestItemsSet: 0
       seconds: 0
-      gemPoped: 0
+      gemPopped: 0
     - sprite: {fileID: 21300000, guid: 72c12047381ac164bacebf632ab19986, type: 3}
       customName: 0
       itemName: 
@@ -66,7 +66,7 @@ MonoBehaviour:
       chestItems: 0
       chestItemsSet: 0
       seconds: 0
-      gemPoped: 0
+      gemPopped: 0
     - sprite: {fileID: 21300000, guid: 528913ed5f5ea1e4f9001ccdbfd74204, type: 3}
       customName: 0
       itemName: 
@@ -86,7 +86,7 @@ MonoBehaviour:
       chestItems: 0
       chestItemsSet: 0
       seconds: 0
-      gemPoped: 0
+      gemPopped: 0
     - sprite: {fileID: 21300000, guid: 47920b00aa2d3be49a5e4d6ec621c353, type: 3}
       customName: 0
       itemName: 
@@ -106,7 +106,7 @@ MonoBehaviour:
       chestItems: 0
       chestItemsSet: 0
       seconds: 0
-      gemPoped: 0
+      gemPopped: 0
     - sprite: {fileID: 21300000, guid: 42bead8e5cf2e514785ce37d0791b327, type: 3}
       customName: 0
       itemName: 
@@ -126,7 +126,7 @@ MonoBehaviour:
       chestItems: 0
       chestItemsSet: 0
       seconds: 0
-      gemPoped: 0
+      gemPopped: 0
     - sprite: {fileID: 21300000, guid: 61b6c1b4a68790a4a85c26fdd18031fa, type: 3}
       customName: 0
       itemName: 
@@ -146,4 +146,4 @@ MonoBehaviour:
       chestItems: 0
       chestItemsSet: 0
       seconds: 0
-      gemPoped: 0
+      gemPopped: 0

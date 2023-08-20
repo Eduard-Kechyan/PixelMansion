@@ -3,7 +3,10 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 namespace Merge
 {
@@ -115,6 +118,7 @@ namespace Merge
             return (T)Enum.Parse(typeof(T), value, true);
         }
 
+#if UNITY_EDITOR
         public static void Validate(Action callback, params UnityEngine.Object[] newObjects)
         {
             void NextUpdate()
@@ -141,5 +145,6 @@ namespace Merge
 
             EditorApplication.update += NextUpdate;
         }
+#endif
     }
 }

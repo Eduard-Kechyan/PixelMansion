@@ -3,5 +3,6 @@
     "pop_board_full": "Board Full",
     "pop_inventory_full": "Inventory Full",
     "pop_max_level": "Max Level",
-    "pop_room_locked":"Continue playing to unlock more rooms!"
+    "pop_room_locked":"Continue playing to unlock more rooms!",
+    "pop_item_unselectable":"This item can't be changed"
 }

@@ -53,7 +53,7 @@ namespace Merge
     private Coroutine chestCoroutine;
     public int chestItems;
     public bool chestItemsSet;
-    public bool gemPoped = false;
+    public bool gemPopped = false;
 
     [HideInInspector]
     public Sprite sprite = null;

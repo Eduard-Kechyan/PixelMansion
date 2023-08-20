@@ -218,6 +218,7 @@ namespace Merge
         public int GetNestedLength(string key)
         {
             int count = -1;
+
             if (config == null)
             {
                 InitConfig();
@@ -233,6 +234,34 @@ namespace Merge
                     Types.ErrorType.Locale,
                     "Missing translation for: " + key + ", in GetNestedLength()"
                 );
+            }
+
+            return count;
+        }
+
+        public int GetLength(string key)
+        {
+            int count = 0;
+
+            if (config == null)
+            {
+                InitConfig();
+            }
+
+            bool finding = true;
+
+            while (finding)
+            {
+                string foundText = config[key + count];
+
+                if (foundText == null || foundText == "")
+                {
+                    finding = false;
+                }
+                else
+                {
+                    count++;
+                }
             }
 
             return count;

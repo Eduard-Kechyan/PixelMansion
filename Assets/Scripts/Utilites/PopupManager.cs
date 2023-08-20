@@ -8,7 +8,7 @@ namespace Merge
 {
     public class PopupManager : MonoBehaviour
 {
-    // Varaibles
+    // Variables
     public SceneLoader sceneLoader;
     public Color textColor;
     public Color outlineColor;
@@ -33,7 +33,7 @@ namespace Merge
 
     // UI
     private VisualElement root;
-    private Label popupLable;
+    private Label popupLabel;
 
     private void Start()
     {
@@ -45,12 +45,12 @@ namespace Merge
         if (SceneManager.GetActiveScene().name == "Gameplay")
         {
             root = GameRefs.Instance.gameplayUIDoc.rootVisualElement;
-            popupLable = root.Q<Label>("PopupLabel");
+            popupLabel = root.Q<Label>("PopupLabel");
         }
         else
         {
             root = GameRefs.Instance.hubGameUIDoc.rootVisualElement;
-            popupLable = root.Q<Label>("PopupLabel");
+            popupLabel = root.Q<Label>("PopupLabel");
         }
     }
 
@@ -236,29 +236,29 @@ namespace Merge
             Camera.main
         );
 
-        popupLable.text = newText;
-        popupLable.style.visibility = Visibility.Visible;
-        popupLable.style.opacity = 0.2f;
-        popupLable.style.top = newUIPos.y;
-        popupLable.style.left = newUIPos.x;
-        popupLable.style.paddingBottom = 0;
+        popupLabel.text = newText;
+        popupLabel.style.visibility = Visibility.Visible;
+        popupLabel.style.opacity = 0.2f;
+        popupLabel.style.top = newUIPos.y;
+        popupLabel.style.left = newUIPos.x;
+        popupLabel.style.paddingBottom = 0;
 
         switch (Settings.Instance.currentLocale)
         {
             case Types.Locale.Armenian:
-                popupLable.style.unityFontDefinition = new StyleFontDefinition(localeManager.hyFont);
+                popupLabel.style.unityFontDefinition = new StyleFontDefinition(localeManager.hyFont);
                 break;
             case Types.Locale.Japanese:
-                popupLable.style.unityFontDefinition = new StyleFontDefinition(localeManager.jpFont);
+                popupLabel.style.unityFontDefinition = new StyleFontDefinition(localeManager.jpFont);
                 break;
             case Types.Locale.Korean:
-                popupLable.style.unityFontDefinition = new StyleFontDefinition(localeManager.krFont);
+                popupLabel.style.unityFontDefinition = new StyleFontDefinition(localeManager.krFont);
                 break;
             case Types.Locale.Chinese:
-                popupLable.style.unityFontDefinition = new StyleFontDefinition(localeManager.cnFont);
+                popupLabel.style.unityFontDefinition = new StyleFontDefinition(localeManager.cnFont);
                 break;
             default:
-                popupLable.style.unityFontDefinition = new StyleFontDefinition(localeManager.enFont);
+                popupLabel.style.unityFontDefinition = new StyleFontDefinition(localeManager.enFont);
 
                 if (Settings.Instance.currentLocale != Types.Locale.German)
                 {
@@ -269,12 +269,12 @@ namespace Merge
 
         yield return new WaitForSeconds(0.1f);
 
-        popupLable.style.fontSize = grownFontSize;
-        popupLable.style.opacity = 1f;
+        popupLabel.style.fontSize = grownFontSize;
+        popupLabel.style.opacity = 1f;
 
         yield return new WaitForSeconds(timeOut / 2.5f); // 0.4f
 
-        popupLable.style.paddingBottom = 30;
+        popupLabel.style.paddingBottom = 30;
 
         // Play audio
         if (soundName != "")
@@ -284,11 +284,11 @@ namespace Merge
 
         yield return new WaitForSeconds(timeOut * 2);
 
-        popupLable.style.opacity = 0;
+        popupLabel.style.opacity = 0;
 
         yield return new WaitForSeconds(timeOut);
 
-        popupLable.style.paddingBottom = 0;
+        popupLabel.style.paddingBottom = 0;
 
         isSelectorPopup = !fromSelector;
 

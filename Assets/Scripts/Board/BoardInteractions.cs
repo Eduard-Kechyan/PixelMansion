@@ -463,7 +463,7 @@ namespace Merge
             genGroup = item.genGroup,
             collGroup = item.collGroup,
             chestGroup = item.chestGroup,
-            gemPoped=item.gemPoped,
+            gemPopped=item.gemPopped,
         };
 
         string spriteName = otherItem.nextSpriteName;

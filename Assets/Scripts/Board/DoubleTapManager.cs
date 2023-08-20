@@ -256,7 +256,7 @@ namespace Merge
             Types.Items collItems = new Types.Items();
 
             // Make sure at least once a gem is created
-            if (last && !interactions.currentItem.gemPoped)
+            if (last && !interactions.currentItem.gemPopped)
             {
                 randomCollTypeOrder = gemChance - interactions.currentItem.level - 1;
             }
@@ -270,7 +270,7 @@ namespace Merge
                     {
                         collItems = gameData.collectablesData[i];
 
-                        interactions.currentItem.gemPoped = true;
+                        interactions.currentItem.gemPopped = true;
                     }
                 }
             }

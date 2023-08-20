@@ -138,7 +138,7 @@ namespace Merge
             state = newItem.state,
             crate = newItem.crate,
             order = oldItem.order,
-            gemPoped=newItem.gemPoped
+            gemPopped=newItem.gemPopped
         };
 
         gameData.boardData[newLoc.x, newLoc.y] = new Types.Board
@@ -152,7 +152,7 @@ namespace Merge
             state = oldItem.state,
             crate = oldItem.crate,
             order = newItem.order,
-            gemPoped=newItem.gemPoped
+            gemPopped=newItem.gemPopped
         };
 
         // Save the board to disk
@@ -185,7 +185,7 @@ namespace Merge
                 newItem.crateSprite.name[(newItem.crateSprite.name.LastIndexOf('e') + 1)..]
             ),
             order = newOrder,
-            gemPoped=newItem.gemPoped
+            gemPopped=newItem.gemPopped
         };
 
         // Save the board to disk
@@ -361,7 +361,7 @@ namespace Merge
             genGroup = itemData.genGroup,
             collGroup = itemData.collGroup,
             chestGroup = itemData.chestGroup,
-            gemPoped=itemData.gemPoped
+            gemPopped=itemData.gemPopped
         };
 
         // Create the item on the board
@@ -392,7 +392,7 @@ namespace Merge
             genGroup = newItem.genGroup,
             collGroup = newItem.collGroup,
             chestGroup = newItem.chestGroup,
-            gemPoped=newItem.gemPoped,
+            gemPopped=newItem.gemPopped,
             state = newItem.state,
             crate = 0,
             order = emptyBoard.order
