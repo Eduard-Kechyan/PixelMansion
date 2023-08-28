@@ -262,8 +262,8 @@ namespace Merge
         {
             public Sprite sprite;
             public string name;
-            public TaskNeeds[] needs;
-            public TaskRewards[] rewards;
+            public TaskItems[] needs;
+            public TaskItems[] rewards;
             public bool completed;
         }
 
@@ -276,28 +276,18 @@ namespace Merge
             public bool completed;
         }
 
-        public class TaskNeeds
+        public class TaskItems
         {
             public Sprite sprite;
             public Type type;
+            public int count;
         }
 
-        public class TaskNeedsJson
+        public class TaskItemsJson
         {
             public string sprite;
             public string type;
-        }
-
-        public class TaskRewards
-        {
-            public Sprite sprite;
-            public Type type;
-        }
-
-        public class TaskRewardsJson
-        {
-            public string sprite;
-            public string type;
+            public int count;
         }
 
         //// ERROR ////

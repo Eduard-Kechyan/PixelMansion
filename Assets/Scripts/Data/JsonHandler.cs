@@ -194,6 +194,10 @@ namespace Merge
             {
                 Types.Tasks newTasksData = new()
                 {
+                    sprite = gameData.GetTaskSprite(tasksJson[i].sprite),
+                    name = tasksJson[i].name,
+                    needs = ConvertTaskItemsFromJson(tasksJson[i].needs),
+                    rewards = ConvertTaskItemsFromJson(tasksJson[i].rewards),
                     completed = tasksJson[i].completed,
                 };
 
@@ -211,6 +215,10 @@ namespace Merge
             {
                 Types.TasksJson newTasksJson = new()
                 {
+                    sprite = tasksData[i].sprite.name,
+                    name = tasksData[i].name,
+                    needs = ConvertTaskItemsToJson(tasksData[i].needs),
+                    rewards = ConvertTaskItemsToJson(tasksData[i].rewards),
                     completed = tasksData[i].completed,
                 };
 
@@ -218,6 +226,56 @@ namespace Merge
             }
 
             return JsonConvert.SerializeObject(tasksJson);
+        }
+
+        Types.TaskItems[] ConvertTaskItemsFromJson(string itemsString)
+        {
+            Types.TaskItemsJson[] itemsJson = JsonConvert.DeserializeObject<Types.TaskItemsJson[]>(
+                itemsString
+            );
+
+           Types.TaskItems[] itemsData = new Types.TaskItems[itemsJson.Length];
+
+            for (int i = 0; i < itemsJson.Length; i++)
+            {
+                Types.Type newType=Glob.ParseEnum<Types.Type>(itemsJson[i].type);
+
+                Types.TaskItems newItemsData = new()
+                {
+                    sprite = gameData.GetSprite(itemsJson[i].sprite, newType),
+                    type = newType,
+                    count = itemsJson[i].count
+                };
+
+                itemsData[i]=newItemsData;
+            }
+
+            return itemsData;
+        }
+
+        string ConvertTaskItemsToJson(Types.TaskItems[] itemsData)
+        {
+            Types.TaskItemsJson[] itemsJson = new Types.TaskItemsJson[itemsData.Length];
+
+            for (int i = 0; i < itemsData.Length; i++)
+            {
+                Types.TaskItemsJson newItemsJson = new()
+                {
+                    sprite = itemsData[i].sprite.name,
+                    type = itemsData[i].type.ToString(),
+                    count = itemsData[i].count
+                };
+
+                itemsJson[i] = newItemsJson;
+            }
+
+            return JsonConvert.SerializeObject(itemsJson);
+        }
+
+        Sprite GetTaskSprite(string spriteName)
+        {
+            // TODO - Get Task sprites
+            return null;
         }
 
         //// UNSENT ////
