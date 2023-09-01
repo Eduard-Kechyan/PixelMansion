@@ -180,25 +180,26 @@ namespace Merge
             return JsonConvert.SerializeObject(inventoryJson);
         }
 
-        //// INVENTORY ////
-
-        public List<Types.Tasks> ConvertTasksFromJson(string tasksString)
+        //// TASKS ////
+        public List<Types.Task> ConvertTasksFromJson(string tasksString)
         {
-            Types.TasksJson[] tasksJson = JsonConvert.DeserializeObject<Types.TasksJson[]>(
+            Types.TaskJson[] tasksJson = JsonConvert.DeserializeObject<Types.TaskJson[]>(
                 tasksString
             );
 
-            List<Types.Tasks> tasksData = new();
+            List<Types.Task> tasksData = new();
 
             for (int i = 0; i < tasksJson.Length; i++)
             {
-                Types.Tasks newTasksData = new()
+                Types.Task newTasksData = new()
                 {
-                    sprite = gameData.GetTaskSprite(tasksJson[i].sprite),
-                    name = tasksJson[i].name,
                     needs = ConvertTaskItemsFromJson(tasksJson[i].needs),
                     rewards = ConvertTaskItemsFromJson(tasksJson[i].rewards),
-                    completed = tasksJson[i].completed,
+                    id = tasksJson[i].id,
+                    groupId = tasksJson[i].groupId,
+                    taskRefName = tasksJson[i].taskRefName,
+                    taskRefType = Glob.ParseEnum<Types.TaskRefType>(tasksJson[i].taskRefType),
+                    isTaskRefRight = tasksJson[i].isTaskRefRight,
                 };
 
                 tasksData.Add(newTasksData);
@@ -207,19 +208,21 @@ namespace Merge
             return tasksData;
         }
 
-        public string ConvertTasksToJson(List<Types.Tasks> tasksData)
+        public string ConvertTasksToJson(List<Types.Task> tasksData)
         {
-            Types.TasksJson[] tasksJson = new Types.TasksJson[tasksData.Count];
+            Types.TaskJson[] tasksJson = new Types.TaskJson[tasksData.Count];
 
             for (int i = 0; i < tasksData.Count; i++)
             {
-                Types.TasksJson newTasksJson = new()
+                Types.TaskJson newTasksJson = new()
                 {
-                    sprite = tasksData[i].sprite.name,
-                    name = tasksData[i].name,
                     needs = ConvertTaskItemsToJson(tasksData[i].needs),
                     rewards = ConvertTaskItemsToJson(tasksData[i].rewards),
-                    completed = tasksData[i].completed,
+                    id = tasksData[i].id,
+                    groupId = tasksData[i].groupId,
+                    taskRefName = tasksData[i].taskRefName,
+                    taskRefType = tasksData[i].taskRefType.ToString(),
+                    isTaskRefRight = tasksData[i].isTaskRefRight,
                 };
 
                 tasksJson[i] = newTasksJson;
@@ -234,20 +237,24 @@ namespace Merge
                 itemsString
             );
 
-           Types.TaskItems[] itemsData = new Types.TaskItems[itemsJson.Length];
+            Types.TaskItems[] itemsData = new Types.TaskItems[itemsJson.Length];
 
             for (int i = 0; i < itemsJson.Length; i++)
             {
-                Types.Type newType=Glob.ParseEnum<Types.Type>(itemsJson[i].type);
+                Types.Type newType = Glob.ParseEnum<Types.Type>(itemsJson[i].type);
 
                 Types.TaskItems newItemsData = new()
                 {
                     sprite = gameData.GetSprite(itemsJson[i].sprite, newType),
                     type = newType,
+                    group = Glob.ParseEnum<ItemTypes.Group>(itemsJson[i].group),
+                    genGroup = Glob.ParseEnum<ItemTypes.GenGroup>(itemsJson[i].genGroup),
+                    collGroup = Glob.ParseEnum<Types.CollGroup>(itemsJson[i].collGroup),
+                    chestGroup = Glob.ParseEnum<Types.ChestGroup>(itemsJson[i].chestGroup),
                     count = itemsJson[i].count
                 };
 
-                itemsData[i]=newItemsData;
+                itemsData[i] = newItemsData;
             }
 
             return itemsData;
@@ -263,6 +270,10 @@ namespace Merge
                 {
                     sprite = itemsData[i].sprite.name,
                     type = itemsData[i].type.ToString(),
+                    group = itemsData[i].group.ToString(),
+                    genGroup = itemsData[i].genGroup.ToString(),
+                    collGroup = itemsData[i].collGroup.ToString(),
+                    chestGroup = itemsData[i].chestGroup.ToString(),
                     count = itemsData[i].count
                 };
 
@@ -270,12 +281,6 @@ namespace Merge
             }
 
             return JsonConvert.SerializeObject(itemsJson);
-        }
-
-        Sprite GetTaskSprite(string spriteName)
-        {
-            // TODO - Get Task sprites
-            return null;
         }
 
         //// UNSENT ////

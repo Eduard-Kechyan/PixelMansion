@@ -1,0 +1,161 @@
+.bottom_box {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding-bottom: 15px;
+    padding-right: 3px;
+    padding-left: 3px;
+    display: flex;
+}
+
+.info_box {
+    margin-left: 1px;
+    margin-right: 1px;
+    margin-bottom: 15px;
+    flex-direction: column;
+    width: 172px;
+    height: 28px;
+}
+
+.info_box .info_item {
+    width: 24px;
+    height: 24px;
+    background-color: rgba(123, 219, 132, 0);
+    position: absolute;
+    top: 2px;
+    left: 16px;
+    -unity-text-outline-color: rgba(0, 0, 0, 0.35);
+    background-image: none;
+}
+
+.info_box .info_item_locked {
+    width: 24px;
+    height: 24px;
+    background-color: rgba(123, 219, 132, 0);
+    position: absolute;
+    top: 2px;
+    left: 16px;
+    -unity-text-outline-color: rgba(0, 0, 0, 0.35);
+    display: none;
+}
+
+.info_box .info_item_bubble {
+    width: 24px;
+    height: 24px;
+    background-color: rgba(123, 219, 132, 0);
+    position: absolute;
+    top: 2px;
+    left: 16px;
+    -unity-text-outline-color: rgba(0, 0, 0, 0.35);
+    display: none;
+}
+
+.info_box .item_name {
+    color: rgb(58, 58, 58);
+    font-size: 6px;
+    position: absolute;
+    top: -3px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    left: 40px;
+}
+
+.info_box .item_data {
+    color: rgb(53, 53, 53);
+    font-size: 4px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    position: absolute;
+    left: 40px;
+    top: 7px;
+    white-space: normal;
+    width: 80px;
+}
+
+.info_box_button {
+    width: 12px;
+    height: 24px;
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    display: none;
+}
+
+.info_box_action_button {
+    font-size: 8px;
+    width: 43px;
+    height: 18px;
+    color: rgb(255, 255, 255);
+    right: 2px;
+    bottom: 2px;
+    position: absolute;
+    display: none;
+}
+
+.info_box_action_button .value {
+    padding-left: 10px;
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    bottom: 3px;
+    right: auto;
+    left: 3px;
+}
+
+.board {
+    width: 174px;
+    height: 222px;
+    margin-bottom: 15px;
+    display: flex;
+    visibility: hidden;
+}
+
+.options {
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: stretch;
+}
+
+.options .inventory_indicator {
+    flex-grow: 1;
+    background-color: rgba(0, 0, 0, 0);
+    position: absolute;
+    width: 38px;
+    height: 38px;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+    display: none;
+}
+
+.options .bonus_indicator {
+    flex-grow: 1;
+    background-color: rgba(0, 0, 0, 0);
+    position: absolute;
+    width: 38px;
+    height: 38px;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+    display: none;
+}
+
+.options .bonus_image {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    left: 2px;
+    top: 2px;
+}
+
+.drag_overlay {
+    width: 24px;
+    height: 24px;
+    visibility: hidden;
+    display: flex;
+}

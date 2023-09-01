@@ -1,0 +1,246 @@
+.sky_up {
+    width: 1000px;
+    height: 300px;
+    position: absolute;
+    left: auto;
+    top: 0;
+    flex-direction: row;
+    right: 0;
+}
+
+.sky_down {
+    width: 1000px;
+    height: 300px;
+    position: absolute;
+    left: auto;
+    top: 0;
+    flex-direction: row;
+    right: 0;
+}
+
+.sky_up .img {
+    width: 500px;
+    height: 300px;
+}
+
+.sky_down .img {
+    width: 500px;
+    height: 300px;
+}
+
+.background {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+    width: 180px;
+    height: 500px;
+}
+
+.main_title {
+    flex-grow: 1;
+    background-color: rgba(0, 0, 0, 0);
+    margin-top: 40px;
+    width: 120px;
+    margin-left: auto;
+    margin-right: auto;
+    max-height: 40%;
+}
+
+.main_title .chunk {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: -15px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    -unity-text-align: middle-center;
+    color: rgb(8, 79, 156);
+    text-shadow: 1px 1px 0 rgb(255, 255, 255);
+    font-size: 40px;
+    -unity-font: initial;
+    display: flex;
+    -unity-font-definition: url('project://database/Assets/Fonts/Venice%20SDF.asset?fileID=11400000&guid=0b005fb4bcbb47045a00862c88e80d53&type=2#Venice SDF');
+}
+
+.loader {
+    width: 104px;
+    height: 13px;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    translate: -50% 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.loader .fill {
+    width: 0;
+    height: 9px;
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    right: auto;
+}
+
+.loader .frame {
+    width: 104px;
+    height: 13px;
+    position: absolute;
+}
+
+.version {
+    position: absolute;
+    left: 0;
+    top: auto;
+    bottom: -4.5px;
+    right: 0;
+    width: 100%;
+    -unity-text-align: upper-center;
+    color: rgb(48, 48, 48);
+    font-size: 6px;
+}
+
+.overlay_background {
+    background-color: rgba(0, 0, 0, 0.47);
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    scale: 1.4 1.4;
+    display: none;
+    transition-duration: 0.3s;
+    opacity: 0;
+}
+
+.loading_scene_menu {
+    flex-grow: 1;
+    background-color: rgb(238, 226, 195);
+    width: 164px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    translate: -50% -10%;
+    height: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 14px;
+    padding-bottom: 7px;
+    transition-duration: 0.3s;
+    display: none;
+    opacity: 0;
+}
+
+.loading_scene_menu .menu_label {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    font-size: 8px;
+    -unity-text-align: upper-center;
+    white-space: normal;
+    margin-bottom: 15px;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    font-size: 8px;
+    -unity-text-align: upper-center;
+    white-space: normal;
+    margin-bottom: 15px;
+}
+
+.loading_scene_menu .border_bottom {
+    width: 165px;
+    height: 4px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -4px;
+}
+
+.loading_scene_menu .title {
+    width: 174px;
+    height: 22px;
+    position: absolute;
+    left: -5px;
+    top: -16px;
+}
+
+.loading_scene_menu .title .title_label {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    -unity-text-align: middle-center;
+    font-size: 8px;
+    height: 17px;
+    width: 100%;
+    color: rgb(255, 255, 255);
+    -unity-font-style: bold;
+}
+
+.loading_scene_menu .container {
+    flex-grow: 1;
+    background-color: rgba(0, 0, 0, 0);
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.loading_scene_menu .button {
+    width: 70px;
+    height: 20px;
+    font-size: 6px;
+    color: rgb(255, 255, 255);
+}
+
+.terms_menu .accept_button {
+    font-size: 10px;
+    margin-bottom: 10px;
+    margin-right: auto;
+    margin-left: auto;
+    -unity-background-image-tint-color: rgb(85, 203, 152);
+}
+
+.age_menu {
+    flex-grow: 1;
+    width: 10px;
+    height: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 4px;
+}
+
+.age_menu .arrow_up  {
+    flex-grow: 1;
+    width: 10px;
+    height: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 4px;
+}
+
+.age_menu .arrow_down {
+    flex-grow: 1;
+    width: 10px;
+    height: 10px;
+    margin-left: auto;
+    margin-right: auto;margin-bottom: 8px;
+        margin-top: 3px;
+        rotate: 180deg;
+}

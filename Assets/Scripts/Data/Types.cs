@@ -257,36 +257,109 @@ namespace Merge
             public string chestGroup;
         }
 
-        //// TASKS ////
-        public class Tasks
+        //// PROGRESS ////
+        public enum StepType
         {
-            public Sprite sprite;
+            Task,
+            Conversation,
+            RoomUnlocking
+        };
+
+        [Serializable]
+        public class Area
+        {
+            public string id;
+            public Step[] steps;
+            public string[] nextIds;
+            [HideInInspector]
+            public int completed;
+            [HideInInspector]
             public string name;
+        }
+
+        [Serializable]
+        public class Step
+        {
+            [ReadOnly]
+            public int order;
+            public StepContent[] content;
+            public string[] nextIds;
+            [HideInInspector]
+            public int completed;
+        }
+
+        [Serializable]
+        public class StepContent
+        {
+            public string id;
+            public StepType stepType;
+            [HideInInspector]
+            public string name;
+        }
+
+        //// TASKS ////
+        public enum TaskRefType
+        {
+            Area,
+            Floor,
+            Wall,
+            Furniture,
+            Item,
+        };
+
+        [Serializable]
+        public class TaskGroup
+        {
+            public string id;
+            public int completed;
+        }
+
+        [Serializable]
+        public class Task
+        {
             public TaskItems[] needs;
             public TaskItems[] rewards;
-            public bool completed;
+            public string id;
+            public string groupId;
+            public string taskRefName;
+            public TaskRefType taskRefType;
+            public bool isTaskRefRight;
         }
 
-        public class TasksJson
+        [Serializable]
+        public class TaskJson
         {
             public string sprite;
-            public string name;
             public string needs;
             public string rewards;
-            public bool completed;
+            public string id;
+            public string groupId;
+            public string taskRefName;
+            public string taskRefType;
+            public bool isTaskRefRight;
         }
 
+        [Serializable]
         public class TaskItems
         {
             public Sprite sprite;
             public Type type;
+            public ItemTypes.Group group;
+            public ItemTypes.GenGroup genGroup;
+            public CollGroup collGroup;
+            public ChestGroup chestGroup;
             public int count;
         }
 
+        [Serializable]
         public class TaskItemsJson
         {
             public string sprite;
             public string type;
+            public string group;
+            public string genGroup;
+            public string collGroup;
+            public string chestGroup;
             public int count;
         }
 

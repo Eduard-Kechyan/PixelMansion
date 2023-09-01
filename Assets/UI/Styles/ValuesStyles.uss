@@ -1,0 +1,181 @@
+.values_box {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    padding-left: 3px;
+    padding-right: 3px;
+    flex-direction: column;
+    justify-content: space-between;
+    opacity: 1;
+    margin-top: 3px;
+    display: flex;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out-cubic;
+}
+
+.values {
+    width: 100%;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: space-between;
+}
+
+.value_button {
+    font-size: 6px;
+    -unity-text-align: middle-center;
+    color: rgb(58, 58, 58);
+    padding-right: 3px;
+    padding-left: 20px;
+    transition-duration: 0.1s;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    background-color: rgba(0, 0, 0, 0);
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.value_button:active {
+    scale: 0.8 0.8;
+}
+
+.value_button:disabled {
+    opacity: 1;
+}
+
+.value_button .plus {
+    width: 8px;
+    height: 8px;
+    position: absolute;
+    left: 7px;
+    bottom: -1px;
+    transition-duration: 0.3s;
+}
+
+.value_bob {
+    scale: 1.2 1.2;
+}
+
+.level_button {
+    width: 37px;
+    height: 17px;
+    overflow: visible;
+}
+
+.level_button .indicator {
+    width: 27px;
+    height: 27px;
+    position: absolute;
+    left: -5px;
+    top: -5px;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.level_button .extra {
+    width: 11px;
+    height: 11px;
+    position: absolute;
+    top: 15px;
+    left: 3px;
+    overflow: visible;
+}
+
+.level_button .fill_container {
+    position: absolute;
+    width: 19px;
+    height: 7px;
+    top: 5px;
+    left: 17px;
+}
+
+.level_button .fill_container .fill {
+    background-color: rgb(129, 170, 222);
+    width: 50%;
+    height: 100%;
+    position: absolute;
+    -unity-background-image-tint-color: rgb(210, 230, 248);
+    transition-duration: 0.3s;
+}
+
+.level_button .fill_container .fill_border {
+    width: 21px;
+    height: 9px;
+    position: absolute;
+    left: -1px;
+    top: -1px;
+}
+
+.level_button .value {
+    font-size: 9px;
+    color: rgb(42, 83, 125);
+    -unity-text-align: middle-center;
+    width: 17px;
+    height: 17px;
+    -unity-font-style: bold;
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.energy_button {
+    width: 36px;
+    height: 17px;
+    overflow: visible;
+    padding-left: 16px;
+    font-size: 5px;
+}
+
+.energy_button .timer {
+    color: rgb(255, 255, 255);
+    position: absolute;
+    right: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    bottom: -3px;
+    display: none;
+    -unity-font-definition: url('project://database/Assets/Fonts/RobotoMono%20SDF.asset?fileID=11400000&guid=26200f3517d34d040a046d6ffe9a951f&type=2#RobotoMono SDF');
+}
+
+.gold_button {
+    width: 40px;
+    height: 17px;
+    overflow: visible;
+    font-size: 5px;
+}
+
+.gold_button .plus {
+    left: 14px;
+}
+
+.gems_button {
+    width: 39px;
+    height: 17px;
+    overflow: visible;
+    padding-left: 19px;
+    font-size: 5px;
+}
+
+.gems_button .plus {
+    left: 10px;
+}

@@ -10,8 +10,6 @@ namespace Merge
 {
     // Variables
     public BoardManager boardManager;
-    public Sprite slotSprite;
-    public Color slotItemColor;
     public int newSlotPrice = 50;
     public float slotPriceMultiplier = 0.5f;
 
@@ -114,35 +112,17 @@ namespace Merge
 
             VisualElement slot = new VisualElement { name = "InventorySlot" + nameOrder };
 
-            slot.style.width = 24f;
-            slot.style.height = 24f;
-            slot.style.backgroundImage = new StyleBackground(slotSprite);
-            slot.style.marginLeft = 2f;
-            slot.style.marginRight = 2f;
-            slot.style.marginBottom = 4f;
+            slot.AddToClassList("slot");
 
             if (gameData.inventoryData.Count > 0 && gameData.inventoryData.Count > i)
             {
                 Button slotItem = new Button { name = "InventorySlotItem" + nameOrder };
 
-                slotItem.style.width = 24f;
-                slotItem.style.height = 24f;
                 slotItem.style.backgroundImage = new StyleBackground(
                     gameData.inventoryData[i].sprite
                 );
-                slotItem.style.backgroundColor = slotItemColor;
-                slotItem.style.borderLeftWidth = 0f;
-                slotItem.style.borderRightWidth = 0f;
-                slotItem.style.borderTopWidth = 0f;
-                slotItem.style.borderBottomWidth = 0f;
-                slotItem.style.marginLeft = 0f;
-                slotItem.style.marginRight = 0f;
-                slotItem.style.marginTop = 0f;
-                slotItem.style.marginBottom = 0f;
-                slotItem.style.paddingLeft = 0f;
-                slotItem.style.paddingRight = 0f;
-                slotItem.style.paddingTop = 0f;
-                slotItem.style.paddingBottom = 0f;
+
+                slotItem.AddToClassList("slot_item");
 
                 slotItem.clicked += () => AddItemToBoard(nameOrder);
 

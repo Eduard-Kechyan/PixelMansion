@@ -193,14 +193,14 @@ namespace Merge
     {
         yield return new WaitForSeconds(0.3f);
 
-        List<TimeValue> durationsZero = new List<TimeValue>();
+        List<TimeValue> durationsZero = new ();
         durationsZero.Add(new TimeValue(0f, TimeUnit.Second));
 
         levelFill.style.transitionDuration = new StyleList<TimeValue>(durationsZero);
 
         levelFill.style.width = Length.Percent(0);
 
-        List<TimeValue> durationsFull = new List<TimeValue>();
+        List<TimeValue> durationsFull = new ();
         durationsFull.Add(new TimeValue(0.3f, TimeUnit.Second));
 
         levelFill.style.transitionDuration = new StyleList<TimeValue>(durationsFull);

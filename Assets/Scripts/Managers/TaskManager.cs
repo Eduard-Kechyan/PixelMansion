@@ -1,21 +1,137 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Merge
 {
     public class TaskManager : MonoBehaviour
     {
-        // Start is called before the first frame update
-        void Start()
+        // Variables
+        public TasksData tasksData;
+        public WorldDataManager worldDataManager;
+
+        // References
+        private GameData gameData;
+        private DataManager dataManager;
+        private ProgressManager progressManager;
+        private HubGameUI hubGameUi;
+
+        private void Start()
         {
-        
+            InitializeReferences();
         }
 
-        // Update is called once per frame
-        void Update()
+        private void InitializeReferences()
         {
-        
+            // Initialize references to other managers and UI elements
+            gameData = GameData.Instance;
+            dataManager = DataManager.Instance;
+            progressManager = GetComponent<ProgressManager>();
+            hubGameUi = GameRefs.Instance.hubGameUI;
+        }
+
+        private void Update()
+        {
+            // Update logic here
+        }
+
+        #region TaskGroups
+
+        public void AddTaskGroup(string areaId)
+        {
+            if (!TaskGroupExists(areaId))
+            {
+                // Create a new task group and add it to the list
+                var newTaskGroup = new Types.TaskGroup
+                {
+                    id = areaId,
+                    completed = 0
+                };
+
+                gameData.taskGroupsData.Add(newTaskGroup);
+
+                // Save changes to tasks data
+                dataManager.SaveTasks();
+            }
+        }
+
+        public void RemoveTaskGroup(string areaId)
+        {
+            // Remove task group logic here
+        }
+
+        private bool TaskGroupExists(string areaId)
+        {
+            // Check if a task group with the given area ID already exists
+            return gameData.taskGroupsData.Exists(taskGroup => taskGroup.id == areaId);
+        }
+
+        #endregion
+
+        #region Tasks
+
+        public void AddTask(string taskId, string newGroupId)
+        {
+            if (TaskGroupExists(newGroupId) && !TaskExists(taskId))
+            {
+                // Find the task by ID
+                var newTask = FindTaskById(taskId);
+
+                if (newTask != null)
+                {
+                    // Assign the task to a new group
+                    newTask.groupId = newGroupId;
+
+                    // Add the task to the list of tasks
+                    gameData.tasksData.Add(newTask);
+
+                    // Save changes to tasks data
+                    dataManager.SaveTasks();
+                }
+                else
+                {
+                    Debug.LogWarning($"No Task found with id: {taskId}, with Task Group id: {newGroupId}");
+                }
+
+                // Update task icons in the world
+                CheckWorldTaskIcons();
+            }
+        }
+
+        public void RemoveTask(string taskId)
+        {
+            // Remove task logic here
+        }
+
+        private Types.Task FindTaskById(string taskId)
+        {
+            // Find a task by its ID from the tasks data
+            return tasksData.tasks.FirstOrDefault(task => task.id == taskId);
+        }
+
+        private bool TaskExists(string taskId)
+        {
+            // Check if a task with the given ID already exists
+            return gameData.tasksData.Exists(task => task.id == taskId);
+        }
+
+        #endregion
+
+        public void CheckWorldTaskIcons()
+        {
+            // Clear existing task icons in the UI
+            hubGameUi.ClearTaskIcons();
+
+            if (gameData.tasksData.Count > 0 && worldDataManager != null)
+            {
+                // Add task icons for tasks in the world
+                foreach (var taskData in gameData.tasksData)
+                {
+                    hubGameUi.AddTaskIcon(worldDataManager.GetWorldItemPos(taskData));
+                }
+            }
         }
     }
+
 }
