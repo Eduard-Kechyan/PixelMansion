@@ -9,11 +9,16 @@ namespace Merge
     {
         // Variables
         public Sprite taskIconSprite;
+        public ProgressManager progressManager;
+
+        private List<TaskIconData> taskIconsData = new();
+
+        // References
+        private Camera cam;
 
         // UI
         private VisualElement root;
         private VisualElement taskIconsContainer;
-        private List<TaskIconData> taskIconsData = new();
 
         private class TaskIconData
         {
@@ -23,15 +28,20 @@ namespace Merge
 
         void Start()
         {
+            // Cache
+            cam = Camera.main;
+
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
 
             taskIconsContainer = root.Q<VisualElement>("TaskIconsContainer");
+
+            //progressManager.CheckInitialData();
         }
 
         void Update()
         {
-            UpdatePos();
+            UpdateTaskIconsPos();
         }
 
         public void ClearTaskIcons()
@@ -39,31 +49,19 @@ namespace Merge
             taskIconsContainer.Clear();
         }
 
-        public void AddTaskIcon(GameObject newGameObject)
+        public void AddTaskIcon(GameObject newGameObject, Types.Task taskData)
         {
-            Debug.Log(newGameObject);
-
-            Vector2 newUIPos = RuntimePanelUtils.CameraTransformWorldToPanel(
-                root.panel,
-                gameObject.transform.position,
-                Camera.main
-            );
-
-            Debug.Log(newUIPos);
-
             Button newTaskIconButton = new();
 
-            newTaskIconButton.style.top = gameObject.transform.position.y;
-            newTaskIconButton.style.left = gameObject.transform.position.x;
-
             newTaskIconButton.AddToClassList("task_icon_button");
+            newTaskIconButton.AddToClassList("button_active");
+
+            newTaskIconButton.clicked += () => TaskIconClicked(taskData.id);
 
             taskIconsContainer.Add(newTaskIconButton);
-            taskIconsData.Add(new()
-            {
-                taskIconButton = newTaskIconButton,
-                gameObject = newGameObject
-            });
+            taskIconsData.Add(
+                new() { taskIconButton = newTaskIconButton, gameObject = newGameObject }
+            );
 
             StartCoroutine(ShowTaskIconButton(newTaskIconButton));
         }
@@ -76,15 +74,29 @@ namespace Merge
             newTaskIconButton.style.visibility = Visibility.Visible;
         }
 
-        void UpdatePos()
+        void TaskIconClicked(string id)
+        {
+            Debug.Log(id);
+        }
+
+        void UpdateTaskIconsPos()
         {
             if (taskIconsData.Count > 0)
             {
-                Debug.Log(taskIconsData[0].gameObject);
+                Vector2 newUIPos = RuntimePanelUtils.CameraTransformWorldToPanel(
+                    root.panel,
+                    taskIconsData[0].gameObject.transform.position,
+                    cam
+                );
+
                 for (int i = 0; i < taskIconsData.Count; i++)
                 {
-                    taskIconsData[i].taskIconButton.style.top = taskIconsData[i].gameObject.transform.position.y;
-                    taskIconsData[i].taskIconButton.style.left = taskIconsData[i].gameObject.transform.position.x;
+                    Button taskIconButton = taskIconsData[i].taskIconButton;
+
+                    taskIconButton.style.top =
+                        newUIPos.y - (taskIconButton.resolvedStyle.height / 2);
+                    taskIconButton.style.left =
+                        newUIPos.x - (taskIconButton.resolvedStyle.width / 2);
                 }
             }
         }

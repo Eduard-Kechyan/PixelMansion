@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="TaskNeed" class="task_need">
+        <ui:VisualElement name="Image" class="image"/>
+        <ui:Label tabindex="-1" text="0/1" display-tooltip-when-elided="true" name="Count" class="count" />
+        <ui:Button display-tooltip-when-elided="true" name="InfoButton" class="info_button button button_active" />
+    </ui:VisualElement>
+</ui:UXML>

@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -49,7 +50,11 @@ namespace Merge
         }
 
         //// INTERVALS ////
-        public static Coroutine SetInterval(Action function, float seconds = 1f, bool callOnce = true)
+        public static Coroutine SetInterval(
+            Action function,
+            float seconds = 1f,
+            bool callOnce = true
+        )
         {
             Coroutine newInterval = Instance.StartCoroutine(SetTimeoutCoroutine(function, seconds));
 
@@ -58,7 +63,11 @@ namespace Merge
             return Instance.StartCoroutine(SetIntervalCoroutine(function, seconds, callOnce));
         }
 
-        private static IEnumerator SetIntervalCoroutine(Action function, float seconds, bool callOnce)
+        private static IEnumerator SetIntervalCoroutine(
+            Action function,
+            float seconds,
+            bool callOnce
+        )
         {
             while (true)
             {
@@ -116,6 +125,33 @@ namespace Merge
         public static T ParseEnum<T>(string value)
         {
             return (T)Enum.Parse(typeof(T), value, true);
+        }
+
+        public static Color FromHEX(string hex)
+        {
+            Color newColor = Color.white;
+
+            if (hex.Length >= 6)
+            {
+                var r = hex.Substring(0, 2);
+                var g = hex.Substring(2, 4);
+                var b = hex.Substring(4, 6);
+                var a = "FF";
+
+                if (hex.Length == 8)
+                {
+                    a = hex.Substring(6, 8);
+                }
+
+                newColor = new Color(
+                    (int.Parse(r, NumberStyles.HexNumber) / 255f),
+                    (int.Parse(g, NumberStyles.HexNumber) / 255f),
+                    (int.Parse(b, NumberStyles.HexNumber) / 255f),
+                    (int.Parse(a, NumberStyles.HexNumber) / 255f)
+                );
+            }
+
+            return newColor;
         }
 
 #if UNITY_EDITOR

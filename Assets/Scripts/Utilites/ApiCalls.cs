@@ -148,6 +148,7 @@ namespace Merge
 
     public IEnumerator CreateUser(string jsonData, Action callback = null)
     {
+        Debug.Log(URL);
         using (UnityWebRequest request = UnityWebRequest.Post(URL + "/users", jsonData, "application/json"))
         {
             yield return request.SendWebRequest();

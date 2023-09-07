@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/Styles/Main.uss?fileID=7433441132597879392&amp;guid=b6d7ed9290f88c745af1e68e28dec072&amp;type=3#Main" />
     <Style src="project://database/Assets/UI/Styles/HubUIStyles.uss?fileID=7433441132597879392&amp;guid=843d101bc7e244040923eba71e2afc42&amp;type=3#HubUIStyles" />
-    <ui:VisualElement name="LocaleWrapper" class="locale_wrapper locale_en" />
+    <ui:VisualElement name="LocaleWrapper" class="locale_wrapper locale_en" style="display: none;" />
     <ui:VisualElement name="TopBox" class="top_box">
         <ui:Button display-tooltip-when-elided="true" name="SettingsButton" class="button_standard settings_button" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Main/SettingsButton.png?fileID=2800000&amp;guid=ba1e299eb262acc479335a62d081f530&amp;type=3#SettingsButton&apos;);" />
         <ui:Button display-tooltip-when-elided="true" name="ShopButton" class="button_standard shop_button" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Main/ShopButtonAlt.png?fileID=2800000&amp;guid=562670c80cd973b46babb76197cc6ab5&amp;type=3#ShopButtonAlt&apos;);" />

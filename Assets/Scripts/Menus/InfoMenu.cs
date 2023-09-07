@@ -8,455 +8,405 @@ using UnityEngine.SceneManagement;
 namespace Merge
 {
     public class InfoMenu : MonoBehaviour
-{
-    // Variables
-    public Sprite unlockedQuestionMarkSprite;
-    public Sprite infoCurrentSprite;
-    public Sprite infoParentItemSprite;
-    public Color textColor;
-    public Color lineColor;
-
-    // References
-    private MenuUI menuUI;
-    private InfoBox infoBox;
-
-    // Instances
-    private GameData gameData;
-    private I18n LOCALE;
-
-    // UI
-    private VisualElement root;
-    private VisualElement infoMenu;
-    private VisualElement itemSprite;
-    private VisualElement unlockedItems;
-    private VisualElement infoParent;
-    private Label itemName;
-    private Label itemData;
-
-    void Start()
     {
-        // Cache
-        menuUI = GetComponent<MenuUI>();
-        gameData = GameData.Instance;
-        LOCALE = I18n.Instance;
+        // Variables
+        public Sprite unlockedQuestionMarkSprite;
+        public Sprite infoCurrentSprite;
 
-        if (SceneManager.GetActiveScene().name == "Gameplay")
+        // References
+        private MenuUI menuUI;
+        private InfoBox infoBox;
+
+        // Instances
+        private GameData gameData;
+        private I18n LOCALE;
+
+        // UI
+        private VisualElement root;
+        private VisualElement infoMenu;
+        private VisualElement itemSprite;
+        private VisualElement unlockedItems;
+        private VisualElement infoParent;
+        private Label itemName;
+        private Label itemData;
+
+        void Start()
         {
-            infoBox = GameRefs.Instance.gameplayUI.GetComponent<InfoBox>();
+            // Cache
+            menuUI = GetComponent<MenuUI>();
+            gameData = GameData.Instance;
+            LOCALE = I18n.Instance;
+
+            if (SceneManager.GetActiveScene().name == "Gameplay")
+            {
+                infoBox = GameRefs.Instance.gameplayUI.GetComponent<InfoBox>();
+            }
+
+            // Cache UI
+            root = GetComponent<UIDocument>().rootVisualElement;
+
+            infoMenu = root.Q<VisualElement>("InfoMenu");
+
+            unlockedItems = infoMenu.Q<VisualElement>("UnlockedItems");
+
+            infoParent = infoMenu.Q<VisualElement>("InfoParent");
+
+            itemSprite = infoMenu.Q<VisualElement>("ItemSprite");
+            itemName = infoMenu.Q<Label>("ItemName");
+            itemData = infoMenu.Q<Label>("ItemData");
+
+            Init();
         }
 
-        // Cache UI
-        root = GetComponent<UIDocument>().rootVisualElement;
-
-        infoMenu = root.Q<VisualElement>("InfoMenu");
-
-        unlockedItems = infoMenu.Q<VisualElement>("UnlockedItems");
-
-        infoParent = infoMenu.Q<VisualElement>("InfoParent");
-
-        itemSprite = infoMenu.Q<VisualElement>("ItemSprite");
-        itemName = infoMenu.Q<Label>("ItemName");
-        itemData = infoMenu.Q<Label>("ItemData");
-
-        Init();
-    }
-
-    void Init()
-    {
-        // Make sure the menu is closed
-        infoMenu.style.display = DisplayStyle.None;
-        infoMenu.style.opacity = 0;
-
-        infoParent.style.display = DisplayStyle.None;
-    }
-
-    public void Open(Item item)
-    {
-        if (infoMenu != null)
+        void Init()
         {
-            ClearData();
+            // Make sure the menu is closed
+            infoMenu.style.display = DisplayStyle.None;
+            infoMenu.style.opacity = 0;
 
-            // Title
-            string title;
+            infoParent.style.display = DisplayStyle.None;
+        }
+
+        public void Open(Item item)
+        {
+            if (infoMenu != null)
+            {
+                ClearData();
+
+                // Title
+                string title;
+
+                switch (item.type)
+                {
+                    case Types.Type.Item:
+                        title = LOCALE.Get("Item_" + item.group + "_" + item.level);
+                        break;
+                    case Types.Type.Gen:
+                        title = LOCALE.Get("Gen_" + item.genGroup);
+                        break;
+                    case Types.Type.Coll:
+                        title = LOCALE.Get("Coll_" + item.collGroup);
+                        break;
+                    default: // Types.Type.Chest
+                        title = LOCALE.Get("Chest_" + item.chestGroup);
+                        break;
+                }
+
+                // Item data
+                itemSprite.style.backgroundImage = new StyleBackground(item.sprite);
+
+                itemName.text = item.itemName;
+
+                if (infoBox != null)
+                {
+                    itemData.text = infoBox.GetItemData(item, true);
+                }
+                else
+                {
+                    itemData.text = LOCALE.Get("info_box_null");
+
+                    ErrorManager.Instance.ThrowFull(
+                        Types.ErrorType.Code,
+                        "InfoMenu.cs -> Open()",
+                        "InfoBox is null!",
+                        "0",
+                        true
+                    );
+                }
+
+                // Unlocked items
+                if (item.type == Types.Type.Chest)
+                {
+                    if (item.chestGroup == Types.ChestGroup.Item)
+                    {
+                        GetUnlockedItems(item);
+                    }
+                    else
+                    {
+                        infoParent.style.display = DisplayStyle.None;
+
+                        GetChestItems(item);
+                    }
+                }
+                else
+                {
+                    GetUnlockedItems(item);
+                }
+
+                if (item.type != Types.Type.Coll && item.type != Types.Type.Chest)
+                {
+                    // Check info parent
+                    CheckInfoParent(item);
+                }
+
+                // Open menu
+                menuUI.OpenMenu(infoMenu, title);
+            }
+        }
+
+        void GetUnlockedItems(Item item)
+        {
+            Types.Items[] items;
+            bool isGroup = false;
+            bool isGenGroup = false;
+            bool isCollGroup = false;
+            bool isChestGroup = false;
 
             switch (item.type)
             {
                 case Types.Type.Item:
-                    title = LOCALE.Get("Item_" + item.group + "_" + item.level);
+                    items = gameData.itemsData;
+                    isGroup = true;
                     break;
                 case Types.Type.Gen:
-                    title = LOCALE.Get("Gen_" + item.genGroup);
+                    items = gameData.generatorsData;
+                    isGenGroup = true;
                     break;
                 case Types.Type.Coll:
-                    title = LOCALE.Get("Coll_" + item.collGroup);
+                    items = gameData.collectablesData;
+                    isCollGroup = true;
                     break;
                 default: // Types.Type.Chest
-                    title = LOCALE.Get("Chest_" + item.chestGroup);
+                    items = gameData.chestsData;
+                    isChestGroup = true;
                     break;
             }
 
-            // Item data
-            itemSprite.style.backgroundImage = new StyleBackground(item.sprite);
-
-            itemName.text = item.itemName;
-
-            if (infoBox != null)
+            for (int i = 0; i < items.Length; i++)
             {
-                itemData.text = infoBox.GetItemData(item, true);
-            }
-            else
-            {
-                itemData.text = LOCALE.Get("info_box_null");
-
-                ErrorManager.Instance.ThrowFull(Types.ErrorType.Code, "InfoMenu.cs -> Open()", "InfoBox is null!", "0", true);
-            }
-
-            // Unlocked items
-            if (item.type == Types.Type.Chest)
-            {
-                if (item.chestGroup == Types.ChestGroup.Item)
+                if (
+                    (isGroup && item.group == items[i].group)
+                    || (isGenGroup && item.genGroup == items[i].genGroup)
+                    || (isCollGroup && item.collGroup == items[i].collGroup)
+                    || (isChestGroup && item.chestGroup == items[i].chestGroup)
+                )
                 {
-                    GetUnlockedItems(item);
+                    for (int j = 0; j < items[i].content.Length; j++)
+                    {
+                        VisualElement current = new() { name = "Current" };
+                        VisualElement unlockedItem = new() { name = "UnlockedItem" + i };
+                        VisualElement line = new() { name = "Line" };
+                        Label order = new() { name = "Order" };
+
+                        // Current
+                        current.AddToClassList("current_item");
+
+                        if (item.sprite == items[i].content[j].sprite)
+                        {
+                            current.style.backgroundImage = new StyleBackground(infoCurrentSprite);
+                        }
+
+                        // Item
+                        unlockedItem.AddToClassList("item");
+
+                        if (j % 5 == 4)
+                        {
+                            current.style.marginRight = 0;
+
+                            line.style.display = DisplayStyle.None;
+                        }
+
+                        if (j == items[i].content.Length - 1)
+                        {
+                            line.style.display = DisplayStyle.None;
+                        }
+
+                        if (
+                            items[i].content[j].unlocked
+                            || items[i].content[j].sprite.name == item.sprite.name
+                        )
+                        {
+                            unlockedItem.style.backgroundImage = new StyleBackground(
+                                items[i].content[j].sprite
+                            );
+                        }
+                        else
+                        {
+                            unlockedItem.style.backgroundImage = new StyleBackground(
+                                unlockedQuestionMarkSprite
+                            );
+                        }
+
+                        // Order
+                        order.text = (j + 1) + "";
+                        order.AddToClassList("order");
+
+                        // Line
+                        line.AddToClassList("line");
+
+                        // Add to UI
+                        unlockedItem.Add(order);
+
+                        unlockedItem.Add(line);
+
+                        current.Add(unlockedItem);
+
+                        unlockedItems.Add(current);
+                    }
                 }
-                else
-                {
-                    infoParent.style.display = DisplayStyle.None;
-
-                    GetChestItems(item);
-                }
             }
-            else
-            {
-                GetUnlockedItems(item);
-            }
-
-            if (item.type != Types.Type.Coll && item.type != Types.Type.Chest)
-            {
-                // Check info parent
-                CheckInfoParent(item);
-            }
-
-            // Open menu
-            menuUI.OpenMenu(infoMenu, title);
-        }
-    }
-
-    void GetUnlockedItems(Item item)
-    {
-        Types.Items[] items;
-        bool isGroup = false;
-        bool isGenGroup = false;
-        bool isCollGroup = false;
-        bool isChestGroup = false;
-
-        switch (item.type)
-        {
-            case Types.Type.Item:
-                items = gameData.itemsData;
-                isGroup = true;
-                break;
-            case Types.Type.Gen:
-                items = gameData.generatorsData;
-                isGenGroup = true;
-                break;
-            case Types.Type.Coll:
-                items = gameData.collectablesData;
-                isCollGroup = true;
-                break;
-            default: // Types.Type.Chest
-                items = gameData.chestsData;
-                isChestGroup = true;
-                break;
         }
 
-        for (int i = 0; i < items.Length; i++)
+        void GetChestItems(Item item)
         {
-            if ((isGroup && item.group == items[i].group)
-            || (isGenGroup && item.genGroup == items[i].genGroup)
-            || (isCollGroup && item.collGroup == items[i].collGroup)
-            || (isChestGroup && item.chestGroup == items[i].chestGroup)
-            )
+            List<Sprite> itemSprites = new();
+
+            if (item.chestGroup == Types.ChestGroup.Item)
             {
-                for (int j = 0; j < items[i].content.Length; j++)
+                // TODO - Handle item chests
+                // Have a list of possible items that the chest might hold
+            }
+            else if (item.chestGroup == Types.ChestGroup.Piggy)
+            {
+                for (int i = 0; i < gameData.collectablesData.Length; i++)
                 {
-                    VisualElement current = new VisualElement { name = "Current" };
-                    VisualElement unlockedItem = new VisualElement { name = "UnlockedItem" + i };
-                    VisualElement line = new VisualElement { name = "Line" };
-                    Label order = new Label { name = "Order" };
-
-                    // Current
-                    current.style.width = 24f;
-                    current.style.height = 24f;
-                    current.style.marginRight = 4f;
-                    current.style.marginBottom = 10f;
-
-                    if (item.sprite == items[i].content[j].sprite)
-                    {
-                        current.style.backgroundImage = new StyleBackground(infoCurrentSprite);
-                    }
-
-                    // Item
-                    unlockedItem.style.width = 24f;
-                    unlockedItem.style.height = 24f;
-                    unlockedItem.style.position = Position.Absolute;
-                    unlockedItem.style.left = 0;
-                    unlockedItem.style.top = 0;
-
-                    if (j % 5 == 4)
-                    {
-                        current.style.marginRight = 0;
-
-                        line.style.display = DisplayStyle.None;
-                    }
-
-                    if (j == items[i].content.Length - 1)
-                    {
-                        line.style.display = DisplayStyle.None;
-                    }
-
                     if (
-                        items[i].content[j].unlocked
-                        || items[i].content[j].sprite.name == item.sprite.name
+                        gameData.collectablesData[i].collGroup == Types.CollGroup.Gold
+                        || gameData.collectablesData[i].collGroup == Types.CollGroup.Gems
                     )
                     {
-                        unlockedItem.style.backgroundImage = new StyleBackground(
-                            items[i].content[j].sprite
-                        );
-                    }
-                    else
-                    {
-                        unlockedItem.style.backgroundImage = new StyleBackground(
-                            unlockedQuestionMarkSprite
-                        );
-                    }
-
-                    // Order
-                    order.text = (j + 1) + "";
-                    order.style.width = 24f;
-                    order.style.position = Position.Absolute;
-                    order.style.left = Length.Percent(50);
-                    order.style.bottom = -10f;
-                    order.style.paddingLeft = 0;
-                    order.style.paddingTop = 0;
-                    order.style.paddingRight = 4f;
-                    order.style.paddingBottom = 0;
-                    order.style.fontSize = 6f;
-                    order.style.color = new StyleColor(textColor);
-                    order.style.translate = new Translate(Length.Percent(-50), 0f);
-                    order.style.unityTextAlign = TextAnchor.MiddleCenter;
-
-                    // Line
-                    line.style.width = 2f;
-                    line.style.height = 1f;
-                    line.style.position = Position.Absolute;
-                    line.style.left = 25f;
-                    line.style.top = Length.Percent(50);
-                    line.style.translate = new Translate(0f, Length.Percent(-50));
-                    line.style.backgroundColor = new StyleColor(lineColor);
-
-                    // Add to UI
-                    unlockedItem.Add(order);
-
-                    unlockedItem.Add(line);
-
-                    current.Add(unlockedItem);
-
-                    unlockedItems.Add(current);
-                }
-            }
-        }
-    }
-
-    void GetChestItems(Item item)
-    {
-        List<Sprite> itemSprites = new();
-
-        if (item.chestGroup == Types.ChestGroup.Item)
-        {
-            // TODO - Handle item chests
-            // Have a list of possible items that the chest might hold
-        }
-        else if (item.chestGroup == Types.ChestGroup.Piggy)
-        {
-            for (int i = 0; i < gameData.collectablesData.Length; i++)
-            {
-                if (gameData.collectablesData[i].collGroup == Types.CollGroup.Gold || gameData.collectablesData[i].collGroup == Types.CollGroup.Gems)
-                {
-                    for (int j = 0; j < gameData.collectablesData[i].content.Length; j++)
-                    {
-                        itemSprites.Add(gameData.collectablesData[i].content[j].sprite);
-                    }
-                }
-            }
-        }
-        else
-        {
-            for (int i = 0; i < gameData.collectablesData.Length; i++)
-            {
-                if (gameData.collectablesData[i].collGroup == Types.CollGroup.Energy)
-                {
-                    for (int j = 0; j < gameData.collectablesData[i].content.Length; j++)
-                    {
-                        itemSprites.Add(gameData.collectablesData[i].content[j].sprite);
-                    }
-                }
-            }
-        }
-
-        // Show the items
-        for (int i = 0; i < itemSprites.Count; i++)
-        {
-            VisualElement current = new VisualElement { name = "Current" };
-            VisualElement unlockedItem = new VisualElement { name = "UnlockedItem" + i };
-            VisualElement line = new VisualElement { name = "Line" };
-
-            // Current
-            current.style.width = 24f;
-            current.style.height = 24f;
-            current.style.marginRight = 4f;
-            current.style.marginBottom = 10f;
-
-            // Item
-            unlockedItem.style.width = 24f;
-            unlockedItem.style.height = 24f;
-            unlockedItem.style.position = Position.Absolute;
-            unlockedItem.style.left = 0;
-            unlockedItem.style.top = 0;
-
-            if (i % 5 == 4)
-            {
-                current.style.marginRight = 0;
-
-                line.style.display = DisplayStyle.None;
-            }
-
-            if (i == itemSprites.Count - 1)
-            {
-                line.style.display = DisplayStyle.None;
-            }
-
-            unlockedItem.style.backgroundImage = new StyleBackground(
-                itemSprites[i]
-            );
-
-            // Line
-            line.style.width = 2f;
-            line.style.height = 1f;
-            line.style.position = Position.Absolute;
-            line.style.left = 25f;
-            line.style.top = Length.Percent(50);
-            line.style.translate = new Translate(0f, Length.Percent(-50));
-            line.style.backgroundColor = new StyleColor(lineColor);
-
-            // Add to UI
-            unlockedItem.Add(line);
-
-            current.Add(unlockedItem);
-
-            unlockedItems.Add(current);
-        }
-    }
-
-    void CheckInfoParent(Item item)
-    {
-        infoParent.style.display = DisplayStyle.None;
-
-        if (item.parents.Length >= 0)
-        {
-            Label value = new Label { name = "Value" };
-
-            value.style.position = Position.Absolute;
-            value.style.left = 0f;
-            value.style.top = 0f;
-            value.style.right = 0f;
-            value.style.height = 12f;
-            value.style.paddingLeft = 0;
-            value.style.paddingTop = 0;
-            value.style.paddingRight = 0;
-            value.style.paddingBottom = 0;
-            value.style.marginLeft = 0;
-            value.style.marginTop = 0;
-            value.style.marginRight = 0;
-            value.style.marginBottom = 0;
-            value.style.fontSize = 6f;
-            value.style.color = new StyleColor(textColor);
-            value.style.unityTextAlign = TextAnchor.MiddleCenter;
-
-            value.text = LOCALE.Get("info_menu_found_in");
-
-            infoParent.Add(value);
-
-            infoParent.style.display = DisplayStyle.Flex;
-
-            for (int i = 0; i < item.parents.Length; i++)
-            {
-                Sprite parentItemSprite = GetParentSprite(item.parents[i]);
-
-                if (parentItemSprite != null)
-                {
-                    VisualElement parent = new VisualElement { name = "Parent" + i };
-                    VisualElement parentItem = new VisualElement { name = "ParentItem" + i };
-
-                    parent.style.width = 24f;
-                    parent.style.height = 24f;
-                    parent.style.backgroundImage = new StyleBackground(infoParentItemSprite);
-
-                    parentItem.style.width = 24f;
-                    parentItem.style.height = 24f;
-                    parentItem.style.backgroundImage = new StyleBackground(parentItemSprite);
-
-                    // Add to UI
-                    parent.Add(parentItem);
-
-                    infoParent.Add(parent);
-                }
-            }
-        }
-    }
-
-    Sprite GetParentSprite(ItemTypes.GenGroup parentGroup)
-    {
-        Sprite sprite = null;
-
-        for (int i = 0; i < gameData.generatorsData.Length; i++)
-        {
-            if (parentGroup == gameData.generatorsData[i].genGroup)
-            {
-                if (gameData.generatorsData[i].content.Length == 1)
-                {
-                    sprite = gameData.generatorsData[i].content[0].sprite;
-                }
-                else
-                {
-                    for (int j = 0; j < gameData.generatorsData[i].content.Length; j++)
-                    {
-                        if (!gameData.generatorsData[i].content[j].unlocked && j >= 0)
+                        for (int j = 0; j < gameData.collectablesData[i].content.Length; j++)
                         {
-                            sprite = gameData.generatorsData[i].content[j - 1].sprite;
-
-                            break;
+                            itemSprites.Add(gameData.collectablesData[i].content[j].sprite);
                         }
                     }
                 }
             }
+            else
+            {
+                for (int i = 0; i < gameData.collectablesData.Length; i++)
+                {
+                    if (gameData.collectablesData[i].collGroup == Types.CollGroup.Energy)
+                    {
+                        for (int j = 0; j < gameData.collectablesData[i].content.Length; j++)
+                        {
+                            itemSprites.Add(gameData.collectablesData[i].content[j].sprite);
+                        }
+                    }
+                }
+            }
+
+            // Show the items
+            for (int i = 0; i < itemSprites.Count; i++)
+            {
+                VisualElement current = new VisualElement { name = "Current" };
+                VisualElement unlockedItem = new VisualElement { name = "UnlockedItem" + i };
+                VisualElement line = new VisualElement { name = "Line" };
+
+                // Current
+                current.AddToClassList("current_item");
+
+                // Item
+                unlockedItem.AddToClassList("item");
+
+                if (i % 5 == 4)
+                {
+                    current.style.marginRight = 0;
+
+                    line.style.display = DisplayStyle.None;
+                }
+
+                if (i == itemSprites.Count - 1)
+                {
+                    line.style.display = DisplayStyle.None;
+                }
+
+                unlockedItem.style.backgroundImage = new StyleBackground(itemSprites[i]);
+
+                // Line
+                line.AddToClassList("line");
+
+                // Add to UI
+                unlockedItem.Add(line);
+
+                current.Add(unlockedItem);
+
+                unlockedItems.Add(current);
+            }
         }
 
-        return sprite;
-    }
-
-    void ClearData()
-    {
-        if (unlockedItems.childCount > 0)
+        void CheckInfoParent(Item item)
         {
-            unlockedItems.Clear();
+            infoParent.style.display = DisplayStyle.None;
+
+            if (item.parents.Length >= 0)
+            {
+                Label value = new() { name = "Value", text = LOCALE.Get("info_menu_found_in") };
+
+                value.AddToClassList("value");
+
+                infoParent.Add(value);
+
+                infoParent.style.display = DisplayStyle.Flex;
+
+                for (int i = 0; i < item.parents.Length; i++)
+                {
+                    Sprite parentItemSprite = GetParentSprite(item.parents[i]);
+
+                    if (parentItemSprite != null)
+                    {
+                        VisualElement parent = new() { name = "Parent" + i };
+                        VisualElement parentItem = new() { name = "ParentItem" + i };
+
+                        parent.AddToClassList("parent");
+
+                        parentItem.AddToClassList("parent_item");
+                        parentItem.style.backgroundImage = new StyleBackground(parentItemSprite);
+
+                        // Add to UI
+                        parent.Add(parentItem);
+
+                        infoParent.Add(parent);
+                    }
+                }
+            }
         }
 
-        if (infoParent.childCount > 0)
+        Sprite GetParentSprite(ItemTypes.GenGroup parentGroup)
         {
-            infoParent.Clear();
+            Sprite sprite = null;
+
+            for (int i = 0; i < gameData.generatorsData.Length; i++)
+            {
+                if (parentGroup == gameData.generatorsData[i].genGroup)
+                {
+                    if (gameData.generatorsData[i].content.Length == 1)
+                    {
+                        sprite = gameData.generatorsData[i].content[0].sprite;
+                    }
+                    else
+                    {
+                        for (int j = 0; j < gameData.generatorsData[i].content.Length; j++)
+                        {
+                            // TODO - Check this
+                            // if (!gameData.generatorsData[i].content[j].unlocked && j >= 0)
+                            if (j >= 0)
+                            {
+                                sprite = gameData.generatorsData[i].content[j - 1].sprite;
+
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return sprite;
         }
 
-        infoParent.style.display = DisplayStyle.None;
+        void ClearData()
+        {
+            if (unlockedItems.childCount > 0)
+            {
+                unlockedItems.Clear();
+            }
+
+            if (infoParent.childCount > 0)
+            {
+                infoParent.Clear();
+            }
+
+            infoParent.style.display = DisplayStyle.None;
+        }
     }
-}
 }

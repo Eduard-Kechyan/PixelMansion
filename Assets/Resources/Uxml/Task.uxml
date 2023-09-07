@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="TaskItem" class="task_item">
+        <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="TaskTitle" class="title" />
+        <ui:VisualElement name="TaskNeeds" class="task_needs" />
+        <ui:Button text="Button" display-tooltip-when-elided="true" name="PlayButton" class="button button_active play_button" />
+    </ui:VisualElement>
+</ui:UXML>

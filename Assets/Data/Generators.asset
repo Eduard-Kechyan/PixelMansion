@@ -40,7 +40,7 @@ MonoBehaviour:
       parents: 
       creates: []
       unlocked: 0
-      isMaxLavel: 0
+      isMaxLevel: 0
       hasLevel: 0
       hasTimer: 0
       chestItems: 0
@@ -60,7 +60,7 @@ MonoBehaviour:
       parents: 
       creates: []
       unlocked: 0
-      isMaxLavel: 0
+      isMaxLevel: 0
       hasLevel: 0
       hasTimer: 0
       chestItems: 0
@@ -80,7 +80,7 @@ MonoBehaviour:
       parents: 
       creates: []
       unlocked: 0
-      isMaxLavel: 0
+      isMaxLevel: 0
       hasLevel: 0
       hasTimer: 0
       chestItems: 0
@@ -100,7 +100,7 @@ MonoBehaviour:
       parents: 
       creates: []
       unlocked: 0
-      isMaxLavel: 0
+      isMaxLevel: 0
       hasLevel: 0
       hasTimer: 0
       chestItems: 0
@@ -120,7 +120,7 @@ MonoBehaviour:
       parents: 
       creates: []
       unlocked: 0
-      isMaxLavel: 0
+      isMaxLevel: 0
       hasLevel: 0
       hasTimer: 0
       chestItems: 0
@@ -140,7 +140,7 @@ MonoBehaviour:
       parents: 
       creates: []
       unlocked: 0
-      isMaxLavel: 0
+      isMaxLevel: 0
       hasLevel: 0
       hasTimer: 0
       chestItems: 0

@@ -64,7 +64,7 @@ namespace Merge
                     unlocked = CheckUnlocked(itemsContent[i].content[j].sprite.name),
                     startTime = itemsContent[i].content[j].startTime,
                     seconds = itemsContent[i].content[j].seconds,
-                    isMaxLavel = count == itemsContent[i].content.Length,
+                    isMaxLevel = count == itemsContent[i].content.Length,
                     chestItems = InitChestItems(itemsContent[i].content[j], itemsContent[i], count),
                     chestItemsSet = itemsContent[i].content[j].chestItemsSet,
                     gemPopped = itemsContent[i].content[j].gemPopped,

@@ -10,6 +10,7 @@ namespace Merge
         // Variables
         public TasksData tasksData;
         public WorldDataManager worldDataManager;
+        public SceneLoader sceneLoader;
 
         // References
         private GameData gameData;
@@ -31,23 +32,12 @@ namespace Merge
             hubGameUi = GameRefs.Instance.hubGameUI;
         }
 
-        private void Update()
-        {
-            // Update logic here
-        }
-
-        #region TaskGroups
-
         public void AddTaskGroup(string areaId)
         {
             if (!TaskGroupExists(areaId))
             {
                 // Create a new task group and add it to the list
-                var newTaskGroup = new Types.TaskGroup
-                {
-                    id = areaId,
-                    completed = 0
-                };
+                var newTaskGroup = new Types.TaskGroup { id = areaId, completed = 0 };
 
                 gameData.taskGroupsData.Add(newTaskGroup);
 
@@ -66,10 +56,6 @@ namespace Merge
             // Check if a task group with the given area ID already exists
             return gameData.taskGroupsData.Exists(taskGroup => taskGroup.id == areaId);
         }
-
-        #endregion
-
-        #region Tasks
 
         public void AddTask(string taskId, string newGroupId)
         {
@@ -91,7 +77,9 @@ namespace Merge
                 }
                 else
                 {
-                    Debug.LogWarning($"No Task found with id: {taskId}, with Task Group id: {newGroupId}");
+                    Debug.LogWarning(
+                        $"No Task found with id: {taskId}, with Task Group id: {newGroupId}"
+                    );
                 }
 
                 // Update task icons in the world
@@ -116,22 +104,29 @@ namespace Merge
             return gameData.tasksData.Exists(task => task.id == taskId);
         }
 
-        #endregion
-
         public void CheckWorldTaskIcons()
         {
-            // Clear existing task icons in the UI
-            hubGameUi.ClearTaskIcons();
-
-            if (gameData.tasksData.Count > 0 && worldDataManager != null)
+            if (gameData == null)
             {
+                InitializeReferences();
+            }
+
+            if (
+                sceneLoader.GetSceneName() == "Hub"
+                && gameData != null
+                && gameData.tasksData.Count > 0
+                && worldDataManager != null
+            )
+            {
+                // Clear existing task icons in the UI
+                hubGameUi.ClearTaskIcons();
+
                 // Add task icons for tasks in the world
                 foreach (var taskData in gameData.tasksData)
                 {
-                    hubGameUi.AddTaskIcon(worldDataManager.GetWorldItemPos(taskData));
+                    hubGameUi.AddTaskIcon(worldDataManager.GetWorldItemPos(taskData), taskData);
                 }
             }
         }
     }
-
 }

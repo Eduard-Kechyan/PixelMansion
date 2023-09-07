@@ -20,7 +20,7 @@
     </ui:VisualElement>
     <ui:Label text="Version: 0.0.0" display-tooltip-when-elided="true" name="Version" class="version" />
     <ui:VisualElement name="OverlayBackground" class="overlay_background" />
-    <ui:VisualElement name="TermsMenu" class="loading_scene_menu terms_menu" style="display: flex; opacity: 1;">
+    <ui:VisualElement name="TermsMenu" class="loading_scene_menu terms_menu" style="display: none; opacity: 0;">
         <ui:Label tabindex="-1" text="Notice" display-tooltip-when-elided="true" name="TermsLabel" class="menu_label" style="-unity-text-align: upper-center;" />
         <ui:Button text="Accept" display-tooltip-when-elided="true" name="AcceptButton" class="button button_active accept_button" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/LongButtonExtra.png?fileID=2800000&amp;guid=5807375128b344f44a31b9300397a38e&amp;type=3#LongButtonExtra&apos;);" />
         <ui:VisualElement class="container">
@@ -32,14 +32,14 @@
             <ui:Label tabindex="-1" text="Important Notice" display-tooltip-when-elided="true" name="TitleLabel" class="title_label" />
         </ui:VisualElement>
     </ui:VisualElement>
-    <ui:VisualElement name="AgeMenu" class="loading_scene_menu age_menu">
+    <ui:VisualElement name="AgeMenu" class="loading_scene_menu age_menu" style="display: none; opacity: 0;">
         <ui:Label tabindex="-1" text="Notice" display-tooltip-when-elided="true" name="AgeLabel" class="menu_label" />
         <ui:VisualElement name="AgeArrowUp" class="arrow_up" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/Loading/Menu/AgeArrow.png?fileID=2800000&amp;guid=0ba53977c232d9e4b866c1efe7c21045&amp;type=3#AgeArrow&apos;);" />
         <ui:VisualElement name="AgeScrollerTopLine" class="scroller_top_line" />
         <ui:ScrollView horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" name="AgeScrollView" touch-scroll-type="Clamped" elasticity="0" class="scroll_view" />
         <ui:VisualElement name="AgeScrollerBottomLine" class="scroller_bottom_line" />
         <ui:VisualElement name="AgeArrowDown" class="arrow_down" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/Loading/Menu/AgeArrow.png?fileID=2800000&amp;guid=0ba53977c232d9e4b866c1efe7c21045&amp;type=3#AgeArrow&apos;);" />
-        <ui:Button text="Accept" display-tooltip-when-elided="true" name="AcceptButton" class="button button_active accept_button" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/LongButtonExtra.png?fileID=2800000&amp;guid=5807375128b344f44a31b9300397a38e&amp;type=3#LongButtonExtra&apos;);" />
+        <ui:Button text="Accept" display-tooltip-when-elided="true" name="AcceptButton" class="accept_button button button_active" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/LongButtonExtra.png?fileID=2800000&amp;guid=5807375128b344f44a31b9300397a38e&amp;type=3#LongButtonExtra&apos;);" />
         <ui:VisualElement name="BorderBottom" class="border_bottom" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/Loading/Menu/BorderBottom.png?fileID=2800000&amp;guid=51a17fd56a7e00541ae25eaaae9f0320&amp;type=3#BorderBottom&apos;);" />
         <ui:VisualElement name="Title" class="title" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/Loading/Menu/Title.png?fileID=2800000&amp;guid=20feb4a762c72b3438394c05558c7909&amp;type=3#Title&apos;); width: 174px; height: 22px; position: absolute; left: -5px; top: -16px;">
             <ui:Label tabindex="-1" text="Age Notice" display-tooltip-when-elided="true" name="TitleLabel" class="title_label" />

@@ -1,8 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
-//  
-// @module Quick Save for Unity3D 
+//
+// @module Quick Save for Unity3D
 // @author Michael Clayton
-// @support clayton.inds+support@gmail.com 
+// @support clayton.inds+support@gmail.com
 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -89,6 +89,11 @@ namespace CI.QuickSave
             }
 
             return this;
+        }
+
+        public Newtonsoft.Json.Linq.JObject Get()
+        {
+            return _items;
         }
 
         /// <summary>

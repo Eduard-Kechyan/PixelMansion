@@ -9,10 +9,10 @@
             <ui:Button display-tooltip-when-elided="true" name="Option2Button" class="button button_active" style="width: 30px; height: 30px;" />
             <ui:Button display-tooltip-when-elided="true" name="Option3Button" class="button button_active" style="width: 30px; height: 30px;" />
         </ui:VisualElement>
-        <ui:Button display-tooltip-when-elided="true" name="ConfirmButton" class="button button_active confirm_button" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/DenyButton.png?fileID=2800000&amp;guid=183a764ee12efff42ad47afd3a9deb27&amp;type=3#DenyButton&apos;);" />
+        <ui:Button display-tooltip-when-elided="true" name="ConfirmButton" class="button button_active confirm_button" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/ConfirmButton.png?fileID=2800000&amp;guid=648a7369b076e174e9160359c385da6d&amp;type=3#ConfirmButton&apos;);" />
     </ui:VisualElement>
     <ui:VisualElement name="SelectorArrow" class="selector_arrow" style="background-image: url(&apos;project://database/Assets/Sprites/Environment/UI/SelectionArrows0.png?fileID=2800000&amp;guid=52cbf66651a7ef245a62e26371238e99&amp;type=3#SelectionArrows0&apos;);" />
-    <ui:Button display-tooltip-when-elided="true" name="SpeechBubble" class="speech_bubble" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/Hub/SpeechBubble/SpeechBubble.png?fileID=2800000&amp;guid=a05199067d49e0b49a57533c59688790&amp;type=3#SpeechBubble&apos;);">
+    <ui:Button display-tooltip-when-elided="true" name="SpeechBubble" class="speech_bubble" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/Hub/SpeechBubble/SpeechBubble.png?fileID=2800000&amp;guid=a05199067d49e0b49a57533c59688790&amp;type=3#SpeechBubble&apos;); display: none; opacity: 0;">
         <ui:Label tabindex="-1" text="This table can fall down any moment!" display-tooltip-when-elided="true" name="SpeechLabel" class="speech_label" />
         <ui:VisualElement name="BorderLeft" class="border_left" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/Hub/SpeechBubble/SpeechBubbleBorderLeft.png?fileID=2800000&amp;guid=9eca50a9594d95a42ade3c576b71a688&amp;type=3#SpeechBubbleBorderLeft&apos;);">
             <ui:VisualElement name="Top" class="top" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/Hub/SpeechBubble/SpeechBubbleBorderLeftTop.png?fileID=2800000&amp;guid=254bab9125440e640acddbc2c61f4e93&amp;type=3#SpeechBubbleBorderLeftTop&apos;);" />

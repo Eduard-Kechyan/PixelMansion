@@ -148,7 +148,6 @@
     padding-top: 0;
 }
 
-
 .scroller .unity-scroller {
     width: 4px;
     overflow: hidden;
@@ -163,6 +162,7 @@
     display: none;
     opacity: 0;
 }
+
 .scroller .unity-scroller__high-button {
     display: none;
     opacity: 0;

@@ -157,7 +157,7 @@ namespace Merge
 
                 if (singleItem.state == Types.State.Default && singleItem.sprite != null)
                 {
-                    if (!boardManager.boardTiles.transform.GetChild(singleItem.order).GetChild(0).gameObject.GetComponent<Item>().isMaxLavel)
+                    if (!boardManager.boardTiles.transform.GetChild(singleItem.order).GetChild(0).gameObject.GetComponent<Item>().isMaxLevel)
                     {
                         singleArray.Add(singleItem);
                     }

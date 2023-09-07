@@ -396,7 +396,7 @@ namespace Merge
                     && (otherItem.state != Types.State.Bubble || currentItem.state != Types.State.Bubble)
                 )
                 {
-                    if (!otherItem.isMaxLavel&& otherItem.state != Types.State.Crate)
+                    if (!otherItem.isMaxLevel&& otherItem.state != Types.State.Crate)
                     {
                         Merge(otherItem);
 

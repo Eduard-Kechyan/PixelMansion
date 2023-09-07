@@ -217,16 +217,7 @@
     -unity-background-image-tint-color: rgb(85, 203, 152);
 }
 
-.age_menu {
-    flex-grow: 1;
-    width: 10px;
-    height: 10px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 4px;
-}
-
-.age_menu .arrow_up  {
+.age_menu .arrow_up {
     flex-grow: 1;
     width: 10px;
     height: 10px;
@@ -240,7 +231,16 @@
     width: 10px;
     height: 10px;
     margin-left: auto;
-    margin-right: auto;margin-bottom: 8px;
-        margin-top: 3px;
-        rotate: 180deg;
+    margin-right: auto;
+    margin-bottom: 8px;
+    margin-top: 3px;
+    rotate: 180deg;
+}
+
+.age_menu .accept_button {
+    font-size: 10px;
+    margin-bottom: 10px;
+    margin-right: auto;
+    margin-left: auto;
+    -unity-background-image-tint-color: rgb(85, 203, 152);
 }

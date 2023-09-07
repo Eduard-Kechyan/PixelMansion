@@ -19,6 +19,7 @@ namespace Merge
 
         [Header("Clamp")]
         public bool shouldClamp = true;
+
         [ReadOnly]
         public Vector2 clamp;
 
@@ -43,8 +44,10 @@ namespace Merge
         [Header("States")]
         [ReadOnly]
         public bool isPanning = false;
+
         [ReadOnly]
         public bool isRebounding = false;
+
         [ReadOnly]
         public bool isResetting = false;
 
@@ -57,6 +60,7 @@ namespace Merge
         private float camDiffX;
         private float camDiffY;
         private bool beganOutOfUI = true;
+
         [HideInInspector]
         public float initialCamSize = 0;
         private bool moved = false;
@@ -66,6 +70,7 @@ namespace Merge
         private MenuUI menuUI;
         private PopupManager popupManager;
         private CharMove charMove;
+        private HubGameUI hubGameUI;
 
         // UI
         private VisualElement root;
@@ -75,6 +80,7 @@ namespace Merge
             // Cache
             cam = Camera.main;
             menuUI = GameRefs.Instance.menuUI;
+            hubGameUI = GameRefs.Instance.hubGameUI;
             popupManager = GameRefs.Instance.popupManager;
             charMove = CharMain.Instance.charMove;
 
@@ -105,19 +111,37 @@ namespace Merge
                 if (showClamp)
                 {
                     Gizmos.color = Color.red;
-                    Gizmos.DrawLine(new Vector3(-clamp.x, -clamp.y), new Vector3(-clamp.x, clamp.y));
+                    Gizmos.DrawLine(
+                        new Vector3(-clamp.x, -clamp.y),
+                        new Vector3(-clamp.x, clamp.y)
+                    );
                     Gizmos.DrawLine(new Vector3(-clamp.x, clamp.y), new Vector3(clamp.x, clamp.y));
                     Gizmos.DrawLine(new Vector3(clamp.x, clamp.y), new Vector3(clamp.x, -clamp.y));
-                    Gizmos.DrawLine(new Vector3(clamp.x, -clamp.y), new Vector3(-clamp.x, -clamp.y));
+                    Gizmos.DrawLine(
+                        new Vector3(clamp.x, -clamp.y),
+                        new Vector3(-clamp.x, -clamp.y)
+                    );
                 }
 
                 if (showRebound)
                 {
                     Gizmos.color = Color.yellow;
-                    Gizmos.DrawLine(new Vector3(-clamp.x + rebound, -clamp.y + rebound), new Vector3(-clamp.x + rebound, clamp.y - rebound));
-                    Gizmos.DrawLine(new Vector3(-clamp.x + rebound, clamp.y - rebound), new Vector3(clamp.x - rebound, clamp.y - rebound));
-                    Gizmos.DrawLine(new Vector3(clamp.x - rebound, clamp.y - rebound), new Vector3(clamp.x - rebound, -clamp.y + rebound));
-                    Gizmos.DrawLine(new Vector3(clamp.x - rebound, -clamp.y + rebound), new Vector3(-clamp.x + rebound, -clamp.y + rebound));
+                    Gizmos.DrawLine(
+                        new Vector3(-clamp.x + rebound, -clamp.y + rebound),
+                        new Vector3(-clamp.x + rebound, clamp.y - rebound)
+                    );
+                    Gizmos.DrawLine(
+                        new Vector3(-clamp.x + rebound, clamp.y - rebound),
+                        new Vector3(clamp.x - rebound, clamp.y - rebound)
+                    );
+                    Gizmos.DrawLine(
+                        new Vector3(clamp.x - rebound, clamp.y - rebound),
+                        new Vector3(clamp.x - rebound, -clamp.y + rebound)
+                    );
+                    Gizmos.DrawLine(
+                        new Vector3(clamp.x - rebound, -clamp.y + rebound),
+                        new Vector3(-clamp.x + rebound, -clamp.y + rebound)
+                    );
                 }
 
                 if (showRealClamp)
@@ -125,10 +149,22 @@ namespace Merge
                     Vector2 newClamp = new(rootSprite.rect.width / 2, rootSprite.rect.height / 2);
 
                     Gizmos.color = Color.cyan;
-                    Gizmos.DrawLine(new Vector3(-newClamp.x, -newClamp.y), new Vector3(-newClamp.x, newClamp.y));
-                    Gizmos.DrawLine(new Vector3(-newClamp.x, newClamp.y), new Vector3(newClamp.x, newClamp.y));
-                    Gizmos.DrawLine(new Vector3(newClamp.x, newClamp.y), new Vector3(newClamp.x, -newClamp.y));
-                    Gizmos.DrawLine(new Vector3(newClamp.x, -newClamp.y), new Vector3(-newClamp.x, -newClamp.y));
+                    Gizmos.DrawLine(
+                        new Vector3(-newClamp.x, -newClamp.y),
+                        new Vector3(-newClamp.x, newClamp.y)
+                    );
+                    Gizmos.DrawLine(
+                        new Vector3(-newClamp.x, newClamp.y),
+                        new Vector3(newClamp.x, newClamp.y)
+                    );
+                    Gizmos.DrawLine(
+                        new Vector3(newClamp.x, newClamp.y),
+                        new Vector3(newClamp.x, -newClamp.y)
+                    );
+                    Gizmos.DrawLine(
+                        new Vector3(newClamp.x, -newClamp.y),
+                        new Vector3(-newClamp.x, -newClamp.y)
+                    );
                 }
 
                 if (showRealRebound)
@@ -136,10 +172,22 @@ namespace Merge
                     Vector2 newClamp = new(rootSprite.rect.width / 2, rootSprite.rect.height / 2);
 
                     Gizmos.color = Color.blue;
-                    Gizmos.DrawLine(new Vector3(-newClamp.x + rebound, -newClamp.y + rebound), new Vector3(-newClamp.x + rebound, newClamp.y - rebound));
-                    Gizmos.DrawLine(new Vector3(-newClamp.x + rebound, newClamp.y - rebound), new Vector3(newClamp.x - rebound, newClamp.y - rebound));
-                    Gizmos.DrawLine(new Vector3(newClamp.x - rebound, newClamp.y - rebound), new Vector3(newClamp.x - rebound, -newClamp.y + rebound));
-                    Gizmos.DrawLine(new Vector3(newClamp.x - rebound, -newClamp.y + rebound), new Vector3(-newClamp.x + rebound, -newClamp.y + rebound));
+                    Gizmos.DrawLine(
+                        new Vector3(-newClamp.x + rebound, -newClamp.y + rebound),
+                        new Vector3(-newClamp.x + rebound, newClamp.y - rebound)
+                    );
+                    Gizmos.DrawLine(
+                        new Vector3(-newClamp.x + rebound, newClamp.y - rebound),
+                        new Vector3(newClamp.x - rebound, newClamp.y - rebound)
+                    );
+                    Gizmos.DrawLine(
+                        new Vector3(newClamp.x - rebound, newClamp.y - rebound),
+                        new Vector3(newClamp.x - rebound, -newClamp.y + rebound)
+                    );
+                    Gizmos.DrawLine(
+                        new Vector3(newClamp.x - rebound, -newClamp.y + rebound),
+                        new Vector3(-newClamp.x + rebound, -newClamp.y + rebound)
+                    );
                 }
             }
         }
@@ -232,13 +280,19 @@ namespace Merge
                                 {
                                     if (debugCharacterMovement && !selector.isSelected)
                                     {
-                                        charMove.SetDestination(cam.ScreenToWorldPoint(touch.position));
+                                        charMove.SetDestination(
+                                            cam.ScreenToWorldPoint(touch.position)
+                                        );
                                     }
 
                                     if (Time.time - touchStartTime >= selector.secondTapDuration)
                                     {
                                         // Tapped
-                                        if (!debugCharacterMovement && !selector.isSelecting && !selector.isSelected)
+                                        if (
+                                            !debugCharacterMovement
+                                            && !selector.isSelecting
+                                            && !selector.isSelected
+                                        )
                                         {
                                             if (selector.triedToSelectUnselectable)
                                             {
@@ -266,16 +320,27 @@ namespace Merge
 
                                 panVelocity = Vector2.zero;
 
-                                if (diffStationary.x < touchThreshold
+                                if (
+                                    diffStationary.x < touchThreshold
                                     || diffStationary.x > -touchThreshold
                                     || diffStationary.y < touchThreshold
                                     || diffStationary.y > -touchThreshold
                                 )
                                 {
                                     // Start selecting
-                                    if (Time.time - touchStartTime >= selector.tapDuration && !isPanning && !selector.isSelecting && !popupManager.isSelectorPopup)
+                                    if (
+                                        Time.time - touchStartTime >= selector.tapDuration
+                                        && !isPanning
+                                        && !selector.isSelecting
+                                        && !popupManager.isSelectorPopup
+                                    )
                                     {
-                                        selector.StartSelecting(touch.position, false, lastTouchPos == touch.position && selector.triedToSelectUnselectable);
+                                        selector.StartSelecting(
+                                            touch.position,
+                                            false,
+                                            lastTouchPos == touch.position
+                                                && selector.triedToSelectUnselectable
+                                        );
                                     }
                                 }
 
@@ -294,20 +359,35 @@ namespace Merge
             // Check for rebounding
             if (isRebounding && !isPanning)
             {
-                if (transform.position.x < -clamp.x - camDiffX + rebound
+                if (
+                    transform.position.x < -clamp.x - camDiffX + rebound
                     || transform.position.x > clamp.x + camDiffX - rebound
                     || transform.position.y < -clamp.y - camDiffY + rebound
-                    || transform.position.y > clamp.y + camDiffY - rebound)
+                    || transform.position.y > clamp.y + camDiffY - rebound
+                )
                 {
                     panVelocity = Vector2.zero;
                 }
 
                 Vector3 clampedPos = new Vector3(
-                    Mathf.Clamp(transform.position.x, -clamp.x - camDiffX + rebound, clamp.x + camDiffX - rebound),
-                    Mathf.Clamp(transform.position.y, -clamp.y - camDiffY + rebound, clamp.y + camDiffY - rebound),
-                    transform.position.z);
+                    Mathf.Clamp(
+                        transform.position.x,
+                        -clamp.x - camDiffX + rebound,
+                        clamp.x + camDiffX - rebound
+                    ),
+                    Mathf.Clamp(
+                        transform.position.y,
+                        -clamp.y - camDiffY + rebound,
+                        clamp.y + camDiffY - rebound
+                    ),
+                    transform.position.z
+                );
 
-                transform.position = Vector3.MoveTowards(transform.position, clampedPos, reboundSpeed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(
+                    transform.position,
+                    clampedPos,
+                    reboundSpeed * Time.deltaTime
+                );
 
                 if (transform.position.x == clampedPos.x && transform.position.y == clampedPos.y)
                 {
@@ -343,14 +423,20 @@ namespace Merge
             float halfScreenWidth = GameData.GAME_PIXEL_WIDTH / 2;
             float halfScreenHeight = (Screen.height / singlePixelWidth) / 2;
 
-            Vector2 newClamp = new((rootSprite.rect.width / 2) - halfScreenWidth, (rootSprite.rect.height / 2) - halfScreenHeight);
+            Vector2 newClamp =
+                new(
+                    (rootSprite.rect.width / 2) - halfScreenWidth,
+                    (rootSprite.rect.height / 2) - halfScreenHeight
+                );
 
             return newClamp;
         }
 
         void Pan(Vector2 deltaPosition)
         {
-            transform.position -= (cam.ScreenToWorldPoint(deltaPosition) - cam.ScreenToWorldPoint(Vector2.zero));
+            transform.position -= (
+                cam.ScreenToWorldPoint(deltaPosition) - cam.ScreenToWorldPoint(Vector2.zero)
+            );
         }
 
         void AddInertia()
@@ -363,7 +449,11 @@ namespace Merge
             if (panVelocity != Vector2.zero)
             {
                 panVelocity = Vector2.Lerp(panVelocity, Vector2.zero, velocityStep);
-                transform.position += new Vector3(-panVelocity.x / (500 * (1 / cam.orthographicSize)), -panVelocity.y / (500 * (1 / cam.orthographicSize)), 0);
+                transform.position += new Vector3(
+                    -panVelocity.x / (500 * (1 / cam.orthographicSize)),
+                    -panVelocity.y / (500 * (1 / cam.orthographicSize)),
+                    0
+                );
             }
         }
 
@@ -402,11 +492,7 @@ namespace Merge
                 }
                 else
                 {
-                    transform.position = new Vector3(
-                        initialPos.x,
-                        initialPos.y,
-                        initialPos.z
-                    );
+                    transform.position = new Vector3(initialPos.x, initialPos.y, initialPos.z);
                 }
             }
         }

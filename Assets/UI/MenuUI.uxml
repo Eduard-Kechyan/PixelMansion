@@ -57,7 +57,7 @@
                 </ui:VisualElement>
                 <ui:VisualElement name="BorderBottom" class="border_bottom" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuBorderBottom.png?fileID=2800000&amp;guid=80923a0de08b2cb4ca2cad385b4f59c7&amp;type=3#MenuBorderBottom&apos;);" />
                 <ui:VisualElement name="ShadowDot" class="shadow_dot" />
-                <ui:VisualElement name="Title" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuTitle.png?fileID=2800000&amp;guid=830ffbc9a26c02c4cb218a8e5568ad67&amp;type=3#MenuTitle&apos;);">
+                <ui:VisualElement name="Title" class="menu_title" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuTitle.png?fileID=2800000&amp;guid=830ffbc9a26c02c4cb218a8e5568ad67&amp;type=3#MenuTitle&apos;);">
                     <ui:Label text="Title" display-tooltip-when-elided="true" name="Value" class="menu_title_value" />
                 </ui:VisualElement>
                 <ui:VisualElement name="Close" class="button_active_extra menu_close_button" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&apos;);" />
@@ -69,7 +69,7 @@
                 <ui:VisualElement name="Content" class="content" />
                 <ui:VisualElement name="BorderBottom" class="border_bottom" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuBorderBottom.png?fileID=2800000&amp;guid=80923a0de08b2cb4ca2cad385b4f59c7&amp;type=3#MenuBorderBottom&apos;);" />
                 <ui:VisualElement name="ShadowDot" class="shadow_dot" />
-                <ui:VisualElement name="Title" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuTitle.png?fileID=2800000&amp;guid=830ffbc9a26c02c4cb218a8e5568ad67&amp;type=3#MenuTitle&apos;);">
+                <ui:VisualElement name="Title" class="menu_title" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuTitle.png?fileID=2800000&amp;guid=830ffbc9a26c02c4cb218a8e5568ad67&amp;type=3#MenuTitle&apos;);">
                     <ui:Label text="Title" display-tooltip-when-elided="true" name="Value" class="menu_title_value" />
                 </ui:VisualElement>
                 <ui:VisualElement name="Close" class="button_active_extra menu_close_button" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&apos;);" />
@@ -83,14 +83,14 @@
                     <ui:Label text="Item Data" display-tooltip-when-elided="true" name="EnergyLabelB" class="item_data" />
                     <ui:VisualElement name="EnergyBoxes" class="energy_boxes">
                         <ui:VisualElement name="BoxAd" class="box" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/EnergyMenu/BoxAd.png?fileID=2800000&amp;guid=6bc571f3f85f4cb4d9fc53d68ef705d0&amp;type=3#BoxAd&apos;);">
-                            <ui:Label tabindex="-1" text="+20" display-tooltip-when-elided="true" class="label" name="WatchLabel"/>
-                            <ui:Button display-tooltip-when-elided="true" name="WatchButton" enable-rich-text="false" text="Watch" class="button button_active" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/LongButton.png?fileID=21300000&amp;guid=e6292ec8b0b2a5743a0f00750e1f4db0&amp;type=3#LongButton&apos;); ">
-                                <ui:VisualElement name="Value" class="value" style="background-image: url(&apos;project://database/Assets/Sprites/Values/SmallAd.png?fileID=2800000&amp;guid=5a5e8c2e89de937438650a731383544b&amp;type=3#SmallAd&apos;); " />
+                            <ui:Label tabindex="-1" text="+20" display-tooltip-when-elided="true" name="WatchLabel" class="label" />
+                            <ui:Button display-tooltip-when-elided="true" name="WatchButton" enable-rich-text="false" text="Watch" class="button button_active" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/LongButton.png?fileID=21300000&amp;guid=e6292ec8b0b2a5743a0f00750e1f4db0&amp;type=3#LongButton&apos;);">
+                                <ui:VisualElement name="Value" class="value" style="background-image: url(&apos;project://database/Assets/Sprites/Values/SmallAd.png?fileID=2800000&amp;guid=5a5e8c2e89de937438650a731383544b&amp;type=3#SmallAd&apos;);" />
                             </ui:Button>
                         </ui:VisualElement>
                         <ui:VisualElement name="BoxEnergy" class="box" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/EnergyMenu/BoxEnergy.png?fileID=2800000&amp;guid=b81700b0a7bf9d84ea088c640dfbd6ea&amp;type=3#BoxEnergy&apos;);">
-                            <ui:Label tabindex="-1" text="+100" display-tooltip-when-elided="true" class="label" name="BuyLabel" />
-                            <ui:Button display-tooltip-when-elided="true" name="BuyButton" enable-rich-text="false" text="Buy" class="button button_active" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/LongButton.png?fileID=21300000&amp;guid=e6292ec8b0b2a5743a0f00750e1f4db0&amp;type=3#LongButton&apos;); ">
+                            <ui:Label tabindex="-1" text="+100" display-tooltip-when-elided="true" name="BuyLabel" class="label" />
+                            <ui:Button display-tooltip-when-elided="true" name="BuyButton" enable-rich-text="false" text="Buy" class="button button_active" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/LongButton.png?fileID=21300000&amp;guid=e6292ec8b0b2a5743a0f00750e1f4db0&amp;type=3#LongButton&apos;);">
                                 <ui:VisualElement name="Value" class="value" style="background-image: url(&apos;project://database/Assets/Sprites/Values/SmallGem.png?fileID=2800000&amp;guid=324e7e0db7beb9248b629fa2da728b06&amp;type=3#SmallGem&apos;);" />
                             </ui:Button>
                         </ui:VisualElement>
@@ -98,7 +98,7 @@
                 </ui:VisualElement>
                 <ui:VisualElement name="BorderBottom" class="border_bottom" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuBorderBottom.png?fileID=2800000&amp;guid=80923a0de08b2cb4ca2cad385b4f59c7&amp;type=3#MenuBorderBottom&apos;);" />
                 <ui:VisualElement name="ShadowDot" class="shadow_dot" />
-                <ui:VisualElement name="Title" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuTitle.png?fileID=2800000&amp;guid=830ffbc9a26c02c4cb218a8e5568ad67&amp;type=3#MenuTitle&apos;);">
+                <ui:VisualElement name="Title" class="menu_title" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuTitle.png?fileID=2800000&amp;guid=830ffbc9a26c02c4cb218a8e5568ad67&amp;type=3#MenuTitle&apos;);">
                     <ui:Label text="Title" display-tooltip-when-elided="true" name="Value" class="menu_title_value" />
                 </ui:VisualElement>
                 <ui:VisualElement name="Close" class="button_active_extra menu_close_button" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&apos;);" />
@@ -129,7 +129,7 @@
                 </ui:VisualElement>
                 <ui:VisualElement name="BorderBottom" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuBorderBottom.png?fileID=2800000&amp;guid=80923a0de08b2cb4ca2cad385b4f59c7&amp;type=3#MenuBorderBottom&apos;);" />
                 <ui:VisualElement name="ShadowDot" class="shadow_dot" />
-                <ui:VisualElement name="Title" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuTitle.png?fileID=2800000&amp;guid=830ffbc9a26c02c4cb218a8e5568ad67&amp;type=3#MenuTitle&apos;);">
+                <ui:VisualElement name="Title" class="menu_title" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuTitle.png?fileID=2800000&amp;guid=830ffbc9a26c02c4cb218a8e5568ad67&amp;type=3#MenuTitle&apos;);">
                     <ui:Label text="Title" display-tooltip-when-elided="true" name="Value" class="menu_title_value" />
                 </ui:VisualElement>
                 <ui:VisualElement name="Close" class="button_active_extra menu_close_button" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&apos;);" />
@@ -358,26 +358,26 @@
                 </ui:VisualElement>
                 <ui:VisualElement name="BorderBottom" class="border_bottom" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuBorderBottom.png?fileID=2800000&amp;guid=80923a0de08b2cb4ca2cad385b4f59c7&amp;type=3#MenuBorderBottom&apos;);" />
                 <ui:VisualElement name="ShadowDot" class="shadow_dot" />
-                <ui:VisualElement name="Title" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuTitle.png?fileID=2800000&amp;guid=830ffbc9a26c02c4cb218a8e5568ad67&amp;type=3#MenuTitle&apos;);">
+                <ui:VisualElement name="Title" class="menu_title" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuTitle.png?fileID=2800000&amp;guid=830ffbc9a26c02c4cb218a8e5568ad67&amp;type=3#MenuTitle&apos;);">
                     <ui:Label text="Title" display-tooltip-when-elided="true" name="Value" class="menu_title_value" />
                 </ui:VisualElement>
                 <ui:VisualElement name="Close" class="button_active_extra menu_close_button" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&apos;);" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="LevelMenu" class="menu level_menu">
+        <ui:VisualElement name="LevelMenu" class="menu level_menu" style="display: none; opacity: 0;">
             <ui:VisualElement name="Background" class="background" />
             <ui:VisualElement name="Container" class="container">
                 <ui:VisualElement name="Content" class="content">
-                    <ui:Label tabindex="-1" text="Level Label Text" display-tooltip-when-elided="true" name="LevelLabel" style="margin-left: auto; margin-right: auto; margin-top: 0; margin-bottom: 5px; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; font-size: 6px; -unity-text-align: upper-center; white-space: normal; width: 80%;" />
-                    <ui:VisualElement name="LevelIndicator" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/LevelMenu/LevelIndicator.png?fileID=2800000&amp;guid=5dc1ab80869f7cc4c963864ca1e145d4&amp;type=3#LevelIndicator&apos;); width: 106px; height: 17px; margin-left: auto; margin-right: auto; margin-bottom: 10px;">
-                        <ui:VisualElement name="FillContainer" style="position: absolute; width: 88px; height: 7px; top: 5px; left: 17px;">
-                            <ui:VisualElement name="Fill" style="background-color: rgb(129, 170, 222); width: 50%; height: 100%; position: absolute; -unity-background-image-tint-color: rgb(210, 230, 248); transition-duration: 0s;" />
-                            <ui:VisualElement name="FillBorder" style="width: 90px; height: 9px; position: absolute; left: -1px; top: -1px; background-image: url(&apos;project://database/Assets/Sprites/Menus/LevelMenu/LevelIndicatorBorder.png?fileID=2800000&amp;guid=fc68bb4abe2ce18418e523afb5f0543b&amp;type=3#LevelIndicatorBorder&apos;);" />
-                            <ui:Label tabindex="-1" text="000/000" display-tooltip-when-elided="true" name="FillLabel" style="color: rgb(255, 255, 255); height: 7px; width: 100%; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; -unity-text-align: middle-center; font-size: 5px; -unity-font-style: bold;" />
+                    <ui:Label tabindex="-1" text="Level Label Text" display-tooltip-when-elided="true" name="LevelLabel" class="menu_label" style="font-size: 5px;" />
+                    <ui:VisualElement name="LevelIndicator" class="level_indicator" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/LevelMenu/LevelIndicator.png?fileID=2800000&amp;guid=5dc1ab80869f7cc4c963864ca1e145d4&amp;type=3#LevelIndicator&apos;);">
+                        <ui:VisualElement name="FillContainer" class="fill_container">
+                            <ui:VisualElement name="Fill" class="fill" />
+                            <ui:VisualElement name="FillBorder" class="fill_border" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/LevelMenu/LevelIndicatorBorder.png?fileID=2800000&amp;guid=fc68bb4abe2ce18418e523afb5f0543b&amp;type=3#LevelIndicatorBorder&apos;);" />
+                            <ui:Label tabindex="-1" text="000/000" display-tooltip-when-elided="true" name="FillLabel" class="fill_label" />
                         </ui:VisualElement>
-                        <ui:Label tabindex="-1" text="00" display-tooltip-when-elided="true" name="Value" style="font-size: 9px; color: rgb(42, 83, 125); -unity-text-align: middle-center; width: 17px; height: 17px; -unity-font-style: bold; position: absolute; left: 0; top: 0; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
+                        <ui:Label tabindex="-1" text="00" display-tooltip-when-elided="true" name="Value" class="label" />
                     </ui:VisualElement>
-                    <ui:VisualElement name="LevelRewards" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/LevelMenu/LevelRewards.png?fileID=2800000&amp;guid=e05b780883c7329459ca413a68fdf80f&amp;type=3#LevelRewards&apos;); width: 144px; height: 45px; margin-left: auto; margin-right: auto; padding-left: 6px; padding-right: 6px; padding-bottom: 1px; padding-top: 20px; margin-bottom: 10px; flex-direction: row; justify-content: center;">
+                    <ui:VisualElement name="LevelRewards" class="level_rewards" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/LevelMenu/LevelRewards.png?fileID=2800000&amp;guid=e05b780883c7329459ca413a68fdf80f&amp;type=3#LevelRewards&apos;);">
                         <ui:Label tabindex="-1" text="Level Label Text" display-tooltip-when-elided="true" name="Label" style="font-size: 5px; -unity-text-align: middle-center; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; position: absolute; left: 0; right: 0; top: 0; height: 12px; white-space: nowrap;" />
                         <ui:VisualElement name="LevelReward0" style="width: 24px; height: 24px; margin-left: 4px; margin-right: 4px; background-image: resource(&apos;Sprites/Items/Metals/MetalsItem1&apos;);">
                             <ui:Button display-tooltip-when-elided="true" name="InfoButton" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Menu/ShopBoxInfoButton.png?fileID=21300000&amp;guid=5b1619c1a050de54a94113d994ffd7cf&amp;type=3#ShopBoxInfoButton&apos;); margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; background-color: rgba(188, 188, 188, 0); width: 11px; height: 11px; position: absolute; top: -2px; right: -2px;" />
@@ -397,50 +397,52 @@
                 </ui:VisualElement>
                 <ui:VisualElement name="BorderBottom" class="border_bottom" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuBorderBottom.png?fileID=2800000&amp;guid=80923a0de08b2cb4ca2cad385b4f59c7&amp;type=3#MenuBorderBottom&apos;);" />
                 <ui:VisualElement name="ShadowDot" class="shadow_dot" />
-                <ui:VisualElement name="Title" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuTitle.png?fileID=2800000&amp;guid=830ffbc9a26c02c4cb218a8e5568ad67&amp;type=3#MenuTitle&apos;);">
+                <ui:VisualElement name="Title" class="menu_title" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuTitle.png?fileID=2800000&amp;guid=830ffbc9a26c02c4cb218a8e5568ad67&amp;type=3#MenuTitle&apos;);">
                     <ui:Label text="Title" display-tooltip-when-elided="true" name="Value" class="menu_title_value" />
                 </ui:VisualElement>
                 <ui:VisualElement name="Close" class="button_active_extra menu_close_button" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&apos;);" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="TaskMenu" class="menu">
-            <ui:VisualElement name="Background" class="background" />
-            <ui:VisualElement name="Container" class="container">
-                <ui:VisualElement name="Content" class="content" />
-                <ui:VisualElement name="BorderBottom" class="border_bottom" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuBorderBottom.png?fileID=2800000&amp;guid=80923a0de08b2cb4ca2cad385b4f59c7&amp;type=3#MenuBorderBottom&apos;);" />
-                <ui:VisualElement name="ShadowDot" class="shadow_dot" />
-                <ui:VisualElement name="Title" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuTitle.png?fileID=2800000&amp;guid=830ffbc9a26c02c4cb218a8e5568ad67&amp;type=3#MenuTitle&apos;);">
-                    <ui:Label text="Title" display-tooltip-when-elided="true" name="Value" class="menu_title_value" />
-                </ui:VisualElement>
-                <ui:VisualElement name="Close" class="button_active_extra menu_close_button" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&apos;);" />
-            </ui:VisualElement>
-        </ui:VisualElement>
-        <ui:VisualElement name="InfoMenu" class="menu">
+        <ui:VisualElement name="TaskMenu" class="menu task_menu" style="display: none; opacity: 0;">
             <ui:VisualElement name="Background" class="background" />
             <ui:VisualElement name="Container" class="container">
                 <ui:VisualElement name="Content" class="content">
-                    <ui:VisualElement name="ItemInfo" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/InfoMenu/ItemInfo.png?fileID=2800000&amp;guid=93d4998d1420f3f4fa9eb55a6449fc2d&amp;type=3#ItemInfo&apos;); width: 107px; height: 24px; margin-right: auto; margin-left: auto; margin-bottom: 15px; margin-top: 5px; display: flex;">
-                        <ui:VisualElement name="ItemSprite" style="width: 24px; height: 24px;" />
-                        <ui:Label text="Item Name" display-tooltip-when-elided="true" name="ItemName" style="position: absolute; color: rgb(58, 58, 58); font-size: 6px; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; top: -5px; left: 25px;" />
-                        <ui:Label text="Item Data" display-tooltip-when-elided="true" name="ItemData" style="position: absolute; width: 80px; font-size: 4px; color: rgb(58, 58, 58); left: 25px; top: 2px; white-space: normal;" />
-                    </ui:VisualElement>
-                    <ui:VisualElement name="UnlockedItems" style="flex-direction: row; align-items: flex-end; justify-content: center; flex-wrap: wrap; width: 136px; margin-left: auto; margin-right: auto; display: flex;">
-                        <ui:VisualElement style="background-image: url(&apos;project://database/Assets/Sprites/Menus/InfoMenu/UnlockedQuestionMark.png?fileID=2800000&amp;guid=dffe992878748814ba040e5f4b6c4e2a&amp;type=3#UnlockedQuestionMark&apos;); width: 24px; height: 24px; margin-right: 4px; margin-bottom: 10px; display: none;">
-                            <ui:Label text="00" display-tooltip-when-elided="true" style="position: absolute; -unity-background-image-tint-color: rgb(53, 53, 53); font-size: 6px; left: 50%; bottom: -10px; -unity-text-align: middle-center; translate: -50% 0; width: 24px; padding-left: 0; padding-right: 4px; padding-top: 0; padding-bottom: 0; white-space: nowrap;" />
-                            <ui:VisualElement style="width: 2px; height: 1px; position: absolute; left: 25px; top: 50%; translate: 0 -50%; background-color: rgba(0, 0, 0, 0.11);" />
-                        </ui:VisualElement>
-                    </ui:VisualElement>
-                    <ui:VisualElement name="InfoParent" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/InfoMenu/InfoParent.png?fileID=2800000&amp;guid=28abd295326bb634cb3348e6d2a1849a&amp;type=3#InfoParent&apos;); width: 144px; height: 45px; margin-left: auto; margin-right: auto; margin-top: 10px; margin-bottom: 5px; padding-right: 4px; padding-bottom: 4px; padding-left: 4px; padding-top: 17px; flex-direction: row; align-items: stretch; justify-content: space-around; align-self: flex-start; display: flex;" />
+                    <ui:ScrollView name="TaskScrollView" class="scroller" />
                 </ui:VisualElement>
                 <ui:VisualElement name="BorderBottom" class="border_bottom" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuBorderBottom.png?fileID=2800000&amp;guid=80923a0de08b2cb4ca2cad385b4f59c7&amp;type=3#MenuBorderBottom&apos;);" />
                 <ui:VisualElement name="ShadowDot" class="shadow_dot" />
-                <ui:VisualElement name="Title" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuTitle.png?fileID=2800000&amp;guid=830ffbc9a26c02c4cb218a8e5568ad67&amp;type=3#MenuTitle&apos;);">
+                <ui:VisualElement name="Title" class="menu_title" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuTitle.png?fileID=2800000&amp;guid=830ffbc9a26c02c4cb218a8e5568ad67&amp;type=3#MenuTitle&apos;);">
                     <ui:Label text="Title" display-tooltip-when-elided="true" name="Value" class="menu_title_value" />
                 </ui:VisualElement>
                 <ui:VisualElement name="Close" class="button_active_extra menu_close_button" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&apos;);" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="NoteMenu" class="menu note_menu">
+        <ui:VisualElement name="InfoMenu" class="menu info_menu" style="display: none; opacity: 0;">
+            <ui:VisualElement name="Background" class="background" />
+            <ui:VisualElement name="Container" class="container">
+                <ui:VisualElement name="Content" class="content">
+                    <ui:VisualElement name="ItemInfo" class="item_info" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/InfoMenu/ItemInfo.png?fileID=2800000&amp;guid=93d4998d1420f3f4fa9eb55a6449fc2d&amp;type=3#ItemInfo&apos;);">
+                        <ui:VisualElement name="ItemSprite" class="item_sprite" />
+                        <ui:Label text="Item Name" display-tooltip-when-elided="true" name="ItemName" class="item_name" />
+                        <ui:Label text="Item Data" display-tooltip-when-elided="true" name="ItemData" class="item_data" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="UnlockedItems" class="unlocked_items">
+                        <ui:VisualElement class="bg" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/InfoMenu/UnlockedQuestionMark.png?fileID=2800000&amp;guid=dffe992878748814ba040e5f4b6c4e2a&amp;type=3#UnlockedQuestionMark&apos;);">
+                            <ui:Label text="00" display-tooltip-when-elided="true" class="label" />
+                            <ui:VisualElement style="width: 2px; height: 1px; position: absolute; left: 25px; top: 50%; translate: 0 -50%; background-color: rgba(0, 0, 0, 0.11);" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="InfoParent" class="info_parent" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/InfoMenu/InfoParent.png?fileID=2800000&amp;guid=28abd295326bb634cb3348e6d2a1849a&amp;type=3#InfoParent&apos;);" />
+                </ui:VisualElement>
+                <ui:VisualElement name="BorderBottom" class="border_bottom" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuBorderBottom.png?fileID=2800000&amp;guid=80923a0de08b2cb4ca2cad385b4f59c7&amp;type=3#MenuBorderBottom&apos;);" />
+                <ui:VisualElement name="ShadowDot" class="shadow_dot" />
+                <ui:VisualElement name="Title" class="menu_title" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuTitle.png?fileID=2800000&amp;guid=830ffbc9a26c02c4cb218a8e5568ad67&amp;type=3#MenuTitle&apos;);">
+                    <ui:Label text="Title" display-tooltip-when-elided="true" name="Value" class="menu_title_value" />
+                </ui:VisualElement>
+                <ui:VisualElement name="Close" class="button_active_extra menu_close_button" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&apos;);" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="NoteMenu" class="menu">
             <ui:VisualElement name="Background" class="background" />
             <ui:VisualElement name="Container" class="container">
                 <ui:VisualElement name="Content" class="content">
@@ -448,13 +450,13 @@
                 </ui:VisualElement>
                 <ui:VisualElement name="BorderBottom" class="border_bottom" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuBorderBottom.png?fileID=2800000&amp;guid=80923a0de08b2cb4ca2cad385b4f59c7&amp;type=3#MenuBorderBottom&apos;);" />
                 <ui:VisualElement name="ShadowDot" class="shadow_dot" />
-                <ui:VisualElement name="Title" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuTitle.png?fileID=2800000&amp;guid=830ffbc9a26c02c4cb218a8e5568ad67&amp;type=3#MenuTitle&apos;);">
+                <ui:VisualElement name="Title" class="menu_title" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuTitle.png?fileID=2800000&amp;guid=830ffbc9a26c02c4cb218a8e5568ad67&amp;type=3#MenuTitle&apos;);">
                     <ui:Label text="Title" display-tooltip-when-elided="true" name="Value" class="menu_title_value" />
                 </ui:VisualElement>
                 <ui:VisualElement name="Close" class="button_active_extra menu_close_button" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&apos;);" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="ConfirmMenu" class="menu confirm_menu">
+        <ui:VisualElement name="ConfirmMenu" class="menu confirm_menu" style="display: none; opacity: 0;">
             <ui:VisualElement name="Background" class="background" />
             <ui:VisualElement name="Container" class="container">
                 <ui:VisualElement name="Content" class="content">
@@ -466,11 +468,12 @@
                 </ui:VisualElement>
                 <ui:VisualElement name="BorderBottom" class="border_bottom" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuBorderBottom.png?fileID=2800000&amp;guid=80923a0de08b2cb4ca2cad385b4f59c7&amp;type=3#MenuBorderBottom&apos;);" />
                 <ui:VisualElement name="ShadowDot" class="shadow_dot" />
-                <ui:VisualElement name="Title" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuTitle.png?fileID=2800000&amp;guid=830ffbc9a26c02c4cb218a8e5568ad67&amp;type=3#MenuTitle&apos;);">
+                <ui:VisualElement name="Title" class="menu_title" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuTitle.png?fileID=2800000&amp;guid=830ffbc9a26c02c4cb218a8e5568ad67&amp;type=3#MenuTitle&apos;);">
                     <ui:Label text="Title" display-tooltip-when-elided="true" name="Value" class="menu_title_value" />
                 </ui:VisualElement>
                 <ui:VisualElement name="Close" class="button_active_extra menu_close_button" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&apos;);" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
+    <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);" />
 </ui:UXML>

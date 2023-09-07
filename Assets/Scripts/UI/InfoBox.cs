@@ -164,7 +164,7 @@ namespace Merge
                     actionType = ActionType.None;
                     infoButton.style.display = DisplayStyle.None;
                 }
-                else if (item.level > 3 || item.isMaxLavel)
+                else if (item.level > 3 || item.isMaxLevel)
                 {
                     actionType = ActionType.Sell;
                 }
@@ -298,7 +298,7 @@ namespace Merge
                 switch (newItem.type)
                 {
                     case Types.Type.Gen:
-                        if (newItem.isMaxLavel)
+                        if (newItem.isMaxLevel)
                         {
                             textToSet = LOCALE.Get("info_box_gen_max");
                         }
@@ -312,7 +312,7 @@ namespace Merge
 
                         if (item.collGroup == Types.CollGroup.Gems)
                         {
-                            if (item.isMaxLavel)
+                            if (item.isMaxLevel)
                             {
                                 textToSet = LOCALE.Get(
                                     "info_box_gems_max",
@@ -331,7 +331,7 @@ namespace Merge
                         }
                         else
                         {
-                            if (item.isMaxLavel)
+                            if (item.isMaxLevel)
                             {
                                 textToSet = LOCALE.Get(
                                     "info_box_coll_max",
@@ -358,7 +358,7 @@ namespace Merge
                         {
                             if (newItem.chestLocked)
                             {
-                                if (newItem.isMaxLavel)
+                                if (newItem.isMaxLevel)
                                 {
                                     textToSet = LOCALE.Get("info_box_chest_max_locked");
                                 }
@@ -369,7 +369,7 @@ namespace Merge
                             }
                             else if (newItem.hasTimer && newItem.timerOn)
                             {
-                                if (newItem.isMaxLavel)
+                                if (newItem.isMaxLevel)
                                 {
                                     textToSet = LOCALE.Get("info_box_chest_max_timer");
                                 }
@@ -384,7 +384,7 @@ namespace Merge
                                 {
                                     textToSet = LOCALE.Get("info_box_chest_single_" + newItem.chestGroup); // Note the +
                                 }
-                                else if (newItem.isMaxLavel)
+                                else if (newItem.isMaxLevel)
                                 {
                                     textToSet = LOCALE.Get("info_box_chest_max_" + newItem.chestGroup); // Note the +
                                 }
@@ -397,7 +397,7 @@ namespace Merge
 
                         break;
                     default:
-                        if (newItem.isMaxLavel)
+                        if (newItem.isMaxLevel)
                         {
                             textToSet = LOCALE.Get("info_box_item_max");
                         }

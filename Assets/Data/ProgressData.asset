@@ -17,11 +17,9 @@ MonoBehaviour:
     steps:
     - order: 0
       content:
-      - id: Task1
+      - id: CleanTheRoom
         stepType: 0
-        stepRefName: Bookcase
-        stepRefType: 3
-        name: Task Task1
+        name: Task CleanTheRoom
       nextIds: []
       completed: 0
     nextIds: []

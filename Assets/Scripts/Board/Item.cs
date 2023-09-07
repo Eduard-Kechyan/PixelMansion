@@ -28,7 +28,7 @@ namespace Merge
     public bool isCompleted;
     public bool isDragging;
     public bool isPlaying;
-    public bool isMaxLavel;
+    public bool isMaxLevel;
     public bool isIndicating;
     public bool hasLevel;
 
@@ -197,7 +197,7 @@ namespace Merge
     {
         if (hasLevel)
         {
-            if (isMaxLavel)
+            if (isMaxLevel)
             {
                 itemLevelName = itemName + " (Max Level " + level + ")";
             }

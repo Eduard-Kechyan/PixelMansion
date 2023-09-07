@@ -40,7 +40,7 @@ namespace Merge
         newItem.hasLevel = itemData.hasLevel;
         newItem.parents = itemData.parents;
         newItem.creates = itemData.creates;
-        newItem.isMaxLavel = itemData.isMaxLavel;
+        newItem.isMaxLevel = itemData.isMaxLevel;
         newItem.group = itemData.group;
         newItem.genGroup = itemData.genGroup;
         newItem.collGroup = itemData.collGroup;
@@ -54,7 +54,7 @@ namespace Merge
         newItem.crateSprite = crateSprites[boardItem.crate];
         newItem.gemPopped = itemData.gemPopped;
 
-        if (!itemData.isMaxLavel)
+        if (!itemData.isMaxLevel)
         {
             newItem.nextName = GetNextItem(boardItem);
         }
@@ -90,7 +90,7 @@ namespace Merge
         newItem.type = shopItem.type;
         newItem.hasLevel = itemData.hasLevel;
         newItem.parents = itemData.parents;
-        newItem.isMaxLavel = itemData.isMaxLavel;
+        newItem.isMaxLevel = itemData.isMaxLevel;
         newItem.group = shopItem.group;
         newItem.genGroup = shopItem.genGroup;
         newItem.chestGroup = shopItem.chestGroup;

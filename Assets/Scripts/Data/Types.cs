@@ -132,7 +132,7 @@ namespace Merge
             public bool unlocked;
 
             [HideInInspector]
-            public bool isMaxLavel;
+            public bool isMaxLevel;
 
             [HideInInspector]
             public bool hasLevel;
