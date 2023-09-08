@@ -16,6 +16,7 @@ namespace Merge
         public QuickSaveReader reader;
 
         private VisualElement dataBlock;
+        private Sprite openFileSprite;
 
         private List<Color> colors;
         private Color colorBlue = Color.blue;
@@ -46,6 +47,8 @@ namespace Merge
             colors.Add(colorGreen);
             colors.Add(colorYellow);
             colors.Add(colorRed);
+
+            openFileSprite = Resources.Load<Sprite>("Sprites/Editor/OpenFile");
 
             SetDataPre();
         }
@@ -83,25 +86,48 @@ namespace Merge
                         .Replace(folderPath + "\\", "")
                         .Replace(".json", "");
 
-                    if (i == 0)
-                    {
-                        firstFileName = fileName;
-                    }
-
                     Button fileNameButton = new() { text = fileName };
-                    Button fileOpenButton = new() { text = "Open " + fileName };
+                    Button fileOpenButton = new() { text = "" };
 
                     string pathName = filePaths[i];
 
+                    fileNameButton.style.height = 22f;
+                    fileNameButton.style.marginLeft = 8f;
+                    fileNameButton.style.marginRight = 0;
+
+                    if (i == 0)
+                    {
+                        firstFileName = fileName;
+
+                        fileNameButton.style.marginLeft = 5f;
+                    }
+
+                    fileOpenButton.style.paddingLeft = 0f;
+                    fileOpenButton.style.paddingRight = 0f;
+                    fileOpenButton.style.paddingTop = 0f;
+                    fileOpenButton.style.paddingBottom = 0f;
+                    fileOpenButton.style.marginLeft = 2f;
+                    fileOpenButton.style.marginRight = 0;
+                    fileOpenButton.style.width = 22f;
+                    fileOpenButton.style.height = 22f;
+
+                    VisualElement bg = new();
+
+                    bg.style.width = 20f;
+                    bg.style.height = 20f;
+                    bg.style.backgroundImage = new StyleBackground(openFileSprite);
+
+                    fileOpenButton.Add(bg);
+
                     fileNameButton.clicked += () => SetData(fileName);
-                    fileOpenButton.clicked += () => OpenFile(pathName);
+                    fileOpenButton.clicked += () => Application.OpenURL(pathName);
 
                     fileNameBlock.Add(fileNameButton);
-                    fileOpenBlock.Add(fileOpenButton);
+                    fileNameBlock.Add(fileOpenButton);
                 }
 
                 rootVisualElement.Add(fileNameBlock);
-                rootVisualElement.Add(fileOpenBlock);
+                //rootVisualElement.Add(fileOpenBlock);
 
                 SetData(firstFileName);
             }
@@ -224,18 +250,6 @@ namespace Merge
             }
 
             return valueLabel;
-        }
-
-        void OpenFile(string filePath)
-        {
-            /*string fielData =File.ReadAllText(filePath);
-
-            if (fileStream != null)
-            {
-                Application.OpenURL()
-            }*/
-
-            Application.OpenURL(filePath);
         }
 
         void AddReloadButton()
