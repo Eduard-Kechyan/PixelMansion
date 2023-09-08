@@ -199,3 +199,27 @@
     border-top-width: 0;
     border-bottom-width: 0;
 }
+
+.note_dot {
+    width: 8px;
+    height: 8px;
+    background-image: url('project://database/Assets/Sprites/Buttons/NoteDot.png?fileID=2800000&guid=b85a4c5d66f980a4fbf423fe6413e48b&type=3#NoteDot');
+    position: absolute;
+    left: -2px;
+    top: -2px;
+    transition-duration: 0.1s;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.note_dot_small {
+    width: 6px;
+    height: 6px;
+    background-image: url('project://database/Assets/Sprites/Buttons/NoteDotSmall.png?fileID=2800000&guid=87f87a41fbc83544584f9c639283f5d9&type=3#NoteDotSmall');
+    position: absolute;
+    left: -1px;
+    top: -1px;
+    transition-duration: 0.1s;
+    visibility: hidden;
+    opacity: 0;
+}

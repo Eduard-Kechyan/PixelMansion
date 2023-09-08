@@ -312,18 +312,20 @@ namespace Merge
         {
             public string id;
             public int completed;
+            public int total;
         }
 
         [Serializable]
         public class Task
         {
-            public TaskItems[] needs;
-            public TaskItems[] rewards;
+            public TaskItem[] needs;
+            public TaskItem[] rewards;
             public string id;
             public string groupId;
             public string taskRefName;
             public TaskRefType taskRefType;
             public bool isTaskRefRight;
+            public bool completed;
         }
 
         [Serializable]
@@ -337,10 +339,11 @@ namespace Merge
             public string taskRefName;
             public string taskRefType;
             public bool isTaskRefRight;
+            public bool completed;
         }
 
         [Serializable]
-        public class TaskItems
+        public class TaskItem
         {
             public Sprite sprite;
             public Type type;
@@ -348,11 +351,11 @@ namespace Merge
             public ItemTypes.GenGroup genGroup;
             public CollGroup collGroup;
             public ChestGroup chestGroup;
-            public int count;
+            public int amount;
         }
 
         [Serializable]
-        public class TaskItemsJson
+        public class TaskItemJson
         {
             public string sprite;
             public string type;
@@ -360,7 +363,7 @@ namespace Merge
             public string genGroup;
             public string collGroup;
             public string chestGroup;
-            public int count;
+            public int amount;
         }
 
         //// ERROR ////

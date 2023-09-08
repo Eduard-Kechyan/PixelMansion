@@ -20,7 +20,7 @@ MonoBehaviour:
       genGroup: 0
       collGroup: 0
       chestGroup: 0
-      count: 0
+      amount: 1
     rewards:
     - sprite: {fileID: 21300000, guid: ca3a280a957839843b47b3b96175df80, type: 3}
       type: 2
@@ -28,9 +28,39 @@ MonoBehaviour:
       genGroup: 0
       collGroup: 1
       chestGroup: 0
-      count: 0
+      amount: 1
     id: CleanTheRoom
     groupId: LivingRoom
     taskRefName: Bookcase
     taskRefType: 3
     isTaskRefRight: 0
+    completed: 0
+  - needs:
+    - sprite: {fileID: 21300000, guid: ef488eadea2597c4f8d11a7763e15512, type: 3}
+      type: 0
+      group: 0
+      genGroup: 0
+      collGroup: 0
+      chestGroup: 0
+      amount: 2
+    - sprite: {fileID: 21300000, guid: 3b37611cca1c83c479df8490da99f8e9, type: 3}
+      type: 0
+      group: 0
+      genGroup: 0
+      collGroup: 0
+      chestGroup: 0
+      amount: 1
+    rewards:
+    - sprite: {fileID: 21300000, guid: ca3a280a957839843b47b3b96175df80, type: 3}
+      type: 2
+      group: 0
+      genGroup: 0
+      collGroup: 1
+      chestGroup: 0
+      amount: 1
+    id: RepairTheRoom
+    groupId: LivingRoom
+    taskRefName: Bookcase
+    taskRefType: 3
+    isTaskRefRight: 0
+    completed: 0

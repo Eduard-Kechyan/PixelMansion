@@ -16,6 +16,12 @@ namespace Merge
         // Variables
         public static AnimationCurve defaultChanceCurve;
 
+        public static Color colorBlue = Color.blue;
+        public static Color colorCyan = Color.cyan;
+        public static Color colorGreen = Color.green;
+        public static Color colorYellow = Color.yellow;
+        public static Color colorRed = Color.red;
+
         // Instance
         public static Glob Instance;
 
@@ -25,6 +31,12 @@ namespace Merge
         void Awake()
         {
             Instance = this;
+
+            colorBlue = FromHEX("71A0F6");
+            colorCyan = FromHEX("55CBB3");
+            colorGreen = FromHEX("3EC37B");
+            colorYellow = FromHEX("FEDA75");
+            colorRed = FromHEX("EC737F");
         }
 
         //// TIMEOUT ////
@@ -134,13 +146,13 @@ namespace Merge
             if (hex.Length >= 6)
             {
                 var r = hex.Substring(0, 2);
-                var g = hex.Substring(2, 4);
-                var b = hex.Substring(4, 6);
+                var g = hex.Substring(2, 2);
+                var b = hex.Substring(4, 2);
                 var a = "FF";
 
                 if (hex.Length == 8)
                 {
-                    a = hex.Substring(6, 8);
+                    a = hex.Substring(6, 2);
                 }
 
                 newColor = new Color(

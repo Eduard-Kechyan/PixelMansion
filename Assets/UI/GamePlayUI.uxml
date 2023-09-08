@@ -18,10 +18,12 @@
             <ui:VisualElement name="Options" class="options">
                 <ui:Button display-tooltip-when-elided="true" name="HomeButton" class="button_standard" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Main/HomeButton.png?fileID=2800000&amp;guid=ba8db5a0c1107754fa75be6b4a22bcd5&amp;type=3#HomeButton&apos;);">
                     <ui:VisualElement name="Border" class="border" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/GamePlayButtonBorder.png?fileID=2800000&amp;guid=b8f07174fd6f28542a9560db033f8d3e&amp;type=3#GamePlayButtonBorder&apos;);" />
+                    <ui:VisualElement name="NoteDot" class="note_dot" style="left: auto; right: -2px;" />
                 </ui:Button>
                 <ui:Button display-tooltip-when-elided="true" name="InventoryButton" class="button_standard" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Main/InventoryButton.png?fileID=2800000&amp;guid=62dfccefaa5458b45aec73dac04a76d9&amp;type=3#InventoryButton&apos;);">
                     <ui:VisualElement name="Border" class="border" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/GamePlayButtonBorder.png?fileID=2800000&amp;guid=b8f07174fd6f28542a9560db033f8d3e&amp;type=3#GamePlayButtonBorder&apos;);" />
                     <ui:VisualElement name="Indicator" class="inventory_indicator" />
+                    <ui:VisualElement name="NoteDot" class="note_dot" style="left: auto; right: -2px;" />
                 </ui:Button>
                 <ui:Button display-tooltip-when-elided="true" name="BonusButton" class="button_standard">
                     <ui:VisualElement name="Image" class="bonus_image" />
@@ -29,9 +31,11 @@
                 </ui:Button>
                 <ui:Button display-tooltip-when-elided="true" name="ShopButton" class="button_standard" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Main/ShopButton.png?fileID=2800000&amp;guid=dbb4cad8875a96e4ea1e9f3647c8dba5&amp;type=3#ShopButton&apos;);">
                     <ui:VisualElement name="Border" class="border" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/GamePlayButtonBorder.png?fileID=2800000&amp;guid=b8f07174fd6f28542a9560db033f8d3e&amp;type=3#GamePlayButtonBorder&apos;);" />
+                    <ui:VisualElement name="NoteDot" class="note_dot" />
                 </ui:Button>
                 <ui:Button display-tooltip-when-elided="true" name="TaskButton" class="button_standard" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Main/TaskButton.png?fileID=2800000&amp;guid=95d01244dc81dc249b49f4a4c989915b&amp;type=3#TaskButton&apos;);">
                     <ui:VisualElement name="Border" class="border" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/GamePlayButtonBorder.png?fileID=2800000&amp;guid=b8f07174fd6f28542a9560db033f8d3e&amp;type=3#GamePlayButtonBorder&apos;);" />
+                    <ui:VisualElement name="NoteDot" class="note_dot" />
                 </ui:Button>
             </ui:VisualElement>
         </ui:VisualElement>

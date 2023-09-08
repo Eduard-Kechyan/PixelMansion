@@ -889,7 +889,7 @@
 
 .task_group .group_container .desc {
     padding-left: 8px;
-    padding-right: 8px;
+    padding-right: 0;
     padding-top: 0;
     padding-bottom: 0;
     margin-left: 0;
@@ -915,6 +915,8 @@
 
 .task_group .group_container .group_box {
     flex-direction: row;
+    padding-right: 12px;
+    padding-left: 12px;
 }
 
 .task_group .group_container .image {
@@ -1009,6 +1011,7 @@
     -unity-background-image-tint-color: rgb(85, 203, 152);
     color: rgb(255, 255, 255);
     margin-left: auto;
+    font-size: 8px;
 }
 
 .task_item .task_needs {

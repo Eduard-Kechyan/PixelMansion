@@ -36,12 +36,22 @@ namespace Merge
         {
             if (!TaskGroupExists(areaId))
             {
+                int totalTasks = 0;
+
+                for (int i = 0; i < tasksData.tasks.Length; i++)
+                {
+                    if (tasksData.tasks[i].groupId == areaId)
+                    {
+                        totalTasks++;
+                    }
+                }
+
                 // Create a new task group and add it to the list
-                var newTaskGroup = new Types.TaskGroup { id = areaId, completed = 0 };
+                var newTaskGroup = new Types.TaskGroup { id = areaId, completed = 0, total = totalTasks };
 
                 gameData.taskGroupsData.Add(newTaskGroup);
 
-                // Save changes to tasks data
+                // Save changes to disk
                 dataManager.SaveTasks();
             }
         }
@@ -72,7 +82,7 @@ namespace Merge
                     // Add the task to the list of tasks
                     gameData.tasksData.Add(newTask);
 
-                    // Save changes to tasks data
+                    // Save changes to disk
                     dataManager.SaveTasks();
                 }
                 else
@@ -90,6 +100,38 @@ namespace Merge
         public void RemoveTask(string taskId)
         {
             // Remove task logic here
+        }
+
+        public Types.TaskGroup TaskCompleted(string groupId, string id)
+        {
+            Types.TaskGroup taskGroupData = new();
+
+            for (int i = 0; i < gameData.taskGroupsData.Count; i++)
+            {
+                if (gameData.taskGroupsData[i].id == groupId)
+                {
+                    gameData.taskGroupsData[i].completed++;
+
+                    taskGroupData = gameData.taskGroupsData[i];
+
+                    break;
+                }
+            }
+
+            for (int i = 0; i < gameData.tasksData.Count; i++)
+            {
+                if (gameData.tasksData[i].groupId == groupId && gameData.tasksData[i].id == id)
+                {
+                    gameData.tasksData[i].completed = true;
+
+                    break;
+                }
+            }
+
+            // Save changes to disk
+            dataManager.SaveTasks();
+
+            return taskGroupData;
         }
 
         private Types.Task FindTaskById(string taskId)

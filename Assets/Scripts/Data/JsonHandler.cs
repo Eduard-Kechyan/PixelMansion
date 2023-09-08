@@ -193,13 +193,14 @@ namespace Merge
             {
                 Types.Task newTasksData = new()
                 {
-                    needs = ConvertTaskItemsFromJson(tasksJson[i].needs),
-                    rewards = ConvertTaskItemsFromJson(tasksJson[i].rewards),
+                    needs = ConvertTaskItemFromJson(tasksJson[i].needs),
+                    rewards = ConvertTaskItemFromJson(tasksJson[i].rewards),
                     id = tasksJson[i].id,
                     groupId = tasksJson[i].groupId,
                     taskRefName = tasksJson[i].taskRefName,
                     taskRefType = Glob.ParseEnum<Types.TaskRefType>(tasksJson[i].taskRefType),
                     isTaskRefRight = tasksJson[i].isTaskRefRight,
+                    completed = tasksJson[i].completed,
                 };
 
                 tasksData.Add(newTasksData);
@@ -216,13 +217,14 @@ namespace Merge
             {
                 Types.TaskJson newTasksJson = new()
                 {
-                    needs = ConvertTaskItemsToJson(tasksData[i].needs),
-                    rewards = ConvertTaskItemsToJson(tasksData[i].rewards),
+                    needs = ConvertTaskItemToJson(tasksData[i].needs),
+                    rewards = ConvertTaskItemToJson(tasksData[i].rewards),
                     id = tasksData[i].id,
                     groupId = tasksData[i].groupId,
                     taskRefName = tasksData[i].taskRefName,
                     taskRefType = tasksData[i].taskRefType.ToString(),
                     isTaskRefRight = tasksData[i].isTaskRefRight,
+                    completed = tasksData[i].completed,
                 };
 
                 tasksJson[i] = newTasksJson;
@@ -231,19 +233,19 @@ namespace Merge
             return JsonConvert.SerializeObject(tasksJson);
         }
 
-        Types.TaskItems[] ConvertTaskItemsFromJson(string itemsString)
+        Types.TaskItem[] ConvertTaskItemFromJson(string itemsString)
         {
-            Types.TaskItemsJson[] itemsJson = JsonConvert.DeserializeObject<Types.TaskItemsJson[]>(
+            Types.TaskItemJson[] itemsJson = JsonConvert.DeserializeObject<Types.TaskItemJson[]>(
                 itemsString
             );
 
-            Types.TaskItems[] itemsData = new Types.TaskItems[itemsJson.Length];
+            Types.TaskItem[] itemsData = new Types.TaskItem[itemsJson.Length];
 
             for (int i = 0; i < itemsJson.Length; i++)
             {
                 Types.Type newType = Glob.ParseEnum<Types.Type>(itemsJson[i].type);
 
-                Types.TaskItems newItemsData = new()
+                Types.TaskItem newItemsData = new()
                 {
                     sprite = gameData.GetSprite(itemsJson[i].sprite, newType),
                     type = newType,
@@ -251,7 +253,7 @@ namespace Merge
                     genGroup = Glob.ParseEnum<ItemTypes.GenGroup>(itemsJson[i].genGroup),
                     collGroup = Glob.ParseEnum<Types.CollGroup>(itemsJson[i].collGroup),
                     chestGroup = Glob.ParseEnum<Types.ChestGroup>(itemsJson[i].chestGroup),
-                    count = itemsJson[i].count
+                    amount = itemsJson[i].amount
                 };
 
                 itemsData[i] = newItemsData;
@@ -260,13 +262,13 @@ namespace Merge
             return itemsData;
         }
 
-        string ConvertTaskItemsToJson(Types.TaskItems[] itemsData)
+        string ConvertTaskItemToJson(Types.TaskItem[] itemsData)
         {
-            Types.TaskItemsJson[] itemsJson = new Types.TaskItemsJson[itemsData.Length];
+            Types.TaskItemJson[] itemsJson = new Types.TaskItemJson[itemsData.Length];
 
             for (int i = 0; i < itemsData.Length; i++)
             {
-                Types.TaskItemsJson newItemsJson = new()
+                Types.TaskItemJson newItemsJson = new()
                 {
                     sprite = itemsData[i].sprite.name,
                     type = itemsData[i].type.ToString(),
@@ -274,7 +276,7 @@ namespace Merge
                     genGroup = itemsData[i].genGroup.ToString(),
                     collGroup = itemsData[i].collGroup.ToString(),
                     chestGroup = itemsData[i].chestGroup.ToString(),
-                    count = itemsData[i].count
+                    amount = itemsData[i].amount
                 };
 
                 itemsJson[i] = newItemsJson;

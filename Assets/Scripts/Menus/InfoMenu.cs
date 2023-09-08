@@ -376,16 +376,19 @@ namespace Merge
                     }
                     else
                     {
-                        for (int j = 0; j < gameData.generatorsData[i].content.Length; j++)
+                        for (int j = gameData.generatorsData[i].content.Length-1; j >= 0;)
                         {
                             // TODO - Check this
-                            // if (!gameData.generatorsData[i].content[j].unlocked && j >= 0)
-                            if (j >= 0)
+                            /*if (gameData.generatorsData[i].content[j].unlocked)
                             {
-                                sprite = gameData.generatorsData[i].content[j - 1].sprite;
+                                sprite = gameData.generatorsData[i].content[j].sprite;
 
                                 break;
-                            }
+                            }*/
+
+                            sprite = gameData.generatorsData[i].content[j].sprite;
+
+                            break;
                         }
                     }
                 }
