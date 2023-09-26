@@ -39,6 +39,7 @@ namespace Merge
         private Camera cam;
         private SelectorUIHandler selectorUIHandler;
         private I18n LOCALE;
+        private GameData gameData;
 
         void Start()
         {
@@ -46,9 +47,10 @@ namespace Merge
             cam = Camera.main;
             selectorUIHandler = speechBubble.GetComponent<SelectorUIHandler>();
             LOCALE = I18n.Instance;
+            gameData = GameData.Instance;
 
             // Say Hello
-            if (greet)
+            if (greet && !gameData.greeted)
             {
                 isSpeaking = true;
 
@@ -148,7 +150,7 @@ namespace Merge
 
                 isTimeOut = true;
 
-                //speechBubble.Close();
+                speechBubble.Close();
 
                 StartCoroutine(StopTimeOut());
             }
@@ -168,6 +170,8 @@ namespace Merge
             yield return new WaitForSeconds(0.5f);
 
             int randomGreeting = Random.Range(0, greetingsCount);
+
+            gameData.greeted = true;
 
             Speak(LOCALE.Get("speech_Greeting_" + randomGreeting));
         }

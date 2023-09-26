@@ -6,334 +6,347 @@ using UnityEngine.UIElements;
 namespace Merge
 {
     public class ValuesUI : MonoBehaviour
-{
-    public Sprite[] levelUpIndicatorSprites = new Sprite[0];
-
-    // Variables
-    private bool levelEnabled = false;
-    private bool energyEnabled = false;
-    private bool goldEnabled = false;
-    private bool gemsEnabled = false;
-
-    private bool energyPlusEnabled = false;
-    private bool goldPlusEnabled = false;
-    private bool gemsPlusEnabled = false;
-
-    private bool enabledSet = false;
-
-    private Coroutine energyCoroutine;
-
-    // References
-    private LevelMenu levelMenu;
-    private EnergyMenu energyMenu;
-    private ShopMenu shopMenu;
-    private EnergyTimer energyTimer;
-
-    // Instances
-    private GameData gameData;
-
-    // UI
-    private VisualElement root;
-
-    private VisualElement valuesBox;
-
-    public Button levelButton;
-    private VisualElement levelFill;
-    private Label levelValue;
-    private VisualElement levelUpIndicator;
-
-    public Button energyButton;
-    private VisualElement energyPlus;
-
-    private Label energyTimerLabel;
-
-    public Button goldButton;
-    private VisualElement goldPlus;
-
-    public Button gemsButton;
-    private VisualElement gemsPlus;
-
-    void Start()
     {
-        // Cache
-        levelMenu = GameRefs.Instance.levelMenu;
-        energyMenu = GameRefs.Instance.energyMenu;
-        shopMenu = GameRefs.Instance.shopMenu;
-        energyTimer = TimeManager.Instance.GetComponent<EnergyTimer>();
+        public Sprite[] levelUpIndicatorSprites = new Sprite[0];
 
-        // Cache instances
-        gameData = GameData.Instance;
+        // Variables
+        private bool levelEnabled = false;
+        private bool energyEnabled = false;
+        private bool goldEnabled = false;
+        private bool gemsEnabled = false;
 
-        // Cache UI
-        root = GetComponent<UIDocument>().rootVisualElement;
+        private bool energyPlusEnabled = false;
+        private bool goldPlusEnabled = false;
+        private bool gemsPlusEnabled = false;
 
-        valuesBox = root.Q<VisualElement>("ValuesBox");
+        private bool enabledSet = false;
 
-        levelButton = valuesBox.Q<Button>("LevelButton");
-        levelFill = levelButton.Q<VisualElement>("Fill");
-        levelValue = levelButton.Q<Label>("Value");
-        levelUpIndicator = valuesBox.Q<VisualElement>("Indicator");
+        private Coroutine energyCoroutine;
 
-        energyButton = valuesBox.Q<Button>("EnergyButton");
-        energyPlus = energyButton.Q<VisualElement>("Plus");
-        energyTimerLabel = energyButton.Q<Label>("EnergyTimer");
+        // References
+        private LevelMenu levelMenu;
+        private EnergyMenu energyMenu;
+        private ShopMenu shopMenu;
+        private EnergyTimer energyTimer;
 
-        energyTimerLabel.style.display = DisplayStyle.None;
+        // Instances
+        private GameData gameData;
 
-        goldButton = valuesBox.Q<Button>("GoldButton");
-        goldPlus = goldButton.Q<VisualElement>("Plus");
+        // UI
+        private VisualElement root;
 
-        gemsButton = valuesBox.Q<Button>("GemsButton");
-        gemsPlus = gemsButton.Q<VisualElement>("Plus");
+        private VisualElement valuesBox;
 
-        SetValues();
+        public Button levelButton;
+        private VisualElement levelFill;
+        private Label levelValue;
+        private VisualElement levelUpIndicator;
 
-        CheckForTaps();
-    }
+        public Button energyButton;
+        private VisualElement energyPlus;
 
-    void Update()
-    {
-        CheckTimer();
-    }
+        private Label energyTimerLabel;
 
-    void SetValues()
-    {
-        // TODO - Remove comments and set to false
-        //levelButton.SetEnabled(false);
-        //energyButton.SetEnabled(false);
-        //goldButton.SetEnabled(false);
-        //gemsButton.SetEnabled(false);
+        public Button goldButton;
+        private VisualElement goldPlus;
 
-        // TODO - Add a check for the plusses
-        // energyPlus.style.display = DisplayStyle.None;
-        //goldPlus.style.display = DisplayStyle.None;
-        //gemsPlus.style.display = DisplayStyle.None;
+        public Button gemsButton;
+        private VisualElement gemsPlus;
 
-        UpdateValues();
-    }
-
-    void CheckForTaps()
-    {
-        levelButton.clicked += () => levelMenu.Open();
-        energyButton.clicked += () => energyMenu.Open();
-        goldButton.clicked += () => shopMenu.Open("Gold");
-        gemsButton.clicked += () => shopMenu.Open("Gems");
-    }
-
-    void CheckTimer()
-    {
-        if (energyTimer.timerOn)
+        void Start()
         {
-            Glob.StopTimeout(energyCoroutine);
+            // Cache
+            levelMenu = GameRefs.Instance.levelMenu;
+            energyMenu = GameRefs.Instance.energyMenu;
+            shopMenu = GameRefs.Instance.shopMenu;
+            energyTimer = TimeManager.Instance.GetComponent<EnergyTimer>();
 
-            energyTimerLabel.style.display = DisplayStyle.Flex;
+            // Cache instances
+            gameData = GameData.Instance;
 
-            float newTimeout = energyTimer.timeOut;
+            // Cache UI
+            root = GetComponent<UIDocument>().rootVisualElement;
 
-            newTimeout++;
+            valuesBox = root.Q<VisualElement>("ValuesBox");
 
-            float minutes = Mathf.FloorToInt(newTimeout / 60);
-            float seconds = Mathf.FloorToInt(newTimeout % 60);
+            levelButton = valuesBox.Q<Button>("LevelButton");
+            levelFill = levelButton.Q<VisualElement>("Fill");
+            levelValue = levelButton.Q<Label>("Value");
+            levelUpIndicator = valuesBox.Q<VisualElement>("Indicator");
 
-            string minutesText = minutes < 10 ? "0" + minutes : minutes.ToString();
-            string secondsText = seconds < 10 ? "0" + seconds : seconds.ToString();
+            energyButton = valuesBox.Q<Button>("EnergyButton");
+            energyPlus = energyButton.Q<VisualElement>("Plus");
+            energyTimerLabel = energyButton.Q<Label>("EnergyTimer");
 
-            energyTimerLabel.text = string.Format("{0}:{1}", minutesText, secondsText);
+            energyTimerLabel.style.display = DisplayStyle.None;
+
+            goldButton = valuesBox.Q<Button>("GoldButton");
+            goldPlus = goldButton.Q<VisualElement>("Plus");
+
+            gemsButton = valuesBox.Q<Button>("GemsButton");
+            gemsPlus = gemsButton.Q<VisualElement>("Plus");
+
+            SetValues();
+
+            CheckForTaps();
         }
-        else if (!energyTimer.waiting)
+
+        void Update()
         {
-            energyCoroutine = Glob.SetTimeout(() =>
+            CheckTimer();
+        }
+
+        void SetValues()
+        {
+            // TODO - Remove comments and set to false
+            //levelButton.SetEnabled(false);
+            //energyButton.SetEnabled(false);
+            //goldButton.SetEnabled(false);
+            //gemsButton.SetEnabled(false);
+
+            // TODO - Add a check for the plusses
+            // energyPlus.style.display = DisplayStyle.None;
+            //goldPlus.style.display = DisplayStyle.None;
+            //gemsPlus.style.display = DisplayStyle.None;
+
+            UpdateValues();
+        }
+
+        void CheckForTaps()
+        {
+            levelButton.clicked += () => levelMenu.Open();
+            energyButton.clicked += () => energyMenu.Open();
+            goldButton.clicked += () => shopMenu.Open("Gold");
+            gemsButton.clicked += () => shopMenu.Open("Gems");
+        }
+
+        void CheckTimer()
+        {
+            if (energyTimer.timerOn)
             {
-                energyTimerLabel.style.display = DisplayStyle.None;
-            }, 1f);
-        }
-    }
+                Glob.StopTimeout(energyCoroutine);
 
-    public void UpdateValues()
-    {
-        levelFill.style.width = CalcLevelFill();
+                energyTimerLabel.style.display = DisplayStyle.Flex;
 
-        // Debug.Log(gameData.energy.ToString());
+                float newTimeout = energyTimer.timeOut;
 
-        levelValue.text = gameData.level.ToString();
-        energyButton.text = gameData.energy.ToString();
-        goldButton.text = gameData.gold.ToString();
-        gemsButton.text = gameData.gems.ToString();
+                newTimeout++;
 
-        energyButton.style.fontSize = CheckFontSize(energyButton);
-        goldButton.style.fontSize = CheckFontSize(goldButton);
-        gemsButton.style.fontSize = CheckFontSize(gemsButton);
-    }
+                float minutes = Mathf.FloorToInt(newTimeout / 60);
+                float seconds = Mathf.FloorToInt(newTimeout % 60);
 
-    float CheckFontSize(Button button)
-    {
-        float newFontSize = button.resolvedStyle.fontSize;
+                string minutesText = minutes < 10 ? "0" + minutes : minutes.ToString();
+                string secondsText = seconds < 10 ? "0" + seconds : seconds.ToString();
 
-        if (button.text.Length > 6)
-        {
-            newFontSize = 4f;
-        }
-
-        if (button.text.Length > 8)
-        {
-            newFontSize = 3f;
-        }
-
-        return newFontSize;
-    }
-
-    public void UpdateLevel()
-    {
-        levelValue.text = gameData.level.ToString();
-
-        StartCoroutine(UpdateEnergyFullAfter());
-    }
-
-    IEnumerator UpdateEnergyFullAfter()
-    {
-        yield return new WaitForSeconds(0.3f);
-
-        List<TimeValue> durationsZero = new ();
-        durationsZero.Add(new TimeValue(0f, TimeUnit.Second));
-
-        levelFill.style.transitionDuration = new StyleList<TimeValue>(durationsZero);
-
-        levelFill.style.width = Length.Percent(0);
-
-        List<TimeValue> durationsFull = new ();
-        durationsFull.Add(new TimeValue(0.3f, TimeUnit.Second));
-
-        levelFill.style.transitionDuration = new StyleList<TimeValue>(durationsFull);
-
-        gameData.SetExperience(gameData.leftoverExperience, false, true);
-
-        DataManager.Instance.writer.Write("experience", gameData.experience).Commit();
-
-        gameData.leftoverExperience = 0;
-
-        levelFill.style.width = CalcLevelFill();
-    }
-
-    public void ToggleLevelUp(bool canLevelUp)
-    {
-        if (canLevelUp)
-        {
-            levelUpIndicator.style.opacity = 1;
-            levelUpIndicator.style.visibility = Visibility.Visible;
-
-            StartCoroutine(BlipLevelUpIndicator());
-        }
-        else
-        {
-            levelUpIndicator.style.opacity = 0;
-            levelUpIndicator.style.visibility = Visibility.Hidden;
-
-            StopCoroutine(BlipLevelUpIndicator());
-        }
-    }
-
-    IEnumerator BlipLevelUpIndicator()
-    {
-        int count = 0;
-
-        while (true)
-        {
-            yield return new WaitForSeconds(0.2f);
-
-            levelUpIndicator.style.backgroundImage = new StyleBackground(levelUpIndicatorSprites[count]);
-
-            if (count == 5)
+                energyTimerLabel.text = string.Format("{0}:{1}", minutesText, secondsText);
+            }
+            else if (!energyTimer.waiting)
             {
-                count = 0;
+                energyCoroutine = Glob.SetTimeout(() =>
+                {
+                    energyTimerLabel.style.display = DisplayStyle.None;
+                }, 1f);
+            }
+        }
+
+        public void UpdateValues()
+        {
+            levelFill.style.width = CalcLevelFill();
+
+            levelValue.text = gameData.level.ToString();
+            energyButton.text = gameData.energy.ToString();
+            goldButton.text = gameData.gold.ToString();
+            gemsButton.text = gameData.gems.ToString();
+
+            float energyFontSize = CheckFontSize(energyButton);
+            float goldFontSize = CheckFontSize(goldButton);
+            float gemsFontSize = CheckFontSize(gemsButton);
+
+            if (energyFontSize != 0)
+            {
+                energyButton.style.fontSize = energyFontSize;
+            }
+
+            if (goldFontSize != 0)
+            {
+                goldButton.style.fontSize = goldFontSize;
+            }
+
+            if (gemsFontSize != 0)
+            {
+                gemsButton.style.fontSize = gemsFontSize;
+            }
+        }
+
+        float CheckFontSize(Button button)
+        {
+            float newFontSize = button.resolvedStyle.fontSize;
+
+            if (button.text.Length > 6)
+            {
+                newFontSize = 4f;
+            }
+
+            if (button.text.Length > 8)
+            {
+                newFontSize = 3f;
+            }
+
+            return newFontSize;
+        }
+
+        public void UpdateLevel()
+        {
+            levelValue.text = gameData.level.ToString();
+
+            StartCoroutine(UpdateEnergyFullAfter());
+        }
+
+        IEnumerator UpdateEnergyFullAfter()
+        {
+            yield return new WaitForSeconds(0.3f);
+
+            List<TimeValue> durationsZero = new();
+            durationsZero.Add(new TimeValue(0f, TimeUnit.Second));
+
+            levelFill.style.transitionDuration = new StyleList<TimeValue>(durationsZero);
+
+            levelFill.style.width = Length.Percent(0);
+
+            List<TimeValue> durationsFull = new();
+            durationsFull.Add(new TimeValue(0.3f, TimeUnit.Second));
+
+            levelFill.style.transitionDuration = new StyleList<TimeValue>(durationsFull);
+
+            gameData.SetExperience(gameData.leftoverExperience, false, true);
+
+            DataManager.Instance.writer.Write("experience", gameData.experience).Commit();
+
+            gameData.leftoverExperience = 0;
+
+            levelFill.style.width = CalcLevelFill();
+        }
+
+        public void ToggleLevelUp(bool canLevelUp)
+        {
+            if (canLevelUp)
+            {
+                levelUpIndicator.style.opacity = 1;
+                levelUpIndicator.style.visibility = Visibility.Visible;
+
+                StartCoroutine(BlipLevelUpIndicator());
             }
             else
             {
-                count++;
+                levelUpIndicator.style.opacity = 0;
+                levelUpIndicator.style.visibility = Visibility.Hidden;
+
+                StopCoroutine(BlipLevelUpIndicator());
             }
         }
+
+        IEnumerator BlipLevelUpIndicator()
+        {
+            int count = 0;
+
+            while (true)
+            {
+                yield return new WaitForSeconds(0.2f);
+
+                levelUpIndicator.style.backgroundImage = new StyleBackground(levelUpIndicatorSprites[count]);
+
+                if (count == 5)
+                {
+                    count = 0;
+                }
+                else
+                {
+                    count++;
+                }
+            }
+        }
+
+        public Length CalcLevelFill()
+        {
+            if (gameData == null)
+            {
+                gameData = GameData.Instance;
+            }
+
+            float fillPercent;
+
+            if (gameData.experience < gameData.maxExperience)
+            {
+                fillPercent = (100f / (float)gameData.maxExperience) * (float)gameData.experience;
+            }
+            else
+            {
+                fillPercent = 100f;
+            }
+
+            return Length.Percent(fillPercent);
+        }
+
+        public void DisableButtons()
+        {
+            if (!enabledSet)
+            {
+                levelEnabled = levelButton.enabledSelf;
+                energyEnabled = energyButton.enabledSelf;
+                goldEnabled = goldButton.enabledSelf;
+                gemsEnabled = gemsButton.enabledSelf;
+
+                levelButton.SetEnabled(false);
+                energyButton.SetEnabled(false);
+                goldButton.SetEnabled(false);
+                gemsButton.SetEnabled(false);
+
+                energyPlusEnabled = energyPlus.resolvedStyle.visibility == Visibility.Visible;
+                goldPlusEnabled = goldPlus.resolvedStyle.visibility == Visibility.Visible;
+                gemsPlusEnabled = gemsPlus.resolvedStyle.visibility == Visibility.Visible;
+
+                energyPlus.style.visibility = Visibility.Hidden;
+                energyPlus.style.opacity = 0f;
+                goldPlus.style.visibility = Visibility.Hidden;
+                goldPlus.style.opacity = 0f;
+                gemsPlus.style.visibility = Visibility.Hidden;
+                gemsPlus.style.opacity = 0f;
+
+                enabledSet = true;
+            }
+        }
+
+        public void EnableButtons()
+        {
+            levelButton.SetEnabled(levelEnabled);
+            energyButton.SetEnabled(energyEnabled);
+            goldButton.SetEnabled(goldEnabled);
+            gemsButton.SetEnabled(gemsEnabled);
+
+            if (energyPlusEnabled)
+            {
+                energyPlus.style.visibility = Visibility.Visible;
+                energyPlus.style.opacity = 1f;
+            }
+
+            if (goldPlusEnabled)
+            {
+                goldPlus.style.visibility = Visibility.Visible;
+                goldPlus.style.opacity = 1f;
+            }
+
+            if (gemsPlusEnabled)
+            {
+                gemsPlus.style.visibility = Visibility.Visible;
+                gemsPlus.style.opacity = 1f;
+            }
+
+            enabledSet = false;
+        }
+
+        public void SetSortingOrder(int order)
+        {
+            GetComponent<UIDocument>().sortingOrder = order;
+        }
     }
-
-    public Length CalcLevelFill()
-    {
-        if (gameData == null)
-        {
-            gameData = GameData.Instance;
-        }
-
-        float fillPercent;
-
-        if (gameData.experience < gameData.maxExperience)
-        {
-            fillPercent = (100f / (float)gameData.maxExperience) * (float)gameData.experience;
-        }
-        else
-        {
-            fillPercent = 100f;
-        }
-
-        return Length.Percent(fillPercent);
-    }
-
-    public void DisableButtons()
-    {
-        if (!enabledSet)
-        {
-            levelEnabled = levelButton.enabledSelf;
-            energyEnabled = energyButton.enabledSelf;
-            goldEnabled = goldButton.enabledSelf;
-            gemsEnabled = gemsButton.enabledSelf;
-
-            levelButton.SetEnabled(false);
-            energyButton.SetEnabled(false);
-            goldButton.SetEnabled(false);
-            gemsButton.SetEnabled(false);
-
-            energyPlusEnabled = energyPlus.resolvedStyle.visibility == Visibility.Visible;
-            goldPlusEnabled = goldPlus.resolvedStyle.visibility == Visibility.Visible;
-            gemsPlusEnabled = gemsPlus.resolvedStyle.visibility == Visibility.Visible;
-
-            energyPlus.style.visibility = Visibility.Hidden;
-            energyPlus.style.opacity = 0f;
-            goldPlus.style.visibility = Visibility.Hidden;
-            goldPlus.style.opacity = 0f;
-            gemsPlus.style.visibility = Visibility.Hidden;
-            gemsPlus.style.opacity = 0f;
-
-            enabledSet = true;
-        }
-    }
-
-    public void EnableButtons()
-    {
-        levelButton.SetEnabled(levelEnabled);
-        energyButton.SetEnabled(energyEnabled);
-        goldButton.SetEnabled(goldEnabled);
-        gemsButton.SetEnabled(gemsEnabled);
-
-        if (energyPlusEnabled)
-        {
-            energyPlus.style.visibility = Visibility.Visible;
-            energyPlus.style.opacity = 1f;
-        }
-
-        if (goldPlusEnabled)
-        {
-            goldPlus.style.visibility = Visibility.Visible;
-            goldPlus.style.opacity = 1f;
-        }
-
-        if (gemsPlusEnabled)
-        {
-            gemsPlus.style.visibility = Visibility.Visible;
-            gemsPlus.style.opacity = 1f;
-        }
-
-        enabledSet = false;
-    }
-
-    public void SetSortingOrder(int order)
-    {
-        GetComponent<UIDocument>().sortingOrder = order;
-    }
-}
 }

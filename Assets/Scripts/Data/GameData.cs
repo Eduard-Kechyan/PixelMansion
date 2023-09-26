@@ -70,6 +70,9 @@ namespace Merge
         private Sprite[] chestsSprites;
         private Sprite[] taskSprites;
 
+        // Other
+        public bool greeted = false;
+
         // References
         private LevelMenu levelMenu;
         private ValuesUI valuesUI;

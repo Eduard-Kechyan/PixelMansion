@@ -4,8 +4,8 @@
         <ui:VisualElement name="Values" class="values">
             <ui:Button display-tooltip-when-elided="true" name="LevelButton" class="value_button level_button" style="background-image: url(&apos;project://database/Assets/Sprites/Values/ValueLevel.png?fileID=2800000&amp;guid=db2a0b434fd00d148947a026afc58439&amp;type=3#ValueLevel&apos;);">
                 <ui:VisualElement name="Indicator" class="indicator" style="background-image: url(&apos;project://database/Assets/Sprites/Values/LevelUpIndicator.png?fileID=2800000&amp;guid=0779a5ff798d5fc4e9e6b9d19fc1e35e&amp;type=3#LevelUpIndicator&apos;);" />
-                <ui:VisualElement name="FillContainer" class="fill_container" style="background-image: url(&apos;project://database/Assets/Sprites/Values/ValueLevelFillBorder.png?fileID=2800000&amp;guid=09e7da2e64b1ede4ca10b0c65b687aa3&amp;type=3#ValueLevelFillBorder&apos;);">
-                    <ui:VisualElement name="Fill" class="fill" style="background-image: none;" />
+                <ui:VisualElement name="FillContainer" class="fill_container" style="background-image: none; display: flex;">
+                    <ui:VisualElement name="Fill" class="fill" style="background-image: none; width: 50%; display: flex;" />
                     <ui:VisualElement name="FillBorder" class="fill_border" style="background-image: url(&apos;project://database/Assets/Sprites/Values/ValueLevelFillBorder.png?fileID=2800000&amp;guid=09e7da2e64b1ede4ca10b0c65b687aa3&amp;type=3#ValueLevelFillBorder&apos;);" />
                 </ui:VisualElement>
                 <ui:VisualElement name="Extra" class="extra" style="background-image: url(&apos;project://database/Assets/Sprites/Values/ValueLevelExtra.png?fileID=2800000&amp;guid=7376b57cbcfa0cf4784e7a2a910b2c38&amp;type=3#ValueLevelExtra&apos;);" />

@@ -11,7 +11,8 @@ namespace Merge
     public bool logConnection = false;
     public bool useDevUrl = false;
 
-    private string URL = "https://game-dev-backup.onrender.com/api"; // TODO - Add real api address
+    private string URL = ""; // TODO - Add real api address
+    //private string URL = "https://game-dev-backup.onrender.com/api"; // TODO - Add real api address
 
     public bool isConnected = false;
     public bool canCheckForUnsent = false;
