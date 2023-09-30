@@ -400,10 +400,9 @@ namespace Merge
             SaveData();
         }
 
-        public GameObject GetWorldItemPos(Types.Task task)
+        public GameObject GetWorldItem(Types.Task task)
         {
             Transform worldArea = null;
-
 
             for (int i = 0; i < worldRoot.childCount; i++)
             {

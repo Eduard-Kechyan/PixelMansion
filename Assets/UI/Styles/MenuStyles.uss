@@ -559,6 +559,7 @@
     border-right-width: 0;
     border-top-width: 0;
     border-bottom-width: 0;
+    background-color: rgba(255, 255, 255, 0);
 }
 
 .slot_item_hidden {
@@ -898,7 +899,7 @@
     margin-bottom: 0;
     font-size: 8px;
     -unity-text-align: middle-center;
-    width: 120px;
+    width: 96px;
     color: rgba(27, 27, 27, 0.76);
     white-space: normal;
 }
@@ -976,8 +977,8 @@
     background-color: rgb(202, 188, 152);
     width: 100%;
     min-height: 10px;
-    padding-left: 8px;
-    padding-right: 8px;
+    padding-left: 4px;
+    padding-right: 4px;
     padding-top: 16px;
     padding-bottom: 4px;
     flex-direction: row;
@@ -1030,6 +1031,7 @@
     padding-right: 1px;
     padding-top: 1px;
     padding-bottom: 1px;
+    margin-right: 6px;
 }
 
 .task_need .image {

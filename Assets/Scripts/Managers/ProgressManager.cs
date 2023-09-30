@@ -11,10 +11,6 @@ namespace Merge
         // Variables
         public ProgressData progressData;
         public CurrentProgress currentProgress;
-        public SceneLoader sceneLoader;
-
-        // [Header("Set")]
-        //public bool addTask = false;
 
         [Serializable]
         public class CurrentProgress
@@ -30,6 +26,7 @@ namespace Merge
         }
 
         private bool initialSet = false;
+        private bool settingInitial = false;
 
         // References
         private TaskManager taskManager;
@@ -38,26 +35,20 @@ namespace Merge
         {
             // Cache
             taskManager = GetComponent<TaskManager>();
-        }
 
-        /*  void OnValidate()
-          {
-              if (addTask)
-              {
-                  addTask = false;
-  
-                  taskManager.AddTaskGroup(progressData.areas[0].id);
-                  taskManager.AddTask(
-                      currentProgress.currentStepContentId = progressData.areas[0].steps[0].content[
-                          0
-                      ].id,
-                      progressData.areas[0].id
-                  );
-              }
-          }*/
+            Glob.SetTimeout(() =>
+            {
+                if (!settingInitial)
+                {
+                    taskManager.CheckTaskNoteDot();
+                }
+            }, 0.3f);
+        }
 
         public void CheckInitialData()
         {
+            initialSet = true;
+
             if (!initialSet)
             {
                 if (PlayerPrefs.HasKey("currentProgress"))
@@ -89,6 +80,8 @@ namespace Merge
                     );
                 }
 
+
+                // TODO - Remove this line
                 if (GameData.Instance.tasksData.Count == 0)
                 {
                     taskManager.AddTaskGroup(progressData.areas[0].id);
@@ -100,9 +93,10 @@ namespace Merge
                     );
                 }
 
-                taskManager.CheckWorldTaskIcons();
+                taskManager.CheckTaskNoteDot();
 
                 initialSet = true;
+                settingInitial = false;
             }
         }
     }

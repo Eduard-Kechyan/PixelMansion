@@ -910,17 +910,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85eed059904f5874b89d03af2e156ca7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1444470405 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2612081357836540789, guid: 09379b30afef3214ba489f71db8fa4dd, type: 3}
-  m_PrefabInstance: {fileID: 1444470403}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91346d9203aadce46b652012a9fba354, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1485929786 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5574773175297324107, guid: af9e0bfb46c520a4fac5c30843ed2d4e, type: 3}
@@ -1085,17 +1074,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3745bd78f7038594bb16e1e12adb1156, type: 3}
---- !u!114 &1688336257 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1888629426759165983, guid: 3745bd78f7038594bb16e1e12adb1156, type: 3}
-  m_PrefabInstance: {fileID: 1688336256}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3fbb8f762516c304f9d15478c4025e82, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &659375698902677581
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1315,18 +1293,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1798228451276164874, guid: d1ee4451982ab4743b3b309d3ca9f109, type: 3}
-      propertyPath: uiDoc
-      value: 
-      objectReference: {fileID: 57463799}
-    - target: {fileID: 1798228451276164874, guid: d1ee4451982ab4743b3b309d3ca9f109, type: 3}
-      propertyPath: taskManager
-      value: 
-      objectReference: {fileID: 1444470405}
-    - target: {fileID: 1798228451276164874, guid: d1ee4451982ab4743b3b309d3ca9f109, type: 3}
-      propertyPath: soundManager
-      value: 
-      objectReference: {fileID: 1688336257}
     - target: {fileID: 1798228451276164874, guid: d1ee4451982ab4743b3b309d3ca9f109, type: 3}
       propertyPath: transitionUI
       value: 

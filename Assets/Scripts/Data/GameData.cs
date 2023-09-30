@@ -129,7 +129,7 @@ namespace Merge
             generatorsSprites = Resources.LoadAll<Sprite>("Sprites/Generators");
             collectablesSprites = Resources.LoadAll<Sprite>("Sprites/Collectables");
             chestsSprites = Resources.LoadAll<Sprite>("Sprites/Chests");
-            taskSprites= Resources.LoadAll<Sprite>("Sprites/Tasks");
+            taskSprites = Resources.LoadAll<Sprite>("Sprites/Tasks");
         }
 
         //////// SET ////////
@@ -294,7 +294,8 @@ namespace Merge
                     energy = 0;
                 }
 
-                energyTimer.Check();
+                // TODO - Check this
+                // energyTimer.Check();
 
                 dataManager.writer.Write("energy", energy).Commit();
 

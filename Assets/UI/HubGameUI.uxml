@@ -1,7 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/Styles/Main.uss?fileID=7433441132597879392&amp;guid=b6d7ed9290f88c745af1e68e28dec072&amp;type=3#Main" />
     <Style src="project://database/Assets/UI/Styles/HubGameStyles.uss?fileID=7433441132597879392&amp;guid=0a305e5e0da6de941b54de76ba85dcea&amp;type=3#HubGameStyles" />
-    <ui:VisualElement name="TaskIconsContainer" class="task_icon_container" />
     <ui:VisualElement name="SelectorBox" class="selector_box">
         <ui:Button display-tooltip-when-elided="true" name="DenyButton" class="button button_active deny_button" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/DenyButton.png?fileID=2800000&amp;guid=183a764ee12efff42ad47afd3a9deb27&amp;type=3#DenyButton&apos;);" />
         <ui:VisualElement name="Selector" class="selector" style="background-image: url(&apos;project://database/Assets/Sprites/Environment/UI/Selector.png?fileID=2800000&amp;guid=e6767378c2d650c4aa97fb6c6bbf54db&amp;type=3#Selector&apos;);">
@@ -27,5 +26,5 @@
         <ui:VisualElement name="Shadow" class="shadow" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/Hub/SpeechBubble/SpeechBubbleShadow.png?fileID=2800000&amp;guid=df4c881ac6275744ab526a3462edf51d&amp;type=3#SpeechBubbleShadow&apos;);" />
         <ui:VisualElement name="Tail" class="tail" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/Hub/SpeechBubble/SpeechBubbleTailBottomLeft.png?fileID=2800000&amp;guid=984be7b612866e44d98f436204326558&amp;type=3#SpeechBubbleTailBottomLeft&apos;); bottom: -6px;" />
     </ui:Button>
-    <ui:Label tabindex="-1" text="Popup Label" display-tooltip-when-elided="true" name="PopupLabel" class="popup_label" />
+    <ui:Label tabindex="-1" text="Popup Label" display-tooltip-when-elided="true" name="PopupLabel" class="popup_label" style="transition-property: opacity, padding; transition-duration: 0.6s, 0.6s; transition-timing-function: ease-in-out, ease-in-out; transition-delay: 0s, 0s; top: -50px; left: 0; height: 10px; translate: -60px -20px; opacity: 0; overflow: visible;" />
 </ui:UXML>

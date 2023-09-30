@@ -11,8 +11,7 @@
     "task_button_play": "Play",
     "task_button_complete": "Complete",
     "________ LIVING ROOM ________": "________________",
-    "task_LivingRoom_CleanTheRoom": "Clean the room",
-    "task_LivingRoom_RepairTheRoom": "Repair the room"
+    "task_LivingRoom_ChangeFloor": "Repair the floor"
 ,
     "________ LIVING ROOM ________": "________________",
     "Conversation_LivingRoom_Unlocking_0": "Hi"
@@ -255,6 +254,40 @@
     "speech_Fridge_2": {
         "zero": "Majestic!",
         "one": "Is it gold or yellow? I can't tell!"
+    },
+    "________ BED ________": "________________",
+    "speech_Bed_-1": {
+        "zero": "I really don't want sleep on that bed!!!",
+        "one": "Why? Just why?"
+    },
+    "speech_Bed_0": {
+        "zero": "No that's a bed to sleep in",
+        "one": "Sooo soft!"
+    },
+    "speech_Bed_1": {
+        "zero": "To sleep, or not to sleep?",
+        "one": "I feel tired suddenly!"
+    },
+    "speech_Bed_2": {
+        "zero": "Incredible!",
+        "one": "Huh, look at that! (-) It's a bed!"
+    },
+    "________ BEDSIDE_TABLE ________": "________________",
+    "speech_BedsideTable_-1": {
+        "zero": "Doesn't look safe!",
+        "one": "Is that mold?!"
+    },
+    "speech_BedsideTable_0": {
+        "zero": "I wonder, can I fit in there?",
+        "one": "Jup, still here."
+    },
+    "speech_BedsideTable_1": {
+        "zero": "Am i forgetting something? (-) Nah.",
+        "one": "Does it pay taxes? (-) I hope so!"
+    },
+    "speech_BedsideTable_2": {
+        "zero": "Ooooh, what a luxury!",
+        "one": "Too bad it doesn't have any drawers!"
     }
 ,
     "________ GREETINGS ________": "________________",

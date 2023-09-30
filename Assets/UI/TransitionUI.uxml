@@ -1,6 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/Styles/TransitionStyles.uss?fileID=7433441132597879392&amp;guid=d7db390fc4af445409c2292703f5c016&amp;type=3#TransitionStyles" />
-    <ui:VisualElement name="Transition" class="transition" style="display: none;">
+    <ui:VisualElement name="Transition" class="transition" style="display: none; transition-duration: 0.3s;">
         <ui:VisualElement name="Overlay" class="overlay" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/Transition/TransitionOverlay.png?fileID=2800000&amp;guid=a203e081d869a9b458e5d52451dc404e&amp;type=3#TransitionOverlay&apos;);" />
     </ui:VisualElement>
 </ui:UXML>

@@ -22,8 +22,12 @@ namespace Merge
         public InitialItems initialItems;
         public ProgressManager progressManager;
 
+        public delegate void BoardSaveEvent();
+        public static event BoardSaveEvent boardSaveEvent;
+
         // Whether data has been fully loaded
         public bool loaded;
+
         private bool isEditor = false;
 
         // Quick Save
@@ -247,6 +251,11 @@ namespace Merge
             );
 
             writer.Write("boardData", newBoardData).Commit();
+
+            if (boardSaveEvent != null)
+            {
+                boardSaveEvent();
+            }
         }
 
         public void SaveTimers()

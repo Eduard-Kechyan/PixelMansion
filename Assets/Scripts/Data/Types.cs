@@ -325,7 +325,7 @@ namespace Merge
             public string taskRefName;
             public TaskRefType taskRefType;
             public bool isTaskRefRight;
-            public bool completed;
+            public int completed;
         }
 
         [Serializable]
@@ -339,7 +339,7 @@ namespace Merge
             public string taskRefName;
             public string taskRefType;
             public bool isTaskRefRight;
-            public bool completed;
+            public int completed;
         }
 
         [Serializable]
@@ -352,6 +352,7 @@ namespace Merge
             public CollGroup collGroup;
             public ChestGroup chestGroup;
             public int amount;
+            public int completed;
         }
 
         [Serializable]
@@ -364,6 +365,7 @@ namespace Merge
             public string collGroup;
             public string chestGroup;
             public int amount;
+            public int completed;
         }
 
         //// ERROR ////

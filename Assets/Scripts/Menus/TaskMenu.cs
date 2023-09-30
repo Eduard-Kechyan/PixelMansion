@@ -11,9 +11,9 @@ namespace Merge
         public SceneLoader sceneLoader;
         public TaskManager taskManager;
 
-        private TemplateContainer taskGroupPrefab;
-        private TemplateContainer taskPrefab;
-        private TemplateContainer taskNeedPrefab;
+        private VisualTreeAsset taskGroupPrefab;
+        private VisualTreeAsset taskPrefab;
+        private VisualTreeAsset taskNeedPrefab;
 
         [Serializable]
         private class CompletedNeed
@@ -50,9 +50,9 @@ namespace Merge
 
             taskScrollView = root.Q<ScrollView>("TaskScrollView");
 
-            taskGroupPrefab = Resources.Load<VisualTreeAsset>("Uxml/TaskGroup").CloneTree();
-            taskPrefab = Resources.Load<VisualTreeAsset>("Uxml/Task").CloneTree();
-            taskNeedPrefab = Resources.Load<VisualTreeAsset>("Uxml/TaskNeed").CloneTree();
+            taskGroupPrefab = Resources.Load<VisualTreeAsset>("Uxml/TaskGroup");
+            taskPrefab = Resources.Load<VisualTreeAsset>("Uxml/Task");
+            taskNeedPrefab = Resources.Load<VisualTreeAsset>("Uxml/TaskNeed");
 
             Init();
         }
@@ -83,7 +83,7 @@ namespace Merge
             {
                 for (int i = 0; i < gameData.taskGroupsData.Count; i++)
                 {
-                    var newTaskGroup = taskGroupPrefab;
+                    var newTaskGroup = taskGroupPrefab.CloneTree();
 
                     newTaskGroup.name = "TaskGroup" + i;
 
@@ -106,7 +106,7 @@ namespace Merge
                     {
                         if (gameData.tasksData[j].groupId == gameData.taskGroupsData[i].id)
                         {
-                            var newTask = taskPrefab;
+                            var newTask = taskPrefab.CloneTree();
 
                             newTask.Q<Label>("TaskTitle").text = LOCALE.Get(
                                 "task_"
@@ -120,60 +120,40 @@ namespace Merge
                             string groupId = gameData.tasksData[j].groupId;
                             string taskId = gameData.tasksData[j].id;
 
-                            List<CompletedNeed> completedNeeds = CheckIfTaskIsCompleted(
-                                gameData.tasksData[j]
-                            );
-
-                            if (completedNeeds.Count == gameData.tasksData[j].needs.Length)
+                            if (gameData.tasksData[j].needs.Length == gameData.tasksData[j].completed)
                             {
                                 string indexString = i.ToString();
 
-                                playButton.clicked += () => FinishTask(groupId, taskId, indexString);
+                                playButton.clicked += () => HandleCompletedTap(groupId, taskId, indexString);
 
                                 playButton.text = LOCALE.Get("task_button_complete");
                             }
                             else
                             {
-                                playButton.clicked += () => sceneLoader.Load(2);
-
                                 playButton.text = LOCALE.Get("task_button_play");
+
+                                if (sceneLoader.GetSceneName() == "Hub")
+                                {
+                                    playButton.clicked += () => HandlePlayTap();
+                                }
+                                else
+                                {
+                                    playButton.style.opacity = 0.3f;
+                                    playButton.pickingMode = PickingMode.Ignore;
+                                }
                             }
 
                             for (int k = 0; k < gameData.tasksData[j].needs.Length; k++)
                             {
-                                var newTaskNeed = taskNeedPrefab;
+                                var newTaskNeed = taskNeedPrefab.CloneTree();
 
-                                string amount = 0 + "/" + gameData.tasksData[j].needs[k].amount;
+                                string amount = gameData.tasksData[j].needs[k].completed + "/" + gameData.tasksData[j].needs[k].amount;
 
-                                for (int l = 0; l < completedNeeds.Count; l++)
+                                if (gameData.tasksData[j].needs[k].completed == gameData.tasksData[j].needs[k].amount)
                                 {
-                                    if (
-                                        completedNeeds[l].sprite
-                                        == gameData.tasksData[j].needs[k].sprite.name
-                                    )
-                                    {
-                                        if (
-                                            completedNeeds[l].amount
-                                            >= gameData.tasksData[j].needs[k].amount
-                                        )
-                                        {
-                                            amount =
-                                                completedNeeds[l].amount
-                                                + "/"
-                                                + gameData.tasksData[j].needs[k].amount;
-
-                                            newTaskNeed
-                                                .Q<VisualElement>("Image")
-                                                .style.backgroundColor = Glob.colorGreen;
-                                        }
-                                        else
-                                        {
-                                            amount =
-                                                completedNeeds[l].amount
-                                                + "/"
-                                                + gameData.tasksData[j].needs[k].amount;
-                                        }
-                                    }
+                                    newTaskNeed
+                                        .Q<VisualElement>("Image")
+                                        .style.backgroundColor = Glob.colorGreen;
                                 }
 
                                 newTaskNeed.Q<Label>("Count").text = amount;
@@ -214,59 +194,39 @@ namespace Merge
             }
         }
 
-        List<CompletedNeed> CheckIfTaskIsCompleted(Types.Task taskData)
+        void HandleCompletedTap(string groupId, string taskId, string indexString)
         {
-            List<CompletedNeed> completedNeeds = new();
-
-            for (int i = 0; i < taskData.needs.Length; i++)
+            if (sceneLoader.GetSceneName() == "Hub")
             {
-                int count = 0;
-
-                for (int x = 0; x < gameData.boardData.GetLength(0); x++)
-                {
-                    for (int y = 0; y < gameData.boardData.GetLength(1); y++)
-                    {
-                        if (
-                            gameData.boardData[x, y].sprite == taskData.needs[i].sprite
-                            && gameData.boardData[x, y].type == taskData.needs[i].type
-                            && gameData.boardData[x, y].group == taskData.needs[i].group
-                            && gameData.boardData[x, y].genGroup == taskData.needs[i].genGroup
-                            && gameData.boardData[x, y].collGroup == taskData.needs[i].collGroup
-                            && gameData.boardData[x, y].chestGroup == taskData.needs[i].chestGroup
-                        )
-                        {
-                            count++;
-                        }
-                    }
-                }
-
-                if (count > 0)
-                {
-                    completedNeeds.Add(
-                        new CompletedNeed
-                        {
-                            sprite = taskData.needs[i].sprite.name,
-                            amount = taskData.needs[i].amount
-                        }
-                    );
-                }
+                taskManager.TryToCompleteTask(groupId, taskId, indexString);
             }
-
-            return completedNeeds;
+            else
+            {
+                Glob.taskToComplete = groupId + "|" + taskId + "|" + indexString;
+                sceneLoader.Load(1);
+            }
         }
 
-        void FinishTask(string groupId, string id, string indexString)
+        void HandlePlayTap()
         {
-            Types.TaskGroup taskGroupData = taskManager.TaskCompleted(groupId, id);
+            if (sceneLoader.GetSceneName() == "Hub")
+            {
+                sceneLoader.Load(2);
+            }
+            else
+            {
 
+            }
+        }
+
+        public void EndTask(string groupId, string indexString, Types.TaskGroup taskGroupData)
+        {
             VisualElement taskGroup = taskScrollView.Q<VisualElement>(groupId + indexString);
 
             int percentComplete = Mathf.RoundToInt((100 / taskGroupData.total) * taskGroupData.completed + 1);
 
             taskGroup.Q<VisualElement>("Fill").style.width = percentComplete;
             taskGroup.Q<Label>("FillLabel").text = percentComplete + "%";
-
-            Debug.Log(id + " - " + indexString);
         }
     }
 }

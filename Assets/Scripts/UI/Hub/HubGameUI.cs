@@ -11,14 +11,14 @@ namespace Merge
         public Sprite taskIconSprite;
         public ProgressManager progressManager;
 
-        private List<TaskIconData> taskIconsData = new();
+       // private List<TaskIconData> taskIconsData = new();
 
         // References
         private Camera cam;
 
         // UI
         private VisualElement root;
-        private VisualElement taskIconsContainer;
+        //private VisualElement taskIconsContainer;
 
         private class TaskIconData
         {
@@ -34,12 +34,12 @@ namespace Merge
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
 
-            taskIconsContainer = root.Q<VisualElement>("TaskIconsContainer");
+            //taskIconsContainer = root.Q<VisualElement>("TaskIconsContainer");
 
             //progressManager.CheckInitialData();
         }
 
-        void Update()
+     /*   void Update()
         {
             UpdateTaskIconsPos();
         }
@@ -99,6 +99,6 @@ namespace Merge
                         newUIPos.x - (taskIconButton.resolvedStyle.width / 2);
                 }
             }
-        }
+        }*/
     }
 }

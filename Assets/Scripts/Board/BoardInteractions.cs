@@ -7,584 +7,271 @@ using UnityEngine.UIElements;
 namespace Merge
 {
     public class BoardInteractions : MonoBehaviour
-{
-    // Variables
-    public bool interactionsEnabled = true; // Is the board currently interactable
-    public float moveSpeed = 16f; // How fast should the item move
-    public float scaleSpeed = 8f; // How fast should the item resize
-    public float touchThreshold = 20f; // How far can the finger be moved before starting to drag
-    public float radius = 0.5f;
-    public float radiusAlt = 0.5f;
-    public bool isDragging = false; // Are we currently dragging
-    public bool isSelected = false; // Have we currently selected something
-    public Item currentItem;
-
-    [HideInInspector]
-    public GameObject tempTile;
-
-    // Undo
-    [HideInInspector]
-    public bool canUndo = false;
-    private Item undoItem;
-    Types.Board undoBoardItem = new Types.Board();
-    private GameObject undoTile;
-    private Vector2 undoScale;
-    private int sellUndoAmount = 0;
-
-    public GameObject boardTiles;
-    private GameObject initialTile;
-    private bool touchBeganOutsideItem = false;
-    private bool previousInteractionsEnabled = true;
-    private Action callback;
-
-    // References
-    private SelectionManager selectionManager;
-    private BoardManager boardManager;
-    private InitializeBoard initializeBoard;
-    private BoardIndication boardIndication;
-    private PopupManager popupManager;
-    private InventoryMenu inventoryMenu;
-    private DataManager dataManager;
-    private GameData gameData;
-    private ItemHandler itemHandler;
-    private SoundManager soundManager;
-    private I18n LOCALE;
-
-    // UI
-    private VisualElement root;
-    private VisualElement dragOverlay;
-
-    // Positions
-    private Vector3 worldPos;
-    private Vector2 initialPos;
-    private Vector2 initialTouchPos = Vector2.zero; 
-
-    private void Start()
     {
+        // Variables
+        public bool interactionsEnabled = true; // Is the board currently interactable
+        public float moveSpeed = 16f; // How fast should the item move
+        public float scaleSpeed = 8f; // How fast should the item resize
+        public float touchThreshold = 20f; // How far can the finger be moved before starting to drag
+        public float radius = 0.5f;
+        public float radiusAlt = 0.5f;
+        public bool isDragging = false; // Are we currently dragging
+        public bool isSelected = false; // Have we currently selected something
+        public Item currentItem;
+
+        [HideInInspector]
+        public GameObject tempTile;
+
+        // Undo
+        [HideInInspector]
+        public bool canUndo = false;
+        private Item undoItem;
+        Types.Board undoBoardItem = new Types.Board();
+        private GameObject undoTile;
+        private Vector2 undoScale;
+        private int sellUndoAmount = 0;
+
+        public GameObject boardTiles;
+        private GameObject initialTile;
+        private bool touchBeganOutsideItem = false;
+        private bool previousInteractionsEnabled = true;
+        private Action callback;
+
         // References
-        initializeBoard = GetComponent<InitializeBoard>();
-        selectionManager = GetComponent<SelectionManager>();
-        boardManager = GetComponent<BoardManager>();
-        boardIndication = GetComponent<BoardIndication>();
-        popupManager = GameRefs.Instance.popupManager;
-        inventoryMenu = GameRefs.Instance.inventoryMenu;
-        soundManager = SoundManager.Instance;
-        dataManager = DataManager.Instance;
-        gameData = GameData.Instance;
-        itemHandler = dataManager.GetComponent<ItemHandler>();
-        LOCALE = I18n.Instance;
+        private SelectionManager selectionManager;
+        private BoardManager boardManager;
+        private InitializeBoard initializeBoard;
+        private BoardIndication boardIndication;
+        private PopupManager popupManager;
+        private InventoryMenu inventoryMenu;
+        private DataManager dataManager;
+        private GameData gameData;
+        private ItemHandler itemHandler;
+        private SoundManager soundManager;
+        private I18n LOCALE;
 
-        // Cache root and dragOverlay
-        root = GameRefs.Instance.gameplayUIDoc.rootVisualElement;
-        dragOverlay = root.Q<VisualElement>("DragOverlay");
+        // UI
+        private VisualElement root;
+        private VisualElement dragOverlay;
 
-        // Drag overlay shouldn't be pickable
-        dragOverlay.pickingMode = PickingMode.Ignore;
-    }
+        // Positions
+        private Vector3 worldPos;
+        private Vector2 initialPos;
+        private Vector2 initialTouchPos = Vector2.zero;
 
-    void Update()
-    {
-        // Check if interactions are enabled
-        if (interactionsEnabled)
+        private void Start()
         {
-            // Check for input
-            if (Input.touchCount == 1)
+            // References
+            initializeBoard = GetComponent<InitializeBoard>();
+            selectionManager = GetComponent<SelectionManager>();
+            boardManager = GetComponent<BoardManager>();
+            boardIndication = GetComponent<BoardIndication>();
+            popupManager = GameRefs.Instance.popupManager;
+            inventoryMenu = GameRefs.Instance.inventoryMenu;
+            soundManager = SoundManager.Instance;
+            dataManager = DataManager.Instance;
+            gameData = GameData.Instance;
+            itemHandler = dataManager.GetComponent<ItemHandler>();
+            LOCALE = I18n.Instance;
+
+            // Cache root and dragOverlay
+            root = GameRefs.Instance.gameplayUIDoc.rootVisualElement;
+            dragOverlay = root.Q<VisualElement>("DragOverlay");
+
+            // Drag overlay shouldn't be pickable
+            dragOverlay.pickingMode = PickingMode.Ignore;
+        }
+
+        void Update()
+        {
+            // Check if interactions are enabled
+            if (interactionsEnabled)
             {
-                // Get the current touch
-                Touch touch = Input.GetTouch(0);
-
-                // Convert current touch position to world position
-                worldPos = Camera.main.ScreenToWorldPoint(touch.position);
-
-                // See when the touch has been started
-                if (touch.phase == TouchPhase.Began)
+                // Check for input
+                if (Input.touchCount == 1)
                 {
-                    // Get the initial touch position for comparing
-                    initialTouchPos = touch.position;
+                    // Get the current touch
+                    Touch touch = Input.GetTouch(0);
 
-                    RaycastHit2D hit = Physics2D.Raycast(
-                        Camera.main.ScreenToWorldPoint(initialTouchPos),
-                        Vector2.zero,
-                        Mathf.Infinity,
-                        LayerMask.GetMask("Tile")
-                    );
+                    // Convert current touch position to world position
+                    worldPos = Camera.main.ScreenToWorldPoint(touch.position);
 
-                    // Check if the initial touch position is from an item or from outside
-                    if (hit || hit.collider != null)
+                    // See when the touch has been started
+                    if (touch.phase == TouchPhase.Began)
                     {
-                        if (hit.transform.childCount == 0)
+                        // Get the initial touch position for comparing
+                        initialTouchPos = touch.position;
+
+                        RaycastHit2D hit = Physics2D.Raycast(
+                            Camera.main.ScreenToWorldPoint(initialTouchPos),
+                            Vector2.zero,
+                            Mathf.Infinity,
+                            LayerMask.GetMask("Tile")
+                        );
+
+                        // Check if the initial touch position is from an item or from outside
+                        if (hit || hit.collider != null)
                         {
-                            touchBeganOutsideItem = true;
-                        }
-                        else
-                        {
-                            tempTile = hit.transform.gameObject;
+                            if (hit.transform.childCount == 0)
+                            {
+                                touchBeganOutsideItem = true;
+                            }
+                            else
+                            {
+                                tempTile = hit.transform.gameObject;
+                            }
                         }
                     }
-                }
 
-                // See when the touch has been moved
-                if (Input.GetTouch(0).phase == TouchPhase.Moved)
-                {
-                    // Compare the current position to the initial position
-                    Vector2 diff = touch.position - initialTouchPos;
-
-                    if (
-                        diff.x > touchThreshold
-                        || diff.x < -touchThreshold
-                        || diff.y > touchThreshold
-                        || diff.y < -touchThreshold
-                    )
+                    // See when the touch has been moved
+                    if (Input.GetTouch(0).phase == TouchPhase.Moved)
                     {
+                        // Compare the current position to the initial position
+                        Vector2 diff = touch.position - initialTouchPos;
+
+                        if (
+                            diff.x > touchThreshold
+                            || diff.x < -touchThreshold
+                            || diff.y > touchThreshold
+                            || diff.y < -touchThreshold
+                        )
+                        {
+                            if (isDragging)
+                            {
+                                if (currentItem != null && currentItem.isSelected)
+                                {
+                                    isSelected = false;
+                                    selectionManager.Unselect("both");
+                                    selectionManager.Select("only");
+                                }
+
+                                // Drag the item around
+                                Drag();
+                            }
+                            else
+                            {
+                                // Detect draggable item if the touch began from an item
+                                if (!touchBeganOutsideItem)
+                                {
+                                    DetectDraggableItem(
+                                        Camera.main.ScreenToWorldPoint(initialTouchPos)
+                                    );
+                                }
+                            }
+                        }
+                    }
+
+                    // See when the touch has been ended
+                    if (touch.phase == TouchPhase.Ended)
+                    {
+                        // Reset this check
+                        touchBeganOutsideItem = false;
+
                         if (isDragging)
                         {
-                            if (currentItem != null && currentItem.isSelected)
-                            {
-                                isSelected = false;
-                                selectionManager.Unselect("both");
-                                selectionManager.Select("only");
-                            }
-
-                            // Drag the item around
-                            Drag();
+                            // Drop the item
+                            Drop();
                         }
                         else
                         {
-                            // Detect draggable item if the touch began from an item
-                            if (!touchBeganOutsideItem)
-                            {
-                                DetectDraggableItem(
-                                    Camera.main.ScreenToWorldPoint(initialTouchPos)
-                                );
-                            }
+                            // Select the item
+                            selectionManager.SelectItem(worldPos);
                         }
-                    }
-                }
-
-                // See when the touch has been ended
-                if (touch.phase == TouchPhase.Ended)
-                {
-                    // Reset this check
-                    touchBeganOutsideItem = false;
-
-                    if (isDragging)
-                    {
-                        // Drop the item
-                        Drop();
-                    }
-                    else
-                    {
-                        // Select the item
-                        selectionManager.SelectItem(worldPos);
                     }
                 }
             }
         }
-    }
 
-    public void EnableInteractions()
-    {
-        if (!interactionsEnabled && previousInteractionsEnabled)
+        public void EnableInteractions()
         {
-            interactionsEnabled = true;
-            previousInteractionsEnabled = false;
-        }
-    }
-
-    public void DisableInteractions()
-    {
-        if (interactionsEnabled)
-        {
-            interactionsEnabled = false;
-            previousInteractionsEnabled = true;
-        }
-    }
-
-    //////// DRAGGING ////////
-
-    void DetectDraggableItem(Vector3 initPos)
-    {
-        RaycastHit2D hit = Physics2D.Raycast(
-            initPos,
-            Vector2.zero,
-            Mathf.Infinity,
-            LayerMask.GetMask("Item")
-        );
-
-        // Check if raycast hit anything
-        if (hit.collider != null)
-        {
-            Item item = hit.transform.gameObject.GetComponent<Item>();
-
-            // Check if gameobject is a item and isn't empty and if it isn't a crate or locked
-            if (item != null && item.state != Types.State.Crate && item.state != Types.State.Locker)
+            if (!interactionsEnabled && previousInteractionsEnabled)
             {
-                if (currentItem != null && currentItem.isSelected)
-                {
-                    selectionManager.Unselect("both");
-                }
-
-                // Set current item
-                currentItem = item;
-
-                // Show selected item's info in the info box
-                selectionManager.Select("info");
-
-                // Start dragging the item
-                StartDragging();
+                interactionsEnabled = true;
+                previousInteractionsEnabled = false;
             }
         }
-    }
 
-    void StartDragging()
-    {
-        // Starting to drag
-        isDragging = true;
-        currentItem.Dragging();
-
-        // Save currentItem's parent
-        initialTile = currentItem.transform.parent.gameObject;
-
-        // Remove currentItem's parent
-        currentItem.transform.parent = null;
-
-        // Set the drag overlay's background image to the dragging item's sprite
-        dragOverlay.style.backgroundImage = new StyleBackground(currentItem.sprite);
-
-        // Set the item's layer to Dragging
-        currentItem.gameObject.layer = LayerMask.NameToLayer("ItemDragging");
-
-        // Set the item's initial position
-        initialPos = new Vector2(
-            currentItem.transform.position.x,
-            currentItem.transform.position.y
-        );
-
-        boardIndication.StopPossibleMergeCheck();
-    }
-
-    void Drag()
-    {
-        // Set the dragging item's new position
-        currentItem.transform.position = new Vector3(
-            worldPos.x,
-            worldPos.y,
-            currentItem.transform.position.z
-        );
-
-        // Get position on the UI from the scene
-        Vector2 newUIPos = RuntimePanelUtils.CameraTransformWorldToPanel(
-            root.panel,
-            currentItem.transform.position,
-            Camera.main
-        );
-
-        // Move the drag overlay
-        dragOverlay.style.left = newUIPos.x - (dragOverlay.resolvedStyle.width / 2);
-        dragOverlay.style.top = newUIPos.y - (dragOverlay.resolvedStyle.width / 2);
-
-        // Show the drag overlay in UI if hidden
-        if (dragOverlay.resolvedStyle.visibility == Visibility.Hidden)
+        public void DisableInteractions()
         {
-            dragOverlay.style.visibility = Visibility.Visible;
-        }
-    }
-
-    void Drop()
-    {
-        // Stopping dragging
-        isDragging = false;
-        currentItem.Dropped();
-
-        // Hide the drag overlay in UI
-        dragOverlay.style.visibility = Visibility.Hidden;
-
-        // Check what needs to happen when we drop the item
-        CheckItemDropAction();
-    }
-
-    void CheckItemDropAction()
-    {
-        //////// Check for the inventory button ////////
-        if (inventoryMenu.CheckInventoryButton(currentItem, initialTile, scaleSpeed))
-        {
-            return;
-        }
-
-        //////// Check for the tile ////////
-
-        RaycastHit2D tileHit = Physics2D.Raycast(
-            worldPos,
-            Vector2.zero,
-            10,
-            LayerMask.GetMask("Tile")
-        );
-
-        // Check if a tile is found
-        if (tileHit.collider != null)
-        {
-            GameObject tile = tileHit.transform.gameObject;
-
-            // Check if the tile is empty
-            if (tile.transform.childCount == 0)
+            if (interactionsEnabled)
             {
-                // No child found, move the item to this tile
-                MoveItem(tile);
-
-                return;
+                interactionsEnabled = false;
+                previousInteractionsEnabled = true;
             }
         }
 
-        //////// Check for the item ////////
+        //////// DRAGGING ////////
 
-        RaycastHit2D itemHit = Physics2D.Raycast(
-            worldPos,
-            Vector2.zero,
-            10,
-            LayerMask.GetMask("Item")
-        );
-
-        // Check if an item is found
-        if (itemHit.collider != null)
+        void DetectDraggableItem(Vector3 initPos)
         {
-            Item otherItem = itemHit.transform.gameObject.GetComponent<Item>();
-
-            // Check if it can be dragged
-            if (otherItem != null)
-            {
-                // Check if objects should be merged of swapped
-                bool sameGroup = false;
-
-                switch (otherItem.type)
-                {
-                    case Types.Type.Item:
-                        if (otherItem.group == currentItem.group)
-                        {
-                            sameGroup = true;
-                        }
-                        break;
-                    case Types.Type.Gen:
-                        if (otherItem.genGroup == currentItem.genGroup)
-                        {
-                            sameGroup = true;
-                        }
-                        break;
-                    case Types.Type.Coll:
-                        if (otherItem.collGroup == currentItem.collGroup)
-                        {
-                            sameGroup = true;
-                        }
-                        break;
-                    case Types.Type.Chest:
-                        if (otherItem.chestGroup == currentItem.chestGroup)
-                        {
-                            sameGroup = true;
-                        }
-                        break;
-                    default:
-                        ErrorManager.Instance.Throw(
-                            Types.ErrorType.Code,
-                            "Wrong type: " + otherItem.type
-                        );
-                        break;
-                }
-
-                if (
-                    sameGroup
-                    && otherItem.type == currentItem.type
-                    && otherItem.level == currentItem.level
-                    && (otherItem.state != Types.State.Bubble || currentItem.state != Types.State.Bubble)
-                )
-                {
-                    if (!otherItem.isMaxLevel&& otherItem.state != Types.State.Crate)
-                    {
-                        Merge(otherItem);
-
-                        return;
-                    }
-                    else
-                    {
-                        // TODO - Check if we need this
-                        // popupManager.AddPop(LOCALE.Get("pop_max_level"), otherItem.transform.position, true);
-                    }
-                }
-                else
-                {
-                    if (
-                        otherItem.state != Types.State.Crate
-                        && otherItem.state != Types.State.Locker
-                    )
-                    {
-                        Swap(otherItem);
-
-                        return;
-                    }
-                }
-            }
-        }
-
-        //////// If there is nothing to do, move the item back to it's initial position ////////
-
-        MoveBack();
-    }
-
-    void MoveItem(GameObject tile)
-    {
-        // Move the item to the tile
-        currentItem.MoveToPos(tile.transform.position, moveSpeed * 10);
-
-        // Set tile as item's new parent
-        currentItem.transform.parent = tile.transform;
-
-        // Set the item's layer back to Item
-        currentItem.gameObject.layer = LayerMask.NameToLayer("Item");
-
-        // Set board data
-        boardManager.SwapBoardData(initialTile, tile);
-
-        // Select item
-        selectionManager.Select("both");
-    }
-
-    void Merge(Item otherItem)
-    {
-        // Save the other item's data in memory
-        GameObject otherTile = otherItem.transform.parent.gameObject;
-        Vector3 initialScale = otherItem.transform.localScale;
-        Vector3 initialPos = otherItem.transform.position;
-
-        // Calc new item name
-        Item item = otherItem;
-        Types.Board boardItem = new Types.Board
-        {
-            sprite = item.sprite,
-            type = item.type,
-            group = item.group,
-            genGroup = item.genGroup,
-            collGroup = item.collGroup,
-            chestGroup = item.chestGroup,
-            gemPopped=item.gemPopped,
-        };
-
-        string spriteName = otherItem.nextSpriteName;
-        bool isLocked = otherItem.state == Types.State.Locker;
-
-        currentItem.transform.parent = null;
-        otherItem.transform.parent = null;
-
-        Item tempCurrentItem = currentItem;
-        currentItem = null;
-
-        // Reduce the two items
-        tempCurrentItem.ScaleToSize(Vector2.zero, scaleSpeed, true);
-        otherItem.GetComponent<Item>().ScaleToSize(Vector2.zero, scaleSpeed, true);
-
-        // Get the prefab that's one level heigher
-        currentItem = itemHandler.CreateItem(
-            otherTile,
-            initializeBoard.tileSize,
-            boardItem,
-            spriteName
-        );
-
-        if (isLocked)
-        {
-            // Play unlocking audio
-            soundManager.PlaySound("UnlockLock");
-        }
-        else
-        {
-            // Play merge audio
-            soundManager.PlaySound("Merge");
-        }
-
-        if (currentItem.type != Types.Type.Coll)
-        {
-            // Unlock the item
-            dataManager.UnlockItem(
-                currentItem.sprite.name,
-                currentItem.type,
-                currentItem.group,
-                currentItem.genGroup,
-                currentItem.collGroup,
-                currentItem.chestGroup
+            RaycastHit2D hit = Physics2D.Raycast(
+                initPos,
+                Vector2.zero,
+                Mathf.Infinity,
+                LayerMask.GetMask("Item")
             );
+
+            // Check if raycast hit anything
+            if (hit.collider != null)
+            {
+                Item item = hit.transform.gameObject.GetComponent<Item>();
+
+                // Check if gameobject is a item and isn't empty and if it isn't a crate or locked
+                if (item != null && item.state != Types.State.Crate && item.state != Types.State.Locker)
+                {
+                    if (currentItem != null && currentItem.isSelected)
+                    {
+                        selectionManager.Unselect("both");
+                    }
+
+                    // Set current item
+                    currentItem = item;
+
+                    // Show selected item's info in the info box
+                    selectionManager.Select("info");
+
+                    // Start dragging the item
+                    StartDragging();
+                }
+            }
         }
 
-        // Set the new item's layer to ItemBusy
-        currentItem.gameObject.layer = LayerMask.NameToLayer("ItemBusy");
-
-        // Reduce and then enlarge the new item
-        currentItem.transform.localScale = new Vector3(0, 0, currentItem.transform.localScale.z);
-
-        boardManager.MergeBoardData(initialTile, otherTile, currentItem);
-
-        callback += MergeBackCallback;
-
-        currentItem.ScaleToSize(initialScale, scaleSpeed, false, callback);
-
-        boardManager.CheckForCrate(otherTile);
-
-        boardManager.CheckForBubble(currentItem);
-    }
-
-    void MergeBackCallback()
-    {
-        // Select item
-        selectionManager.Select("both", false);
-    }
-
-    void Swap(Item otherItem)
-    {
-        // Save the other item's data in memory
-        GameObject otherTile = otherItem.transform.parent.gameObject;
-
-        // Set the current item's pos and parent
-        currentItem.MoveToPos(otherTile.transform.position, moveSpeed);
-        currentItem.transform.parent = otherTile.transform;
-
-        // Set the other item's pos and parent
-        otherItem.MoveToPos(initialTile.transform.position, moveSpeed);
-        otherItem.transform.parent = initialTile.transform;
-
-        // Set the item's layer back to Item
-        currentItem.gameObject.layer = LayerMask.NameToLayer("Item");
-
-        // Set board data
-        boardManager.SwapBoardData(initialTile, otherTile);
-
-        // Select item
-        selectionManager.Select("both");
-    }
-
-    void MoveBack()
-    {
-        callback += MoveBackCallback;
-
-        // Show the drag overlay in UI
-        dragOverlay.style.visibility = Visibility.Visible;
-
-        // Reset item to its initial position
-        currentItem.GetComponent<Item>().MoveToPos(initialPos, moveSpeed, callback);
-
-        StartCoroutine(MoveBackOverlay(currentItem));
-
-        currentItem.transform.parent = initialTile.transform;
-
-        // Set the item's layer back to Item
-        currentItem.gameObject.layer = LayerMask.NameToLayer("Item");
-    }
-
-    void MoveBackCallback()
-    {
-        // Select item
-        selectionManager.Select("both");
-    }
-
-    IEnumerator MoveBackOverlay(Item item)
-    {
-        while (item.isMoving)
+        void StartDragging()
         {
+            // Starting to drag
+            isDragging = true;
+            currentItem.Dragging();
+
+            // Save currentItem's parent
+            initialTile = currentItem.transform.parent.gameObject;
+
+            // Remove currentItem's parent
+            currentItem.transform.parent = null;
+
+            // Set the drag overlay's background image to the dragging item's sprite
+            dragOverlay.style.backgroundImage = new StyleBackground(currentItem.sprite);
+
+            // Set the item's layer to Dragging
+            currentItem.gameObject.layer = LayerMask.NameToLayer("ItemDragging");
+
+            // Set the item's initial position
+            initialPos = new Vector2(
+                currentItem.transform.position.x,
+                currentItem.transform.position.y
+            );
+
+            boardIndication.StopPossibleMergeCheck();
+        }
+
+        void Drag()
+        {
+            // Set the dragging item's new position
+            currentItem.transform.position = new Vector3(
+                worldPos.x,
+                worldPos.y,
+                currentItem.transform.position.z
+            );
+
             // Get position on the UI from the scene
             Vector2 newUIPos = RuntimePanelUtils.CameraTransformWorldToPanel(
                 root.panel,
@@ -596,232 +283,550 @@ namespace Merge
             dragOverlay.style.left = newUIPos.x - (dragOverlay.resolvedStyle.width / 2);
             dragOverlay.style.top = newUIPos.y - (dragOverlay.resolvedStyle.width / 2);
 
-            yield return null;
+            // Show the drag overlay in UI if hidden
+            if (dragOverlay.resolvedStyle.visibility == Visibility.Hidden)
+            {
+                dragOverlay.style.visibility = Visibility.Visible;
+            }
         }
 
-        // Show the drag overlay in UI
-        if (!isDragging)
+        void Drop()
         {
+            // Stopping dragging
+            isDragging = false;
+            currentItem.Dropped();
+
+            // Hide the drag overlay in UI
             dragOverlay.style.visibility = Visibility.Hidden;
+
+            // Check what needs to happen when we drop the item
+            CheckItemDropAction();
         }
 
-        yield return null;
-    }
-
-    //////// INFO ACTION ////////
-
-    public void OpenItem(Item item, int amount, Types.State state)
-    {
-        if (item.name == currentItem.name)
+        void CheckItemDropAction()
         {
-            if (gameData.UpdateGems(-amount))
+            //////// Check for the inventory button ////////
+            if (inventoryMenu.CheckInventoryButton(currentItem, initialTile, scaleSpeed))
             {
-                switch (state)
+                return;
+            }
+
+            //////// Check for the tile ////////
+
+            RaycastHit2D tileHit = Physics2D.Raycast(
+                worldPos,
+                Vector2.zero,
+                10,
+                LayerMask.GetMask("Tile")
+            );
+
+            // Check if a tile is found
+            if (tileHit.collider != null)
+            {
+                GameObject tile = tileHit.transform.gameObject;
+
+                // Check if the tile is empty
+                if (tile.transform.childCount == 0)
                 {
-                    case Types.State.Crate:
-                        currentItem.OpenCrate();
+                    // No child found, move the item to this tile
+                    MoveItem(tile);
 
-                        // Play crate opening audio
-                        soundManager.PlaySound("OpenCrate");
-
-                        OpenCrateCallback(currentItem);
-                        break;
-
-                    case Types.State.Bubble:
-                        currentItem.PopBubble();
-
-                        // Play crate opening audio
-                        soundManager.PlaySound("PopBubble" + UnityEngine.Random.Range(0, 3));
-
-                        PopBubbleCallback(currentItem);
-                        break;
-
-                    default:
-                        currentItem.UnlockLock();
-
-                        // Play unlocking audio
-                        soundManager.PlaySound("UnlockLock");
-
-                        OpenLockCallback(currentItem);
-                        break;
+                    return;
                 }
             }
-        }
-    }
 
-    public void UnlockChest(Item item)
-    {
-        if (item.name == currentItem.name && item.type == Types.Type.Chest)
-        {
-            currentItem.UnlockChest();
+            //////// Check for the item ////////
 
-            // Play unlocking audio
-            soundManager.PlaySound("UnlockLock");
+            RaycastHit2D itemHit = Physics2D.Raycast(
+                worldPos,
+                Vector2.zero,
+                10,
+                LayerMask.GetMask("Item")
+            );
 
-            // TODO - Create this function if we need it
-            // UnlockChestCallback(currentItem);
-        }
-    }
-
-    public void SpeedUpItem(Item item, int amount)
-    {
-        if (item.name == currentItem.name)
-        {
-            if (gameData.UpdateGems(-amount))
+            // Check if an item is found
+            if (itemHit.collider != null)
             {
-                switch (currentItem.type)
+                Item otherItem = itemHit.transform.gameObject.GetComponent<Item>();
+
+                // Check if it can be dragged
+                if (otherItem != null)
                 {
-                    case Types.Type.Chest:
-                        currentItem.SpeedUpChest();
+                    // Check if objects should be merged of swapped
+                    bool sameGroup = false;
 
-                        // Play speeding up audio
-                        soundManager.PlaySound("SpeedUpItem");
+                    switch (otherItem.type)
+                    {
+                        case Types.Type.Item:
+                            if (otherItem.group == currentItem.group)
+                            {
+                                sameGroup = true;
+                            }
+                            break;
+                        case Types.Type.Gen:
+                            if (otherItem.genGroup == currentItem.genGroup)
+                            {
+                                sameGroup = true;
+                            }
+                            break;
+                        case Types.Type.Coll:
+                            if (otherItem.collGroup == currentItem.collGroup)
+                            {
+                                sameGroup = true;
+                            }
+                            break;
+                        case Types.Type.Chest:
+                            if (otherItem.chestGroup == currentItem.chestGroup)
+                            {
+                                sameGroup = true;
+                            }
+                            break;
+                        default:
+                            ErrorManager.Instance.Throw(
+                                Types.ErrorType.Code,
+                                "Wrong type: " + otherItem.type
+                            );
+                            break;
+                    }
 
-                        // TODO - Create this function if we need it
-                        // SpeedUpChestCallback(currentItem);
-                        break;
+                    if (
+                        sameGroup
+                        && otherItem.type == currentItem.type
+                        && otherItem.level == currentItem.level
+                        && (otherItem.state != Types.State.Bubble || currentItem.state != Types.State.Bubble)
+                    )
+                    {
+                        if (!otherItem.isMaxLevel && otherItem.state != Types.State.Crate)
+                        {
+                            Merge(otherItem);
 
-                    default:
-                        Debug.Log("????");
-                        break;
+                            return;
+                        }
+                        else
+                        {
+                            // TODO - Check if we need this
+                            // popupManager.AddPop(LOCALE.Get("pop_max_level"), otherItem.transform.position, true);
+                        }
+                    }
+                    else
+                    {
+                        if (
+                            otherItem.state != Types.State.Crate
+                            && otherItem.state != Types.State.Locker
+                        )
+                        {
+                            Swap(otherItem);
+
+                            return;
+                        }
+                    }
                 }
             }
+
+            //////// If there is nothing to do, move the item back to it's initial position ////////
+
+            MoveBack();
         }
-    }
 
-    void OpenCrateCallback(Item item)
-    {
-        GameObject itemTile = item.transform.parent.gameObject;
-
-        Vector2Int loc = boardManager.GetBoardLocation(0, itemTile);
-
-        if (gameData.boardData[loc.x, loc.y].state == Types.State.Crate)
+        void MoveItem(GameObject tile)
         {
-            gameData.boardData[loc.x, loc.y].state = Types.State.Locker;
+            // Move the item to the tile
+            currentItem.MoveToPos(tile.transform.position, moveSpeed * 10);
 
-            dataManager.SaveBoard();
+            // Set tile as item's new parent
+            currentItem.transform.parent = tile.transform;
+
+            // Set the item's layer back to Item
+            currentItem.gameObject.layer = LayerMask.NameToLayer("Item");
+
+            // Set board data
+            boardManager.SwapBoardData(initialTile, tile);
+
+            // Select item
+            selectionManager.Select("both");
         }
-    }
 
-    void OpenLockCallback(Item item)
-    {
-        GameObject itemTile = item.transform.parent.gameObject;
-
-        Vector2Int loc = boardManager.GetBoardLocation(0, itemTile);
-
-        if (gameData.boardData[loc.x, loc.y].state == Types.State.Locker)
+        void Merge(Item otherItem)
         {
-            gameData.boardData[loc.x, loc.y].state = Types.State.Default;
+            // Save the other item's data in memory
+            GameObject otherTile = otherItem.transform.parent.gameObject;
+            Vector3 initialScale = otherItem.transform.localScale;
+            Vector3 initialPos = otherItem.transform.position;
 
-            dataManager.SaveBoard();
-        }
-    }
-
-    void PopBubbleCallback(Item item)
-    {
-        GameObject itemTile = item.transform.parent.gameObject;
-
-        Vector2Int loc = boardManager.GetBoardLocation(0, itemTile);
-
-        if (gameData.boardData[loc.x, loc.y].state == Types.State.Bubble)
-        {
-            gameData.boardData[loc.x, loc.y].state = Types.State.Default;
-
-            dataManager.SaveBoard();
-        }
-    }
-
-    public void RemoveItem(Item item, int amount = 0, bool canUndoPre = true)
-    {
-        if (item.name == currentItem.name)
-        {
-            if (canUndoPre)
+            // Calc new item name
+            Item item = otherItem;
+            Types.Board boardItem = new Types.Board
             {
-                CancelUndo();
+                sprite = item.sprite,
+                type = item.type,
+                group = item.group,
+                genGroup = item.genGroup,
+                collGroup = item.collGroup,
+                chestGroup = item.chestGroup,
+                gemPopped = item.gemPopped,
+            };
 
-                canUndo = true;
+            string spriteName = otherItem.nextSpriteName;
+            bool isLocked = otherItem.state == Types.State.Locker;
 
-                if (amount > 0)
-                {
-                    gameData.UpdateGold(amount);
+            currentItem.transform.parent = null;
+            otherItem.transform.parent = null;
 
-                    sellUndoAmount = amount;
-                }
+            Item tempCurrentItem = currentItem;
+            currentItem = null;
 
-                undoItem = currentItem;
-                undoTile = undoItem.transform.parent.gameObject;
-                undoScale = undoItem.transform.localScale;
+            // Reduce the two items
+            tempCurrentItem.ScaleToSize(Vector2.zero, scaleSpeed, true);
+            otherItem.GetComponent<Item>().ScaleToSize(Vector2.zero, scaleSpeed, true);
 
-                Vector2Int loc = boardManager.GetBoardLocation(0, undoTile);
+            // Get the prefab that's one level heigher
+            currentItem = itemHandler.CreateItem(
+                otherTile,
+                initializeBoard.tileSize,
+                boardItem,
+                spriteName
+            );
 
-                undoBoardItem = gameData.boardData[loc.x, loc.y];
-
-                undoItem.transform.parent = null;
-
-                undoItem.ScaleToSize(Vector2.zero, scaleSpeed, false);
-
-                gameData.boardData[loc.x, loc.y] = new Types.Board { order = undoBoardItem.order };
+            if (isLocked)
+            {
+                // Play unlocking audio
+                soundManager.PlaySound("UnlockLock");
             }
             else
             {
-                Vector2Int loc = boardManager.GetBoardLocation(0, currentItem.transform.parent.gameObject);
+                // Play merge audio
+                soundManager.PlaySound("Merge");
+            }
 
-                Types.Board removeBoardItem = gameData.boardData[loc.x, loc.y];
+            if (currentItem.type != Types.Type.Coll)
+            {
+                // Unlock the item
+                dataManager.UnlockItem(
+                    currentItem.sprite.name,
+                    currentItem.type,
+                    currentItem.group,
+                    currentItem.genGroup,
+                    currentItem.collGroup,
+                    currentItem.chestGroup
+                );
+            }
 
-                currentItem.transform.parent = null;
+            // Set the new item's layer to ItemBusy
+            currentItem.gameObject.layer = LayerMask.NameToLayer("ItemBusy");
 
-                selectionManager.Unselect("info");
+            // Reduce and then enlarge the new item
+            currentItem.transform.localScale = new Vector3(0, 0, currentItem.transform.localScale.z);
 
-                currentItem.ScaleToSize(Vector2.zero, scaleSpeed, true);
+            boardManager.MergeBoardData(initialTile, otherTile, currentItem);
 
-                gameData.boardData[loc.x, loc.y] = new Types.Board { order = removeBoardItem.order };
+            callback += MergeBackCallback;
+
+            currentItem.ScaleToSize(initialScale, scaleSpeed, false, callback);
+
+            boardManager.CheckForCrate(otherTile);
+
+            boardManager.CheckForBubble(currentItem);
+        }
+
+        void MergeBackCallback()
+        {
+            // Select item
+            selectionManager.Select("both", false);
+        }
+
+        void Swap(Item otherItem)
+        {
+            // Save the other item's data in memory
+            GameObject otherTile = otherItem.transform.parent.gameObject;
+
+            // Set the current item's pos and parent
+            currentItem.MoveToPos(otherTile.transform.position, moveSpeed);
+            currentItem.transform.parent = otherTile.transform;
+
+            // Set the other item's pos and parent
+            otherItem.MoveToPos(initialTile.transform.position, moveSpeed);
+            otherItem.transform.parent = initialTile.transform;
+
+            // Set the item's layer back to Item
+            currentItem.gameObject.layer = LayerMask.NameToLayer("Item");
+
+            // Set board data
+            boardManager.SwapBoardData(initialTile, otherTile);
+
+            // Select item
+            selectionManager.Select("both");
+        }
+
+        void MoveBack()
+        {
+            callback += MoveBackCallback;
+
+            // Show the drag overlay in UI
+            dragOverlay.style.visibility = Visibility.Visible;
+
+            // Reset item to its initial position
+            currentItem.GetComponent<Item>().MoveToPos(initialPos, moveSpeed, callback);
+
+            StartCoroutine(MoveBackOverlay(currentItem));
+
+            currentItem.transform.parent = initialTile.transform;
+
+            // Set the item's layer back to Item
+            currentItem.gameObject.layer = LayerMask.NameToLayer("Item");
+        }
+
+        void MoveBackCallback()
+        {
+            // Select item
+            selectionManager.Select("both");
+        }
+
+        IEnumerator MoveBackOverlay(Item item)
+        {
+            while (item.isMoving)
+            {
+                // Get position on the UI from the scene
+                Vector2 newUIPos = RuntimePanelUtils.CameraTransformWorldToPanel(
+                    root.panel,
+                    currentItem.transform.position,
+                    Camera.main
+                );
+
+                // Move the drag overlay
+                dragOverlay.style.left = newUIPos.x - (dragOverlay.resolvedStyle.width / 2);
+                dragOverlay.style.top = newUIPos.y - (dragOverlay.resolvedStyle.width / 2);
+
+                yield return null;
+            }
+
+            // Show the drag overlay in UI
+            if (!isDragging)
+            {
+                dragOverlay.style.visibility = Visibility.Hidden;
+            }
+
+            yield return null;
+        }
+
+        //////// INFO ACTION ////////
+
+        public void OpenItem(Item item, int amount, Types.State state)
+        {
+            if (item.name == currentItem.name)
+            {
+                if (gameData.UpdateGems(-amount))
+                {
+                    switch (state)
+                    {
+                        case Types.State.Crate:
+                            currentItem.OpenCrate();
+
+                            // Play crate opening audio
+                            soundManager.PlaySound("OpenCrate");
+
+                            OpenCrateCallback(currentItem);
+                            break;
+
+                        case Types.State.Bubble:
+                            currentItem.PopBubble();
+
+                            // Play crate opening audio
+                            soundManager.PlaySound("PopBubble" + UnityEngine.Random.Range(0, 3));
+
+                            PopBubbleCallback(currentItem);
+                            break;
+
+                        default:
+                            currentItem.UnlockLock();
+
+                            // Play unlocking audio
+                            soundManager.PlaySound("UnlockLock");
+
+                            OpenLockCallback(currentItem);
+                            break;
+                    }
+                }
+            }
+        }
+
+        public void UnlockChest(Item item)
+        {
+            if (item.name == currentItem.name && item.type == Types.Type.Chest)
+            {
+                currentItem.UnlockChest();
+
+                // Play unlocking audio
+                soundManager.PlaySound("UnlockLock");
+
+                // TODO - Create this function if we need it
+                // UnlockChestCallback(currentItem);
+            }
+        }
+
+        public void SpeedUpItem(Item item, int amount)
+        {
+            if (item.name == currentItem.name)
+            {
+                if (gameData.UpdateGems(-amount))
+                {
+                    switch (currentItem.type)
+                    {
+                        case Types.Type.Chest:
+                            currentItem.SpeedUpChest();
+
+                            // Play speeding up audio
+                            soundManager.PlaySound("SpeedUpItem");
+
+                            // TODO - Create this function if we need it
+                            // SpeedUpChestCallback(currentItem);
+                            break;
+
+                        default:
+                            Debug.Log("????");
+                            break;
+                    }
+                }
+            }
+        }
+
+        void OpenCrateCallback(Item item)
+        {
+            GameObject itemTile = item.transform.parent.gameObject;
+
+            Vector2Int loc = boardManager.GetBoardLocation(0, itemTile);
+
+            if (gameData.boardData[loc.x, loc.y].state == Types.State.Crate)
+            {
+                gameData.boardData[loc.x, loc.y].state = Types.State.Locker;
+
+                dataManager.SaveBoard();
+            }
+        }
+
+        void OpenLockCallback(Item item)
+        {
+            GameObject itemTile = item.transform.parent.gameObject;
+
+            Vector2Int loc = boardManager.GetBoardLocation(0, itemTile);
+
+            if (gameData.boardData[loc.x, loc.y].state == Types.State.Locker)
+            {
+                gameData.boardData[loc.x, loc.y].state = Types.State.Default;
+
+                dataManager.SaveBoard();
+            }
+        }
+
+        void PopBubbleCallback(Item item)
+        {
+            GameObject itemTile = item.transform.parent.gameObject;
+
+            Vector2Int loc = boardManager.GetBoardLocation(0, itemTile);
+
+            if (gameData.boardData[loc.x, loc.y].state == Types.State.Bubble)
+            {
+                gameData.boardData[loc.x, loc.y].state = Types.State.Default;
+
+                dataManager.SaveBoard();
+            }
+        }
+
+        public void RemoveItem(Item item, int amount = 0, bool canUndoPre = true)
+        {
+            if (item.name == currentItem.name)
+            {
+                if (canUndoPre)
+                {
+                    CancelUndo();
+
+                    canUndo = true;
+
+                    if (amount > 0)
+                    {
+                        gameData.UpdateGold(amount);
+
+                        sellUndoAmount = amount;
+                    }
+
+                    undoItem = currentItem;
+                    undoTile = undoItem.transform.parent.gameObject;
+                    undoScale = undoItem.transform.localScale;
+
+                    Vector2Int loc = boardManager.GetBoardLocation(0, undoTile);
+
+                    undoBoardItem = gameData.boardData[loc.x, loc.y];
+
+                    undoItem.transform.parent = null;
+
+                    undoItem.ScaleToSize(Vector2.zero, scaleSpeed, false);
+
+                    gameData.boardData[loc.x, loc.y] = new Types.Board { order = undoBoardItem.order };
+                }
+                else
+                {
+                    Vector2Int loc = boardManager.GetBoardLocation(0, currentItem.transform.parent.gameObject);
+
+                    Types.Board removeBoardItem = gameData.boardData[loc.x, loc.y];
+
+                    currentItem.transform.parent = null;
+
+                    selectionManager.Unselect("info");
+
+                    currentItem.ScaleToSize(Vector2.zero, scaleSpeed, true);
+
+                    gameData.boardData[loc.x, loc.y] = new Types.Board { order = removeBoardItem.order };
+                }
+
+                dataManager.SaveBoard();
+            }
+        }
+
+        public void UndoLastStep()
+        {
+            if (canUndo)
+            {
+                currentItem = undoItem;
+                currentItem.transform.parent = undoTile.transform;
+
+                currentItem.ScaleToSize(undoScale, scaleSpeed, false, () =>
+                {
+                    CancelUndo();
+                });
+
+                Vector2Int loc = boardManager.GetBoardLocation(0, undoTile);
+
+                gameData.boardData[loc.x, loc.y] = new Types.Board
+                {
+                    sprite = undoBoardItem.sprite,
+                    group = undoBoardItem.group,
+                    state = undoBoardItem.state,
+                    crate = undoBoardItem.crate,
+                    order = undoBoardItem.order,
+                };
+
+                selectionManager.SelectItemAfterUndo();
+
+                if (sellUndoAmount > 0)
+                {
+                    gameData.UpdateGold(-sellUndoAmount);
+                    sellUndoAmount = 0;
+                }
+
+                dataManager.SaveBoard();
+            }
+        }
+
+        public void CancelUndo()
+        {
+            canUndo = false;
+
+            if (undoItem != null)
+            {
+                undoItem = null;
+                undoBoardItem = null;
+                undoTile = null;
+                undoScale = Vector2.zero;
             }
         }
     }
-
-    public void UndoLastStep()
-    {
-        if (canUndo)
-        {
-            currentItem = undoItem;
-            currentItem.transform.parent = undoTile.transform;
-
-            currentItem.ScaleToSize(undoScale, scaleSpeed, false,()=>{
-                CancelUndo();
-            });
-
-            Vector2Int loc = boardManager.GetBoardLocation(0, undoTile);
-
-            gameData.boardData[loc.x, loc.y] = new Types.Board
-            {
-                sprite = undoBoardItem.sprite,
-                group = undoBoardItem.group,
-                state = undoBoardItem.state,
-                crate = undoBoardItem.crate,
-                order = undoBoardItem.order,
-            };
-
-            selectionManager.SelectItemAfterUndo();
-
-            if (sellUndoAmount > 0)
-            {
-                gameData.UpdateGold(-sellUndoAmount);
-                sellUndoAmount = 0;
-            }
-        }
-    }
-
-    public void CancelUndo()
-    {
-        canUndo = false;
-
-        if (undoItem != null)
-        {
-            undoItem=null;
-            undoBoardItem = null;
-            undoTile = null;
-            undoScale = Vector2.zero;
-        }
-    }
-}
 }

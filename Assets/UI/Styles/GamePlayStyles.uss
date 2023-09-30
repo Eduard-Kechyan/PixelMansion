@@ -97,6 +97,10 @@
     display: none;
 }
 
+.info_box_action_button_has_value {
+    padding-left: 14px;
+}
+
 .info_box_action_button .value {
     padding-left: 10px;
     width: 12px;

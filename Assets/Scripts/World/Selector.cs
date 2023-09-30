@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,13 +31,16 @@ namespace Merge
         private Selectable selectable;
         private int lastSpriteOrder;
 
+        private Action confirmCallback;
+        private Action cancelCallback;
+
         // References
         private Camera cam;
         private SoundManager soundManager;
         private SelectorUIHandler selectorUIHandler;
         private PopupManager popupManager;
         private I18n LOCALE;
-        private WorldDataManager WorldDataManager;
+        private WorldDataManager worldDataManager;
         private CharMain charMain;
 
         // UI
@@ -51,7 +55,7 @@ namespace Merge
             selectorUIHandler = hubGameUiDoc.GetComponent<SelectorUIHandler>();
             popupManager = GameRefs.Instance.popupManager;
             LOCALE = I18n.Instance;
-            WorldDataManager = GetComponent<WorldDataManager>();
+            worldDataManager = GetComponent<WorldDataManager>();
             charMain = CharMain.Instance;
 
             // Calc duration
@@ -229,6 +233,14 @@ namespace Merge
             selectable = null;
         }
 
+        public void SelectAlt(Selectable newSelectable, Action newConfirmCallback = null, Action newCancelCallback = null)
+        {
+            confirmCallback = newConfirmCallback;
+            cancelCallback = newCancelCallback;
+
+            Debug.Log(newSelectable.transform.name);
+        }
+
         public void SelectOption(int option)
         {
             selectable.SetSprites(option);
@@ -255,6 +267,10 @@ namespace Merge
             }
 
             selectable = null;
+
+            if(cancelCallback!=null){
+                cancelCallback();
+            }
         }
 
         void CancelSelectingAlt()
@@ -264,6 +280,11 @@ namespace Merge
             selectable.CancelSpriteChange(lastSpriteOrder);
 
             selectable = null;
+
+            if (cancelCallback != null)
+            {
+                cancelCallback();
+            }
         }
 
         public void SelectionConfirmed()
@@ -273,11 +294,16 @@ namespace Merge
 
             selectable.ConfirmSpriteChange(lastSpriteOrder);
 
-            WorldDataManager.SetSelectable(selectable);
+            worldDataManager.SetSelectable(selectable);
 
             selectable.Unselect();
 
             selectable = null;
+
+            if (confirmCallback != null)
+            {
+                confirmCallback();
+            }
         }
 
         IEnumerator ShowArrow(Vector2 newUIPos, Selectable selectable)

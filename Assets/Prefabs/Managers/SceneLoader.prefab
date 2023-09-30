@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1798228451276164874
 MonoBehaviour:
@@ -45,6 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   transitionUI: {fileID: 0}
-  duration: 0.3
-  fadeDuration: 0.2
+  duration: 0.4
+  fadeDuration: 0.3
   sceneName: 

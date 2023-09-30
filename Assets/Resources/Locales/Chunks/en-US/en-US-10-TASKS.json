@@ -6,6 +6,5 @@
     "task_button_play": "Play",
     "task_button_complete": "Complete",
     "________ LIVING ROOM ________": "________________",
-    "task_LivingRoom_CleanTheRoom": "Clean the room",
-    "task_LivingRoom_RepairTheRoom": "Repair the room"
+    "task_LivingRoom_ChangeFloor": "Repair the floor"
 }

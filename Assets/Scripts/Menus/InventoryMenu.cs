@@ -338,13 +338,15 @@ namespace Merge
                     gameplayUI.BlipInventoryIndicator();
 
                     // Remove and unselect the item
-                    item.ScaleToSize(Vector2.zero, scaleSpeed, false);
+                    item.ScaleToSize(Vector2.zero, scaleSpeed, true);
 
                     Vector2Int loc = boardManager.GetBoardLocation(0, initialTile);
 
                     int order = gameData.boardData[loc.x, loc.y].order;
 
                     gameData.boardData[loc.x, loc.y] = new Types.Board { order = order };
+
+                    dataManager.SaveBoard();
 
                     selectionManager.Unselect("Other");
 

@@ -22,6 +22,9 @@ namespace Merge
         public static Color colorYellow = Color.yellow;
         public static Color colorRed = Color.red;
 
+        // Temp data
+        public static string taskToComplete = "";
+
         // Instance
         public static Glob Instance;
 

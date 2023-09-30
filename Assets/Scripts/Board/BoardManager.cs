@@ -302,7 +302,7 @@ namespace Merge
                 }
             }
 
-            Debug.Log(a * single + ":" + b * single);
+          //  Debug.Log(a * single + ":" + b * single);
 
 
             // TODO - Add timer for bubble
@@ -353,7 +353,7 @@ namespace Merge
         {
             GameObject emptyTile = boardTiles.transform.GetChild(emptyBoard.order).gameObject;
 
-            Types.Board boardItem = new Types.Board
+            Types.Board boardItem = new()
             {
                 sprite = itemData.sprite,
                 type = itemData.type,
@@ -367,7 +367,7 @@ namespace Merge
             // Create the item on the board
             Item newItem = itemHandler.CreateItem(emptyTile, initializeBoard.tileSize, boardItem);
 
-            Vector2 tempScale = new Vector2(
+            Vector2 tempScale = new(
                 newItem.transform.localScale.x,
                 newItem.transform.localScale.y
             );
@@ -384,7 +384,7 @@ namespace Merge
 
             newItem.MoveAndScale(emptyTile.transform.position, tempScale, moveSpeed, scaleSpeed);
 
-            gameData.boardData[emptyBoard.loc.x, emptyBoard.loc.y] = new Types.Board
+            gameData.boardData[emptyBoard.loc.x, emptyBoard.loc.y] = new()
             {
                 sprite = newItem.sprite,
                 type = newItem.type,
@@ -470,7 +470,7 @@ namespace Merge
             }
         }
 
-        // Calculate the distance between two points in a 2d array
+                // Calculate the distance between two points in a 2d array
         float CalculateDistance(int currentX, int currentY, int otherX, int otherY)
         {
             float distance = Mathf.Sqrt(

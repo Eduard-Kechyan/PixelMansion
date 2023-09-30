@@ -17,9 +17,9 @@ MonoBehaviour:
     steps:
     - order: 0
       content:
-      - id: CleanTheRoom
+      - id: ChangeFloor
         stepType: 0
-        name: Task CleanTheRoom
+        name: Task ChangeFloor
       nextIds: []
       completed: 0
     nextIds: []

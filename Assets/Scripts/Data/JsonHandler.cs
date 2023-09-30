@@ -253,7 +253,8 @@ namespace Merge
                     genGroup = Glob.ParseEnum<ItemTypes.GenGroup>(itemsJson[i].genGroup),
                     collGroup = Glob.ParseEnum<Types.CollGroup>(itemsJson[i].collGroup),
                     chestGroup = Glob.ParseEnum<Types.ChestGroup>(itemsJson[i].chestGroup),
-                    amount = itemsJson[i].amount
+                    amount = itemsJson[i].amount,
+                    completed = itemsJson[i].completed,
                 };
 
                 itemsData[i] = newItemsData;
@@ -276,7 +277,8 @@ namespace Merge
                     genGroup = itemsData[i].genGroup.ToString(),
                     collGroup = itemsData[i].collGroup.ToString(),
                     chestGroup = itemsData[i].chestGroup.ToString(),
-                    amount = itemsData[i].amount
+                    amount = itemsData[i].amount,
+                    completed = itemsData[i].completed,
                 };
 
                 itemsJson[i] = newItemsJson;
