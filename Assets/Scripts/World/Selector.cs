@@ -238,7 +238,16 @@ namespace Merge
             confirmCallback = newConfirmCallback;
             cancelCallback = newCancelCallback;
 
-            Debug.Log(newSelectable.transform.name);
+            selectable = newSelectable;
+
+            selectorUIHandler.Open(selectable.GetSpriteOptions(), true);
+
+            soundManager.PlaySound("", arrowSound);
+
+            isSelecting = false;
+            isSelected = true;
+
+            selectable.Select();
         }
 
         public void SelectOption(int option)
@@ -268,7 +277,8 @@ namespace Merge
 
             selectable = null;
 
-            if(cancelCallback!=null){
+            if (cancelCallback != null)
+            {
                 cancelCallback();
             }
         }

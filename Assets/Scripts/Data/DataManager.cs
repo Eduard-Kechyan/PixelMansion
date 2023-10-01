@@ -244,7 +244,7 @@ namespace Merge
 
         //// SAVE ////
 
-        public void SaveBoard()
+        public void SaveBoard(bool fireEvent = true)
         {
             string newBoardData = jsonHandler.ConvertBoardToJson(
                 dataConverter.ConvertBoardToArray(gameData.boardData)
@@ -252,7 +252,7 @@ namespace Merge
 
             writer.Write("boardData", newBoardData).Commit();
 
-            if (boardSaveEvent != null)
+            if (fireEvent && boardSaveEvent != null)
             {
                 boardSaveEvent();
             }

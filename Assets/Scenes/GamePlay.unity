@@ -645,6 +645,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2612081357836540789, guid: 09379b30afef3214ba489f71db8fa4dd, type: 3}
+      propertyPath: boardManager
+      value: 
+      objectReference: {fileID: 639326507}
     - target: {fileID: 6123228280949545067, guid: 09379b30afef3214ba489f71db8fa4dd, type: 3}
       propertyPath: m_Name
       value: ProgressManager

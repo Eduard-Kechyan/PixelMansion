@@ -25,6 +25,7 @@ namespace Merge
         // References
         private MenuUI menuUI;
         private InfoMenu infoMenu;
+        //private HubUI hubUI;
         private I18n LOCALE;
         private GameData gameData;
         private ItemHandler itemHandler;
@@ -42,6 +43,7 @@ namespace Merge
             itemHandler = DataManager.Instance.GetComponent<ItemHandler>();
             LOCALE = I18n.Instance;
             gameData = GameData.Instance;
+            //hubUI = GameRefs.Instance.hubUI;
 
             // Cache UI
             root = GetComponent<UIDocument>().rootVisualElement;
@@ -71,6 +73,12 @@ namespace Merge
 
             SetTasks();
 
+           /* if (hubUI != null && PlayerPrefs.HasKey("TaskNoteDotSet"))
+            {
+                hubUI.ToggleButtonNoteDot("task", false);
+                PlayerPrefs.DeleteKey("TaskNoteDotSet");
+            }*/
+
             // Open menu
             menuUI.OpenMenu(taskMenu, title);
         }
@@ -79,13 +87,13 @@ namespace Merge
         {
             taskScrollView.Clear();
 
-            if (gameData.taskGroupsData.Count > 0 && gameData.tasksData.Count > 0)
+            if (gameData.taskGroupsData.Count > 0)
             {
                 for (int i = 0; i < gameData.taskGroupsData.Count; i++)
                 {
                     var newTaskGroup = taskGroupPrefab.CloneTree();
 
-                    newTaskGroup.name = "TaskGroup" + i;
+                    newTaskGroup.name = gameData.taskGroupsData[i].id;
 
                     newTaskGroup.Q<Label>("GroupTitle").text = LOCALE.Get("task_group_" + gameData.taskGroupsData[i].id);
 
@@ -122,19 +130,21 @@ namespace Merge
 
                             if (gameData.tasksData[j].needs.Length == gameData.tasksData[j].completed)
                             {
-                                string indexString = i.ToString();
-
-                                playButton.clicked += () => HandleCompletedTap(groupId, taskId, indexString);
+                                playButton.clicked += () => HandleCompletedTap(groupId, taskId);
 
                                 playButton.text = LOCALE.Get("task_button_complete");
+
+                                playButton.style.unityBackgroundImageTintColor = Glob.colorGreen;
                             }
                             else
                             {
                                 playButton.text = LOCALE.Get("task_button_play");
 
+                                playButton.style.unityBackgroundImageTintColor = Glob.colorBlue;
+
                                 if (sceneLoader.GetSceneName() == "Hub")
                                 {
-                                    playButton.clicked += () => HandlePlayTap();
+                                    playButton.clicked += () => sceneLoader.Load(2);
                                 }
                                 else
                                 {
@@ -194,39 +204,20 @@ namespace Merge
             }
         }
 
-        void HandleCompletedTap(string groupId, string taskId, string indexString)
+        void HandleCompletedTap(string groupId, string taskId)
         {
             if (sceneLoader.GetSceneName() == "Hub")
             {
-                taskManager.TryToCompleteTask(groupId, taskId, indexString);
+                taskManager.TryToCompleteTask(groupId, taskId);
+
+                menuUI.CloseMenu(taskMenu.name);
             }
             else
             {
-                Glob.taskToComplete = groupId + "|" + taskId + "|" + indexString;
+                Glob.taskToComplete = groupId + "|" + taskId;
+
                 sceneLoader.Load(1);
             }
-        }
-
-        void HandlePlayTap()
-        {
-            if (sceneLoader.GetSceneName() == "Hub")
-            {
-                sceneLoader.Load(2);
-            }
-            else
-            {
-
-            }
-        }
-
-        public void EndTask(string groupId, string indexString, Types.TaskGroup taskGroupData)
-        {
-            VisualElement taskGroup = taskScrollView.Q<VisualElement>(groupId + indexString);
-
-            int percentComplete = Mathf.RoundToInt((100 / taskGroupData.total) * taskGroupData.completed + 1);
-
-            taskGroup.Q<VisualElement>("Fill").style.width = percentComplete;
-            taskGroup.Q<Label>("FillLabel").text = percentComplete + "%";
         }
     }
 }

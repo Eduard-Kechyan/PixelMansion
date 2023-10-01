@@ -47,7 +47,7 @@ namespace Merge
 
         public void CheckInitialData()
         {
-            initialSet = true;
+            settingInitial = true;
 
             if (!initialSet)
             {
@@ -82,7 +82,7 @@ namespace Merge
 
 
                 // TODO - Remove this line
-                if (GameData.Instance.tasksData.Count == 0)
+                if (GameData.Instance.tasksData.Count == 0 && !PlayerPrefs.HasKey("TempTaskDataSet"))
                 {
                     taskManager.AddTaskGroup(progressData.areas[0].id);
                     taskManager.AddTask(
@@ -91,6 +91,8 @@ namespace Merge
                         ].content[0].id,
                         progressData.areas[0].id
                     );
+
+                    PlayerPrefs.SetInt("TempTaskDataSet", 1);
                 }
 
                 taskManager.CheckTaskNoteDot();
@@ -98,6 +100,66 @@ namespace Merge
                 initialSet = true;
                 settingInitial = false;
             }
+        }
+
+        public bool CheckNextTaskIds(string groupId, string taskId)
+        {
+            bool hasNext = true;
+
+            for (int i = 0; i < progressData.areas.Length; i++)
+            {
+                if (progressData.areas[i].id == groupId)
+                {
+                    if (progressData.areas[i].steps.Length > 0)
+                    {
+                        for (int j = 0; j < progressData.areas[i].steps.Length; j++)
+                        {
+                            if (Array.Exists(progressData.areas[i].steps[j].nextIds, id => id == taskId))
+                            {
+                                for (int k = 0; k < progressData.areas[i].steps[j].nextIds.Length; k++)
+                                {
+                                    taskManager.AddTaskGroup(groupId);
+                                    taskManager.AddTask(
+                                        progressData.areas[i].steps[j].nextIds[k],
+                                        groupId
+                                    );
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        hasNext = false;
+                    }
+                }
+            }
+
+            return hasNext;
+        }
+
+        public void CheckNextTaskGroupIds(string groupId)
+        {
+            bool hasNext = true;
+
+            for (int i = 0; i < progressData.areas.Length; i++)
+            {
+                if (progressData.areas[i].id == groupId)
+                {
+                    if (progressData.areas[i].steps.Length > 0)
+                    {
+                        for (int j = 0; j < progressData.areas[i].steps.Length; j++)
+                        {
+                            
+                        }
+                    }
+                    else
+                    {
+                        hasNext = false;
+                    }
+                }
+            }
+
+            //return hasNext;
         }
     }
 }

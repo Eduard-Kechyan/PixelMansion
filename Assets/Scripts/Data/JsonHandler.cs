@@ -46,6 +46,7 @@ namespace Merge
                     generatesAt = boardJson[i].generatesAt,
                     crate = boardJson[i].crate,
                     gemPopped = boardJson[i].gemPopped,
+                    isCompleted = boardJson[i].isCompleted,
                 };
 
                 boardData[i] = newBoardData;
@@ -76,6 +77,7 @@ namespace Merge
                     chestItemsSet = boardData[i].chestItemsSet,
                     crate = initialLoop ? randomInt : boardData[i].crate,
                     gemPopped = boardData[i].gemPopped,
+                    isCompleted = boardData[i].isCompleted,
                 };
 
                 boardJson[i] = newBoardJson;

@@ -2,9 +2,12 @@
     "________ TASK GROUPS ________": "________________",
     "task_group_LivingRoom": "The Grand Living Room",
     "task_group_LivingRoom_desc": "Lets clean it up before we explore it!",
+    "task_group_BedRoom": "The Tiny Bedroom",
+    "task_group_BedRoom_desc": "Lets make this room a dream room!",
     "________ TASKS ________": "________________",
     "task_button_play": "Play",
     "task_button_complete": "Complete",
     "________ LIVING ROOM ________": "________________",
-    "task_LivingRoom_ChangeFloor": "Repair the floor"
+    "task_BedRoom_ChangeFloor": "Repair the floor",
+    "task_LivingRoom_ChangeWallLeft":"Repair The Walls"
 }

@@ -30,8 +30,9 @@ namespace Merge
         private Button playButton;
         private VisualElement settingsButtonNoteDot;
         private VisualElement shopButtonNoteDot;
-        private VisualElement taskButtonNoteDot;
         private VisualElement playButtonNoteDot;
+        private VisualElement taskButtonNoteDot;
+        private Label taskButtonNoteDotLabel;
 
         void Start()
         {
@@ -54,8 +55,9 @@ namespace Merge
 
             settingsButtonNoteDot = settingsButton.Q<VisualElement>("NoteDot");
             shopButtonNoteDot = shopButton.Q<VisualElement>("NoteDot");
-            taskButtonNoteDot = taskButton.Q<VisualElement>("NoteDot");
             playButtonNoteDot = playButton.Q<VisualElement>("NoteDot");
+            taskButtonNoteDot = taskButton.Q<VisualElement>("NoteDot");
+            taskButtonNoteDotLabel = taskButtonNoteDot.Q<Label>("Value");
 
             settingsButton.clicked += () => settingsMenu.Open();
             shopButton.clicked += () => shopMenu.Open();
@@ -106,7 +108,7 @@ namespace Merge
             playButtonPosition = Camera.main.ScreenToWorldPoint(playButtonScreenPosition);
         }
 
-        public void ToggleButtonNoteDot(string buttonName, bool show)
+        public void ToggleButtonNoteDot(string buttonName, bool show, string countText = "")
         {
             switch (buttonName)
             {
@@ -122,17 +124,19 @@ namespace Merge
                         : Visibility.Hidden;
                     shopButtonNoteDot.style.opacity = show ? 1 : 0;
                     break;
-                case "task":
-                    taskButtonNoteDot.style.visibility = show
-                        ? Visibility.Visible
-                        : Visibility.Hidden;
-                    taskButtonNoteDot.style.opacity = show ? 1 : 0;
-                    break;
                 case "play":
                     playButtonNoteDot.style.visibility = show
                         ? Visibility.Visible
                         : Visibility.Hidden;
                     playButtonNoteDot.style.opacity = show ? 1 : 0;
+                    break;
+                case "task":
+                    taskButtonNoteDot.style.visibility = show
+                        ? Visibility.Visible
+                        : Visibility.Hidden;
+                    taskButtonNoteDot.style.opacity = show ? 1 : 0;
+
+                    taskButtonNoteDotLabel.text = countText;
                     break;
             }
         }

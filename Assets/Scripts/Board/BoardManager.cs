@@ -46,6 +46,7 @@ namespace Merge
             itemHandler = dataManager.GetComponent<ItemHandler>();
             valuePop = GameRefs.Instance.valuePop;
         }
+
 #if UNITY_EDITOR
         void OnValidate()
         {
@@ -257,7 +258,7 @@ namespace Merge
 
                 if (foundTile.childCount > 0)
                 {
-                    GameObject foundItem = boardTiles.transform.GetChild(order).GetChild(0).gameObject;
+                    GameObject foundItem = foundTile.GetChild(0).gameObject;
 
                     foundItem.GetComponent<Item>().OpenCrate();
                 }
@@ -302,7 +303,7 @@ namespace Merge
                 }
             }
 
-          //  Debug.Log(a * single + ":" + b * single);
+            //  Debug.Log(a * single + ":" + b * single);
 
 
             // TODO - Add timer for bubble
@@ -470,7 +471,7 @@ namespace Merge
             }
         }
 
-                // Calculate the distance between two points in a 2d array
+        // Calculate the distance between two points in a 2d array
         float CalculateDistance(int currentX, int currentY, int otherX, int otherY)
         {
             float distance = Mathf.Sqrt(
@@ -478,6 +479,24 @@ namespace Merge
             );
 
             return distance;
+        }
+
+        public void SetCompletedItems()
+        {
+            for (int x = 0; x < gameData.boardData.GetLength(0); x++)
+            {
+                for (int y = 0; y < gameData.boardData.GetLength(1); y++)
+                {
+                    int order = GetBoardOrder(x, y);
+
+                    Transform foundTile = boardTiles.transform.GetChild(order);
+
+                    if (foundTile.childCount > 0)
+                    {
+                        foundTile.GetChild(0).GetComponent<Item>().isCompleted = gameData.boardData[x, y].isCompleted;
+                    }
+                }
+            }
         }
     }
 }

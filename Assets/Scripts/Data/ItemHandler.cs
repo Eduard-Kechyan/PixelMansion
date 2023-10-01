@@ -36,6 +36,7 @@ namespace Merge
         newItem.itemName = itemData.itemName;
         newItem.level = itemData.level;
         newItem.state = boardItem.state;
+        newItem.isCompleted = boardItem.isCompleted;
         newItem.type = itemData.type;
         newItem.hasLevel = itemData.hasLevel;
         newItem.parents = itemData.parents;
@@ -103,7 +104,7 @@ namespace Merge
         return newItem;
     }
 
-    // Find the given item for the scritable object
+    // Find the given item for the scriptable object
     public Types.ItemsData FindItem(
         Types.Board boardItem = null,
         Types.ShopItemsContent shopItem = null,

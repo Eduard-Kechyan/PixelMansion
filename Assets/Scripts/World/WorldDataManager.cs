@@ -408,7 +408,7 @@ namespace Merge
             {
                 Transform tempArea = worldRoot.GetChild(i);
 
-                if (tempArea.name == task.groupId +"Area")
+                if (tempArea.name == task.groupId + "Area")
                 {
                     worldArea = tempArea;
                 }
@@ -421,36 +421,11 @@ namespace Merge
                     case Types.TaskRefType.Area:
                         return worldArea.gameObject;
                     case Types.TaskRefType.Wall:
-                        if (worldArea.GetChild(task.isTaskRefRight ? 1 : 0).TryGetComponent(out ChangeWall changeWallRight))
-                        {
-                            return changeWallRight.gameObject;
-                        }
-                        break;
-                    case Types.TaskRefType.Floor:
-                        if (worldArea.GetChild(2).TryGetComponent(out ChangeFloor changeFloor))
-                        {
-                            return changeFloor.gameObject;
-                        }
-                        break;
-                    case Types.TaskRefType.Furniture:
-                        for (int i = 0; i < worldArea.GetChild(3).childCount; i++)
-                        {
-                            Transform furniture = worldArea.GetChild(3).GetChild(i);
-
-                            if (furniture.name == task.taskRefName)
-                            {
-                                if (furniture.TryGetComponent(out ChangeFurniture changeFurniture))
-                                {
-                                    return changeFurniture.gameObject;
-                                }
-
-                                break;
-                            }
-                        }
-                        break;
-                    case Types.TaskRefType.Item:
-                        Debug.LogWarning("Types.StepRefType.Item not set in WorldDataManager.cs");
-                        return null;
+                        return worldArea.Find(task.taskRefName + (task.isTaskRefRight ? "Right" : "Left")).gameObject;
+                    default:
+                        // Floor, Furniture, Item and others
+                        // TODO - Possible find Furniture and Item first before getting their children
+                        return worldArea.Find(task.taskRefName).gameObject;
                 }
             }
 

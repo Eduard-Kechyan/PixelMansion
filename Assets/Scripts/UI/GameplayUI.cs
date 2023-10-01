@@ -47,6 +47,7 @@ namespace Merge
         private VisualElement inventoryButtonNoteDot;
         private VisualElement shopButtonNoteDot;
         private VisualElement taskButtonNoteDot;
+        private Label taskButtonNoteDotLabel;
 
         void Start()
         {
@@ -72,6 +73,7 @@ namespace Merge
             inventoryButtonNoteDot = inventoryButton.Q<VisualElement>("NoteDot");
             shopButtonNoteDot = shopButton.Q<VisualElement>("NoteDot");
             taskButtonNoteDot = taskButton.Q<VisualElement>("NoteDot");
+            taskButtonNoteDotLabel = taskButtonNoteDot.Q<Label>("Value");
 
             // Disable inventory button border
             inventoryButton.Q<VisualElement>("Border").pickingMode = PickingMode.Ignore;
@@ -271,7 +273,7 @@ namespace Merge
             }
         }
 
-        public void ToggleButtonNoteDot(string buttonName, bool show)
+        public void ToggleButtonNoteDot(string buttonName, bool show, string countText = "")
         {
             switch (buttonName)
             {
@@ -298,6 +300,8 @@ namespace Merge
                         ? Visibility.Visible
                         : Visibility.Hidden;
                     taskButtonNoteDot.style.opacity = show ? 1 : 0;
+
+                    taskButtonNoteDotLabel.text = countText;
                     break;
             }
         }

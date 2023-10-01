@@ -194,6 +194,9 @@ namespace Merge
             [HideInInspector]
             public bool gemPopped;
 
+            [HideInInspector]
+            public bool isCompleted;
+
             /*public bool hasTimer;
             public string startTime;
             public int seconds;*/
@@ -214,6 +217,7 @@ namespace Merge
             public int generatesAt;
             public bool chestItemsSet;
             public bool gemPopped;
+            public bool isCompleted;
             /*public string startTime;
             public bool hasTimer;
             public int seconds;*/
