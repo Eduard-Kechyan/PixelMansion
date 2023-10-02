@@ -45,7 +45,6 @@ namespace Merge
         public string initialJsonData;
         private string bonusData;
         private string inventoryData;
-        private string taskGroupsData;
         private string tasksData;
         private string timersJsonData;
         [HideInInspector]
@@ -114,8 +113,7 @@ namespace Merge
                 initialJsonData = jsonHandler.ConvertBoardToJson(initialItems.content, true);
                 bonusData = jsonHandler.ConvertBonusToJson(gameData.bonusData);
                 inventoryData = jsonHandler.ConvertInventoryToJson(gameData.inventoryData);
-                taskGroupsData = JsonConvert.SerializeObject(gameData.taskGroupsData);
-                tasksData = jsonHandler.ConvertTasksToJson(gameData.tasksData);
+                tasksData = jsonHandler.ConvertTaskGroupsToJson(gameData.tasksData);
                 timersJsonData = jsonHandler.ConvertTimersToJson(gameData.timers);
                 unsentJsonData = jsonHandler.ConvertUnsentToJson(apiCalls.unsentData);
 
@@ -131,7 +129,6 @@ namespace Merge
                     .Write("boardData", initialJsonData)
                     .Write("bonusData", bonusData)
                     .Write("inventoryData", inventoryData)
-                    .Write("taskGroupsData", taskGroupsData)
                     .Write("tasksData", tasksData)
                     .Write("unlockedData", dataConverter.GetInitialUnlocked())
                     .Write("timers", timersJsonData)
@@ -157,7 +154,6 @@ namespace Merge
             string newBoardData = "";
             string newBonusData = "";
             string newInventoryData = "";
-            string newTaskGroupsData = "";
             string newTasksData = "";
             string newTimersData = "";
             string newUnlockedData = "";
@@ -169,7 +165,6 @@ namespace Merge
                 newBoardData = initialJsonData;
                 newBonusData = bonusData;
                 newInventoryData = inventoryData;
-                newTaskGroupsData = taskGroupsData;
                 newTasksData = tasksData;
                 newTimersData = timersJsonData;
                 newUnlockedData = unlockedJsonData;
@@ -187,7 +182,6 @@ namespace Merge
                 reader.Read<string>("boardData", r => newBoardData = r);
                 reader.Read<string>("bonusData", r => newBonusData = r);
                 reader.Read<string>("inventoryData", r => newInventoryData = r);
-                reader.Read<string>("taskGroupsData", r => newTaskGroupsData = r);
                 reader.Read<string>("tasksData", r => newTasksData = r);
                 reader.Read<string>("timers", r => newTimersData = r);
                 reader.Read<string>("unlockedData", r => newUnlockedData = r);
@@ -213,8 +207,7 @@ namespace Merge
             gameData.boardData = dataConverter.ConvertArrayToBoard(jsonHandler.ConvertBoardFromJson(newBoardData));
             gameData.bonusData = jsonHandler.ConvertBonusFromJson(newBonusData);
             gameData.inventoryData = jsonHandler.ConvertInventoryFromJson(newInventoryData);
-            gameData.taskGroupsData = JsonConvert.DeserializeObject<List<Types.TaskGroup>>(newTaskGroupsData);
-            gameData.tasksData = jsonHandler.ConvertTasksFromJson(newTasksData);
+            gameData.tasksData = jsonHandler.ConvertTaskGroupsFromJson(newTasksData);
 
             apiCalls.unsentData = jsonHandler.ConvertUnsentFromJson(newUnsentData);
 
@@ -274,10 +267,8 @@ namespace Merge
 
         public void SaveTasks()
         {
-            string newTaskGroupsData = JsonConvert.SerializeObject(gameData.taskGroupsData);
-            string newTasksData = jsonHandler.ConvertTasksToJson(gameData.tasksData);
+            string newTasksData = jsonHandler.ConvertTaskGroupsToJson(gameData.tasksData);
 
-            writer.Write("taskGroupsData", newTaskGroupsData).Commit();
             writer.Write("tasksData", newTasksData).Commit();
         }
 

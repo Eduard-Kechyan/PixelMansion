@@ -12,6 +12,7 @@
     "________ TASKS ________": "________________",
     "task_button_play": "Play",
     "task_button_complete": "Complete",
+    "task_empty": "No tasks found!",
     "________ LIVING ROOM ________": "________________",
     "task_BedRoom_ChangeFloor": "Repair the floor",
     "task_LivingRoom_ChangeWallLeft":"Repair The Walls"

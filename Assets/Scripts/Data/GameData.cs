@@ -55,8 +55,7 @@ namespace Merge
         public Types.Items[] chestsData;
         public List<Types.Bonus> bonusData = new();
         public List<Types.Inventory> inventoryData = new();
-        public List<Types.TaskGroup> taskGroupsData = new();
-        public List<Types.Task> tasksData = new();
+        public List<Types.TaskGroup> tasksData = new();
 
         public Types.Board[,] boardData;
         public string[] unlockedData = new string[0];

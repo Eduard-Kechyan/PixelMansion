@@ -183,25 +183,20 @@ namespace Merge
         }
 
         //// TASKS ////
-        public List<Types.Task> ConvertTasksFromJson(string tasksString)
+        public List<Types.TaskGroup> ConvertTaskGroupsFromJson(string tasksString)
         {
-            Types.TaskJson[] tasksJson = JsonConvert.DeserializeObject<Types.TaskJson[]>(
+            Types.TaskGroupJson[] tasksJson = JsonConvert.DeserializeObject<Types.TaskGroupJson[]>(
                 tasksString
             );
 
-            List<Types.Task> tasksData = new();
+            List<Types.TaskGroup> tasksData = new();
 
             for (int i = 0; i < tasksJson.Length; i++)
             {
-                Types.Task newTasksData = new()
+                Types.TaskGroup newTasksData = new()
                 {
-                    needs = ConvertTaskItemFromJson(tasksJson[i].needs),
-                    rewards = ConvertTaskItemFromJson(tasksJson[i].rewards),
                     id = tasksJson[i].id,
-                    groupId = tasksJson[i].groupId,
-                    taskRefName = tasksJson[i].taskRefName,
-                    taskRefType = Glob.ParseEnum<Types.TaskRefType>(tasksJson[i].taskRefType),
-                    isTaskRefRight = tasksJson[i].isTaskRefRight,
+                    tasks = ConvertTasksFromJson(tasksJson[i].tasks),
                     completed = tasksJson[i].completed,
                 };
 
@@ -211,21 +206,16 @@ namespace Merge
             return tasksData;
         }
 
-        public string ConvertTasksToJson(List<Types.Task> tasksData)
+        public string ConvertTaskGroupsToJson(List<Types.TaskGroup> tasksData)
         {
-            Types.TaskJson[] tasksJson = new Types.TaskJson[tasksData.Count];
+            Types.TaskGroupJson[] tasksJson = new Types.TaskGroupJson[tasksData.Count];
 
             for (int i = 0; i < tasksData.Count; i++)
             {
-                Types.TaskJson newTasksJson = new()
+                Types.TaskGroupJson newTasksJson = new()
                 {
-                    needs = ConvertTaskItemToJson(tasksData[i].needs),
-                    rewards = ConvertTaskItemToJson(tasksData[i].rewards),
                     id = tasksData[i].id,
-                    groupId = tasksData[i].groupId,
-                    taskRefName = tasksData[i].taskRefName,
-                    taskRefType = tasksData[i].taskRefType.ToString(),
-                    isTaskRefRight = tasksData[i].isTaskRefRight,
+                    tasks = ConvertTasksToJson(tasksData[i].tasks),
                     completed = tasksData[i].completed,
                 };
 
@@ -233,6 +223,56 @@ namespace Merge
             }
 
             return JsonConvert.SerializeObject(tasksJson);
+        }
+
+        List<Types.Task> ConvertTasksFromJson(string tasksString)
+        {
+            Types.TaskJson[] tasksJson = JsonConvert.DeserializeObject<Types.TaskJson[]>(
+                tasksString
+            );
+
+            List<Types.Task> tasksData = new (tasksJson.Length);
+
+            for (int i = 0; i < tasksJson.Length; i++)
+            {
+                Types.Task newTasksData = new()
+                {
+                    needs = ConvertTaskItemFromJson(tasksJson[i].needs),
+                    rewards = ConvertTaskItemFromJson(tasksJson[i].rewards),
+                    id = tasksJson[i].id,
+                    taskRefName = tasksJson[i].taskRefName,
+                    taskRefType = Glob.ParseEnum<Types.TaskRefType>(tasksJson[i].taskRefType),
+                    isTaskRefRight = tasksJson[i].isTaskRefRight,
+                    completed = tasksJson[i].completed,
+                };
+
+                tasksData[i] = newTasksData;
+            }
+
+            return tasksData;
+        }
+
+        string ConvertTasksToJson(List<Types.Task> tasksData)
+        {
+            Types.TaskJson[] taskJson = new Types.TaskJson[tasksData.Count];
+
+            for (int i = 0; i < tasksData.Count; i++)
+            {
+                Types.TaskJson newTaskJson = new()
+                {
+                    needs = ConvertTaskItemToJson(tasksData[i].needs),
+                    rewards = ConvertTaskItemToJson(tasksData[i].rewards),
+                    id = tasksData[i].id,
+                    taskRefName = tasksData[i].taskRefName,
+                    taskRefType = tasksData[i].taskRefType.ToString(),
+                    isTaskRefRight = tasksData[i].isTaskRefRight,
+                    completed = tasksData[i].completed,
+                };
+
+                taskJson[i] = newTaskJson;
+            }
+
+            return JsonConvert.SerializeObject(taskJson);
         }
 
         Types.TaskItem[] ConvertTaskItemFromJson(string itemsString)

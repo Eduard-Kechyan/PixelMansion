@@ -27,19 +27,11 @@ namespace Merge
                     {
                         for (int j = 0; j < areas[i].steps.Length; j++)
                         {
-                            areas[i].steps[j].order = j;
+                            areas[i].steps[j].name = areas[i].steps[j].stepType.ToString() + " " + areas[i].steps[j].id;
 
-                            if (areas[i].steps[j].content.Length > 0)
+                            if (areas[i].steps[j].id == "")
                             {
-                                for (int k = 0; k < areas[i].steps[j].content.Length; k++)
-                                {
-                                    areas[i].steps[j].content[k].name = areas[i].steps[j].content[k].stepType.ToString() + " " + areas[i].steps[j].content[k].id;
-
-                                    if (areas[i].steps[j].content[k].id == "")
-                                    {
-                                        Debug.LogWarning("Step Content" + k + " in Step " + j + " in Area " + i + " doesn't have an id. In ProgressData.cs");
-                                    }
-                                }
+                                Debug.LogWarning("Step " + j + " in Area " + i + " doesn't have an id. In ProgressData.cs");
                             }
                         }
                     }

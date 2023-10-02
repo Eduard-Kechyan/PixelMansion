@@ -12,6 +12,8 @@ namespace Merge
         public WorldDataManager worldDataManager;
         public BoardManager boardManager;
 
+        private Types.TaskGroup[] initialTaskData = null;
+
         // References
         private GameData gameData;
         private DataManager dataManager;
@@ -22,7 +24,12 @@ namespace Merge
         private ProgressManager progressManager;
         private CameraMotion cameraMotion;
 
-        private void Start()
+        void Awake()
+        {
+            initialTaskData = tasksData.taskGroups;
+        }
+
+        void Start()
         {
             // Initialize references to other managers and UI elements
             gameData = GameData.Instance;
@@ -38,54 +45,72 @@ namespace Merge
                 selector = worldDataManager.GetComponent<Selector>();
             }
 
-            /* if (hubUI != null && PlayerPrefs.HasKey("TaskNoteDotSet"))
-             {
-                 hubUI.ToggleButtonNoteDot("task", true);
-             }*/
-
             CheckIfThereIsATaskToComplete();
 
             DataManager.boardSaveEvent += CheckBoardAndInventoryForTasks;
         }
 
-        private void OnDestroy()
+        void OnDestroy()
         {
             DataManager.boardSaveEvent -= CheckBoardAndInventoryForTasks;
         }
 
-        //// Task Groups ////
+        //// Tasks ////
 
-        public void AddTaskGroup(string areaId)
+        public void AddTask(string groupId, string taskId)
         {
-            if (!TaskGroupExists(areaId))
+            Types.Task newTask = initialTaskData.FirstOrDefault(i => i.id == groupId).tasks.FirstOrDefault(i => i.id == taskId);
+
+            bool addNewGroup = true;
+
+            // Check if task group exists and add the new task to it
+            for (int i = 0; i < gameData.tasksData.Count; i++)
             {
-                int totalTasks = 0;
-
-                for (int i = 0; i < tasksData.tasks.Length; i++)
+                if (gameData.tasksData[i].id == groupId)
                 {
-                    if (tasksData.tasks[i].groupId == areaId)
-                    {
-                        totalTasks++;
-                    }
+                    gameData.tasksData[i].tasks.Add(newTask);
+
+                    addNewGroup = false;
+
+                    break;
                 }
-
-                // Create a new task group and add it to the list
-                var newTaskGroup = new Types.TaskGroup { id = areaId, completed = 0, total = totalTasks };
-
-                gameData.taskGroupsData.Add(newTaskGroup);
-
-                // Save changes to disk
-                dataManager.SaveTasks();
             }
+
+            // Add a new task group and add the new task to it
+            if (addNewGroup)
+            {
+                Types.TaskGroup newTaskGroup = new()
+                {
+                    id = groupId,
+                    tasks= new List<Types.Task>()
+                };
+
+                newTaskGroup.tasks.Add(newTask);
+
+                gameData.tasksData.Add(newTaskGroup);
+            }
+
+            // Save data to disk
+            dataManager.SaveTasks();
+
+            CheckBoardAndInventoryForTasks();
         }
 
-        public void RemoveTaskGroup(string areaId)
+        void RemoveTask(string groupId, string taskId)
         {
-            for (int i = 0; i < gameData.taskGroupsData.Count; i++)
+            for (int i = 0; i < gameData.tasksData.Count; i++)
             {
-                if (gameData.taskGroupsData[i].id == areaId)
+                if (gameData.tasksData[i].id == groupId)
                 {
-                    gameData.taskGroupsData.RemoveAt(i);
+                    for (int j = 0; j < gameData.tasksData[i].tasks.Count; j++)
+                    {
+                        if (gameData.tasksData[i].tasks[j].id == taskId)
+                        {
+                            gameData.tasksData[i].tasks.RemoveAt(j);
+
+                            break;
+                        }
+                    }
 
                     break;
                 }
@@ -95,51 +120,11 @@ namespace Merge
             dataManager.SaveTasks();
         }
 
-        private bool TaskGroupExists(string areaId)
-        {
-            // Check if a task group with the given area ID already exists
-            return gameData.taskGroupsData.Exists(taskGroup => taskGroup.id == areaId);
-        }
-
-        //// Tasks ////
-
-        public void AddTask(string taskId, string newGroupId)
-        {
-            if (TaskGroupExists(newGroupId) && !TaskExists(taskId))
-            {
-                // Find the task by ID
-                var newTask = FindTaskById(taskId);
-
-                if (newTask != null)
-                {
-                    // Assign the task to a new group
-                    newTask.groupId = newGroupId;
-
-                    // Add the task to the list of tasks
-                    gameData.tasksData.Add(newTask);
-
-                    // Save changes to disk
-                    dataManager.SaveTasks();
-                }
-                else
-                {
-                    Debug.LogWarning(
-                        $"No Task found with id: {taskId}, with Task Group id: {newGroupId}"
-                    );
-                }
-
-                /*hubUI.ToggleButtonNoteDot("task", true);
-                PlayerPrefs.SetInt("TaskNoteDotSet", 1);*/
-
-                CheckBoardAndInventoryForTasks();
-            }
-        }
-
-        void RemoveTask(string taskId)
+        void RemoveTaskGroup(string groupId)
         {
             for (int i = 0; i < gameData.tasksData.Count; i++)
             {
-                if (gameData.tasksData[i].id == taskId)
+                if (gameData.tasksData[i].id == groupId)
                 {
                     gameData.tasksData.RemoveAt(i);
 
@@ -153,37 +138,27 @@ namespace Merge
 
         public void TaskCompleted(string groupId, string taskId)
         {
-            for (int i = 0; i < gameData.taskGroupsData.Count; i++)
+            for (int i = 0; i < gameData.tasksData.Count; i++)
             {
-                if (gameData.taskGroupsData[i].id == groupId)
+                if (gameData.tasksData[i].id == groupId)
                 {
-                    gameData.taskGroupsData[i].completed += 1;
+                    gameData.tasksData[i].completed += 1;
 
                     break;
                 }
             }
 
+            //bool isLastTask = progressManager.CheckNextTaskIds(groupId, taskId);
+
             // TODO - Check this
-           /* if (!progressManager.CheckNextTaskIds(groupId, taskId))
-            {
-                progressManager.CheckNextTaskGroupIds(groupId);
-            }*/
+            /* if (!progressManager.CheckNextTaskIds(groupId, taskId))
+             {
+                 progressManager.CheckNextTaskGroupIds(groupId);
+             }*/
 
-            RemoveNeedsFromBoardAndInventory(taskId);
+            RemoveNeedsFromBoardAndInventory(groupId, taskId);
 
-            RemoveTask(taskId);
-        }
-
-        private Types.Task FindTaskById(string taskId)
-        {
-            // Find a task by its ID from the tasks data
-            return tasksData.tasks.FirstOrDefault(task => task.id == taskId);
-        }
-
-        private bool TaskExists(string taskId)
-        {
-            // Check if a task with the given ID already exists
-            return gameData.tasksData.Exists(task => task.id == taskId);
+            RemoveTask(groupId, taskId);
         }
 
         //// Completion ////
@@ -191,23 +166,26 @@ namespace Merge
         // Check if any task is ready and enable the task button note dot
         public void CheckTaskNoteDot()
         {
-            int hasAtLeastOneReady = 0;
+            int completedCount = 0;
 
             for (int i = 0; i < gameData.tasksData.Count; i++)
             {
-                if (gameData.tasksData[i].needs.Length == gameData.tasksData[i].completed)
+                for (int j = 0; j < gameData.tasksData[i].tasks.Count; j++)
                 {
-                    hasAtLeastOneReady++;
+                    if (gameData.tasksData[i].tasks[j].needs.Length == gameData.tasksData[i].tasks[j].completed)
+                    {
+                        completedCount++;
+                    }
                 }
             }
 
             if (hubUI != null)
             {
-                hubUI.ToggleButtonNoteDot("task", hasAtLeastOneReady > 0, hasAtLeastOneReady.ToString());
+                hubUI.ToggleButtonNoteDot("task", completedCount > 0, completedCount.ToString());
             }
             else
             {
-                gameplayUI.ToggleButtonNoteDot("task", hasAtLeastOneReady > 0, hasAtLeastOneReady.ToString());
+                gameplayUI.ToggleButtonNoteDot("task", completedCount > 0, completedCount.ToString());
             }
         }
 
@@ -223,36 +201,33 @@ namespace Merge
                 }
             }
 
+            // If there is at least on item completed
             bool completedAtLeastOnItem = false;
 
-            // Count completed needs and set items to completed
-            for (int i = 0; i < gameData.taskGroupsData.Count; i++)
+            for (int i = 0; i < gameData.tasksData.Count; i++)
             {
-                for (int j = 0; j < gameData.tasksData.Count; j++)
+                for (int j = 0; j < gameData.tasksData[i].tasks.Count; j++)
                 {
                     int needsCompleted = 0;
 
-                    // Set task needs completed count
-                    if (gameData.tasksData[j].groupId == gameData.taskGroupsData[i].id)
+                    for (int k = 0; k < gameData.tasksData[i].tasks[j].needs.Length; k++)
                     {
-                        for (int k = 0; k < gameData.tasksData[j].needs.Length; k++)
+                        // Check needs completed
+                        gameData.tasksData[i].tasks[j].needs[k].completed = CheckNeedCompleted(gameData.tasksData[i].tasks[j].needs[k]);
+
+                        if (gameData.tasksData[i].tasks[j].needs[k].amount == gameData.tasksData[i].tasks[j].needs[k].completed)
                         {
-                            gameData.tasksData[j].needs[k].completed = CheckNeedCompleted(gameData.tasksData[j].needs[k]);
+                            needsCompleted++;
+                        }
 
-                            if (gameData.tasksData[j].needs[k].amount == gameData.tasksData[j].needs[k].completed)
-                            {
-                                needsCompleted++;
-                            }
-
-                            if (!completedAtLeastOnItem && gameData.tasksData[j].needs[k].completed > 0)
-                            {
-                                completedAtLeastOnItem = true;
-                            }
+                        if (!completedAtLeastOnItem && gameData.tasksData[i].tasks[j].needs[k].completed > 0)
+                        {
+                            completedAtLeastOnItem = true;
                         }
                     }
 
-                    // Set task completed count
-                    gameData.tasksData[j].completed = needsCompleted;
+                    // Set needs completed count
+                    gameData.tasksData[i].tasks[j].completed = needsCompleted;
                 }
             }
 
@@ -342,11 +317,20 @@ namespace Merge
         {
             GameObject taskRef = new();
 
-            for (int i = 0; i < tasksData.tasks.Length; i++)
+            for (int i = 0; i < gameData.tasksData.Count; i++)
             {
-                if (tasksData.tasks[i].id == taskId)
+                if (gameData.tasksData[i].id == groupId)
                 {
-                    taskRef = worldDataManager.GetWorldItem(tasksData.tasks[i]);
+                    for (int j = 0; j < gameData.tasksData[i].tasks.Count; j++)
+                    {
+                        if (gameData.tasksData[i].tasks[j].id == taskId)
+                        {
+
+                            taskRef = worldDataManager.GetWorldItem(groupId, gameData.tasksData[i].tasks[j]);
+
+                            break;
+                        }
+                    }
 
                     break;
                 }
@@ -363,20 +347,28 @@ namespace Merge
             });
         }
 
-        void RemoveNeedsFromBoardAndInventory(string taskId)
+        void RemoveNeedsFromBoardAndInventory(string groupId, string taskId)
         {
             List<Types.TaskItem> needs = new();
 
             // Get needs
             for (int i = 0; i < gameData.tasksData.Count; i++)
             {
-                if (gameData.tasksData[i].id == taskId)
+                if (gameData.tasksData[i].id == groupId)
                 {
-                    for (int j = 0; j < gameData.tasksData[i].needs.Length; j++)
+                    for (int j = 0; j < gameData.tasksData[i].tasks.Count; j++)
                     {
-                        for (int k = 0; k < gameData.tasksData[i].needs[j].amount; k++)
+                        if (gameData.tasksData[i].tasks[j].id == taskId)
                         {
-                            needs.Add(gameData.tasksData[i].needs[j]);
+                            for (int k = 0; k < gameData.tasksData[i].tasks[j].needs.Length; k++)
+                            {
+                                for (int l = 0; l < gameData.tasksData[i].tasks[j].needs[k].amount; l++)
+                                {
+                                    needs.Add(gameData.tasksData[i].tasks[j].needs[k]);
+                                }
+                            }
+
+                            break;
                         }
                     }
 

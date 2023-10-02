@@ -7,25 +7,32 @@ namespace Merge
     [CreateAssetMenu(fileName = "TasksData", menuName = "ScriptableObject/TasksData", order = 7)]
     public class TasksData : ScriptableObject
     {
-        public Types.Task[] tasks;
+        public Types.TaskGroup[] taskGroups;
 
         void OnValidate()
         {
-            for (int i = 0; i < tasks.Length; i++)
+            for (int i = 0; i < taskGroups.Length; i++)
             {
-                for (int j = 0; j < tasks[i].needs.Length; j++)
-                {
-                    if (tasks[i].needs[j].amount == 0)
-                    {
-                        tasks[i].needs[j].amount = 1;
-                    }
-                }
+                taskGroups[i].name =  taskGroups[i].id;
 
-                for (int j = 0; j < tasks[i].rewards.Length; j++)
+                for (int j = 0; j < taskGroups[i].tasks.Count; j++)
                 {
-                    if (tasks[i].rewards[j].amount == 0)
+                    taskGroups[i].tasks[j].name = taskGroups[i].tasks[j].id;
+
+                    for (int k = 0; k < taskGroups[i].tasks[j].needs.Length; k++)
                     {
-                        tasks[i].rewards[j].amount = 1;
+                        if (taskGroups[i].tasks[j].needs[k].amount == 0)
+                        {
+                            taskGroups[i].tasks[j].needs[k].amount = 1;
+                        }
+                    }
+
+                    for (int k = 0; k < taskGroups[i].tasks[j].rewards.Length; k++)
+                    {
+                        if (taskGroups[i].tasks[j].rewards[k].amount == 0)
+                        {
+                            taskGroups[i].tasks[j].rewards[k].amount = 1;
+                        }
                     }
                 }
             }

@@ -272,33 +272,23 @@ namespace Merge
         [Serializable]
         public class Area
         {
+            [HideInInspector]
+            public string name;
             public string id;
             public Step[] steps;
             public string[] nextIds;
             [HideInInspector]
             public int completed;
-            [HideInInspector]
-            public string name;
         }
 
         [Serializable]
         public class Step
         {
-            [ReadOnly]
-            public int order;
-            public StepContent[] content;
-            public string[] nextIds;
-            [HideInInspector]
-            public int completed;
-        }
-
-        [Serializable]
-        public class StepContent
-        {
-            public string id;
-            public StepType stepType;
             [HideInInspector]
             public string name;
+            public string id;
+            public StepType stepType;
+            public string[] nextIds;
         }
 
         //// TASKS ////
@@ -314,35 +304,26 @@ namespace Merge
         [Serializable]
         public class TaskGroup
         {
+            [HideInInspector]
+            public string name;
             public string id;
+            public List<Task> tasks;
+            [HideInInspector]
             public int completed;
-            public int total;
         }
 
         [Serializable]
         public class Task
         {
-            public TaskItem[] needs;
-            public TaskItem[] rewards;
+            [HideInInspector]
+            public string name;
             public string id;
-            public string groupId;
             public string taskRefName;
             public TaskRefType taskRefType;
             public bool isTaskRefRight;
-            public int completed;
-        }
-
-        [Serializable]
-        public class TaskJson
-        {
-            public string sprite;
-            public string needs;
-            public string rewards;
-            public string id;
-            public string groupId;
-            public string taskRefName;
-            public string taskRefType;
-            public bool isTaskRefRight;
+            public TaskItem[] needs;
+            public TaskItem[] rewards;
+            [HideInInspector]
             public int completed;
         }
 
@@ -356,6 +337,27 @@ namespace Merge
             public CollGroup collGroup;
             public ChestGroup chestGroup;
             public int amount;
+            [HideInInspector]
+            public int completed;
+        }
+
+        [Serializable]
+        public class TaskGroupJson
+        {
+            public string id;
+            public string tasks;
+            public int completed;
+        }
+
+        [Serializable]
+        public class TaskJson
+        {
+            public string needs;
+            public string rewards;
+            public string id;
+            public string taskRefName;
+            public string taskRefType;
+            public bool isTaskRefRight;
             public int completed;
         }
 

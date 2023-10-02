@@ -25,7 +25,6 @@ namespace Merge
         // References
         private MenuUI menuUI;
         private InfoMenu infoMenu;
-        //private HubUI hubUI;
         private I18n LOCALE;
         private GameData gameData;
         private ItemHandler itemHandler;
@@ -43,7 +42,6 @@ namespace Merge
             itemHandler = DataManager.Instance.GetComponent<ItemHandler>();
             LOCALE = I18n.Instance;
             gameData = GameData.Instance;
-            //hubUI = GameRefs.Instance.hubUI;
 
             // Cache UI
             root = GetComponent<UIDocument>().rootVisualElement;
@@ -73,12 +71,6 @@ namespace Merge
 
             SetTasks();
 
-           /* if (hubUI != null && PlayerPrefs.HasKey("TaskNoteDotSet"))
-            {
-                hubUI.ToggleButtonNoteDot("task", false);
-                PlayerPrefs.DeleteKey("TaskNoteDotSet");
-            }*/
-
             // Open menu
             menuUI.OpenMenu(taskMenu, title);
         }
@@ -87,116 +79,117 @@ namespace Merge
         {
             taskScrollView.Clear();
 
-            if (gameData.taskGroupsData.Count > 0)
+            if (gameData.tasksData.Count > 0)
             {
-                for (int i = 0; i < gameData.taskGroupsData.Count; i++)
+                // Task groups
+                for (int i = 0; i < gameData.tasksData.Count; i++)
                 {
                     var newTaskGroup = taskGroupPrefab.CloneTree();
 
-                    newTaskGroup.name = gameData.taskGroupsData[i].id;
+                    newTaskGroup.name = gameData.tasksData[i].id;
 
-                    newTaskGroup.Q<Label>("GroupTitle").text = LOCALE.Get("task_group_" + gameData.taskGroupsData[i].id);
+                    newTaskGroup.Q<Label>("GroupTitle").text = LOCALE.Get("task_group_" + gameData.tasksData[i].id);
 
                     newTaskGroup.Q<VisualElement>("Image").style.backgroundImage = new StyleBackground(
-                        gameData.GetTaskSprite("TaskGroup" + gameData.taskGroupsData[i].id)
+                        gameData.GetTaskSprite("TaskGroup" + gameData.tasksData[i].id)
                     );
 
                     newTaskGroup.Q<Label>("Desc").text = LOCALE.Get(
-                        "task_group_" + gameData.taskGroupsData[i].id + "_desc"
+                        "task_group_" + gameData.tasksData[i].id + "_desc"
                     );
 
-                    int percentComplete = Mathf.RoundToInt((100 / gameData.taskGroupsData[i].total) * gameData.taskGroupsData[i].completed);
+                    int percentComplete = Mathf.RoundToInt((100 / gameData.tasksData[i].tasks.Count) * gameData.tasksData[i].completed);
 
                     newTaskGroup.Q<VisualElement>("Fill").style.width = percentComplete;
                     newTaskGroup.Q<Label>("FillLabel").text = percentComplete + "%";
 
-                    for (int j = 0; j < gameData.tasksData.Count; j++)
+                    // Tasks
+                    for (int j = 0; j < gameData.tasksData[i].tasks.Count; j++)
                     {
-                        if (gameData.tasksData[j].groupId == gameData.taskGroupsData[i].id)
+                        var newTask = taskPrefab.CloneTree();
+
+                        newTask.Q<Label>("TaskTitle").text = LOCALE.Get(
+                            "task_"
+                                + gameData.tasksData[i].id
+                                + "_"
+                                + gameData.tasksData[i].tasks[j].id
+                        );
+
+                        Button playButton = newTask.Q<Button>("PlayButton");
+
+                        // Set button
+                        if (gameData.tasksData[i].tasks[j].needs.Length == gameData.tasksData[i].tasks[j].completed)
                         {
-                            var newTask = taskPrefab.CloneTree();
+                            playButton.clicked += () => HandleCompletedTap(gameData.tasksData[j].id, gameData.tasksData[i].tasks[j].id);
 
-                            newTask.Q<Label>("TaskTitle").text = LOCALE.Get(
-                                "task_"
-                                    + gameData.taskGroupsData[i].id
-                                    + "_"
-                                    + gameData.tasksData[j].id
-                            );
+                            playButton.text = LOCALE.Get("task_button_complete");
 
-                            Button playButton = newTask.Q<Button>("PlayButton");
+                            playButton.style.unityBackgroundImageTintColor = Glob.colorGreen;
+                        }
+                        else
+                        {
+                            playButton.text = LOCALE.Get("task_button_play");
 
-                            string groupId = gameData.tasksData[j].groupId;
-                            string taskId = gameData.tasksData[j].id;
+                            playButton.style.unityBackgroundImageTintColor = Glob.colorBlue;
 
-                            if (gameData.tasksData[j].needs.Length == gameData.tasksData[j].completed)
+                            if (sceneLoader.GetSceneName() == "Hub")
                             {
-                                playButton.clicked += () => HandleCompletedTap(groupId, taskId);
-
-                                playButton.text = LOCALE.Get("task_button_complete");
-
-                                playButton.style.unityBackgroundImageTintColor = Glob.colorGreen;
+                                playButton.clicked += () => sceneLoader.Load(2);
                             }
                             else
                             {
-                                playButton.text = LOCALE.Get("task_button_play");
-
-                                playButton.style.unityBackgroundImageTintColor = Glob.colorBlue;
-
-                                if (sceneLoader.GetSceneName() == "Hub")
-                                {
-                                    playButton.clicked += () => sceneLoader.Load(2);
-                                }
-                                else
-                                {
-                                    playButton.style.opacity = 0.3f;
-                                    playButton.pickingMode = PickingMode.Ignore;
-                                }
+                                playButton.style.opacity = 0.3f;
+                                playButton.pickingMode = PickingMode.Ignore;
                             }
-
-                            for (int k = 0; k < gameData.tasksData[j].needs.Length; k++)
-                            {
-                                var newTaskNeed = taskNeedPrefab.CloneTree();
-
-                                string amount = gameData.tasksData[j].needs[k].completed + "/" + gameData.tasksData[j].needs[k].amount;
-
-                                if (gameData.tasksData[j].needs[k].completed == gameData.tasksData[j].needs[k].amount)
-                                {
-                                    newTaskNeed
-                                        .Q<VisualElement>("Image")
-                                        .style.backgroundColor = Glob.colorGreen;
-                                }
-
-                                newTaskNeed.Q<Label>("Count").text = amount;
-
-                                newTaskNeed.Q<VisualElement>("Image").style.backgroundImage =
-                                    new StyleBackground(gameData.tasksData[j].needs[k].sprite);
-
-                                Types.ShopItemsContent taskNeedItem =
-                                    new()
-                                    {
-                                        type = gameData.tasksData[j].needs[k].type,
-                                        group = gameData.tasksData[j].needs[k].group,
-                                        genGroup = gameData.tasksData[j].needs[k].genGroup,
-                                        chestGroup = gameData.tasksData[j].needs[k].chestGroup,
-                                        sprite = gameData.tasksData[j].needs[k].sprite,
-                                    };
-
-                                newTaskNeed.Q<Button>("InfoButton").clicked += () =>
-                                    infoMenu.Open(itemHandler.CreateItemTemp(taskNeedItem));
-
-                                newTask.Q<VisualElement>("TaskNeeds").Add(newTaskNeed);
-                            }
-
-                            newTaskGroup.Q<VisualElement>("TasksContainer").Add(newTask);
                         }
+
+                        // Task needs
+                        for (int k = 0; k < gameData.tasksData[i].tasks[j].needs.Length; k++)
+                        {
+                            var newTaskNeed = taskNeedPrefab.CloneTree();
+
+                            string amount = gameData.tasksData[i].tasks[j].needs[k].completed + "/" + gameData.tasksData[i].tasks[j].needs[k].amount;
+
+                            if (gameData.tasksData[i].tasks[j].needs[k].completed == gameData.tasksData[i].tasks[j].needs[k].amount)
+                            {
+                                newTaskNeed
+                                    .Q<VisualElement>("Image")
+                                    .style.backgroundColor = Glob.colorGreen;
+                            }
+
+                            newTaskNeed.Q<Label>("Count").text = amount;
+
+                            newTaskNeed.Q<VisualElement>("Image").style.backgroundImage =
+                                new StyleBackground(gameData.tasksData[i].tasks[j].needs[k].sprite);
+
+                            Types.ShopItemsContent taskNeedItem =
+                                new()
+                                {
+                                    type = gameData.tasksData[i].tasks[j].needs[k].type,
+                                    group = gameData.tasksData[i].tasks[j].needs[k].group,
+                                    genGroup = gameData.tasksData[i].tasks[j].needs[k].genGroup,
+                                    chestGroup = gameData.tasksData[i].tasks[j].needs[k].chestGroup,
+                                    sprite = gameData.tasksData[i].tasks[j].needs[k].sprite,
+                                };
+
+                            newTaskNeed.Q<Button>("InfoButton").clicked += () =>
+                                infoMenu.Open(itemHandler.CreateItemTemp(taskNeedItem));
+
+                            newTask.Q<VisualElement>("TaskNeeds").Add(newTaskNeed);
+                        }
+
+                        // Add task to task group
+                        newTaskGroup.Q<VisualElement>("TasksContainer").Add(newTask);
                     }
 
+                    // Add task group to the menu
                     taskScrollView.Add(newTaskGroup);
                 }
             }
             else
             {
-                Label emptyTasksLabel = new() { text = "No tasks found!" };
+                // There are not tasks
+                Label emptyTasksLabel = new() { text = LOCALE.Get("task_empty") };
 
                 emptyTasksLabel.AddToClassList("menu_label");
 

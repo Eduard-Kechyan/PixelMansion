@@ -13,16 +13,17 @@ MonoBehaviour:
   m_Name: ProgressData
   m_EditorClassIdentifier: 
   areas:
-  - id: BedRoom
+  - name: BedRoom
+    id: BedRoom
     steps:
-    - order: 0
-      content:
-      - id: ChangeFloor
-        stepType: 0
-        name: Task ChangeFloor
+    - name: Task ChangeFloor
+      id: ChangeFloor
+      stepType: 0
       nextIds:
       - ChangeWallLeft
-      completed: 0
+    - name: Task ChangeWallLeft
+      id: ChangeWallLeft
+      stepType: 0
+      nextIds: []
     nextIds: []
     completed: 0
-    name: BedRoom

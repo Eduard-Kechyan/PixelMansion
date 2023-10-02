@@ -400,7 +400,7 @@ namespace Merge
             SaveData();
         }
 
-        public GameObject GetWorldItem(Types.Task task)
+        public GameObject GetWorldItem(string groupId, Types.Task task)
         {
             Transform worldArea = null;
 
@@ -408,7 +408,7 @@ namespace Merge
             {
                 Transform tempArea = worldRoot.GetChild(i);
 
-                if (tempArea.name == task.groupId + "Area")
+                if (tempArea.name == groupId + "Area")
                 {
                     worldArea = tempArea;
                 }
@@ -421,11 +421,12 @@ namespace Merge
                     case Types.TaskRefType.Area:
                         return worldArea.gameObject;
                     case Types.TaskRefType.Wall:
-                        return worldArea.Find(task.taskRefName + (task.isTaskRefRight ? "Right" : "Left")).gameObject;
+                        return worldArea.Find(task.taskRefType.ToString() + (task.isTaskRefRight ? "Right" : "Left")).gameObject;
+                    case Types.TaskRefType.Floor:
                     default:
                         // Floor, Furniture, Item and others
                         // TODO - Possible find Furniture and Item first before getting their children
-                        return worldArea.Find(task.taskRefName).gameObject;
+                        return worldArea.Find(task.taskRefName == "" ? task.taskRefType.ToString() : task.taskRefName).gameObject;
                 }
             }
 
