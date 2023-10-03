@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,7 @@ namespace Merge
         public TasksData tasksData;
         public WorldDataManager worldDataManager;
         public BoardManager boardManager;
-
-        private Types.TaskGroup[] initialTaskData = null;
+        public bool check = false;
 
         // References
         private GameData gameData;
@@ -23,11 +23,6 @@ namespace Merge
         private Selector selector;
         private ProgressManager progressManager;
         private CameraMotion cameraMotion;
-
-        void Awake()
-        {
-            initialTaskData = tasksData.taskGroups;
-        }
 
         void Start()
         {
@@ -55,45 +50,72 @@ namespace Merge
             DataManager.boardSaveEvent -= CheckBoardAndInventoryForTasks;
         }
 
+        void OnValidate()
+        {
+            if (check)
+            {
+                check = false;
+
+                Test();
+            }
+        }
+
         //// Tasks ////
 
         public void AddTask(string groupId, string taskId)
         {
-            Types.Task newTask = initialTaskData.FirstOrDefault(i => i.id == groupId).tasks.FirstOrDefault(i => i.id == taskId);
+            Types.Task newTask = null;
 
-            bool addNewGroup = true;
-
-            // Check if task group exists and add the new task to it
-            for (int i = 0; i < gameData.tasksData.Count; i++)
+            for (int i = 0; i < tasksData.taskGroups.Length; i++)
             {
-                if (gameData.tasksData[i].id == groupId)
+                if (tasksData.taskGroups[i].id == groupId)
                 {
-                    gameData.tasksData[i].tasks.Add(newTask);
-
-                    addNewGroup = false;
+                    newTask = tasksData.taskGroups[i].tasks.FirstOrDefault(i => i.id == taskId);
 
                     break;
                 }
             }
 
-            // Add a new task group and add the new task to it
-            if (addNewGroup)
+            if (newTask != null)
             {
-                Types.TaskGroup newTaskGroup = new()
+                bool addNewGroup = true;
+
+                // Check if task group exists and add the new task to it
+                for (int i = 0; i < gameData.tasksData.Count; i++)
                 {
-                    id = groupId,
-                    tasks= new List<Types.Task>()
-                };
+                    if (gameData.tasksData[i].id == groupId)
+                    {
+                        gameData.tasksData[i].tasks.Add(newTask);
 
-                newTaskGroup.tasks.Add(newTask);
+                        addNewGroup = false;
 
-                gameData.tasksData.Add(newTaskGroup);
+                        break;
+                    }
+                }
+
+                // Add a new task group and add the new task to it
+                if (addNewGroup)
+                {
+                    Types.TaskGroup newTaskGroup = new()
+                    {
+                        id = groupId,
+                        tasks = new List<Types.Task>()
+                    };
+
+                    newTaskGroup.tasks.Add(newTask);
+
+                    gameData.tasksData.Add(newTaskGroup);
+                }
+
+                // Save data to disk
+                dataManager.SaveTasks();
+
+                CheckBoardAndInventoryForTasks();
             }
-
-            // Save data to disk
-            dataManager.SaveTasks();
-
-            CheckBoardAndInventoryForTasks();
+            else
+            {
+                Debug.LogWarning("Task not found!");
+            }
         }
 
         void RemoveTask(string groupId, string taskId)
@@ -136,7 +158,9 @@ namespace Merge
             dataManager.SaveTasks();
         }
 
-        public void TaskCompleted(string groupId, string taskId)
+        //// Completion ////
+
+        void TaskCompleted(string groupId, string taskId)
         {
             for (int i = 0; i < gameData.tasksData.Count; i++)
             {
@@ -156,12 +180,16 @@ namespace Merge
                  progressManager.CheckNextTaskGroupIds(groupId);
              }*/
 
-            RemoveNeedsFromBoardAndInventory(groupId, taskId);
+            RemoveNeedsFromBoardAndInventory(groupId, taskId, () =>
+            {
+                RemoveTask(groupId, taskId);
 
-            RemoveTask(groupId, taskId);
+                // Save data to disk
+                dataManager.SaveBoard();
+
+                dataManager.SaveInventory();
+            });
         }
-
-        //// Completion ////
 
         // Check if any task is ready and enable the task button note dot
         public void CheckTaskNoteDot()
@@ -197,7 +225,10 @@ namespace Merge
             {
                 for (int y = 0; y < gameData.boardData.GetLength(1); y++)
                 {
-                    gameData.boardData[x, y].isCompleted = false;
+                    if (gameData.boardData[x, y].isCompleted)
+                    {
+                        gameData.boardData[x, y].isCompleted = false;
+                    }
                 }
             }
 
@@ -313,6 +344,24 @@ namespace Merge
             }
         }
 
+        void Test()
+        {
+            int count = 0;
+
+            for (int x = 0; x < gameData.boardData.GetLength(0); x++)
+            {
+                for (int y = 0; y < gameData.boardData.GetLength(1); y++)
+                {
+                    if (gameData.boardData[x, y].isCompleted)
+                    {
+                        Debug.Log("Aaaaah: " + count);
+                    }
+
+                    count++;
+                }
+            }
+        }
+
         public void TryToCompleteTask(string groupId, string taskId)
         {
             GameObject taskRef = new();
@@ -347,7 +396,7 @@ namespace Merge
             });
         }
 
-        void RemoveNeedsFromBoardAndInventory(string groupId, string taskId)
+        void RemoveNeedsFromBoardAndInventory(string groupId, string taskId, Action callback)
         {
             List<Types.TaskItem> needs = new();
 
@@ -395,7 +444,7 @@ namespace Merge
                 }
             }
 
-            // Remove needs from board
+            // Remove needs from the inventory
             for (int i = 0; i < needs.Count; i++)
             {
                 if (needs[i].sprite != null)
@@ -410,9 +459,7 @@ namespace Merge
                 }
             }
 
-            // Save data to disk
-            dataManager.SaveInventory();
-            dataManager.SaveBoard();
+            callback();
         }
     }
 }

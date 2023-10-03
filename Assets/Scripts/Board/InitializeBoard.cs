@@ -139,7 +139,7 @@ namespace Merge
                 for (int y = 0; y < GameData.HEIGHT; y++)
                 {
                     // Calculate tile's position
-                    Vector3 pos = new Vector3(
+                    Vector3 pos = new(
                         (tileSize * x) - (boardHalfWidth - (tileSize / 2)),
                         -(tileSize * y) + (boardHalfHeight + (tileSize / 2)),
                         0

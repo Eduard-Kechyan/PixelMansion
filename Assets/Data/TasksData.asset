@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: TasksData
   m_EditorClassIdentifier: 
   taskGroups:
-  - name: BedRoom
-    id: BedRoom
+  - name: LivingRoom
+    id: LivingRoom
     tasks:
     - name: ChangeFloor
       id: ChangeFloor

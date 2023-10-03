@@ -231,7 +231,7 @@ namespace Merge
                 tasksString
             );
 
-            List<Types.Task> tasksData = new (tasksJson.Length);
+            List<Types.Task> tasksData = new ();
 
             for (int i = 0; i < tasksJson.Length; i++)
             {
@@ -246,7 +246,7 @@ namespace Merge
                     completed = tasksJson[i].completed,
                 };
 
-                tasksData[i] = newTasksData;
+                tasksData.Add(newTasksData);
             }
 
             return tasksData;

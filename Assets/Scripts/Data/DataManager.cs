@@ -20,10 +20,11 @@ namespace Merge
         public Items collectables;
         public Items chests;
         public InitialItems initialItems;
-        public ProgressManager progressManager;
 
         public delegate void BoardSaveEvent();
         public static event BoardSaveEvent boardSaveEvent;
+        public delegate void CheckProgressEvent();
+        public static event CheckProgressEvent checkProgressEvent;
 
         // Whether data has been fully loaded
         public bool loaded;
@@ -215,10 +216,7 @@ namespace Merge
 
             //timeManager.CheckTimers();
 
-            if (progressManager != null)
-            {
-                progressManager.CheckInitialData();
-            }
+            checkProgressEvent();
 
             // Finish Task
             loaded = true;

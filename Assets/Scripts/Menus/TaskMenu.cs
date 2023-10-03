@@ -98,7 +98,12 @@ namespace Merge
                         "task_group_" + gameData.tasksData[i].id + "_desc"
                     );
 
-                    int percentComplete = Mathf.RoundToInt((100 / gameData.tasksData[i].tasks.Count) * gameData.tasksData[i].completed);
+                    int percentComplete = 0;
+
+                    if (gameData.tasksData[i].tasks.Count > 0)
+                    {
+                        percentComplete = Mathf.RoundToInt((100 / gameData.tasksData[i].tasks.Count) * gameData.tasksData[i].completed);
+                    }
 
                     newTaskGroup.Q<VisualElement>("Fill").style.width = percentComplete;
                     newTaskGroup.Q<Label>("FillLabel").text = percentComplete + "%";
@@ -117,10 +122,13 @@ namespace Merge
 
                         Button playButton = newTask.Q<Button>("PlayButton");
 
+                        string groupId = gameData.tasksData[i].id;
+                        string taskId = gameData.tasksData[i].tasks[j].id;
+
                         // Set button
                         if (gameData.tasksData[i].tasks[j].needs.Length == gameData.tasksData[i].tasks[j].completed)
                         {
-                            playButton.clicked += () => HandleCompletedTap(gameData.tasksData[j].id, gameData.tasksData[i].tasks[j].id);
+                            playButton.clicked += () => HandleCompletedTap(groupId, taskId);
 
                             playButton.text = LOCALE.Get("task_button_complete");
 

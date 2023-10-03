@@ -352,12 +352,12 @@ namespace Merge
         [Serializable]
         public class TaskJson
         {
-            public string needs;
-            public string rewards;
             public string id;
             public string taskRefName;
             public string taskRefType;
             public bool isTaskRefRight;
+            public string needs;
+            public string rewards;
             public int completed;
         }
 

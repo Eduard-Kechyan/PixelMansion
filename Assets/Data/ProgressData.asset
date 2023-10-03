@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: ProgressData
   m_EditorClassIdentifier: 
   areas:
-  - name: BedRoom
-    id: BedRoom
+  - name: LivingRoom
+    id: LivingRoom
     steps:
     - name: Task ChangeFloor
       id: ChangeFloor

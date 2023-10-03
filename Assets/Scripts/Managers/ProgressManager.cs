@@ -29,6 +29,13 @@ namespace Merge
                     taskManager.CheckTaskNoteDot();
                 }
             }, 0.3f);
+
+            DataManager.checkProgressEvent += CheckInitialData;
+        }
+
+        void OnDestroy()
+        {
+            DataManager.checkProgressEvent -= CheckInitialData;
         }
 
         public void CheckInitialData()

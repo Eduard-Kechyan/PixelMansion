@@ -280,7 +280,8 @@ namespace Merge
                     chestItems = boardArray[count].chestItems,
                     chestItemsSet = boardArray[count].chestItemsSet,
                     generatesAt = boardArray[count].generatesAt,
-                    gemPopped = boardArray[count].gemPopped
+                    gemPopped = boardArray[count].gemPopped,
+                    isCompleted = boardArray[count].isCompleted
                 };
 
                 count++;
@@ -311,7 +312,8 @@ namespace Merge
                 chestItems = boardItem.chestItems,
                 chestItemsSet = boardItem.chestItemsSet,
                 generatesAt = boardItem.generatesAt,
-                gemPopped = boardItem.gemPopped
+                gemPopped = boardItem.gemPopped,
+                isCompleted = boardItem.isCompleted
             };
 
             count++;
