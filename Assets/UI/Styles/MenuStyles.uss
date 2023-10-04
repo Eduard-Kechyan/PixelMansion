@@ -562,6 +562,17 @@
     background-color: rgba(255, 255, 255, 0);
 }
 
+.inventory_slots .slot_item .check {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background-image: url('project://database/Assets/Sprites/Items/!%20Extra/Completion.png?fileID=2800000&guid=47c024a3d93ed024682db3aea79ab753&type=3#Completion');
+}
+
 .slot_item_hidden {
     scale: 0 0;
 }
@@ -944,7 +955,7 @@
     border-top-width: 1px;
     border-bottom-width: 1px;
     margin-right: 4px;
-    background-color: rgb(53, 159, 113);
+    background-color: rgba(17, 17, 17, 0.79);
 }
 
 .task_group .fill_container .fill {

@@ -8,14 +8,18 @@
     "task_group_LivingRoom": "The Grand Living Room",
     "task_group_LivingRoom_desc": "Lets clean it up before we explore it!",
     "task_group_BedRoom": "The Tiny Bedroom",
-    "task_group_BedRoom_desc": "Lets make this room a dream room!",
+    "task_group_BedRoom_desc": "Lets make this room a room for dream!",
     "________ TASKS ________": "________________",
     "task_button_play": "Play",
     "task_button_complete": "Complete",
     "task_empty": "No tasks found!",
     "________ LIVING ROOM TASKS________": "________________",
     "task_LivingRoom_ChangeFloor": "Repair the floor",
-    "task_LivingRoom_ChangeWallLeft":"Repair The Walls"
+    "task_LivingRoom_ChangeWallLeft": "Repair The Walls (1)",
+    "task_LivingRoom_ChangeWallRight": "Repair The Walls (2)",
+    "task_LivingRoom_Last": "Finish room!",
+    "________ BED ROOM TASKS________": "________________",
+    "task_BedRoom_ChangeFloor": "Repair the floor"
 ,
     "________ LIVING ROOM ________": "________________",
     "Conversation_LivingRoom_Unlocking_0": "Hi"

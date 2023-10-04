@@ -46,11 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85eed059904f5874b89d03af2e156ca7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tasksData: {fileID: 11400000, guid: 31a3c4f66f2dbff4aaf2ce9b549c16ed, type: 2}
   progressData: {fileID: 11400000, guid: e1503265c32dad0459e900ae4ca3a5fa, type: 2}
-  currentProgress:
-    currentAreaId: 
-    currentStepOrder: 0
-    currentStepContentId: 
 --- !u!114 &2612081357836540789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65,7 +62,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tasksData: {fileID: 11400000, guid: 31a3c4f66f2dbff4aaf2ce9b549c16ed, type: 2}
   worldDataManager: {fileID: 0}
-  sceneLoader: {fileID: 0}
+  boardManager: {fileID: 0}
 --- !u!114 &5041890705364766301
 MonoBehaviour:
   m_ObjectHideFlags: 0

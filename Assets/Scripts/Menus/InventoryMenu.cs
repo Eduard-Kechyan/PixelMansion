@@ -7,366 +7,375 @@ using UnityEngine.UIElements;
 namespace Merge
 {
     public class InventoryMenu : MonoBehaviour
-{
-    // Variables
-    public BoardManager boardManager;
-    public int newSlotPrice = 50;
-    public float slotPriceMultiplier = 0.5f;
-
-    // References
-    private MenuUI menuUI;
-    private ShopMenu shopMenu;
-    private ConfirmMenu confirmMenu;
-    private GameData gameData;
-    private DataManager dataManager;
-    private PopupManager popupManager;
-    private SelectionManager selectionManager;
-    private ValuePop valuePop;
-    private GameplayUI gameplayUI;
-    private SoundManager soundManager;
-
-    // Instances
-    private I18n LOCALE;
-
-    // UI
-    private VisualElement root;
-    private VisualElement inventoryMenu;
-    private VisualElement slotsContainer;
-    private Label amountLabel;
-    private Label descriptionLabel;
-    private VisualElement buyMoreContainer;
-    private Button buyMoreButton;
-    private Label buyMoreLabel;
-
-    void Start()
     {
-        // Cache
-        menuUI = GetComponent<MenuUI>();
-        shopMenu = GetComponent<ShopMenu>();
-        confirmMenu = GetComponent<ConfirmMenu>();
-        gameData = GameData.Instance;
-        dataManager = DataManager.Instance;
-        popupManager = GameRefs.Instance.popupManager;
-        valuePop = GameRefs.Instance.valuePop;
-        gameplayUI = GameRefs.Instance.gameplayUI;
-        soundManager = SoundManager.Instance;
+        // Variables
+        public BoardManager boardManager;
+        public int newSlotPrice = 50;
+        public float slotPriceMultiplier = 0.5f;
 
-        if (boardManager != null)
+        // References
+        private MenuUI menuUI;
+        private ShopMenu shopMenu;
+        private ConfirmMenu confirmMenu;
+        private GameData gameData;
+        private DataManager dataManager;
+        private PopupManager popupManager;
+        private SelectionManager selectionManager;
+        private ValuePop valuePop;
+        private GameplayUI gameplayUI;
+        private SoundManager soundManager;
+
+        // Instances
+        private I18n LOCALE;
+
+        // UI
+        private VisualElement root;
+        private VisualElement inventoryMenu;
+        private VisualElement slotsContainer;
+        private Label amountLabel;
+        private Label descriptionLabel;
+        private VisualElement buyMoreContainer;
+        private Button buyMoreButton;
+        private Label buyMoreLabel;
+
+        void Start()
         {
-            selectionManager = boardManager.GetComponent<SelectionManager>();
-        }
+            // Cache
+            menuUI = GetComponent<MenuUI>();
+            shopMenu = GetComponent<ShopMenu>();
+            confirmMenu = GetComponent<ConfirmMenu>();
+            gameData = GameData.Instance;
+            dataManager = DataManager.Instance;
+            popupManager = GameRefs.Instance.popupManager;
+            valuePop = GameRefs.Instance.valuePop;
+            gameplayUI = GameRefs.Instance.gameplayUI;
+            soundManager = SoundManager.Instance;
 
-        // Cache instances
-        LOCALE = I18n.Instance;
-
-        // Cache UI
-        root = GetComponent<UIDocument>().rootVisualElement;
-
-        inventoryMenu = root.Q<VisualElement>("InventoryMenu");
-
-        slotsContainer = inventoryMenu.Q<VisualElement>("SlotsContainer");
-
-        amountLabel = inventoryMenu.Q<Label>("AmountLabel");
-        descriptionLabel = inventoryMenu.Q<Label>("DescriptionLabel");
-
-        buyMoreContainer = inventoryMenu.Q<VisualElement>("BuyMoreContainer");
-        buyMoreLabel = buyMoreContainer.Q<Label>("BuyMoreLabel");
-        buyMoreButton = buyMoreContainer.Q<Button>("BuyMoreButton");
-
-        buyMoreButton.clicked += () => BuyMoreSpace();
-
-        Init();
-    }
-
-    void Init()
-    {
-        // Make sure the menu is closed
-        inventoryMenu.style.display = DisplayStyle.None;
-        inventoryMenu.style.opacity = 0;
-    }
-
-    public void Open()
-    {
-        ClearData();
-
-        SetUI();
-
-        string title = LOCALE.Get("menu_inventory_title");
-
-        // Open menu
-        menuUI.OpenMenu(inventoryMenu, title, true);
-    }
-
-    void SetUI()
-    {
-        // Amount
-        amountLabel.text = gameData.inventoryData.Count + "/" + gameData.inventorySpace;
-
-        // Description
-        descriptionLabel.text = LOCALE.Get("menu_inventory_description");
-
-        // Container content
-        for (int i = 0; i < gameData.inventorySpace; i++)
-        {
-            string nameOrder = i.ToString();
-
-            VisualElement slot = new VisualElement { name = "InventorySlot" + nameOrder };
-
-            slot.AddToClassList("slot");
-
-            if (gameData.inventoryData.Count > 0 && gameData.inventoryData.Count > i)
+            if (boardManager != null)
             {
-                Button slotItem = new Button { name = "InventorySlotItem" + nameOrder };
-
-                slotItem.style.backgroundImage = new StyleBackground(
-                    gameData.inventoryData[i].sprite
-                );
-
-                slotItem.AddToClassList("slot_item");
-
-                slotItem.clicked += () => AddItemToBoard(nameOrder);
-
-                slot.Add(slotItem);
+                selectionManager = boardManager.GetComponent<SelectionManager>();
             }
 
-            slotsContainer.Add(slot);
+            // Cache instances
+            LOCALE = I18n.Instance;
+
+            // Cache UI
+            root = GetComponent<UIDocument>().rootVisualElement;
+
+            inventoryMenu = root.Q<VisualElement>("InventoryMenu");
+
+            slotsContainer = inventoryMenu.Q<VisualElement>("SlotsContainer");
+
+            amountLabel = inventoryMenu.Q<Label>("AmountLabel");
+            descriptionLabel = inventoryMenu.Q<Label>("DescriptionLabel");
+
+            buyMoreContainer = inventoryMenu.Q<VisualElement>("BuyMoreContainer");
+            buyMoreLabel = buyMoreContainer.Q<Label>("BuyMoreLabel");
+            buyMoreButton = buyMoreContainer.Q<Button>("BuyMoreButton");
+
+            buyMoreButton.clicked += () => BuyMoreSpace();
+
+            Init();
         }
 
-        // Buy more
-        if (gameData.inventorySpace < GameData.maxInventorySpace)
+        void Init()
         {
-            buyMoreContainer.style.display = DisplayStyle.Flex;
-
-            buyMoreButton.text = CalcNewSlotPrice();
-
-            buyMoreLabel.text = LOCALE.Get("menu_inventory_buy_more");
+            // Make sure the menu is closed
+            inventoryMenu.style.display = DisplayStyle.None;
+            inventoryMenu.style.opacity = 0;
         }
-        else
+
+        public void Open()
         {
-            buyMoreButton.style.display = DisplayStyle.None;
-
-            buyMoreLabel.text = LOCALE.Get("menu_inventory_max_slots");
-        }
-    }
-
-    void BuyMoreSpace()
-    {
-        int amount = int.Parse(buyMoreButton.text);
-
-        if (gameData.UpdateGold(-amount))
-        {
-            gameData.inventorySpace++;
-
             ClearData();
 
             SetUI();
 
-            dataManager.SaveInventory(true);
-        }
-        else
-        {
-            confirmMenu.Open("need_gold", () =>
-            {
-                confirmMenu.Close();
+            string title = LOCALE.Get("menu_inventory_title");
 
-                Glob.SetTimeout(() =>
+            // Open menu
+            menuUI.OpenMenu(inventoryMenu, title, true);
+        }
+
+        void SetUI()
+        {
+            // Amount
+            amountLabel.text = gameData.inventoryData.Count + "/" + gameData.inventorySpace;
+
+            // Description
+            descriptionLabel.text = LOCALE.Get("menu_inventory_description");
+
+            // Container content
+            for (int i = 0; i < gameData.inventorySpace; i++)
+            {
+                string nameOrder = i.ToString();
+
+                VisualElement slot = new() { name = "InventorySlot" + nameOrder };
+
+                slot.AddToClassList("slot");
+
+                if (gameData.inventoryData.Count > 0 && gameData.inventoryData.Count > i)
                 {
-                    shopMenu.Open("Gold");
-                }, 0.35f);
-            });
-        }
-    }
+                    Button slotItem = new() { name = "InventorySlotItem" + nameOrder };
 
-    string CalcNewSlotPrice()
-    {
-        int boughtSlots = gameData.inventorySpace - gameData.initialInventorySpace;
+                    slotItem.style.backgroundImage = new StyleBackground(
+                        gameData.inventoryData[i].sprite
+                    );
 
-        int newPrice = gameData.inventorySlotPrice;
+                    slotItem.AddToClassList("slot_item");
 
-        if (boughtSlots > 0)
-        {
-            if (boughtSlots % 2 == 1)
+                    slotItem.clicked += () => AddItemToBoard(nameOrder);
+
+                    if (gameData.inventoryData[i].isCompleted)
+                    {
+                        VisualElement check = new() { name = "Check" };
+
+                        check.AddToClassList("check");
+
+                        slotItem.Add(check);
+                    }
+
+                    slot.Add(slotItem);
+                }
+
+                slotsContainer.Add(slot);
+            }
+
+            // Buy more
+            if (gameData.inventorySpace < GameData.maxInventorySpace)
             {
-                newPrice += 7 * boughtSlots;
+                buyMoreContainer.style.display = DisplayStyle.Flex;
+
+                buyMoreButton.text = CalcNewSlotPrice();
+
+                buyMoreLabel.text = LOCALE.Get("menu_inventory_buy_more");
             }
             else
             {
-                newPrice += 10 * (boughtSlots - 1);
-            }
+                buyMoreButton.style.display = DisplayStyle.None;
 
-            if (gameData.inventorySlotPrice != newPrice)
+                buyMoreLabel.text = LOCALE.Get("menu_inventory_max_slots");
+            }
+        }
+
+        void BuyMoreSpace()
+        {
+            int amount = int.Parse(buyMoreButton.text);
+
+            if (gameData.UpdateGold(-amount))
             {
-                gameData.inventorySlotPrice = newPrice;
+                gameData.inventorySpace++;
+
+                ClearData();
+
+                SetUI();
 
                 dataManager.SaveInventory(true);
             }
-        }
-
-        return newPrice.ToString();
-    }
-
-    void AddItemToBoard(string nameOrder)
-    {
-        List<Types.BoardEmpty> emptyBoard = boardManager.GetEmptyBoardItems(Vector2Int.zero, true);
-
-        if (emptyBoard.Count > 0)
-        {
-            //Button slotItem = slotsContainer.Q<Button>("InventorySlotItem" + nameOrder);
-
-            int order = int.Parse(nameOrder);
-
-            VisualElement slot = slotsContainer.Q<VisualElement>("InventorySlot" + nameOrder);
-
-            // Pop out the item
-            valuePop.PopInventoryItem(
-                gameData.inventoryData[order].sprite,
-                slot.worldBound.position,
-                gameplayUI.bonusButtonPosition
-            );
-
-            Types.ItemsData itemData = GetItemData(gameData.inventoryData[order]);
-
-            gameData.inventoryData.RemoveAt(order);
-
-            boardManager.CreateItemOnEmptyTile(itemData, emptyBoard[0], gameplayUI.bonusButtonPosition, false);
-
-            dataManager.SaveInventory();
-
-            ClearData();
-
-            SetUI();
-
-            StartCoroutine(ClearSlot(slot));
-        }
-    }
-
-    Types.ItemsData GetItemData(Types.Inventory inventoryItem)
-    {
-        Types.ItemsData newItemData = new Types.ItemsData();
-
-        if (inventoryItem.type == Types.Type.Item)
-        {
-            for (int i = 0; i < gameData.itemsData.Length; i++)
+            else
             {
-                if (gameData.itemsData[i].group == inventoryItem.group)
+                confirmMenu.Open("need_gold", () =>
                 {
-                    for (int j = 0; j < gameData.itemsData[i].content.Length; j++)
+                    confirmMenu.Close();
+
+                    Glob.SetTimeout(() =>
                     {
-                        if (gameData.itemsData[i].content[j].sprite == inventoryItem.sprite)
-                        {
-                            newItemData = gameData.itemsData[i].content[j];
-                        }
-                    }
-                }
+                        shopMenu.Open("Gold");
+                    }, 0.35f);
+                });
             }
         }
 
-        if (inventoryItem.type == Types.Type.Gen)
+        string CalcNewSlotPrice()
         {
-            for (int i = 0; i < gameData.generatorsData.Length; i++)
+            int boughtSlots = gameData.inventorySpace - gameData.initialInventorySpace;
+
+            int newPrice = gameData.inventorySlotPrice;
+
+            if (boughtSlots > 0)
             {
-                if (gameData.generatorsData[i].group == inventoryItem.group)
+                if (boughtSlots % 2 == 1)
                 {
-                    for (int j = 0; j < gameData.generatorsData[i].content.Length; j++)
-                    {
-                        if (gameData.generatorsData[i].content[j].sprite == inventoryItem.sprite)
-                        {
-                            newItemData = gameData.generatorsData[i].content[j];
-                        }
-                    }
-                }
-            }
-        }
-
-
-
-        return newItemData;
-    }
-
-    IEnumerator ClearSlot(VisualElement slot)
-    {
-        yield return new WaitForSeconds(0.1f);
-
-        // Remove the item from the data
-        slot.Clear();
-    }
-
-    void ClearData()
-    {
-        if (slotsContainer.childCount > 0)
-        {
-            slotsContainer.Clear();
-        }
-    }
-
-    public bool CheckInventoryButton(Item item, GameObject initialTile, float scaleSpeed)
-    {
-        // Get dragged position on the UI
-        Vector2 newUIPos = RuntimePanelUtils.CameraTransformWorldToPanel(
-            root.panel,
-            item.transform.position,
-            Camera.main
-        );
-
-        var pickedElement = root.panel.Pick(newUIPos);
-
-        // Check if the item's type is the correct one
-        if (item.type != Types.Type.Coll)
-        {
-            // Check if the element under the position is the one we need
-            if (pickedElement != null && pickedElement.name == "InventoryButton")
-            {
-                // Check if there is enough space in the inventory
-                if (gameData.inventoryData.Count < gameData.inventorySpace)
-                {
-                    // Add the item to the inventory
-                    Types.Inventory newInventoryItem = new Types.Inventory
-                    {
-                        sprite = item.sprite,
-                        type = item.type,
-                        group = item.group,
-                        genGroup = item.genGroup,
-                        chestGroup = item.chestGroup,
-                    };
-
-                    gameData.inventoryData.Add(newInventoryItem);
-
-                    dataManager.SaveInventory();
-
-                    soundManager.PlaySound("OpenCrate"); // TODO - Set proper sound
-
-                    gameplayUI.BlipInventoryIndicator();
-
-                    // Remove and unselect the item
-                    item.ScaleToSize(Vector2.zero, scaleSpeed, true);
-
-                    Vector2Int loc = boardManager.GetBoardLocation(0, initialTile);
-
-                    int order = gameData.boardData[loc.x, loc.y].order;
-
-                    gameData.boardData[loc.x, loc.y] = new Types.Board { order = order };
-
-                    dataManager.SaveBoard();
-
-                    selectionManager.Unselect("Other");
-
-                    return true;
+                    newPrice += 7 * boughtSlots;
                 }
                 else
                 {
-                    popupManager.AddPop(
-                        LOCALE.Get("pop_inventory_full"),
-                        item.transform.position,
-                        true,
-                        "Buzz"
-                    );
-
-                    return false;
+                    newPrice += 10 * (boughtSlots - 1);
                 }
+
+                if (gameData.inventorySlotPrice != newPrice)
+                {
+                    gameData.inventorySlotPrice = newPrice;
+
+                    dataManager.SaveInventory(true);
+                }
+            }
+
+            return newPrice.ToString();
+        }
+
+        void AddItemToBoard(string nameOrder)
+        {
+            List<Types.BoardEmpty> emptyBoard = boardManager.GetEmptyBoardItems(Vector2Int.zero, true);
+
+            if (emptyBoard.Count > 0)
+            {
+                //Button slotItem = slotsContainer.Q<Button>("InventorySlotItem" + nameOrder);
+
+                int order = int.Parse(nameOrder);
+
+                VisualElement slot = slotsContainer.Q<VisualElement>("InventorySlot" + nameOrder);
+
+                // Pop out the item
+                valuePop.PopInventoryItem(
+                    gameData.inventoryData[order].sprite,
+                    slot.worldBound.position,
+                    gameplayUI.bonusButtonPosition
+                );
+
+                Types.ItemsData itemData = GetItemData(gameData.inventoryData[order]);
+
+                gameData.inventoryData.RemoveAt(order);
+
+                boardManager.CreateItemOnEmptyTile(itemData, emptyBoard[0], gameplayUI.bonusButtonPosition, false);
+
+                dataManager.SaveInventory();
+
+                ClearData();
+
+                SetUI();
+
+                StartCoroutine(ClearSlot(slot));
             }
         }
 
-        return false;
+        Types.ItemsData GetItemData(Types.Inventory inventoryItem)
+        {
+            Types.ItemsData newItemData = new Types.ItemsData();
+
+            if (inventoryItem.type == Types.Type.Item)
+            {
+                for (int i = 0; i < gameData.itemsData.Length; i++)
+                {
+                    if (gameData.itemsData[i].group == inventoryItem.group)
+                    {
+                        for (int j = 0; j < gameData.itemsData[i].content.Length; j++)
+                        {
+                            if (gameData.itemsData[i].content[j].sprite == inventoryItem.sprite)
+                            {
+                                newItemData = gameData.itemsData[i].content[j];
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (inventoryItem.type == Types.Type.Gen)
+            {
+                for (int i = 0; i < gameData.generatorsData.Length; i++)
+                {
+                    if (gameData.generatorsData[i].group == inventoryItem.group)
+                    {
+                        for (int j = 0; j < gameData.generatorsData[i].content.Length; j++)
+                        {
+                            if (gameData.generatorsData[i].content[j].sprite == inventoryItem.sprite)
+                            {
+                                newItemData = gameData.generatorsData[i].content[j];
+                            }
+                        }
+                    }
+                }
+            }
+
+
+
+            return newItemData;
+        }
+
+        IEnumerator ClearSlot(VisualElement slot)
+        {
+            yield return new WaitForSeconds(0.1f);
+
+            // Remove the item from the data
+            slot.Clear();
+        }
+
+        void ClearData()
+        {
+            if (slotsContainer.childCount > 0)
+            {
+                slotsContainer.Clear();
+            }
+        }
+
+        public bool CheckInventoryButton(Item item, GameObject initialTile, float scaleSpeed)
+        {
+            // Get dragged position on the UI
+            Vector2 newUIPos = RuntimePanelUtils.CameraTransformWorldToPanel(
+                root.panel,
+                item.transform.position,
+                Camera.main
+            );
+
+            var pickedElement = root.panel.Pick(newUIPos);
+
+            // Check if the item's type is the correct one
+            if (item.type != Types.Type.Coll)
+            {
+                // Check if the element under the position is the one we need
+                if (pickedElement != null && pickedElement.name == "InventoryButton")
+                {
+                    // Check if there is enough space in the inventory
+                    if (gameData.inventoryData.Count < gameData.inventorySpace)
+                    {
+                        // Add the item to the inventory
+                        Types.Inventory newInventoryItem = new Types.Inventory
+                        {
+                            sprite = item.sprite,
+                            type = item.type,
+                            group = item.group,
+                            genGroup = item.genGroup,
+                            chestGroup = item.chestGroup,
+                        };
+
+                        gameData.inventoryData.Add(newInventoryItem);
+
+                        dataManager.SaveInventory();
+
+                        soundManager.PlaySound("OpenCrate"); // TODO - Set proper sound
+
+                        gameplayUI.BlipInventoryIndicator();
+
+                        // Remove and unselect the item
+                        item.ScaleToSize(Vector2.zero, scaleSpeed, true);
+
+                        Vector2Int loc = boardManager.GetBoardLocation(0, initialTile);
+
+                        int order = gameData.boardData[loc.x, loc.y].order;
+
+                        gameData.boardData[loc.x, loc.y] = new Types.Board { order = order };
+
+                        dataManager.SaveBoard();
+
+                        selectionManager.Unselect("Other");
+
+                        return true;
+                    }
+                    else
+                    {
+                        popupManager.AddPop(
+                            LOCALE.Get("pop_inventory_full"),
+                            item.transform.position,
+                            true,
+                            "Buzz"
+                        );
+
+                        return false;
+                    }
+                }
+            }
+
+            return false;
+        }
     }
-}
 }

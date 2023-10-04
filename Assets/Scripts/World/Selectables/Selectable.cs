@@ -13,6 +13,8 @@ namespace Merge
         public bool canBeSelected = false;
         [Condition("canBeSelected", true)]
         public float selectSpeed = 1.8f;
+        [Condition("canBeSelected", true, true)]
+        public bool notifyCantBeSelected = false;
 
         [Header("Taps")]
         public bool canBeTapped = false;
@@ -192,6 +194,8 @@ namespace Merge
 
         public void ConfirmSpriteChange(int order)
         {
+            canBeSelected = true;
+
             switch (type)
             {
                 case Type.Floor:

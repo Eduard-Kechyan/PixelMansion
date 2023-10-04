@@ -14,6 +14,9 @@ namespace Merge
         [HideInInspector]
         public Vector2 playButtonPosition;
 
+        [HideInInspector]
+        public int taskNoteDotAmount = 0;
+
         // References
         private SafeAreaHandler safeAreaHandler;
         private SettingsMenu settingsMenu;
@@ -108,37 +111,63 @@ namespace Merge
             playButtonPosition = Camera.main.ScreenToWorldPoint(playButtonScreenPosition);
         }
 
-        public void ToggleButtonNoteDot(string buttonName, bool show, string countText = "")
+        public void ToggleButtonNoteDot(string buttonName, bool show, int amount = 0, bool useBloop = false)
         {
+            VisualElement buttonNoteDot = new();
+
+            if (useBloop)
+            {
+                StopCoroutine(BloopNoteDot(buttonNoteDot));
+            }
+
             switch (buttonName)
             {
                 case "settings":
-                    settingsButtonNoteDot.style.visibility = show
-                        ? Visibility.Visible
-                        : Visibility.Hidden;
-                    settingsButtonNoteDot.style.opacity = show ? 1 : 0;
+                    buttonNoteDot = settingsButtonNoteDot;
                     break;
                 case "shop":
-                    shopButtonNoteDot.style.visibility = show
-                        ? Visibility.Visible
-                        : Visibility.Hidden;
-                    shopButtonNoteDot.style.opacity = show ? 1 : 0;
+                    buttonNoteDot = shopButtonNoteDot;
                     break;
                 case "play":
-                    playButtonNoteDot.style.visibility = show
-                        ? Visibility.Visible
-                        : Visibility.Hidden;
-                    playButtonNoteDot.style.opacity = show ? 1 : 0;
+                    buttonNoteDot = playButtonNoteDot;
                     break;
                 case "task":
-                    taskButtonNoteDot.style.visibility = show
-                        ? Visibility.Visible
-                        : Visibility.Hidden;
-                    taskButtonNoteDot.style.opacity = show ? 1 : 0;
+                    buttonNoteDot = taskButtonNoteDot;
 
-                    taskButtonNoteDotLabel.text = countText;
+                    if (amount > 0)
+                    {
+                        taskNoteDotAmount = amount;
+
+                        if (amount > 0)
+                        {
+                            taskButtonNoteDotLabel.text = amount.ToString();
+                        }
+                    }
                     break;
             }
+
+            buttonNoteDot.RemoveFromClassList("note_dot_bloop");
+
+            buttonNoteDot.style.visibility = show
+                ? Visibility.Visible
+                : Visibility.Hidden;
+            buttonNoteDot.style.opacity = show ? 1 : 0;
+
+            if (useBloop)
+            {
+                StartCoroutine(BloopNoteDot(buttonNoteDot));
+            }
+        }
+
+        IEnumerator BloopNoteDot(VisualElement buttonNoteDot)
+        {
+            yield return new WaitForSeconds(0.2f);
+
+            buttonNoteDot.AddToClassList("note_dot_bloop");
+
+            yield return new WaitForSeconds(0.2f);
+
+            buttonNoteDot.RemoveFromClassList("note_dot_bloop");
         }
     }
 }

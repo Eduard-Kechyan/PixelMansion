@@ -152,7 +152,8 @@ namespace Merge
                     type = newType,
                     group = Glob.ParseEnum<ItemTypes.Group>(inventoryJson[i].group),
                     genGroup = Glob.ParseEnum<ItemTypes.GenGroup>(inventoryJson[i].genGroup),
-                    chestGroup = Glob.ParseEnum<Types.ChestGroup>(inventoryJson[i].chestGroup)
+                    chestGroup = Glob.ParseEnum<Types.ChestGroup>(inventoryJson[i].chestGroup),
+                    isCompleted = inventoryJson[i].isCompleted
                 };
 
                 inventoryData.Add(newInventoryData);
@@ -174,6 +175,7 @@ namespace Merge
                     group = inventoryData[i].group.ToString(),
                     genGroup = inventoryData[i].genGroup.ToString(),
                     chestGroup = inventoryData[i].chestGroup.ToString(),
+                    isCompleted = inventoryData[i].isCompleted
                 };
 
                 inventoryJson[i] = newInventoryJson;
@@ -197,6 +199,7 @@ namespace Merge
                 {
                     id = tasksJson[i].id,
                     tasks = ConvertTasksFromJson(tasksJson[i].tasks),
+                    total = tasksJson[i].total,
                     completed = tasksJson[i].completed,
                 };
 
@@ -216,6 +219,7 @@ namespace Merge
                 {
                     id = tasksData[i].id,
                     tasks = ConvertTasksToJson(tasksData[i].tasks),
+                    total = tasksData[i].total,
                     completed = tasksData[i].completed,
                 };
 

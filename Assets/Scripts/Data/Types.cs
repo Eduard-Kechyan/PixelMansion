@@ -250,6 +250,7 @@ namespace Merge
             public ItemTypes.Group group;
             public ItemTypes.GenGroup genGroup;
             public ChestGroup chestGroup;
+            public bool isCompleted;
         }
 
         public class InventoryJson
@@ -259,6 +260,7 @@ namespace Merge
             public string group;
             public string genGroup;
             public string chestGroup;
+            public bool isCompleted;
         }
 
         //// PROGRESS ////
@@ -276,9 +278,6 @@ namespace Merge
             public string name;
             public string id;
             public Step[] steps;
-            public string[] nextIds;
-            [HideInInspector]
-            public int completed;
         }
 
         [Serializable]
@@ -289,6 +288,16 @@ namespace Merge
             public string id;
             public StepType stepType;
             public string[] nextIds;
+            public string[] requiredIds;
+        }
+
+        [Serializable]
+        public class NextStep
+        {
+            [HideInInspector]
+            public string name;
+            public string id;
+            public bool isArea;
         }
 
         //// TASKS ////
@@ -308,6 +317,8 @@ namespace Merge
             public string name;
             public string id;
             public List<Task> tasks;
+            [HideInInspector]
+            public int total;
             [HideInInspector]
             public int completed;
         }
@@ -346,6 +357,7 @@ namespace Merge
         {
             public string id;
             public string tasks;
+            public int total;
             public int completed;
         }
 

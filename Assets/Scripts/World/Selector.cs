@@ -201,11 +201,13 @@ namespace Merge
                         isSelected = false;
                         isSelecting = false;
 
+                        bool notify = selectable.notifyCantBeSelected;
+
                         selectable = null;
 
                         triedToSelectUnselectable = true;
 
-                        if (!ignorePopup)
+                        if (!ignorePopup && notify)
                         {
                             popupManager.AddPop(LOCALE.Get("pop_item_unselectable"), position, true, "", true);
                         }

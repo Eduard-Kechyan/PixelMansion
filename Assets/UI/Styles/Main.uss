@@ -207,7 +207,7 @@
     position: absolute;
     left: -2px;
     top: -2px;
-    transition-duration: 0.1s;
+    transition-duration: 0.2s;
     visibility: hidden;
     opacity: 0;
 }
@@ -238,4 +238,9 @@
     font-size: 6px;
     width: 8px;
     height: 8px;
+}
+
+.note_dot_bloop {
+    height: 8px;
+    scale: 1.5 1.5;
 }

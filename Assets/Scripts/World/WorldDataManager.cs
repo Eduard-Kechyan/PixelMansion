@@ -171,18 +171,24 @@ namespace Merge
                             if (loadedAreas[i].wallLeftOrder >= 0 && worldArea.GetChild(0).TryGetComponent(out ChangeWall changeWallLeft))
                             {
                                 changeWallLeft.SetSprites(loadedAreas[i].wallLeftOrder, true);
+
+                                changeWallLeft.GetComponent<Selectable>().canBeSelected = true;
                             }
 
                             // Wall right
                             if (loadedAreas[i].wallRightOrder >= 0 && worldArea.GetChild(1).TryGetComponent(out ChangeWall changeWallRight))
                             {
                                 changeWallRight.SetSprites(loadedAreas[i].wallRightOrder, true);
+
+                                changeWallRight.GetComponent<Selectable>().canBeSelected = true;
                             }
 
                             // Floor
                             if (loadedAreas[i].floorOrder >= 0 && worldArea.GetChild(2).TryGetComponent(out ChangeFloor changeFloor))
                             {
                                 changeFloor.SetSprites(loadedAreas[i].floorOrder, true);
+
+                                changeFloor.GetComponent<Selectable>().canBeSelected = true;
                             }
 
                             // Furniture
@@ -195,6 +201,8 @@ namespace Merge
                                     if (loadedAreas[i].furniture[k].order >= 0 && furniture.TryGetComponent(out ChangeFurniture changeFurniture))
                                     {
                                         changeFurniture.SetSprites(loadedAreas[i].furniture[k].order, true);
+
+                                        changeFurniture.GetComponent<Selectable>().canBeSelected = true;
                                     }
                                 }
                             }
@@ -400,7 +408,7 @@ namespace Merge
             SaveData();
         }
 
-        public GameObject GetWorldItem(string groupId, Types.Task task)
+        public Transform GetWorldItem(string groupId, Types.Task task)
         {
             Transform worldArea = null;
 
@@ -419,18 +427,42 @@ namespace Merge
                 switch (task.taskRefType)
                 {
                     case Types.TaskRefType.Area:
-                        return worldArea.gameObject;
+                        return worldArea;
                     case Types.TaskRefType.Wall:
-                        return worldArea.Find(task.taskRefType.ToString() + (task.isTaskRefRight ? "Right" : "Left")).gameObject;
+                        return worldArea.Find(task.taskRefType.ToString() + (task.isTaskRefRight ? "Right" : "Left"));
                     case Types.TaskRefType.Floor:
                     default:
                         // Floor, Furniture, Item and others
                         // TODO - Possible find Furniture and Item first before getting their children
-                        return worldArea.Find(task.taskRefName == "" ? task.taskRefType.ToString() : task.taskRefName).gameObject;
+                        return worldArea.Find(task.taskRefName == "" ? task.taskRefType.ToString() : task.taskRefName);
                 }
             }
 
             return null;
+        }
+
+        // Find selectable items collider center position
+        public Vector2 GetColliderCenter(Transform taskRef, Types.TaskRefType taskRefType)
+        {
+            Vector2 center;
+
+            switch (taskRefType)
+            {
+                case Types.TaskRefType.Area:
+                    center = taskRef.transform.position;
+                    break;
+                case Types.TaskRefType.Wall:
+                    center = taskRef.GetComponent<CompositeCollider2D>().bounds.center;
+                    break;
+                case Types.TaskRefType.Floor:
+                    center = taskRef.GetComponent<CompositeCollider2D>().bounds.center;
+                    break;
+                default: // Item and others
+                    center = taskRef.GetComponent<PolygonCollider2D>().bounds.center;
+                    break;
+            }
+
+            return center;
         }
 
         // Conversion

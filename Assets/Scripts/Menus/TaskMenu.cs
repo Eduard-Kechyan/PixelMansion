@@ -100,9 +100,9 @@ namespace Merge
 
                     int percentComplete = 0;
 
-                    if (gameData.tasksData[i].tasks.Count > 0)
+                    if (gameData.tasksData[i].total > 0)
                     {
-                        percentComplete = Mathf.RoundToInt((100 / gameData.tasksData[i].tasks.Count) * gameData.tasksData[i].completed);
+                        percentComplete = Mathf.CeilToInt((100f / gameData.tasksData[i].total) * gameData.tasksData[i].completed);
                     }
 
                     newTaskGroup.Q<VisualElement>("Fill").style.width = percentComplete;

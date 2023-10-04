@@ -104,7 +104,7 @@
                 <ui:VisualElement name="Close" class="button_active_extra menu_close_button" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&apos;);" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="InventoryMenu" class="menu inventory_menu">
+        <ui:VisualElement name="InventoryMenu" class="menu inventory_menu" style="display: none; opacity: 0;">
             <ui:VisualElement name="Background" class="background" />
             <ui:VisualElement name="Container" class="container">
                 <ui:VisualElement name="Content" class="content">

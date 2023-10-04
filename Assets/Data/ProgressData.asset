@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db8f164643505f24f84ff102ef052072, type: 3}
   m_Name: ProgressData
   m_EditorClassIdentifier: 
+  check: 0
   areas:
   - name: LivingRoom
     id: LivingRoom
@@ -21,9 +22,31 @@ MonoBehaviour:
       stepType: 0
       nextIds:
       - ChangeWallLeft
+      - ChangeWallRight
+      requiredIds: []
     - name: Task ChangeWallLeft
       id: ChangeWallLeft
       stepType: 0
+      nextIds:
+      - Last
+      requiredIds: []
+    - name: Task ChangeWallRight
+      id: ChangeWallRight
+      stepType: 0
+      nextIds:
+      - Last
+      requiredIds: []
+    - name: Task Last
+      id: Last
+      stepType: 0
+      nextIds:
+      - BedRoom
+      requiredIds: []
+  - name: BedRoom
+    id: BedRoom
+    steps:
+    - name: Task ChangeFloor
+      id: ChangeFloor
+      stepType: 0
       nextIds: []
-    nextIds: []
-    completed: 0
+      requiredIds: []
