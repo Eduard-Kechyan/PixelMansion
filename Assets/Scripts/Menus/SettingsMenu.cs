@@ -77,7 +77,7 @@ namespace Merge
         notifics = Services.Instance.GetComponent<Notifics>();
         resetHandler = GetComponent<ResetHandler>();
 
-        // Cache UI
+        // UI
         root = GetComponent<UIDocument>().rootVisualElement;
 
         settingsMenu = root.Q<VisualElement>("SettingsMenu");

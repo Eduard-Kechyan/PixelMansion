@@ -114,7 +114,7 @@ namespace Merge
     {
         valuePop.PopColl(
             interactions.currentItem.level,
-            interactions.currentItem.collGroup.ToString(),
+            interactions.currentItem.collGroup,
             interactions.currentItem.transform.position
         );
 

@@ -42,7 +42,7 @@ namespace Merge
                 infoBox = GameRefs.Instance.gameplayUI.GetComponent<InfoBox>();
             }
 
-            // Cache UI
+            // UI
             root = GetComponent<UIDocument>().rootVisualElement;
 
             infoMenu = root.Q<VisualElement>("InfoMenu");

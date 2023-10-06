@@ -67,7 +67,7 @@ namespace Merge
         soundManager = SoundManager.Instance;
         LOCALE = I18n.Instance;
 
-        // Cache UI
+        // UI
         root = GetComponent<UIDocument>().rootVisualElement;
 
         levelMenu = root.Q<VisualElement>("LevelMenu");

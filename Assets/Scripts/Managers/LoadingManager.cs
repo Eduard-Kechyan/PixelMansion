@@ -42,7 +42,7 @@ namespace Merge
             //notifics = Services.Instance.GetComponent<Notifics>();
             userDataHandler = GetComponent<UserDataHandler>();
 
-            // Cache UI
+            // UI
             VisualElement root = uiDocument.GetComponent<UIDocument>().rootVisualElement;
 
             fill = root.Q<VisualElement>("Fill");
@@ -61,8 +61,9 @@ namespace Merge
             // TODO - Check this
             Glob.SetTimeout(() =>
             {
+                Debug.Log("SetTimeout Loading!");
                 sceneLoader.Load(1);
-            }, 10000);
+            }, 5000);
         }
 
         void Update()

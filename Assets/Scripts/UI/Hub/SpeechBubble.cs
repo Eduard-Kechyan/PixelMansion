@@ -8,6 +8,7 @@ namespace Merge
 {
     public class SpeechBubble : MonoBehaviour
     {
+        // Variables
         public Vector2 posOffset;
         public float closeDelay = 0.3f;
         public float speechLength = 3f;
@@ -66,6 +67,7 @@ namespace Merge
             speechLabel = root.Q<Label>("SpeechLabel");
             tail = root.Q<VisualElement>("Tail");
 
+            // UI taps
             speechBubble.clicked += () => StartCoroutine(CloseBubble());
         }
 
@@ -109,6 +111,10 @@ namespace Merge
             );
         }
 
+        //// Handle Movement ////
+
+        // Make the bubble follow the character around
+        // Clamp it inside the game/scene/hud view
         void MoveBubble()
         {
             if (isBubbleShowing)
@@ -168,6 +174,7 @@ namespace Merge
             }
         }
 
+        // Move and flip the tail as necessary
         void MoveTail(float maxXDefault, float maxXTop, bool useTop)
         {
             bool isOnTheTop = false;
@@ -260,6 +267,9 @@ namespace Merge
             }
         }
 
+        //// Open ////
+
+        // Get ready to open the bubble
         public void Open(string newContent, Vector2 newPos, CharSpeech newCharSpeech)
         {
             if (!first)
@@ -300,6 +310,7 @@ namespace Merge
             }
         }
 
+        // Open the bubble once
         void OpenSingle(string newContent, Vector2 newPos, CharSpeech newCharSpeech)
         {
             charSpeech = newCharSpeech;
@@ -314,6 +325,7 @@ namespace Merge
             }, speechLength);
         }
 
+        // Open the bubble multiple times until the character finishes talking
         void OpenMulti(string newContent, Vector2 newPos, CharSpeech newCharSpeech)
         {
             charSpeech = newCharSpeech;
@@ -338,6 +350,8 @@ namespace Merge
                 charSpeech?.Closed();
             }
         }
+
+        //// Show/Hide ////
 
         void ShowSpeechBubble(string newContent)
         {

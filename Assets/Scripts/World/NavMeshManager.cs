@@ -25,7 +25,7 @@ namespace Merge
 
         void Start()
         {
-            // References
+            // Cache
             navMeshSurface = GetComponent<NavMeshSurface>();
 
             CheckRooms();

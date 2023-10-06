@@ -36,7 +36,7 @@ namespace Merge
         settings = Settings.Instance;
         localeManager = settings.GetComponent<LocaleManager>();
 
-        // Cache UI
+        // UI
         root = GetComponent<UIDocument>().rootVisualElement;
 
         localeMenu = root.Q<VisualElement>("LocaleMenu");

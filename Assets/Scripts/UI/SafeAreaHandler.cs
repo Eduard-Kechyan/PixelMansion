@@ -34,7 +34,10 @@ namespace Merge
         {
             // UI
             valuesBox = GameRefs.Instance.valuesUIDoc.rootVisualElement.Q<VisualElement>("ValuesBox");
+        }
 
+        void Init()
+        {
             // Get the safe area height
             height = Screen.height - Screen.safeArea.height;
 
@@ -64,6 +67,7 @@ namespace Merge
                     Debug.Log("Unknown scene name: " + scene.name);
                     break;
             }
+
         }
 
         void SetGamplayUI()

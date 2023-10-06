@@ -11,6 +11,7 @@ namespace Merge
     public class WorldDataManager : MonoBehaviour
     {
         public Transform worldRoot;
+        public TaskManager taskManager;
         public int roomInHierarchyOffset = 2;
 
         public bool canLog = false;
@@ -19,10 +20,12 @@ namespace Merge
         public bool loadData = false;
         public bool clearData = false;
 
-        private List<Area> areas = new List<Area>();
-        private List<Area> loadedAreas = new List<Area>();
-        private bool initial = true;
+        [HideInInspector]
+        public bool loaded = false;
 
+        private List<Area> areas = new();
+        private List<Area> loadedAreas = new();
+        private bool initial = true;
         [Serializable]
         public class Area
         {
@@ -148,6 +151,8 @@ namespace Merge
 
             if (initial || alt)
             {
+                loaded = true;
+
                 SaveData();
             }
         }
@@ -358,6 +363,10 @@ namespace Merge
             yield return new WaitForSeconds(1f);
 
             navMeshManager.Bake();
+
+            taskManager.CheckIfThereIsATaskToComplete(()=>{
+                loaded = true;
+            });
         }
 
         // Public methods

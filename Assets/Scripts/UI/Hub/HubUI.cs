@@ -13,9 +13,8 @@ namespace Merge
 
         [HideInInspector]
         public Vector2 playButtonPosition;
-
         [HideInInspector]
-        public int taskNoteDotAmount = 0;
+        public Vector2 taskButtonPosition;
 
         // References
         private SafeAreaHandler safeAreaHandler;
@@ -31,11 +30,12 @@ namespace Merge
         private Button shopButton;
         private Button taskButton;
         private Button playButton;
-        private VisualElement settingsButtonNoteDot;
-        private VisualElement shopButtonNoteDot;
-        private VisualElement playButtonNoteDot;
-        private VisualElement taskButtonNoteDot;
-        private Label taskButtonNoteDotLabel;
+
+        public VisualElement settingsButtonNoteDot;
+        public VisualElement shopButtonNoteDot;
+        public VisualElement playButtonNoteDot;
+        public VisualElement taskButtonNoteDot;
+        public Label taskButtonNoteDotLabel;
 
         void Start()
         {
@@ -62,6 +62,7 @@ namespace Merge
             taskButtonNoteDot = taskButton.Q<VisualElement>("NoteDot");
             taskButtonNoteDotLabel = taskButtonNoteDot.Q<Label>("Value");
 
+            // UI taps
             settingsButton.clicked += () => settingsMenu.Open();
             shopButton.clicked += () => shopMenu.Open();
 
@@ -79,95 +80,42 @@ namespace Merge
         {
             root.UnregisterCallback<GeometryChangedEvent>(Init);
 
+            // Set top box top padding based on the values position on the screen
             topBox.style.top = safeAreaHandler.GetTopOffset() + extraTopPadding;
 
             CalcPlayButtonPosition();
+
+            CalcTaskButtonPosition();
         }
 
+        //// Positions ////
+
+        // Get play button position in the world space
         void CalcPlayButtonPosition()
         {
             // Calculate the button position on the screen and the world space
             float singlePixelWidth = Camera.main.pixelWidth / GameData.GAME_PIXEL_WIDTH;
 
-            Vector2 playButtonScreenPosition = new Vector2(
-                singlePixelWidth
-                    * (
-                        root.worldBound.width
-                        - (
-                            root.worldBound.width
-                            - (
-                                playButton.worldBound.center.x
-                                - (playButton.resolvedStyle.width / 4)
-                            )
-                        )
-                    ),
-                singlePixelWidth
-                    * (
-                        root.worldBound.height
-                        - (playButton.worldBound.center.y - (playButton.resolvedStyle.width / 4))
-                    )
+            Vector2 playButtonScreenPosition = new(
+                singlePixelWidth* (root.worldBound.width- (root.worldBound.width- playButton.worldBound.center.x)),
+                singlePixelWidth* (root.worldBound.height- playButton.worldBound.center.y )
             );
 
             playButtonPosition = Camera.main.ScreenToWorldPoint(playButtonScreenPosition);
         }
 
-        public void ToggleButtonNoteDot(string buttonName, bool show, int amount = 0, bool useBloop = false)
+        // Get Task button position in the world space
+        void CalcTaskButtonPosition()
         {
-            VisualElement buttonNoteDot = new();
+            // Calculate the button position on the screen and the world space
+            float singlePixelWidth = Camera.main.pixelWidth / GameData.GAME_PIXEL_WIDTH;
 
-            if (useBloop)
-            {
-                StopCoroutine(BloopNoteDot(buttonNoteDot));
-            }
+            Vector2 taskButtonScreenPosition = new(
+                singlePixelWidth* (root.worldBound.width- (root.worldBound.width- taskButton.worldBound.center.x)),
+                singlePixelWidth* (root.worldBound.height- taskButton.worldBound.center.y)
+            );
 
-            switch (buttonName)
-            {
-                case "settings":
-                    buttonNoteDot = settingsButtonNoteDot;
-                    break;
-                case "shop":
-                    buttonNoteDot = shopButtonNoteDot;
-                    break;
-                case "play":
-                    buttonNoteDot = playButtonNoteDot;
-                    break;
-                case "task":
-                    buttonNoteDot = taskButtonNoteDot;
-
-                    if (amount > 0)
-                    {
-                        taskNoteDotAmount = amount;
-
-                        if (amount > 0)
-                        {
-                            taskButtonNoteDotLabel.text = amount.ToString();
-                        }
-                    }
-                    break;
-            }
-
-            buttonNoteDot.RemoveFromClassList("note_dot_bloop");
-
-            buttonNoteDot.style.visibility = show
-                ? Visibility.Visible
-                : Visibility.Hidden;
-            buttonNoteDot.style.opacity = show ? 1 : 0;
-
-            if (useBloop)
-            {
-                StartCoroutine(BloopNoteDot(buttonNoteDot));
-            }
-        }
-
-        IEnumerator BloopNoteDot(VisualElement buttonNoteDot)
-        {
-            yield return new WaitForSeconds(0.2f);
-
-            buttonNoteDot.AddToClassList("note_dot_bloop");
-
-            yield return new WaitForSeconds(0.2f);
-
-            buttonNoteDot.RemoveFromClassList("note_dot_bloop");
+            taskButtonPosition = Camera.main.ScreenToWorldPoint(taskButtonScreenPosition);
         }
     }
 }

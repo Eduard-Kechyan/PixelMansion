@@ -22,27 +22,6 @@ namespace Merge
         private Item item;
         private string textToSet = "";
 
-        // References
-
-        private InfoMenu infoMenu;
-        private ShopMenu shopMenu;
-
-        // Instances
-        private GameData gameData;
-        private I18n LOCALE = I18n.Instance;
-
-        // UI
-        private VisualElement root;
-        private VisualElement infoItem;
-        private VisualElement infoItemLocked;
-        private VisualElement infoItemBubble;
-        private Button infoButton;
-        private Button infoActionButton;
-        private VisualElement infoActionValue;
-        private Label infoName;
-        private Label infoData;
-        private Sprite sprite;
-
         public enum ActionType
         {
             Open,
@@ -58,14 +37,31 @@ namespace Merge
 
         private ActionType actionType;
 
+        // References
+        private InfoMenu infoMenu;
+        private ShopMenu shopMenu;
+        private GameData gameData;
+        private I18n LOCALE;
+
+        // UI
+        private VisualElement root;
+        private VisualElement infoItem;
+        private VisualElement infoItemLocked;
+        private VisualElement infoItemBubble;
+        private Button infoButton;
+        private Button infoActionButton;
+        private VisualElement infoActionValue;
+        private Label infoName;
+        private Label infoData;
+        private Sprite sprite;
+
         void Start()
         {
             // Cache
             infoMenu = GameRefs.Instance.infoMenu;
             shopMenu = GameRefs.Instance.shopMenu;
-
-            // Cache instances
             gameData = GameData.Instance;
+            LOCALE = I18n.Instance;
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
@@ -86,17 +82,15 @@ namespace Merge
             infoName.text = "";
             infoData.text = LOCALE.Get("info_box_default");
 
-            CheckForTaps();
-        }
-
-        void CheckForTaps()
-        {
-            //Open info menu
+            // UI taps
             infoButton.clicked += () => infoMenu.Open(item);
 
             infoActionButton.clicked += () => InfoAction();
         }
 
+        //// Info Box ////
+
+        // Show the selected item's info
         public void Select(Item newItem)
         {
             item = newItem;
@@ -178,6 +172,54 @@ namespace Merge
             HandleActionButton();
         }
 
+        // Hide the existing info
+        public void Unselect(bool isUndo = false)
+        {
+            item = null;
+
+            infoItem.style.backgroundImage = null;
+
+            infoItemLocked.style.display = DisplayStyle.None;
+
+            sprite = null;
+
+            infoButton.style.display = DisplayStyle.None;
+            infoName.text = "";
+
+            textToSet = "";
+
+            if (isUndo || boardInteractions.canUndo)
+            {
+                infoData.text = LOCALE.Get("info_box_undo");
+            }
+            else
+            {
+                infoActionButton.style.display = DisplayStyle.None;
+
+                infoActionButton.RemoveFromClassList("info_box_action_button_has_value");
+
+                infoActionButton.RemoveFromClassList("info_box_button_disabled");
+
+                infoActionValue.style.display = DisplayStyle.None;
+
+                infoData.text = LOCALE.Get("info_box_default");
+            }
+        }
+
+        // Refresh the item's info
+        public void Refresh()
+        {
+            if (boardInteractions.isSelected)
+            {
+                Select(boardInteractions.currentItem);
+            }
+            else
+            {
+                infoData.text = LOCALE.Get("info_box_default");
+            }
+        }
+
+        // Set the buttons
         void HandleActionButton()
         {
             switch (actionType)
@@ -241,38 +283,127 @@ namespace Merge
             }
         }
 
-        public void Unselect(bool isUndo = false)
+        // Handle the buttons
+        void InfoAction()
         {
-            item = null;
-
-            infoItem.style.backgroundImage = null;
-
-            infoItemLocked.style.display = DisplayStyle.None;
-
-            sprite = null;
-
-            infoButton.style.display = DisplayStyle.None;
-            infoName.text = "";
-
-            textToSet = "";
-
-            if (isUndo || boardInteractions.canUndo)
+            switch (actionType)
             {
-                infoData.text = LOCALE.Get("info_box_undo");
-            }
-            else
-            {
-                infoActionButton.style.display = DisplayStyle.None;
-
-                infoActionButton.RemoveFromClassList("info_box_action_button_has_value");
-
-                infoActionButton.RemoveFromClassList("info_box_button_disabled");
-
-                infoActionValue.style.display = DisplayStyle.None;
-
-                infoData.text = LOCALE.Get("info_box_default");
+                case ActionType.Open:
+                    if (gameData.gems < openAmount)
+                    {
+                        shopMenu.Open("Gems");
+                    }
+                    else
+                    {
+                        boardInteractions.OpenItem(item, openAmount, Types.State.Crate);
+                        Select(item);
+                        selectionManager.Select("both", false);
+                    }
+                    break;
+                case ActionType.Unlock:
+                    if (gameData.gems < unlockAmount)
+                    {
+                        shopMenu.Open("Gems");
+                    }
+                    else
+                    {
+                        boardInteractions.OpenItem(item, unlockAmount, Types.State.Locker);
+                        Select(item);
+                        selectionManager.Select("both", false);
+                    }
+                    break;
+                case ActionType.UnlockChest:
+                    boardInteractions.UnlockChest(item);
+                    Select(item);
+                    selectionManager.Select("both", false);
+                    break;
+                case ActionType.SpeedUp:
+                    if (gameData.gems < speedUpAmount)
+                    {
+                        shopMenu.Open("Gems");
+                    }
+                    else
+                    {
+                        boardInteractions.SpeedUpItem(item, speedUpAmount);
+                        Select(item);
+                        selectionManager.Select("both", false);
+                    }
+                    break;
+                case ActionType.Pop:
+                    if (gameData.gems < popAmount)
+                    {
+                        shopMenu.Open("Gems");
+                    }
+                    else
+                    {
+                        boardInteractions.OpenItem(item, unlockAmount, Types.State.Bubble);
+                        Select(item);
+                        selectionManager.Select("both", false);
+                    }
+                    break;
+                case ActionType.Sell:
+                    boardInteractions.RemoveItem(item, sellAmount);
+                    Unselect(true);
+                    selectionManager.UnselectAlt();
+                    SetUndoButton(true);
+                    break;
+                case ActionType.Remove:
+                    boardInteractions.RemoveItem(item);
+                    Unselect(true);
+                    selectionManager.UnselectAlt();
+                    SetUndoButton();
+                    break;
+                case ActionType.Undo:
+                    boardInteractions.UndoLastStep();
+                    break;
             }
         }
+
+        // Set the undo button either sold or removed
+        void SetUndoButton(bool sold = false)
+        {
+            actionType = ActionType.Undo;
+
+            infoActionButton.text = LOCALE.Get("info_box_button_undo");
+            infoActionButton.style.display = DisplayStyle.Flex;
+            infoActionButton.style.unityBackgroundImageTintColor = Glob.colorYellow;
+
+            if (sold)
+            {
+                infoActionButton.AddToClassList("info_box_action_button_has_value");
+
+                infoActionValue.style.backgroundImage = new StyleBackground(goldValue);
+                infoActionValue.style.display = DisplayStyle.Flex;
+            }
+        }
+
+        // Show the collectables multiplied value
+        int GetMultipliedValue(int level, Types.CollGroup collGroup)
+        {
+            int multipliedValue = 0;
+            switch (collGroup)
+            {
+                case Types.CollGroup.Experience:
+                    multipliedValue = gameData.valuesData.experienceMultiplier[level - 1];
+                    break;
+                case Types.CollGroup.Gold:
+                    multipliedValue = gameData.valuesData.goldMultiplier[level - 1];
+                    break;
+                case Types.CollGroup.Gems:
+                    multipliedValue = gameData.valuesData.gemsMultiplier[level - 1];
+                    break;
+                case Types.CollGroup.Energy:
+                    multipliedValue = gameData.valuesData.energyMultiplier[level - 1];
+                    break;
+                default:
+                    Debug.Log("Wrong collectables group");
+                    break;
+            }
+
+            return multipliedValue;
+        }
+
+        //// Other ////
 
         public string GetItemData(Item newItem, bool alt = false)
         {
@@ -406,135 +537,6 @@ namespace Merge
             }
 
             return textToSet;
-        }
-
-        void InfoAction()
-        {
-            switch (actionType)
-            {
-                case ActionType.Open:
-                    if (gameData.gems < openAmount)
-                    {
-                        shopMenu.Open("Gems");
-                    }
-                    else
-                    {
-                        boardInteractions.OpenItem(item, openAmount, Types.State.Crate);
-                        Select(item);
-                        selectionManager.Select("both", false);
-                    }
-                    break;
-                case ActionType.Unlock:
-                    if (gameData.gems < unlockAmount)
-                    {
-                        shopMenu.Open("Gems");
-                    }
-                    else
-                    {
-                        boardInteractions.OpenItem(item, unlockAmount, Types.State.Locker);
-                        Select(item);
-                        selectionManager.Select("both", false);
-                    }
-                    break;
-                case ActionType.UnlockChest:
-                    boardInteractions.UnlockChest(item);
-                    Select(item);
-                    selectionManager.Select("both", false);
-                    break;
-                case ActionType.SpeedUp:
-                    if (gameData.gems < speedUpAmount)
-                    {
-                        shopMenu.Open("Gems");
-                    }
-                    else
-                    {
-                        boardInteractions.SpeedUpItem(item, speedUpAmount);
-                        Select(item);
-                        selectionManager.Select("both", false);
-                    }
-                    break;
-                case ActionType.Pop:
-                    if (gameData.gems < popAmount)
-                    {
-                        shopMenu.Open("Gems");
-                    }
-                    else
-                    {
-                        boardInteractions.OpenItem(item, unlockAmount, Types.State.Bubble);
-                        Select(item);
-                        selectionManager.Select("both", false);
-                    }
-                    break;
-                case ActionType.Sell:
-                    boardInteractions.RemoveItem(item, sellAmount);
-                    Unselect(true);
-                    selectionManager.UnselectAlt();
-                    SetUndoButton(true);
-                    break;
-                case ActionType.Remove:
-                    boardInteractions.RemoveItem(item);
-                    Unselect(true);
-                    selectionManager.UnselectAlt();
-                    SetUndoButton();
-                    break;
-                case ActionType.Undo:
-                    boardInteractions.UndoLastStep();
-                    break;
-            }
-        }
-
-        void SetUndoButton(bool sold = false)
-        {
-            actionType = ActionType.Undo;
-
-            infoActionButton.text = LOCALE.Get("info_box_button_undo");
-            infoActionButton.style.display = DisplayStyle.Flex;
-            infoActionButton.style.unityBackgroundImageTintColor = Glob.colorYellow;
-
-            if (sold)
-            {
-                infoActionButton.AddToClassList("info_box_action_button_has_value");
-
-                infoActionValue.style.backgroundImage = new StyleBackground(goldValue);
-                infoActionValue.style.display = DisplayStyle.Flex;
-            }
-        }
-
-        public void Refresh()
-        {
-            if (boardInteractions.isSelected)
-            {
-                Select(boardInteractions.currentItem);
-            }
-            else
-            {
-                infoData.text = LOCALE.Get("info_box_default");
-            }
-        }
-
-        int GetMultipliedValue(int level, Types.CollGroup collGroup)
-        {
-            int multipliedValue = 0;
-            switch (collGroup)
-            {
-                case Types.CollGroup.Experience:
-                    multipliedValue = gameData.valuesData.experienceMultiplier[level - 1];
-                    break;
-                case Types.CollGroup.Gold:
-                    multipliedValue = gameData.valuesData.goldMultiplier[level - 1];
-                    break;
-                case Types.CollGroup.Gems:
-                    multipliedValue = gameData.valuesData.gemsMultiplier[level - 1];
-                    break;
-                case Types.CollGroup.Energy:
-                    multipliedValue = gameData.valuesData.energyMultiplier[level - 1];
-                    break;
-                default:
-                    Debug.Log("Wrong collectables group");
-                    break;
-            }
-
-            return multipliedValue;
         }
     }
 }

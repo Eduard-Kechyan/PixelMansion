@@ -63,7 +63,7 @@ namespace Merge
         menuUI = GameRefs.Instance.menuUI;
         cameraPan = GetComponent<CameraPan>();
 
-        // Cache UI
+        // UI
         root = GameRefs.Instance.hubUIDoc.rootVisualElement;
 
         // Get the camera's initial orthographic size

@@ -69,13 +69,13 @@ namespace Merge
 
         void Start()
         {
-            // Instances
+            // Cache
             LOCALE = I18n.Instance;
 
             // Load the sprites
             backgroundSprites = Resources.LoadAll<Sprite>("Scenes/Loading/Scene");
 
-            // Cache UI
+            // UI
             root = GetComponent<UIDocument>().rootVisualElement;
 
             background = root.Q<VisualElement>("Background");
@@ -105,6 +105,7 @@ namespace Merge
             updateButton = updateMenu.Q<Button>("UpdateButton");
             updateExitButton = updateMenu.Q<Button>("ExitButton");
 
+            // UI taps
             termsAcceptButton.clicked += () => AcceptTerms();
             termsTermsButton.clicked += () =>
             {
@@ -115,10 +116,11 @@ namespace Merge
                 Application.OpenURL(GameData.WEB_ADDRESS + "/privacy");
             };
 
-            ageAcceptButton.clicked += () => AcceptAge();
+            ageAcceptButton.clicked += () => SetAge();
 
             updateButton.clicked += () => UpdateGame();
             updateExitButton.clicked += () => Application.Quit();
+
 
             ageScrollView.verticalScroller.valueChanged += newValue => AgeScrollerHandle(newValue);
 
@@ -141,6 +143,7 @@ namespace Merge
             HideAgeMenu();
         }
 
+        // Dynamically set the game's title
         void SetTitle()
         {
             string[] gameTitleChunks = GameData.GAME_TITLE.Split(" "[0]);
@@ -160,6 +163,9 @@ namespace Merge
             }
         }
 
+        //// Animations ////
+
+        // Animate the background
         void ChangeBackgroundSprite()
         {
             background.style.backgroundImage = new StyleBackground(
@@ -176,6 +182,7 @@ namespace Merge
             }
         }
 
+        // Animate the sky up
         void MoveSkyUpSprite()
         {
             skyUp.style.right = new Length(skyUpCount, LengthUnit.Pixel);
@@ -190,6 +197,7 @@ namespace Merge
             }
         }
 
+        // Animate the sky down
         void MoveSkyDownSprite()
         {
             skyDown.style.right = new Length(skyDownCount, LengthUnit.Pixel);
@@ -205,6 +213,8 @@ namespace Merge
         }
 
         //// TERMS ////
+
+        // Show the terms and privacy policy menu before continuing
         public void CheckTerms(Action callback = null)
         {
             termsCallback = callback;
@@ -225,6 +235,7 @@ namespace Merge
             termsPrivacyButton.text = LOCALE.Get("terms_privacy_button");
         }
 
+        // Handle the player accepting the terms
         void AcceptTerms()
         {
             HideTermsMenu();
@@ -250,6 +261,8 @@ namespace Merge
         }
 
         //// AGE ////
+
+        // Show the age menu 
         public void CheckAge(Action<int> callback = null)
         {
             ageCallback = callback;
@@ -271,6 +284,29 @@ namespace Merge
             ageAcceptButton.SetEnabled(false);
         }
 
+        // Handle the player setting the age
+        void SetAge()
+        {
+            HideAgeMenu();
+
+            PlayerPrefs.SetInt("ageAccepted", 1);
+            PlayerPrefs.Save();
+
+            ageCallback?.Invoke(currentAge);
+        }
+
+        void HideAgeMenu()
+        {
+            // Hide the overlay
+            overlayBackground.style.display = DisplayStyle.None;
+            overlayBackground.style.opacity = 0;
+
+            // Hide the menu
+            ageMenu.style.display = DisplayStyle.None;
+            ageMenu.style.opacity = 0;
+        }
+
+        // These three functions handle the age's scroller
         void SetAgeScroller()
         {
             for (int i = 0; i < 100; i++)
@@ -311,27 +347,6 @@ namespace Merge
             }
         }
 
-        void AcceptAge()
-        {
-            HideAgeMenu();
-
-            PlayerPrefs.SetInt("ageAccepted", 1);
-            PlayerPrefs.Save();
-
-            ageCallback?.Invoke(currentAge);
-        }
-
-        void HideAgeMenu()
-        {
-            // Hide the overlay
-            overlayBackground.style.display = DisplayStyle.None;
-            overlayBackground.style.opacity = 0;
-
-            // Hide the menu
-            ageMenu.style.display = DisplayStyle.None;
-            ageMenu.style.opacity = 0;
-        }
-
         void AgeScrollerHandle(float newValue)
         {
             if (Input.touchCount == 0 && isAgeScrolling)
@@ -370,6 +385,8 @@ namespace Merge
         }
 
         //// UPDATE ////
+
+        // Check if there any game updates available and notify the player
         public void CheckForUpdates(Action callback = null)
         {
             updateCallback = callback;

@@ -64,7 +64,7 @@ namespace Merge
             // Cache instances
             gameData = GameData.Instance;
 
-            // Cache UI
+            // UI
             root = GetComponent<UIDocument>().rootVisualElement;
 
             valuesBox = root.Q<VisualElement>("ValuesBox");

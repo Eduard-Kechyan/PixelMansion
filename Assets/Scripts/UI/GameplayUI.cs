@@ -15,18 +15,13 @@ namespace Merge
         public Sprite[] bonusIndicatorSprites;
         public float inventoryIndicatorSpeed = 5f;
         public float bonusIndicatorSpeed = 0.05f;
+        private bool blippingInventoryIndicator = false;
+        private bool blippingBonusIndicator = false;
 
         [HideInInspector]
         public Vector2 bonusButtonPosition;
-
         [HideInInspector]
         public Vector2 inventoryButtonPosition;
-
-        [HideInInspector]
-        public int taskNoteDotAmount = 0;
-
-        private bool blippingInventoryIndicator = false;
-        private bool blippingBonusIndicator = false;
 
         // References
         private BonusManager bonusManager;
@@ -46,11 +41,12 @@ namespace Merge
         private Button taskButton;
         private VisualElement inventoryIndicator;
         private VisualElement bonusIndicator;
-        private VisualElement homeButtonNoteDot;
-        private VisualElement inventoryButtonNoteDot;
-        private VisualElement shopButtonNoteDot;
-        private VisualElement taskButtonNoteDot;
-        private Label taskButtonNoteDotLabel;
+
+        public VisualElement homeButtonNoteDot;
+        public VisualElement inventoryButtonNoteDot;
+        public VisualElement shopButtonNoteDot;
+        public VisualElement taskButtonNoteDot;
+        public Label taskButtonNoteDotLabel;
 
         void Start()
         {
@@ -84,7 +80,7 @@ namespace Merge
             inventoryIndicator = inventoryButton.Q<VisualElement>("Indicator");
             bonusIndicator = bonusButton.Q<VisualElement>("Indicator");
 
-            // Button taps
+            // UI taps
             homeButton.clicked += () =>
             {
                 soundManager.PlaySound("Transition");
@@ -101,6 +97,9 @@ namespace Merge
             CheckBonusButton();
         }
 
+        //// Positions ////
+
+        // Get bonus button position in the world space
         public void CalcBonusButtonPosition(GeometryChangedEvent evt)
         {
             root.UnregisterCallback<GeometryChangedEvent>(CalcBonusButtonPosition);
@@ -108,28 +107,15 @@ namespace Merge
             // Calculate the button position on the screen and the world space
             float singlePixelWidth = Camera.main.pixelWidth / GameData.GAME_PIXEL_WIDTH;
 
-            Vector2 bonusButtonScreenPosition = new Vector2(
-                singlePixelWidth
-                    * (
-                        root.worldBound.width
-                        - (
-                            root.worldBound.width
-                            - (
-                                bonusButton.worldBound.center.x
-                                - (bonusButton.resolvedStyle.width / 4)
-                            )
-                        )
-                    ),
-                singlePixelWidth
-                    * (
-                        root.worldBound.height
-                        - (bonusButton.worldBound.center.y - (bonusButton.resolvedStyle.width / 4))
-                    )
+            Vector2 bonusButtonScreenPosition = new(
+                singlePixelWidth * (root.worldBound.width - (root.worldBound.width - bonusButton.worldBound.center.x)),
+                singlePixelWidth * (root.worldBound.height - bonusButton.worldBound.center.y)
             );
 
             bonusButtonPosition = Camera.main.ScreenToWorldPoint(bonusButtonScreenPosition);
         }
 
+        // Get inventory button position in the world space
         public void CalcInventoryButtonPosition(GeometryChangedEvent evt)
         {
             root.UnregisterCallback<GeometryChangedEvent>(CalcInventoryButtonPosition);
@@ -137,31 +123,18 @@ namespace Merge
             // Calculate the button position on the screen and the world space
             float singlePixelWidth = Camera.main.pixelWidth / GameData.GAME_PIXEL_WIDTH;
 
-            Vector2 inventoryButtonScreenPosition = new Vector2(
-                singlePixelWidth
-                    * (
-                        root.worldBound.width
-                        - (
-                            root.worldBound.width
-                            - (
-                                inventoryButton.worldBound.center.x
-                                - (inventoryButton.resolvedStyle.width / 4)
-                            )
-                        )
-                    ),
-                singlePixelWidth
-                    * (
-                        root.worldBound.height
-                        - (
-                            inventoryButton.worldBound.center.y
-                            - (inventoryButton.resolvedStyle.width / 4)
-                        )
-                    )
+            Vector2 inventoryButtonScreenPosition = new(
+                singlePixelWidth * (root.worldBound.width - (root.worldBound.width - inventoryButton.worldBound.center.x)),
+                singlePixelWidth * (root.worldBound.height - inventoryButton.worldBound.center.y)
             );
 
             inventoryButtonPosition = Camera.main.ScreenToWorldPoint(inventoryButtonScreenPosition);
         }
 
+        //// Indicators ////
+
+        // Stop inventory indication when a new item is dropped on the inventory button
+        // and start again
         public void BlipInventoryIndicator()
         {
             if (!blippingInventoryIndicator)
@@ -172,6 +145,7 @@ namespace Merge
             }
         }
 
+        // Indicate when an item is dropped on the inventory button
         IEnumerator InventoryIndicatorBlip()
         {
             int count = 0;
@@ -202,6 +176,8 @@ namespace Merge
             }
         }
 
+        // Check if there are any bonus items, 
+        // if so, show the bonus button
         public void CheckBonusButton()
         {
             // Check if we should show bonus button
@@ -252,6 +228,7 @@ namespace Merge
             }
         }
 
+        // Indicate that there are bonus items
         IEnumerator BonusIndicatorBlip()
         {
             int count = 0;
@@ -274,62 +251,6 @@ namespace Merge
 
                 count++;
             }
-        }
-
-        public void ToggleButtonNoteDot(string buttonName, bool show, int amount = 0, bool useBloop = false)
-        {
-            VisualElement buttonNoteDot = new();
-
-            if (useBloop)
-            {
-                StopCoroutine(BloopNoteDot(buttonNoteDot));
-            }
-
-            switch (buttonName)
-            {
-                case "home":
-                    buttonNoteDot = homeButtonNoteDot;
-                    break;
-                case "inventory":
-                    buttonNoteDot = inventoryButtonNoteDot;
-                    break;
-                case "shop":
-                    buttonNoteDot = shopButtonNoteDot;
-                    break;
-                case "task":
-                    buttonNoteDot = taskButtonNoteDot;
-
-                    taskNoteDotAmount = amount;
-
-                    if (amount > 0)
-                    {
-                        taskButtonNoteDotLabel.text = amount.ToString();
-                    }
-                    break;
-            }
-
-            buttonNoteDot.RemoveFromClassList("note_dot_bloop");
-
-            buttonNoteDot.style.visibility = show
-                ? Visibility.Visible
-                : Visibility.Hidden;
-            buttonNoteDot.style.opacity = show ? 1 : 0;
-
-            if (useBloop)
-            {
-                StartCoroutine(BloopNoteDot(buttonNoteDot));
-            }
-        }
-
-        IEnumerator BloopNoteDot(VisualElement buttonNoteDot)
-        {
-            yield return new WaitForSeconds(0.2f);
-
-            buttonNoteDot.AddToClassList("note_dot_bloop");
-
-            yield return new WaitForSeconds(0.2f);
-
-            buttonNoteDot.RemoveFromClassList("note_dot_bloop");
         }
     }
 }

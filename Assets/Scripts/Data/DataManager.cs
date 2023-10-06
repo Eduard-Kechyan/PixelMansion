@@ -73,7 +73,7 @@ namespace Merge
 
         void Start()
         {
-            // References
+            // Cache
             gameData = GameData.Instance;
             apiCalls = ApiCalls.Instance;
             dataConverter = GetComponent<DataConverter>();
@@ -205,7 +205,7 @@ namespace Merge
             gameData.unlockedData.CopyTo(unlockedDataTemp, 0);
             gameData.unlockedData = unlockedDataTemp;
 
-            gameData.finishedTasks = JsonConvert.DeserializeObject<List<string>>(newFinishedTasks);
+            gameData.finishedTasks = JsonConvert.DeserializeObject<List<Types.FinishedTask>>(newFinishedTasks);
 
             // Convert data
             gameData.itemsData = dataConverter.ConvertItems(items.content);

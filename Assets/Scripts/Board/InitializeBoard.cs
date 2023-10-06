@@ -46,7 +46,7 @@ namespace Merge
             gameplayUI = GameRefs.Instance.gameplayUI;
             safeAreaHandler = gameplayUI.GetComponent<SafeAreaHandler>();
 
-            // Cache UI
+            // UI
             root = gameplayUI.GetComponent<UIDocument>().rootVisualElement;
 
             // Set the gameObject

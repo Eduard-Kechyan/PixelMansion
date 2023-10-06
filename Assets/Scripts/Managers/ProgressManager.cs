@@ -21,7 +21,7 @@ namespace Merge
 
         void Start()
         {
-            // References
+            // Cache
             taskManager = GetComponent<TaskManager>();
             gameData = GameData.Instance;
 
@@ -176,7 +176,7 @@ namespace Merge
                         {
                             for (int k = 0; k < gameData.finishedTasks.Count; k++)
                             {
-                                if (steps[i].requiredIds[j] == gameData.finishedTasks[k])
+                                if (groupId == gameData.finishedTasks[k].groupId && steps[i].requiredIds[j] == gameData.finishedTasks[k].taskId)
                                 {
                                     count++;
                                 }
@@ -215,7 +215,7 @@ namespace Merge
 
                         for (int k = 0; k < gameData.finishedTasks.Count; k++)
                         {
-                            if (gameData.finishedTasks[k] == tasksData.taskGroups[i].tasks[j].id)
+                            if (groupId == gameData.finishedTasks[k].groupId && tasksData.taskGroups[i].tasks[j].id == gameData.finishedTasks[k].taskId)
                             {
                                 finishedCount++;
                             }

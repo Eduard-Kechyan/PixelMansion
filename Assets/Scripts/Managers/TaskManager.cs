@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+// TODO - Every time we want to get the task or task group we loop through it,
+// TODO - It would be more performant to save them in a variable and use them when needed
+
 namespace Merge
 {
     public class TaskManager : MonoBehaviour
@@ -12,33 +15,36 @@ namespace Merge
         public TasksData tasksData;
         public WorldDataManager worldDataManager;
         public BoardManager boardManager;
+        public ValuePop valuePop;
 
         // References
         private GameData gameData;
         private DataManager dataManager;
-        private HubUI hubUI;
-        private GameplayUI gameplayUI;
         private Selector selector;
         private ProgressManager progressManager;
         private CameraMotion cameraMotion;
+        private ItemHandler itemHandler;
+        private NoteDotHandler noteDotHandler;
+        private HubUI hubUI;
+        private GameplayUI gameplayUI;
 
         void Start()
         {
-            // References
+            // Cache
             gameData = GameData.Instance;
             dataManager = DataManager.Instance;
-            hubUI = GameRefs.Instance.hubUI;
-            gameplayUI = GameRefs.Instance.gameplayUI;
             progressManager = GetComponent<ProgressManager>();
             cameraMotion = Camera.main.GetComponent<CameraMotion>();
+            noteDotHandler = GameRefs.Instance.noteDotHandler;
+            itemHandler = DataManager.Instance.GetComponent<ItemHandler>();
+            hubUI = GameRefs.Instance.hubUI;
+            gameplayUI = GameRefs.Instance.gameplayUI;
 
             // The world data manager is only attached in the hub scene
             if (worldDataManager != null)
             {
                 selector = worldDataManager.GetComponent<Selector>();
             }
-
-            CheckIfThereIsATaskToComplete();
 
             // Subscribe to events
             DataManager.boardSaveEvent += CheckBoardAndInventoryForTasks;
@@ -138,7 +144,7 @@ namespace Merge
                 }
             }
 
-            AddTaskIdToFinishedTasks(taskId);
+            AddTaskIdToFinishedTasks(groupId, taskId);
 
             // Save changes to disk
             dataManager.SaveTasks();
@@ -188,7 +194,7 @@ namespace Merge
             {
                 if (gameData.tasksData[i].id == groupId)
                 {
-                    if (!gameData.tasksData[i].tasks.Exists(i => i.id == taskId) && !gameData.finishedTasks.Exists(i => i == taskId))
+                    if (!gameData.tasksData[i].tasks.Exists(i => i.id == taskId) && !gameData.finishedTasks.Exists(i => i.groupId == groupId && i.taskId == taskId))
                     {
                         AddTask(groupId, taskId);
                     }
@@ -205,11 +211,11 @@ namespace Merge
             }
         }
 
-        void AddTaskIdToFinishedTasks(string taskId)
+        void AddTaskIdToFinishedTasks(string groupId, string taskId)
         {
-            if (!gameData.finishedTasks.Exists(i => i == taskId))
+            if (!gameData.finishedTasks.Exists(i => i.groupId == groupId && i.taskId == taskId))
             {
-                gameData.finishedTasks.Add(taskId);
+                gameData.finishedTasks.Add(new Types.FinishedTask() { groupId = groupId, taskId = taskId, });
             }
         }
 
@@ -257,7 +263,10 @@ namespace Merge
                 // Select the item
                 selector.SelectAlt(taskRef.GetComponent<Selectable>(), () =>
                 {
-                    // If successfully changed, complete the task  
+                    // If successfully changed, give the rewards and complete the task 
+
+                    HandleRewards(groupId, taskId);
+
                     TaskCompleted(groupId, taskId);
                 });
             }
@@ -282,6 +291,8 @@ namespace Merge
                 progressManager.CheckNextArea(groupId);
 
                 RemoveTaskGroup(groupId);
+
+                CheckBoardAndInventoryForTasks();
             }
             else
             {
@@ -370,6 +381,70 @@ namespace Merge
             callback();
         }
 
+        //// Rewards ////
+
+        // Get the rewards and handle them as needed
+        void HandleRewards(string groupId, string taskId)
+        {
+            for (int i = 0; i < gameData.tasksData.Count; i++)
+            {
+                if (gameData.tasksData[i].id == groupId)
+                {
+                    for (int j = 0; j < gameData.tasksData[i].tasks.Count; j++)
+                    {
+                        if (gameData.tasksData[i].tasks[j].id == taskId)
+                        {
+                            for (int k = 0; k < gameData.tasksData[i].tasks[j].rewards.Length; k++)
+                            {
+                                Types.TaskItem reward = gameData.tasksData[i].tasks[j].rewards[k];
+
+                                if (reward.type == Types.Type.Coll)
+                                {
+                                    valuePop.PopColl(reward.amount, reward.collGroup, hubUI.taskButtonPosition, false);
+                                }
+                                else
+                                {
+                                    AddItemToBonus(reward);
+                                }
+                            }
+
+                            break;
+                        }
+                    }
+
+                    break;
+                }
+            }
+        }
+
+        // Handle Items, Generators and Chests
+        IEnumerator AddItemToBonus(Types.TaskItem reward)
+        {
+            yield return new WaitForSeconds(0.5f);
+
+            Item newItem = new()
+            {
+                sprite = reward.sprite,
+                type = reward.type,
+                group = reward.group,
+                genGroup = reward.genGroup,
+                chestGroup = reward.chestGroup
+            };
+
+            Vector2 buttonPosition;
+
+            if (noteDotHandler.isHub)
+            {
+                buttonPosition = hubUI.playButtonPosition;
+            }
+            else
+            {
+                buttonPosition = gameplayUI.bonusButtonPosition;
+            }
+
+            valuePop.PopBonus(newItem, buttonPosition, true, true);
+        }
+
         //// Checks ////
 
         // Check if any task is ready to be completed and enable the task button note dot
@@ -388,31 +463,12 @@ namespace Merge
                 }
             }
 
-            if (hubUI != null && completedCount != hubUI.taskNoteDotAmount)
+            if (noteDotHandler.isHub && completedCount == noteDotHandler.taskNoteDotAmount)
             {
-                if (completedCount < hubUI.taskNoteDotAmount)
-                {
-                    hubUI.ToggleButtonNoteDot("task", completedCount > 0, completedCount);
-                }
-                else if (completedCount > hubUI.taskNoteDotAmount)
-                {
-                    hubUI.ToggleButtonNoteDot("task", completedCount > 0, completedCount, true);
-                }
-
                 return;
             }
 
-            if (gameplayUI != null)
-            {
-                if (completedCount < gameplayUI.taskNoteDotAmount)
-                {
-                    gameplayUI.ToggleButtonNoteDot("task", completedCount > 0, completedCount);
-                }
-                else if (completedCount > gameplayUI.taskNoteDotAmount)
-                {
-                    gameplayUI.ToggleButtonNoteDot("task", completedCount > 0, completedCount, true);
-                }
-            }
+            noteDotHandler.ToggleButtonNoteDot("task", completedCount > 0, completedCount, completedCount > noteDotHandler.taskNoteDotAmount);
         }
 
         // Check if any task is ready to be completed
@@ -541,7 +597,7 @@ namespace Merge
 
         // After tapping the complete button on the task in the gameplay scene, 
         // send the data to the hub scene and try to complete the scene here
-        void CheckIfThereIsATaskToComplete()
+        public void CheckIfThereIsATaskToComplete(Action callback = null)
         {
             if (Glob.taskToComplete != "")
             {
@@ -550,6 +606,11 @@ namespace Merge
                 TryToCompleteTask(splitTaskData[0], splitTaskData[1]);
 
                 Glob.taskToComplete = "";
+            }
+
+            if (callback != null)
+            {
+                callback();
             }
         }
     }

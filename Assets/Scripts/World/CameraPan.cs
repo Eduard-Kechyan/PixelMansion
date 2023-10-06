@@ -70,7 +70,6 @@ namespace Merge
         private MenuUI menuUI;
         private PopupManager popupManager;
         private CharMove charMove;
-        private HubGameUI hubGameUI;
 
         // UI
         private VisualElement root;
@@ -80,11 +79,10 @@ namespace Merge
             // Cache
             cam = Camera.main;
             menuUI = GameRefs.Instance.menuUI;
-            hubGameUI = GameRefs.Instance.hubGameUI;
             popupManager = GameRefs.Instance.popupManager;
             charMove = CharMain.Instance.charMove;
 
-            // Cache UI
+            // UI
             root = GameRefs.Instance.hubUIDoc.rootVisualElement;
 
             if (selector == null)

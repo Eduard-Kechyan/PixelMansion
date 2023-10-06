@@ -32,7 +32,7 @@ namespace Merge
         menuUI = GetComponent<MenuUI>();
         LOCALE = I18n.Instance;
 
-        // Cache UI
+        // UI
         root = GetComponent<UIDocument>().rootVisualElement;
 
         confirmMenu = root.Q<VisualElement>("ConfirmMenu");

@@ -43,7 +43,7 @@ namespace Merge
             LOCALE = I18n.Instance;
             gameData = GameData.Instance;
 
-            // Cache UI
+            // UI
             root = GetComponent<UIDocument>().rootVisualElement;
 
             taskMenu = root.Q<VisualElement>("TaskMenu");
@@ -75,8 +75,10 @@ namespace Merge
             menuUI.OpenMenu(taskMenu, title);
         }
 
+        // Show task data
         void SetTasks()
         {
+            // Clear past data
             taskScrollView.Clear();
 
             if (gameData.tasksData.Count > 0)
@@ -126,7 +128,20 @@ namespace Merge
                         string taskId = gameData.tasksData[i].tasks[j].id;
 
                         // Set button
-                        if (gameData.tasksData[i].tasks[j].needs.Length == gameData.tasksData[i].tasks[j].completed)
+                        if (taskId == "Last")
+                        {
+                            newTask.Q<VisualElement>("TaskNeeds").style.display = DisplayStyle.None;
+
+                            playButton.clicked += () => HandleCompletedTap(groupId, taskId);
+
+                            playButton.text = LOCALE.Get("task_button_finish");
+
+                            playButton.AddToClassList("task_button_last");
+
+                            playButton.style.unityBackgroundImageTintColor = Glob.colorGreen;
+
+                        }
+                        else if (gameData.tasksData[i].tasks[j].needs.Length == gameData.tasksData[i].tasks[j].completed)
                         {
                             playButton.clicked += () => HandleCompletedTap(groupId, taskId);
 
@@ -160,9 +175,11 @@ namespace Merge
 
                             if (gameData.tasksData[i].tasks[j].needs[k].completed == gameData.tasksData[i].tasks[j].needs[k].amount)
                             {
-                                newTaskNeed
-                                    .Q<VisualElement>("Image")
-                                    .style.backgroundColor = Glob.colorGreen;
+                                VisualElement check = new() { name = "Check" };
+
+                                check.AddToClassList("check");
+
+                                newTaskNeed.Q<VisualElement>("Image").Add(check);
                             }
 
                             newTaskNeed.Q<Label>("Count").text = amount;
@@ -196,7 +213,7 @@ namespace Merge
             }
             else
             {
-                // There are not tasks
+                // There are no tasks
                 Label emptyTasksLabel = new() { text = LOCALE.Get("task_empty") };
 
                 emptyTasksLabel.AddToClassList("menu_label");
@@ -205,6 +222,10 @@ namespace Merge
             }
         }
 
+        // Check if we are on the hub scene and complete the task,
+        // but if we are on the gameplay scene,
+        // then save the task group id and task id to a static variable
+        // so it can be used in the hub scene
         void HandleCompletedTap(string groupId, string taskId)
         {
             if (sceneLoader.GetSceneName() == "Hub")

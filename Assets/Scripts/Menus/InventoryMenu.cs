@@ -59,7 +59,7 @@ namespace Merge
             // Cache instances
             LOCALE = I18n.Instance;
 
-            // Cache UI
+            // UI
             root = GetComponent<UIDocument>().rootVisualElement;
 
             inventoryMenu = root.Q<VisualElement>("InventoryMenu");

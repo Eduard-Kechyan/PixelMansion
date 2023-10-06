@@ -61,7 +61,7 @@ namespace Merge
 
         private void Start()
         {
-            // References
+            // Cache
             initializeBoard = GetComponent<InitializeBoard>();
             selectionManager = GetComponent<SelectionManager>();
             boardManager = GetComponent<BoardManager>();

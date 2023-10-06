@@ -353,6 +353,13 @@ namespace Merge
         }
 
         [Serializable]
+        public class FinishedTask
+        {
+            public string groupId;
+            public string taskId;
+        }
+
+        [Serializable]
         public class TaskGroupJson
         {
             public string id;

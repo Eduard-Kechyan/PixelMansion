@@ -17,7 +17,7 @@ namespace Merge
 
         void Start()
         {
-            // References
+            // Cache
             selectable = GetComponent<Selectable>();
             LOCALE = I18n.Instance;
             charSpeech = CharMain.Instance.charSpeech;

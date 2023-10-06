@@ -23,7 +23,7 @@ namespace Merge
         // Cache
         menuUI = GetComponent<MenuUI>();
 
-        // Cache UI
+        // UI
         root = GetComponent<UIDocument>().rootVisualElement;
 
         noteMenu = root.Q<VisualElement>("NoteMenu");

@@ -1016,7 +1016,7 @@
     background-color: rgb(183, 170, 137);
 }
 
-.task_item .play_button {
+.task_item .task_button {
     background-image: url('project://database/Assets/Sprites/Buttons/LongButton.png?fileID=2800000&guid=e6292ec8b0b2a5743a0f00750e1f4db0&type=3#LongButton');
     width: 43px;
     height: 18px;
@@ -1024,6 +1024,11 @@
     color: rgb(255, 255, 255);
     margin-left: auto;
     font-size: 8px;
+}
+
+.task_button_last {
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .task_item .task_needs {
@@ -1048,6 +1053,17 @@
 .task_need .image {
     width: 24px;
     height: 24px;
+}
+
+.task_need .image .check {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background-image: url('project://database/Assets/Sprites/Items/!%20Extra/Completion.png?fileID=2800000&guid=47c024a3d93ed024682db3aea79ab753&type=3#Completion');
 }
 
 .task_need .count {

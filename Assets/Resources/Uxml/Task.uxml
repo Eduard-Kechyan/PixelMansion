@@ -2,6 +2,6 @@
     <ui:VisualElement name="TaskItem" class="task_item">
         <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="TaskTitle" class="title" />
         <ui:VisualElement name="TaskNeeds" class="task_needs" />
-        <ui:Button text="Button" display-tooltip-when-elided="true" name="PlayButton" class="button button_active play_button" />
+        <ui:Button text="Button" display-tooltip-when-elided="true" name="PlayButton" class="button button_active task_button" />
     </ui:VisualElement>
 </ui:UXML>

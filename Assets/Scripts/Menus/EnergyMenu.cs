@@ -43,7 +43,7 @@ namespace Merge
         gameData = GameData.Instance;
         LOCALE = I18n.Instance;
 
-        // Cache UI
+        // UI
         root = GetComponent<UIDocument>().rootVisualElement;
 
         energyMenu = root.Q<VisualElement>("EnergyMenu");
@@ -58,7 +58,7 @@ namespace Merge
         buyButton = energyMenu.Q<VisualElement>("EnergyBoxes").Q<Button>("BuyButton");
 
         watchButton.clicked += () => WatchAdHandle();
-        buyButton.clicked += () => BuyEnegyHandler();
+        buyButton.clicked += () => BuyEnergyHandler();
 
         Init();
     }
@@ -94,7 +94,7 @@ namespace Merge
         menuUI.OpenMenu(energyMenu, title, true);
     }
 
-    // Add energy after successfuly watching an ad
+    // Add energy after successfully watching an ad
     void WatchAdHandle()
     {
         adsManager.WatchAd(()=>{
@@ -104,8 +104,8 @@ namespace Merge
         });        
     }
 
-    // Add energy after buyinh it
-    void BuyEnegyHandler()
+    // Add energy after buying it
+    void BuyEnergyHandler()
     {
         // Check if we have enough energy
         if (gameData.gems >= gemsCost)
@@ -113,7 +113,7 @@ namespace Merge
             // TODO - Put this together with the UpdateEnergy. In case something goes they both will not fire
             gameData.UpdateGems(-gemsCost); // Note the -
 
-            valuePop.PopValue(energyBuyAmount, "Energy");
+            valuePop.PopValue(energyBuyAmount, Types.CollGroup.Energy);
 
             menuUI.CloseMenu(energyMenu.name);
         }

@@ -59,7 +59,7 @@ namespace Merge
             valuePop = GetComponent<ValuePop>();
             paymentsManager = Services.Instance.GetComponent<PaymentsManager>();
 
-            // Cache UI
+            // UI
             root = GetComponent<UIDocument>().rootVisualElement;
 
             shopMenu = root.Q<VisualElement>("ShopMenu");
@@ -473,11 +473,11 @@ namespace Merge
 
             paymentsManager.Purchase(shopGem.price, () =>
             {
-                valuePop.PopValue(shopGem.amount, "Gems");
+                valuePop.PopValue(shopGem.amount, Types.CollGroup.Gems);
 
                 if (shopGem.hasBonus)
                 {
-                    valuePop.PopValue(shopData.gemsContent[order].bonusAmount, "Energy");
+                    valuePop.PopValue(shopData.gemsContent[order].bonusAmount, Types.CollGroup.Energy);
                 }
 
                 menuUI.CloseMenu(shopMenu.name);
@@ -497,7 +497,7 @@ namespace Merge
 
             paymentsManager.Purchase(shopGold.price, () =>
             {
-                valuePop.PopValue(shopGold.amount, "Gold");
+                valuePop.PopValue(shopGold.amount,Types.CollGroup.Gold);
 
                 menuUI.CloseMenu(shopMenu.name);
             }, () =>
