@@ -50,7 +50,7 @@ namespace Merge
                 SceneManager.LoadScene(sceneIndex);
             });
         }
-
+        
         public void LoadAsync(int sceneIndex)
         {
             transitionUI.Open();

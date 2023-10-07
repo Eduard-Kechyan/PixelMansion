@@ -634,10 +634,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameplayUI: {fileID: 0}
   hubUI: {fileID: 0}
-  hubGameUI: {fileID: 0}
   menuUI: {fileID: 0}
   valuesUI: {fileID: 0}
-  safeAreaHandler: {fileID: 0}
   gameplayUIDoc: {fileID: 0}
   hubUIDoc: {fileID: 0}
   hubGameUIDoc: {fileID: 0}
@@ -654,6 +652,8 @@ MonoBehaviour:
   valuePop: {fileID: 0}
   initialized: 0
   popupManager: {fileID: 0}
+  safeAreaHandler: {fileID: 0}
+  noteDotHandler: {fileID: 0}
 --- !u!4 &993497632
 Transform:
   m_ObjectHideFlags: 0
@@ -1136,7 +1136,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6666298423405771595, guid: a255d925b90a92e418c669c0cfae21e9, type: 3}
       propertyPath: logPhases
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6666298423405771595, guid: a255d925b90a92e418c669c0cfae21e9, type: 3}
       propertyPath: uiDocument
@@ -1147,17 +1147,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1419910202}
     - target: {fileID: 6666298423405771595, guid: a255d925b90a92e418c669c0cfae21e9, type: 3}
-      propertyPath: stayOnScene
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6666298423405771595, guid: a255d925b90a92e418c669c0cfae21e9, type: 3}
       propertyPath: loadingSceneUI
       value: 
       objectReference: {fileID: 57463800}
-    - target: {fileID: 6666298423405771595, guid: a255d925b90a92e418c669c0cfae21e9, type: 3}
-      propertyPath: fillSpeedInEditor
-      value: 30
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

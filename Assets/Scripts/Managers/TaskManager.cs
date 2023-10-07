@@ -463,12 +463,15 @@ namespace Merge
                 }
             }
 
-            if (noteDotHandler.isHub && completedCount == noteDotHandler.taskNoteDotAmount)
+            if (noteDotHandler != null)
             {
-                return;
-            }
+                if (noteDotHandler.isHub && completedCount == noteDotHandler.taskNoteDotAmount)
+                {
+                    return;
+                }
 
-            noteDotHandler.ToggleButtonNoteDot("task", completedCount > 0, completedCount, completedCount > noteDotHandler.taskNoteDotAmount);
+                noteDotHandler.ToggleButtonNoteDot("task", completedCount > 0, completedCount, completedCount > noteDotHandler.taskNoteDotAmount);
+            }
         }
 
         // Check if any task is ready to be completed

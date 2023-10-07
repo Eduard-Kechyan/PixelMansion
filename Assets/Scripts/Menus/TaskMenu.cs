@@ -238,7 +238,7 @@ namespace Merge
             {
                 Glob.taskToComplete = groupId + "|" + taskId;
 
-                sceneLoader.Load(1);
+                sceneLoader.Load(2);
             }
         }
     }

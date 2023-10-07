@@ -4,22 +4,26 @@ using UnityEngine;
 
 namespace Merge
 {
-public class Services : MonoBehaviour
-{
-    // Instance
-    public static Services Instance;
-
-    void Awake()
+    public class Services : MonoBehaviour
     {
-        if (Instance != null && Instance != this)
+        // Variables
+        public bool networkAvailable = false;
+        public bool adsAvailable = false;
+
+        // Instance
+        public static Services Instance;
+
+        void Awake()
         {
-            Destroy(gameObject);
-        }
-        else
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
+            if (Instance != null && Instance != this)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                Instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
         }
     }
-}
 }

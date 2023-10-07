@@ -34,6 +34,8 @@ namespace Merge
         {
             // UI
             valuesBox = GameRefs.Instance.valuesUIDoc.rootVisualElement.Q<VisualElement>("ValuesBox");
+
+            Init();
         }
 
         void Init()
@@ -60,7 +62,7 @@ namespace Merge
                     break;
 
                 case "Gameplay":
-                    SetGamplayUI();
+                    SetGameplayUI();
                     break;
 
                 default:
@@ -70,7 +72,7 @@ namespace Merge
 
         }
 
-        void SetGamplayUI()
+        void SetGameplayUI()
         {
             root = GetComponent<UIDocument>().rootVisualElement;
             bottomBox = root.Q<VisualElement>("BottomBox");

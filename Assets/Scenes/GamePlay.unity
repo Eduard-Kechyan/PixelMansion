@@ -482,7 +482,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameplayUI: {fileID: 3894635478175162773}
   hubUI: {fileID: 0}
-  hubGameUI: {fileID: 0}
   menuUI: {fileID: 2529494230138778357}
   valuesUI: {fileID: 7866921526989002608}
   gameplayUIDoc: {fileID: 0}
@@ -650,6 +649,10 @@ PrefabInstance:
       propertyPath: boardManager
       value: 
       objectReference: {fileID: 639326507}
+    - target: {fileID: 5041890705364766301, guid: 09379b30afef3214ba489f71db8fa4dd, type: 3}
+      propertyPath: resetData
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6123228280949545067, guid: 09379b30afef3214ba489f71db8fa4dd, type: 3}
       propertyPath: m_Name
       value: ProgressManager
@@ -1283,7 +1286,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2948ff4e1b88be4bbae1f164d234f4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dummy: {fileID: 5001190018503221121, guid: 7d7ee69ed5ec77a4490cbdbd613b63d1, type: 3}
   sceneLoader: {fileID: 2129448916}
   inventoryIndicatorSprites:
   - {fileID: -2105459946, guid: 4d91f211f5df6004391e14554e998da1, type: 3}

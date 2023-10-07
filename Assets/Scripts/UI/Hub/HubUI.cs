@@ -70,7 +70,7 @@ namespace Merge
             playButton.clicked += () =>
             {
                 soundManager.PlaySound("Transition");
-                sceneLoader.Load(2);
+                sceneLoader.Load(3);
             };
 
             root.RegisterCallback<GeometryChangedEvent>(Init);

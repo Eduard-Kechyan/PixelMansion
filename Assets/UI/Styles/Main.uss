@@ -244,3 +244,21 @@
     height: 8px;
     scale: 1.5 1.5;
 }
+
+.splash_box {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgb(10, 61, 89);
+    transition-duration: 0.4s;
+    opacity: 0;
+    visibility: visible;
+    display: none;
+}
+
+.splash_box_show {
+    opacity: 1;
+    display: flex;
+}

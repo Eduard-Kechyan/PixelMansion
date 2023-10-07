@@ -84,7 +84,7 @@ namespace Merge
             homeButton.clicked += () =>
             {
                 soundManager.PlaySound("Transition");
-                sceneLoader.Load(1);
+                sceneLoader.Load(2);
             };
             inventoryButton.clicked += () => inventoryMenu.Open();
             bonusButton.clicked += () => bonusManager.GetBonus();

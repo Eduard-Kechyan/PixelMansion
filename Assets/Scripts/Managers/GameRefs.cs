@@ -14,8 +14,8 @@ namespace Merge
         public MenuUI menuUI;
         public ValuesUI valuesUI;
 
-        [Header("UI Documents")]
         // UI documents
+        [Header("UI Documents")]
         [HideInInspector]
         public UIDocument gameplayUIDoc;
 
@@ -94,14 +94,14 @@ namespace Merge
                 safeAreaHandler = gameplayUI.GetComponent<SafeAreaHandler>();
                 noteDotHandler = gameplayUI.GetComponent<NoteDotHandler>();
             }
-
+            
             if (hubUI != null)
             {
                 hubUIDoc = hubUI.GetComponent<UIDocument>();
                 safeAreaHandler = hubUI.GetComponent<SafeAreaHandler>();
                 noteDotHandler = hubUI.GetComponent<NoteDotHandler>();
             }
-
+            
             if (valuesUI != null)
             {
                 valuesUIDoc = valuesUI.GetComponent<UIDocument>();

@@ -57,13 +57,6 @@ namespace Merge
             tempAge = PlayerPrefs.GetInt("tempAge");
 
             initial = !PlayerPrefs.HasKey("InitialLoaded"); // Note the "!"
-
-            // TODO - Check this
-            Glob.SetTimeout(() =>
-            {
-                Debug.Log("SetTimeout Loading!");
-                sceneLoader.Load(1);
-            }, 5000);
         }
 
         void Update()
@@ -124,11 +117,13 @@ namespace Merge
                     }
                 }
 
-                // Check and create user
+              /*  // Check and create user
                 if (fillCount >= singlePhasePercent * 4 && phase == 4)
                 {
                     loading = false;
-                    userDataHandler.CheckUser(callback, tempAge);
+                    ContinueLoading();
+                    // TODO - Fix this function
+                   // userDataHandler.CheckUser(callback, tempAge);
 
                     if (logPhases)
                     {
@@ -142,14 +137,16 @@ namespace Merge
                     if (!initial)
                     {
                         loading = false;
-                        loadingSceneUI.CheckForUpdates(callback);
+                        ContinueLoading();
+                        // TODO - Fix this function
+                        // loadingSceneUI.CheckForUpdates(callback);
 
                         if (logPhases)
                         {
                             Debug.Log("Phase 5");
                         }
                     }
-                }
+                }*/
 
                 // get notification permission
                 /*if (fillCount >= singlePhasePercent*5 && phase==5)
@@ -183,7 +180,7 @@ namespace Merge
                     }
                     else
                     {
-                        sceneLoader.Load(1);
+                        sceneLoader.Load(2);
                     }
                 }
             }
