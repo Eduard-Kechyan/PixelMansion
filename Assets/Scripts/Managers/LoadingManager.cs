@@ -16,9 +16,11 @@ namespace Merge
         public SceneLoader sceneLoader;
         public GameObject uiDocument;
         public LoadingSceneUI loadingSceneUI;
-        public bool loading = false;
         public int phase = 1;
         public float maxPhase = 6;
+
+        [SerializeField]
+        private bool loading = false;
 
         [ReadOnly]
         [SerializeField]
@@ -26,29 +28,29 @@ namespace Merge
         private VisualElement fill;
         private Action callback;
         private Action<int> callbackAge;
-        private UserDataHandler userDataHandler;
         private float singlePhasePercent = 10f;
         private int tempAge = 0;
         private bool initial = true;
 
         // References
         private DataManager dataManager;
+        private UserDataHandler userDataHandler;
+        private SoundManager soundManager;
         //private Notifics notifics;
 
         void Start()
         {
             // Cache
             dataManager = DataManager.Instance;
-            //notifics = Services.Instance.GetComponent<Notifics>();
             userDataHandler = GetComponent<UserDataHandler>();
+            soundManager = SoundManager.Instance;
+            //notifics = Services.Instance.GetComponent<Notifics>();
 
             // UI
             VisualElement root = uiDocument.GetComponent<UIDocument>().rootVisualElement;
-
             fill = root.Q<VisualElement>("Fill");
 
-            loading = true;
-
+            // Get Ready
             singlePhasePercent = 100f / (maxPhase + 1);
 
             callback += ContinueLoading;
@@ -68,6 +70,7 @@ namespace Merge
                 fill.style.width = new Length(fillCount, LengthUnit.Pixel);
 
                 // Terms of Service and Privacy Policy notice
+                // This phase is being checked once
                 if (fillCount >= singlePhasePercent * 1 && phase == 1)
                 {
                     loading = false;
@@ -87,6 +90,7 @@ namespace Merge
                 }
 
                 // Age notice
+                // This phase is being checked once
                 if (fillCount >= singlePhasePercent * 2 && phase == 2)
                 {
                     loading = false;
@@ -106,6 +110,7 @@ namespace Merge
                 }
 
                 // Check and get game data
+                // This phase is being checked every time
                 if (fillCount >= singlePhasePercent * 3 && phase == 3)
                 {
                     loading = false;
@@ -117,38 +122,41 @@ namespace Merge
                     }
                 }
 
-              /*  // Check and create user
-                if (fillCount >= singlePhasePercent * 4 && phase == 4)
-                {
-                    loading = false;
-                    ContinueLoading();
-                    // TODO - Fix this function
-                   // userDataHandler.CheckUser(callback, tempAge);
+                /*  // Check and create user
+                // This phase is being checked once
+                  if (fillCount >= singlePhasePercent * 4 && phase == 4)
+                  {
+                      loading = false;
+                      ContinueLoading();
+                      // TODO - Fix this function
+                     // userDataHandler.CheckUser(callback, tempAge);
 
-                    if (logPhases)
-                    {
-                        Debug.Log("Phase 4");
-                    }
-                }
+                      if (logPhases)
+                      {
+                          Debug.Log("Phase 4");
+                      }
+                  }
 
-                // Check for updates
-                if (fillCount >= singlePhasePercent * 5 && phase == 5)
-                {
-                    if (!initial)
-                    {
-                        loading = false;
-                        ContinueLoading();
-                        // TODO - Fix this function
-                        // loadingSceneUI.CheckForUpdates(callback);
+                  // Check for updates
+                // This phase is being checked every time
+                  if (fillCount >= singlePhasePercent * 5 && phase == 5)
+                  {
+                      if (!initial)
+                      {
+                          loading = false;
+                          ContinueLoading();
+                          // TODO - Fix this function
+                          // loadingSceneUI.CheckForUpdates(callback);
 
-                        if (logPhases)
-                        {
-                            Debug.Log("Phase 5");
-                        }
-                    }
-                }*/
+                          if (logPhases)
+                          {
+                              Debug.Log("Phase 5");
+                          }
+                      }
+                  }*/
 
-                // get notification permission
+                // Get notification permission
+                // This phase is being checked once
                 /*if (fillCount >= singlePhasePercent*5 && phase==5)
                 {
                     loading = false;
@@ -180,10 +188,18 @@ namespace Merge
                     }
                     else
                     {
-                        sceneLoader.Load(2);
+                        sceneLoader.Load(1);
                     }
                 }
             }
+        }
+
+        public void StartLoading()
+        {
+// PLay background music
+            soundManager.PlayMusic("Loading");
+
+            loading = true;
         }
 
         void HandleAge(int newValue)

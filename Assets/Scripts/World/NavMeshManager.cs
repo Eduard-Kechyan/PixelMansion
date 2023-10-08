@@ -10,6 +10,7 @@ namespace Merge
     {
         // Variables
         public bool bake;
+        public bool log=false;
         public Transform worldRoot;
 
         // References
@@ -78,6 +79,10 @@ namespace Merge
                 navMeshSurface = GetComponent<NavMeshSurface>();
             }
 
+            // Hide logs
+            navMeshSurface.hideEditorLogs = !log;
+
+            // Build nav mesh
             navMeshSurface.BuildNavMesh();
         }
     }

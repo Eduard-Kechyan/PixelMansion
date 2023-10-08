@@ -65,12 +65,11 @@ namespace Merge
             Item item,
             Vector2 bonusButtonPosition,
             bool check = true,
-            bool useCenter = false,
-            bool convertPosition = true
+            bool useCenter = false
         )
         {
             StartCoroutine(
-                HandlePopBonus(item, bonusButtonPosition, check, useCenter, convertPosition)
+                HandlePopBonus(item, bonusButtonPosition, check, useCenter)
             );
         }
 
@@ -172,7 +171,7 @@ namespace Merge
             Sprite valuePopSprite = sprite;
 
             // Add value pop element to the root
-            VisualElement valuePop = InitializePopValueElement(valuePopSprite, initialPosition, false);
+            VisualElement valuePop = InitializePopValueElement(valuePopSprite, initialPosition);
 
             // Add the value pop to the root
             root.Add(valuePop);
@@ -219,11 +218,10 @@ namespace Merge
             Item item,
             Vector2 bonusButtonPosition,
             bool check = true,
-            bool useCenter = false,
-            bool convertPosition = true
+            bool useCenter = false
         )
         {
-            Vector2 initialPosition = new Vector2(
+            Vector2 initialPosition = new(
                 Mathf.Ceil(valuesUI.levelButton.layout.x),
                 safeAreaHandler.topPadding
             );
@@ -239,8 +237,7 @@ namespace Merge
             // Add value pop element to the root
             VisualElement valuePop = InitializePopValueElement(
                 valuePopSprite,
-                initialPosition,
-                convertPosition
+                initialPosition
             );
 
             // Add the value pop to the root
@@ -256,14 +253,8 @@ namespace Merge
             yield return new WaitForSeconds(0.5f);
 
             // Move the value pop to it's intended position
-            Vector2 newUIPos = RuntimePanelUtils.CameraTransformWorldToPanel(
-                root.panel,
-                bonusButtonPosition,
-                Camera.main
-            );
-
-            valuePop.style.left = newUIPos.x - (28 / 4);
-            valuePop.style.top = newUIPos.y - (28 / 4);
+            valuePop.style.left = bonusButtonPosition.x - (28 / 4);
+            valuePop.style.top = bonusButtonPosition.y - (28 / 4);
 
             yield return new WaitForSeconds(0.5f);
 
@@ -291,14 +282,13 @@ namespace Merge
 
         VisualElement InitializePopValueElement(
             Sprite sprite,
-            Vector2 position,
-            bool convertPosition = true
+            Vector2 position
         )
         {
             VisualElement newValuePop = new() { name = "ValuePop" };
 
             // Set the value pop's styles
-            Scale scale = new Scale(new Vector2(0f, 0f));
+            Scale scale = new(new Vector2(0f, 0f));
 
             List<TimeValue> durations = new();
             durations.Add(new TimeValue(0.5f, TimeUnit.Second));
@@ -329,24 +319,15 @@ namespace Merge
             }
             else
             {
-                if (convertPosition)
-                {
-                    // Get position on the UI from the scene
-                    Vector2 newUIPos = RuntimePanelUtils.CameraTransformWorldToPanel(
-                        root.panel,
-                        position,
-                        Camera.main
-                    );
+                // Get position on the UI from the scene
+                Vector2 newUIPos = RuntimePanelUtils.CameraTransformWorldToPanel(
+                    root.panel,
+                    position,
+                    Camera.main
+                );
 
-                    // Set the value pop's position
-                    newValuePop.style.left = newUIPos.x - halfWidth;
-                    newValuePop.style.top = newUIPos.y - halfWidth;
-                }
-                else
-                {
-                    newValuePop.style.left = position.x;
-                    newValuePop.style.top = position.y;
-                }
+                newValuePop.style.left = newUIPos.x - halfWidth;
+                newValuePop.style.top = newUIPos.y - halfWidth;
             }
 
             return newValuePop;

@@ -82,12 +82,6 @@ namespace Merge
 
             switch (sceneName)
             {
-                case "Loading":
-                    // Play background music
-                    soundManager.PlayMusic(sceneName);
-
-                    break;
-
                 case "Hub":
                     // Play background music
                     soundManager.PlayMusic(sceneName);
@@ -111,11 +105,6 @@ namespace Merge
                     GameData.Instance.Init(sceneName);
 
                     localeManager.Init(sceneName);
-
-                    break;
-
-                default:
-                    Debug.Log("Unknown scene name: " + sceneName);
 
                     break;
             }

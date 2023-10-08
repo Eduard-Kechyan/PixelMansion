@@ -34,13 +34,13 @@ namespace Merge
             }, 0.3f);
 
             // Subscribe to events
-            DataManager.checkProgressEvent += CheckInitialData;
+            DataManager.CheckProgressEventAction += CheckInitialData;
         }
 
         void OnDestroy()
         {
             // Unsubscribe from events
-            DataManager.checkProgressEvent -= CheckInitialData;
+            DataManager.CheckProgressEventAction -= CheckInitialData;
         }
 
         // Dummy function for testing

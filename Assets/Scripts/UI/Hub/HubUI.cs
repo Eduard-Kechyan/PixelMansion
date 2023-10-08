@@ -11,10 +11,7 @@ namespace Merge
         public SceneLoader sceneLoader;
         public float extraTopPadding = 15;
 
-        [HideInInspector]
-        public Vector2 playButtonPosition;
-        [HideInInspector]
-        public Vector2 taskButtonPosition;
+        private float singlePixelWidth;
 
         // References
         private SafeAreaHandler safeAreaHandler;
@@ -22,6 +19,8 @@ namespace Merge
         private ShopMenu shopMenu;
         private TaskMenu taskMenu;
         private SoundManager soundManager;
+        private UIButtons uiButtons;
+        private SelectorUIHandler selectorUIHandler;
 
         // UI
         private VisualElement root;
@@ -45,6 +44,8 @@ namespace Merge
             shopMenu = GameRefs.Instance.shopMenu;
             taskMenu = GameRefs.Instance.taskMenu;
             soundManager = SoundManager.Instance;
+            uiButtons = GameData.Instance.GetComponent<UIButtons>();
+            selectorUIHandler = GameRefs.Instance.hubGameUIDoc.GetComponent<SelectorUIHandler>();
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
@@ -70,7 +71,7 @@ namespace Merge
             playButton.clicked += () =>
             {
                 soundManager.PlaySound("Transition");
-                sceneLoader.Load(3);
+                sceneLoader.Load(2);
             };
 
             root.RegisterCallback<GeometryChangedEvent>(Init);
@@ -83,39 +84,39 @@ namespace Merge
             // Set top box top padding based on the values position on the screen
             topBox.style.top = safeAreaHandler.GetTopOffset() + extraTopPadding;
 
-            CalcPlayButtonPosition();
+            // Calculate the button position on the screen and the world space
+            singlePixelWidth = Camera.main.pixelWidth / GameData.GAME_PIXEL_WIDTH;
 
-            CalcTaskButtonPosition();
+            SetUIButtons();
         }
 
         //// Positions ////
 
-        // Get play button position in the world space
-        void CalcPlayButtonPosition()
+        // Calc inventory button position in the world space
+        Vector2 CalcButtonPosition(Button button, bool checkForSelector = false)
         {
-            // Calculate the button position on the screen and the world space
-            float singlePixelWidth = Camera.main.pixelWidth / GameData.GAME_PIXEL_WIDTH;
-
-            Vector2 playButtonScreenPosition = new(
-                singlePixelWidth* (root.worldBound.width- (root.worldBound.width- playButton.worldBound.center.x)),
-                singlePixelWidth* (root.worldBound.height- playButton.worldBound.center.y )
-            );
-
-            playButtonPosition = Camera.main.ScreenToWorldPoint(playButtonScreenPosition);
+            if (checkForSelector && selectorUIHandler.isSelectorOpen)
+            {
+                return Camera.main.ScreenToWorldPoint(new(
+                    singlePixelWidth * (root.worldBound.width - (root.worldBound.width - button.worldBound.center.x)),
+                    singlePixelWidth * (root.worldBound.height - button.worldBound.center.y + (selectorUIHandler.bottomOffset - (button.worldBound.width / 2)))
+                ));
+            }
+            else
+            {
+                return Camera.main.ScreenToWorldPoint(new(
+                    singlePixelWidth * (root.worldBound.width - (root.worldBound.width - button.worldBound.center.x)),
+                    singlePixelWidth * (root.worldBound.height - button.worldBound.center.y)
+                ));
+            }
         }
 
-        // Get Task button position in the world space
-        void CalcTaskButtonPosition()
+        public void SetUIButtons()
         {
-            // Calculate the button position on the screen and the world space
-            float singlePixelWidth = Camera.main.pixelWidth / GameData.GAME_PIXEL_WIDTH;
+            uiButtons.hubButtonsSet = true;
 
-            Vector2 taskButtonScreenPosition = new(
-                singlePixelWidth* (root.worldBound.width- (root.worldBound.width- taskButton.worldBound.center.x)),
-                singlePixelWidth* (root.worldBound.height- taskButton.worldBound.center.y)
-            );
-
-            taskButtonPosition = Camera.main.ScreenToWorldPoint(taskButtonScreenPosition);
+            uiButtons.hubTaskButtonPos = CalcButtonPosition(taskButton, true);
+            uiButtons.hubPlayButtonPos = CalcButtonPosition(playButton, true);
         }
     }
 }

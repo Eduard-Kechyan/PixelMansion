@@ -245,20 +245,23 @@
     scale: 1.5 1.5;
 }
 
-.splash_box {
+.splash_container {
     position: absolute;
     left: 0;
     top: 0;
     right: 0;
     bottom: 0;
     background-color: rgb(10, 61, 89);
-    transition-duration: 0.4s;
-    opacity: 0;
-    visibility: visible;
-    display: none;
 }
 
-.splash_box_show {
-    opacity: 1;
-    display: flex;
+.splash_logo {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 64px;
+    height: 64px;
+    translate: -50% -50%;
+    background-image: url('project://database/Assets/Sprites/Splash/Logo.png?fileID=2800000&guid=a321d0e6c5ec8a741aaa95aac3f573f4&type=3#Logo');
+    transition-duration: 0.5s;
+    transition-timing-function: ease-in-out;
 }

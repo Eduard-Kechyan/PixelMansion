@@ -11,7 +11,6 @@ namespace Merge
         // Variables
         public bool gameplayScene = false;
         public GameplayUI gameplayUI;
-        public HubUI hubUI;
         public BoardManager boardManager;
         public SceneLoader sceneLoader;
         public ShopData shopData;
@@ -30,6 +29,7 @@ namespace Merge
         private InfoMenu infoMenu;
         private ValuePop valuePop;
         private PaymentsManager paymentsManager;
+        private UIButtons uiButtons;
 
         // UI
         private VisualElement root;
@@ -58,6 +58,7 @@ namespace Merge
             infoMenu = GetComponent<InfoMenu>();
             valuePop = GetComponent<ValuePop>();
             paymentsManager = Services.Instance.GetComponent<PaymentsManager>();
+            uiButtons = gameData.GetComponent<UIButtons>();
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
@@ -579,11 +580,11 @@ namespace Merge
 
                 if (gameplayScene)
                 {
-                    buttonPosition = gameplayUI.bonusButtonPosition;
+                    buttonPosition = uiButtons.gameplayBonusButtonPos;
                 }
                 else
                 {
-                    buttonPosition = hubUI.playButtonPosition;
+                    buttonPosition = uiButtons.hubPlayButtonPos;
                 }
 
                 valuePop.PopBonus(newItem, buttonPosition, true, true);
@@ -605,7 +606,7 @@ namespace Merge
                 newItem = itemHandler.CreateItemTemp(shopData.dailyContent[order]);
             }
 
-            valuePop.PopBonus(newItem, hubUI.playButtonPosition, false, true);
+            valuePop.PopBonus(newItem, uiButtons.hubPlayButtonPos, false, true);
         }
     }
 }

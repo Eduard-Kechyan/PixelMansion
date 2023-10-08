@@ -24,6 +24,7 @@ namespace Merge
         private ValuePop valuePop;
         private GameplayUI gameplayUI;
         private SoundManager soundManager;
+        private UIButtons uiButtons;
 
         // Instances
         private I18n LOCALE;
@@ -50,6 +51,7 @@ namespace Merge
             valuePop = GameRefs.Instance.valuePop;
             gameplayUI = GameRefs.Instance.gameplayUI;
             soundManager = SoundManager.Instance;
+            uiButtons=gameData.GetComponent<UIButtons>();
 
             if (boardManager != null)
             {
@@ -230,14 +232,14 @@ namespace Merge
                 valuePop.PopInventoryItem(
                     gameData.inventoryData[order].sprite,
                     slot.worldBound.position,
-                    gameplayUI.bonusButtonPosition
+                    uiButtons.gameplayBonusButtonPos
                 );
 
                 Types.ItemsData itemData = GetItemData(gameData.inventoryData[order]);
 
                 gameData.inventoryData.RemoveAt(order);
 
-                boardManager.CreateItemOnEmptyTile(itemData, emptyBoard[0], gameplayUI.bonusButtonPosition, false);
+                boardManager.CreateItemOnEmptyTile(itemData, emptyBoard[0], uiButtons.gameplayBonusButtonScreenPos, false);
 
                 dataManager.SaveInventory();
 

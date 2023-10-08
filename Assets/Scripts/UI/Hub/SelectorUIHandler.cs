@@ -9,6 +9,7 @@ namespace Merge
     {
         // Variables
         public Selector selector;
+        public float bottomOffset = 50f;
         [ReadOnly]
         public bool isSelectorOpen = false;
 
@@ -21,6 +22,7 @@ namespace Merge
         private VisualElement topBox;
         private VisualElement bottomBox;
         private VisualElement selectorBox;
+        private SafeAreaHandler safeAreaHandler;
 
         private Button denyButton;
         private Button confirmButton;
@@ -36,6 +38,7 @@ namespace Merge
             // Cache
             valuesUIDoc = GameRefs.Instance.valuesUIDoc;
             hubUIDoc = GameRefs.Instance.hubUIDoc;
+            safeAreaHandler = GameRefs.Instance.hubUI.GetComponent<SafeAreaHandler>();
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
@@ -97,7 +100,7 @@ namespace Merge
                 topBox.style.left = -50f;
                 topBox.style.right = -50f;
                 topBox.style.transitionDelay = fullDelay;
-                bottomBox.style.bottom = -50f;
+                bottomBox.style.bottom = -bottomOffset; // Note the -
                 bottomBox.style.transitionDelay = fullDelay;
                 selectorBox.style.bottom = 0;
                 selectorBox.style.transitionDelay = nullDelay;
@@ -115,7 +118,7 @@ namespace Merge
                 selectorBox.style.bottom = -60f;
                 selectorBox.style.transitionDelay = fullDelay;
 
-                valuesBox.style.top = 0;
+                valuesBox.style.top = safeAreaHandler.topPadding;
                 valuesBox.style.transitionDelay = nullDelay;
             }
         }

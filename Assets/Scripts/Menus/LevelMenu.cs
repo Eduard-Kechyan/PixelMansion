@@ -8,223 +8,221 @@ using UnityEngine.SceneManagement;
 namespace Merge
 {
     public class LevelMenu : MonoBehaviour
-{
-    // Variables
-    public bool gameplayScene = false;
-    public HubUI hubUI;
-    public LevelData levelData;
-
-    private Types.ShopItemsContent[] rewardContent = new Types.ShopItemsContent[0];
-
-    private string levelRewardText0;
-    private string levelRewardText1;
-    private string levelRewardText2;
-
-    // References
-    private MenuUI menuUI;
-    private InfoMenu infoMenu;
-    private ValuePop valuePop;
-    private ValuesUI valuesUI;
-    private GameplayUI gameplayUI;
-
-    // Instances
-    private GameData gameData;
-    private ItemHandler itemHandler;
-    private SoundManager soundManager;
-    private I18n LOCALE;
-
-    // UI
-    private VisualElement root;
-    private VisualElement levelMenu;
-    private Label levelLabel;
-    private Label levelValue;
-    private VisualElement levelFill;
-    private Label levelRewardsLabel;
-    private Button levelUpButton;
-    private Label levelUpLabel;
-
-    private Label levelFillLabel;
-    private VisualElement levelRewards;
-    private VisualElement levelReward0;
-    private Button levelRewardButton0;
-    private VisualElement levelReward1;
-    private Button levelRewardButton1;
-    private VisualElement levelReward2;
-    private Button levelRewardButton2;
-
-    void Start()
     {
-        // Cache
-        menuUI = GetComponent<MenuUI>();
-        infoMenu = menuUI.GetComponent<InfoMenu>();
-        valuePop = GetComponent<ValuePop>();
-        valuesUI = GameRefs.Instance.valuesUI;
-        gameplayUI = GameRefs.Instance.gameplayUI;
+        // Variables
+        public bool gameplayScene = false;
+        public HubUI hubUI;
+        public LevelData levelData;
 
-        // Cache instances
-        gameData = GameData.Instance;
-        itemHandler = DataManager.Instance.GetComponent<ItemHandler>();
-        soundManager = SoundManager.Instance;
-        LOCALE = I18n.Instance;
+        private Types.ShopItemsContent[] rewardContent = new Types.ShopItemsContent[0];
+
+        private string levelRewardText0;
+        private string levelRewardText1;
+        private string levelRewardText2;
+
+        // References
+        private GameData gameData;
+        private ItemHandler itemHandler;
+        private SoundManager soundManager;
+        private I18n LOCALE;
+        private MenuUI menuUI;
+        private InfoMenu infoMenu;
+        private ValuePop valuePop;
+        private ValuesUI valuesUI;
+        private GameplayUI gameplayUI;
+        private UIButtons uiButtons;
 
         // UI
-        root = GetComponent<UIDocument>().rootVisualElement;
+        private VisualElement root;
+        private VisualElement levelMenu;
+        private Label levelLabel;
+        private Label levelValue;
+        private VisualElement levelFill;
+        private Label levelRewardsLabel;
+        private Button levelUpButton;
+        private Label levelUpLabel;
 
-        levelMenu = root.Q<VisualElement>("LevelMenu");
+        private Label levelFillLabel;
+        private VisualElement levelRewards;
+        private VisualElement levelReward0;
+        private Button levelRewardButton0;
+        private VisualElement levelReward1;
+        private Button levelRewardButton1;
+        private VisualElement levelReward2;
+        private Button levelRewardButton2;
 
-        levelLabel = levelMenu.Q<Label>("LevelLabel");
-        levelValue = levelMenu.Q<VisualElement>("LevelIndicator").Q<Label>("Value");
-        levelFill = levelMenu.Q<VisualElement>("Fill");
-        levelFillLabel = levelMenu.Q<Label>("FillLabel");
-        levelUpButton = levelMenu.Q<Button>("LevelUpButton");
-        levelUpLabel = levelUpButton.Q<Label>("LevelUpLabel");
-
-        levelRewards = levelMenu.Q<VisualElement>("LevelRewards");
-        levelRewardsLabel = levelRewards.Q<Label>("Label");
-        levelReward0 = levelRewards.Q<VisualElement>("LevelReward0");
-        levelRewardButton0 = levelReward0.Q<Button>("InfoButton");
-        levelReward1 = levelRewards.Q<VisualElement>("LevelReward1");
-        levelRewardButton1 = levelReward1.Q<Button>("InfoButton");
-        levelReward2 = levelRewards.Q<VisualElement>("LevelReward2");
-        levelRewardButton2 = levelReward2.Q<Button>("InfoButton");
-
-        levelRewardButton0.clicked += () =>
+        void Start()
         {
-            ShowInfo(levelRewardText0, 'd');
-        };
+            // Cache
+            gameData = GameData.Instance;
+            itemHandler = DataManager.Instance.GetComponent<ItemHandler>();
+            soundManager = SoundManager.Instance;
+            LOCALE = I18n.Instance;
+            menuUI = GetComponent<MenuUI>();
+            infoMenu = menuUI.GetComponent<InfoMenu>();
+            valuePop = GetComponent<ValuePop>();
+            valuesUI = GameRefs.Instance.valuesUI;
+            gameplayUI = GameRefs.Instance.gameplayUI;
+            uiButtons = gameData.GetComponent<UIButtons>();
 
-        levelRewardButton1.clicked += () =>
-        {
-            ShowInfo(levelRewardText1, 'd');
-        };
+            // UI
+            root = GetComponent<UIDocument>().rootVisualElement;
 
-        levelRewardButton2.clicked += () =>
-        {
-            ShowInfo(levelRewardText2, 'd');
-        };
+            levelMenu = root.Q<VisualElement>("LevelMenu");
 
-        levelUpButton.clicked += () => UpdateLevel();
+            levelLabel = levelMenu.Q<Label>("LevelLabel");
+            levelValue = levelMenu.Q<VisualElement>("LevelIndicator").Q<Label>("Value");
+            levelFill = levelMenu.Q<VisualElement>("Fill");
+            levelFillLabel = levelMenu.Q<Label>("FillLabel");
+            levelUpButton = levelMenu.Q<Button>("LevelUpButton");
+            levelUpLabel = levelUpButton.Q<Label>("LevelUpLabel");
 
-        Init();
-    }
+            levelRewards = levelMenu.Q<VisualElement>("LevelRewards");
+            levelRewardsLabel = levelRewards.Q<Label>("Label");
+            levelReward0 = levelRewards.Q<VisualElement>("LevelReward0");
+            levelRewardButton0 = levelReward0.Q<Button>("InfoButton");
+            levelReward1 = levelRewards.Q<VisualElement>("LevelReward1");
+            levelRewardButton1 = levelReward1.Q<Button>("InfoButton");
+            levelReward2 = levelRewards.Q<VisualElement>("LevelReward2");
+            levelRewardButton2 = levelReward2.Q<Button>("InfoButton");
 
-    void Init()
-    {
-        // Make sure the menu is closed
-        levelMenu.style.display = DisplayStyle.None;
-        levelMenu.style.opacity = 0;
-    }
-
-    public void Open()
-    {
-        // Set the title
-        string title = LOCALE.Get("level_menu_title");
-
-        levelLabel.text = LOCALE.Get("level_menu_label");
-
-        levelRewardsLabel.text = LOCALE.Get("level_menu_rewards_label");
-
-        levelUpLabel.text = LOCALE.Get("level_menu_level_up_button");
-
-        UpdateLevelMenu();
-
-        if (gameData.levelTen)
-        {
-            rewardContent = levelData.levelTenRewardContent;
-        }
-        else
-        {
-            rewardContent = levelData.levelRewardContent;
-        }
-
-        HandleRewards();
-
-        // Open menu
-        menuUI.OpenMenu(levelMenu, title);
-    }
-
-    public void UpdateLevelMenu()
-    {
-        levelValue.text = gameData.level.ToString();
-
-        levelFill.style.width = valuesUI.CalcLevelFill();
-
-        levelFillLabel.text = gameData.experience + "/" + gameData.maxExperience;
-
-        levelUpButton.SetEnabled(gameData.canLevelUp);
-    }
-
-    void HandleRewards()
-    {
-        levelReward0.style.backgroundImage = new StyleBackground(rewardContent[0].sprite);
-        levelReward1.style.backgroundImage = new StyleBackground(rewardContent[1].sprite);
-
-        levelRewardText0 = levelReward0.name;
-        levelRewardText1 = levelReward1.name;
-
-        if (rewardContent.Length == 2)
-        {
-            levelReward2.style.display = DisplayStyle.None;
-        }
-        else
-        {
-            levelReward2.style.backgroundImage = new StyleBackground(rewardContent[2].sprite);
-            levelRewardText2 = levelReward2.name;
-        }
-    }
-
-    void ShowInfo(string name, char nameChar)
-    {
-        int order = int.Parse(name[(name.LastIndexOf(nameChar) + 1)..]);
-
-        infoMenu.Open(itemHandler.CreateItemTemp(rewardContent[order]));
-    }
-
-    void UpdateLevel()
-    {
-        gameData.UpdateLevel();
-
-        for (int i = 0; i < rewardContent.Length; i++)
-        {
-            bool check = false;
-
-            if (rewardContent.Length - 1 == i)
+            levelRewardButton0.clicked += () =>
             {
-                check = true;
+                ShowInfo(levelRewardText0, 'd');
+            };
+
+            levelRewardButton1.clicked += () =>
+            {
+                ShowInfo(levelRewardText1, 'd');
+            };
+
+            levelRewardButton2.clicked += () =>
+            {
+                ShowInfo(levelRewardText2, 'd');
+            };
+
+            levelUpButton.clicked += () => UpdateLevel();
+
+            Init();
+        }
+
+        void Init()
+        {
+            // Make sure the menu is closed
+            levelMenu.style.display = DisplayStyle.None;
+            levelMenu.style.opacity = 0;
+        }
+
+        public void Open()
+        {
+            // Set the title
+            string title = LOCALE.Get("level_menu_title");
+
+            levelLabel.text = LOCALE.Get("level_menu_label");
+
+            levelRewardsLabel.text = LOCALE.Get("level_menu_rewards_label");
+
+            levelUpLabel.text = LOCALE.Get("level_menu_level_up_button");
+
+            UpdateLevelMenu();
+
+            if (gameData.levelTen)
+            {
+                rewardContent = levelData.levelTenRewardContent;
+            }
+            else
+            {
+                rewardContent = levelData.levelRewardContent;
             }
 
-            soundManager.PlaySound("LevelUp");
+            HandleRewards();
 
-            StartCoroutine(PopOutBonus(i * 0.4f, i, check));
+            // Open menu
+            menuUI.OpenMenu(levelMenu, title);
         }
 
-        UpdateLevelMenu();
-
-        HandleRewards();
-    }
-
-    IEnumerator PopOutBonus(float seconds, int order, bool newCheck = true)
-    {
-        yield return new WaitForSeconds(seconds);
-
-        bool check = newCheck;
-
-        Item newItem = itemHandler.CreateItemTemp(rewardContent[order]);
-
-        Vector2 buttonPosition;
-
-        if (gameplayScene)
+        public void UpdateLevelMenu()
         {
-            buttonPosition = gameplayUI.bonusButtonPosition;
+            levelValue.text = gameData.level.ToString();
+
+            levelFill.style.width = valuesUI.CalcLevelFill();
+
+            levelFillLabel.text = gameData.experience + "/" + gameData.maxExperience;
+
+            levelUpButton.SetEnabled(gameData.canLevelUp);
         }
-        else
+
+        void HandleRewards()
         {
-            buttonPosition = hubUI.playButtonPosition;
+            levelReward0.style.backgroundImage = new StyleBackground(rewardContent[0].sprite);
+            levelReward1.style.backgroundImage = new StyleBackground(rewardContent[1].sprite);
 
-            check = false;
+            levelRewardText0 = levelReward0.name;
+            levelRewardText1 = levelReward1.name;
+
+            if (rewardContent.Length == 2)
+            {
+                levelReward2.style.display = DisplayStyle.None;
+            }
+            else
+            {
+                levelReward2.style.backgroundImage = new StyleBackground(rewardContent[2].sprite);
+                levelRewardText2 = levelReward2.name;
+            }
         }
 
-        valuePop.PopBonus(newItem, buttonPosition, check, false, false);
+        void ShowInfo(string name, char nameChar)
+        {
+            int order = int.Parse(name[(name.LastIndexOf(nameChar) + 1)..]);
+
+            infoMenu.Open(itemHandler.CreateItemTemp(rewardContent[order]));
+        }
+
+        void UpdateLevel()
+        {
+            gameData.UpdateLevel();
+
+            for (int i = 0; i < rewardContent.Length; i++)
+            {
+                bool check = false;
+
+                if (rewardContent.Length - 1 == i)
+                {
+                    check = true;
+                }
+
+                soundManager.PlaySound("LevelUp");
+
+                StartCoroutine(PopOutBonus(i * 0.4f, i, check));
+            }
+
+            UpdateLevelMenu();
+
+            HandleRewards();
+        }
+
+        IEnumerator PopOutBonus(float seconds, int order, bool newCheck = true)
+        {
+            yield return new WaitForSeconds(seconds);
+
+            bool check = newCheck;
+
+            Item newItem = itemHandler.CreateItemTemp(rewardContent[order]);
+
+            Vector2 buttonPosition;
+
+            if (gameplayScene)
+            {
+                buttonPosition = uiButtons.gameplayBonusButtonPos;
+            }
+            else
+            {
+                buttonPosition = uiButtons.hubPlayButtonPos;
+
+                check = false;
+            }
+
+            valuePop.PopBonus(newItem, buttonPosition, check, false);
+        }
     }
-}
 }

@@ -20,11 +20,11 @@ namespace Merge
     public Types.ShopItemsContent[] dailyContent;
 
     // References
-    private JsonHandler jsonHandler;
+    private DataConverter dataConverter;
 
     void Start() {
         // Cache
-        jsonHandler = GetComponent<JsonHandler>();
+        dataConverter = GetComponent<DataConverter>();
 
         CheckDailyItems();
     }
@@ -66,13 +66,13 @@ namespace Merge
         dailyContent[0] = shopData.dailyContent[0];
         dailyContent[1] = shopData.dailyContent[UnityEngine.Random.Range(1, 3)];
 
-        PlayerPrefs.SetString("dailyContent", jsonHandler.ConvertShopItemContentToJson(dailyContent, true));
+        PlayerPrefs.SetString("dailyContent", dataConverter.ConvertShopItemContentToJson(dailyContent, true));
         PlayerPrefs.Save();
     }
 
     public void GetDailyContent()
     {
-        dailyContent = jsonHandler.ConvertShopItemContentFromJson(PlayerPrefs.GetString("dailyContent"));
+        dailyContent = dataConverter.ConvertShopItemContentFromJson(PlayerPrefs.GetString("dailyContent"));
     }
 }
 }

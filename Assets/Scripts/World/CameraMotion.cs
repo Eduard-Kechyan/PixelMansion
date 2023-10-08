@@ -8,31 +8,25 @@ namespace Merge
     {
         // Variables
         public float speed = 100f;
+        [ReadOnly]
+        public bool moving = false;
 
         private Vector3 desiredPos;
-        private bool move = false;
         private bool useAltSpeed = false;
         private float altSpeed = -1f;
 
         // References
-        private Camera cam;
-        private CharMain charMain;
+        private HubUI hubUI;
 
         void Start()
         {
             // Cache
-            cam = Camera.main;
-            charMain = CharMain.Instance;
-
-            /*Glob.SetTimeout(() =>
-            {
-                MoveTo(charMain.transform.position);
-            }, 2f);*/
+            hubUI = GameRefs.Instance.hubUI;
         }
 
         void Update()
         {
-            if (move)
+            if (moving)
             {
                 speed = Mathf.SmoothStep(0, 100, speed);
 
@@ -43,8 +37,13 @@ namespace Merge
                 {
                     transform.position = new Vector3(desiredPos.x, desiredPos.y, transform.position.z);
 
-                    move = false;
+                    moving = false;
                     useAltSpeed = false;
+                    
+                    PlayerPrefs.SetFloat("lastCamPosX", transform.position.x);
+                    PlayerPrefs.SetFloat("lastCamPosY", transform.position.y);
+
+                    hubUI.SetUIButtons();
                 }
             }
         }
@@ -52,7 +51,7 @@ namespace Merge
         public void MoveTo(Vector2 pos, float newMotionSpeed = -1)
         {
             desiredPos = new Vector3(pos.x, pos.y, transform.position.z);
-            move = true;
+            moving = true;
 
             if (newMotionSpeed > -1)
             {

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2656915087510296412}
   - component: {fileID: 7628476360138686812}
   - component: {fileID: 2518802072706261672}
+  - component: {fileID: 5365750438327078213}
   m_Layer: 0
   m_Name: GameData
   m_TagString: Untagged
@@ -31,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7628476360138686812
 MonoBehaviour:
@@ -47,25 +48,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   valuesData: {fileID: 11400000, guid: e82c58a155150ca47be106027d9ca637, type: 2}
   energyTimer: {fileID: 0}
-  maxExperience: 10
-  leftoverExperience: 0
   experience: 0
-  level: 0
   energy: 100
   gold: 100
   gems: 100
+  level: 0
   levelTen: 0
   canLevelUp: 0
+  maxExperience: 10
+  leftoverExperience: 0
   inventorySpace: 7
   inventorySlotPrice: 50
   initialInventorySpace: 7
-  timers: []
+  tasksData: []
+  finishedTasks: []
+  areasData: []
+  unlockedData: []
   itemsData: []
   collectablesData: []
   generatorsData: []
   chestsData: []
-  unlockedData: []
+  timers: []
   userId: 
+  greeted: 0
 --- !u!114 &2518802072706261672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79,3 +84,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resetData: 0
+--- !u!114 &5365750438327078213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6831382092569983105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7362485d08d62434a90e4c90aa824d2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  drawGizmos: 1
+  gizmoRadius: 26
+  gizmoColor: {r: 0, g: 0, b: 1, a: 1}
+  hubButtonsSet: 0
+  hubPlayButtonPos: {x: 0, y: 0}
+  hubTaskButtonPos: {x: 0, y: 0}
+  gameplayButtonsSet: 0
+  gameplayBonusButtonPos: {x: 0, y: 0}
+  gameplayBonusButtonScreenPos: {x: 0, y: 0}

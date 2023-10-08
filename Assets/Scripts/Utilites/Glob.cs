@@ -45,6 +45,11 @@ namespace Merge
         //// TIMEOUT ////
         public static Coroutine SetTimeout(Action function, float seconds = 1f)
         {
+            if (seconds > 10f)
+            {
+                Debug.LogWarning("Set timeout function seconds are too big!");
+            }
+
             Coroutine newTimeout = Instance.StartCoroutine(SetTimeoutCoroutine(function, seconds));
 
             timeouts.Add(newTimeout);
@@ -71,6 +76,11 @@ namespace Merge
             bool callOnce = true
         )
         {
+            if (seconds > 10f)
+            {
+                Debug.LogWarning("Set interval function seconds are too big!");
+            }
+
             Coroutine newInterval = Instance.StartCoroutine(SetTimeoutCoroutine(function, seconds));
 
             intervals.Add(newInterval);

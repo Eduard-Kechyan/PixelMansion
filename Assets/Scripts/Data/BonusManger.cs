@@ -5,66 +5,68 @@ using UnityEngine;
 namespace Merge
 {
     public class BonusManager : MonoBehaviour
-{
-    // Variables
-    public BoardManager boardManager;
-
-    // References
-    private GameplayUI gameplayUI;
-    private PopupManager popupManager;
-
-    // Instances
-    private GameData gameData;
-    private I18n LOCALE;
-
-    void Start()
     {
+        // Variables
+        public BoardManager boardManager;
+
         // References
-        gameplayUI = GetComponent<GameplayUI>();
-        popupManager= GameRefs.Instance.popupManager;
+        private GameplayUI gameplayUI;
+        private PopupManager popupManager;
+        private UIButtons uiButtons;
 
-        // Cache instances
-        gameData = GameData.Instance;
-        LOCALE = I18n.Instance;
-    }
+        // Instances
+        private GameData gameData;
+        private I18n LOCALE;
 
-    public void GetBonus()
-    {
-        List<Types.BoardEmpty> emptyBoard = boardManager.GetEmptyBoardItems(Vector2Int.zero, false);
-
-        // Check if the board is full
-        if (emptyBoard.Count > 0)
+        void Start()
         {
-            Types.Bonus latestBonus = gameData.GetAndRemoveLatestBonus();
+            // References
+            gameplayUI = GetComponent<GameplayUI>();
+            popupManager = GameRefs.Instance.popupManager;
+            uiButtons=GameData.Instance.GetComponent<UIButtons>();
 
-            emptyBoard.Sort((p1, p2) => p1.distance.CompareTo(p2.distance));
+            // Cache instances
+            gameData = GameData.Instance;
+            LOCALE = I18n.Instance;
+        }
 
-            Types.ItemsData boardItem = new Types.ItemsData
+        public void GetBonus()
+        {
+            List<Types.BoardEmpty> emptyBoard = boardManager.GetEmptyBoardItems(Vector2Int.zero, false);
+
+            // Check if the board is full
+            if (emptyBoard.Count > 0)
             {
-                sprite = latestBonus.sprite,
-                type = latestBonus.type,
-                group = latestBonus.group,
-                genGroup = latestBonus.genGroup,
-                chestGroup = latestBonus.chestGroup,
-                collGroup = Types.CollGroup.Experience,
-            };
+                Types.Bonus latestBonus = gameData.GetAndRemoveLatestBonus();
 
-            boardManager.CreateItemOnEmptyTile(
-                boardItem,
-                emptyBoard[0],
-                gameplayUI.bonusButtonPosition,
-                false
-            );
-        }
-        else
-        {
-            popupManager.AddPop(
-                LOCALE.Get("pop_board_full"),
-                gameplayUI.bonusButtonPosition,
-                true,
-                "Buzz"
-            );
+                emptyBoard.Sort((p1, p2) => p1.distance.CompareTo(p2.distance));
+
+                Types.ItemsData boardItem = new Types.ItemsData
+                {
+                    sprite = latestBonus.sprite,
+                    type = latestBonus.type,
+                    group = latestBonus.group,
+                    genGroup = latestBonus.genGroup,
+                    chestGroup = latestBonus.chestGroup,
+                    collGroup = Types.CollGroup.Experience,
+                };
+
+                boardManager.CreateItemOnEmptyTile(
+                    boardItem,
+                    emptyBoard[0],
+                    uiButtons.gameplayBonusButtonScreenPos,
+                    false
+                );
+            }
+            else
+            {
+                popupManager.AddPop(
+                    LOCALE.Get("pop_board_full"),
+                    uiButtons.gameplayBonusButtonPos,
+                    true,
+                    "Buzz"
+                );
+            }
         }
     }
-}
 }

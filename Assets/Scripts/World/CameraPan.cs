@@ -44,10 +44,8 @@ namespace Merge
         [Header("States")]
         [ReadOnly]
         public bool isPanning = false;
-
         [ReadOnly]
         public bool isRebounding = false;
-
         [ReadOnly]
         public bool isResetting = false;
 
@@ -70,6 +68,8 @@ namespace Merge
         private MenuUI menuUI;
         private PopupManager popupManager;
         private CharMove charMove;
+        private HubUI hubUI;
+        private CameraMotion cameraMotion;
 
         // UI
         private VisualElement root;
@@ -81,6 +81,8 @@ namespace Merge
             menuUI = GameRefs.Instance.menuUI;
             popupManager = GameRefs.Instance.popupManager;
             charMove = CharMain.Instance.charMove;
+            hubUI = GameRefs.Instance.hubUI;
+            cameraMotion = GetComponent<CameraMotion>();
 
             // UI
             root = GameRefs.Instance.hubUIDoc.rootVisualElement;
@@ -99,6 +101,8 @@ namespace Merge
 
             // Initialize clamp
             clamp = CalcClamp();
+
+            CheckLastCamPos();
         }
 
 #if UNITY_EDITOR
@@ -194,7 +198,7 @@ namespace Merge
         void Update()
         {
             // Check if panning is enabled
-            if (canPan && !menuUI.menuOpen)
+            if (canPan && !menuUI.menuOpen && !cameraMotion.moving)
             {
                 if (Input.touchCount == 1) // Pan
                 {
@@ -224,6 +228,8 @@ namespace Merge
                                 selector.triedToSelectUnselectable = false;
 
                                 moved = false;
+
+                                StopCoroutine(AfterPan());
 
                                 break;
 
@@ -309,6 +315,10 @@ namespace Merge
                                         }
                                     }
                                 }
+                                else
+                                {
+                                    StartCoroutine(AfterPan());
+                                }
 
                                 break;
 
@@ -393,7 +403,7 @@ namespace Merge
                 }
             }
 
-            // Check for reseting
+            // Check for resetting
             if (isResetting && !isPanning)
             {
                 transform.position = Vector3.MoveTowards(
@@ -447,6 +457,7 @@ namespace Merge
             if (panVelocity != Vector2.zero)
             {
                 panVelocity = Vector2.Lerp(panVelocity, Vector2.zero, velocityStep);
+
                 transform.position += new Vector3(
                     -panVelocity.x / (500 * (1 / cam.orthographicSize)),
                     -panVelocity.y / (500 * (1 / cam.orthographicSize)),
@@ -513,6 +524,30 @@ namespace Merge
             {
                 return false;
             }
+        }
+
+        void CheckLastCamPos()
+        {
+            if (PlayerPrefs.HasKey("lastCamPosX"))
+            {
+                float xPos = PlayerPrefs.GetFloat("lastCamPosX");
+                float yPos = PlayerPrefs.GetFloat("lastCamPosY");
+
+                transform.position = new Vector3(xPos, yPos, transform.position.z);
+            }
+        }
+
+        IEnumerator AfterPan()
+        {
+            while (isPanning || isResetting || isRebounding || panVelocity != Vector2.zero)
+            {
+                yield return null;
+            }
+
+            PlayerPrefs.SetFloat("lastCamPosX", transform.position.x);
+            PlayerPrefs.SetFloat("lastCamPosY", transform.position.y);
+
+            hubUI.SetUIButtons();
         }
     }
 }

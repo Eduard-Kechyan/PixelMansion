@@ -18,10 +18,7 @@ namespace Merge
         private bool blippingInventoryIndicator = false;
         private bool blippingBonusIndicator = false;
 
-        [HideInInspector]
-        public Vector2 bonusButtonPosition;
-        [HideInInspector]
-        public Vector2 inventoryButtonPosition;
+        private float singlePixelWidth;
 
         // References
         private BonusManager bonusManager;
@@ -30,6 +27,7 @@ namespace Merge
         private ShopMenu shopMenu;
         private TaskMenu taskMenu;
         private SoundManager soundManager;
+        private UIButtons uiButtons;
 
         // UI
         private VisualElement root;
@@ -57,6 +55,7 @@ namespace Merge
             shopMenu = GameRefs.Instance.shopMenu;
             taskMenu = GameRefs.Instance.taskMenu;
             soundManager = SoundManager.Instance;
+            uiButtons = gameData.GetComponent<UIButtons>();
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
@@ -84,51 +83,50 @@ namespace Merge
             homeButton.clicked += () =>
             {
                 soundManager.PlaySound("Transition");
-                sceneLoader.Load(2);
+                sceneLoader.Load(1);
             };
             inventoryButton.clicked += () => inventoryMenu.Open();
             bonusButton.clicked += () => bonusManager.GetBonus();
             shopButton.clicked += () => shopMenu.Open();
             taskButton.clicked += () => taskMenu.Open();
 
-            root.RegisterCallback<GeometryChangedEvent>(CalcBonusButtonPosition);
-            root.RegisterCallback<GeometryChangedEvent>(CalcInventoryButtonPosition);
+            // Calculate the button position on the screen and the world space
+            singlePixelWidth = Camera.main.pixelWidth / GameData.GAME_PIXEL_WIDTH;
+
+            root.RegisterCallback<GeometryChangedEvent>(evt => SetUIButtons(evt, true));
 
             CheckBonusButton();
         }
 
         //// Positions ////
 
-        // Get bonus button position in the world space
-        public void CalcBonusButtonPosition(GeometryChangedEvent evt)
+        // Calc inventory button position in the world space
+        Vector2 CalcButtonPosition(Button button)
         {
-            root.UnregisterCallback<GeometryChangedEvent>(CalcBonusButtonPosition);
-
-            // Calculate the button position on the screen and the world space
-            float singlePixelWidth = Camera.main.pixelWidth / GameData.GAME_PIXEL_WIDTH;
-
-            Vector2 bonusButtonScreenPosition = new(
-                singlePixelWidth * (root.worldBound.width - (root.worldBound.width - bonusButton.worldBound.center.x)),
-                singlePixelWidth * (root.worldBound.height - bonusButton.worldBound.center.y)
+            return new(
+                singlePixelWidth * (root.worldBound.width - (root.worldBound.width - button.worldBound.center.x)),
+                singlePixelWidth * (root.worldBound.height - button.worldBound.center.y)
             );
-
-            bonusButtonPosition = Camera.main.ScreenToWorldPoint(bonusButtonScreenPosition);
         }
 
-        // Get inventory button position in the world space
-        public void CalcInventoryButtonPosition(GeometryChangedEvent evt)
+        void SetUIButtons(GeometryChangedEvent evt, bool initial = false)
         {
-            root.UnregisterCallback<GeometryChangedEvent>(CalcInventoryButtonPosition);
+            root.UnregisterCallback<GeometryChangedEvent>(evt => SetUIButtons(evt, true));
 
-            // Calculate the button position on the screen and the world space
-            float singlePixelWidth = Camera.main.pixelWidth / GameData.GAME_PIXEL_WIDTH;
+            bool setButtons = true;
 
-            Vector2 inventoryButtonScreenPosition = new(
-                singlePixelWidth * (root.worldBound.width - (root.worldBound.width - inventoryButton.worldBound.center.x)),
-                singlePixelWidth * (root.worldBound.height - inventoryButton.worldBound.center.y)
-            );
+            if (initial && uiButtons.gameplayButtonsSet)
+            {
+                setButtons = false;
+            }
 
-            inventoryButtonPosition = Camera.main.ScreenToWorldPoint(inventoryButtonScreenPosition);
+            if (setButtons)
+            {
+                uiButtons.gameplayButtonsSet = true;
+
+                uiButtons.gameplayBonusButtonScreenPos = CalcButtonPosition(bonusButton);
+                uiButtons.gameplayBonusButtonPos = Camera.main.ScreenToWorldPoint(uiButtons.gameplayBonusButtonScreenPos);
+            }
         }
 
         //// Indicators ////

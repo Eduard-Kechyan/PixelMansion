@@ -22,9 +22,9 @@ namespace Merge
         public InitialItems initialItems;
 
         public delegate void BoardSaveEvent();
-        public static event BoardSaveEvent boardSaveEvent;
+        public static event BoardSaveEvent BoardSaveEventAction;
         public delegate void CheckProgressEvent();
-        public static event CheckProgressEvent checkProgressEvent;
+        public static event CheckProgressEvent CheckProgressEventAction;
 
         // Whether data has been fully loaded
         public bool loaded;
@@ -36,17 +36,16 @@ namespace Merge
         public QuickSaveWriter writer;
         public QuickSaveReader reader;
 
-        private JsonHandler jsonHandler;
-        private GameData gameData;
-        private TimeManager timeManager;
         private ApiCalls apiCalls;
+        private GameData gameData;
         private DataConverter dataConverter;
+        private TimeManager timeManager;
 
         [HideInInspector]
         public string initialJsonData;
         private string bonusData;
         private string inventoryData;
-        private string tasksData;
+        private string tasksJsonData;
         [HideInInspector]
         public string finishedTasksJsonData;
         private string timersJsonData;
@@ -77,7 +76,6 @@ namespace Merge
             gameData = GameData.Instance;
             apiCalls = ApiCalls.Instance;
             dataConverter = GetComponent<DataConverter>();
-            jsonHandler = GetComponent<JsonHandler>();
             timeManager = gameData.GetComponent<TimeManager>();
 
             // Set up Quick Save
@@ -113,12 +111,12 @@ namespace Merge
         {
             if ((ignoreInitialCheck && isEditor) || (!PlayerPrefs.HasKey("Loaded") && !writer.Exists("rootSet")))
             {
-                initialJsonData = jsonHandler.ConvertBoardToJson(initialItems.content, true);
-                bonusData = jsonHandler.ConvertBonusToJson(gameData.bonusData);
-                inventoryData = jsonHandler.ConvertInventoryToJson(gameData.inventoryData);
-                tasksData = jsonHandler.ConvertTaskGroupsToJson(gameData.tasksData);
-                timersJsonData = jsonHandler.ConvertTimersToJson(gameData.timers);
-                unsentJsonData = jsonHandler.ConvertUnsentToJson(apiCalls.unsentData);
+                initialJsonData = dataConverter.ConvertBoardToJson(initialItems.content, true);
+                bonusData = dataConverter.ConvertBonusToJson(gameData.bonusData);
+                inventoryData = dataConverter.ConvertInventoryToJson(gameData.inventoryData);
+                tasksJsonData = dataConverter.ConvertTaskGroupsToJson(gameData.tasksData);
+                timersJsonData = dataConverter.ConvertTimersToJson(gameData.timers);
+                unsentJsonData = dataConverter.ConvertUnsentToJson(apiCalls.unsentData);
                 finishedTasksJsonData = JsonConvert.SerializeObject(gameData.finishedTasks);
 
                 writer
@@ -133,7 +131,7 @@ namespace Merge
                     .Write("boardData", initialJsonData)
                     .Write("bonusData", bonusData)
                     .Write("inventoryData", inventoryData)
-                    .Write("tasksData", tasksData)
+                    .Write("tasksData", tasksJsonData)
                     .Write("finishedTasks", finishedTasksJsonData)
                     .Write("unlockedData", dataConverter.GetInitialUnlocked())
                     .Write("timers", timersJsonData)
@@ -171,7 +169,7 @@ namespace Merge
                 newBoardData = initialJsonData;
                 newBonusData = bonusData;
                 newInventoryData = inventoryData;
-                newTasksData = tasksData;
+                newTasksData = tasksJsonData;
                 newFinishedTasks = finishedTasksJsonData;
                 newTimersData = timersJsonData;
                 newUnlockedData = unlockedJsonData;
@@ -213,19 +211,19 @@ namespace Merge
             gameData.collectablesData = dataConverter.ConvertItems(collectables.content);
             gameData.chestsData = dataConverter.ConvertItems(chests.content);
 
-            gameData.timers = jsonHandler.ConvertTimersFromJson(newTimersData);
-            gameData.boardData = dataConverter.ConvertArrayToBoard(jsonHandler.ConvertBoardFromJson(newBoardData));
-            gameData.bonusData = jsonHandler.ConvertBonusFromJson(newBonusData);
-            gameData.inventoryData = jsonHandler.ConvertInventoryFromJson(newInventoryData);
-            gameData.tasksData = jsonHandler.ConvertTaskGroupsFromJson(newTasksData);
+            gameData.timers = dataConverter.ConvertTimersFromJson(newTimersData);
+            gameData.boardData = dataConverter.ConvertArrayToBoard(dataConverter.ConvertBoardFromJson(newBoardData));
+            gameData.bonusData = dataConverter.ConvertBonusFromJson(newBonusData);
+            gameData.inventoryData = dataConverter.ConvertInventoryFromJson(newInventoryData);
+            gameData.tasksData = dataConverter.ConvertTaskGroupsFromJson(newTasksData);
 
-            apiCalls.unsentData = jsonHandler.ConvertUnsentFromJson(newUnsentData);
+            apiCalls.unsentData = dataConverter.ConvertUnsentFromJson(newUnsentData);
 
             apiCalls.canCheckForUnsent = true;
 
             //timeManager.CheckTimers();
 
-            checkProgressEvent();
+            CheckProgressEventAction();
 
             // Finish Task
             loaded = true;
@@ -246,35 +244,35 @@ namespace Merge
 
         public void SaveBoard(bool fireEvent = true)
         {
-            string newBoardData = jsonHandler.ConvertBoardToJson(
+            string newBoardData = dataConverter.ConvertBoardToJson(
                 dataConverter.ConvertBoardToArray(gameData.boardData)
             );
 
             writer.Write("boardData", newBoardData).Commit();
 
-            if (fireEvent && boardSaveEvent != null)
+            if (fireEvent && BoardSaveEventAction != null)
             {
-                boardSaveEvent();
+                BoardSaveEventAction();
             }
         }
 
         public void SaveTimers()
         {
-            string newTimers = jsonHandler.ConvertTimersToJson(gameData.timers);
+            string newTimers = dataConverter.ConvertTimersToJson(gameData.timers);
 
             writer.Write("timers", newTimers).Commit();
         }
 
         public void SaveBonus()
         {
-            string newBonusData = jsonHandler.ConvertBonusToJson(gameData.bonusData);
+            string newBonusData = dataConverter.ConvertBonusToJson(gameData.bonusData);
 
             writer.Write("bonusData", newBonusData).Commit();
         }
 
         public void SaveTasks()
         {
-            string newTasksData = jsonHandler.ConvertTaskGroupsToJson(gameData.tasksData);
+            string newTasksData = dataConverter.ConvertTaskGroupsToJson(gameData.tasksData);
 
             writer.Write("tasksData", newTasksData).Commit();
         }
@@ -288,7 +286,7 @@ namespace Merge
 
         public void SaveUnsentData()
         {
-            string newUnsentData = jsonHandler.ConvertUnsentToJson(apiCalls.unsentData);
+            string newUnsentData = dataConverter.ConvertUnsentToJson(apiCalls.unsentData);
 
             writer.Write("unsentData", newUnsentData).Commit();
         }
@@ -303,7 +301,7 @@ namespace Merge
             else
             {
                 //inventorySlotPrice
-                string newInventorySpace = jsonHandler.ConvertInventoryToJson(gameData.inventoryData);
+                string newInventorySpace = dataConverter.ConvertInventoryToJson(gameData.inventoryData);
 
                 writer.Write("inventoryData", newInventorySpace).Commit();
             }

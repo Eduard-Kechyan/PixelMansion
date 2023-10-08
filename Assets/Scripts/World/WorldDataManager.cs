@@ -23,42 +23,12 @@ namespace Merge
         [HideInInspector]
         public bool loaded = false;
 
-        private List<Area> areas = new();
-        private List<Area> loadedAreas = new();
         private bool initial = true;
-        [Serializable]
-        public class Area
-        {
-            public string name;
-            public bool isLocked;
-            public bool isRoom;
-            public int wallLeftOrder;
-            public int wallRightOrder;
-            public int floorOrder;
-            public List<Furniture> furniture;
-        }
-
-        [Serializable]
-        public class AreaJson
-        {
-            public string name;
-            public bool isLocked;
-            public bool isRoom;
-            public int wallLeftOrder;
-            public int wallRightOrder;
-            public int floorOrder;
-            public string furniture;
-        }
-
-        [Serializable]
-        public class Furniture
-        {
-            public string name;
-            public int order;
-        }
 
         // References
         private NavMeshManager navMeshManager;
+        private DataConverter dataConverter;
+        private GameData gameData;
 
         // Quick Save
         private QuickSaveSettings saveSettings;
@@ -67,7 +37,10 @@ namespace Merge
 
         void Start()
         {
+            // Cache
             navMeshManager = NavMeshManager.Instance;
+            dataConverter = DataManager.Instance.GetComponent<DataConverter>();
+            gameData = GameData.Instance;
 
             Init();
         }
@@ -109,7 +82,7 @@ namespace Merge
             }
 
             // Set up the writer
-            saveSettings = new QuickSaveSettings() { CompressionMode = CompressionMode.None }; // Chage compression mode from None to Gzip on release
+            saveSettings = new QuickSaveSettings() { CompressionMode = CompressionMode.None }; // TODO - Change compression mode from None to Gzip on release
             writer = QuickSaveWriter.Create("Areas", saveSettings);
 
             if (PlayerPrefs.HasKey("areaSet") && writer.Exists("areaSet"))
@@ -120,30 +93,27 @@ namespace Merge
                 initial = false;
             }
 
-            GetDataFromRoot();
-
-            if (!initial)
-            {
-                SetDataToRoot();
-            }
-
             if (initial)
             {
+                GetDataFromRoot();
+
                 initial = false;
+            }
+            else
+            {
+                SetDataToRoot();
             }
         }
 
         void GetDataFromRoot(bool alt = false)
         {
-            areas = new();
-
             for (int i = 0; i < worldRoot.childCount; i++)
             {
                 Transform worldItem = worldRoot.GetChild(i);
 
                 if (worldItem.name.Contains("Area"))
                 {
-                    areas.Add(HandleArea(worldItem));
+                    gameData.areasData.Add(HandleArea(worldItem));
                 }
             }
 
@@ -151,8 +121,6 @@ namespace Merge
 
             if (initial || alt)
             {
-                loaded = true;
-
                 SaveData();
             }
         }
@@ -161,51 +129,51 @@ namespace Merge
         {
             LoadData();
 
-            for (int i = 0; i < loadedAreas.Count; i++)
+            for (int i = 0; i < gameData.areasData.Count; i++)
             {
                 for (int j = 0; j < worldRoot.childCount; j++)
                 {
                     Transform worldArea = worldRoot.GetChild(j);
 
-                    if (worldArea.name == loadedAreas[i].name)
+                    if (worldArea.name == gameData.areasData[i].name)
                     {
                         // Rooms
-                        if (loadedAreas[i].isRoom)
+                        if (gameData.areasData[i].isRoom)
                         {
                             // Wall left
-                            if (loadedAreas[i].wallLeftOrder >= 0 && worldArea.GetChild(0).TryGetComponent(out ChangeWall changeWallLeft))
+                            if (gameData.areasData[i].wallLeftOrder >= 0 && worldArea.GetChild(0).TryGetComponent(out ChangeWall changeWallLeft))
                             {
-                                changeWallLeft.SetSprites(loadedAreas[i].wallLeftOrder, true);
+                                changeWallLeft.SetSprites(gameData.areasData[i].wallLeftOrder, true);
 
                                 changeWallLeft.GetComponent<Selectable>().canBeSelected = true;
                             }
 
                             // Wall right
-                            if (loadedAreas[i].wallRightOrder >= 0 && worldArea.GetChild(1).TryGetComponent(out ChangeWall changeWallRight))
+                            if (gameData.areasData[i].wallRightOrder >= 0 && worldArea.GetChild(1).TryGetComponent(out ChangeWall changeWallRight))
                             {
-                                changeWallRight.SetSprites(loadedAreas[i].wallRightOrder, true);
+                                changeWallRight.SetSprites(gameData.areasData[i].wallRightOrder, true);
 
                                 changeWallRight.GetComponent<Selectable>().canBeSelected = true;
                             }
 
                             // Floor
-                            if (loadedAreas[i].floorOrder >= 0 && worldArea.GetChild(2).TryGetComponent(out ChangeFloor changeFloor))
+                            if (gameData.areasData[i].floorOrder >= 0 && worldArea.GetChild(2).TryGetComponent(out ChangeFloor changeFloor))
                             {
-                                changeFloor.SetSprites(loadedAreas[i].floorOrder, true);
+                                changeFloor.SetSprites(gameData.areasData[i].floorOrder, true);
 
                                 changeFloor.GetComponent<Selectable>().canBeSelected = true;
                             }
 
                             // Furniture
-                            for (int k = 0; k < loadedAreas[i].furniture.Count; k++)
+                            for (int k = 0; k < gameData.areasData[i].furniture.Count; k++)
                             {
                                 Transform furniture = worldArea.GetChild(3).GetChild(k);
 
-                                if (furniture.name == loadedAreas[i].furniture[k].name)
+                                if (furniture.name == gameData.areasData[i].furniture[k].name)
                                 {
-                                    if (loadedAreas[i].furniture[k].order >= 0 && furniture.TryGetComponent(out ChangeFurniture changeFurniture))
+                                    if (gameData.areasData[i].furniture[k].order >= 0 && furniture.TryGetComponent(out ChangeFurniture changeFurniture))
                                     {
-                                        changeFurniture.SetSprites(loadedAreas[i].furniture[k].order, true);
+                                        changeFurniture.SetSprites(gameData.areasData[i].furniture[k].order, true);
 
                                         changeFurniture.GetComponent<Selectable>().canBeSelected = true;
                                     }
@@ -216,9 +184,7 @@ namespace Merge
                 }
             }
 
-            areas = loadedAreas;
-
-            StartCoroutine(BakeNavMeshAfterPhysicsUpdate());
+            StartCoroutine(TryCheckingForTasks());
         }
 
         void SaveData()
@@ -227,7 +193,7 @@ namespace Merge
             {
                 writer
                 .Write("areaSet", true)
-                .Write("areas", ConvertAreaToJson(areas))
+                .Write("areas", dataConverter.ConvertAreaToJson(gameData.areasData))
                 .Commit();
 
                 PlayerPrefs.SetInt("areaSet", 1);
@@ -236,30 +202,35 @@ namespace Merge
             else
             {
                 writer
-                .Write("areas", ConvertAreaToJson(areas))
+                .Write("areas", dataConverter.ConvertAreaToJson(gameData.areasData))
                 .Commit();
             }
+
+            StartCoroutine(BakeNavMeshAfterPhysicsUpdate());
         }
 
         void LoadData()
         {
-            string newAreasData = "";
+            if (gameData.areasData.Count == 0)
+            {
+                string newAreasData = "";
 
-            reader.Read<string>("areas", r => newAreasData = r);
+                reader.Read<string>("areas", r => newAreasData = r);
 
-            loadedAreas = ConvertJsonToArea(newAreasData);
+                gameData.areasData = dataConverter.ConvertJsonToArea(newAreasData);
 
-            LogData();
+                LogData();
+            }
         }
 
-        Area HandleArea(Transform area)
+        WorldTypes.Area HandleArea(Transform area)
         {
             bool isRoom;
             bool isLocked;
             int wallLeftOrder = -1;
             int wallRightOrder = -1;
             int floorOrder = -1;
-            List<Furniture> furniture = new List<Furniture>();
+            List<WorldTypes.Furniture> furniture = new();
 
             RoomHandler roomHandler = area.GetComponent<RoomHandler>();
 
@@ -293,7 +264,7 @@ namespace Merge
                 {
                     ChangeFurniture changeFurniture = areaFurniture.GetChild(i).GetComponent<ChangeFurniture>();
 
-                    Furniture furnitureItem = new Furniture
+                    WorldTypes.Furniture furnitureItem = new()
                     {
                         name = areaFurniture.GetChild(i).name,
                         order = changeFurniture.spriteOrder
@@ -308,7 +279,7 @@ namespace Merge
                 isLocked = false; // TODO - Check this here
             }
 
-            Area newArea = new Area
+            WorldTypes.Area newArea = new()
             {
                 name = area.name,
                 isRoom = isRoom,
@@ -339,20 +310,20 @@ namespace Merge
         {
             if (canLog)
             {
-                for (int i = 0; i < areas.Count; i++)
+                for (int i = 0; i < gameData.areasData.Count; i++)
                 {
-                    if (areas[i].isRoom)
+                    if (gameData.areasData[i].isRoom)
                     {
-                        Debug.Log(areas[i].name + ", Is Room, " + areas[i].wallLeftOrder + ", " + areas[i].wallRightOrder + ", " + areas[i].floorOrder);
+                        Debug.Log(gameData.areasData[i].name + ", Is Room, " + gameData.areasData[i].wallLeftOrder + ", " + gameData.areasData[i].wallRightOrder + ", " + gameData.areasData[i].floorOrder);
                     }
                     else
                     {
-                        Debug.Log(areas[i].name);
+                        Debug.Log(gameData.areasData[i].name);
                     }
 
-                    for (int j = 0; j < areas[i].furniture.Count; j++)
+                    for (int j = 0; j < gameData.areasData[i].furniture.Count; j++)
                     {
-                        Debug.Log("      " + areas[i].furniture[j].name + ", " + areas[i].furniture[j].order);
+                        Debug.Log("      " + gameData.areasData[i].furniture[j].name + ", " + gameData.areasData[i].furniture[j].order);
                     }
                 }
             }
@@ -364,7 +335,18 @@ namespace Merge
 
             navMeshManager.Bake();
 
-            taskManager.CheckIfThereIsATaskToComplete(()=>{
+            loaded = true;
+        }
+
+        IEnumerator TryCheckingForTasks()
+        {
+            while (!taskManager.isLoaded)
+            {
+                yield return null;
+            }
+
+            taskManager.CheckIfThereIsATaskToComplete(() =>
+            {
                 loaded = true;
             });
         }
@@ -372,39 +354,39 @@ namespace Merge
         // Public methods
         public void SetSelectable(Selectable selectable)
         {
-            for (int i = 0; i < areas.Count; i++)
+            for (int i = 0; i < gameData.areasData.Count; i++)
             {
                 // Walls
-                if (selectable.type == Selectable.Type.Wall && areas[i].name == selectable.transform.parent.name)
+                if (selectable.type == Selectable.Type.Wall && gameData.areasData[i].name == selectable.transform.parent.name)
                 {
                     if (selectable.name.Contains("Left"))
                     {
-                        areas[i].wallLeftOrder = selectable.changeWall.spriteOrder;
+                        gameData.areasData[i].wallLeftOrder = selectable.changeWall.spriteOrder;
                     }
                     else
                     {
-                        areas[i].wallRightOrder = selectable.changeWall.spriteOrder;
+                        gameData.areasData[i].wallRightOrder = selectable.changeWall.spriteOrder;
                     }
 
                     break;
                 }
 
                 // Floor
-                if (selectable.type == Selectable.Type.Floor && areas[i].name == selectable.transform.parent.name)
+                if (selectable.type == Selectable.Type.Floor && gameData.areasData[i].name == selectable.transform.parent.name)
                 {
-                    areas[i].floorOrder = selectable.changeFloor.spriteOrder;
+                    gameData.areasData[i].floorOrder = selectable.changeFloor.spriteOrder;
 
                     break;
                 }
 
                 // Furniture
-                if (selectable.type == Selectable.Type.Furniture && areas[i].name == selectable.transform.parent.transform.parent.name)
+                if (selectable.type == Selectable.Type.Furniture && gameData.areasData[i].name == selectable.transform.parent.transform.parent.name)
                 {
-                    for (int j = 0; j < areas[i].furniture.Count; j++)
+                    for (int j = 0; j < gameData.areasData[i].furniture.Count; j++)
                     {
-                        if (areas[i].furniture[j].name == selectable.name)
+                        if (gameData.areasData[i].furniture[j].name == selectable.name)
                         {
-                            areas[i].furniture[j].order = selectable.changeFurniture.spriteOrder;
+                            gameData.areasData[i].furniture[j].order = selectable.changeFurniture.spriteOrder;
 
                             break;
                         }
@@ -472,55 +454,6 @@ namespace Merge
             }
 
             return center;
-        }
-
-        // Conversion
-        string ConvertAreaToJson(List<Area> areasData)
-        {
-            AreaJson[] areaJson = new AreaJson[areasData.Count];
-
-            for (int i = 0; i < areasData.Count; i++)
-            {
-                AreaJson newAreaJson = new AreaJson
-                {
-                    name = areasData[i].name,
-                    isLocked = areasData[i].isLocked,
-                    isRoom = areasData[i].isRoom,
-                    wallLeftOrder = areasData[i].wallLeftOrder,
-                    wallRightOrder = areasData[i].wallRightOrder,
-                    floorOrder = areasData[i].floorOrder,
-                    furniture = JsonConvert.SerializeObject(areasData[i].furniture),
-                };
-
-                areaJson[i] = newAreaJson;
-            }
-
-            return JsonConvert.SerializeObject(areaJson);
-        }
-
-        List<Area> ConvertJsonToArea(string areasString)
-        {
-            AreaJson[] areaJson = JsonConvert.DeserializeObject<AreaJson[]>(areasString);
-
-            List<Area> areasData = new List<Area>();
-
-            for (int i = 0; i < areaJson.Length; i++)
-            {
-                Area newAreasData = new Area
-                {
-                    name = areaJson[i].name,
-                    isLocked = areaJson[i].isLocked,
-                    isRoom = areaJson[i].isRoom,
-                    wallLeftOrder = areaJson[i].wallLeftOrder,
-                    wallRightOrder = areaJson[i].wallRightOrder,
-                    floorOrder = areaJson[i].floorOrder,
-                    furniture = JsonConvert.DeserializeObject<List<Furniture>>(areaJson[i].furniture),
-                };
-
-                areasData.Add(newAreasData);
-            }
-
-            return areasData;
         }
     }
 }

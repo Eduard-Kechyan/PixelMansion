@@ -13,65 +13,90 @@ namespace Merge
         public ValuesData valuesData;
         public EnergyTimer energyTimer;
 
+        [HideInInspector]
         public const int WIDTH = 7;
+        [HideInInspector]
         public const int HEIGHT = 9;
+        [HideInInspector]
         public const int ITEM_COUNT = WIDTH * HEIGHT;
+        [HideInInspector]
         public const int MAX_ENERGY = 100;
+        [HideInInspector]
         public const float GAME_PIXEL_WIDTH = 180f;
+        [HideInInspector]
         public static float GAME_PIXEL_HEIGHT = 0f;
 
-        public const string WEB_ADDRESS = "https://WEBSITE.com"; // TODO - Replace WEBSITE with proper the website name
-        public const string STUDIO_NAME = "unonodegames"; // TODO - Replace SOCIAL_MEDIA_NAME with the proper studio name
+        public const string WEB_ADDRESS = "https://solonodegames.com"; // TODO - Replace WEBSITE with proper website name
+        public const string STUDIO_NAME = "solonodegames"; // TODO - Replace STUDIO_NAME with the proper studio name
         public const string GAME_TITLE = "Pixel Merge"; // TODO - Replace GAME_TITLE with the proper game title
 
-        public int maxExperience = 10;
-        public int leftoverExperience = 0;
-
         // Values
+        [Header("Values")]
+        [Tooltip("0% - 100%")]
         public int experience = 0; // 0% - 100%
-        public int level = 0;
         public int energy = 100;
         public int gold = 100;
         public int gems = 100;
 
+        [Header("Level")]
+        public int level = 0;
         public bool levelTen;
         public bool canLevelUp = false;
 
-        // Inventory
-        public int inventorySpace = 7;
-        public const int maxInventorySpace = 50;
-        public int inventorySlotPrice = 50;
+        [Header("Experience")]
+        public int maxExperience = 10;
+        [HideInInspector]
+        public int leftoverExperience = 0;
 
+        // Inventory
+        [Header("Inventory")]
+        public int inventorySpace = 7;
+        public int inventorySlotPrice = 50;
         [HideInInspector]
         public int initialInventorySpace = 7;
-
-        // Timers
-        public List<Types.Timer> timers;
+        public List<Types.Inventory> inventoryData = new();
+        public const int maxInventorySpace = 50;
 
         // Main data
-        public Types.Items[] itemsData;
-        public Types.Items[] collectablesData;
-        public Types.Items[] generatorsData;
-        public Types.Items[] chestsData;
+        [HideInInspector]
         public List<Types.Bonus> bonusData = new();
-        public List<Types.Inventory> inventoryData = new();
+        [HideInInspector]
         public List<Types.TaskGroup> tasksData = new();
+        [HideInInspector]
         public List<Types.FinishedTask> finishedTasks = new();
+        [HideInInspector]
+        public List<WorldTypes.Area> areasData = new();
 
+        // Board
+        [HideInInspector]
         public Types.Board[,] boardData;
+        [HideInInspector]
         public string[] unlockedData = new string[0];
+        [HideInInspector]
+        public Types.Items[] itemsData;
+        [HideInInspector]
+        public Types.Items[] collectablesData;
+        [HideInInspector]
+        public Types.Items[] generatorsData;
+        [HideInInspector]
+        public Types.Items[] chestsData;
 
-        // User
+        // Timers
+        [HideInInspector]
+        public List<Types.Timer> timers;
+
+        [Header("Other")]
+        [ReadOnly]
         public string userId;
+        [ReadOnly]
+        public bool greeted = false;
 
+        // Sprites
         private Sprite[] itemsSprites;
         private Sprite[] generatorsSprites;
         private Sprite[] collectablesSprites;
         private Sprite[] chestsSprites;
         private Sprite[] taskSprites;
-
-        // Other
-        public bool greeted = false;
 
         // References
         private LevelMenu levelMenu;

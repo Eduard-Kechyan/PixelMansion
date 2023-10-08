@@ -9,6 +9,7 @@ namespace Merge
     public class AdsManager : MonoBehaviour
     {
         // Variables
+        public bool enableAds = true;
         public bool logData = false;
 
         private string adUnitId = "unused";
@@ -28,6 +29,13 @@ namespace Merge
 
         void Awake()
         {
+#if UNITY_EDITOR
+#else
+    if(!enableAds){
+        enableAds = true;
+    }
+#endif
+
 #if UNITY_ANDROID
             adUnitId = "ca-app-pub-5910627528492422/2571416965";
 #elif Unity_IPHONE
@@ -43,17 +51,20 @@ namespace Merge
             //MobileAds.RaiseAdEventsOnUnityMainThread = true;
 
             // Initialize Google ads
-            MobileAds.Initialize(initStatus =>
+            if (enableAds)
             {
-                if (logData)
+                MobileAds.Initialize(initStatus =>
                 {
-                    Debug.Log(initStatus);
-                }
+                    if (logData)
+                    {
+                        Debug.Log(initStatus);
+                    }
 
-                services.adsAvailable = true;
+                    services.adsAvailable = true;
 
-                LoadAd();
-            });
+                    LoadAd();
+                });
+            }
         }
 
         // Watch an simple ad
@@ -62,7 +73,14 @@ namespace Merge
             successCallback = callback;
             failedCallback = failCallback;
 
-            ShowAd();
+            if (enableAds)
+            {
+                ShowAd();
+            }
+            else
+            {
+                successCallback?.Invoke();
+            }
         }
 
         // Pre load the ads to be watched when necessary

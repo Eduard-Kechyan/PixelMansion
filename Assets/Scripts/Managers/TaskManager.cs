@@ -17,16 +17,19 @@ namespace Merge
         public BoardManager boardManager;
         public ValuePop valuePop;
 
+        [HideInInspector]
+        public bool isLoaded = false;
+
         // References
         private GameData gameData;
         private DataManager dataManager;
         private Selector selector;
         private ProgressManager progressManager;
         private CameraMotion cameraMotion;
-        private ItemHandler itemHandler;
         private NoteDotHandler noteDotHandler;
         private HubUI hubUI;
         private GameplayUI gameplayUI;
+        private UIButtons uiButtons;
 
         void Start()
         {
@@ -36,9 +39,9 @@ namespace Merge
             progressManager = GetComponent<ProgressManager>();
             cameraMotion = Camera.main.GetComponent<CameraMotion>();
             noteDotHandler = GameRefs.Instance.noteDotHandler;
-            itemHandler = DataManager.Instance.GetComponent<ItemHandler>();
             hubUI = GameRefs.Instance.hubUI;
             gameplayUI = GameRefs.Instance.gameplayUI;
+            uiButtons = gameData.GetComponent<UIButtons>();
 
             // The world data manager is only attached in the hub scene
             if (worldDataManager != null)
@@ -46,14 +49,16 @@ namespace Merge
                 selector = worldDataManager.GetComponent<Selector>();
             }
 
+            isLoaded = true;
+
             // Subscribe to events
-            DataManager.boardSaveEvent += CheckBoardAndInventoryForTasks;
+            DataManager.BoardSaveEventAction += CheckBoardAndInventoryForTasks;
         }
 
         void OnDestroy()
         {
             // Unsubscribe from events
-            DataManager.boardSaveEvent -= CheckBoardAndInventoryForTasks;
+            DataManager.BoardSaveEventAction -= CheckBoardAndInventoryForTasks;
         }
 
         //// Tasks ////
@@ -227,6 +232,7 @@ namespace Merge
             Transform taskRef = null;
             Vector2 taskRefPos = Vector2.zero;
             bool isLastStep = false;
+            Types.TaskItem[] rewards = null;
 
             // Get the task item form the world
             for (int i = 0; i < gameData.tasksData.Count; i++)
@@ -237,6 +243,8 @@ namespace Merge
                     {
                         if (gameData.tasksData[i].tasks[j].id == taskId)
                         {
+                            rewards = gameData.tasksData[i].tasks[j].rewards;
+
                             taskRef = worldDataManager.GetWorldItem(groupId, gameData.tasksData[i].tasks[j]);
 
                             taskRefPos = worldDataManager.GetColliderCenter(taskRef, gameData.tasksData[i].tasks[j].taskRefType);
@@ -265,7 +273,10 @@ namespace Merge
                 {
                     // If successfully changed, give the rewards and complete the task 
 
-                    HandleRewards(groupId, taskId);
+                    Glob.SetTimeout(() =>
+                    {
+                        HandleRewards(rewards);
+                    }, 0.35f);
 
                     TaskCompleted(groupId, taskId);
                 });
@@ -384,35 +395,17 @@ namespace Merge
         //// Rewards ////
 
         // Get the rewards and handle them as needed
-        void HandleRewards(string groupId, string taskId)
+        void HandleRewards(Types.TaskItem[] rewards)
         {
-            for (int i = 0; i < gameData.tasksData.Count; i++)
+            for (int k = 0; k < rewards.Length; k++)
             {
-                if (gameData.tasksData[i].id == groupId)
+                if (rewards[k].type == Types.Type.Coll)
                 {
-                    for (int j = 0; j < gameData.tasksData[i].tasks.Count; j++)
-                    {
-                        if (gameData.tasksData[i].tasks[j].id == taskId)
-                        {
-                            for (int k = 0; k < gameData.tasksData[i].tasks[j].rewards.Length; k++)
-                            {
-                                Types.TaskItem reward = gameData.tasksData[i].tasks[j].rewards[k];
-
-                                if (reward.type == Types.Type.Coll)
-                                {
-                                    valuePop.PopColl(reward.amount, reward.collGroup, hubUI.taskButtonPosition, false);
-                                }
-                                else
-                                {
-                                    AddItemToBonus(reward);
-                                }
-                            }
-
-                            break;
-                        }
-                    }
-
-                    break;
+                    valuePop.PopColl(rewards[k].amount, rewards[k].collGroup, uiButtons.hubTaskButtonPos, false);
+                }
+                else
+                {
+                    AddItemToBonus(rewards[k]);
                 }
             }
         }
@@ -435,11 +428,11 @@ namespace Merge
 
             if (noteDotHandler.isHub)
             {
-                buttonPosition = hubUI.playButtonPosition;
+                buttonPosition = uiButtons.hubPlayButtonPos;
             }
             else
             {
-                buttonPosition = gameplayUI.bonusButtonPosition;
+                buttonPosition = uiButtons.gameplayBonusButtonPos;
             }
 
             valuePop.PopBonus(newItem, buttonPosition, true, true);

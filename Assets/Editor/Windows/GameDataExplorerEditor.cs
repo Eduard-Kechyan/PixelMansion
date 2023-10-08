@@ -63,82 +63,97 @@ namespace Merge
 
             string folderPath = Application.persistentDataPath + "/QuickSave";
 
-            string[] filePaths = Directory.GetFiles(folderPath);
-
-            if (filePaths.Length > 0)
+            if (Directory.Exists(folderPath))
             {
-                VisualElement fileNameBlock = new();
-                VisualElement fileOpenBlock = new();
+                string[] filePaths = Directory.GetFiles(folderPath);
 
-                fileNameBlock.style.flexDirection = FlexDirection.Row;
-                fileNameBlock.style.justifyContent = Justify.Center;
-                fileNameBlock.style.marginBottom = 10f;
-
-                fileOpenBlock.style.flexDirection = FlexDirection.Row;
-                fileOpenBlock.style.justifyContent = Justify.Center;
-                fileOpenBlock.style.marginBottom = 10f;
-
-                string firstFileName = "";
-
-                for (int i = 0; i < filePaths.Length; i++)
+                if (filePaths.Length > 0)
                 {
-                    string fileName = filePaths[i]
-                        .Replace(folderPath + "\\", "")
-                        .Replace(".json", "");
+                    VisualElement fileNameBlock = new();
+                    VisualElement fileOpenBlock = new();
 
-                    Button fileNameButton = new() { text = fileName };
-                    Button fileOpenButton = new() { text = "" };
+                    fileNameBlock.style.flexDirection = FlexDirection.Row;
+                    fileNameBlock.style.justifyContent = Justify.Center;
+                    fileNameBlock.style.marginBottom = 10f;
 
-                    string pathName = filePaths[i];
+                    fileOpenBlock.style.flexDirection = FlexDirection.Row;
+                    fileOpenBlock.style.justifyContent = Justify.Center;
+                    fileOpenBlock.style.marginBottom = 10f;
 
-                    fileNameButton.style.height = 22f;
-                    fileNameButton.style.marginLeft = 8f;
-                    fileNameButton.style.marginRight = 0;
+                    string firstFileName = "";
 
-                    if (i == 0)
+                    for (int i = 0; i < filePaths.Length; i++)
                     {
-                        firstFileName = fileName;
+                        string fileName = filePaths[i]
+                            .Replace(folderPath + "\\", "")
+                            .Replace(".json", "");
 
-                        fileNameButton.style.marginLeft = 5f;
+                        Button fileNameButton = new() { text = fileName };
+                        Button fileOpenButton = new() { text = "" };
+
+                        string pathName = filePaths[i];
+
+                        fileNameButton.style.height = 22f;
+                        fileNameButton.style.marginLeft = 8f;
+                        fileNameButton.style.marginRight = 0;
+
+                        if (i == 0)
+                        {
+                            firstFileName = fileName;
+
+                            fileNameButton.style.marginLeft = 5f;
+                        }
+
+                        fileOpenButton.style.paddingLeft = 0f;
+                        fileOpenButton.style.paddingRight = 0f;
+                        fileOpenButton.style.paddingTop = 0f;
+                        fileOpenButton.style.paddingBottom = 0f;
+                        fileOpenButton.style.marginLeft = 2f;
+                        fileOpenButton.style.marginRight = 0;
+                        fileOpenButton.style.width = 22f;
+                        fileOpenButton.style.height = 22f;
+
+                        VisualElement bg = new();
+
+                        bg.style.width = 20f;
+                        bg.style.height = 20f;
+                        bg.style.backgroundImage = new StyleBackground(openFileSprite);
+
+                        fileOpenButton.Add(bg);
+
+                        fileNameButton.clicked += () => SetData(fileName);
+                        fileOpenButton.clicked += () => Application.OpenURL(pathName);
+
+                        fileNameBlock.Add(fileNameButton);
+                        fileNameBlock.Add(fileOpenButton);
                     }
 
-                    fileOpenButton.style.paddingLeft = 0f;
-                    fileOpenButton.style.paddingRight = 0f;
-                    fileOpenButton.style.paddingTop = 0f;
-                    fileOpenButton.style.paddingBottom = 0f;
-                    fileOpenButton.style.marginLeft = 2f;
-                    fileOpenButton.style.marginRight = 0;
-                    fileOpenButton.style.width = 22f;
-                    fileOpenButton.style.height = 22f;
+                    rootVisualElement.Add(fileNameBlock);
+                    //rootVisualElement.Add(fileOpenBlock);
 
-                    VisualElement bg = new();
-
-                    bg.style.width = 20f;
-                    bg.style.height = 20f;
-                    bg.style.backgroundImage = new StyleBackground(openFileSprite);
-
-                    fileOpenButton.Add(bg);
-
-                    fileNameButton.clicked += () => SetData(fileName);
-                    fileOpenButton.clicked += () => Application.OpenURL(pathName);
-
-                    fileNameBlock.Add(fileNameButton);
-                    fileNameBlock.Add(fileOpenButton);
+                    SetData(firstFileName);
                 }
+                else
+                {
+                    Label emptyLabel = new() { text = "No Data" };
 
-                rootVisualElement.Add(fileNameBlock);
-                //rootVisualElement.Add(fileOpenBlock);
+                    emptyLabel.style.color = Color.red;
+                    emptyLabel.style.unityTextAlign = TextAnchor.MiddleCenter;
 
-                SetData(firstFileName);
+                    rootVisualElement.Add(emptyLabel);
+                }
             }
             else
             {
-                Label emptyLabel = new() { text = "No Data" };
+                Label noDataLabel = new() { text = "No Data Found!" };
 
-                emptyLabel.style.color = Color.red;
-                emptyLabel.style.unityTextAlign = TextAnchor.MiddleCenter;
+                noDataLabel.style.width = Length.Percent(100);
+                noDataLabel.style.height = 20f;
+                noDataLabel.style.color = colorRed;
+                noDataLabel.style.unityTextAlign = TextAnchor.MiddleCenter;
+                noDataLabel.style.fontSize = 14f;
 
-                rootVisualElement.Add(emptyLabel);
+                rootVisualElement.Add(noDataLabel);
             }
         }
 
