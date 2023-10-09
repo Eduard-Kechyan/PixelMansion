@@ -54,7 +54,7 @@ namespace Merge
         {
             Label newLabel = new Label { name = "NoteLabel" + i };
 
-            newLabel.style.width = Length.Percent(80);
+            newLabel.style.width = Length.Percent(100);
             newLabel.style.fontSize = 8f;
             newLabel.style.unityTextAlign = TextAnchor.UpperCenter;
             newLabel.style.whiteSpace = WhiteSpace.Normal;

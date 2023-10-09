@@ -93,6 +93,15 @@ namespace Merge
             // Calculate the button position on the screen and the world space
             singlePixelWidth = Camera.main.pixelWidth / GameData.GAME_PIXEL_WIDTH;
 
+            if (Application.isEditor || Debug.isDebugBuild)
+            {
+                Button debugButton = root.Q<Button>("DebugButton");
+
+                debugButton.style.display = DisplayStyle.Flex;
+
+                debugButton.clicked += () => DebugManager.Instance.OpenMenu();
+            }
+
             root.RegisterCallback<GeometryChangedEvent>(evt => SetUIButtons(evt, true));
 
             CheckBonusButton();

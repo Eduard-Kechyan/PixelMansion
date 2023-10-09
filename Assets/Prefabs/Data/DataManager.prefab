@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: -7698504415603008170}
   - component: {fileID: 2647993437880791096}
   - component: {fileID: 5574773175297324107}
-  - component: {fileID: 2928596913998717830}
   - component: {fileID: 8380244147946217097}
   m_Layer: 0
   m_Name: DataManager
@@ -34,7 +33,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &-7698504415603008170
 MonoBehaviour:
@@ -48,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32fa525191c09d74480ce81539a1c0f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ignoreInitialCheck: 1
+  ignoreInitialCheck: 0
   items: {fileID: 11400000, guid: c8cb055841d16d4418a75072be1f69f5, type: 2}
   generators: {fileID: 11400000, guid: c258775e13b5df74081b412b6f1f3947, type: 2}
   collectables: {fileID: 11400000, guid: bed7c08ca8af31748b66ffc88a9a245e, type: 2}
@@ -87,29 +86,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d56e580252b7c314b93b83869dda9e0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2928596913998717830
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2434679965947527676}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b619b6fc155675141a56623bfe0cd3f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  toggleKey: 32
-  openOnStart: 0
-  shakeToOpen: 1
-  shakeRequiresTouch: 0
-  shakeAcceleration: 3
-  toggleThresholdSeconds: 0.5
-  restrictLogCount: 0
-  maxLogCount: 1000
-  collapseLogOnStart: 0
-  logFontSize: 14
-  scaleFactor: 2
 --- !u!114 &8380244147946217097
 MonoBehaviour:
   m_ObjectHideFlags: 0

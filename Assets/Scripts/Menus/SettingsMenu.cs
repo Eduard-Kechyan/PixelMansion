@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
-using GoogleMobileAds.Api;
 
 namespace Merge
 {
@@ -49,8 +48,6 @@ namespace Merge
         private Button instagramFollowButton;
         private Button facebookFollowButton;
         //private Button youtubeFollowButton;
-
-        private Button adDebugButton;
 
         private Label signInLabel;
         private Label followLabel;
@@ -137,23 +134,6 @@ namespace Merge
             facebookFollowButton.clicked += () => OpenSocialMediaLink(SocialMediaType.Facebook);
             // youtubeFollowButton.clicked += () => OpenSocialMediaLink(SocialMediaType.Youtube);
 
-            if (Application.isEditor || Debug.isDebugBuild)
-            {
-                adDebugButton = settingsMenu.Q<Button>("AdDebugButton");
-
-                adDebugButton.style.display = DisplayStyle.Flex;
-
-                adDebugButton.clicked += () => MobileAds.OpenAdInspector(error =>
-                {
-                    if (error != null)
-                    {
-                        Debug.LogError("Couldn't open ad inspector!");
-                        Debug.LogError(error.GetMessage());
-                        Debug.LogError(error.GetCause());
-                    }
-                });
-            }
-
             idCopyButton.clicked += () => CopyIdToClipboard();
 
             Init();
@@ -175,6 +155,8 @@ namespace Merge
         {
             // Set the title
             string title = LOCALE.Get("settings_menu_title");
+
+            Debug.Log(GameData.Instance.userId);
 
             // TODO - Get the user ID
             idLabel.text = "User ID: " + GameData.Instance.userId;

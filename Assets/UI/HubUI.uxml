@@ -3,21 +3,26 @@
     <Style src="project://database/Assets/UI/Styles/HubUIStyles.uss?fileID=7433441132597879392&amp;guid=843d101bc7e244040923eba71e2afc42&amp;type=3#HubUIStyles" />
     <ui:VisualElement name="LocaleWrapper" class="locale_wrapper locale_en" style="display: none;" />
     <ui:VisualElement name="TopBox" class="top_box">
-        <ui:Button display-tooltip-when-elided="true" name="SettingsButton" class="button_standard settings_button" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Main/SettingsButton.png?fileID=2800000&amp;guid=ba1e299eb262acc479335a62d081f530&amp;type=3#SettingsButton&apos;);">
+        <ui:Button display-tooltip-when-elided="true" name="SettingsButton" class="button_standard button_standard_small" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Main/SettingsButton.png?fileID=2800000&amp;guid=ba1e299eb262acc479335a62d081f530&amp;type=3#SettingsButton&apos;);">
+            <ui:VisualElement name="Border" class="border" />
             <ui:VisualElement name="NoteDot" class="note_dot_small" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/NoteDotSmall.png?fileID=2800000&amp;guid=87f87a41fbc83544584f9c639283f5d9&amp;type=3#NoteDotSmall&apos;);" />
         </ui:Button>
-        <ui:Button display-tooltip-when-elided="true" name="ShopButton" class="button_standard shop_button" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Main/ShopButtonAlt.png?fileID=2800000&amp;guid=562670c80cd973b46babb76197cc6ab5&amp;type=3#ShopButtonAlt&apos;);">
+        <ui:Button display-tooltip-when-elided="true" name="ShopButton" class="button_standard button_standard_small" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Main/ShopButtonAlt.png?fileID=2800000&amp;guid=562670c80cd973b46babb76197cc6ab5&amp;type=3#ShopButtonAlt&apos;);">
+            <ui:VisualElement name="Border" class="border" />
             <ui:VisualElement name="NoteDot" class="note_dot_small" />
+        </ui:Button>
+        <ui:Button display-tooltip-when-elided="true" name="DebugButton" class="button_standard button_standard_small" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Main/DebugButton.png?fileID=2800000&amp;guid=15ad31ceda532ec4892dda5273f74f24&amp;type=3#DebugButton&apos;); display: none;">
+            <ui:VisualElement name="Border" class="border" />
         </ui:Button>
     </ui:VisualElement>
     <ui:VisualElement name="BottomBox" class="bottom_box">
         <ui:VisualElement name="Options" class="options">
             <ui:Button display-tooltip-when-elided="true" name="PlayButton" class="button_standard play_button" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Main/PlayButton.png?fileID=2800000&amp;guid=9e796003c4fa07e42a3d824c4763e7e5&amp;type=3#PlayButton&apos;);">
+                <ui:VisualElement name="Border" class="border" />
                 <ui:VisualElement name="NoteDot" class="note_dot" style="left: auto; right: -2px;" />
-                <ui:VisualElement name="Border" class="border" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/GamePlayButtonBorder.png?fileID=2800000&amp;guid=b8f07174fd6f28542a9560db033f8d3e&amp;type=3#GamePlayButtonBorder&apos;);" />
             </ui:Button>
             <ui:Button display-tooltip-when-elided="true" name="TaskButton" class="button_standard" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Main/TaskButton.png?fileID=2800000&amp;guid=95d01244dc81dc249b49f4a4c989915b&amp;type=3#TaskButton&apos;);">
-                <ui:VisualElement name="Border" class="border" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/GamePlayButtonBorder.png?fileID=2800000&amp;guid=b8f07174fd6f28542a9560db033f8d3e&amp;type=3#GamePlayButtonBorder&apos;);" />
+                <ui:VisualElement name="Border" class="border" />
                 <ui:VisualElement name="NoteDot" class="note_dot" style="opacity: 0; visibility: hidden;">
                     <ui:Label tabindex="-1" display-tooltip-when-elided="true" name="Value" class="value" />
                 </ui:VisualElement>

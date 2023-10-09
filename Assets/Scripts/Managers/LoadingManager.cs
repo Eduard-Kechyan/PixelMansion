@@ -12,10 +12,12 @@ namespace Merge
         // Variables
         public bool stayOnScene = false;
         public bool logPhases = false;
+        public bool skipSplash = false;
         public float fillSpeed = 30f;
         public SceneLoader sceneLoader;
         public GameObject uiDocument;
         public LoadingSceneUI loadingSceneUI;
+        public SplashManager splashManager;
         public int phase = 1;
         public float maxPhase = 6;
 
@@ -35,7 +37,6 @@ namespace Merge
         // References
         private DataManager dataManager;
         private UserDataHandler userDataHandler;
-        private SoundManager soundManager;
         //private Notifics notifics;
 
         void Start()
@@ -43,7 +44,6 @@ namespace Merge
             // Cache
             dataManager = DataManager.Instance;
             userDataHandler = GetComponent<UserDataHandler>();
-            soundManager = SoundManager.Instance;
             //notifics = Services.Instance.GetComponent<Notifics>();
 
             // UI
@@ -59,6 +59,8 @@ namespace Merge
             tempAge = PlayerPrefs.GetInt("tempAge");
 
             initial = !PlayerPrefs.HasKey("InitialLoaded"); // Note the "!"
+
+            splashManager.Init();
         }
 
         void Update()
@@ -122,38 +124,36 @@ namespace Merge
                     }
                 }
 
-                /*  // Check and create user
+                // Check and create user
                 // This phase is being checked once
-                  if (fillCount >= singlePhasePercent * 4 && phase == 4)
-                  {
-                      loading = false;
-                      ContinueLoading();
-                      // TODO - Fix this function
-                     // userDataHandler.CheckUser(callback, tempAge);
+                if (fillCount >= singlePhasePercent * 4 && phase == 4)
+                {
+                    loading = false;
+                    userDataHandler.CheckUser(callback, tempAge);
 
-                      if (logPhases)
-                      {
-                          Debug.Log("Phase 4");
-                      }
-                  }
+                    if (logPhases)
+                    {
+                        Debug.Log("Phase 4");
+                    }
+                }
 
-                  // Check for updates
+                // Check for updates
                 // This phase is being checked every time
-                  if (fillCount >= singlePhasePercent * 5 && phase == 5)
-                  {
-                      if (!initial)
-                      {
-                          loading = false;
-                          ContinueLoading();
-                          // TODO - Fix this function
-                          // loadingSceneUI.CheckForUpdates(callback);
+                /*  if (fillCount >= singlePhasePercent * 5 && phase == 5)
+                 {
+                     if (!initial)
+                     {
+                         loading = false;
+                         ContinueLoading();
+                         // TODO - Fix this function
+                         // loadingSceneUI.CheckForUpdates(callback);
 
-                          if (logPhases)
-                          {
-                              Debug.Log("Phase 5");
-                          }
-                      }
-                  }*/
+                         if (logPhases)
+                         {
+                             Debug.Log("Phase 5");
+                         }
+                     }
+                 }*/
 
                 // Get notification permission
                 // This phase is being checked once
@@ -188,7 +188,7 @@ namespace Merge
                     }
                     else
                     {
-                        sceneLoader.Load(1);
+                        LoadNextScene();
                     }
                 }
             }
@@ -196,10 +196,12 @@ namespace Merge
 
         public void StartLoading()
         {
-// PLay background music
-            soundManager.PlayMusic("Loading");
-
             loading = true;
+        }
+
+        public void LoadNextScene()
+        {
+            sceneLoader.Load(1);
         }
 
         void HandleAge(int newValue)

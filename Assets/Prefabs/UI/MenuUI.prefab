@@ -42,7 +42,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6890635896343097084
 MonoBehaviour:
@@ -119,9 +119,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unlockedQuestionMarkSprite: {fileID: 21300000, guid: dffe992878748814ba040e5f4b6c4e2a, type: 3}
   infoCurrentSprite: {fileID: 21300000, guid: eb1ab04edbf5cef42a7349e4977bf347, type: 3}
-  infoParentItemSprite: {fileID: 21300000, guid: 49c117f476be9d14f9f248b548270113, type: 3}
-  textColor: {r: 0.3584906, g: 0.3584906, b: 0.3584906, a: 1}
-  lineColor: {r: 0, g: 0, b: 0, a: 0.11764706}
 --- !u!114 &1037969692192170820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,7 +148,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameplayScene: 1
   gameplayUI: {fileID: 0}
-  hubUI: {fileID: 0}
   boardManager: {fileID: 0}
   sceneLoader: {fileID: 0}
   shopData: {fileID: 11400000, guid: 9ccd7e0ffc1f88547b1138b322dfed0d, type: 2}
@@ -184,8 +180,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boardManager: {fileID: 0}
-  slotSprite: {fileID: 21300000, guid: 06667950052f6b14086f30495a5b11f8, type: 3}
-  slotItemColor: {r: 0, g: 0, b: 0, a: 0}
   newSlotPrice: 50
   slotPriceMultiplier: 2
 --- !u!114 &990211674076651926
@@ -200,6 +194,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e967bd34d6f806448c186ff05a8a84b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneLoader: {fileID: 0}
+  taskManager: {fileID: 0}
 --- !u!114 &269867168095586740
 MonoBehaviour:
   m_ObjectHideFlags: 0

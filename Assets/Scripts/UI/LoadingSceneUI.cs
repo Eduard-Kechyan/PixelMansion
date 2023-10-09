@@ -121,8 +121,16 @@ namespace Merge
             updateButton.clicked += () => UpdateGame();
             updateExitButton.clicked += () => Application.Quit();
 
-
             ageScrollView.verticalScroller.valueChanged += newValue => AgeScrollerHandle(newValue);
+
+            if (Application.isEditor || Debug.isDebugBuild)
+            {
+                Button debugButton =root.Q<Button>("DebugButton");
+
+                debugButton.style.display=DisplayStyle.Flex;
+
+                debugButton.clicked += () => DebugManager.Instance.OpenMenu();
+            }
 
             Init();
 

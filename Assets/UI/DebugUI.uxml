@@ -1,0 +1,40 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Styles/MenuStyles.uss?fileID=7433441132597879392&amp;guid=663206ebf1059204eb4ee1eb82dfb026&amp;type=3#MenuStyles" />
+    <Style src="project://database/Assets/UI/Styles/Main.uss?fileID=7433441132597879392&amp;guid=b6d7ed9290f88c745af1e68e28dec072&amp;type=3#Main" />
+    <Style src="project://database/Assets/UI/Styles/DebugStyles.uss?fileID=7433441132597879392&amp;guid=f74f2992a06a0e94488b0560717c063c&amp;type=3#DebugStyles" />
+    <ui:VisualElement name="DebugMenu" class="menu" style="display: none; opacity: 0;">
+        <ui:VisualElement name="Background" class="background" />
+        <ui:VisualElement name="Container" class="container">
+            <ui:VisualElement name="Content" class="content">
+                <ui:ScrollView class="scroller">
+                    <ui:VisualElement name="LoadingContainer" class="debug_menu_container" style="display: none;">
+                        <ui:Label tabindex="-1" text="Loading Scene" display-tooltip-when-elided="true" name="ContainerLabel" class="debug_menu_container_label" />
+                        <ui:Button text="Skip Loading" display-tooltip-when-elided="true" name="SkipButton" class="button_active debug_menu_button debug_menu_button_red" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="OtherContainer" class="debug_menu_container" style="justify-content: center; flex-direction: row; flex-wrap: wrap; bottom: -4px;">
+                        <ui:Label tabindex="-1" text="Other" display-tooltip-when-elided="true" name="ContainerLabel" class="debug_menu_container_label" />
+                        <ui:Button text="Ads Inspector" display-tooltip-when-elided="true" name="AdButton" class="button_active debug_menu_button" />
+                        <ui:Button text="Show Logs" display-tooltip-when-elided="true" name="LogsButton" class="button_active debug_menu_button" />
+                    </ui:VisualElement>
+                </ui:ScrollView>
+            </ui:VisualElement>
+            <ui:VisualElement name="BorderBottom" class="border_bottom" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuBorderBottom.png?fileID=2800000&amp;guid=80923a0de08b2cb4ca2cad385b4f59c7&amp;type=3#MenuBorderBottom&apos;);" />
+            <ui:VisualElement name="ShadowDot" class="shadow_dot" />
+            <ui:VisualElement name="Title" class="menu_title" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuTitle.png?fileID=2800000&amp;guid=830ffbc9a26c02c4cb218a8e5568ad67&amp;type=3#MenuTitle&apos;);">
+                <ui:Label text="Debug" display-tooltip-when-elided="true" name="Value" class="menu_title_value" />
+            </ui:VisualElement>
+            <ui:VisualElement name="Close" class="button_active_extra menu_close_button" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&apos;);" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="LogsContainer" class="logs_container" style="display: none; opacity: 0;">
+        <ui:VisualElement name="LogsTop" class="logs_top" style="display: none;" />
+        <ui:Label tabindex="-1" text="Logs" display-tooltip-when-elided="true" name="Title" class="title" />
+        <ui:ScrollView name="LogsScrollView" class="scroller logs_scroll_view">
+            <ui:Label tabindex="-1" text="Some text explaining an error" display-tooltip-when-elided="true" class="log" />
+        </ui:ScrollView>
+        <ui:VisualElement name="Options" class="options" style="flex-direction: row;">
+            <ui:Button text="Clear" display-tooltip-when-elided="true" name="ClearButton" class="button" />
+            <ui:Button text="Close" display-tooltip-when-elided="true" name="CloseButton" class="button button_alt" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

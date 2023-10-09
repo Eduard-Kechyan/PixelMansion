@@ -31,7 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2295170619679281268
 MonoBehaviour:
@@ -62,7 +62,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   transitionData: {fileID: 11400000, guid: a6d129924148bb347b132cd4cb764dfe, type: 2}
-  duration: 0.3
+  worldDataManager: {fileID: 0}
+  sceneLoader: {fileID: 0}
+  duration: 0.2
   backgroundColors:
   - {r: 0.30588236, g: 0.5529412, b: 0.5764706, a: 1}
   - {r: 0.5943396, g: 0.2719384, b: 0.2859558, a: 1}

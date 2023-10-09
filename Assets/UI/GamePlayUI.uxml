@@ -17,11 +17,11 @@
             <ui:VisualElement name="Board" class="board" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/Gameplay/Board.png?fileID=2800000&amp;guid=dcdc28b82ad02ce469c4a972cf5733b0&amp;type=3#Board&apos;);" />
             <ui:VisualElement name="Options" class="options">
                 <ui:Button display-tooltip-when-elided="true" name="HomeButton" class="button_standard" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Main/HomeButton.png?fileID=2800000&amp;guid=ba8db5a0c1107754fa75be6b4a22bcd5&amp;type=3#HomeButton&apos;);">
-                    <ui:VisualElement name="Border" class="border" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/GamePlayButtonBorder.png?fileID=2800000&amp;guid=b8f07174fd6f28542a9560db033f8d3e&amp;type=3#GamePlayButtonBorder&apos;);" />
+                    <ui:VisualElement name="Border" class="border" />
                     <ui:VisualElement name="NoteDot" class="note_dot" style="left: auto; right: -2px;" />
                 </ui:Button>
                 <ui:Button display-tooltip-when-elided="true" name="InventoryButton" class="button_standard" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Main/InventoryButton.png?fileID=2800000&amp;guid=62dfccefaa5458b45aec73dac04a76d9&amp;type=3#InventoryButton&apos;);">
-                    <ui:VisualElement name="Border" class="border" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/GamePlayButtonBorder.png?fileID=2800000&amp;guid=b8f07174fd6f28542a9560db033f8d3e&amp;type=3#GamePlayButtonBorder&apos;);" />
+                    <ui:VisualElement name="Border" class="border" />
                     <ui:VisualElement name="Indicator" class="inventory_indicator" />
                     <ui:VisualElement name="NoteDot" class="note_dot" style="left: auto; right: -2px;" />
                 </ui:Button>
@@ -30,15 +30,16 @@
                     <ui:VisualElement name="Indicator" class="bonus_indicator" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Main/BonusIndicator1.png?fileID=2800000&amp;guid=0fc4a560f6e67ad4e9bcbee356aabb2c&amp;type=3#BonusIndicator1&apos;);" />
                 </ui:Button>
                 <ui:Button display-tooltip-when-elided="true" name="ShopButton" class="button_standard" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Main/ShopButton.png?fileID=2800000&amp;guid=dbb4cad8875a96e4ea1e9f3647c8dba5&amp;type=3#ShopButton&apos;);">
-                    <ui:VisualElement name="Border" class="border" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/GamePlayButtonBorder.png?fileID=2800000&amp;guid=b8f07174fd6f28542a9560db033f8d3e&amp;type=3#GamePlayButtonBorder&apos;);" />
+                    <ui:VisualElement name="Border" class="border" />
                     <ui:VisualElement name="NoteDot" class="note_dot" />
                 </ui:Button>
                 <ui:Button display-tooltip-when-elided="true" name="TaskButton" class="button_standard" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Main/TaskButton.png?fileID=2800000&amp;guid=95d01244dc81dc249b49f4a4c989915b&amp;type=3#TaskButton&apos;);">
-                    <ui:VisualElement name="Border" class="border" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/GamePlayButtonBorder.png?fileID=2800000&amp;guid=b8f07174fd6f28542a9560db033f8d3e&amp;type=3#GamePlayButtonBorder&apos;);" />
+                    <ui:VisualElement name="Border" class="border" />
                     <ui:VisualElement name="NoteDot" class="note_dot">
                         <ui:Label tabindex="-1" display-tooltip-when-elided="true" name="Value" class="value" />
                     </ui:VisualElement>
                 </ui:Button>
+                <ui:Button display-tooltip-when-elided="true" name="DebugButton" class="button_standard debug_button" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Main/DebugButton.png?fileID=2800000&amp;guid=15ad31ceda532ec4892dda5273f74f24&amp;type=3#DebugButton&apos;); display: none;" />
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="DragOverlay" class="drag_overlay" style="background-image: resource(&apos;Sprites/Items/Tools/ToolsItem3&apos;);" />

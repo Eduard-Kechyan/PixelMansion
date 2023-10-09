@@ -16,6 +16,7 @@ namespace Merge
         // References
         private UIDocument valuesUIDoc;
         private UIDocument hubUIDoc;
+        private HubUI hubUI;
 
         // UI
         private VisualElement root;
@@ -38,6 +39,7 @@ namespace Merge
             // Cache
             valuesUIDoc = GameRefs.Instance.valuesUIDoc;
             hubUIDoc = GameRefs.Instance.hubUIDoc;
+            hubUI = GameRefs.Instance.hubUI;
             safeAreaHandler = GameRefs.Instance.hubUI.GetComponent<SafeAreaHandler>();
 
             // UI
@@ -67,7 +69,7 @@ namespace Merge
         }
 
         // Open the selector and set the appropriate sprites
-        public void Open(Sprite[] sprites, bool initialSelection)
+        public void Open(Sprite[] sprites, bool initialSelection, bool isAlt = false)
         {
             option1Button.style.backgroundImage = new StyleBackground(sprites[0]);
             option2Button.style.backgroundImage = new StyleBackground(sprites[1]);
@@ -75,19 +77,19 @@ namespace Merge
 
             if (initialSelection)
             {
-                ToggleSelector();
+                ToggleSelector(isAlt);
             }
         }
 
-        void ToggleSelector()
+        void ToggleSelector(bool isAlt)
         {
             isSelectorOpen = !isSelectorOpen;
 
-            UpdateSelector();
+            UpdateSelector(isAlt);
         }
 
         // Open or close the selectorL
-        void UpdateSelector()
+        void UpdateSelector(bool isAlt)
         {
             List<TimeValue> nullDelay = new();
             List<TimeValue> fullDelay = new();
@@ -121,6 +123,11 @@ namespace Merge
                 valuesBox.style.top = safeAreaHandler.topPadding;
                 valuesBox.style.transitionDelay = nullDelay;
             }
+
+            if (isAlt)
+            {
+                hubUI.SetUIButtons();
+            }
         }
 
         // Handle canceling
@@ -128,7 +135,7 @@ namespace Merge
         {
             selector.CancelSelecting(true);
 
-            ToggleSelector();
+            ToggleSelector(false);
         }
 
         // Handle confirming the selector
@@ -136,7 +143,7 @@ namespace Merge
         {
             selector.SelectionConfirmed();
 
-            ToggleSelector();
+            ToggleSelector(false);
         }
     }
 }

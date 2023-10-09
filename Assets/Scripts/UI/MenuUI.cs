@@ -36,7 +36,7 @@ namespace Merge
 
         void Start()
         {
-            // References
+            // Cache
             valuesUI = GameRefs.Instance.valuesUI;
 
             // UI

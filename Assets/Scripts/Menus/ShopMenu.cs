@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-
 namespace Merge
 {
     public class ShopMenu : MonoBehaviour

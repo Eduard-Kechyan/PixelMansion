@@ -48,7 +48,7 @@ namespace Merge
 
         public void PopValue(int amount, Types.CollGroup type, bool multiply = false)
         {
-            StartCoroutine(HandlePopValue(amount, type, Vector2.zero, false, multiply));
+            StartCoroutine(HandlePopValue(amount, type, Vector2.zero, true, multiply));
         }
 
         public void PopColl(int level, Types.CollGroup type, Vector2 position, bool multiply = true)

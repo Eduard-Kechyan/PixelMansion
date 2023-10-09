@@ -85,14 +85,31 @@
 .button_standard .border {
     position: absolute;
     overflow: visible;
-    right: -1px;
-    bottom: -1px;
-    width: 23px;
-    height: 23px;
+    width: 32px;
+    height: 32px;
+    left: -2px;
+    top: -2px;
+    background-image: url('project://database/Assets/Sprites/Buttons/Main/ButtonBorder.png?fileID=2800000&guid=c062e3307eec0304f9afcd865b49cf91&type=3#ButtonBorder');
 }
 
 .button_standard:active {
     scale: 0.8 0.8;
+}
+
+.button_standard_small {
+    width: 20px;
+    height: 20px;
+    margin-left: auto;
+    margin-right: 4px;
+    margin-bottom: 4px;
+}
+
+.button_standard_small .border {
+    width: 24px;
+    height: 24px;
+    background-image: url('project://database/Assets/Sprites/Buttons/Main/ButtonBorderSmall.png?fileID=2800000&guid=ecb8d5f89de5227409fc70789cfbc449&type=3#ButtonBorderSmall');
+    left: -2px;
+    top: -2px;
 }
 
 .button {
@@ -264,4 +281,12 @@
     background-image: url('project://database/Assets/Sprites/Splash/Logo.png?fileID=2800000&guid=a321d0e6c5ec8a741aaa95aac3f573f4&type=3#Logo');
     transition-duration: 0.5s;
     transition-timing-function: ease-in-out;
+}
+
+.debug_button {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    right: 22px;
+    bottom: 20px;
 }

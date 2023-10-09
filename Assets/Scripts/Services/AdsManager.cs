@@ -12,15 +12,19 @@ namespace Merge
         public bool enableAds = true;
         public bool logData = false;
 
+        // Make sure to reset the rewards in the ResetData function
+        [Header("Rewards")]
+        public int energyRewardAmount = 20;
+
         private string adUnitId = "unused";
 
         private RewardedAd rewardedAd;
 
-        private Action successCallback;
-        private Action failedCallback;
+        private Action<int> rewardCallback;
+        private Action rewardFailedCallback;
 
         private int failedCount = 0;
-        private int maxFailedCount = 3;
+        private const int maxFailedCount = 3;
 
         private bool failedAlt = false;
 
@@ -48,8 +52,6 @@ namespace Merge
             // Cache
             services = Services.Instance;
 
-            //MobileAds.RaiseAdEventsOnUnityMainThread = true;
-
             // Initialize Google ads
             if (enableAds)
             {
@@ -68,10 +70,10 @@ namespace Merge
         }
 
         // Watch an simple ad
-        public void WatchAd(Action callback = null, Action failCallback = null)
+        public void WatchAd(Action<int> callback = null, Action failCallback = null)
         {
-            successCallback = callback;
-            failedCallback = failCallback;
+            rewardCallback = callback;
+            rewardFailedCallback = failCallback;
 
             if (enableAds)
             {
@@ -79,7 +81,9 @@ namespace Merge
             }
             else
             {
-                successCallback?.Invoke();
+                rewardCallback?.Invoke(energyRewardAmount);
+
+                ResetData();
             }
         }
 
@@ -116,6 +120,8 @@ namespace Merge
 
                 rewardedAd = ad;
 
+                HandleReward(rewardedAd.GetRewardItem(), true);
+
                 HandleAdEvent(rewardedAd);
 
                 if (showAfterLoading)
@@ -128,16 +134,11 @@ namespace Merge
         // Show the ad to the player
         void ShowAd()
         {
-            const string rewardMsg = "Rewarded ad. Type: {0}, amount: {1}.";
-
             if (rewardedAd != null && rewardedAd.CanShowAd())
             {
                 rewardedAd.Show((Reward reward) =>
                 {
-                    if (logData)
-                    {
-                        Debug.Log(String.Format(rewardMsg, reward.Type, reward.Amount));
-                    }
+                    HandleReward(reward);
                 });
             }
             else
@@ -146,7 +147,9 @@ namespace Merge
                 {
                     failedAlt = false;
 
-                    failedCallback?.Invoke();
+                    rewardFailedCallback?.Invoke();
+
+                    ResetData();
                 }
                 else
                 {
@@ -216,6 +219,40 @@ namespace Merge
                 // Reload the ad so that we can show another as soon as possible.
                 LoadAd();
             };
+        }
+
+        void HandleReward(Reward reward, bool pre = false)
+        {
+            if (pre)
+            {
+                switch (reward.Type)
+                {
+                    case "Energy":
+                        energyRewardAmount = (int)reward.Amount;
+                        break;
+                    case "Reward":// TODO - This is a dummy and should be fixed
+                        energyRewardAmount = (int)reward.Amount;
+                        break;
+                    default:
+                        // TODO - Handle error
+                        Debug.LogWarning("[AdsManager.cs] Ad reward type not found! Type: " + reward.Type + ", Amount: " + reward.Amount);
+                        break;
+                }
+            }
+            else
+            {
+                rewardCallback?.Invoke((int)reward.Amount);
+
+                ResetData();
+            }
+        }
+
+        void ResetData()
+        {
+            rewardCallback = null;
+            rewardFailedCallback = null;
+
+            energyRewardAmount = 20;
         }
     }
 }

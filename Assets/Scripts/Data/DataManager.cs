@@ -177,11 +177,11 @@ namespace Merge
             }
             else
             {
-                gameData.SetExperience(reader.Read<int>("experience"), true);
-                gameData.SetLevel(reader.Read<int>("level"), true);
-                gameData.SetEnergy(reader.Read<int>("energy"), true);
-                gameData.SetGold(reader.Read<int>("gold"), true);
-                gameData.SetGems(reader.Read<int>("gems"), true);
+                gameData.SetExperience(reader.Read<int>("experience"));
+                gameData.SetLevel(reader.Read<int>("level"));
+                gameData.SetEnergy(reader.Read<int>("energy"));
+                gameData.SetGold(reader.Read<int>("gold"));
+                gameData.SetGems(reader.Read<int>("gems"));
 
                 // Get json string from the saved json file
                 reader.Read<string>("boardData", r => newBoardData = r);

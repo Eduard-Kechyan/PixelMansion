@@ -87,7 +87,7 @@ namespace Merge
 
         [Header("Other")]
         [ReadOnly]
-        public string userId;
+        public string userId = "DUMMY_ID";
         [ReadOnly]
         public bool greeted = false;
 
@@ -164,14 +164,11 @@ namespace Merge
             GAME_PIXEL_HEIGHT = Screen.height / (Screen.width / GAME_PIXEL_WIDTH);
         }
 
-        public void SetExperience(int amount, bool initial = false, bool checkCanLevelUp = false)
+        public void SetExperience(int amount,  bool checkCanLevelUp = false)
         {
             experience = amount;
 
-            if (!initial)
-            {
-                valuesUI.UpdateValues();
-            }
+            valuesUI.UpdateValues();
 
             if (checkCanLevelUp)
             {
@@ -179,7 +176,7 @@ namespace Merge
             }
         }
 
-        public void SetLevel(int amount, bool initial = false)
+        public void SetLevel(int amount)
         {
             level = amount;
 
@@ -187,40 +184,28 @@ namespace Merge
 
             CalcMaxExperience();
 
-            if (!initial)
-            {
-                valuesUI.UpdateValues();
-            }
+            valuesUI.UpdateValues();
         }
 
-        public void SetEnergy(int amount, bool initial = false)
+        public void SetEnergy(int amount)
         {
             energy = amount;
 
-            if (!initial)
-            {
-                valuesUI.UpdateValues();
-            }
+            valuesUI.UpdateValues();
         }
 
-        public void SetGold(int amount, bool initial = false)
+        public void SetGold(int amount)
         {
             gold = amount;
 
-            if (!initial)
-            {
-                valuesUI.UpdateValues();
-            }
+            valuesUI.UpdateValues();
         }
 
-        public void SetGems(int amount, bool initial = false)
+        public void SetGems(int amount)
         {
             gems = amount;
 
-            if (!initial)
-            {
-                valuesUI.UpdateValues();
-            }
+            valuesUI.UpdateValues();
         }
 
         //////// UPDATE ////////
@@ -299,7 +284,7 @@ namespace Merge
 
         public bool UpdateEnergy(int amount = 1, bool useMultiplier = false)
         {
-            if (amount < 0 && gems + energy < 0)
+            if (amount < 0 && energy + amount < 0)
             {
                 return false;
             }

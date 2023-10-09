@@ -74,6 +74,15 @@ namespace Merge
                 sceneLoader.Load(2);
             };
 
+            if (Application.isEditor || Debug.isDebugBuild)
+            {
+                Button debugButton = topBox.Q<Button>("DebugButton");
+
+                debugButton.style.display = DisplayStyle.Flex;
+
+                debugButton.clicked += () => DebugManager.Instance.OpenMenu();
+            }
+
             root.RegisterCallback<GeometryChangedEvent>(Init);
         }
 
@@ -99,7 +108,7 @@ namespace Merge
             {
                 return Camera.main.ScreenToWorldPoint(new(
                     singlePixelWidth * (root.worldBound.width - (root.worldBound.width - button.worldBound.center.x)),
-                    singlePixelWidth * (root.worldBound.height - button.worldBound.center.y + (selectorUIHandler.bottomOffset - (button.worldBound.width / 2)))
+                    singlePixelWidth * (root.worldBound.height - button.worldBound.center.y + selectorUIHandler.bottomOffset)
                 ));
             }
             else

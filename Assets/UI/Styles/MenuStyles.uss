@@ -198,10 +198,6 @@
     white-space: normal;
 }
 
-.settings_menu .buttons_container .settings_button.alt {
-    -unity-background-image-tint-color: rgb(236, 115, 127);
-}
-
 .settings_menu .sing_in_container {
     margin-bottom: 8px;
 }
@@ -496,7 +492,7 @@
     height: 164px;
 }
 
-.inventory_slots .border_top {
+.inventory_slots .border_top_alt {
     width: 100%;
     position: absolute;
     left: 0;
@@ -505,7 +501,7 @@
     height: 3px;
 }
 
-.inventory_slots .border_bottom {
+.inventory_slots .border_bottom_alt {
     width: 100%;
     position: absolute;
     left: 0;

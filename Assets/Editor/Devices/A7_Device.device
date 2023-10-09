@@ -1,0 +1,14 @@
+{
+    "friendlyName": "! Samsung Galaxy A7 (2017)",
+    "version": 1,
+    "screens": [
+        {
+            "width": 1080,
+            "height": 1920,
+            "dpi": 386
+        }
+    ],
+    "systemInfo": {
+        "operatingSystem": "Android"
+    }
+}

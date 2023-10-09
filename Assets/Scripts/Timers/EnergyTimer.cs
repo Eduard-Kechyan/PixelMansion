@@ -51,7 +51,7 @@ namespace Merge
         // Set the time
         timeOut = time;
 
-        GetTimerDate();
+       // GetTimerDate();
     }
 
     void Update()
@@ -126,7 +126,7 @@ namespace Merge
         timeManager.SetEnergyTimer(startSeconds);
     }
 
-    public void GetTimerDate(GeometryChangedEvent evt = null)
+    void GetTimerDate(GeometryChangedEvent evt = null)
     {
         if (!gottenData)
         {

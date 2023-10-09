@@ -244,3 +244,12 @@
     margin-left: auto;
     -unity-background-image-tint-color: rgb(85, 203, 152);
 }
+
+.loading_debug_button {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    background-image: url('project://database/Assets/Sprites/Buttons/Main/DebugButton.png?fileID=2800000&guid=15ad31ceda532ec4892dda5273f74f24&type=3#DebugButton');
+    width: 20px;
+    height: 20px;
+}

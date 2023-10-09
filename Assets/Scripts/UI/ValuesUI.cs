@@ -218,7 +218,7 @@ namespace Merge
 
             levelFill.style.transitionDuration = new StyleList<TimeValue>(durationsFull);
 
-            gameData.SetExperience(gameData.leftoverExperience, false, true);
+            gameData.SetExperience(gameData.leftoverExperience,  true);
 
             DataManager.Instance.writer.Write("experience", gameData.experience).Commit();
 

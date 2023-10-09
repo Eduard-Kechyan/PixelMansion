@@ -242,7 +242,7 @@ namespace Merge
 
             selectable = newSelectable;
 
-            selectorUIHandler.Open(selectable.GetSpriteOptions(), true);
+            selectorUIHandler.Open(selectable.GetSpriteOptions(), true, true);
 
             soundManager.PlaySound("", arrowSound);
 
