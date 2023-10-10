@@ -14,12 +14,10 @@ namespace Merge
         public Sprite infoCurrentSprite;
 
         // References
-        private MenuUI menuUI;
-        private InfoBox infoBox;
-
-        // Instances
         private GameData gameData;
         private I18n LOCALE;
+        private MenuUI menuUI;
+        private InfoBox infoBox;
 
         // UI
         private VisualElement root;
@@ -33,9 +31,9 @@ namespace Merge
         void Start()
         {
             // Cache
-            menuUI = GetComponent<MenuUI>();
             gameData = GameData.Instance;
             LOCALE = I18n.Instance;
+            menuUI = GetComponent<MenuUI>();
 
             if (SceneManager.GetActiveScene().name == "Gameplay")
             {
@@ -329,7 +327,7 @@ namespace Merge
         {
             infoParent.style.display = DisplayStyle.None;
 
-            if (item.parents.Length >= 0)
+            if (item.parents.Length > 0)
             {
                 Label value = new() { name = "Value", text = LOCALE.Get("info_menu_found_in") };
 
@@ -378,19 +376,20 @@ namespace Merge
                     {
                         for (int j = gameData.generatorsData[i].content.Length-1; j >= 0;)
                         {
-                            // TODO - Check this
-                            /*if (gameData.generatorsData[i].content[j].unlocked)
+                            if (gameData.generatorsData[i].content[j].unlocked)
                             {
                                 sprite = gameData.generatorsData[i].content[j].sprite;
 
                                 break;
-                            }*/
+                            }
 
-                            sprite = gameData.generatorsData[i].content[j].sprite;
+                            sprite = unlockedQuestionMarkSprite;
 
                             break;
                         }
                     }
+
+                    break;
                 }
             }
 

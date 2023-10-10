@@ -42,16 +42,8 @@ namespace Merge
             localeManager = Settings.Instance.GetComponent<LocaleManager>();
 
             // UI
-            if (SceneManager.GetActiveScene().name == "Gameplay")
-            {
-                root = GameRefs.Instance.gameplayUIDoc.rootVisualElement;
-                popupLabel = root.Q<Label>("PopupLabel");
-            }
-            else
-            {
-                root = GameRefs.Instance.hubGameUIDoc.rootVisualElement;
-                popupLabel = root.Q<Label>("PopupLabel");
-            }
+            root = GameRefs.Instance.menuUIDoc.rootVisualElement;
+            popupLabel = root.Q<Label>("PopupLabel");
         }
 
         public void AddPop(string newText, Vector2 position, bool single = true, string soundName = "", bool fromSelector = false)
@@ -80,7 +72,9 @@ namespace Merge
 
             if (SceneManager.GetActiveScene().name == "Gameplay")
             {
-                StartCoroutine(PopTextToBoard(newText, position, single, soundName));
+                // TODO - Check this
+                //StartCoroutine(PopTextToBoard(newText, position, single, soundName));
+                StartCoroutine(PopText(newText, position, single, soundName, fromSelector));
             }
             else
             {

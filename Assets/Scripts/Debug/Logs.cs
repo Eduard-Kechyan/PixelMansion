@@ -29,8 +29,8 @@ namespace Merge
         public bool logsOpen = false;
 
         private float lastToggleTime;
-        private const float TOGGLE_THRESHOLD_SECONDS = 1f;
-        private const float SHAKE_ACCELERATION = 4f;
+        private const float TOGGLE_THRESHOLD_SECONDS = 2f;
+        private const float SHAKE_ACCELERATION = 5f;
 
         private Coroutine clearTimeout;
 

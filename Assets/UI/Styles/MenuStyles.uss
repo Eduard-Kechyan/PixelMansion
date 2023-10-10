@@ -631,6 +631,185 @@
     flex-wrap: wrap;
 }
 
+.shop_menu .shop_item_box {
+    width: 45px;
+    height: 71px;
+    margin-bottom: 10px;
+}
+
+.shop_menu .shop_item_box_daily {
+    background-image: url('project://database/Assets/Sprites/Menus/ShopMenu/ShopBox.png?fileID=2800000&guid=9e7c70b32b740ac4eb78b2cfd3943bd2&type=3#ShopBox');
+}
+
+.shop_menu .shop_item_box_item {
+    background-image: url('project://database/Assets/Sprites/Menus/ShopMenu/ShopBox.png?fileID=2800000&guid=9e7c70b32b740ac4eb78b2cfd3943bd2&type=3#ShopBox');
+}
+
+.shop_menu .shop_item_box_gold {
+    background-image: url('project://database/Assets/Sprites/Menus/ShopMenu/ShopBoxGold.png?fileID=2800000&guid=c8bc6674a420b9247b84a1b9e7ebbcb0&type=3#ShopBoxGold');
+}
+
+.shop_menu .shop_item_box_gems {
+    background-image: url('project://database/Assets/Sprites/Menus/ShopMenu/ShopBoxGems.png?fileID=2800000&guid=985158be3a613a545a112be3f553ccfc&type=3#ShopBoxGems');
+}
+
+.shop_menu .shop_item_box .shop_box_top_label {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 2px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    color: rgb(41, 41, 41);
+    font-size: 8px;
+    -unity-text-align: middle-center;
+}
+
+.shop_menu .shop_item_box .shop_box_popular {
+    flex-grow: 1;
+    background-image: url('project://database/Assets/Sprites/Menus/ShopMenu/Pupular.png?fileID=2800000&guid=c2d14d57d3b1655499c3441f6745b3fb&type=3#Pupular');
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: -2px;
+    right: -2px;
+}
+
+.shop_menu .shop_item_box .shop_box_popular .popular_label {
+    font-size: 5px;
+    color: rgb(255, 255, 255);
+    -unity-text-align: middle-center;
+    rotate: 45deg;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    width: 30px;
+    height: 30px;
+    white-space: nowrap;
+    text-overflow: clip;
+    position: absolute;
+    top: -5px;
+    right: -5px;
+}
+
+.shop_menu .shop_item_box .shop_box_image {
+    width: 37px;
+    height: 37px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    translate: -50% -60%;
+    flex-grow: 1;
+}
+
+.shop_menu .shop_item_box .shop_box_bonus {
+    background-image: url('project://database/Assets/Sprites/Menus/ShopMenu/EnergyBonus.png?fileID=2800000&guid=e84b1151ce36e9b4892a7e645a454983&type=3#EnergyBonus');
+    width: 37px;
+    height: 12px;
+    position: absolute;
+    bottom: 19px;
+    left: 4px;
+}
+
+.shop_menu .shop_item_box .shop_box_bonus .bonus_label {
+    font-size: 6px;
+    -unity-text-align: middle-right;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 6px;
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 12px;
+    width: 100%;
+}
+
+.shop_menu .shop_item_box .shop_box_buy_button {
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    width: 37px;
+    height: 16px;
+    position: absolute;
+    left: 4px;
+    bottom: 4px;
+    font-size: 10px;
+    color: rgb(255, 255, 255);
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 2px;
+    padding-right: 2px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    flex-direction: row;
+    transition-duration: 0.1s;
+    background-image: url('project://database/Assets/Sprites/Buttons/Menu/MenuShopBuyButton.png?fileID=2800000&guid=7f72d8d22e16fd541997c69f9c4f9f34&type=3#MenuShopBuyButton');
+    -unity-background-image-tint-color: rgb(85, 203, 152);
+}
+
+.shop_menu .shop_item_box .shop_box_buy_button .shop_box_buy_button_value {
+    background-color: rgba(0, 0, 0, 0);
+    background-image: url('project://database/Assets/Sprites/Values/SmallGold.png?fileID=2800000&guid=9927c70a39873234ead5f8d41fb591bf&type=3#SmallGold');
+    width: 12px;
+    height: 12px;
+}
+
+.shop_menu .shop_item_box .shop_box_buy_button .shop_box_buy_button_label {
+    width: 21px;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 12px;
+}
+
+.shop_menu .shop_item_box .shop_box_buy_button .shop_box_buy_button_label_full {
+    width: 100%;
+}
+
+.shop_menu .shop_item_box .shop_box_info_button {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 11px;
+    height: 11px;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    background-image: url('project://database/Assets/Sprites/Buttons/Menu/ShopBoxInfoButton.png?fileID=2800000&guid=5b1619c1a050de54a94113d994ffd7cf&type=3#ShopBoxInfoButton');
+    background-color: rgba(188, 188, 188, 0);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    transition-duration: 0.1s;
+}
+
 .shop_menu .restore_button {
     justify-content: center;
     padding-left: 0;
@@ -647,6 +826,11 @@
     border-bottom-width: 0;
     background-color: rgba(188, 188, 188, 0);
     flex-direction: row;
+    transition-duration: 0.2s;
+}
+
+.shop_menu .restore_button:active {
+    scale: 0.8 0.8;
 }
 
 .shop_menu .restore_button .img {
@@ -1238,7 +1422,6 @@
     margin-top: 0;
     margin-right: 0;
     margin-bottom: 0;
-    background-color: rgba(0, 0, 0, 0.11);
     font-size: 6px;
 }
 

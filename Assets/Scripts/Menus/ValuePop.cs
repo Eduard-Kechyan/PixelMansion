@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -46,30 +47,26 @@ namespace Merge
             root = GetComponent<UIDocument>().rootVisualElement;
         }
 
-        public void PopValue(int amount, Types.CollGroup type, bool multiply = false)
+        public void PopValue(int amount, Types.CollGroup type, Vector2 position = default, bool multiply = false, Action callback = null)
         {
-            StartCoroutine(HandlePopValue(amount, type, Vector2.zero, true, multiply));
+            StartCoroutine(HandlePopValue(amount, type, position, multiply, callback));
         }
 
-        public void PopColl(int level, Types.CollGroup type, Vector2 position, bool multiply = true)
+        public void PopInventoryItem(Sprite sprite, Vector2 initialPosition, Vector2 position, Action callback = null)
         {
-            StartCoroutine(HandlePopValue(level, type, position, true, multiply));
-        }
-
-        public void PopInventoryItem(Sprite sprite, Vector2 initialPosition, Vector2 position)
-        {
-            StartCoroutine(HandlePopInventoryItem(sprite, initialPosition, position));
+            StartCoroutine(HandlePopInventoryItem(sprite, initialPosition, position, callback));
         }
 
         public void PopBonus(
             Item item,
+            Vector2 initialPosition,
             Vector2 bonusButtonPosition,
             bool check = true,
-            bool useCenter = false
+            bool isUIPosition = false
         )
         {
             StartCoroutine(
-                HandlePopBonus(item, bonusButtonPosition, check, useCenter)
+                HandlePopBonus(item, initialPosition, bonusButtonPosition, check, isUIPosition)
             );
         }
 
@@ -77,8 +74,8 @@ namespace Merge
             int amount,
             Types.CollGroup type,
             Vector2 position,
-            bool useOffset = false,
-            bool multiply = false
+            bool multiply = false,
+            Action callback = null
         )
         {
             Sprite valuePopSprite;
@@ -109,7 +106,7 @@ namespace Merge
             valuePopSFX = type.ToString();
 
             // Add value pop element to the root
-            VisualElement valuePop = InitializePopValueElement(valuePopSprite, position);
+            VisualElement valuePop = InitializePopValueElement(valuePopSprite, position, false);
 
             // Add the value pop to the root
             root.Add(valuePop);
@@ -124,7 +121,7 @@ namespace Merge
             yield return new WaitForSeconds(0.5f);
 
             // Move the value pop to it's intended position
-            valuePop.style.left = Mathf.Ceil(valuePopOffset + (useOffset ? offset : 0));
+            valuePop.style.left = Mathf.Ceil(valuePopOffset + offset);
             valuePop.style.top = safeAreaHandler.topPadding + offset;
 
             yield return new WaitForSeconds(0.5f);
@@ -135,6 +132,8 @@ namespace Merge
             valuePop.style.scale = new StyleScale(scale);
 
             yield return new WaitForSeconds(0.1f);
+
+            callback?.Invoke();
 
             // Play value pop sound
             soundManager.PlaySound(valuePopSFX);
@@ -166,12 +165,12 @@ namespace Merge
             }
         }
 
-        public IEnumerator HandlePopInventoryItem(Sprite sprite, Vector2 initialPosition, Vector2 position)
+        public IEnumerator HandlePopInventoryItem(Sprite sprite, Vector2 initialPosition, Vector2 position, Action callback = null)
         {
             Sprite valuePopSprite = sprite;
 
             // Add value pop element to the root
-            VisualElement valuePop = InitializePopValueElement(valuePopSprite, initialPosition);
+            VisualElement valuePop = InitializePopValueElement(valuePopSprite, initialPosition, true, true);
 
             // Add the value pop to the root
             root.Add(valuePop);
@@ -179,7 +178,7 @@ namespace Merge
             yield return new WaitForSeconds(0.1f);
 
             // Increase the size of the value pop
-            Scale scale = new Scale(new Vector2(1f, 1f));
+            Scale scale = new (new Vector2(1f, 1f));
 
             valuePop.style.scale = new StyleScale(scale);
 
@@ -204,6 +203,8 @@ namespace Merge
 
             yield return new WaitForSeconds(0.1f);
 
+            callback?.Invoke();
+
             // Hide the value pop
             valuePop.style.visibility = Visibility.Hidden;
             valuePop.style.opacity = 0;
@@ -216,29 +217,26 @@ namespace Merge
 
         public IEnumerator HandlePopBonus(
             Item item,
+            Vector2 initialPosition,
             Vector2 bonusButtonPosition,
             bool check = true,
-            bool useCenter = false
+            bool isUIPosition = false
         )
         {
-            Vector2 initialPosition = new(
-                Mathf.Ceil(valuesUI.levelButton.layout.x),
-                safeAreaHandler.topPadding
-            );
-
-            if (useCenter)
-            {
-                initialPosition = Vector2.zero;
-            }
-
             Sprite valuePopSprite = item.sprite;
             string valuePopSFX = "Experience";
 
             // Add value pop element to the root
-            VisualElement valuePop = InitializePopValueElement(
-                valuePopSprite,
-                initialPosition
+            VisualElement valuePop = InitializePopValueElement(valuePopSprite, initialPosition, true, isUIPosition);
+
+            // Get position on the UI from the scene
+            Vector2 newUIPos = RuntimePanelUtils.CameraTransformWorldToPanel(
+                root.panel,
+                bonusButtonPosition,
+                Camera.main
             );
+
+            float halfWidth = GameData.BOARD_ITEM_WIDTH / 2;
 
             // Add the value pop to the root
             root.Add(valuePop);
@@ -246,20 +244,20 @@ namespace Merge
             yield return new WaitForSeconds(0.1f);
 
             // Increase the size of the value pop
-            Scale scale = new Scale(new Vector2(1f, 1f));
+            Scale scale = new(new Vector2(1f, 1f));
 
             valuePop.style.scale = new StyleScale(scale);
 
             yield return new WaitForSeconds(0.5f);
 
             // Move the value pop to it's intended position
-            valuePop.style.left = bonusButtonPosition.x - (28 / 4);
-            valuePop.style.top = bonusButtonPosition.y - (28 / 4);
+            valuePop.style.left = newUIPos.x - halfWidth;
+            valuePop.style.top = newUIPos.y - halfWidth;
 
             yield return new WaitForSeconds(0.5f);
 
             // Decrease the size of the value pop
-            scale = new Scale(new Vector2(0f, 0f));
+            scale = new(new Vector2(0f, 0f));
 
             valuePop.style.scale = new StyleScale(scale);
 
@@ -282,7 +280,9 @@ namespace Merge
 
         VisualElement InitializePopValueElement(
             Sprite sprite,
-            Vector2 position
+            Vector2 position,
+            bool isItem = true,
+            bool isUIPosition = false
         )
         {
             VisualElement newValuePop = new() { name = "ValuePop" };
@@ -293,7 +293,7 @@ namespace Merge
             List<TimeValue> durations = new();
             durations.Add(new TimeValue(0.5f, TimeUnit.Second));
 
-            popWidth = sprite.rect.width;
+            popWidth = isItem ? GameData.BOARD_ITEM_WIDTH : sprite.rect.width;
 
             newValuePop.style.width = popWidth;
             newValuePop.style.height = popWidth;
@@ -319,15 +319,23 @@ namespace Merge
             }
             else
             {
-                // Get position on the UI from the scene
-                Vector2 newUIPos = RuntimePanelUtils.CameraTransformWorldToPanel(
-                    root.panel,
-                    position,
-                    Camera.main
-                );
+                if (isUIPosition)
+                {
+                    newValuePop.style.left = position.x - halfWidth;
+                    newValuePop.style.top = position.y - halfWidth;
+                }
+                else
+                {
+                    // Get position on the UI from the scene
+                    Vector2 newUIPos = RuntimePanelUtils.CameraTransformWorldToPanel(
+                        root.panel,
+                        position,
+                        Camera.main
+                    );
 
-                newValuePop.style.left = newUIPos.x - halfWidth;
-                newValuePop.style.top = newUIPos.y - halfWidth;
+                    newValuePop.style.left = newUIPos.x - halfWidth;
+                    newValuePop.style.top = newUIPos.y - halfWidth;
+                }
             }
 
             return newValuePop;

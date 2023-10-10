@@ -197,7 +197,14 @@
     "Item_Tools_4": "Hammer",
     "Item_Tools_5": "Jaw Wrench",
     "Item_Tools_6": "Saw",
-    "Item_Tools_7": "Axe"
+    "Item_Tools_7": "Axe",
+    "Item_Tools_8": "Dummy A",
+    "Item_Tools_9": "Dummy B",
+    "Item_Tools_10": "Dummy C",
+    "Item_Tools_11": "Dummy D",
+    "Item_Tools_12": "Dummy E",
+    "Item_Tools_13": "Dummy F",
+    "Item_Tools_14": "Dummy G"
 ,
     "________ PAINTING ________": "________________",
     "speech_Painting_-1": "Is it a cat or a dog? I can't see through the dust!",

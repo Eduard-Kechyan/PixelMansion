@@ -32,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7628476360138686812
 MonoBehaviour:
@@ -97,11 +97,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drawGizmos: 1
-  gizmoRadius: 26
+  gizmoRadiusHub: 28
+  gizmoRadiusHubSmall: 28
+  gizmoRadiusGameplay: 0.65
   gizmoColor: {r: 0, g: 0, b: 1, a: 1}
   hubButtonsSet: 0
+  hubShopButtonPos: {x: 0, y: 0}
   hubPlayButtonPos: {x: 0, y: 0}
   hubTaskButtonPos: {x: 0, y: 0}
   gameplayButtonsSet: 0
+  gameplayShopButtonPos: {x: 0, y: 0}
+  gameplayTaskButtonPos: {x: 0, y: 0}
   gameplayBonusButtonPos: {x: 0, y: 0}
   gameplayBonusButtonScreenPos: {x: 0, y: 0}

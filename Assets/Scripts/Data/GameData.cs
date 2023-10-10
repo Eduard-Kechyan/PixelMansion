@@ -20,6 +20,8 @@ namespace Merge
         [HideInInspector]
         public const int ITEM_COUNT = WIDTH * HEIGHT;
         [HideInInspector]
+        public const int BOARD_ITEM_WIDTH = 24;
+        [HideInInspector]
         public const int MAX_ENERGY = 100;
         [HideInInspector]
         public const float GAME_PIXEL_WIDTH = 180f;
@@ -45,7 +47,7 @@ namespace Merge
 
         [Header("Experience")]
         public int maxExperience = 10;
-        [HideInInspector]
+        [ReadOnly]
         public int leftoverExperience = 0;
 
         // Inventory
@@ -405,8 +407,6 @@ namespace Merge
             Types.Bonus newBonus = bonusData[latestIndex];
 
             bonusData.RemoveAt(latestIndex);
-
-            dataManager.SaveBonus();
 
             gameplayUI.CheckBonusButton();
 

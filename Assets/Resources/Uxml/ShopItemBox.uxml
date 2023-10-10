@@ -1,0 +1,17 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="ShopItemBox" class="shop_item_box">
+        <ui:Label tabindex="-1" text="1/1" display-tooltip-when-elided="true" name="TopLabel" class="shop_box_top_label" />
+        <ui:VisualElement name="Popular" class="shop_box_popular">
+            <ui:Label tabindex="-1" text="Popular" display-tooltip-when-elided="true" name="PopularLabel" class="popular_label" />
+        </ui:VisualElement>
+        <ui:VisualElement name="Image" class="shop_box_image" />
+        <ui:VisualElement name="Bonus" class="shop_box_bonus">
+            <ui:Label tabindex="-1" text="+ 100" display-tooltip-when-elided="true" name="BonusLabel" class="bonus_label" />
+        </ui:VisualElement>
+        <ui:Button display-tooltip-when-elided="true" name="BuyButton" class="shop_box_buy_button button button_active">
+            <ui:VisualElement name="Value" class="shop_box_buy_button_value" />
+            <ui:Label tabindex="-1" text="00" display-tooltip-when-elided="true" name="Label" class="shop_box_buy_button_label" />
+        </ui:Button>
+        <ui:Button display-tooltip-when-elided="true" name="InfoButton" class="shop_box_info_button button button_active" />
+    </ui:VisualElement>
+</ui:UXML>

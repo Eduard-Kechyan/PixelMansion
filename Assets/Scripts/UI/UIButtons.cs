@@ -13,16 +13,23 @@ namespace Merge
         public bool drawGizmos = false;
         [Condition("drawGizmos", true)]
         public float gizmoRadiusHub = 28f;
+        [Condition("drawGizmos", true)]
+        public float gizmoRadiusHubSmall = 20f;
+        [Condition("drawGizmos", true)]
         public float gizmoRadiusGameplay = 0.65f;
         [Condition("drawGizmos", true)]
         public Color gizmoColor = Color.blue;
+        
         private Vector2 gizmosSizeHub;
+        private Vector2 gizmosSizeHubSmall;
         private Vector2 gizmosSizeGameplay;
 #endif
 
         [Header("Hub Scene")]
         [ReadOnly]
         public bool hubButtonsSet = false;
+        [ReadOnly]
+        public Vector2 hubShopButtonPos;
         [ReadOnly]
         public Vector2 hubPlayButtonPos;
         [ReadOnly]
@@ -32,9 +39,11 @@ namespace Merge
         [ReadOnly]
         public bool gameplayButtonsSet = false;
         [ReadOnly]
-        public Vector2 gameplayBonusButtonPos;
+        public Vector2 gameplayShopButtonPos;
         [ReadOnly]
-        public Vector2 gameplayBonusButtonScreenPos;
+        public Vector2 gameplayTaskButtonPos;
+        [ReadOnly]
+        public Vector2 gameplayBonusButtonPos;
 
 #if UNITY_EDITOR
         void OnValidate()
@@ -42,6 +51,7 @@ namespace Merge
             if (drawGizmos)
             {
                 gizmosSizeHub = new Vector2(gizmoRadiusHub, gizmoRadiusHub);
+                gizmosSizeHubSmall= new Vector2(gizmoRadiusHubSmall, gizmoRadiusHubSmall);
                 gizmosSizeGameplay = new Vector2(gizmoRadiusGameplay, gizmoRadiusGameplay);
             }
         }
@@ -54,9 +64,12 @@ namespace Merge
 
                 if (SceneManager.GetActiveScene().name == "Hub")
                 {
+                    Gizmos.DrawWireCube(hubShopButtonPos, gizmosSizeHubSmall);
                     Gizmos.DrawWireCube(hubPlayButtonPos, gizmosSizeHub);
                     Gizmos.DrawWireCube(hubTaskButtonPos, gizmosSizeHub);
                 }else{
+                    Gizmos.DrawWireCube(gameplayShopButtonPos, gizmosSizeGameplay);
+                    Gizmos.DrawWireCube(Camera.main.ScreenToWorldPoint(gameplayTaskButtonPos), gizmosSizeGameplay);
                     Gizmos.DrawWireCube(gameplayBonusButtonPos, gizmosSizeGameplay);
                 }
             }

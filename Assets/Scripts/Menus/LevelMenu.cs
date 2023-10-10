@@ -11,8 +11,11 @@ namespace Merge
     {
         // Variables
         public bool gameplayScene = false;
+        public float levelButtonOffset = 9f;
         public HubUI hubUI;
         public LevelData levelData;
+        [ReadOnly]
+        public bool isRewarding = false;
 
         private Types.ShopItemsContent[] rewardContent = new Types.ShopItemsContent[0];
 
@@ -29,7 +32,6 @@ namespace Merge
         private InfoMenu infoMenu;
         private ValuePop valuePop;
         private ValuesUI valuesUI;
-        private GameplayUI gameplayUI;
         private UIButtons uiButtons;
 
         // UI
@@ -62,7 +64,6 @@ namespace Merge
             infoMenu = menuUI.GetComponent<InfoMenu>();
             valuePop = GetComponent<ValuePop>();
             valuesUI = GameRefs.Instance.valuesUI;
-            gameplayUI = GameRefs.Instance.gameplayUI;
             uiButtons = gameData.GetComponent<UIButtons>();
 
             // UI
@@ -115,30 +116,33 @@ namespace Merge
 
         public void Open()
         {
-            // Set the title
-            string title = LOCALE.Get("level_menu_title");
-
-            levelLabel.text = LOCALE.Get("level_menu_label");
-
-            levelRewardsLabel.text = LOCALE.Get("level_menu_rewards_label");
-
-            levelUpLabel.text = LOCALE.Get("level_menu_level_up_button");
-
-            UpdateLevelMenu();
-
-            if (gameData.levelTen)
+            if (!isRewarding)
             {
-                rewardContent = levelData.levelTenRewardContent;
-            }
-            else
-            {
-                rewardContent = levelData.levelRewardContent;
-            }
+                // Set the title
+                string title = LOCALE.Get("level_menu_title");
 
-            HandleRewards();
+                levelLabel.text = LOCALE.Get("level_menu_label");
 
-            // Open menu
-            menuUI.OpenMenu(levelMenu, title);
+                levelRewardsLabel.text = LOCALE.Get("level_menu_rewards_label");
+
+                levelUpLabel.text = LOCALE.Get("level_menu_level_up_button");
+
+                UpdateLevelMenu();
+
+                if (gameData.levelTen)
+                {
+                    rewardContent = levelData.levelTenRewardContent;
+                }
+                else
+                {
+                    rewardContent = levelData.levelRewardContent;
+                }
+
+                HandleRewards();
+
+                // Open menu
+                menuUI.OpenMenu(levelMenu, title);
+            }
         }
 
         public void UpdateLevelMenu()
@@ -191,12 +195,14 @@ namespace Merge
                     check = true;
                 }
 
-                soundManager.PlaySound("LevelUp");
-
                 StartCoroutine(PopOutBonus(i * 0.4f, i, check));
             }
 
-            UpdateLevelMenu();
+            soundManager.PlaySound("LevelUp");
+
+            //UpdateLevelMenu();
+
+            menuUI.CloseMenu(levelMenu.name);
 
             HandleRewards();
         }
@@ -209,6 +215,7 @@ namespace Merge
 
             Item newItem = itemHandler.CreateItemTemp(rewardContent[order]);
 
+            Vector2 initialPosition = new(valuesUI.levelButton.worldBound.x + levelButtonOffset, valuesUI.levelButton.worldBound.y + levelButtonOffset);
             Vector2 buttonPosition;
 
             if (gameplayScene)
@@ -222,7 +229,7 @@ namespace Merge
                 check = false;
             }
 
-            valuePop.PopBonus(newItem, buttonPosition, check, false);
+            valuePop.PopBonus(newItem, initialPosition, buttonPosition, check, true);
         }
     }
 }

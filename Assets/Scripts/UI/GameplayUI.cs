@@ -23,6 +23,7 @@ namespace Merge
         // References
         private BonusManager bonusManager;
         private GameData gameData;
+        private DataManager dataManager;
         private InventoryMenu inventoryMenu;
         private ShopMenu shopMenu;
         private TaskMenu taskMenu;
@@ -51,6 +52,7 @@ namespace Merge
             // Cache
             bonusManager = GetComponent<BonusManager>();
             gameData = GameData.Instance;
+            dataManager = DataManager.Instance;
             inventoryMenu = GameRefs.Instance.inventoryMenu;
             shopMenu = GameRefs.Instance.shopMenu;
             taskMenu = GameRefs.Instance.taskMenu;
@@ -104,7 +106,7 @@ namespace Merge
 
             root.RegisterCallback<GeometryChangedEvent>(evt => SetUIButtons(evt, true));
 
-            CheckBonusButton();
+            StartCoroutine(CheckBonusData());
         }
 
         //// Positions ////
@@ -112,10 +114,10 @@ namespace Merge
         // Calc inventory button position in the world space
         Vector2 CalcButtonPosition(Button button)
         {
-            return new(
+            return Camera.main.ScreenToWorldPoint(new(
                 singlePixelWidth * (root.worldBound.width - (root.worldBound.width - button.worldBound.center.x)),
                 singlePixelWidth * (root.worldBound.height - button.worldBound.center.y)
-            );
+            ));
         }
 
         void SetUIButtons(GeometryChangedEvent evt, bool initial = false)
@@ -133,8 +135,9 @@ namespace Merge
             {
                 uiButtons.gameplayButtonsSet = true;
 
-                uiButtons.gameplayBonusButtonScreenPos = CalcButtonPosition(bonusButton);
-                uiButtons.gameplayBonusButtonPos = Camera.main.ScreenToWorldPoint(uiButtons.gameplayBonusButtonScreenPos);
+                uiButtons.gameplayShopButtonPos = CalcButtonPosition(shopButton);
+                uiButtons.gameplayTaskButtonPos = CalcButtonPosition(taskButton);
+                uiButtons.gameplayBonusButtonPos = CalcButtonPosition(bonusButton);
             }
         }
 
@@ -183,6 +186,17 @@ namespace Merge
             }
         }
 
+        //// Bonus ////
+        IEnumerator CheckBonusData()
+        {
+            while (!dataManager.loaded)
+            {
+                yield return null;
+            }
+
+            CheckBonusButton();
+        }
+
         // Check if there are any bonus items, 
         // if so, show the bonus button
         public void CheckBonusButton()
@@ -192,23 +206,12 @@ namespace Merge
             {
                 int lastIndex = gameData.bonusData.Count - 1;
 
-                // Show bonus button if it's hidden
-                if (bonusButton.resolvedStyle.opacity == 0f)
-                {
-                    bonusButton.style.visibility = Visibility.Visible;
-                    bonusButton.style.opacity = 1f;
-                }
+                bonusButton.style.visibility = Visibility.Visible;
+                bonusButton.style.opacity = 1f;
 
-                // Change the bonus button image if it's different
-                if (
-                    bonusButtonImage.resolvedStyle.backgroundImage
-                    != new StyleBackground(gameData.bonusData[lastIndex].sprite)
-                )
-                {
-                    bonusButtonImage.style.backgroundImage = new StyleBackground(
-                        gameData.bonusData[lastIndex].sprite
-                    );
-                }
+                bonusButtonImage.style.backgroundImage = new StyleBackground(
+                    gameData.bonusData[lastIndex].sprite
+                );
 
                 if (!blippingBonusIndicator)
                 {
@@ -219,12 +222,8 @@ namespace Merge
             }
             else
             {
-                // Hide bonus button if it's visible
-                if (bonusButton.resolvedStyle.opacity == 1f)
-                {
-                    bonusButton.style.visibility = Visibility.Hidden;
-                    bonusButton.style.opacity = 0f;
-                }
+                bonusButton.style.visibility = Visibility.Hidden;
+                bonusButton.style.opacity = 0f;
 
                 if (blippingBonusIndicator)
                 {

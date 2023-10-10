@@ -200,7 +200,7 @@ namespace Merge
             }
         }
 
-        //////// DRAGGING ////////
+        //// DRAGGING ////
 
         void DetectDraggableItem(Vector3 initPos)
         {
@@ -305,13 +305,13 @@ namespace Merge
 
         void CheckItemDropAction()
         {
-            //////// Check for the inventory button ////////
+            //// Check for the inventory button ////
             if (inventoryMenu.CheckInventoryButton(currentItem, initialTile, scaleSpeed))
             {
                 return;
             }
 
-            //////// Check for the tile ////////
+            //// Check for the tile ////
 
             RaycastHit2D tileHit = Physics2D.Raycast(
                 worldPos,
@@ -335,7 +335,7 @@ namespace Merge
                 }
             }
 
-            //////// Check for the item ////////
+            //// Check for the item ////
 
             RaycastHit2D itemHit = Physics2D.Raycast(
                 worldPos,
@@ -423,7 +423,7 @@ namespace Merge
                 }
             }
 
-            //////// If there is nothing to do, move the item back to it's initial position ////////
+            //// If there is nothing to do, move the item back to it's initial position ////
 
             MoveBack();
         }
@@ -608,7 +608,7 @@ namespace Merge
             yield return null;
         }
 
-        //////// INFO ACTION ////////
+        //// INFO ACTION ////
 
         public void OpenItem(Item item, int amount, Types.State state)
         {

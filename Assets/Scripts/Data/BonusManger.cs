@@ -12,6 +12,7 @@ namespace Merge
         // References
         private GameplayUI gameplayUI;
         private PopupManager popupManager;
+        private DataManager dataManager;
         private UIButtons uiButtons;
 
         // Instances
@@ -23,7 +24,8 @@ namespace Merge
             // References
             gameplayUI = GetComponent<GameplayUI>();
             popupManager = GameRefs.Instance.popupManager;
-            uiButtons=GameData.Instance.GetComponent<UIButtons>();
+            dataManager = DataManager.Instance;
+            uiButtons = GameData.Instance.GetComponent<UIButtons>();
 
             // Cache instances
             gameData = GameData.Instance;
@@ -41,7 +43,7 @@ namespace Merge
 
                 emptyBoard.Sort((p1, p2) => p1.distance.CompareTo(p2.distance));
 
-                Types.ItemsData boardItem = new Types.ItemsData
+                Types.ItemsData itemData = new()
                 {
                     sprite = latestBonus.sprite,
                     type = latestBonus.type,
@@ -49,14 +51,17 @@ namespace Merge
                     genGroup = latestBonus.genGroup,
                     chestGroup = latestBonus.chestGroup,
                     collGroup = Types.CollGroup.Experience,
+                    gemPopped = false
                 };
 
                 boardManager.CreateItemOnEmptyTile(
-                    boardItem,
+                    itemData,
                     emptyBoard[0],
-                    uiButtons.gameplayBonusButtonScreenPos,
+                    uiButtons.gameplayBonusButtonPos,
                     false
                 );
+
+                dataManager.SaveBonus();
             }
             else
             {

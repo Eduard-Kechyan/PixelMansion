@@ -401,7 +401,7 @@ namespace Merge
             {
                 if (rewards[k].type == Types.Type.Coll)
                 {
-                    valuePop.PopColl(rewards[k].amount, rewards[k].collGroup, uiButtons.hubTaskButtonPos, false);
+                    valuePop.PopValue(rewards[k].amount, rewards[k].collGroup, uiButtons.hubTaskButtonPos, false);
                 }
                 else
                 {
@@ -424,18 +424,21 @@ namespace Merge
                 chestGroup = reward.chestGroup
             };
 
+            Vector2 initialPosition;
             Vector2 buttonPosition;
 
             if (noteDotHandler.isHub)
             {
+                initialPosition = uiButtons.hubTaskButtonPos;
                 buttonPosition = uiButtons.hubPlayButtonPos;
             }
             else
             {
+                initialPosition = uiButtons.gameplayTaskButtonPos;
                 buttonPosition = uiButtons.gameplayBonusButtonPos;
             }
 
-            valuePop.PopBonus(newItem, buttonPosition, true, true);
+            valuePop.PopBonus(newItem, initialPosition, buttonPosition, true);
         }
 
         //// Checks ////

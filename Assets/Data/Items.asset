@@ -21,6 +21,7 @@ MonoBehaviour:
     hasLevel: 1
     customName: 1
     hasTimer: 0
+    generatesAt: 0
     parents: 00000000
     creates: []
     content:
@@ -31,6 +32,7 @@ MonoBehaviour:
       group: 0
       type: 0
       chestGroup: 0
+      generatesAt: 0
       genGroup: 0
       collGroup: 0
       parents: 
@@ -50,6 +52,7 @@ MonoBehaviour:
       group: 0
       type: 0
       chestGroup: 0
+      generatesAt: 0
       genGroup: 0
       collGroup: 0
       parents: 
@@ -69,6 +72,7 @@ MonoBehaviour:
       group: 0
       type: 0
       chestGroup: 0
+      generatesAt: 0
       genGroup: 0
       collGroup: 0
       parents: 
@@ -88,6 +92,7 @@ MonoBehaviour:
       group: 0
       type: 0
       chestGroup: 0
+      generatesAt: 0
       genGroup: 0
       collGroup: 0
       parents: 
@@ -107,6 +112,7 @@ MonoBehaviour:
       group: 0
       type: 0
       chestGroup: 0
+      generatesAt: 0
       genGroup: 0
       collGroup: 0
       parents: 
@@ -126,6 +132,7 @@ MonoBehaviour:
       group: 0
       type: 0
       chestGroup: 0
+      generatesAt: 0
       genGroup: 0
       collGroup: 0
       parents: 
@@ -145,6 +152,147 @@ MonoBehaviour:
       group: 0
       type: 0
       chestGroup: 0
+      generatesAt: 0
+      genGroup: 0
+      collGroup: 0
+      parents: 
+      creates: []
+      unlocked: 0
+      isMaxLevel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPopped: 0
+    - sprite: {fileID: 21300000, guid: 4080b5c672afd3949882037a563befa0, type: 3}
+      customName: 0
+      itemName: 
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      generatesAt: 0
+      genGroup: 0
+      collGroup: 0
+      parents: 
+      creates: []
+      unlocked: 0
+      isMaxLevel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPopped: 0
+    - sprite: {fileID: 21300000, guid: fa3afbbc5d35b13468d99da9c56bc911, type: 3}
+      customName: 0
+      itemName: 
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      generatesAt: 0
+      genGroup: 0
+      collGroup: 0
+      parents: 
+      creates: []
+      unlocked: 0
+      isMaxLevel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPopped: 0
+    - sprite: {fileID: 21300000, guid: dba4c787cde276943a8a953fbcf406d9, type: 3}
+      customName: 0
+      itemName: 
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      generatesAt: 0
+      genGroup: 0
+      collGroup: 0
+      parents: 
+      creates: []
+      unlocked: 0
+      isMaxLevel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPopped: 0
+    - sprite: {fileID: 21300000, guid: cc8e303e2c7e09e4bb91e0585fc1cfe4, type: 3}
+      customName: 0
+      itemName: 
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      generatesAt: 0
+      genGroup: 0
+      collGroup: 0
+      parents: 
+      creates: []
+      unlocked: 0
+      isMaxLevel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPopped: 0
+    - sprite: {fileID: 21300000, guid: 5d3e2149c7503954db729868b7dc6be5, type: 3}
+      customName: 0
+      itemName: 
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      generatesAt: 0
+      genGroup: 0
+      collGroup: 0
+      parents: 
+      creates: []
+      unlocked: 0
+      isMaxLevel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPopped: 0
+    - sprite: {fileID: 21300000, guid: 20c39288ec6926344833951144eeec29, type: 3}
+      customName: 0
+      itemName: 
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      generatesAt: 0
+      genGroup: 0
+      collGroup: 0
+      parents: 
+      creates: []
+      unlocked: 0
+      isMaxLevel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPopped: 0
+    - sprite: {fileID: 21300000, guid: e75b47d1068cfe541ae1a01d64e13592, type: 3}
+      customName: 0
+      itemName: 
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      generatesAt: 0
       genGroup: 0
       collGroup: 0
       parents: 

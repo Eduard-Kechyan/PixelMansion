@@ -340,7 +340,7 @@ namespace Merge
             }
             else
             {
-                valuePop.PopColl(1, Types.CollGroup.Experience, tile.transform.position);
+                valuePop.PopValue(1, Types.CollGroup.Experience, tile.transform.position);
             }
         }
 

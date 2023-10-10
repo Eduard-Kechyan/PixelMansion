@@ -51,7 +51,7 @@ namespace Merge
             valuePop = GameRefs.Instance.valuePop;
             gameplayUI = GameRefs.Instance.gameplayUI;
             soundManager = SoundManager.Instance;
-            uiButtons=gameData.GetComponent<UIButtons>();
+            uiButtons = gameData.GetComponent<UIButtons>();
 
             if (boardManager != null)
             {
@@ -220,34 +220,46 @@ namespace Merge
         {
             List<Types.BoardEmpty> emptyBoard = boardManager.GetEmptyBoardItems(Vector2Int.zero, true);
 
+            int order = int.Parse(nameOrder);
+
+            VisualElement slot = slotsContainer.Q<VisualElement>("InventorySlot" + nameOrder);
+
             if (emptyBoard.Count > 0)
             {
-                //Button slotItem = slotsContainer.Q<Button>("InventorySlotItem" + nameOrder);
+                slot.Clear();
 
-                int order = int.Parse(nameOrder);
-
-                VisualElement slot = slotsContainer.Q<VisualElement>("InventorySlot" + nameOrder);
+                float halfWidth = slot.worldBound.width / 2;
+                Vector2 initialPosition = new (slot.worldBound.position.x + halfWidth, slot.worldBound.position.y + halfWidth);
 
                 // Pop out the item
                 valuePop.PopInventoryItem(
                     gameData.inventoryData[order].sprite,
-                    slot.worldBound.position,
-                    uiButtons.gameplayBonusButtonPos
+                    initialPosition,
+                    uiButtons.gameplayBonusButtonPos,
+                    () =>
+                    {
+                        Types.ItemsData itemData = GetItemData(gameData.inventoryData[order]);
+
+                        boardManager.CreateItemOnEmptyTile(itemData, emptyBoard[0], uiButtons.gameplayBonusButtonPos, false);
+
+                        gameData.inventoryData.RemoveAt(order);
+
+                        dataManager.SaveInventory();
+
+                        ClearData();
+
+                        SetUI();
+                    }
                 );
-
-                Types.ItemsData itemData = GetItemData(gameData.inventoryData[order]);
-
-                gameData.inventoryData.RemoveAt(order);
-
-                boardManager.CreateItemOnEmptyTile(itemData, emptyBoard[0], uiButtons.gameplayBonusButtonScreenPos, false);
-
-                dataManager.SaveInventory();
-
-                ClearData();
-
-                SetUI();
-
-                StartCoroutine(ClearSlot(slot));
+            }
+            else
+            {
+                popupManager.AddPop(
+                    LOCALE.Get("pop_board_full"),
+                    slot.worldBound.position,
+                    true,
+                    "Buzz"
+                );
             }
         }
 
@@ -294,14 +306,6 @@ namespace Merge
             return newItemData;
         }
 
-        IEnumerator ClearSlot(VisualElement slot)
-        {
-            yield return new WaitForSeconds(0.1f);
-
-            // Remove the item from the data
-            slot.Clear();
-        }
-
         void ClearData()
         {
             if (slotsContainer.childCount > 0)
@@ -331,7 +335,7 @@ namespace Merge
                     if (gameData.inventoryData.Count < gameData.inventorySpace)
                     {
                         // Add the item to the inventory
-                        Types.Inventory newInventoryItem = new Types.Inventory
+                        Types.Inventory newInventoryItem = new ()
                         {
                             sprite = item.sprite,
                             type = item.type,

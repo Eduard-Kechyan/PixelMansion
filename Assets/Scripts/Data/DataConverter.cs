@@ -562,7 +562,7 @@ namespace Merge
 
                 Types.ShopItemsContent newShopContentDataData = new()
                 {
-                    left = shopContentJson[i].left,
+                    total = shopContentJson[i].total,
                     price = shopContentJson[i].price,
                     type = newType,
                     group = Glob.ParseEnum<ItemTypes.Group>(shopContentJson[i].group),
@@ -577,17 +577,15 @@ namespace Merge
             return shopContentData;
         }
 
-        public string ConvertShopItemContentToJson(Types.ShopItemsContent[] shopContentData, bool ignoreLast = false)
+        public string ConvertShopItemContentToJson(Types.ShopItemsContent[] shopContentData)
         {
-            int length = ignoreLast ? shopContentData.Length - 1 : shopContentData.Length;
+            Types.ShopItemsContentJson[] shopContentJson = new Types.ShopItemsContentJson[shopContentData.Length];
 
-            Types.ShopItemsContentJson[] shopContentJson = new Types.ShopItemsContentJson[length];
-
-            for (int i = 0; i < length; i++)
+            for (int i = 0; i <shopContentJson.Length; i++)
             {
                 Types.ShopItemsContentJson newShopContentJson = new()
                 {
-                    left = shopContentData[i].left,
+                    total = shopContentData[i].total,
                     price = shopContentData[i].price,
                     type = shopContentData[i].type.ToString(),
                     group = shopContentData[i].group.ToString(),

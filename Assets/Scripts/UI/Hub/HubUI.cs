@@ -96,7 +96,7 @@ namespace Merge
             // Calculate the button position on the screen and the world space
             singlePixelWidth = Camera.main.pixelWidth / GameData.GAME_PIXEL_WIDTH;
 
-            SetUIButtons();
+            topBox.RegisterCallback<GeometryChangedEvent>(SetUIButtons);
         }
 
         //// Positions ////
@@ -120,10 +120,13 @@ namespace Merge
             }
         }
 
-        public void SetUIButtons()
+        public void SetUIButtons(GeometryChangedEvent evt = null)
         {
+            root.UnregisterCallback<GeometryChangedEvent>(SetUIButtons);
+
             uiButtons.hubButtonsSet = true;
 
+            uiButtons.hubShopButtonPos = CalcButtonPosition(shopButton);
             uiButtons.hubTaskButtonPos = CalcButtonPosition(taskButton, true);
             uiButtons.hubPlayButtonPos = CalcButtonPosition(playButton, true);
         }

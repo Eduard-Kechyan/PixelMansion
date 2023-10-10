@@ -11,10 +11,6 @@ namespace Merge
         public SceneLoader sceneLoader;
         public TaskManager taskManager;
 
-        private VisualTreeAsset taskGroupPrefab;
-        private VisualTreeAsset taskPrefab;
-        private VisualTreeAsset taskNeedPrefab;
-
         [Serializable]
         private class CompletedNeed
         {
@@ -33,6 +29,10 @@ namespace Merge
         private VisualElement root;
         private VisualElement taskMenu;
         private ScrollView taskScrollView;
+
+        private VisualTreeAsset taskGroupPrefab;
+        private VisualTreeAsset taskPrefab;
+        private VisualTreeAsset taskNeedPrefab;
 
         void Start()
         {

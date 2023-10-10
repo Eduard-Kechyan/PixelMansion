@@ -21,5 +21,12 @@
     "Item_Tools_4": "Hammer",
     "Item_Tools_5": "Jaw Wrench",
     "Item_Tools_6": "Saw",
-    "Item_Tools_7": "Axe"
+    "Item_Tools_7": "Axe",
+    "Item_Tools_8": "24x24",
+    "Item_Tools_9": "30x30 (+6)",
+    "Item_Tools_10": "32x32 (+8)",
+    "Item_Tools_11": "36x36 (+12)",
+    "Item_Tools_12": "40x40 (+16)",
+    "Item_Tools_13": "44x44 (+20)",
+    "Item_Tools_14": "48x48 (+24)"
 }

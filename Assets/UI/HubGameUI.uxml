@@ -26,5 +26,4 @@
         <ui:VisualElement name="Shadow" class="shadow" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/Hub/SpeechBubble/SpeechBubbleShadow.png?fileID=2800000&amp;guid=df4c881ac6275744ab526a3462edf51d&amp;type=3#SpeechBubbleShadow&apos;);" />
         <ui:VisualElement name="Tail" class="tail" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/Hub/SpeechBubble/SpeechBubbleTailBottomLeft.png?fileID=2800000&amp;guid=984be7b612866e44d98f436204326558&amp;type=3#SpeechBubbleTailBottomLeft&apos;); bottom: -6px;" />
     </ui:Button>
-    <ui:Label tabindex="-1" text="Popup Label" display-tooltip-when-elided="true" name="PopupLabel" class="popup_label" style="transition-property: opacity, padding; transition-duration: 0.6s, 0.6s; transition-timing-function: ease-in-out, ease-in-out; transition-delay: 0s, 0s; top: -50px; left: 0; height: 10px; translate: -60px -20px; opacity: 0; overflow: visible;" />
 </ui:UXML>

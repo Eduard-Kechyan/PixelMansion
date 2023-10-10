@@ -409,10 +409,18 @@ namespace Merge
             Gold
         };
 
+        public enum ShopItemType
+        {
+            Daily,
+            Item,
+            Gold,
+            Gems
+        }
+
         [Serializable]
         public class ShopItemsContent
         {
-            public int left;
+            public int total;
             public int price;
             public Type type;
             public ItemTypes.Group group;
@@ -425,7 +433,7 @@ namespace Merge
         [Serializable]
         public class ShopItemsContentJson
         {
-            public int left;
+            public int total;
             public int price;
             public string type;
             public string group;
