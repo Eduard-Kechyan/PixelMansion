@@ -74,8 +74,7 @@
     position: absolute;
     left: -5px;
     top: -5px;
-    visibility: hidden;
-    opacity: 0;
+    display: none;
 }
 
 .level_button .extra {

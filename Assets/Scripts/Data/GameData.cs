@@ -133,8 +133,6 @@ namespace Merge
 
             initialInventorySpace = inventorySpace;
 
-            CalcMaxExperience();
-
             CalcGamePixelHeight();
         }
 
@@ -166,16 +164,13 @@ namespace Merge
             GAME_PIXEL_HEIGHT = Screen.height / (Screen.width / GAME_PIXEL_WIDTH);
         }
 
-        public void SetExperience(int amount,  bool checkCanLevelUp = false)
+        public void SetExperience(int amount)
         {
             experience = amount;
 
             valuesUI.UpdateValues();
 
-            if (checkCanLevelUp)
-            {
-                // SetExperienceReady();
-            }
+            CheckExperience();
         }
 
         public void SetLevel(int amount)
@@ -214,37 +209,16 @@ namespace Merge
 
         public void UpdateExperience(int amount = 1, bool useMultiplier = false)
         {
-            if (canLevelUp)
+            if (useMultiplier)
             {
-                if (useMultiplier)
-                {
-                    leftoverExperience += valuesData.experienceMultiplier[amount - 1];
-                }
-                else
-                {
-                    leftoverExperience += amount;
-                }
+                experience += valuesData.experienceMultiplier[amount - 1];
             }
             else
             {
-                if (useMultiplier)
-                {
-                    experience += valuesData.experienceMultiplier[amount - 1];
-                }
-                else
-                {
-                    experience += amount;
-                }
-
-                if (experience >= maxExperience)
-                {
-                    leftoverExperience = experience - maxExperience;
-
-                    //  experience = maxExperience;
-
-                    SetExperienceReady();
-                }
+                experience += amount;
             }
+
+            CheckExperience(true);
 
             if (experience < 0)
             {
@@ -253,35 +227,43 @@ namespace Merge
 
             valuesUI.UpdateValues();
 
-            levelMenu.UpdateLevelMenu();
-
             dataManager.writer.Write("experience", experience).Commit();
         }
 
-        void SetExperienceReady()
-        {
-            ToggleCanLevelUpCheck(true);
-
-            soundManager.PlaySound("LevelUpIndicator");
-
-            valuesUI.ToggleLevelUp(true);
-        }
-
-        public void UpdateLevel()
+        public void UpdateLevel(Action callback=null)
         {
             level++;
 
+            experience -= maxExperience;
+
             SetTenthLevel();
 
-            dataManager.writer.Write("level", level).Commit();
-
-            ToggleCanLevelUpCheck(false);
-
-            valuesUI.ToggleLevelUp(false);
+            dataManager.writer.Write("level", level).Write("experience", experience).Commit();
 
             CalcMaxExperience();
 
-            valuesUI.UpdateLevel();
+            valuesUI.UpdateLevel(callback);
+        }
+
+        public void CheckExperience(bool playSound = false)
+        {
+            if (experience >= maxExperience)
+            {
+                ToggleCanLevelUpCheck(true);
+
+                if (playSound)
+                {
+                    soundManager.PlaySound("LevelUpIndicator");
+                }
+
+                valuesUI.ToggleLevelUp(true);
+            }
+            else
+            {
+                ToggleCanLevelUpCheck(false);
+
+                valuesUI.ToggleLevelUp(false);
+            }
         }
 
         public bool UpdateEnergy(int amount = 1, bool useMultiplier = false)

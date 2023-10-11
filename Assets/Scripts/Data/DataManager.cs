@@ -23,6 +23,8 @@ namespace Merge
 
         public delegate void BoardSaveEvent();
         public static event BoardSaveEvent BoardSaveEventAction;
+        public delegate void BoardSaveUndoEvent(bool unselect);
+        public static event BoardSaveUndoEvent BoardSaveUndoEventAction;
         public delegate void CheckProgressEvent();
         public static event CheckProgressEvent CheckProgressEventAction;
 
@@ -177,8 +179,9 @@ namespace Merge
             }
             else
             {
-                gameData.SetExperience(reader.Read<int>("experience"));
+                // ! - Level should come before experience
                 gameData.SetLevel(reader.Read<int>("level"));
+                gameData.SetExperience(reader.Read<int>("experience"));
                 gameData.SetEnergy(reader.Read<int>("energy"));
                 gameData.SetGold(reader.Read<int>("gold"));
                 gameData.SetGems(reader.Read<int>("gems"));
@@ -242,7 +245,7 @@ namespace Merge
 
         //// SAVE ////
 
-        public void SaveBoard(bool fireEvent = true)
+        public void SaveBoard(bool fireEvent = true,bool fireEventForUndo = true)
         {
             string newBoardData = dataConverter.ConvertBoardToJson(
                 dataConverter.ConvertBoardToArray(gameData.boardData)
@@ -253,6 +256,11 @@ namespace Merge
             if (fireEvent && BoardSaveEventAction != null)
             {
                 BoardSaveEventAction();
+            }
+
+            if (fireEventForUndo && BoardSaveUndoEventAction != null)
+            {
+                BoardSaveUndoEventAction(true);
             }
         }
 

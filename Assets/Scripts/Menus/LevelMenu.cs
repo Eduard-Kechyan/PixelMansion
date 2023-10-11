@@ -23,6 +23,15 @@ namespace Merge
         private string levelRewardText1;
         private string levelRewardText2;
 
+        private List<TimeValue> nullTransition = new();
+        private List<TimeValue> fullTransition = new();
+
+
+        Scale nullScale = new(new Vector2(0f, 0f));
+        Scale fullScale = new(new Vector2(1f, 1f));
+
+        private Coroutine levelFillTimeout;
+
         // References
         private GameData gameData;
         private ItemHandler itemHandler;
@@ -112,6 +121,10 @@ namespace Merge
             // Make sure the menu is closed
             levelMenu.style.display = DisplayStyle.None;
             levelMenu.style.opacity = 0;
+
+            // Set transitions
+            nullTransition.Add(new TimeValue(0f, TimeUnit.Second));
+            fullTransition.Add(new TimeValue(0.3f, TimeUnit.Second));
         }
 
         public void Open()
@@ -127,7 +140,7 @@ namespace Merge
 
                 levelUpLabel.text = LOCALE.Get("level_menu_level_up_button");
 
-                UpdateLevelMenu();
+                UpdateLevelMenu(true);
 
                 if (gameData.levelTen)
                 {
@@ -145,33 +158,84 @@ namespace Merge
             }
         }
 
-        public void UpdateLevelMenu()
+        public void UpdateLevelMenu(bool init = false)
         {
-            levelValue.text = gameData.level.ToString();
+            if (init)
+            {
+                levelValue.text = gameData.level.ToString();
 
-            levelFill.style.width = valuesUI.CalcLevelFill();
+                levelFill.style.transitionDuration = new StyleList<TimeValue>(fullTransition);
+                levelFill.style.width = valuesUI.CalcLevelFill();
+            }
+            else
+            {
+                StartCoroutine(BloopLevelValue());
+
+                Glob.StopTimeout(levelFillTimeout);
+
+                levelFill.style.transitionDuration = new StyleList<TimeValue>(nullTransition);
+                levelFill.style.width = 0;
+
+                levelFillTimeout = Glob.SetTimeout(() =>
+                {
+                    levelFill.style.transitionDuration = new StyleList<TimeValue>(fullTransition);
+                    levelFill.style.width = valuesUI.CalcLevelFill();
+                }, 0.3f);
+            }
 
             levelFillLabel.text = gameData.experience + "/" + gameData.maxExperience;
 
             levelUpButton.SetEnabled(gameData.canLevelUp);
         }
 
-        void HandleRewards()
+        // Bloop the level value
+        IEnumerator BloopLevelValue()
         {
+            yield return new WaitForSeconds(0.2f);
+
+            levelValue.AddToClassList("level_value_bloop");
+
+            yield return new WaitForSeconds(0.2f);
+
+            levelValue.text = gameData.level.ToString();
+
+            soundManager.PlaySound("Experience");
+
+            levelValue.RemoveFromClassList("level_value_bloop");
+        }
+
+        void HandleRewards(bool newRewards = true)
+        {
+            // TODO -  Also update the new rewards if "newRewards"
+
             levelReward0.style.backgroundImage = new StyleBackground(rewardContent[0].sprite);
             levelReward1.style.backgroundImage = new StyleBackground(rewardContent[1].sprite);
 
             levelRewardText0 = levelReward0.name;
             levelRewardText1 = levelReward1.name;
 
-            if (rewardContent.Length == 2)
-            {
-                levelReward2.style.display = DisplayStyle.None;
-            }
-            else
+            if (rewardContent.Length > 2)
             {
                 levelReward2.style.backgroundImage = new StyleBackground(rewardContent[2].sprite);
                 levelRewardText2 = levelReward2.name;
+            }
+            else
+            {
+                levelReward2.style.display = DisplayStyle.None;
+            }
+
+            if (newRewards)
+            {
+                levelReward0.style.scale = new StyleScale(fullScale);
+                levelRewardButton0.style.scale = new StyleScale(fullScale);
+
+                levelReward1.style.scale = new StyleScale(fullScale);
+                levelRewardButton0.style.scale = new StyleScale(fullScale);
+
+                levelReward2.style.scale = new StyleScale(fullScale);
+                levelRewardButton0.style.scale = new StyleScale(fullScale);
+
+                soundManager.PlaySound("Experience");
             }
         }
 
@@ -184,7 +248,12 @@ namespace Merge
 
         void UpdateLevel()
         {
-            gameData.UpdateLevel();
+            levelUpButton.SetEnabled(false);
+
+            gameData.UpdateLevel(() =>
+            {
+                UpdateLevelMenu();
+            });
 
             for (int i = 0; i < rewardContent.Length; i++)
             {
@@ -193,18 +262,17 @@ namespace Merge
                 if (rewardContent.Length - 1 == i)
                 {
                     check = true;
+
+                    Glob.SetTimeout(() =>
+                    {
+                        HandleRewards(true);
+                    }, (rewardContent.Length + 1) * 0.4f);
                 }
 
                 StartCoroutine(PopOutBonus(i * 0.4f, i, check));
             }
 
             soundManager.PlaySound("LevelUp");
-
-            //UpdateLevelMenu();
-
-            menuUI.CloseMenu(levelMenu.name);
-
-            HandleRewards();
         }
 
         IEnumerator PopOutBonus(float seconds, int order, bool newCheck = true)
@@ -215,8 +283,30 @@ namespace Merge
 
             Item newItem = itemHandler.CreateItemTemp(rewardContent[order]);
 
-            Vector2 initialPosition = new(valuesUI.levelButton.worldBound.x + levelButtonOffset, valuesUI.levelButton.worldBound.y + levelButtonOffset);
+            Vector2 initialPosition;
             Vector2 buttonPosition;
+
+            if (order == 0)
+            {
+                initialPosition = new Vector2(levelReward0.worldBound.x + (GameData.BOARD_ITEM_WIDTH / 2), levelReward0.worldBound.y + (GameData.BOARD_ITEM_WIDTH / 2));
+
+                levelReward0.style.scale = new StyleScale(nullScale);
+                levelRewardButton0.style.scale = new StyleScale(nullScale);
+            }
+            else if (order == 1)
+            {
+                initialPosition = new Vector2(levelReward1.worldBound.x + (GameData.BOARD_ITEM_WIDTH / 2), levelReward1.worldBound.y + (GameData.BOARD_ITEM_WIDTH / 2));
+
+                levelReward1.style.scale = new StyleScale(nullScale);
+                levelRewardButton0.style.scale = new StyleScale(nullScale);
+            }
+            else
+            {
+                initialPosition = new Vector2(levelReward2.worldBound.x + (GameData.BOARD_ITEM_WIDTH / 2), levelReward2.worldBound.y + (GameData.BOARD_ITEM_WIDTH / 2));
+
+                levelReward2.style.scale = new StyleScale(nullScale);
+                levelRewardButton0.style.scale = new StyleScale(nullScale);
+            }
 
             if (gameplayScene)
             {

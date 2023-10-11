@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,6 +21,8 @@ namespace Merge
         private bool gemsPlusEnabled = false;
 
         private bool enabledSet = false;
+
+        private bool levelBlipping = false;
 
         private Coroutine energyCoroutine;
 
@@ -89,6 +92,7 @@ namespace Merge
             SetValues();
 
             CheckForTaps();
+
         }
 
         void Update()
@@ -105,7 +109,7 @@ namespace Merge
             //gemsButton.SetEnabled(false);
 
             // TODO - Add a check for the plusses
-            // energyPlus.style.display = DisplayStyle.None;
+            //energyPlus.style.display = DisplayStyle.None;
             //goldPlus.style.display = DisplayStyle.None;
             //gemsPlus.style.display = DisplayStyle.None;
 
@@ -195,14 +199,14 @@ namespace Merge
             return newFontSize;
         }
 
-        public void UpdateLevel()
+        public void UpdateLevel(Action callback = null)
         {
             levelValue.text = gameData.level.ToString();
 
-            StartCoroutine(UpdateEnergyFullAfter());
+            StartCoroutine(UpdateEnergyFullAfter(callback));
         }
 
-        IEnumerator UpdateEnergyFullAfter()
+        IEnumerator UpdateEnergyFullAfter(Action callback)
         {
             yield return new WaitForSeconds(0.3f);
 
@@ -218,11 +222,11 @@ namespace Merge
 
             levelFill.style.transitionDuration = new StyleList<TimeValue>(durationsFull);
 
-            gameData.SetExperience(gameData.leftoverExperience,  true);
+            gameData.CheckExperience();
+
+            callback?.Invoke();
 
             DataManager.Instance.writer.Write("experience", gameData.experience).Commit();
-
-            gameData.leftoverExperience = 0;
 
             levelFill.style.width = CalcLevelFill();
         }
@@ -231,17 +235,25 @@ namespace Merge
         {
             if (canLevelUp)
             {
-                levelUpIndicator.style.opacity = 1;
-                levelUpIndicator.style.visibility = Visibility.Visible;
+                if (!levelBlipping)
+                {
+                    levelUpIndicator.style.display = DisplayStyle.Flex;
 
-                StartCoroutine(BlipLevelUpIndicator());
+                    levelBlipping = true;
+
+                    StartCoroutine(BlipLevelUpIndicator());
+                }
             }
             else
             {
-                levelUpIndicator.style.opacity = 0;
-                levelUpIndicator.style.visibility = Visibility.Hidden;
+                if (levelBlipping)
+                {
+                    levelUpIndicator.style.display = DisplayStyle.None;
 
-                StopCoroutine(BlipLevelUpIndicator());
+                    levelBlipping = false;
+
+                    StopCoroutine(BlipLevelUpIndicator());
+                }
             }
         }
 
@@ -249,7 +261,7 @@ namespace Merge
         {
             int count = 0;
 
-            while (true)
+            while (levelBlipping)
             {
                 yield return new WaitForSeconds(0.2f);
 

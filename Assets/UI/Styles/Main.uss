@@ -258,7 +258,6 @@
 }
 
 .note_dot_bloop {
-    height: 8px;
     scale: 1.5 1.5;
 }
 

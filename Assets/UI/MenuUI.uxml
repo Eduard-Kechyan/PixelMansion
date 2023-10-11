@@ -1,6 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI/Styles/Main.uss?fileID=7433441132597879392&amp;guid=b6d7ed9290f88c745af1e68e28dec072&amp;type=3#Main" />
     <Style src="project://database/Assets/UI/Styles/MenuStyles.uss?fileID=7433441132597879392&amp;guid=663206ebf1059204eb4ee1eb82dfb026&amp;type=3#MenuStyles" />
+    <Style src="project://database/Assets/UI/Styles/Main.uss?fileID=7433441132597879392&amp;guid=b6d7ed9290f88c745af1e68e28dec072&amp;type=3#Main" />
     <ui:VisualElement name="LocaleWrapper" class="locale_en" style="left: 0; top: 0; right: 0; bottom: 0; position: absolute; display: none;">
         <ui:VisualElement name="SettingsMenu" class="menu" style="display: none; opacity: 0;">
             <ui:VisualElement name="Background" class="background" />
@@ -181,7 +181,7 @@
                     <ui:Label tabindex="-1" text="Level Label Text" display-tooltip-when-elided="true" name="LevelLabel" class="menu_label" style="font-size: 5px;" />
                     <ui:VisualElement name="LevelIndicator" class="level_indicator" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/LevelMenu/LevelIndicator.png?fileID=2800000&amp;guid=5dc1ab80869f7cc4c963864ca1e145d4&amp;type=3#LevelIndicator&apos;);">
                         <ui:VisualElement name="FillContainer" class="fill_container">
-                            <ui:VisualElement name="Fill" class="fill" />
+                            <ui:VisualElement name="Fill" class="fill" style="width: 0;" />
                             <ui:VisualElement name="FillBorder" class="fill_border" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/LevelMenu/LevelIndicatorBorder.png?fileID=2800000&amp;guid=fc68bb4abe2ce18418e523afb5f0543b&amp;type=3#LevelIndicatorBorder&apos;);" />
                             <ui:Label tabindex="-1" text="000/000" display-tooltip-when-elided="true" name="FillLabel" class="fill_label" />
                         </ui:VisualElement>
@@ -189,14 +189,14 @@
                     </ui:VisualElement>
                     <ui:VisualElement name="LevelRewards" class="level_rewards" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/LevelMenu/LevelRewards.png?fileID=2800000&amp;guid=e05b780883c7329459ca413a68fdf80f&amp;type=3#LevelRewards&apos;);">
                         <ui:Label tabindex="-1" text="Level Label Text" display-tooltip-when-elided="true" name="Label" style="font-size: 5px; -unity-text-align: middle-center; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; position: absolute; left: 0; right: 0; top: 0; height: 12px; white-space: nowrap;" />
-                        <ui:VisualElement name="LevelReward0" style="width: 24px; height: 24px; margin-left: 4px; margin-right: 4px; background-image: resource(&apos;Sprites/Items/Metals/MetalsItem1&apos;);">
-                            <ui:Button display-tooltip-when-elided="true" name="InfoButton" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Menu/ShopBoxInfoButton.png?fileID=21300000&amp;guid=5b1619c1a050de54a94113d994ffd7cf&amp;type=3#ShopBoxInfoButton&apos;); margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; background-color: rgba(188, 188, 188, 0); width: 11px; height: 11px; position: absolute; top: -2px; right: -2px;" />
+                        <ui:VisualElement name="LevelReward0" class="reward_item" style="width: 24px; height: 24px; margin-left: 4px; margin-right: 4px;">
+                            <ui:Button display-tooltip-when-elided="true" name="InfoButton" class="button button_active" />
                         </ui:VisualElement>
-                        <ui:VisualElement name="LevelReward1" style="width: 24px; height: 24px; margin-left: 4px; margin-right: 4px; background-image: resource(&apos;Sprites/Items/Metals/MetalsItem1&apos;);">
-                            <ui:Button display-tooltip-when-elided="true" name="InfoButton" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Menu/ShopBoxInfoButton.png?fileID=21300000&amp;guid=5b1619c1a050de54a94113d994ffd7cf&amp;type=3#ShopBoxInfoButton&apos;); margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; background-color: rgba(188, 188, 188, 0); width: 11px; height: 11px; position: absolute; top: -2px; right: -2px;" />
+                        <ui:VisualElement name="LevelReward1" class="reward_item" style="width: 24px; height: 24px; margin-left: 4px; margin-right: 4px;">
+                            <ui:Button display-tooltip-when-elided="true" name="InfoButton" class="button button_active" />
                         </ui:VisualElement>
-                        <ui:VisualElement name="LevelReward2" style="width: 24px; height: 24px; margin-left: 4px; margin-right: 4px; background-image: resource(&apos;Sprites/Items/Metals/MetalsItem1&apos;);">
-                            <ui:Button display-tooltip-when-elided="true" name="InfoButton" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Menu/ShopBoxInfoButton.png?fileID=21300000&amp;guid=5b1619c1a050de54a94113d994ffd7cf&amp;type=3#ShopBoxInfoButton&apos;); margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; background-color: rgba(188, 188, 188, 0); width: 11px; height: 11px; position: absolute; top: -2px; right: -2px;" />
+                        <ui:VisualElement name="LevelReward2" class="reward_item" style="width: 24px; height: 24px; margin-left: 4px; margin-right: 4px;">
+                            <ui:Button display-tooltip-when-elided="true" name="InfoButton" class="button button_active" />
                         </ui:VisualElement>
                     </ui:VisualElement>
                     <ui:Button display-tooltip-when-elided="true" name="LevelUpButton" class="button_active" style="width: auto; height: 18px; margin-left: auto; margin-right: auto; margin-top: 0; margin-bottom: 0; padding-left: 4px; padding-right: 4px; padding-top: 0; padding-bottom: 0; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; background-color: rgb(85, 203, 152); color: rgb(255, 255, 255); font-size: 8px; overflow: visible; transition-duration: 0.1s;">

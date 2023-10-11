@@ -530,7 +530,7 @@ namespace Merge
             }
 
             // Save data to disk
-            dataManager.SaveBoard(false);
+            dataManager.SaveBoard(false, false);
             dataManager.SaveInventory();
             dataManager.SaveTasks();
 

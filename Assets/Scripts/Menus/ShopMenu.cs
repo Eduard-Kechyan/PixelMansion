@@ -625,7 +625,7 @@ namespace Merge
             }
             else
             {
-                valuePop.PopBonus(newItem, uiButtons.gameplayShopButtonPos, uiButtons.gameplayBonusButtonPos, false);
+                valuePop.PopBonus(newItem, uiButtons.gameplayShopButtonPos, uiButtons.gameplayBonusButtonPos, true);
             }
         }
 

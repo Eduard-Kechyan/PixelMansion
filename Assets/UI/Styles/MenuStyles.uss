@@ -864,6 +864,10 @@
     top: -2px;
 }
 
+.level_menu .level_value_bloop {
+    scale: 1.5 1.5;
+}
+
 .level_menu .level_indicator {
     width: 106px;
     height: 17px;
@@ -886,7 +890,6 @@
     height: 100%;
     position: absolute;
     -unity-background-image-tint-color: rgb(210, 230, 248);
-    transition-duration: 0s;
 }
 
 .level_menu .level_indicator .fill_container .fill_border {
@@ -932,6 +935,8 @@
     padding-right: 0;
     padding-top: 0;
     padding-bottom: 0;
+    transition-duration: 0.3s;
+    background-image: url('project://database/Assets/Sprites/Values/Experience.png?fileID=2800000&guid=e35c219a6b21fcc4e8f87256aab8e82b&type=3#Experience');
 }
 
 .level_menu .level_rewards {
@@ -972,6 +977,7 @@
     height: 24px;
     margin-left: 4px;
     margin-right: 4px;
+    transition-duration: 0.3s;
 }
 
 .level_menu .level_rewards .reward_item .button {
@@ -993,6 +999,8 @@
     position: absolute;
     top: -2px;
     right: -2px;
+    background-image: url('project://database/Assets/Sprites/Buttons/Menu/ShopBoxInfoButton.png?fileID=2800000&guid=5b1619c1a050de54a94113d994ffd7cf&type=3#ShopBoxInfoButton');
+    transition-duration: 0.3s;
 }
 
 .level_menu .level_button {

@@ -66,7 +66,7 @@ namespace Merge
             selectionManager = GetComponent<SelectionManager>();
             boardManager = GetComponent<BoardManager>();
             boardIndication = GetComponent<BoardIndication>();
-            popupManager =PopupManager.Instance;
+            popupManager = PopupManager.Instance;
             inventoryMenu = GameRefs.Instance.inventoryMenu;
             soundManager = SoundManager.Instance;
             dataManager = DataManager.Instance;
@@ -84,15 +84,14 @@ namespace Merge
 
         void OnEnable()
         {
-
             // Subscribe to events
-            DataManager.BoardSaveEventAction += CancelUndo;
+            DataManager.BoardSaveUndoEventAction += CancelUndo;
         }
 
         void OnDestroy()
         {
             // Unsubscribe from events
-            DataManager.BoardSaveEventAction -= CancelUndo;
+            DataManager.BoardSaveUndoEventAction -= CancelUndo;
         }
 
 
@@ -791,7 +790,7 @@ namespace Merge
                     gameData.boardData[loc.x, loc.y] = new Types.Board { order = removeBoardItem.order };
                 }
 
-                dataManager.SaveBoard();
+                dataManager.SaveBoard(true, false);
             }
         }
 
@@ -826,11 +825,11 @@ namespace Merge
                     sellUndoAmount = 0;
                 }
 
-                dataManager.SaveBoard();
+                dataManager.SaveBoard(true, false);
             }
         }
 
-        public void CancelUndo()
+        public void CancelUndo(bool unselect = false)
         {
             canUndo = false;
 
@@ -842,7 +841,10 @@ namespace Merge
                 undoScale = Vector2.zero;
             }
 
-            selectionManager.UnselectUndo();
+            if (unselect)
+            {
+                selectionManager.UnselectUndo();
+            }
         }
     }
 }
