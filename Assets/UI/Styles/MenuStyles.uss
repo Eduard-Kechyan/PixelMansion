@@ -556,6 +556,11 @@
     border-top-width: 0;
     border-bottom-width: 0;
     background-color: rgba(255, 255, 255, 0);
+    transition-duration: 0.3s;
+}
+
+.inventory_slots .slot_item:active {
+    scale: 0.8 0.8;
 }
 
 .inventory_slots .slot_item .check {

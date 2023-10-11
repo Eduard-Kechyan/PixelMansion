@@ -39,7 +39,7 @@ namespace Merge
             // Cache
             interactions = GetComponent<BoardInteractions>();
             boardManager = GetComponent<BoardManager>();
-            popupManager = GameRefs.Instance.popupManager;
+            popupManager = PopupManager.Instance;
             boardIndication = GetComponent<BoardIndication>();
             dataManager = DataManager.Instance;
             levelMenu = GameRefs.Instance.levelMenu;
@@ -97,11 +97,11 @@ namespace Merge
                     }
                     else
                     {
-                        popupManager.AddPop(
+                        popupManager.Pop(
                             LOCALE.Get("pop_board_full"),
                             interactions.currentItem.transform.position,
-                            true,
-                            "Buzz"
+                            "Buzz",
+                            true
                         );
                     }
                 }
@@ -123,7 +123,7 @@ namespace Merge
                 interactions.currentItem.level,
                 interactions.currentItem.collGroup,
                 interactions.currentItem.transform.position,
-                true, 
+                true,
                 () =>
                 {
                     levelMenu.isRewarding = false;
@@ -159,11 +159,11 @@ namespace Merge
                     }
                     else
                     {
-                        popupManager.AddPop(
+                        popupManager.Pop(
                             LOCALE.Get("pop_board_full"),
                             interactions.currentItem.transform.position,
-                            true,
-                            "Buzz"
+                            "Buzz",
+                            true
                         );
                     }
                 }

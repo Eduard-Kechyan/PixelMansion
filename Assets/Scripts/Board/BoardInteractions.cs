@@ -66,7 +66,7 @@ namespace Merge
             selectionManager = GetComponent<SelectionManager>();
             boardManager = GetComponent<BoardManager>();
             boardIndication = GetComponent<BoardIndication>();
-            popupManager = GameRefs.Instance.popupManager;
+            popupManager =PopupManager.Instance;
             inventoryMenu = GameRefs.Instance.inventoryMenu;
             soundManager = SoundManager.Instance;
             dataManager = DataManager.Instance;
@@ -81,6 +81,20 @@ namespace Merge
             // Drag overlay shouldn't be pickable
             dragOverlay.pickingMode = PickingMode.Ignore;
         }
+
+        void OnEnable()
+        {
+
+            // Subscribe to events
+            DataManager.BoardSaveEventAction += CancelUndo;
+        }
+
+        void OnDestroy()
+        {
+            // Unsubscribe from events
+            DataManager.BoardSaveEventAction -= CancelUndo;
+        }
+
 
         void Update()
         {
@@ -405,7 +419,7 @@ namespace Merge
                         else
                         {
                             // TODO - Check if we need this
-                            // popupManager.AddPop(LOCALE.Get("pop_max_level"), otherItem.transform.position, true);
+                            // popupManager.Pop(LOCALE.Get("pop_max_level"), otherItem.transform.position);
                         }
                     }
                     else
@@ -827,6 +841,8 @@ namespace Merge
                 undoTile = null;
                 undoScale = Vector2.zero;
             }
+
+            selectionManager.UnselectUndo();
         }
     }
 }

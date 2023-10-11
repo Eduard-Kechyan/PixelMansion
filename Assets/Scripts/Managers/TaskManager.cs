@@ -50,6 +50,10 @@ namespace Merge
             }
 
             isLoaded = true;
+        }
+
+        void OnEnable()
+        {
 
             // Subscribe to events
             DataManager.BoardSaveEventAction += CheckBoardAndInventoryForTasks;

@@ -196,32 +196,3 @@
     bottom: -6px;
     left: 0;
 }
-
-.popup_label {
-    margin-left: 0;
-    margin-right: 0;
-    margin-top: 0;
-    margin-bottom: 0;
-    padding-left: 0;
-    padding-right: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    position: absolute;
-    width: 120px;
-    height: auto;
-    transition-property: opacity, padding-bottom;
-    transition-duration: 0.3s, 0.3s;
-    font-size: 8px;
-    -unity-text-align: middle-center;
-    transition-timing-function: ease-in-out, ease-in-out;
-    top: -50px;
-    color: rgb(255, 255, 255);
-    -unity-text-outline-width: 0.1px;
-    -unity-text-outline-color: rgb(0, 0, 0);
-    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.71);
-    opacity: 0;
-    visibility: hidden;
-    overflow: hidden;
-    white-space: normal;
-    translate: -60px 0;
-}

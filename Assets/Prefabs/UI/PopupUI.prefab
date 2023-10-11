@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7504682329703976227
+--- !u!1 &6959001973875461028
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,38 +8,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3654883059792793667}
-  - component: {fileID: 2295170619679281268}
-  - component: {fileID: 4479317755097273465}
-  m_Layer: 5
-  m_Name: TransitionUI
+  - component: {fileID: 3555755011942888088}
+  - component: {fileID: 6505914479141634174}
+  - component: {fileID: 5149703782136879602}
+  m_Layer: 0
+  m_Name: PopupUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3654883059792793667
+--- !u!4 &3555755011942888088
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7504682329703976227}
+  m_GameObject: {fileID: 6959001973875461028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2295170619679281268
+--- !u!114 &6505914479141634174
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7504682329703976227}
+  m_GameObject: {fileID: 6959001973875461028}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
@@ -47,31 +47,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: 2e83536c46c9fb3449baddd42f9cfe72, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: 08b4933c45fb8e34f94c785bd7a3d967, type: 3}
-  m_SortingOrder: 14
---- !u!114 &4479317755097273465
+  sourceAsset: {fileID: 9197481963319205126, guid: 42039637b7949cf4abc140b97f3aec2a, type: 3}
+  m_SortingOrder: 12
+--- !u!114 &5149703782136879602
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7504682329703976227}
+  m_GameObject: {fileID: 6959001973875461028}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c48ea186f28bc8e45b61861941973a07, type: 3}
+  m_Script: {fileID: 11500000, guid: 1ec7e51b4e672aa4d8f51402c4f49a18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transitionData: {fileID: 11400000, guid: a6d129924148bb347b132cd4cb764dfe, type: 2}
-  worldDataManager: {fileID: 0}
   sceneLoader: {fileID: 0}
-  duration: 0.2
-  backgroundColors:
-  - {r: 0.30588236, g: 0.5529412, b: 0.5764706, a: 1}
-  - {r: 0.5943396, g: 0.2719384, b: 0.2859558, a: 1}
-  - {r: 0.26966894, g: 0.5660378, b: 0.34694105, a: 1}
-  - {r: 0.606935, g: 0.6226415, b: 0.26139194, a: 1}
-  - {r: 0.69803923, g: 0.5020379, b: 0.18039216, a: 1}
-  - {r: 0.5862841, g: 0.2627451, b: 0.62352943, a: 1}
-  - {r: 0.2627451, g: 0.2766628, b: 0.62352943, a: 1}
-  - {r: 0.2627451, g: 0.40662313, b: 0.62352943, a: 1}
-  iconSprites: []
+  textColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineColor: {r: 0, g: 0, b: 0, a: 1}
+  shadowColor: {r: 0, g: 0, b: 0, a: 0.7058824}
+  timeOut: 0.5
+  positionOffset: 1.5
+  isSelectorPopup: 0

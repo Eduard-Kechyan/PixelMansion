@@ -47,7 +47,7 @@ namespace Merge
             confirmMenu = GetComponent<ConfirmMenu>();
             gameData = GameData.Instance;
             dataManager = DataManager.Instance;
-            popupManager = GameRefs.Instance.popupManager;
+            popupManager = PopupManager.Instance;
             valuePop = GameRefs.Instance.valuePop;
             gameplayUI = GameRefs.Instance.gameplayUI;
             soundManager = SoundManager.Instance;
@@ -224,12 +224,13 @@ namespace Merge
 
             VisualElement slot = slotsContainer.Q<VisualElement>("InventorySlot" + nameOrder);
 
+            float halfWidth = slot.worldBound.width / 2;
+            Vector2 initialPosition = new(slot.worldBound.position.x + halfWidth, slot.worldBound.position.y + halfWidth);
+
             if (emptyBoard.Count > 0)
             {
                 slot.Clear();
 
-                float halfWidth = slot.worldBound.width / 2;
-                Vector2 initialPosition = new (slot.worldBound.position.x + halfWidth, slot.worldBound.position.y + halfWidth);
 
                 // Pop out the item
                 valuePop.PopInventoryItem(
@@ -254,10 +255,9 @@ namespace Merge
             }
             else
             {
-                popupManager.AddPop(
+                popupManager.Pop(
                     LOCALE.Get("pop_board_full"),
-                    slot.worldBound.position,
-                    true,
+                    initialPosition,
                     "Buzz"
                 );
             }
@@ -335,7 +335,7 @@ namespace Merge
                     if (gameData.inventoryData.Count < gameData.inventorySpace)
                     {
                         // Add the item to the inventory
-                        Types.Inventory newInventoryItem = new ()
+                        Types.Inventory newInventoryItem = new()
                         {
                             sprite = item.sprite,
                             type = item.type,
@@ -369,11 +369,11 @@ namespace Merge
                     }
                     else
                     {
-                        popupManager.AddPop(
+                        popupManager.Pop(
                             LOCALE.Get("pop_inventory_full"),
                             item.transform.position,
-                            true,
-                            "Buzz"
+                            "Buzz",
+                            true
                         );
 
                         return false;

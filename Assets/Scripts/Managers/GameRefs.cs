@@ -62,11 +62,7 @@ namespace Merge
         [HideInInspector]
         public bool initialized = false;
 
-        // References
-        [HideInInspector]
-        public PopupManager popupManager;
-
-        [HideInInspector]
+                [HideInInspector]
         public SafeAreaHandler safeAreaHandler;
 
         [HideInInspector]
@@ -84,9 +80,6 @@ namespace Merge
 
         void Init()
         {
-            // References
-            popupManager = GetComponent<PopupManager>();
-
             // UI documents
             if (gameplayUI != null)
             {

@@ -285,5 +285,4 @@
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
-    <ui:Label tabindex="-1" text="Popup Label" display-tooltip-when-elided="true" name="PopupLabel" class="popup_label" style="transition-property: opacity, padding; transition-duration: 0.6s, 0.6s; transition-timing-function: ease-in-out, ease-in-out; transition-delay: 0s, 0s; top: -50px; left: 0; height: 10px; translate: -60px -20px; opacity: 0; overflow: visible;" />
 </ui:UXML>

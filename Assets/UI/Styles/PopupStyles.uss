@@ -1,0 +1,27 @@
+.popup_label {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-top: 0;
+    padding-bottom: 0;
+    position: absolute;
+    transition-property: opacity, top, scale;
+    transition-duration: 0.3s, 1s, 0.3s;
+    font-size: 8px;
+    -unity-text-align: middle-center;
+    transition-timing-function: ease-in-out, ease-in-out, ease;
+    color: rgb(255, 255, 255);
+    -unity-text-outline-width: 0.1px;
+    -unity-text-outline-color: rgb(0, 0, 0);
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.71);
+    opacity: 0;
+    visibility: hidden;
+    overflow: hidden;
+    white-space: normal;
+    scale: 0.4 0.4;
+    translate: -50% 0;
+    max-width: 120px;
+}

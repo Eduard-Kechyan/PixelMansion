@@ -79,7 +79,7 @@ namespace Merge
             // Cache
             cam = Camera.main;
             menuUI = GameRefs.Instance.menuUI;
-            popupManager = GameRefs.Instance.popupManager;
+            popupManager = PopupManager.Instance;
             charMove = CharMain.Instance.charMove;
             hubUI = GameRefs.Instance.hubUI;
             cameraMotion = GetComponent<CameraMotion>();

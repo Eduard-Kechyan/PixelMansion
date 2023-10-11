@@ -23,7 +23,7 @@ namespace Merge
         {
             // References
             gameplayUI = GetComponent<GameplayUI>();
-            popupManager = GameRefs.Instance.popupManager;
+            popupManager = PopupManager.Instance;
             dataManager = DataManager.Instance;
             uiButtons = GameData.Instance.GetComponent<UIButtons>();
 
@@ -65,11 +65,11 @@ namespace Merge
             }
             else
             {
-                popupManager.AddPop(
+                popupManager.Pop(
                     LOCALE.Get("pop_board_full"),
                     uiButtons.gameplayBonusButtonPos,
-                    true,
-                    "Buzz"
+                    "Buzz",
+                    true
                 );
             }
         }

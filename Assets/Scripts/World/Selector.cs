@@ -53,7 +53,7 @@ namespace Merge
             cam = Camera.main;
             soundManager = SoundManager.Instance;
             selectorUIHandler = hubGameUiDoc.GetComponent<SelectorUIHandler>();
-            popupManager = GameRefs.Instance.popupManager;
+            popupManager = PopupManager.Instance;
             LOCALE = I18n.Instance;
             worldDataManager = GetComponent<WorldDataManager>();
             charMain = CharMain.Instance;
@@ -108,7 +108,9 @@ namespace Merge
 
         void LockedRoomSelecting(Vector2 position)
         {
-            popupManager.AddPop(LOCALE.Get("pop_room_locked"), position, true, "", true);
+            Vector2 worldPosition = cam.ScreenToWorldPoint(position);
+
+            popupManager.Pop(LOCALE.Get("pop_room_locked"), worldPosition, "", true, true);
         }
 
         void DefaultSelecting(Vector2 position, bool tapped = false, bool ignorePopup = false)
@@ -119,8 +121,10 @@ namespace Merge
 
             contactFilter2D.SetLayerMask(LayerMask.GetMask("Selectable"));
 
+            Vector2 worldPosition =cam.ScreenToWorldPoint(position);
+
             Physics2D.Raycast(
-                           cam.ScreenToWorldPoint(position),
+                           worldPosition,
                            Vector2.zero,
                            contactFilter2D,
                            hits,
@@ -182,7 +186,7 @@ namespace Merge
 
                             Vector2 newUIPos = RuntimePanelUtils.CameraTransformWorldToPanel(
                                 root.panel,
-                                cam.ScreenToWorldPoint(position),
+                                worldPosition,
                                 cam
                             );
 
@@ -209,7 +213,7 @@ namespace Merge
 
                         if (!ignorePopup && notify)
                         {
-                            popupManager.AddPop(LOCALE.Get("pop_item_unselectable"), position, true, "", true);
+                            popupManager.Pop(LOCALE.Get("pop_item_unselectable"), worldPosition,  "", true, true);
                         }
                     }
                 }
