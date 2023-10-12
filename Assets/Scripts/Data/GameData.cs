@@ -172,7 +172,10 @@ namespace Merge
         {
             experience = amount;
 
-            valuesUI.UpdateValues();
+            if (valuesUI != null)
+            {
+                valuesUI.UpdateValues();
+            }
 
             CheckExperience();
         }
@@ -185,14 +188,20 @@ namespace Merge
 
             CalcMaxExperience();
 
-            valuesUI.UpdateValues();
+            if (valuesUI != null)
+            {
+                valuesUI.UpdateValues();
+            }
         }
 
         public void SetEnergy(int amount, bool slash = false)
         {
             energy = amount;
 
-            valuesUI.UpdateValues();
+            if (valuesUI != null)
+            {
+                valuesUI.UpdateValues();
+            }
 
             if (slash)
             {
@@ -204,7 +213,10 @@ namespace Merge
         {
             gold = amount;
 
-            valuesUI.UpdateValues();
+            if (valuesUI != null)
+            {
+                valuesUI.UpdateValues();
+            }
 
             if (slash)
             {
@@ -216,7 +228,10 @@ namespace Merge
         {
             gems = amount;
 
-            valuesUI.UpdateValues();
+            if (valuesUI != null)
+            {
+                valuesUI.UpdateValues();
+            }
 
             if (slash)
             {
@@ -228,14 +243,9 @@ namespace Merge
 
         void UpdateExperience(int amount)
         {
-            experience += amount;
+            experience = amount;
 
             CheckExperience(true);
-
-            if (experience < 0)
-            {
-                experience = 0;
-            }
 
             valuesUI.UpdateValues();
 
@@ -273,13 +283,19 @@ namespace Merge
                     soundManager.PlaySound("LevelUpIndicator");
                 }
 
-                valuesUI.ToggleLevelUp(true);
+                if (valuesUI != null)
+                {
+                    valuesUI.ToggleLevelUp(true);
+                }
             }
             else
             {
                 ToggleCanLevelUpCheck(false);
 
-                valuesUI.ToggleLevelUp(false);
+                if (valuesUI != null)
+                {
+                    valuesUI.ToggleLevelUp(false);
+                }
             }
         }
 
@@ -324,7 +340,7 @@ namespace Merge
 
         public void UpdateValueUI(int amount, Types.CollGroup type, bool useMultiplier = false)
         {
-            int tempAmount = CalcNewAmount(amount, type,useMultiplier);
+            int tempAmount = CalcNewAmount(amount, type, useMultiplier);
 
             bool shouldFlash = amount > 0 ? true : false;
 
@@ -407,7 +423,7 @@ namespace Merge
                         return experience + amount;
                     }
             }
-            
+
         }
 
         IEnumerator UpdateNumber(Types.CollGroup type, int amount, int newAmount, bool slash)
@@ -483,7 +499,7 @@ namespace Merge
                     // TODO - Check this
                     // energyTimer.Check();
                 }
-                
+
                 SetUpdating(type, false);
             }
         }

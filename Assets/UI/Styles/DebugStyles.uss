@@ -195,3 +195,15 @@
 .debug_menu_button_cyan {
     -unity-background-image-tint-color: rgb(85, 203, 179);
 }
+
+.debug_menu_scroller .unity-base-slider__tracker {
+    width: 0;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+}
+
+.debug_menu_scroller .unity-base-slider__dragger {
+    width: 0;
+}

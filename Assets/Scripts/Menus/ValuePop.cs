@@ -265,7 +265,7 @@ namespace Merge
             // Remove the value pop
             root.Remove(valuePop);
 
-            gameData.AddToBonus(item, check);
+            gameData.AddToBonus(item, check); // TODO - Change the location of this line
         }
 
         VisualElement InitializePopValueElement(

@@ -231,8 +231,6 @@ namespace Merge
 
             levelValue.text = gameData.level.ToString();
 
-            soundManager.PlaySound("Experience");
-
             levelValue.RemoveFromClassList("level_value_bloop");
         }
 
@@ -289,8 +287,6 @@ namespace Merge
 
                 levelReward2.style.scale = new StyleScale(fullScale);
                 levelRewardButton0.style.scale = new StyleScale(fullScale);
-
-                soundManager.PlaySound("Experience");
             }
         }
 

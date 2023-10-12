@@ -6,7 +6,7 @@
         <ui:VisualElement name="Background" class="background" />
         <ui:VisualElement name="Container" class="container">
             <ui:VisualElement name="Content" class="content">
-                <ui:ScrollView class="scroller">
+                <ui:ScrollView vertical-scroller-visibility="Hidden" horizontal-scroller-visibility="Hidden" class="debug_menu_scroller">
                     <ui:VisualElement name="LoadingContainer" class="debug_menu_container" style="display: none;">
                         <ui:Label tabindex="-1" text="Loading Scene" display-tooltip-when-elided="true" name="ContainerLabel" class="debug_menu_container_label" />
                         <ui:Button text="Skip Loading" display-tooltip-when-elided="true" name="SkipButton" class="button_active debug_menu_button debug_menu_button_red" />
@@ -23,7 +23,7 @@
             <ui:VisualElement name="Title" class="menu_title" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuTitle.png?fileID=2800000&amp;guid=830ffbc9a26c02c4cb218a8e5568ad67&amp;type=3#MenuTitle&apos;);">
                 <ui:Label text="Debug" display-tooltip-when-elided="true" name="Value" class="menu_title_value" />
             </ui:VisualElement>
-            <ui:VisualElement name="Close" class="button_active_extra menu_close_button" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&apos;);" />
+            <ui:VisualElement name="Close" picking-mode="Ignore" class="button_active_extra menu_close_button" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&apos;);" />
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="LogsContainer" class="logs_container" style="display: none; opacity: 0;">

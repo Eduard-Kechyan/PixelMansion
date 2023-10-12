@@ -42,15 +42,16 @@ namespace Merge
             }
             else
             {
-                if (Instance != null && Instance != this)
+                Instance = this;
+             /*   if (Instance != null && Instance != this)
                 {
                     Destroy(gameObject);
                 }
                 else
                 {
-                    Instance = this;
+                   Instance = this;
                     DontDestroyOnLoad(gameObject);
-                }
+                }*/
             }
         }
 
