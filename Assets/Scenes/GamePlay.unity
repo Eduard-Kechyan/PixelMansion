@@ -923,9 +923,17 @@ PrefabInstance:
       value: GameData
       objectReference: {fileID: 0}
     - target: {fileID: 7628476360138686812, guid: 9191de2ed2b660e45ac702f5b04303ad, type: 3}
+      propertyPath: countFPS
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 7628476360138686812, guid: 9191de2ed2b660e45ac702f5b04303ad, type: 3}
       propertyPath: energyTimer
       value: 
       objectReference: {fileID: 783295150}
+    - target: {fileID: 7628476360138686812, guid: 9191de2ed2b660e45ac702f5b04303ad, type: 3}
+      propertyPath: numberIncreaseSpeed
+      value: 0.1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1528,38 +1536,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ValuesUI
       objectReference: {fileID: 0}
-    - target: {fileID: 5620125642504170655, guid: e40cfcf418a8eb04ca91a1f444eb3a9f, type: 3}
-      propertyPath: menuUI
-      value: 
-      objectReference: {fileID: 2529494230138778357}
-    - target: {fileID: 5620125642504170655, guid: e40cfcf418a8eb04ca91a1f444eb3a9f, type: 3}
-      propertyPath: levelUpIndicatorSprites.Array.size
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 5620125642504170655, guid: e40cfcf418a8eb04ca91a1f444eb3a9f, type: 3}
-      propertyPath: levelUpIndicatorSprites.Array.data[0]
-      value: 
-      objectReference: {fileID: -448423610, guid: 0779a5ff798d5fc4e9e6b9d19fc1e35e, type: 3}
-    - target: {fileID: 5620125642504170655, guid: e40cfcf418a8eb04ca91a1f444eb3a9f, type: 3}
-      propertyPath: levelUpIndicatorSprites.Array.data[1]
-      value: 
-      objectReference: {fileID: 1912430233, guid: 0779a5ff798d5fc4e9e6b9d19fc1e35e, type: 3}
-    - target: {fileID: 5620125642504170655, guid: e40cfcf418a8eb04ca91a1f444eb3a9f, type: 3}
-      propertyPath: levelUpIndicatorSprites.Array.data[2]
-      value: 
-      objectReference: {fileID: -430561725, guid: 0779a5ff798d5fc4e9e6b9d19fc1e35e, type: 3}
-    - target: {fileID: 5620125642504170655, guid: e40cfcf418a8eb04ca91a1f444eb3a9f, type: 3}
-      propertyPath: levelUpIndicatorSprites.Array.data[3]
-      value: 
-      objectReference: {fileID: -78041159, guid: 0779a5ff798d5fc4e9e6b9d19fc1e35e, type: 3}
-    - target: {fileID: 5620125642504170655, guid: e40cfcf418a8eb04ca91a1f444eb3a9f, type: 3}
-      propertyPath: levelUpIndicatorSprites.Array.data[4]
-      value: 
-      objectReference: {fileID: 579244564, guid: 0779a5ff798d5fc4e9e6b9d19fc1e35e, type: 3}
-    - target: {fileID: 5620125642504170655, guid: e40cfcf418a8eb04ca91a1f444eb3a9f, type: 3}
-      propertyPath: levelUpIndicatorSprites.Array.data[5]
-      value: 
-      objectReference: {fileID: -1459763292, guid: 0779a5ff798d5fc4e9e6b9d19fc1e35e, type: 3}
     - target: {fileID: 6853033041420144743, guid: e40cfcf418a8eb04ca91a1f444eb3a9f, type: 3}
       propertyPath: m_RootOrder
       value: 7

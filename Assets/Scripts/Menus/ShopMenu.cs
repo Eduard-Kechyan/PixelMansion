@@ -252,7 +252,7 @@ namespace Merge
 
                     // Top label 
                     Label topLabel = newShopItemBox.Q<Label>("TopLabel");
-                    topLabel.text = shopValues[i].amount.ToString();
+                    topLabel.text = shopValues[i].amount.ToString("N0");
 
                     // Popular
                     VisualElement popular = newShopItemBox.Q<VisualElement>("Popular");
@@ -451,7 +451,7 @@ namespace Merge
                 {
                     if (gameData.gold >= shopData.itemsContent[order].price)
                     {
-                        gameData.UpdateGold(-shopData.itemsContent[order].price);
+                        gameData.UpdateValue(-shopData.itemsContent[order].price, Types.CollGroup.Gold, false, true);
                     }
                     else
                     {
@@ -464,7 +464,7 @@ namespace Merge
                 {
                     if (gameData.gems >= shopData.itemsContent[order].price)
                     {
-                        gameData.UpdateGems(-shopData.itemsContent[order].price);
+                        gameData.UpdateValue(-shopData.itemsContent[order].price, Types.CollGroup.Gems, false, true);
                     }
                     else
                     {
@@ -489,7 +489,7 @@ namespace Merge
                 StartCoroutine(AddItemToPlayButton(order, shopItemType));
             }
 
-            dailyData.SetBoughtItem(nameOrder,  shopItemType);
+            dailyData.SetBoughtItem(nameOrder, shopItemType);
 
             InitializeShopItems(shopItemType);
 

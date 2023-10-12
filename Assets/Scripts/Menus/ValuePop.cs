@@ -47,9 +47,12 @@ namespace Merge
             root = GetComponent<UIDocument>().rootVisualElement;
         }
 
-        public void PopValue(int amount, Types.CollGroup type, Vector2 position = default, bool multiply = false, Action callback = null)
+        public void PopValue(int amount, Types.CollGroup type, Vector2 position = default, bool multiply = false, bool isUIPosition = false, Action callback = null)
         {
-            StartCoroutine(HandlePopValue(amount, type, position, multiply, callback));
+            // Run this first
+            gameData.UpdateValue(amount, type, multiply);
+
+            StartCoroutine(HandlePopValue(amount, type, position, multiply, isUIPosition, callback));
         }
 
         public void PopInventoryItem(Sprite sprite, Vector2 initialPosition, Vector2 position, Action callback = null)
@@ -75,6 +78,7 @@ namespace Merge
             Types.CollGroup type,
             Vector2 position,
             bool multiply = false,
+            bool isUIPosition = false,
             Action callback = null
         )
         {
@@ -106,7 +110,7 @@ namespace Merge
             valuePopSFX = type.ToString();
 
             // Add value pop element to the root
-            VisualElement valuePop = InitializePopValueElement(valuePopSprite, position, false);
+            VisualElement valuePop = InitializePopValueElement(valuePopSprite, position, false, isUIPosition);
 
             // Add the value pop to the root
             root.Add(valuePop);
@@ -148,21 +152,7 @@ namespace Merge
             root.Remove(valuePop);
 
             // Update data
-            switch (type)
-            {
-                case Types.CollGroup.Energy:
-                    gameData.UpdateEnergy(amount, multiply);
-                    break;
-                case Types.CollGroup.Gold:
-                    gameData.UpdateGold(amount, multiply);
-                    break;
-                case Types.CollGroup.Gems:
-                    gameData.UpdateGems(amount, multiply);
-                    break;
-                default: // Types.CollGroup.Experience
-                    gameData.UpdateExperience(amount, multiply);
-                    break;
-            }
+            gameData.UpdateValueUI(amount, type, multiply);
         }
 
         public IEnumerator HandlePopInventoryItem(Sprite sprite, Vector2 initialPosition, Vector2 position, Action callback = null)
@@ -178,7 +168,7 @@ namespace Merge
             yield return new WaitForSeconds(0.1f);
 
             // Increase the size of the value pop
-            Scale scale = new (new Vector2(1f, 1f));
+            Scale scale = new(new Vector2(1f, 1f));
 
             valuePop.style.scale = new StyleScale(scale);
 

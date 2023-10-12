@@ -26,6 +26,10 @@ namespace Merge
 
         private Coroutine energyCoroutine;
 
+        private bool isEnergySlashing = false;
+        private bool isGoldSlashing = false;
+        private bool isGemsSlashing = false;
+
         // References
         private LevelMenu levelMenu;
         private EnergyMenu energyMenu;
@@ -47,14 +51,17 @@ namespace Merge
 
         public Button energyButton;
         private VisualElement energyPlus;
+        private VisualElement energySlash;
 
         private Label energyTimerLabel;
 
         public Button goldButton;
         private VisualElement goldPlus;
+        private VisualElement goldSlash;
 
         public Button gemsButton;
         private VisualElement gemsPlus;
+        private VisualElement gemsSlash;
 
         void Start()
         {
@@ -80,19 +87,26 @@ namespace Merge
             energyButton = valuesBox.Q<Button>("EnergyButton");
             energyPlus = energyButton.Q<VisualElement>("Plus");
             energyTimerLabel = energyButton.Q<Label>("EnergyTimer");
+            energySlash = energyButton.Q<VisualElement>("Slash");
 
             energyTimerLabel.style.display = DisplayStyle.None;
 
             goldButton = valuesBox.Q<Button>("GoldButton");
             goldPlus = goldButton.Q<VisualElement>("Plus");
+            goldSlash = goldButton.Q<VisualElement>("Slash");
 
             gemsButton = valuesBox.Q<Button>("GemsButton");
             gemsPlus = gemsButton.Q<VisualElement>("Plus");
+            gemsSlash = gemsButton.Q<VisualElement>("Slash");
+
+            // Init
+            energySlash.RemoveFromClassList("slashing");
+            goldSlash.RemoveFromClassList("slashing");
+            gemsSlash.RemoveFromClassList("slashing");
 
             SetValues();
 
             CheckForTaps();
-
         }
 
         void Update()
@@ -158,9 +172,9 @@ namespace Merge
             levelFill.style.width = CalcLevelFill();
 
             levelValue.text = gameData.level.ToString();
-            energyButton.text = gameData.energy.ToString();
-            goldButton.text = gameData.gold.ToString();
-            gemsButton.text = gameData.gems.ToString();
+            energyButton.text = gameData.energy.ToString("N0");
+            goldButton.text = gameData.gold.ToString("N0");
+            gemsButton.text = gameData.gems.ToString("N0");
 
             float energyFontSize = CheckFontSize(energyButton);
             float goldFontSize = CheckFontSize(goldButton);
@@ -297,6 +311,58 @@ namespace Merge
             }
 
             return Length.Percent(fillPercent);
+        }
+
+        public void SlashValues(Types.CollGroup type)
+        {
+            switch (type)
+            {
+                case Types.CollGroup.Energy:
+                    if (!isEnergySlashing)
+                    {
+                        isEnergySlashing = true;
+
+                        energySlash.AddToClassList("slashing");
+
+                        Glob.SetTimeout(() =>
+                        {
+                            isEnergySlashing = false;
+
+                            energySlash.RemoveFromClassList("slashing");
+                        }, 0.4f);
+                    }
+                    break;
+                case Types.CollGroup.Gold:
+                    if (!isGoldSlashing)
+                    {
+                        isGoldSlashing = true;
+
+                        goldSlash.AddToClassList("slashing");
+
+                        Glob.SetTimeout(() =>
+                        {
+                            isGoldSlashing = false;
+
+                            goldSlash.RemoveFromClassList("slashing");
+                        }, 0.4f);
+                    }
+                    break;
+                case Types.CollGroup.Gems:
+                    if (!isGemsSlashing)
+                    {
+                        isGemsSlashing = true;
+
+                        gemsSlash.AddToClassList("slashing");
+
+                        Glob.SetTimeout(() =>
+                        {
+                            isGemsSlashing = false;
+
+                            gemsSlash.RemoveFromClassList("slashing");
+                        }, 0.4f);
+                    }
+                    break;
+            }
         }
 
         public void DisableButtons()

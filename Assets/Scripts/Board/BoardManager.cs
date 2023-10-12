@@ -413,7 +413,7 @@ namespace Merge
 
             if (useEnergy)
             {
-                gameData.UpdateEnergy(-1);
+                gameData.UpdateValue(-1, Types.CollGroup.Energy, false, true);
             }
 
             dataManager.SaveBoard();

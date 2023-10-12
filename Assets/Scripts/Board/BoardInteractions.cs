@@ -627,7 +627,7 @@ namespace Merge
         {
             if (item.name == currentItem.name)
             {
-                if (gameData.UpdateGems(-amount))
+                if (gameData.UpdateValue(-amount, Types.CollGroup.Gems, false, true))
                 {
                     switch (state)
                     {
@@ -680,7 +680,7 @@ namespace Merge
         {
             if (item.name == currentItem.name)
             {
-                if (gameData.UpdateGems(-amount))
+                if (gameData.UpdateValue(-amount, Types.CollGroup.Gems, false, true))
                 {
                     switch (currentItem.type)
                     {
@@ -756,7 +756,7 @@ namespace Merge
 
                     if (amount > 0)
                     {
-                        gameData.UpdateGold(amount);
+                        gameData.UpdateValue(amount, Types.CollGroup.Gold, false, true);
 
                         sellUndoAmount = amount;
                     }
@@ -821,7 +821,7 @@ namespace Merge
 
                 if (sellUndoAmount > 0)
                 {
-                    gameData.UpdateGold(-sellUndoAmount);
+                    gameData.UpdateValue(-sellUndoAmount, Types.CollGroup.Gold, false, true);
                     sellUndoAmount = 0;
                 }
 

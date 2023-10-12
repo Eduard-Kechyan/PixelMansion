@@ -59,7 +59,7 @@ namespace Merge
 
             AddColors();
 
-            AddReloadButton();
+            AddReloadAndDeleteButton();
 
             string folderPath = Application.persistentDataPath + "/QuickSave";
 
@@ -70,15 +70,9 @@ namespace Merge
                 if (filePaths.Length > 0)
                 {
                     VisualElement fileNameBlock = new();
-                    VisualElement fileOpenBlock = new();
-
                     fileNameBlock.style.flexDirection = FlexDirection.Row;
                     fileNameBlock.style.justifyContent = Justify.Center;
                     fileNameBlock.style.marginBottom = 10f;
-
-                    fileOpenBlock.style.flexDirection = FlexDirection.Row;
-                    fileOpenBlock.style.justifyContent = Justify.Center;
-                    fileOpenBlock.style.marginBottom = 10f;
 
                     string firstFileName = "";
 
@@ -129,8 +123,6 @@ namespace Merge
                     }
 
                     rootVisualElement.Add(fileNameBlock);
-                    //rootVisualElement.Add(fileOpenBlock);
-
                     SetData(firstFileName);
                 }
                 else
@@ -267,18 +259,51 @@ namespace Merge
             return valueLabel;
         }
 
-        void AddReloadButton()
+        void DeleteData()
         {
+            string folderPath = Application.persistentDataPath + "/QuickSave";
+
+            if (Directory.Exists(folderPath))
+            {
+                Directory.Delete(folderPath, true);
+            }
+
+            PlayerPrefs.DeleteAll();
+            PlayerPrefs.Save();
+
+            SetDataPre();
+        }
+
+        void AddReloadAndDeleteButton()
+        {
+            VisualElement buttonsBlock = new();
+            buttonsBlock.style.flexDirection = FlexDirection.Row;
+            buttonsBlock.style.justifyContent = Justify.Center;
+            buttonsBlock.style.marginBottom = 10f;
+
             Button reloadButton = new() { text = "Reload Data" };
 
-            reloadButton.style.marginRight = StyleKeyword.Auto;
-            reloadButton.style.marginLeft = StyleKeyword.Auto;
+            reloadButton.style.marginRight = 10f;
+            reloadButton.style.marginLeft = 10f;
             reloadButton.style.marginTop = 10f;
             reloadButton.style.marginBottom = 10f;
 
             reloadButton.clicked += () => SetDataPre();
 
-            rootVisualElement.Add(reloadButton);
+            buttonsBlock.Add(reloadButton);
+
+            Button deleteButton = new() { text = "Delete Data" };
+
+            deleteButton.style.marginRight = 10f;
+            deleteButton.style.marginLeft = 10f;
+            deleteButton.style.marginTop = 10f;
+            deleteButton.style.marginBottom = 10f;
+
+            deleteButton.clicked += () => DeleteData();
+
+            buttonsBlock.Add(deleteButton);
+
+            rootVisualElement.Add(buttonsBlock);
         }
 
         void AddColors()
@@ -291,14 +316,18 @@ namespace Merge
 
             for (int i = 0; i < colors.Count; i++)
             {
-                VisualElement colorBlueItem = new();
-                colorBlueItem.style.width = 20f;
-                colorBlueItem.style.height = 20f;
-                colorBlueItem.style.marginLeft = 5f;
-                colorBlueItem.style.marginRight = 5f;
-                colorBlueItem.style.backgroundColor = colors[i];
+                VisualElement colorItem = new();
+                colorItem.style.width = 20f;
+                colorItem.style.height = 20f;
+                colorItem.style.marginLeft = 5f;
+                colorItem.style.marginRight = 5f;
+                colorItem.style.backgroundColor = colors[i];
+                colorItem.style.borderTopLeftRadius = 4f;
+                colorItem.style.borderTopRightRadius = 4f;
+                colorItem.style.borderBottomLeftRadius = 4f;
+                colorItem.style.borderBottomRightRadius = 4f;
 
-                colorBox.Add(colorBlueItem);
+                colorBox.Add(colorItem);
             }
 
             rootVisualElement.Add(colorBox);

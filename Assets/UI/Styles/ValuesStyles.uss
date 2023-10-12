@@ -39,6 +39,8 @@
     margin-bottom: 0;
     padding-top: 0;
     padding-bottom: 0;
+    width: 40px;
+    height: 18px;
 }
 
 .value_button:active {
@@ -56,6 +58,28 @@
     left: 7px;
     bottom: -1px;
     transition-duration: 0.3s;
+}
+
+.value_button .edge {
+    width: 2px;
+    height: 18px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-image: url('project://database/Assets/Sprites/Values/ValueBoxEdge.png?fileID=2800000&guid=374ad9b173b598746ba971596a0a6415&type=3#ValueBoxEdge');
+}
+
+.value_button .slash {
+    width: 8px;
+    height: 18px;
+    position: absolute;
+    background-image: url('project://database/Assets/Sprites/Values/ValueSlash.png?fileID=2800000&guid=920ec226e86a00044a00ae5d8a9c9974&type=3#ValueSlash');
+    left: 5px;
+}
+
+.value_button .slashing {
+    left: 40px;
+    transition-duration: 0.4s;
 }
 
 .value_bob {
@@ -132,8 +156,6 @@
 }
 
 .energy_button {
-    width: 36px;
-    height: 17px;
     overflow: visible;
     padding-left: 16px;
     font-size: 5px;
@@ -157,8 +179,6 @@
 }
 
 .gold_button {
-    width: 40px;
-    height: 17px;
     overflow: visible;
     font-size: 5px;
 }
@@ -168,8 +188,6 @@
 }
 
 .gems_button {
-    width: 39px;
-    height: 17px;
     overflow: visible;
     padding-left: 19px;
     font-size: 5px;

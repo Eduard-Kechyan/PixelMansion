@@ -12,6 +12,8 @@ namespace Merge
         // Variables
         public ValuesData valuesData;
         public EnergyTimer energyTimer;
+        public float countFPS = 10f;
+        public float numberIncreaseDuration = 1f;
 
         [HideInInspector]
         public const int WIDTH = 7;
@@ -39,6 +41,10 @@ namespace Merge
         public int energy = 100;
         public int gold = 100;
         public int gems = 100;
+
+        private bool updatingEnergy = false;
+        private bool updatingGold = false;
+        private bool updatingGems = false;
 
         [Header("Level")]
         public int level = 0;
@@ -101,7 +107,6 @@ namespace Merge
         private Sprite[] taskSprites;
 
         // References
-        private LevelMenu levelMenu;
         private ValuesUI valuesUI;
         private GameplayUI gameplayUI;
         private DataManager dataManager;
@@ -138,7 +143,6 @@ namespace Merge
 
         public void Init(string sceneName)
         {
-            levelMenu = GameRefs.Instance.levelMenu;
             valuesUI = GameRefs.Instance.valuesUI;
 
             if (sceneName == "Gameplay")
@@ -184,39 +188,47 @@ namespace Merge
             valuesUI.UpdateValues();
         }
 
-        public void SetEnergy(int amount)
+        public void SetEnergy(int amount, bool slash = false)
         {
             energy = amount;
 
             valuesUI.UpdateValues();
+
+            if (slash)
+            {
+                valuesUI.SlashValues(Types.CollGroup.Energy);
+            }
         }
 
-        public void SetGold(int amount)
+        public void SetGold(int amount, bool slash = false)
         {
             gold = amount;
 
             valuesUI.UpdateValues();
+
+            if (slash)
+            {
+                valuesUI.SlashValues(Types.CollGroup.Gold);
+            }
         }
 
-        public void SetGems(int amount)
+        public void SetGems(int amount, bool slash = false)
         {
             gems = amount;
 
             valuesUI.UpdateValues();
+
+            if (slash)
+            {
+                valuesUI.SlashValues(Types.CollGroup.Gems);
+            }
         }
 
         //////// UPDATE ////////
 
-        public void UpdateExperience(int amount = 1, bool useMultiplier = false)
+        void UpdateExperience(int amount)
         {
-            if (useMultiplier)
-            {
-                experience += valuesData.experienceMultiplier[amount - 1];
-            }
-            else
-            {
-                experience += amount;
-            }
+            experience += amount;
 
             CheckExperience(true);
 
@@ -230,7 +242,7 @@ namespace Merge
             dataManager.writer.Write("experience", experience).Commit();
         }
 
-        public void UpdateLevel(Action callback=null)
+        public void UpdateLevel(Action callback = null)
         {
             level++;
 
@@ -243,6 +255,11 @@ namespace Merge
             CalcMaxExperience();
 
             valuesUI.UpdateLevel(callback);
+
+            if (energy < 100)
+            {
+                SetEnergy(100, true);
+            }
         }
 
         public void CheckExperience(bool playSound = false)
@@ -266,96 +283,240 @@ namespace Merge
             }
         }
 
-        public bool UpdateEnergy(int amount = 1, bool useMultiplier = false)
+        public bool UpdateValue(int amount, Types.CollGroup type, bool useMultiplier = false, bool updateUI = false)
         {
-            if (amount < 0 && energy + amount < 0)
+            int tempAmount = CalcNewAmount(amount, type, useMultiplier);
+
+            switch (type)
             {
-                return false;
+                case Types.CollGroup.Energy:
+                    if (amount < 0 && energy + amount < 0)
+                    {
+                        return false;
+                    }
+                    break;
+                case Types.CollGroup.Gold:
+                    if (amount < 0 && gold + amount < 0)
+                    {
+                        return false;
+                    }
+                    break;
+                case Types.CollGroup.Gems:
+                    if (amount < 0 && gems + amount < 0)
+                    {
+                        return false;
+                    }
+                    break;
+                default: //Types.CollGroup.Experience
+                    UpdateExperience(tempAmount);
+                    return false;
             }
-            else
+
+            dataManager.writer.Write(type.ToString().ToLower(), tempAmount).Commit();
+
+            if (updateUI)
             {
-                if (useMultiplier)
-                {
-                    energy += valuesData.energyMultiplier[amount - 1];
-                }
-                else
-                {
-                    energy += amount;
-                }
+                UpdateValueUI(amount, type, useMultiplier);
+            }
 
-                if (energy < 0)
-                {
-                    energy = 0;
-                }
+            return true;
+        }
 
-                // TODO - Check this
-                // energyTimer.Check();
+        public void UpdateValueUI(int amount, Types.CollGroup type, bool useMultiplier = false)
+        {
+            int tempAmount = CalcNewAmount(amount, type,useMultiplier);
 
-                dataManager.writer.Write("energy", energy).Commit();
+            bool shouldFlash = amount > 0 ? true : false;
 
-                valuesUI.UpdateValues();
+            int currentAmount;
 
-                return true;
+            bool isUpdating;
+
+            switch (type)
+            {
+                case Types.CollGroup.Energy:
+                    currentAmount = energy;
+                    isUpdating = updatingEnergy;
+                    break;
+                case Types.CollGroup.Gold:
+                    currentAmount = gold;
+                    isUpdating = updatingGold;
+                    break;
+                case Types.CollGroup.Gems:
+                    currentAmount = gems;
+                    isUpdating = updatingGems;
+                    break;
+                default: //Types.CollGroup.Experience
+                    Debug.LogWarning("Types.CollGroup.Experience was given to UpdateValueUI!");
+                    return;
+            }
+
+            if (isUpdating)
+            {
+                SetUpdating(type, false);
+
+                StopCoroutine(UpdateNumber(type, currentAmount, tempAmount, shouldFlash)); // Remove energy
+            }
+
+            if (!isUpdating)
+            {
+                SetUpdating(type, true);
+
+                StartCoroutine(UpdateNumber(type, currentAmount, tempAmount, shouldFlash));
             }
         }
 
-        public bool UpdateGold(int amount = 1, bool useMultiplier = false)
+        int CalcNewAmount(int amount, Types.CollGroup type, bool useMultiplier = false)
         {
-            if (amount < 0 && gold + amount < 0)
+            switch (type)
             {
-                return false;
+                case Types.CollGroup.Energy:
+                    if (useMultiplier)
+                    {
+                        return energy + valuesData.energyMultiplier[amount - 1];
+                    }
+                    else
+                    {
+                        return energy + amount;
+                    }
+                case Types.CollGroup.Gold:
+                    if (useMultiplier)
+                    {
+                        return gold + valuesData.goldMultiplier[amount - 1];
+                    }
+                    else
+                    {
+                        return gold + amount;
+                    }
+                case Types.CollGroup.Gems:
+                    if (useMultiplier)
+                    {
+                        return gems + valuesData.gemsMultiplier[amount - 1];
+                    }
+                    else
+                    {
+                        return gems + amount;
+                    }
+                default: //Types.CollGroup.Experience
+                    if (useMultiplier)
+                    {
+                        return experience + valuesData.experienceMultiplier[amount - 1];
+                    }
+                    else
+                    {
+                        return experience + amount;
+                    }
+            }
+            
+        }
+
+        IEnumerator UpdateNumber(Types.CollGroup type, int amount, int newAmount, bool slash)
+        {
+            int prevAmount = amount;
+            int stepAmount;
+
+            if (newAmount - prevAmount < 0)
+            {
+                stepAmount = Mathf.FloorToInt((newAmount - prevAmount) / (countFPS * numberIncreaseDuration));
             }
             else
             {
-                if (useMultiplier)
+                stepAmount = Mathf.CeilToInt((newAmount - prevAmount) / (countFPS * numberIncreaseDuration));
+            }
+
+            if (prevAmount < newAmount)
+            {
+                while (prevAmount < newAmount)
                 {
-                    gold += valuesData.goldMultiplier[amount - 1];
+                    prevAmount += stepAmount;
+
+                    if (prevAmount > newAmount)
+                    {
+                        prevAmount = newAmount;
+                    }
+
+                    SetUpdateNumber(type, prevAmount);
+
+                    valuesUI.UpdateValues();
+
+                    yield return new WaitForSeconds(1f / countFPS);
                 }
-                else
+
+                if (slash)
                 {
-                    gold += amount;
+                    valuesUI.SlashValues(type);
                 }
 
-                if (gold < 0)
+                if (type == Types.CollGroup.Energy)
                 {
-                    gold = 0;
+                    // TODO - Check this
+                    // energyTimer.Check();
                 }
 
-                dataManager.writer.Write("gold", gold).Commit();
+                SetUpdating(type, false);
+            }
+            else
+            {
+                while (prevAmount > newAmount)
+                {
+                    prevAmount += stepAmount;
 
-                valuesUI.UpdateValues();
+                    if (prevAmount < newAmount)
+                    {
+                        prevAmount = newAmount;
+                    }
 
-                return true;
+                    SetUpdateNumber(type, prevAmount);
+
+                    valuesUI.UpdateValues();
+
+                    yield return new WaitForSeconds(1f / countFPS);
+                }
+
+                if (slash)
+                {
+                    valuesUI.SlashValues(type);
+                }
+
+                if (type == Types.CollGroup.Energy)
+                {
+                    // TODO - Check this
+                    // energyTimer.Check();
+                }
+                
+                SetUpdating(type, false);
             }
         }
 
-        public bool UpdateGems(int amount = 1, bool useMultiplier = false)
+        void SetUpdateNumber(Types.CollGroup type, int amount)
         {
-            if (amount < 0 && gems + amount < 0)
+            switch (type)
             {
-                return false;
+                case Types.CollGroup.Energy:
+                    energy = amount;
+                    break;
+                case Types.CollGroup.Gold:
+                    gold = amount;
+                    break;
+                case Types.CollGroup.Gems:
+                    gems = amount;
+                    break;
             }
-            else
+        }
+
+        void SetUpdating(Types.CollGroup type, bool value)
+        {
+            switch (type)
             {
-                if (useMultiplier)
-                {
-                    gems += valuesData.gemsMultiplier[amount - 1];
-                }
-                else
-                {
-                    gems += amount;
-                }
-
-                if (gems < 0)
-                {
-                    gems = 0;
-                }
-
-                dataManager.writer.Write("gems", gems).Commit();
-
-                valuesUI.UpdateValues();
-
-                return true;
+                case Types.CollGroup.Energy:
+                    updatingEnergy = value;
+                    break;
+                case Types.CollGroup.Gold:
+                    updatingGold = value;
+                    break;
+                case Types.CollGroup.Gems:
+                    updatingGems = value;
+                    break;
             }
         }
 

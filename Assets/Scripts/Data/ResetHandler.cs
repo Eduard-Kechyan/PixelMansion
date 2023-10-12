@@ -6,37 +6,38 @@ using System.IO;
 namespace Merge
 {
     public class ResetHandler : MonoBehaviour
-{
-    public bool resetData = false;
+    {
+        public bool resetData = false;
 
 #if UNITY_EDITOR
-    void OnValidate()
-    {
-        if (resetData)
+        void OnValidate()
         {
-            resetData = false;
+            if (resetData)
+            {
+                resetData = false;
 
-            ResetData();
+                ResetData();
+            }
         }
-    }
 #endif
 
-    public void RestartAndResetApp(){
-        RestartApp(true);
-    }
-
-    public void RestartApp(bool reset = false)
-    {
-        //if(Application.isEditor) return;
-
-        // Reset the game's data
-        if (reset)
+        public void RestartAndResetApp()
         {
-            ResetData();
+            RestartApp(true);
         }
 
-#if UNITY_EDITOR             
-        Debug.Log("Restarting application!");
+        public void RestartApp(bool reset = false)
+        {
+            //if(Application.isEditor) return;
+
+            // Reset the game's data
+            if (reset)
+            {
+                ResetData();
+            }
+
+#if UNITY_EDITOR
+            Debug.Log("Restarting application!");
 #elif UNITY_ANDROID
         using (var unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
         {
@@ -59,19 +60,19 @@ namespace Merge
         // The game will be closing, please open it up again!
         // OR - Find a way to restart the game
 #endif
-    }
-
-    public void ResetData()
-    {
-        string folderPath = Application.persistentDataPath + "/QuickSave";
-
-        if (Directory.Exists(folderPath))
-        {
-            Directory.Delete(folderPath, true);
         }
 
-        PlayerPrefs.DeleteAll();
-        PlayerPrefs.Save();
+        public void ResetData()
+        {
+            string folderPath = Application.persistentDataPath + "/QuickSave";
+
+            if (Directory.Exists(folderPath))
+            {
+                Directory.Delete(folderPath, true);
+            }
+
+            PlayerPrefs.DeleteAll();
+            PlayerPrefs.Save();
+        }
     }
-}
 }

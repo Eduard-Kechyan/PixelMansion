@@ -164,7 +164,7 @@ namespace Merge
         {
             int amount = int.Parse(buyMoreButton.text);
 
-            if (gameData.UpdateGold(-amount))
+            if (gameData.UpdateValue( -amount, Types.CollGroup.Gold, false, true))
             {
                 gameData.inventorySpace++;
 

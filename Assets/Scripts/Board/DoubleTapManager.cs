@@ -124,6 +124,7 @@ namespace Merge
                 interactions.currentItem.collGroup,
                 interactions.currentItem.transform.position,
                 true,
+                false,
                 () =>
                 {
                     levelMenu.isRewarding = false;

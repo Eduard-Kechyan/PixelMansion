@@ -90,7 +90,7 @@ namespace Merge
         {
             // Title
             string title = LOCALE.Get("energy_menu_title");
-            
+
             energyWatchLabel.text = "+" + adsManager.energyRewardAmount;
 
             // Open menu
@@ -102,12 +102,10 @@ namespace Merge
         {
             adsManager.WatchAd((int newEnergyAmount) =>
             {
-                valuePop.PopValue(newEnergyAmount, Types.CollGroup.Energy);
-
-                menuUI.CloseMenu(energyMenu.name);
+                valuePop.PopValue(newEnergyAmount, Types.CollGroup.Energy, watchButton.worldBound.center, false, true);
             }, () =>
             {
-                string[] notes = new string[] { "note_menu_energy_ad_error_1","note_menu_energy_ad_error_2" };
+                string[] notes = new string[] { "note_menu_energy_ad_error_1", "note_menu_energy_ad_error_2" };
 
                 noteMenu.Open("note_menu_energy_ad_error_title", notes);
             });
@@ -119,12 +117,9 @@ namespace Merge
             // Check if we have enough energy
             if (gameData.gems >= gemsCost)
             {
-                // TODO - Put this together with the UpdateEnergy. In case something goes wrong they both will not fire
-                gameData.UpdateGems(-gemsCost); // Note the -
+                gameData.UpdateValue(-gemsCost, Types.CollGroup.Gems, false, true); // Note the -
 
-                valuePop.PopValue(energyBuyAmount, Types.CollGroup.Energy);
-
-                menuUI.CloseMenu(energyMenu.name);
+                valuePop.PopValue(energyBuyAmount, Types.CollGroup.Energy, buyButton.worldBound.center, false, true);
             }
             else
             {

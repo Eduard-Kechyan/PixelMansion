@@ -26,6 +26,7 @@ namespace Merge
         private List<TimeValue> nullTransition = new();
         private List<TimeValue> fullTransition = new();
 
+        private bool isButtonSlashing = false;
 
         Scale nullScale = new(new Vector2(0f, 0f));
         Scale fullScale = new(new Vector2(1f, 1f));
@@ -51,7 +52,10 @@ namespace Merge
         private VisualElement levelFill;
         private Label levelRewardsLabel;
         private Button levelUpButton;
+        private VisualElement levelUpButtonSlash;
         private Label levelUpLabel;
+        private Button levelUpDummyButton;
+        private Label levelUpDummyLabel;
 
         private Label levelFillLabel;
         private VisualElement levelRewards;
@@ -85,7 +89,10 @@ namespace Merge
             levelFill = levelMenu.Q<VisualElement>("Fill");
             levelFillLabel = levelMenu.Q<Label>("FillLabel");
             levelUpButton = levelMenu.Q<Button>("LevelUpButton");
+            levelUpButtonSlash = levelUpButton.Q<VisualElement>("ButtonSlash");
             levelUpLabel = levelUpButton.Q<Label>("LevelUpLabel");
+            levelUpDummyButton= levelMenu.Q<Button>("LevelUpDummyButton");
+            levelUpDummyLabel = levelUpDummyButton.Q<Label>("LevelUpLabel");
 
             levelRewards = levelMenu.Q<VisualElement>("LevelRewards");
             levelRewardsLabel = levelRewards.Q<Label>("Label");
@@ -121,6 +128,9 @@ namespace Merge
             // Make sure the menu is closed
             levelMenu.style.display = DisplayStyle.None;
             levelMenu.style.opacity = 0;
+
+            // Initialize level up button slash
+            levelUpButtonSlash.RemoveFromClassList("button_slash_slashing");
 
             // Set transitions
             nullTransition.Add(new TimeValue(0f, TimeUnit.Second));
@@ -185,7 +195,29 @@ namespace Merge
 
             levelFillLabel.text = gameData.experience + "/" + gameData.maxExperience;
 
-            levelUpButton.SetEnabled(gameData.canLevelUp);
+            if (gameData.canLevelUp)
+            {
+                levelUpButton.style.display = DisplayStyle.Flex;
+                levelUpDummyButton.style.display = DisplayStyle.None;
+
+                if (!isButtonSlashing)
+                {
+                    isButtonSlashing = true;
+
+                    StartCoroutine(SlashLevelUpButton());
+                }
+            }
+            else
+            {
+                levelUpButton.style.display = DisplayStyle.None;
+                levelUpDummyButton.style.display = DisplayStyle.Flex;
+
+                isButtonSlashing = false;
+
+                StopCoroutine(SlashLevelUpButton());
+
+                levelUpButtonSlash.RemoveFromClassList("button_slash_slashing");
+            }
         }
 
         // Bloop the level value
@@ -202,6 +234,29 @@ namespace Merge
             soundManager.PlaySound("Experience");
 
             levelValue.RemoveFromClassList("level_value_bloop");
+        }
+
+        IEnumerator SlashLevelUpButton()
+        {
+            bool slash = true;
+
+            while (isButtonSlashing)
+            {
+                if (slash)
+                {
+                    levelUpButtonSlash.AddToClassList("button_slash_slashing");
+
+                    yield return new WaitForSeconds(1f);
+
+                    slash = false;
+                }else{
+                    levelUpButtonSlash.RemoveFromClassList("button_slash_slashing");
+
+                    yield return new WaitForSeconds(0.5f);
+
+                    slash = true;
+                }
+            }
         }
 
         void HandleRewards(bool newRewards = true)
@@ -248,7 +303,8 @@ namespace Merge
 
         void UpdateLevel()
         {
-            levelUpButton.SetEnabled(false);
+            levelUpButton.style.display = DisplayStyle.None;
+            levelUpDummyButton.style.display = DisplayStyle.Flex;
 
             gameData.UpdateLevel(() =>
             {
