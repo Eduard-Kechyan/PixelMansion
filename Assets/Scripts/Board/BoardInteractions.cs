@@ -26,7 +26,7 @@ namespace Merge
         [HideInInspector]
         public bool canUndo = false;
         private Item undoItem;
-        Types.Board undoBoardItem = new Types.Board();
+        Types.Board undoBoardItem = new();
         private GameObject undoTile;
         private Vector2 undoScale;
         private int sellUndoAmount = 0;
@@ -93,7 +93,6 @@ namespace Merge
             // Unsubscribe from events
             DataManager.BoardSaveUndoEventAction -= CancelUndo;
         }
-
 
         void Update()
         {
@@ -229,7 +228,7 @@ namespace Merge
             {
                 Item item = hit.transform.gameObject.GetComponent<Item>();
 
-                // Check if gameobject is a item and isn't empty and if it isn't a crate or locked
+                // Check if game object is a item and isn't empty and if it isn't a crate or locked
                 if (item != null && item.state != Types.State.Crate && item.state != Types.State.Locker)
                 {
                     if (currentItem != null && currentItem.isSelected)
@@ -418,7 +417,7 @@ namespace Merge
                         else
                         {
                             // TODO - Check if we need this
-                            // popupManager.Pop(LOCALE.Get("pop_max_level"), otherItem.transform.position);
+                            popupManager.Pop(LOCALE.Get("pop_max_level"), otherItem.transform.position, "", true);
                         }
                     }
                     else
@@ -468,7 +467,7 @@ namespace Merge
 
             // Calc new item name
             Item item = otherItem;
-            Types.Board boardItem = new Types.Board
+            Types.Board boardItem = new()
             {
                 sprite = item.sprite,
                 type = item.type,
@@ -492,7 +491,7 @@ namespace Merge
             tempCurrentItem.ScaleToSize(Vector2.zero, scaleSpeed, true);
             otherItem.GetComponent<Item>().ScaleToSize(Vector2.zero, scaleSpeed, true);
 
-            // Get the prefab that's one level heigher
+            // Get the prefab that's one level higher
             currentItem = itemHandler.CreateItem(
                 otherTile,
                 initializeBoard.tileSize,
@@ -831,19 +830,20 @@ namespace Merge
 
         public void CancelUndo(bool unselect = false)
         {
-            canUndo = false;
-
-            if (undoItem != null)
+            if (canUndo)
             {
-                undoItem = null;
-                undoBoardItem = null;
-                undoTile = null;
-                undoScale = Vector2.zero;
-            }
+                if (undoItem != null)
+                {
+                    undoItem = null;
+                    undoBoardItem = null;
+                    undoTile = null;
+                    undoScale = Vector2.zero;
+                }
 
-            if (unselect)
-            {
-                selectionManager.UnselectUndo();
+                if (unselect)
+                {
+                    selectionManager.UnselectUndo();
+                }
             }
         }
     }

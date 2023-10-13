@@ -72,6 +72,8 @@ namespace Merge
             }
 
             SetPositionZ();
+
+            enabled = false;
         }
 
         void Update()
@@ -158,12 +160,16 @@ namespace Merge
         {
             isSelected = true;
 
+            enabled = true;
+
             SetInitial();
         }
 
         public void Unselect()
         {
             isSelected = false;
+
+            enabled = false;
 
             // Reset flashing
             overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, 0);

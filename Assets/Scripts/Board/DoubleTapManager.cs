@@ -179,11 +179,11 @@ namespace Merge
         {
             Types.Creates[] creates = interactions.currentItem.creates;
 
-            System.Random random = new System.Random();
+            System.Random random = new ();
             double diceRoll = random.NextDouble();
             double cumulative = 0.0;
 
-            ItemTypes.Group selectedGroup = new ItemTypes.Group();
+            ItemTypes.Group selectedGroup = new ();
 
             // Randomly select a group of items to choose from
             for (int i = 0; i < creates.Length; i++)

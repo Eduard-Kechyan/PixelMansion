@@ -1,0 +1,98 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: LoadingSceneAtlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 0
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 0
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_IgnorePlatformSupport: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+      enableAlphaDilation: 1
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 61ca172c17fbedc48b41fee8a338705b, type: 3}
+    - {fileID: 21300000, guid: a203e081d869a9b458e5d52451dc404e, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+    packedSpriteRenderDataKeys:
+    - a203e081d869a9b458e5d52451dc404e: 21300000
+    - 8d3c0e13abeda294daf3dafdd4914243: 21300000
+    - 5cc777d5624f2a74b9c845b2ff6a4267: 21300000
+    - 5c1d5dd59e64e744ca01efb228801bb0: 21300000
+    - 51a17fd56a7e00541ae25eaaae9f0320: 21300000
+    - 0ba53977c232d9e4b866c1efe7c21045: 21300000
+    - 20feb4a762c72b3438394c05558c7909: 21300000
+    - b4b5f8086a07abf49bc1dc2b8cf57e98: 21300000
+    - aecefaf87cdaa094fb9f95ad7c7f400c: 21300000
+    - da9216fa9b665944c9866f384cd15f39: 21300000
+    - cf15db4c14889544f93c0531e528d239: 21300000
+    - 12bad7cc644735748b7eb480727b50a4: 21300000
+    - 1ebc37de54c49164095e17c603278279: 21300000
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: a203e081d869a9b458e5d52451dc404e, type: 3}
+  - {fileID: 21300000, guid: 8d3c0e13abeda294daf3dafdd4914243, type: 3}
+  - {fileID: 21300000, guid: 5cc777d5624f2a74b9c845b2ff6a4267, type: 3}
+  - {fileID: 21300000, guid: 5c1d5dd59e64e744ca01efb228801bb0, type: 3}
+  - {fileID: 21300000, guid: 51a17fd56a7e00541ae25eaaae9f0320, type: 3}
+  - {fileID: 21300000, guid: 0ba53977c232d9e4b866c1efe7c21045, type: 3}
+  - {fileID: 21300000, guid: 20feb4a762c72b3438394c05558c7909, type: 3}
+  - {fileID: 21300000, guid: b4b5f8086a07abf49bc1dc2b8cf57e98, type: 3}
+  - {fileID: 21300000, guid: aecefaf87cdaa094fb9f95ad7c7f400c, type: 3}
+  - {fileID: 21300000, guid: da9216fa9b665944c9866f384cd15f39, type: 3}
+  - {fileID: 21300000, guid: cf15db4c14889544f93c0531e528d239, type: 3}
+  - {fileID: 21300000, guid: 12bad7cc644735748b7eb480727b50a4, type: 3}
+  - {fileID: 21300000, guid: 1ebc37de54c49164095e17c603278279, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - TransitionOverlay
+  - LoaderBackground
+  - SkyUp
+  - ScenePlaceholder
+  - BorderBottom
+  - AgeArrow
+  - Title
+  - Title
+  - SliderDragger
+  - SkyDown
+  - LoaderFrame
+  - BorderTop
+  - Fill
+  m_RenderDataMap: {}
+  m_Tag: LoadingSceneAtlas
+  m_IsVariant: 0

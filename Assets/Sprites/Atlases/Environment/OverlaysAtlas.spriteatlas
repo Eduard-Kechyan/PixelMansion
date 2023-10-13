@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: OverlaysAtlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 0
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 0
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_IgnorePlatformSupport: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+      enableAlphaDilation: 1
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: f47d80ff3ed572b42889b289ec70599b, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+    packedSpriteRenderDataKeys:
+    - c53f8be101f8349429d34f7f175eb8b2: 21300000
+    - 040e34429a305e44aba23e72f6744b30: 21300000
+    - 306edfe3c6a5bf4488c9a455de2df6cc: 21300000
+    - 478bfa45df628be4fa5358c507505e24: 21300000
+    - 7cef98f66d3478647bdd7b1dbb81797d: 21300000
+    - 2fc50a5ce7afe1f43b25c7a969fb3072: 21300000
+    - fc67306e54634ab4188f9429c8a94ff1: 21300000
+    - d07b3dbe3ecbda84fb6839ee513e05b8: 21300000
+    - e87025ce0c806194eb4edb454d064911: 21300000
+    - ad26cdce60c349e4c893e59086201bb4: 21300000
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: c53f8be101f8349429d34f7f175eb8b2, type: 3}
+  - {fileID: 21300000, guid: 040e34429a305e44aba23e72f6744b30, type: 3}
+  - {fileID: 21300000, guid: 306edfe3c6a5bf4488c9a455de2df6cc, type: 3}
+  - {fileID: 21300000, guid: 478bfa45df628be4fa5358c507505e24, type: 3}
+  - {fileID: 21300000, guid: 7cef98f66d3478647bdd7b1dbb81797d, type: 3}
+  - {fileID: 21300000, guid: 2fc50a5ce7afe1f43b25c7a969fb3072, type: 3}
+  - {fileID: 21300000, guid: fc67306e54634ab4188f9429c8a94ff1, type: 3}
+  - {fileID: 21300000, guid: d07b3dbe3ecbda84fb6839ee513e05b8, type: 3}
+  - {fileID: 21300000, guid: e87025ce0c806194eb4edb454d064911, type: 3}
+  - {fileID: 21300000, guid: ad26cdce60c349e4c893e59086201bb4, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - LivingOverlayWallLeft
+  - KitchenOverlayWallLeft
+  - LivingRoomOverlayFloor
+  - BedRoomOverlayWallLeft
+  - BedRoomOverlayFloor
+  - LivingOverlayWallRight
+  - BedRoomOverlayWallRight
+  - KitchenOverlayFloor
+  - BaseDoorOverlay
+  - KitchenOverlayWallRight
+  m_RenderDataMap: {}
+  m_Tag: OverlaysAtlas
+  m_IsVariant: 0

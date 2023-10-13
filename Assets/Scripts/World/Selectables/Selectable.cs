@@ -56,6 +56,8 @@ namespace Merge
             anim = GetComponent<Animation>();
 
             Initialize();
+
+            enabled = false;
         }
 
         void Update()
@@ -63,6 +65,8 @@ namespace Merge
             if (isPlaying && !anim.IsPlaying("SelectableSelect"))
             {
                 isPlaying = false;
+
+                enabled = false;
             }
         }
 
@@ -256,6 +260,8 @@ namespace Merge
                 anim.Play("SelectableSelect");
 
                 isPlaying = true;
+
+                enabled = true;
 
                 return true;
             }

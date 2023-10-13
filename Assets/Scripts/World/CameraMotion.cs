@@ -22,6 +22,8 @@ namespace Merge
         {
             // Cache
             hubUI = GameRefs.Instance.hubUI;
+
+            enabled = false;
         }
 
         void Update()
@@ -44,6 +46,8 @@ namespace Merge
                     PlayerPrefs.SetFloat("lastCamPosY", transform.position.y);
 
                     hubUI.SetUIButtons();
+
+                    enabled = false;
                 }
             }
         }
@@ -63,6 +67,8 @@ namespace Merge
             {
                 useAltSpeed = false;
             }
+
+            enabled = true;
         }
     }
 }

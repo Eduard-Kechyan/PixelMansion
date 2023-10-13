@@ -15,6 +15,8 @@ namespace Merge
 
         private Vector2 destinationPos;
 
+        private bool canCheck = false;
+
         // Enums
         public enum Dir
         {
@@ -48,6 +50,8 @@ namespace Merge
             // Initialize direction
             direction = Dir.DownRight;
             directionOrder = (int)direction;
+
+            enabled = false;
         }
 
         // Update is called once per frame
@@ -55,20 +59,7 @@ namespace Merge
         {
             MoveChar();
 
-            if (agent.velocity.magnitude != 0)
-            {
-                float direction = CalcDirection(agent.velocity.normalized);
-
-                animator.SetFloat("Direction", direction);
-
-                animator.SetBool("Walking", true);
-
-                charOrderSetter.CheckArea();
-            }
-            else
-            {
-                animator.SetBool("Walking", false);
-            }
+            CheckVelocity();
         }
 
         void MoveChar()
@@ -76,15 +67,52 @@ namespace Merge
             agent.SetDestination(new Vector3(destinationPos.x, destinationPos.y, transform.position.z));
 
             agent.velocity = agent.desiredVelocity;
+
+            if (!canCheck)
+            {
+                Glob.SetTimeout(() =>
+                {
+                    canCheck = true;
+
+                    enabled = true;
+                }, 0.1f);
+            }
         }
 
         public void SetDestination(Vector2 newPos, bool stayInRoom = false)
         {
             destinationPos = newPos;
 
+            MoveChar();
+
             if (stayInRoom)
             {
                 //Debug.Log("Staying in room!");
+            }
+        }
+
+        void CheckVelocity()
+        {
+            if (canCheck)
+            {
+                if (agent.velocity.magnitude == 0)
+                {
+                    animator.SetBool("Walking", false);
+
+                    enabled = false;
+
+                    canCheck = false;
+                }
+                else
+                {
+                    float direction = CalcDirection(agent.velocity.normalized);
+
+                    animator.SetFloat("Direction", direction);
+
+                    animator.SetBool("Walking", true);
+
+                    charOrderSetter.CheckArea();
+                }
             }
         }
 

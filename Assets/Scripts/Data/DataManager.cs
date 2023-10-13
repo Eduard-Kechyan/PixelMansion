@@ -44,7 +44,7 @@ namespace Merge
         private TimeManager timeManager;
 
         [HideInInspector]
-        public string initialJsonData;
+        public string boardJsonData;
         private string bonusData;
         private string inventoryData;
         private string tasksJsonData;
@@ -84,8 +84,6 @@ namespace Merge
             saveSettings = new QuickSaveSettings() { CompressionMode = CompressionMode.None }; //TODO -  Set CompressionMode in the final game to Gzip
             writer = QuickSaveWriter.Create("Root", saveSettings);
 
-            gameData.InitAlt();
-
 #if UNITY_EDITOR
             isEditor = true;
 
@@ -98,7 +96,7 @@ namespace Merge
                 )
             )
             {
-                CheckInitialData();
+                StartCoroutine(WaitForLoadedResources());
             }
 
             if (PlayerPrefs.HasKey("userId"))
@@ -108,12 +106,24 @@ namespace Merge
 #endif
         }
 
+        public void CheckForLoadedResources(Action callback = null){
+            StartCoroutine(WaitForLoadedResources(callback));
+        }
+
+        public IEnumerator WaitForLoadedResources(Action callback = null){
+            while(!gameData.resourcesLoaded){
+                yield return null;
+            }
+            
+            CheckInitialData(callback);
+        }
+
         // Check if we need to save initial data to disk
-        public void CheckInitialData(Action callback = null)
+        void CheckInitialData(Action callback)
         {
             if ((ignoreInitialCheck && isEditor) || (!PlayerPrefs.HasKey("Loaded") && !writer.Exists("rootSet")))
             {
-                initialJsonData = dataConverter.ConvertBoardToJson(initialItems.content, true);
+                boardJsonData = dataConverter.ConvertBoardToJson(initialItems.content, true);
                 bonusData = dataConverter.ConvertBonusToJson(gameData.bonusData);
                 inventoryData = dataConverter.ConvertInventoryToJson(gameData.inventoryData);
                 tasksJsonData = dataConverter.ConvertTaskGroupsToJson(gameData.tasksData);
@@ -130,7 +140,7 @@ namespace Merge
                     .Write("gold", gameData.gold)
                     .Write("gems", gameData.gems)
                     //////// Data ////////
-                    .Write("boardData", initialJsonData)
+                    .Write("boardData", boardJsonData)
                     .Write("bonusData", bonusData)
                     .Write("inventoryData", inventoryData)
                     .Write("tasksData", tasksJsonData)
@@ -154,7 +164,7 @@ namespace Merge
         }
 
         // Get object data from the initial data
-        void GetData(bool initialLoad, Action callback = null)
+        void GetData(bool initialLoad, Action callback)
         {
             string newBoardData = "";
             string newBonusData = "";
@@ -168,7 +178,7 @@ namespace Merge
             if (initialLoad)
             {
                 // Get json string from the initial json file
-                newBoardData = initialJsonData;
+                newBoardData = boardJsonData;
                 newBonusData = bonusData;
                 newInventoryData = inventoryData;
                 newTasksData = tasksJsonData;

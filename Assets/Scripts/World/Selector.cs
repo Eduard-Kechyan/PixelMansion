@@ -121,7 +121,7 @@ namespace Merge
 
             contactFilter2D.SetLayerMask(LayerMask.GetMask("Selectable"));
 
-            Vector2 worldPosition =cam.ScreenToWorldPoint(position);
+            Vector2 worldPosition = cam.ScreenToWorldPoint(position);
 
             Physics2D.Raycast(
                            worldPosition,
@@ -213,7 +213,7 @@ namespace Merge
 
                         if (!ignorePopup && notify)
                         {
-                            popupManager.Pop(LOCALE.Get("pop_item_unselectable"), worldPosition,  "", true, true);
+                            popupManager.Pop(LOCALE.Get("pop_item_unselectable"), worldPosition, "", true, true);
                         }
                     }
                 }

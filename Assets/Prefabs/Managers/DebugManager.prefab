@@ -33,7 +33,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &352704914890339314
 MonoBehaviour:
@@ -63,6 +63,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 696fd0b5bfeb2c64890e3534a5afcb0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boardInteractions: {fileID: 0}
+  loadingManager: {fileID: 0}
+  transitionDuration: 0.1
 --- !u!114 &237811397895804709
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76,7 +79,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   logsEnabled: 1
-  shakingEnabled: 1
+  shakingEnabled: 0
   titleHight: 20
   defaultLogColor: {r: 0.7019608, g: 0.78039217, b: 0.83137256, a: 1}
   debug: 1

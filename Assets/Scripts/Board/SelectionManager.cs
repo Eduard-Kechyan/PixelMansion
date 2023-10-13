@@ -44,7 +44,7 @@ namespace Merge
             {
                 Item item = hit.transform.gameObject.GetComponent<Item>();
 
-                // Check if gameobject is an item and isn't empty
+                // Check if game object is an item and isn't empty
                 if (item != null)
                 {
                     // See if the same exact item was double tapped

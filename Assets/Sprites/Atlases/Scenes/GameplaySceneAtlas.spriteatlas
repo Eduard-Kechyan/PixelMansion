@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: GameplaySceneAtlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 0
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 0
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_IgnorePlatformSupport: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+      enableAlphaDilation: 1
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 03dbc62a9242d3c48837006be8851f4e, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+    packedSpriteRenderDataKeys:
+    - 67e0e2f1b7ca3854b95261c156f6d02b: 21300000
+    - 257ae422f8b72cf4d9b4d527d769b323: 21300000
+    - ddca53b2390a38641a2ae7143d2ab9a9: 21300000
+    - dcdc28b82ad02ce469c4a972cf5733b0: 21300000
+    - b138143b008636f42aef1b5eb37ce99f: 21300000
+    - ffdf819dad4702e45b3d37c287173b0e: 21300000
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 67e0e2f1b7ca3854b95261c156f6d02b, type: 3}
+  - {fileID: 21300000, guid: 257ae422f8b72cf4d9b4d527d769b323, type: 3}
+  - {fileID: 21300000, guid: ddca53b2390a38641a2ae7143d2ab9a9, type: 3}
+  - {fileID: 21300000, guid: dcdc28b82ad02ce469c4a972cf5733b0, type: 3}
+  - {fileID: 21300000, guid: b138143b008636f42aef1b5eb37ce99f, type: 3}
+  - {fileID: 21300000, guid: ffdf819dad4702e45b3d37c287173b0e, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Background
+  - EmptyTile
+  - Character1
+  - Board
+  - Info Box
+  - Character0
+  m_RenderDataMap: {}
+  m_Tag: GameplaySceneAtlas
+  m_IsVariant: 0

@@ -1,0 +1,130 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ValuesAtlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 0
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 0
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_IgnorePlatformSupport: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+      enableAlphaDilation: 1
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 6b017a4578641fd4a8817635ed524dd2, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+    packedSpriteRenderDataKeys:
+    - 7f2582712c649454cac7fdacf465ec27: 21300000
+    - 374ad9b173b598746ba971596a0a6415: 21300000
+    - 91052942d1bb9e64fb2e7057a21be27d: 21300000
+    - db2a0b434fd00d148947a026afc58439: 21300000
+    - ddd9df73c1cda4346ade788ba7efec3b: 21300000
+    - 920ec226e86a00044a00ae5d8a9c9974: 21300000
+    - 9927c70a39873234ead5f8d41fb591bf: 21300000
+    - e35c219a6b21fcc4e8f87256aab8e82b: 21300000
+    - 657cb52cfa9591f42805162173ae326d: 21300000
+    - 6780ef3c1475285438310f7718763be0: 21300000
+    - 7376b57cbcfa0cf4784e7a2a910b2c38: 21300000
+    - 324e7e0db7beb9248b629fa2da728b06: 21300000
+    - 33008d2d55001e24b9e3d814fc8c0a30: 21300000
+    - c164332ef8545e14c804928c22c83a7b: 21300000
+    - 09e7da2e64b1ede4ca10b0c65b687aa3: 21300000
+    - 5a5e8c2e89de937438650a731383544b: 21300000
+    - c1cd829e51693f342ab508d6f519052f: 21300000
+    - 0ac1b32f0c68fa5488ef306136d17434: 21300000
+    - 0779a5ff798d5fc4e9e6b9d19fc1e35e: -430561725
+    - 0779a5ff798d5fc4e9e6b9d19fc1e35e: -78041159
+    - 0779a5ff798d5fc4e9e6b9d19fc1e35e: -448423610
+    - 0779a5ff798d5fc4e9e6b9d19fc1e35e: 1912430233
+    - 0779a5ff798d5fc4e9e6b9d19fc1e35e: 579244564
+    - 0779a5ff798d5fc4e9e6b9d19fc1e35e: -1459763292
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 7f2582712c649454cac7fdacf465ec27, type: 3}
+  - {fileID: 21300000, guid: 374ad9b173b598746ba971596a0a6415, type: 3}
+  - {fileID: 21300000, guid: 91052942d1bb9e64fb2e7057a21be27d, type: 3}
+  - {fileID: 21300000, guid: db2a0b434fd00d148947a026afc58439, type: 3}
+  - {fileID: 21300000, guid: ddd9df73c1cda4346ade788ba7efec3b, type: 3}
+  - {fileID: 21300000, guid: 920ec226e86a00044a00ae5d8a9c9974, type: 3}
+  - {fileID: 21300000, guid: 9927c70a39873234ead5f8d41fb591bf, type: 3}
+  - {fileID: 21300000, guid: e35c219a6b21fcc4e8f87256aab8e82b, type: 3}
+  - {fileID: 21300000, guid: 657cb52cfa9591f42805162173ae326d, type: 3}
+  - {fileID: 21300000, guid: 6780ef3c1475285438310f7718763be0, type: 3}
+  - {fileID: 21300000, guid: 7376b57cbcfa0cf4784e7a2a910b2c38, type: 3}
+  - {fileID: 21300000, guid: 324e7e0db7beb9248b629fa2da728b06, type: 3}
+  - {fileID: 21300000, guid: 33008d2d55001e24b9e3d814fc8c0a30, type: 3}
+  - {fileID: 21300000, guid: c164332ef8545e14c804928c22c83a7b, type: 3}
+  - {fileID: 21300000, guid: 09e7da2e64b1ede4ca10b0c65b687aa3, type: 3}
+  - {fileID: 21300000, guid: 5a5e8c2e89de937438650a731383544b, type: 3}
+  - {fileID: 21300000, guid: c1cd829e51693f342ab508d6f519052f, type: 3}
+  - {fileID: 21300000, guid: 0ac1b32f0c68fa5488ef306136d17434, type: 3}
+  - {fileID: -430561725, guid: 0779a5ff798d5fc4e9e6b9d19fc1e35e, type: 3}
+  - {fileID: -78041159, guid: 0779a5ff798d5fc4e9e6b9d19fc1e35e, type: 3}
+  - {fileID: -448423610, guid: 0779a5ff798d5fc4e9e6b9d19fc1e35e, type: 3}
+  - {fileID: 1912430233, guid: 0779a5ff798d5fc4e9e6b9d19fc1e35e, type: 3}
+  - {fileID: 579244564, guid: 0779a5ff798d5fc4e9e6b9d19fc1e35e, type: 3}
+  - {fileID: -1459763292, guid: 0779a5ff798d5fc4e9e6b9d19fc1e35e, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - ValueBox
+  - ValueBoxEdge
+  - Gold
+  - ValueLevel
+  - ValueBoxEnergy
+  - ValueSlash
+  - SmallGold
+  - Experience
+  - Energy
+  - SmallExperience
+  - ValueLevelExtra
+  - SmallGem
+  - ValueBoxGems
+  - ValuePlus
+  - ValueLevelFillBorder
+  - SmallAd
+  - ValueBoxGold
+  - Gems
+  - LevelUpIndicator_2
+  - LevelUpIndicator_3
+  - LevelUpIndicator_0
+  - LevelUpIndicator_1
+  - LevelUpIndicator_4
+  - LevelUpIndicator_5
+  m_RenderDataMap: {}
+  m_Tag: ValuesAtlas
+  m_IsVariant: 0

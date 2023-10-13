@@ -1,0 +1,145 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: FurnitureAtlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 0
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 0
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_IgnorePlatformSupport: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+      enableAlphaDilation: 1
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 1cf69f21c8a41e74393f8048d547bf36, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+    packedSpriteRenderDataKeys:
+    - e1c20700cdf385c4fa45170c51a4ede8: 21300000
+    - 56530d013e3927c4abeaf495880f6939: 21300000
+    - d595e951c08f02640918c5678a71578c: 21300000
+    - fb82b4b1da25da849979cb0be77e6193: 21300000
+    - 4163c81241b19894091a7c4b0501bbcd: 21300000
+    - 92c67214c7e777047823e78ead2807da: 21300000
+    - 30169f144d703a048ac08d1488b74b63: 21300000
+    - 9d8ec684d7d185e46892108b0fdef1da: 21300000
+    - b529f39496212984f9c8b9ae8d93d669: 21300000
+    - 8b6aa17553a96264691a2a8174a6f57e: 21300000
+    - d156dce58fd056d4f92066d535bf7f38: 21300000
+    - f33c1586877115744a4c2bc359350bbd: 21300000
+    - cbca61b67116d3f4cb1f0992f06e8f03: 21300000
+    - d5621ff6564776048822371f7e054dfb: 21300000
+    - 3d0cce37e926d854f8d1931e21b15480: 21300000
+    - f2fc6357e627a55459027bcd4e6b931a: 21300000
+    - 2a589ca744522724c8b7f976334611ed: 21300000
+    - 3263f9c71123839429758fd3ff63bd8e: 21300000
+    - 5de4d2b931dad084399723e375e89c71: 21300000
+    - a7b4f14bc30a28c408b85cbf7c0828ca: 21300000
+    - 322b0a4bcff7fcd4d9dae4c44a80ed3a: 21300000
+    - 52bb196bc8c9cf24faaaccd6488ae0ad: 21300000
+    - 95327b9c8c2027541868aed613127f78: 21300000
+    - 47076e9c029708946bedb3b521dbdb3e: 21300000
+    - 5e650a2ede59c8d4b960fc213427298a: 21300000
+    - ddba79de3bd572b42a411d17bea466d9: 21300000
+    - 9f8aa01f5526c9c4a80e8b0ecfd283a7: 21300000
+    - 2da8691f3a4b98842a6c05677948897c: 21300000
+    - 55cdf38fca7c9bf46a1519305d62bb88: 21300000
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: e1c20700cdf385c4fa45170c51a4ede8, type: 3}
+  - {fileID: 21300000, guid: 56530d013e3927c4abeaf495880f6939, type: 3}
+  - {fileID: 21300000, guid: d595e951c08f02640918c5678a71578c, type: 3}
+  - {fileID: 21300000, guid: fb82b4b1da25da849979cb0be77e6193, type: 3}
+  - {fileID: 21300000, guid: 4163c81241b19894091a7c4b0501bbcd, type: 3}
+  - {fileID: 21300000, guid: 92c67214c7e777047823e78ead2807da, type: 3}
+  - {fileID: 21300000, guid: 30169f144d703a048ac08d1488b74b63, type: 3}
+  - {fileID: 21300000, guid: 9d8ec684d7d185e46892108b0fdef1da, type: 3}
+  - {fileID: 21300000, guid: b529f39496212984f9c8b9ae8d93d669, type: 3}
+  - {fileID: 21300000, guid: 8b6aa17553a96264691a2a8174a6f57e, type: 3}
+  - {fileID: 21300000, guid: d156dce58fd056d4f92066d535bf7f38, type: 3}
+  - {fileID: 21300000, guid: f33c1586877115744a4c2bc359350bbd, type: 3}
+  - {fileID: 21300000, guid: cbca61b67116d3f4cb1f0992f06e8f03, type: 3}
+  - {fileID: 21300000, guid: d5621ff6564776048822371f7e054dfb, type: 3}
+  - {fileID: 21300000, guid: 3d0cce37e926d854f8d1931e21b15480, type: 3}
+  - {fileID: 21300000, guid: f2fc6357e627a55459027bcd4e6b931a, type: 3}
+  - {fileID: 21300000, guid: 2a589ca744522724c8b7f976334611ed, type: 3}
+  - {fileID: 21300000, guid: 3263f9c71123839429758fd3ff63bd8e, type: 3}
+  - {fileID: 21300000, guid: 5de4d2b931dad084399723e375e89c71, type: 3}
+  - {fileID: 21300000, guid: a7b4f14bc30a28c408b85cbf7c0828ca, type: 3}
+  - {fileID: 21300000, guid: 322b0a4bcff7fcd4d9dae4c44a80ed3a, type: 3}
+  - {fileID: 21300000, guid: 52bb196bc8c9cf24faaaccd6488ae0ad, type: 3}
+  - {fileID: 21300000, guid: 95327b9c8c2027541868aed613127f78, type: 3}
+  - {fileID: 21300000, guid: 47076e9c029708946bedb3b521dbdb3e, type: 3}
+  - {fileID: 21300000, guid: 5e650a2ede59c8d4b960fc213427298a, type: 3}
+  - {fileID: 21300000, guid: ddba79de3bd572b42a411d17bea466d9, type: 3}
+  - {fileID: 21300000, guid: 9f8aa01f5526c9c4a80e8b0ecfd283a7, type: 3}
+  - {fileID: 21300000, guid: 2da8691f3a4b98842a6c05677948897c, type: 3}
+  - {fileID: 21300000, guid: 55cdf38fca7c9bf46a1519305d62bb88, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Bed1
+  - Fridge4
+  - BedNavArea
+  - Painting2
+  - Bookcase2
+  - Fridge2
+  - TableLarge3
+  - Bookcase4
+  - BedsideTableNavArea
+  - Bookcase3
+  - Bed4
+  - Painting1
+  - BookcaseNavArea
+  - BedsideTable2
+  - BedsideTable3
+  - Painting3
+  - Painting4
+  - TableLarge1
+  - Fridge1
+  - BedsideTable1
+  - Bookcase1
+  - TableLarge2
+  - Fridge3
+  - BedsideTable4
+  - Bed3
+  - TableLargeNavArea
+  - Bed2
+  - FridgeNavArea
+  - TableLarge4
+  m_RenderDataMap: {}
+  m_Tag: FurnitureAtlas
+  m_IsVariant: 0

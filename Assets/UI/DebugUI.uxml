@@ -37,4 +37,5 @@
             <ui:Button text="Close" display-tooltip-when-elided="true" name="CloseButton" class="button button_alt" />
         </ui:VisualElement>
     </ui:VisualElement>
+    <ui:VisualElement />
 </ui:UXML>

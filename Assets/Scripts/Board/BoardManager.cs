@@ -87,7 +87,7 @@ namespace Merge
         {
             // Get the item's location from the board by its tile's order
 
-            Vector2Int loc = new Vector2Int(0, 0);
+            Vector2Int loc = new (0, 0);
 
             if (tile != null)
             {
@@ -192,7 +192,7 @@ namespace Merge
             // Save the board to disk
             dataManager.SaveBoard();
 
-            // Give experience if it's the first time unlocking it and its level is heigher than experienceThreshold (default 4)
+            // Give experience if it's the first time unlocking it and its level is higher than experienceThreshold (default 4)
             if (newItem.type != Types.Type.Coll && newItem.level >= (experienceThreshold + 1))
             {
                 CreateCollectable();
@@ -421,7 +421,7 @@ namespace Merge
 
         public List<Types.BoardEmpty> GetEmptyBoardItems(Vector2Int tileLoc, bool useTileLoc = true)
         {
-            List<Types.BoardEmpty> emptyBoard = new List<Types.BoardEmpty>();
+            List<Types.BoardEmpty> emptyBoard = new ();
 
             for (int x = 0; x < gameData.boardData.GetLength(0); x++)
             {

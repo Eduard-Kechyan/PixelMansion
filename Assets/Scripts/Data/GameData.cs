@@ -99,6 +99,9 @@ namespace Merge
         [ReadOnly]
         public bool greeted = false;
 
+        [HideInInspector]
+        public bool resourcesLoaded = false;
+
         // Sprites
         private Sprite[] itemsSprites;
         private Sprite[] generatorsSprites;
@@ -139,6 +142,8 @@ namespace Merge
             initialInventorySpace = inventorySpace;
 
             CalcGamePixelHeight();
+
+            LoadSprites();
         }
 
         public void Init(string sceneName)
@@ -151,14 +156,16 @@ namespace Merge
             }
         }
 
-        public void InitAlt()
+        // Load sprites from resources
+        public void LoadSprites()
         {
-            // Load sprites from resources
             itemsSprites = Resources.LoadAll<Sprite>("Sprites/Items");
             generatorsSprites = Resources.LoadAll<Sprite>("Sprites/Generators");
             collectablesSprites = Resources.LoadAll<Sprite>("Sprites/Collectables");
             chestsSprites = Resources.LoadAll<Sprite>("Sprites/Chests");
             taskSprites = Resources.LoadAll<Sprite>("Sprites/Tasks");
+
+            resourcesLoaded = true;
         }
 
         //////// SET ////////

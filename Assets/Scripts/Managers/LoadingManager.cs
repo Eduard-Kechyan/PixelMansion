@@ -76,14 +76,7 @@ namespace Merge
                 if (fillCount >= singlePhasePercent * 1 && phase == 1)
                 {
                     loading = false;
-                    if (PlayerPrefs.HasKey("termsAccepted"))
-                    {
-                        ContinueLoading();
-                    }
-                    else
-                    {
-                        loadingSceneUI.CheckTerms(callback);
-                    }
+                    dataManager.CheckForLoadedResources(callback);
 
                     if (logPhases)
                     {
@@ -116,7 +109,14 @@ namespace Merge
                 if (fillCount >= singlePhasePercent * 3 && phase == 3)
                 {
                     loading = false;
-                    dataManager.CheckInitialData(callback);
+                    if (PlayerPrefs.HasKey("termsAccepted"))
+                    {
+                        ContinueLoading();
+                    }
+                    else
+                    {
+                        loadingSceneUI.CheckTerms(callback);
+                    }
 
                     if (logPhases)
                     {

@@ -62,10 +62,10 @@ namespace Merge
         {
             if (dataManager.loaded && !set)
             {
+                set = true;
+
                 // Calculate board scale
                 root.RegisterCallback<GeometryChangedEvent>(SetBoard);
-
-                set = true;
 
                 // Stop running the update function
                 enabled = false;

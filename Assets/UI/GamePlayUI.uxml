@@ -42,6 +42,6 @@
                 <ui:Button display-tooltip-when-elided="true" name="DebugButton" class="button_standard debug_button" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Main/DebugButton.png?fileID=2800000&amp;guid=15ad31ceda532ec4892dda5273f74f24&amp;type=3#DebugButton&apos;); display: none;" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="DragOverlay" class="drag_overlay" style="background-image: resource(&apos;Sprites/Items/Tools/ToolsItem3&apos;);" />
+        <ui:VisualElement name="DragOverlay" class="drag_overlay" />
     </ui:VisualElement>
 </ui:UXML>

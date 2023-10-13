@@ -5,17 +5,7 @@ using UnityEngine;
 namespace Merge
 {
     public class LockedOverlayPH : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
     {
-        
+        // TODO - This is an empty placeholder script and should be improved
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-}
 }

@@ -69,6 +69,8 @@ namespace Merge
 
             // UI taps
             speechBubble.clicked += () => StartCoroutine(CloseBubble());
+
+            enabled = false;
         }
 
         void Update()
@@ -361,6 +363,7 @@ namespace Merge
             speechBubble.style.opacity = 1;
 
             isBubbleShowing = true;
+            enabled = true;
         }
 
         void HideSpeechBubble(Action callback = null)
@@ -369,6 +372,7 @@ namespace Merge
             speechBubble.style.scale = new Vector2(0f, 0f);
 
             isBubbleShowing = false;
+            enabled = false;
 
             StartCoroutine(CloseSpeechBubble(callback));
         }

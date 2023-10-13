@@ -1,0 +1,214 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: MenusAtlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 0
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 0
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_IgnorePlatformSupport: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+      enableAlphaDilation: 1
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 8f38309fdaf665542ac18a5bb1767890, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+    packedSpriteRenderDataKeys:
+    - 06667950052f6b14086f30495a5b11f8: 21300000
+    - f62dd9702263bc448b7b92475071a928: 21300000
+    - 5dc1ab80869f7cc4c963864ca1e145d4: 21300000
+    - b81700b0a7bf9d84ea088c640dfbd6ea: 21300000
+    - e9d057d018d333c4cb4bdea925453af8: 21300000
+    - e84b1151ce36e9b4892a7e645a454983: 21300000
+    - 0c0ba202be70f664388d58c36c1ce203: 21300000
+    - b79aa6e2d9e63cc49a7daada34c1b324: 21300000
+    - 9e7c70b32b740ac4eb78b2cfd3943bd2: 21300000
+    - b540f6d3047659742828aa6c5eb006a0: 21300000
+    - 6bc571f3f85f4cb4d9fc53d68ef705d0: 21300000
+    - 27de5614324c195499e2bd850981f367: 21300000
+    - b9e5a534546047a43a1386d2da45ab77: 21300000
+    - c8bc6674a420b9247b84a1b9e7ebbcb0: 21300000
+    - b899298494829bd478c103b453048064: 21300000
+    - 49c117f476be9d14f9f248b548270113: 21300000
+    - eaead43574bfbfb4fb4df1d0316bc47f: 21300000
+    - f65685853112ac843863b9445e6d9c9e: 21300000
+    - 28abd295326bb634cb3348e6d2a1849a: 21300000
+    - e1f86ff5504c3934f83955fa756999bb: 21300000
+    - 9564fa96a4ccacb43b3532fb9a8dd75c: 21300000
+    - fdd2a8c6ee7260e4898a4be1ea7fc7d6: 21300000
+    - 010266370f308ac469d2802810b2ee0f: 21300000
+    - c2d14d57d3b1655499c3441f6745b3fb: 21300000
+    - 1a32eb77663b79848963b98d6c197aff: 21300000
+    - e05b780883c7329459ca413a68fdf80f: 21300000
+    - 9d4ebe18b62f6c144bfa099cef112dc6: 21300000
+    - 77474028355160f41a137258b8978732: 21300000
+    - dffe992878748814ba040e5f4b6c4e2a: 21300000
+    - e6f5f019834978e4fb189de1bc260265: 21300000
+    - 1713f8395ae13904ca4b5e4454279d6b: 21300000
+    - bcb0fd39ffe5ba346baa56b17b36b787: 21300000
+    - 4b05ed79491568e4e94a99abc97210a1: 21300000
+    - eb1c85b9de5054449be5c84428fbae75: 21300000
+    - 830ffbc9a26c02c4cb218a8e5568ad67: 21300000
+    - 593d112a5d1d21646a4ffa4d3122444a: 21300000
+    - 6f5e944a6365f3746ac0d1a47c0c37f1: 21300000
+    - fc68bb4abe2ce18418e523afb5f0543b: 21300000
+    - 04bc709ab7c398248b5ef7c35c2d4f18: 21300000
+    - 690484caf0e2d9a47a94aa94dbb74e83: 21300000
+    - eb38771be3415ce42b81eab553b8157f: 21300000
+    - d63b9f3c6654d1d4baff5244c0512043: 21300000
+    - f8151e7c91cd3e341a010482e952df1e: 21300000
+    - 80923a0de08b2cb4ca2cad385b4f59c7: 21300000
+    - 93d4998d1420f3f4fa9eb55a6449fc2d: 21300000
+    - 50a5c42ee036af749856dda7b33c791b: 21300000
+    - eb1ab04edbf5cef42a7349e4977bf347: 21300000
+    - e90aab9e7382a9044b5bdc25d2aceedb: 21300000
+    - 985158be3a613a545a112be3f553ccfc: 21300000
+    - 83fafa4f4a63b8c4d98e98f1dc12de09: 21300000
+    - fec2ad5fa004de8468772cb975b92452: 21300000
+    - 0bf65eef74a87964baaaab1781465cc5: 21300000
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 06667950052f6b14086f30495a5b11f8, type: 3}
+  - {fileID: 21300000, guid: f62dd9702263bc448b7b92475071a928, type: 3}
+  - {fileID: 21300000, guid: 5dc1ab80869f7cc4c963864ca1e145d4, type: 3}
+  - {fileID: 21300000, guid: b81700b0a7bf9d84ea088c640dfbd6ea, type: 3}
+  - {fileID: 21300000, guid: e9d057d018d333c4cb4bdea925453af8, type: 3}
+  - {fileID: 21300000, guid: e84b1151ce36e9b4892a7e645a454983, type: 3}
+  - {fileID: 21300000, guid: 0c0ba202be70f664388d58c36c1ce203, type: 3}
+  - {fileID: 21300000, guid: b79aa6e2d9e63cc49a7daada34c1b324, type: 3}
+  - {fileID: 21300000, guid: 9e7c70b32b740ac4eb78b2cfd3943bd2, type: 3}
+  - {fileID: 21300000, guid: b540f6d3047659742828aa6c5eb006a0, type: 3}
+  - {fileID: 21300000, guid: 6bc571f3f85f4cb4d9fc53d68ef705d0, type: 3}
+  - {fileID: 21300000, guid: 27de5614324c195499e2bd850981f367, type: 3}
+  - {fileID: 21300000, guid: b9e5a534546047a43a1386d2da45ab77, type: 3}
+  - {fileID: 21300000, guid: c8bc6674a420b9247b84a1b9e7ebbcb0, type: 3}
+  - {fileID: 21300000, guid: b899298494829bd478c103b453048064, type: 3}
+  - {fileID: 21300000, guid: 49c117f476be9d14f9f248b548270113, type: 3}
+  - {fileID: 21300000, guid: eaead43574bfbfb4fb4df1d0316bc47f, type: 3}
+  - {fileID: 21300000, guid: f65685853112ac843863b9445e6d9c9e, type: 3}
+  - {fileID: 21300000, guid: 28abd295326bb634cb3348e6d2a1849a, type: 3}
+  - {fileID: 21300000, guid: e1f86ff5504c3934f83955fa756999bb, type: 3}
+  - {fileID: 21300000, guid: 9564fa96a4ccacb43b3532fb9a8dd75c, type: 3}
+  - {fileID: 21300000, guid: fdd2a8c6ee7260e4898a4be1ea7fc7d6, type: 3}
+  - {fileID: 21300000, guid: 010266370f308ac469d2802810b2ee0f, type: 3}
+  - {fileID: 21300000, guid: c2d14d57d3b1655499c3441f6745b3fb, type: 3}
+  - {fileID: 21300000, guid: 1a32eb77663b79848963b98d6c197aff, type: 3}
+  - {fileID: 21300000, guid: e05b780883c7329459ca413a68fdf80f, type: 3}
+  - {fileID: 21300000, guid: 9d4ebe18b62f6c144bfa099cef112dc6, type: 3}
+  - {fileID: 21300000, guid: 77474028355160f41a137258b8978732, type: 3}
+  - {fileID: 21300000, guid: dffe992878748814ba040e5f4b6c4e2a, type: 3}
+  - {fileID: 21300000, guid: e6f5f019834978e4fb189de1bc260265, type: 3}
+  - {fileID: 21300000, guid: 1713f8395ae13904ca4b5e4454279d6b, type: 3}
+  - {fileID: 21300000, guid: bcb0fd39ffe5ba346baa56b17b36b787, type: 3}
+  - {fileID: 21300000, guid: 4b05ed79491568e4e94a99abc97210a1, type: 3}
+  - {fileID: 21300000, guid: eb1c85b9de5054449be5c84428fbae75, type: 3}
+  - {fileID: 21300000, guid: 830ffbc9a26c02c4cb218a8e5568ad67, type: 3}
+  - {fileID: 21300000, guid: 593d112a5d1d21646a4ffa4d3122444a, type: 3}
+  - {fileID: 21300000, guid: 6f5e944a6365f3746ac0d1a47c0c37f1, type: 3}
+  - {fileID: 21300000, guid: fc68bb4abe2ce18418e523afb5f0543b, type: 3}
+  - {fileID: 21300000, guid: 04bc709ab7c398248b5ef7c35c2d4f18, type: 3}
+  - {fileID: 21300000, guid: 690484caf0e2d9a47a94aa94dbb74e83, type: 3}
+  - {fileID: 21300000, guid: eb38771be3415ce42b81eab553b8157f, type: 3}
+  - {fileID: 21300000, guid: d63b9f3c6654d1d4baff5244c0512043, type: 3}
+  - {fileID: 21300000, guid: f8151e7c91cd3e341a010482e952df1e, type: 3}
+  - {fileID: 21300000, guid: 80923a0de08b2cb4ca2cad385b4f59c7, type: 3}
+  - {fileID: 21300000, guid: 93d4998d1420f3f4fa9eb55a6449fc2d, type: 3}
+  - {fileID: 21300000, guid: 50a5c42ee036af749856dda7b33c791b, type: 3}
+  - {fileID: 21300000, guid: eb1ab04edbf5cef42a7349e4977bf347, type: 3}
+  - {fileID: 21300000, guid: e90aab9e7382a9044b5bdc25d2aceedb, type: 3}
+  - {fileID: 21300000, guid: 985158be3a613a545a112be3f553ccfc, type: 3}
+  - {fileID: 21300000, guid: 83fafa4f4a63b8c4d98e98f1dc12de09, type: 3}
+  - {fileID: 21300000, guid: fec2ad5fa004de8468772cb975b92452, type: 3}
+  - {fileID: 21300000, guid: 0bf65eef74a87964baaaab1781465cc5, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - InventoryItem
+  - IDCopyButton
+  - LevelIndicator
+  - BoxEnergy
+  - OptionsVibration
+  - EnergyBonus
+  - Gems3
+  - ShopBoxGold4
+  - ShopBox
+  - ShopBoxGold1
+  - BoxAd
+  - YoutubeIcon
+  - TikTokIcon
+  - ShopBoxGold
+  - SliderDragger
+  - InfoParentItem
+  - Gems5
+  - ToggleBox
+  - InfoParent
+  - InventoryMenuBorder
+  - OptionsButton
+  - Gems1
+  - Restore
+  - Pupular
+  - OptionsSound
+  - LevelRewards
+  - OptionsMusic
+  - ToggleBoxChecked
+  - UnlockedQuestionMark
+  - SliderTracker
+  - ShopBoxGold5
+  - FacebookIcon
+  - AppleSignInIcon
+  - InstagramIcon
+  - MenuTitle
+  - GoogleSignInIcon
+  - SignedInCheck
+  - LevelIndicatorBorder
+  - Gems4
+  - EnumArrow
+  - OptionsNotifications
+  - ShopBoxGold6
+  - MenuSubtitle
+  - MenuBorderBottom
+  - ItemInfo
+  - FacebookSignInIcon
+  - ItemCurrent
+  - ShopBoxGold3
+  - ShopBoxGems
+  - Gems2
+  - ShopBoxGold2
+  - Gems6
+  m_RenderDataMap: {}
+  m_Tag: MenusAtlas
+  m_IsVariant: 0
