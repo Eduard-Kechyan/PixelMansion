@@ -36,12 +36,12 @@ SpriteAtlas:
       m_ForceMaximumCompressionQuality_BC6H_BC7: 0
     packingSettings:
       serializedVersion: 2
-      padding: 2
+      padding: 8
       blockOffset: 1
       allowAlphaSplitting: 0
       enableRotation: 1
       enableTightPacking: 1
-      enableAlphaDilation: 1
+      enableAlphaDilation: 0
     secondaryTextureSettings: {}
     variantMultiplier: 1
     packables:
@@ -59,7 +59,6 @@ SpriteAtlas:
     - 7d2330b10eba4ee4db18079e2cd94e3b: 21300000
     - f8c970e1ff225ac468c98a0db8eb6278: 21300000
     - 45d63ff1c9c9fc5458084437276ed9c4: 21300000
-    - 147e9e429486ccc45a254381c5d4f11f: 21300000
     - 4fc95e62f7d9b8840804003a991d2f26: 21300000
     - 2145d80393f2bb44580001893683d573: 21300000
     - bfe41a232f1b19d4ebf4c74d8878642c: 21300000
@@ -70,7 +69,6 @@ SpriteAtlas:
     - a77095b535a11784b898f9bda3c1502e: 21300000
     - b409d44665ab844408ff646a41f85e3d: 21300000
     - 8860a066eac4c1c4989e69ee6aeb29f8: 21300000
-    - c8f103768c54de8488cf1a3eae5f714f: 21300000
     - 7df37b76f3ee6274dbc86eab49574055: 21300000
     - b2340c86443b88c4b8c7d7063461d870: 21300000
     - 0a7ace965812a5744ad35628e2a1cad8: 21300000
@@ -116,7 +114,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 7d2330b10eba4ee4db18079e2cd94e3b, type: 3}
   - {fileID: 21300000, guid: f8c970e1ff225ac468c98a0db8eb6278, type: 3}
   - {fileID: 21300000, guid: 45d63ff1c9c9fc5458084437276ed9c4, type: 3}
-  - {fileID: 21300000, guid: 147e9e429486ccc45a254381c5d4f11f, type: 3}
   - {fileID: 21300000, guid: 4fc95e62f7d9b8840804003a991d2f26, type: 3}
   - {fileID: 21300000, guid: 2145d80393f2bb44580001893683d573, type: 3}
   - {fileID: 21300000, guid: bfe41a232f1b19d4ebf4c74d8878642c, type: 3}
@@ -127,7 +124,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: a77095b535a11784b898f9bda3c1502e, type: 3}
   - {fileID: 21300000, guid: b409d44665ab844408ff646a41f85e3d, type: 3}
   - {fileID: 21300000, guid: 8860a066eac4c1c4989e69ee6aeb29f8, type: 3}
-  - {fileID: 21300000, guid: c8f103768c54de8488cf1a3eae5f714f, type: 3}
   - {fileID: 21300000, guid: 7df37b76f3ee6274dbc86eab49574055, type: 3}
   - {fileID: 21300000, guid: b2340c86443b88c4b8c7d7063461d870, type: 3}
   - {fileID: 21300000, guid: 0a7ace965812a5744ad35628e2a1cad8, type: 3}
@@ -172,7 +168,6 @@ SpriteAtlas:
   - OuterWallRightCorner
   - WallDoorFrameRight3
   - WallOld2
-  - OuterWallRight-export
   - WallWindowRight2
   - WallWindowPlaceholder
   - OuterWallRightCornerIn
@@ -183,7 +178,6 @@ SpriteAtlas:
   - OuterWallFrontCornerIn
   - OuterWallWindowRight
   - WallWindowRight1
-  - OuterWallLeft-export
   - WallOld4
   - WallDoorFrameRight1
   - OuterWallRight

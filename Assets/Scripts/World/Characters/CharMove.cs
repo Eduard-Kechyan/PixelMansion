@@ -12,6 +12,8 @@ namespace Merge
         public Dir direction;
         [ReadOnly]
         public int directionOrder;
+        [ReadOnly]
+        public bool isWalking = false;
 
         private Vector2 destinationPos;
 
@@ -102,6 +104,10 @@ namespace Merge
                     enabled = false;
 
                     canCheck = false;
+
+                    isWalking = false;
+
+                    charOrderSetter.SetShadow();
                 }
                 else
                 {
@@ -112,6 +118,8 @@ namespace Merge
                     animator.SetBool("Walking", true);
 
                     charOrderSetter.CheckArea();
+
+                    charOrderSetter.SetShadow(false);
                 }
             }
         }

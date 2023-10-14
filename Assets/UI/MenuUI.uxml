@@ -66,7 +66,7 @@
         <ui:VisualElement name="LocaleMenu" class="menu locale_menu">
             <ui:VisualElement name="Background" class="background" />
             <ui:VisualElement name="Container" class="container">
-                <ui:VisualElement name="Content" class="content" />
+                <ui:VisualElement name="Content" class="content" style="flex-direction: row; flex-wrap: wrap; justify-content: center; align-items: center;" />
                 <ui:VisualElement name="BorderBottom" class="border_bottom" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuBorderBottom.png?fileID=2800000&amp;guid=80923a0de08b2cb4ca2cad385b4f59c7&amp;type=3#MenuBorderBottom&apos;);" />
                 <ui:VisualElement name="ShadowDot" class="shadow_dot" />
                 <ui:VisualElement name="Title" class="menu_title" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuTitle.png?fileID=2800000&amp;guid=830ffbc9a26c02c4cb218a8e5568ad67&amp;type=3#MenuTitle&apos;);">

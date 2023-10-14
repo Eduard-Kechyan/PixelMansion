@@ -101,7 +101,7 @@
     height: 20px;
     margin-left: auto;
     margin-right: 4px;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
 }
 
 .button_standard_small .border {

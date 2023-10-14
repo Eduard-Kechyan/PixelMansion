@@ -39,7 +39,7 @@
     width: 165px;
     height: 4px;
     display: flex;
-    bottom: -3px;
+    bottom: -2px;
 }
 
 .menu .container .shadow_dot {

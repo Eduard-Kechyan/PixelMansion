@@ -1,7 +1,6 @@
 ﻿using Lib.SimpleJSON;
 using System;
 using UnityEngine;
-using System.Linq;
 
 namespace Merge
 {
@@ -9,23 +8,9 @@ namespace Merge
     {
         private static JSONNode config = null;
 
-        private static readonly I18n instance = new I18n();
+        private static readonly I18n instance = new ();
 
-        private static readonly string[] locales = new string[]
-        {
-            "en-US", // English - English
-            "fr-FR", // French - Français
-            "es-ES", // Spanish - Española
-            "de-DE", // German - Deutsch
-            "it-IT", // Italian - Italiano
-            "ru-RU", // Russian - Русский
-            "hy-HY", // Armenian - Հայերեն
-            "ja-JP", // Japanese - 日本語
-            "ko-KR", // Korean - 한국어
-            "zh-CN" // Chinese - 中文
-        };
-
-        private static string currentLocale = "en-US";
+        private static Types.Locale currentLocale = Types.Locale.English;
 
         private static string localePath = "Locales/";
 
@@ -42,123 +27,25 @@ namespace Merge
 
         static void InitConfig()
         {
-            if (locales.Contains(currentLocale))
-            {
-                // Read the file as one string.
-                TextAsset configText = Resources.Load(localePath + currentLocale) as TextAsset;
-                config = JSON.Parse(configText.text);
-            }
-            else if (isLoggingMissing)
-            {
-                Debug.Log("Missing: locale [" + currentLocale + "] not found in supported list");
-            }
+            // Read the file as one string.
+            TextAsset configText = Resources.Load(localePath + currentLocale.ToString()) as TextAsset;
+            config = JSON.Parse(configText.text);
         }
 
-        public string[] GetLocales()
-        {
-            return locales;
-        }
-
-        public string ConvertToCode(Types.Locale newLocale)
-        {
-            string locale;
-
-            switch (newLocale)
-            {
-                case Types.Locale.French:
-                    locale = "fr-FR";
-                    break;
-                case Types.Locale.Spanish:
-                    locale = "es-ES";
-                    break;
-                case Types.Locale.German:
-                    locale = "de-DE";
-                    break;
-                case Types.Locale.Italian:
-                    locale = "it-IT";
-                    break;
-                case Types.Locale.Russian:
-                    locale = "ru-RU";
-                    break;
-                case Types.Locale.Armenian:
-                    locale = "hy-HY";
-                    break;
-                case Types.Locale.Japanese:
-                    locale = "ja-JP";
-                    break;
-                case Types.Locale.Korean:
-                    locale = "ko-KR";
-                    break;
-                case Types.Locale.Chinese:
-                    locale = "zh-CN";
-                    break;
-                default:
-                    locale = "en-US";
-                    break;
-            }
-
-            return locale;
-        }
-
-        public Types.Locale ConvertToLocale(string localeCode)
-        {
-            Types.Locale locale;
-
-            switch (localeCode)
-            {
-
-                case "fr-FR":
-                    locale = Types.Locale.French;
-                    break;
-                case "es-ES":
-                    locale = Types.Locale.Spanish;
-                    break;
-                case "de-DE":
-                    locale = Types.Locale.German;
-                    break;
-                case "it-IT":
-                    locale = Types.Locale.Italian;
-                    break;
-                case "ru-RU":
-                    locale = Types.Locale.Russian;
-                    break;
-                case "hy-HY":
-                    locale = Types.Locale.Armenian;
-                    break;
-                case "ja-JP":
-                    locale = Types.Locale.Japanese;
-                    break;
-                case "ko-KR":
-                    locale = Types.Locale.Korean;
-                    break;
-                case "zh-CN":
-                    locale = Types.Locale.Chinese;
-                    break;
-                default:
-                    locale = Types.Locale.English;
-                    break;
-            };
-
-            return locale;
-        }
-
-        public static string GetLocale()
+        public static Types.Locale GetLocale()
         {
             return currentLocale;
         }
 
-        public static void SetLocale(string newLocale = null)
+        public static void SetLocale(Types.Locale newLocale)
         {
-            if (newLocale != null)
-            {
-                currentLocale = newLocale;
-                InitConfig();
-            }
+            currentLocale = newLocale;
+            InitConfig();
         }
 
         public static void Configure(
             string newLocalePath = null,
-            string newLocale = null,
+            Types.Locale newLocale =Types.Locale.English,
             bool newLogMissing = false
         )
         {
@@ -166,10 +53,9 @@ namespace Merge
             {
                 localePath = newLocalePath;
             }
-            if (newLocale != null)
-            {
-                currentLocale = newLocale;
-            }
+
+            currentLocale = newLocale;
+
             if (newLogMissing)
             {
                 isLoggingMissing = newLogMissing;

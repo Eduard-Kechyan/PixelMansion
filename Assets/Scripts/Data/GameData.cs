@@ -283,12 +283,12 @@ namespace Merge
         {
             if (experience >= maxExperience)
             {
-                ToggleCanLevelUpCheck(true);
-
-                if (playSound)
+                if (playSound && !canLevelUp)
                 {
                     soundManager.PlaySound("LevelUpIndicator");
                 }
+                ToggleCanLevelUpCheck(true);
+
 
                 if (valuesUI != null)
                 {

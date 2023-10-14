@@ -41,8 +41,8 @@ namespace Merge
         public Sprite[] optionSprites = new Sprite[3];
 
         // Sprites
-        private List<SpriteRenderer> chunks = new List<SpriteRenderer>();
-        private List<Sprite> oldChunkSprites = new List<Sprite>();
+        private readonly List<SpriteRenderer> chunks = new ();
+        private readonly List<Sprite> oldChunkSprites = new ();
 
         // Overlay
         private SpriteRenderer overlay;
@@ -94,7 +94,7 @@ namespace Merge
             {
                 overlay = transform.GetChild(0).GetComponent<SpriteRenderer>();
 
-                List<SpriteRenderer> tempOldChunks = new List<SpriteRenderer>();
+                List<SpriteRenderer> tempOldChunks = new ();
 
                 // Start at 1 since 0 is the overlay
                 for (int i = 1; i < transform.childCount; i++)
@@ -112,10 +112,10 @@ namespace Merge
                         // Set the sorting order to the parent
                         if (i == 0)
                         {
-                            selectable.order = newChild.sortingOrder;
+                            //selectable.order = newChild.sortingOrder;
                         }
 
-                        // Check if we shoul't flip the sprites
+                        // Check if we shouldn't flip the sprites
                         if (unFlip)
                         {
                             newChild.transform.localScale = new Vector3(1, newChild.transform.localScale.y, newChild.transform.localScale.z);

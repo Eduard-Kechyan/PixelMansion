@@ -45,7 +45,7 @@ namespace Merge
             if (isOld)
             {
                 oldSprite = spriteRenderer.sprite;
-                selectable.order = spriteRenderer.sortingOrder;
+                //selectable.order = spriteRenderer.sortingOrder;
             }
 
             SetPositionZ();

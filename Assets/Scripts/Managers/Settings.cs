@@ -107,21 +107,17 @@ namespace Merge
 
         public void SetLocale(Types.Locale newLocale, bool initial = false)
         {
-            string localeCode = "en-US";
-
             if (initial)
             {
                 if (PlayerPrefs.HasKey("locale"))
                 {
-                    localeCode = PlayerPrefs.GetString("locale");
+                    Types.Locale locale = Glob.ParseEnum<Types.Locale>(PlayerPrefs.GetString("locale"));
 
-                    currentLocale = LOCALE.ConvertToLocale(localeCode);
-
-                    I18n.SetLocale(localeCode);
+                    I18n.SetLocale(locale);
                 }
                 else
                 {
-                    List<string> locales = new List<string>();
+                    List<string> locales = new ();
 
                     foreach (Types.Locale locale in System.Enum.GetValues(typeof(Types.Locale)))
                     {
@@ -132,14 +128,13 @@ namespace Merge
                     {
                         Types.Locale locale = Glob.ParseEnum<Types.Locale>(Application.systemLanguage.ToString());
 
-                        localeCode = LOCALE.ConvertToCode(locale);
-                        I18n.SetLocale(localeCode);
-                        PlayerPrefs.SetString("locale", localeCode);
+                        I18n.SetLocale(locale);
+                        PlayerPrefs.SetString("locale", locale.ToString());
                     }
                     else
                     {
-                        I18n.SetLocale(localeCode);
-                        PlayerPrefs.SetString("locale", localeCode);
+                        I18n.SetLocale(Types.Locale.English);
+                        PlayerPrefs.SetString("locale", "English");
                     }
 
                     PlayerPrefs.Save();
@@ -147,11 +142,7 @@ namespace Merge
             }
             else
             {
-                currentLocale = newLocale;
-
-                localeCode = LOCALE.ConvertToCode(newLocale);
-
-                PlayerPrefs.SetString("locale", localeCode);
+                PlayerPrefs.SetString("locale", newLocale.ToString());
 
                 PlayerPrefs.Save();
             }

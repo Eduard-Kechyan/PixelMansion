@@ -63,17 +63,19 @@ namespace Merge
             denyButton.clicked += () => DenySelection();
             confirmButton.clicked += () => ConfirmSelection();
 
-            option1Button.clicked += () => selector.SelectOption(0);
-            option2Button.clicked += () => selector.SelectOption(1);
-            option3Button.clicked += () => selector.SelectOption(2);
+            option1Button.clicked += () => SelectOption(0);
+            option2Button.clicked += () => SelectOption(1);
+            option3Button.clicked += () => SelectOption(2);
         }
 
         // Open the selector and set the appropriate sprites
-        public void Open(Sprite[] sprites, bool initialSelection, bool isAlt = false)
+        public void Open(Sprite[] sprites, int order, bool initialSelection, bool isAlt = false)
         {
             option1Button.style.backgroundImage = new StyleBackground(sprites[0]);
             option2Button.style.backgroundImage = new StyleBackground(sprites[1]);
             option3Button.style.backgroundImage = new StyleBackground(sprites[2]);
+
+            SelectOptionButton(order);
 
             if (initialSelection)
             {
@@ -86,6 +88,32 @@ namespace Merge
             isSelectorOpen = !isSelectorOpen;
 
             UpdateSelector(isAlt);
+        }
+
+        void SelectOption(int order)
+        {
+            option1Button.RemoveFromClassList("selector_option_selected");
+            option2Button.RemoveFromClassList("selector_option_selected");
+            option3Button.RemoveFromClassList("selector_option_selected");
+
+            SelectOptionButton(order);
+
+            selector.SelectOption(order);
+        }
+
+        void SelectOptionButton(int order){
+            if (order == 0)
+            {
+                option1Button.AddToClassList("selector_option_selected");
+            }
+            else if (order == 1)
+            {
+                option2Button.AddToClassList("selector_option_selected");
+            }
+            else
+            {
+                option3Button.AddToClassList("selector_option_selected");
+            }
         }
 
         // Open or close the selectorL

@@ -116,7 +116,7 @@ namespace Merge
                     item2.StopAnimate(true);
                 }
 
-                selectedPairs=null;
+                selectedPairs = null;
             }
 
             if (indicatingPossibleMerges)
@@ -140,6 +140,14 @@ namespace Merge
             // ResetDistance();
         }
 
+        public void CheckIfShouldStop(Item currentItem)
+        {
+            if (currentItem.id == item1.id || currentItem.id == item2.id)
+            {
+                StopPossibleMergeCheck();
+            }
+        }
+
         IEnumerator CheckPossibleMerges()
         {
             indicatingPossibleMerges = false;
@@ -148,7 +156,7 @@ namespace Merge
             yield return new WaitForSeconds(UnityEngine.Random.Range(2, 5));
 
             // Variables
-            List<Types.Board> singleArray = new ();
+            List<Types.Board> singleArray = new();
 
             List<Pair> pairs = new();
 

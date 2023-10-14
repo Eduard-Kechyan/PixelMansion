@@ -28,8 +28,6 @@ namespace Merge
 
         [HideInInspector]
         public string id;
-        [HideInInspector]
-        public int order = 0;
 
         // Enums
         public enum Type
@@ -116,26 +114,19 @@ namespace Merge
             return isOld;
         }
 
-        public int GetSprites()
+        public int GetSpriteOrder()
         {
-            int order = 0;
-
             switch (type)
             {
                 case Type.Floor:
-                    order = changeFloor.spriteOrder;
-                    break;
+                    return changeFloor.spriteOrder;
 
                 case Type.Wall:
-                    order = changeWall.spriteOrder;
-                    break;
+                    return changeWall.spriteOrder;
 
-                case Type.Furniture:
-                    order = changeFurniture.spriteOrder;
-                    break;
+                default: // Type.Furniture
+                    return changeFurniture.spriteOrder;
             }
-
-            return order;
         }
 
         public Sprite[] GetSpriteOptions()

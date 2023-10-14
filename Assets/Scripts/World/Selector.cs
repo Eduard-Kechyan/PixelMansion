@@ -160,7 +160,7 @@ namespace Merge
                     selectable = newSelectable;
                 }
 
-                lastSpriteOrder = selectable.GetSprites();
+                lastSpriteOrder = selectable.GetSpriteOrder();
 
                 // Check if we can select the selectable
                 if (selectable.canBeSelected)
@@ -177,7 +177,7 @@ namespace Merge
 
                             soundManager.PlaySound("", swapSound);
 
-                            selectorUIHandler.Open(selectable.GetSpriteOptions(), false);
+                            selectorUIHandler.Open(selectable.GetSpriteOptions(), selectable.GetSpriteOrder(), false);
                         }
                         else
                         {
@@ -246,7 +246,7 @@ namespace Merge
 
             selectable = newSelectable;
 
-            selectorUIHandler.Open(selectable.GetSpriteOptions(), true, true);
+            selectorUIHandler.Open(selectable.GetSpriteOptions(), selectable.GetSpriteOrder(), true, true);
 
             soundManager.PlaySound("", arrowSound);
 
@@ -369,7 +369,7 @@ namespace Merge
 
             selectorArrow.style.display = DisplayStyle.None;
 
-            selectorUIHandler.Open(selectable.GetSpriteOptions(), true);
+            selectorUIHandler.Open(selectable.GetSpriteOptions(), selectable.GetSpriteOrder(), true);
 
             isSelecting = false;
             isSelected = true;

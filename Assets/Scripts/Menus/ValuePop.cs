@@ -152,7 +152,10 @@ namespace Merge
             root.Remove(valuePop);
 
             // Update data
-            gameData.UpdateValueUI(amount, type, multiply);
+            if (type != Types.CollGroup.Experience)
+            {
+                gameData.UpdateValueUI(amount, type, multiply);
+            }
         }
 
         public IEnumerator HandlePopInventoryItem(Sprite sprite, Vector2 initialPosition, Vector2 position, Action callback = null)

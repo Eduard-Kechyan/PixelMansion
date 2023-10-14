@@ -36,17 +36,18 @@ SpriteAtlas:
       m_ForceMaximumCompressionQuality_BC6H_BC7: 0
     packingSettings:
       serializedVersion: 2
-      padding: 2
+      padding: 8
       blockOffset: 1
       allowAlphaSplitting: 0
       enableRotation: 1
       enableTightPacking: 1
-      enableAlphaDilation: 1
+      enableAlphaDilation: 0
     secondaryTextureSettings: {}
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 61ca172c17fbedc48b41fee8a338705b, type: 3}
     - {fileID: 21300000, guid: a203e081d869a9b458e5d52451dc404e, type: 3}
+    - {fileID: 21300000, guid: 5af0a1ef3db269a48ac96828aad562c5, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -64,6 +65,7 @@ SpriteAtlas:
     - cf15db4c14889544f93c0531e528d239: 21300000
     - 12bad7cc644735748b7eb480727b50a4: 21300000
     - 1ebc37de54c49164095e17c603278279: 21300000
+    - 5af0a1ef3db269a48ac96828aad562c5: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: a203e081d869a9b458e5d52451dc404e, type: 3}
@@ -79,6 +81,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: cf15db4c14889544f93c0531e528d239, type: 3}
   - {fileID: 21300000, guid: 12bad7cc644735748b7eb480727b50a4, type: 3}
   - {fileID: 21300000, guid: 1ebc37de54c49164095e17c603278279, type: 3}
+  - {fileID: 21300000, guid: 5af0a1ef3db269a48ac96828aad562c5, type: 3}
   m_PackedSpriteNamesToIndex:
   - TransitionOverlay
   - LoaderBackground
@@ -93,6 +96,7 @@ SpriteAtlas:
   - LoaderFrame
   - BorderTop
   - Fill
+  - BackgroundShadow
   m_RenderDataMap: {}
   m_Tag: LoadingSceneAtlas
   m_IsVariant: 0

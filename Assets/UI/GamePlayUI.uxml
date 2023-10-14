@@ -1,6 +1,8 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/Styles/Main.uss?fileID=7433441132597879392&amp;guid=b6d7ed9290f88c745af1e68e28dec072&amp;type=3#Main" />
     <Style src="project://database/Assets/UI/Styles/GamePlayStyles.uss?fileID=7433441132597879392&amp;guid=ec0150edc540bd047ae83ec388af573c&amp;type=3#GamePlayStyles" />
+    <ui:VisualElement name="TopBgShadow" picking-mode="Ignore" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/BackgroundShadow.png?fileID=2800000&amp;guid=5af0a1ef3db269a48ac96828aad562c5&amp;type=3#BackgroundShadow&apos;); position: absolute; left: 0; top: -50px; right: 0; width: 180px; height: 90px;" />
+    <ui:VisualElement name="BottomBgShadow" picking-mode="Ignore" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/BackgroundShadow.png?fileID=2800000&amp;guid=5af0a1ef3db269a48ac96828aad562c5&amp;type=3#BackgroundShadow&apos;); position: absolute; left: 0; right: 0; width: 180px; height: 100px; bottom: -60px; rotate: 180deg; display: flex;" />
     <ui:VisualElement name="LocaleWrapper" class="locale_wrapper locale_en">
         <ui:VisualElement name="BottomBox" class="bottom_box">
             <ui:VisualElement name="InfoBox" class="info_box" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/Gameplay/Info%20Box.png?fileID=2800000&amp;guid=b138143b008636f42aef1b5eb37ce99f&amp;type=3#Info Box&apos;);">

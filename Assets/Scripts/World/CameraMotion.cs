@@ -12,8 +12,8 @@ namespace Merge
         public bool moving = false;
 
         private Vector3 desiredPos;
-        private bool useAltSpeed = false;
-        private float altSpeed = -1f;
+        private bool useAltMoveSpeed = false;
+        private float altMoveSpeed = -1f;
 
         // References
         private HubUI hubUI;
@@ -33,15 +33,15 @@ namespace Merge
                 speed = Mathf.SmoothStep(0, 100, speed);
 
                 // TODO - Add easing
-                transform.position = Vector3.MoveTowards(transform.position, desiredPos, (useAltSpeed ? altSpeed : speed) * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, desiredPos, (useAltMoveSpeed ? altMoveSpeed : speed) * Time.deltaTime);
 
                 if (Vector2.Distance(transform.position, desiredPos) < 0.01f)
                 {
                     transform.position = new Vector3(desiredPos.x, desiredPos.y, transform.position.z);
 
                     moving = false;
-                    useAltSpeed = false;
-                    
+                    useAltMoveSpeed = false;
+
                     PlayerPrefs.SetFloat("lastCamPosX", transform.position.x);
                     PlayerPrefs.SetFloat("lastCamPosY", transform.position.y);
 
@@ -59,13 +59,13 @@ namespace Merge
 
             if (newMotionSpeed > -1)
             {
-                useAltSpeed = true;
+                useAltMoveSpeed = true;
 
-                altSpeed = newMotionSpeed;
+                altMoveSpeed = newMotionSpeed;
             }
             else
             {
-                useAltSpeed = false;
+                useAltMoveSpeed = false;
             }
 
             enabled = true;

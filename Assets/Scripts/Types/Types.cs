@@ -458,16 +458,16 @@ namespace Merge
         //// OTHER ////
         public enum Locale
         {
-            English,
-            French,
-            Spanish,
-            German,
-            Italian,
-            Russian,
-            Armenian,
-            Japanese,
-            Korean,
-            Chinese
+            English, // English (en-US)
+            French, // Français (fr-FR)
+            Spanish, // Española (es-ES)
+            German, // Deutsch (de-DE)
+            Italian, // Italiano (it-IT)
+            Russian, // Русский (ru-RU)
+            Armenian, // Հայերեն (hy-HY)
+            Japanese, // 日本語 (ja-JP)
+            Korean, // 한국어 (ko-KR)
+            Chinese // 中文 (zh-CN)
         };
     }
 }

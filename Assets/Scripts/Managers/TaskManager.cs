@@ -26,6 +26,7 @@ namespace Merge
         private Selector selector;
         private ProgressManager progressManager;
         private CameraMotion cameraMotion;
+        private CameraPinch cameraPinch;
         private NoteDotHandler noteDotHandler;
         private HubUI hubUI;
         private GameplayUI gameplayUI;
@@ -38,6 +39,7 @@ namespace Merge
             dataManager = DataManager.Instance;
             progressManager = GetComponent<ProgressManager>();
             cameraMotion = Camera.main.GetComponent<CameraMotion>();
+            cameraPinch = Camera.main.GetComponent<CameraPinch>();
             noteDotHandler = GameRefs.Instance.noteDotHandler;
             hubUI = GameRefs.Instance.hubUI;
             gameplayUI = GameRefs.Instance.gameplayUI;
@@ -265,6 +267,7 @@ namespace Merge
 
             // Move the camera to the item we want to change
             cameraMotion.MoveTo(taskRefPos, 250);
+            cameraPinch.isResetting = true;
 
             if (isLastStep)
             {

@@ -31,8 +31,8 @@ namespace Merge
         public Sprite[] optionSprites = new Sprite[3];
 
         // Tiles
-        private List<List<SpriteRenderer>> tiles = new List<List<SpriteRenderer>>();
-        private List<List<Sprite>> oldTilesSprites = new List<List<Sprite>>();
+        private readonly List<List<SpriteRenderer>> tiles = new();
+        private readonly List<List<Sprite>> oldTilesSprites = new();
 
         // Overlay
         private SpriteRenderer overlay;
@@ -70,7 +70,7 @@ namespace Merge
             {
                 overlay = transform.GetChild(0).GetComponent<SpriteRenderer>();
 
-                List<Transform> preTiles = new List<Transform>();
+                List<Transform> preTiles = new ();
 
                 // Start at 1 since 0 is the overlay
                 for (int i = 1; i < transform.childCount; i++)
@@ -90,18 +90,18 @@ namespace Merge
                     {
                         SpriteRenderer newSpriteRenderer = preTiles[i].GetComponent<SpriteRenderer>();
 
-                        List<SpriteRenderer> tempTiles = new List<SpriteRenderer>{
+                        List<SpriteRenderer> tempTiles = new (){
                         newSpriteRenderer
                     };
 
                         // Set the sorting order to the parent
-                        selectable.order = tempTiles[0].sortingOrder;
+                        //selectable.order = tempTiles[0].sortingOrder;
 
                         tiles.Add(tempTiles);
 
                         if (isOld)
                         {
-                            List<Sprite> tempTileSprites = new List<Sprite>{
+                            List<Sprite> tempTileSprites = new (){
                             newSpriteRenderer.sprite
                         };
 
@@ -125,7 +125,7 @@ namespace Merge
                         {
                             SpriteRenderer newSpriteRenderer = preTiles[i].GetComponent<SpriteRenderer>();
 
-                            List<SpriteRenderer> tempTiles = new List<SpriteRenderer>{
+                            List<SpriteRenderer> tempTiles = new (){
                         newSpriteRenderer
                     };
 
@@ -133,7 +133,7 @@ namespace Merge
 
                             if (isOld)
                             {
-                                List<Sprite> tempTileSprites = new List<Sprite>{
+                                List<Sprite> tempTileSprites = new (){
                                 newSpriteRenderer.sprite
                             };
 

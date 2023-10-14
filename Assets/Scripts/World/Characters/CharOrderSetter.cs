@@ -9,15 +9,21 @@ namespace Merge
         // Variables
         public int radius;
         public int sortingOrderOffset = 7;
+        public Sprite shadowIdleSprite;
+        public Sprite shadowWalkingSprite;
 
-        private SpriteRenderer spriteRenderer;
+        private SpriteRenderer mainSpriteRenderer;
+        private SpriteRenderer shadowSpriteRenderer;
         [HideInInspector]
         public string currentRoomName = "";
 
         void Start()
         {
             // Cache
-            spriteRenderer = GetComponent<SpriteRenderer>();
+            mainSpriteRenderer = GetComponent<SpriteRenderer>();
+            shadowSpriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>(); // 0 is shadow
+
+            shadowSpriteRenderer.sortingOrder = mainSpriteRenderer.sortingOrder - 1;
 
             CheckArea();
         }
@@ -42,11 +48,24 @@ namespace Merge
 
                     if (roomOrderSetter != null)
                     {
-                        spriteRenderer.sortingLayerName = roomOrderSetter.sortingLayer;
+                        mainSpriteRenderer.sortingLayerName = roomOrderSetter.sortingLayer;
+                        shadowSpriteRenderer.sortingLayerName = roomOrderSetter.sortingLayer;
 
                         currentRoomName = hits[i].transform.name;
                     }
                 }
+            }
+        }
+
+        public void SetShadow(bool isIdle = true)
+        {
+            if (isIdle)
+            {
+                shadowSpriteRenderer.sprite = shadowIdleSprite;
+            }
+            else
+            {
+                shadowSpriteRenderer.sprite = shadowWalkingSprite;
             }
         }
     }

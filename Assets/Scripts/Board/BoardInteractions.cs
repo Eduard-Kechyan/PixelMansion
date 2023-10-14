@@ -271,8 +271,6 @@ namespace Merge
                 currentItem.transform.position.x,
                 currentItem.transform.position.y
             );
-
-            boardIndication.StopPossibleMergeCheck();
         }
 
         void Drag()
@@ -747,6 +745,8 @@ namespace Merge
         {
             if (item.name == currentItem.name)
             {
+                boardIndication.CheckIfShouldStop(item);
+                
                 if (canUndoPre)
                 {
                     CancelUndo();

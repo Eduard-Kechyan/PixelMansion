@@ -32,7 +32,6 @@ namespace Merge
 
         private int lastRandomContent;
         private int greetingsCount = 0;
-        private int randomCount = 0;
         private bool randomCounted = false;
 
         // References
@@ -119,7 +118,6 @@ namespace Merge
 
         public void TryToSpeak(string content = "", bool speakIfEmpty = true)
         {
-            // TODO - Check for (-) and split the content into multiple marts
 
             if (!isSpeaking && !isTimeOut)
             {
@@ -165,7 +163,7 @@ namespace Merge
 
         IEnumerator GreetThePlayer()
         {
-            greetingsCount = LOCALE.GetLength("speech_Greeting_");
+            greetingsCount = LOCALE.GetLength("speech_greeting_");
 
             yield return new WaitForSeconds(0.5f);
 
@@ -173,16 +171,19 @@ namespace Merge
 
             gameData.greeted = true;
 
-            Speak(LOCALE.Get("speech_Greeting_" + randomGreeting));
+            // TODO - Get player name and change Eduard
+            Speak(string.Format(LOCALE.Get("speech_greeting_" + randomGreeting), "Eduard"));
         }
 
         IEnumerator RandomSpeech(bool useDelay = true)
         {
+            int randomCount = 0;
+
             if (!randomCounted)
             {
                 randomCounted = true;
 
-                randomCount = LOCALE.GetLength("speech_" + gameObject.name + "_Random_");
+                randomCount = LOCALE.GetLength("speech_" + gameObject.name + "_random_");
             }
 
             isRandomSpeechTimeOut = true;
@@ -201,11 +202,11 @@ namespace Merge
 
             if (randomCount > 0)
             {
-                lastRandomContent = GetRandomInt();
+                lastRandomContent = GetRandomInt(randomCount);
 
                 int randomSpeech = Random.Range(0, lastRandomContent);
 
-                TryToSpeak(LOCALE.Get("speech_" + gameObject.name + "_Random_" + randomSpeech));
+                TryToSpeak(LOCALE.Get("speech_" + gameObject.name + "_random_" + randomSpeech));
             }
             else
             {
@@ -213,13 +214,13 @@ namespace Merge
             }
         }
 
-        int GetRandomInt()
+        int GetRandomInt(int randomCount)
         {
             int randomContent = Random.Range(0, randomCount);
 
             if (lastRandomContent == randomContent)
             {
-                GetRandomInt();
+                GetRandomInt(randomCount);
                 return 0;
             }
 

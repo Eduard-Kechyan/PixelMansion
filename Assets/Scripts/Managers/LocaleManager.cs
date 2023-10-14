@@ -18,7 +18,7 @@ namespace Merge
     // References
     private GameRefs gameRefs;
 
-    private List<VisualElement> wrappers = new List<VisualElement>();
+    private List<VisualElement> wrappers = new ();
     private VisualElement menuLocaleWrapper;
     private VisualElement hubLocaleWrapper;
     private VisualElement gameplayLocaleWrapper;

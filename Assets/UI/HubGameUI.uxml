@@ -1,16 +1,24 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/Styles/Main.uss?fileID=7433441132597879392&amp;guid=b6d7ed9290f88c745af1e68e28dec072&amp;type=3#Main" />
     <Style src="project://database/Assets/UI/Styles/HubGameStyles.uss?fileID=7433441132597879392&amp;guid=0a305e5e0da6de941b54de76ba85dcea&amp;type=3#HubGameStyles" />
+    <ui:VisualElement name="BottomBgShadow" style="position: absolute; left: 0; right: 0; height: 100px; width: 180px; background-image: url(&apos;project://database/Assets/Sprites/Scenes/BackgroundShadow.png?fileID=2800000&amp;guid=5af0a1ef3db269a48ac96828aad562c5&amp;type=3#BackgroundShadow&apos;); bottom: -60px; rotate: 180deg;" />
+    <ui:VisualElement name="TopBgShadow" style="position: absolute; left: 0; right: 0; top: -50px; height: 90px; width: 180px; background-image: url(&apos;project://database/Assets/Sprites/Scenes/BackgroundShadow.png?fileID=2800000&amp;guid=5af0a1ef3db269a48ac96828aad562c5&amp;type=3#BackgroundShadow&apos;);" />
     <ui:VisualElement name="SelectorBox" class="selector_box">
         <ui:Button display-tooltip-when-elided="true" name="DenyButton" class="button button_active deny_button" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/DenyButton.png?fileID=2800000&amp;guid=183a764ee12efff42ad47afd3a9deb27&amp;type=3#DenyButton&apos;);" />
-        <ui:VisualElement name="Selector" class="selector" style="background-image: url(&apos;project://database/Assets/Sprites/Environment/UI/Selector.png?fileID=2800000&amp;guid=e6767378c2d650c4aa97fb6c6bbf54db&amp;type=3#Selector&apos;);">
-            <ui:Button display-tooltip-when-elided="true" name="Option1Button" class="button button_active" style="width: 30px; height: 30px;" />
-            <ui:Button display-tooltip-when-elided="true" name="Option2Button" class="button button_active" style="width: 30px; height: 30px;" />
-            <ui:Button display-tooltip-when-elided="true" name="Option3Button" class="button button_active" style="width: 30px; height: 30px;" />
+        <ui:VisualElement name="Selector" class="selector" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/Hub/Selector.png?fileID=2800000&amp;guid=e6767378c2d650c4aa97fb6c6bbf54db&amp;type=3#Selector&apos;);">
+            <ui:Button display-tooltip-when-elided="true" name="Option1Button" class="button button_active selector_option">
+                <ui:VisualElement name="Overlay" class="selector_option_overlay" />
+            </ui:Button>
+            <ui:Button display-tooltip-when-elided="true" name="Option2Button" class="button button_active selector_option">
+                <ui:VisualElement name="Overlay" class="selector_option_overlay" />
+            </ui:Button>
+            <ui:Button display-tooltip-when-elided="true" name="Option3Button" class="button button_active selector_option">
+                <ui:VisualElement name="Overlay" class="selector_option_overlay" />
+            </ui:Button>
         </ui:VisualElement>
         <ui:Button display-tooltip-when-elided="true" name="ConfirmButton" class="button button_active confirm_button" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/ConfirmButton.png?fileID=2800000&amp;guid=648a7369b076e174e9160359c385da6d&amp;type=3#ConfirmButton&apos;);" />
     </ui:VisualElement>
-    <ui:VisualElement name="SelectorArrow" class="selector_arrow" style="background-image: url(&apos;project://database/Assets/Sprites/Environment/UI/SelectionArrows0.png?fileID=2800000&amp;guid=52cbf66651a7ef245a62e26371238e99&amp;type=3#SelectionArrows0&apos;);" />
+    <ui:VisualElement name="SelectorArrow" class="selector_arrow" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/Hub/SelectionArrows0.png?fileID=2800000&amp;guid=52cbf66651a7ef245a62e26371238e99&amp;type=3#SelectionArrows0&apos;);" />
     <ui:Button display-tooltip-when-elided="true" name="SpeechBubble" class="speech_bubble" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/Hub/SpeechBubble/SpeechBubble.png?fileID=2800000&amp;guid=a05199067d49e0b49a57533c59688790&amp;type=3#SpeechBubble&apos;); display: none; opacity: 0;">
         <ui:Label tabindex="-1" text="This table can fall down any moment!" display-tooltip-when-elided="true" name="SpeechLabel" class="speech_label" style="padding-left: 1px; padding-right: 1px; padding-top: 2px; padding-bottom: 2px;" />
         <ui:VisualElement name="BorderLeft" class="border_left" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/Hub/SpeechBubble/SpeechBubbleBorderLeft.png?fileID=2800000&amp;guid=9eca50a9594d95a42ade3c576b71a688&amp;type=3#SpeechBubbleBorderLeft&apos;); top: 4px; bottom: 3px; left: -4px;">

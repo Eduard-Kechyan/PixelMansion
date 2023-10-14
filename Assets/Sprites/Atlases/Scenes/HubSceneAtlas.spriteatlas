@@ -36,12 +36,12 @@ SpriteAtlas:
       m_ForceMaximumCompressionQuality_BC6H_BC7: 0
     packingSettings:
       serializedVersion: 2
-      padding: 2
+      padding: 8
       blockOffset: 1
       allowAlphaSplitting: 0
       enableRotation: 1
       enableTightPacking: 1
-      enableAlphaDilation: 1
+      enableAlphaDilation: 0
     secondaryTextureSettings: {}
     variantMultiplier: 1
     packables:
@@ -52,7 +52,9 @@ SpriteAtlas:
     packedSpriteRenderDataKeys:
     - c8a70331c0324a746b5a4e429cd08032: 21300000
     - 254bab9125440e640acddbc2c61f4e93: 21300000
+    - 3f4d0d13a592dad438f05c6957d17c85: 21300000
     - bc1da323638462847834e3c84d776c48: 21300000
+    - dd9361345201533459c0194d3102bdb0: 21300000
     - a05199067d49e0b49a57533c59688790: 21300000
     - 52cbf66651a7ef245a62e26371238e99: 21300000
     - 802c6866113c0944792db9e432563348: 21300000
@@ -73,7 +75,9 @@ SpriteAtlas:
   m_PackedSprites:
   - {fileID: 21300000, guid: c8a70331c0324a746b5a4e429cd08032, type: 3}
   - {fileID: 21300000, guid: 254bab9125440e640acddbc2c61f4e93, type: 3}
+  - {fileID: 21300000, guid: 3f4d0d13a592dad438f05c6957d17c85, type: 3}
   - {fileID: 21300000, guid: bc1da323638462847834e3c84d776c48, type: 3}
+  - {fileID: 21300000, guid: dd9361345201533459c0194d3102bdb0, type: 3}
   - {fileID: 21300000, guid: a05199067d49e0b49a57533c59688790, type: 3}
   - {fileID: 21300000, guid: 52cbf66651a7ef245a62e26371238e99, type: 3}
   - {fileID: 21300000, guid: 802c6866113c0944792db9e432563348, type: 3}
@@ -93,7 +97,9 @@ SpriteAtlas:
   m_PackedSpriteNamesToIndex:
   - SelectionArrows5
   - SpeechBubbleBorderLeftTop
+  - SelectorOptionOverlay
   - SpeechBubbleTailTopLeft
+  - SelectorOptionSelected
   - SpeechBubble
   - SelectionArrows0
   - SelectionArrows2
