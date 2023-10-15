@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ConvoAtlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 0
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 0
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_IgnorePlatformSupport: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 8
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: e56dd44324e5926439abfcd9e93d0a1a, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+    packedSpriteRenderDataKeys:
+    - e5ede6a28f16ac742a8e8d2e5184713a: 21300000
+    - 1b8e71d3354f7ee4ea5fdb095e823ed3: 21300000
+    - db7e3d666296eea48918e2a2525651ef: 21300000
+    - 10308679bc950b946bdaafc86115fb54: 21300000
+    - ac7f26a9c0fa76c4582459ac7da386ce: 21300000
+    - d05e03d905b376a43b0f54b6bccacb1f: 21300000
+    - 78eafdea84aa4c1488ee95182fd2d88b: 21300000
+    - 0536b98ce4b8f2c4b9b1f1fa5287e241: 21300000
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: e5ede6a28f16ac742a8e8d2e5184713a, type: 3}
+  - {fileID: 21300000, guid: 1b8e71d3354f7ee4ea5fdb095e823ed3, type: 3}
+  - {fileID: 21300000, guid: db7e3d666296eea48918e2a2525651ef, type: 3}
+  - {fileID: 21300000, guid: 10308679bc950b946bdaafc86115fb54, type: 3}
+  - {fileID: 21300000, guid: ac7f26a9c0fa76c4582459ac7da386ce, type: 3}
+  - {fileID: 21300000, guid: d05e03d905b376a43b0f54b6bccacb1f, type: 3}
+  - {fileID: 21300000, guid: 78eafdea84aa4c1488ee95182fd2d88b, type: 3}
+  - {fileID: 21300000, guid: 0536b98ce4b8f2c4b9b1f1fa5287e241, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - NamePlate
+  - NamePlateRightEdge
+  - ConvoBoxEdge
+  - NextButton
+  - NamePlateLeftEdge
+  - ConvoBoxTopEdge
+  - ConvoBoxBottomEdge
+  - SkipButton
+  m_RenderDataMap: {}
+  m_Tag: ConvoAtlas
+  m_IsVariant: 0

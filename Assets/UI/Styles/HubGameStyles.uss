@@ -189,3 +189,198 @@
     bottom: -6px;
     left: 0;
 }
+
+.convo_container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    display: none;
+}
+
+.convo_underlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    transition-duration: 0.2s;
+    background-color: rgba(0, 0, 0, 0.2);
+    opacity: 0;
+}
+
+.convo_shadow {
+    width: 180px;
+    height: 180px;
+    position: absolute;
+    left: 0;
+    top: -120px;
+    right: 0;
+    transition-duration: 0.2s;
+    background-image: url('project://database/Assets/Sprites/Scenes/BackgroundShadow.png?fileID=2800000&guid=5af0a1ef3db269a48ac96828aad562c5&type=3#BackgroundShadow');
+    display: flex;
+}
+
+.convo_skip {
+    position: absolute;
+    right: 4px;
+    top: 42px;
+    width: auto;
+    height: 16px;
+    left: 4px;
+    -unity-text-align: middle-right;
+    font-size: 8px;
+    color: rgb(255, 255, 255);
+    padding-right: 18px;
+    opacity: 0;
+    -unity-font-definition: url('project://database/Assets/Fonts/Roboto%20SDF.asset?fileID=11400000&guid=1c5dedeb0ccefb74ebe6e5ff0a6f7e56&type=2#Roboto SDF');
+    transition-duration: 0.3s;
+}
+
+.convo_skip .icon {
+    background-image: url('project://database/Assets/Sprites/Conversation/SkipButton.png?fileID=2800000&guid=0536b98ce4b8f2c4b9b1f1fa5287e241&type=3#SkipButton');
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.convo_box {
+    width: 172px;
+    min-height: 60px;
+    transition-duration: 0.3s;
+    position: absolute;
+    left: 4px;
+    right: 4px;
+    bottom: 4px;
+}
+
+.convo_box .mid_area {
+    position: absolute;
+    left: 0;
+    top: 7px;
+    bottom: 39px;
+    background-image: url('project://database/Assets/Sprites/Conversation/ConvoBoxMidArea.png?fileID=2800000&guid=9c0d759946bc8cc4a8ac459a3bf0c11b&type=3#ConvoBoxMidArea');
+    right: 0;
+}
+
+.convo_box .bottom_border {
+    width: 172px;
+    height: 40px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('project://database/Assets/Sprites/Conversation/ConvoBoxBottomEdge.png?fileID=2800000&guid=78eafdea84aa4c1488ee95182fd2d88b&type=3#ConvoBoxBottomEdge');
+}
+
+.convo_box .top_border {
+    width: 172px;
+    height: 8px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    background-image: url('project://database/Assets/Sprites/Conversation/ConvoBoxTopEdge.png?fileID=2800000&guid=d05e03d905b376a43b0f54b6bccacb1f&type=3#ConvoBoxTopEdge');
+}
+
+.convo_box .next_button {
+    position: absolute;
+    right: 4px;
+    bottom: 4px;
+    font-size: 8px;
+    color: rgb(169, 132, 95);
+    -unity-text-align: middle-right;
+    padding-left: 0;
+    padding-right: 10px;
+    padding-top: 0;
+    padding-bottom: 0;
+    left: 4px;
+    height: 10px;
+    -unity-font-definition: url('project://database/Assets/Fonts/Roboto%20SDF.asset?fileID=11400000&guid=1c5dedeb0ccefb74ebe6e5ff0a6f7e56&type=2#Roboto SDF');
+}
+
+.convo_box .next_button .icon {
+    background-image: url('project://database/Assets/Sprites/Conversation/NextButton.png?fileID=2800000&guid=10308679bc950b946bdaafc86115fb54&type=3#NextButton');
+    width: 8px;
+    height: 10px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    top: 0;
+}
+
+.convo_box .name_plate {
+    background-image: url('project://database/Assets/Sprites/Conversation/NamePlate.png?fileID=2800000&guid=e5ede6a28f16ac742a8e8d2e5184713a&type=3#NamePlate');
+    height: 12px;
+    -unity-background-image-tint-color: rgb(0, 136, 255);
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 0;
+    padding-bottom: 2px;
+    min-width: 48px;
+    position: absolute;
+    top: -2px;
+    left: 10px;
+}
+
+.convo_box .name_edge {
+    width: 8px;
+    height: 14px;
+    position: absolute;
+    -unity-background-image-tint-color: rgb(0, 136, 255);
+    top: 0;
+    left: -7px;
+}
+
+.convo_box .name_label {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    -unity-text-align: middle-center;
+    white-space: nowrap;
+    font-size: 8px;
+    color: rgb(255, 255, 255);
+    -unity-font-definition: url('project://database/Assets/Fonts/Roboto%20SDF.asset?fileID=11400000&guid=1c5dedeb0ccefb74ebe6e5ff0a6f7e56&type=2#Roboto SDF');
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    -unity-font-style: italic;
+}
+
+.convo_avatar {
+    background-image: url('project://database/Assets/Sprites/Avatars/TonyAvatar.png?fileID=2800000&guid=fe507632932b4b6479ea4640d9448198&type=3#TonyAvatar');
+    width: 64px;
+    height: 74px;
+    position: absolute;
+    top: -63px;
+    left: 4px;
+    transition-duration: 0.3s;
+    transition-delay: 0.2s;
+}
+
+.convo_avatar .eyes {
+    position: absolute;
+    right: 20px;
+    background-image: url('project://database/Assets/Sprites/Avatars/TonyEyes1.png?fileID=2800000&guid=6ae5eda71ca2ddd47a2a90dfd2e84561&type=3#TonyEyes1');
+    top: 18px;
+    width: 20px;
+    height: 6px;
+}
+
+.convo_avatar .mouth {
+    background-image: url('project://database/Assets/Sprites/Avatars/TonyMouth1.png?fileID=2800000&guid=80737dad34591b143a90e8e6e4408e63&type=3#TonyMouth1');
+    width: 14px;
+    height: 10px;
+    position: absolute;
+    top: 32px;
+    right: 23px;
+}
