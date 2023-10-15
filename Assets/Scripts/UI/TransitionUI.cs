@@ -37,8 +37,9 @@ namespace Merge
             if (SceneManager.GetActiveScene().name == "Loading")
             {
                 transition.style.display = DisplayStyle.Flex;
-                transition.style.opacity = 0;
-                transition.style.visibility = Visibility.Hidden;
+                /*  transition.style.opacity = 0;
+                  transition.style.visibility = Visibility.Hidden;*/
+                transition.style.bottom = 500;
             }
             else
             {
@@ -59,8 +60,9 @@ namespace Merge
 
             // Do the rest afterwards
 
-            transition.style.opacity = 1;
-            transition.style.visibility = Visibility.Visible;
+            /*transition.style.opacity = 1;
+            transition.style.visibility = Visibility.Visible;*/
+            transition.style.bottom = 0;
 
             if (callback != null)
             {
@@ -78,8 +80,9 @@ namespace Merge
                 transition.style.backgroundColor = backgroundColors[transitionData.backgroundColor];
             }
 
-            transition.style.opacity = 1;
-            transition.style.visibility = Visibility.Visible;
+            /*  transition.style.opacity = 1;
+              transition.style.visibility = Visibility.Visible;*/
+            transition.style.bottom = 0;
             transition.style.display = DisplayStyle.Flex;
 
             while (!CheckLoaded())
@@ -89,14 +92,15 @@ namespace Merge
 
             yield return new WaitForSeconds(duration);
 
-            transition.style.opacity = 0;
-            transition.style.visibility = Visibility.Hidden;
+            /* transition.style.opacity = 0;
+             transition.style.visibility = Visibility.Hidden;*/
+            transition.style.bottom = 500;
         }
 
         bool CheckLoaded()
         {
             bool readyToOpen = false;
-            
+
             if (dataManager.loaded)
             {
                 string sceneName = sceneLoader.GetSceneName();

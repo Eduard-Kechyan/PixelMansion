@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 269867168095586740}
   - component: {fileID: 194810349795178729}
   - component: {fileID: 380637600984663935}
+  - component: {fileID: 574956127959172480}
   m_Layer: 0
   m_Name: MenuUI
   m_TagString: Untagged
@@ -132,7 +133,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   energyBuyAmount: 50
-  energyWatchAmount: 20
   gemsCost: 5
 --- !u!114 &40359766856632406
 MonoBehaviour:
@@ -209,8 +209,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameplayScene: 1
+  levelButtonOffset: 9
   hubUI: {fileID: 0}
   levelData: {fileID: 11400000, guid: 8c88eefc0fdf45146ba2dc71a2f1e938, type: 2}
+  isRewarding: 0
 --- !u!114 &194810349795178729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -236,3 +238,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a5e249499069b64fb299e0102f497c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &574956127959172480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2529494229858904796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c4306c6e8b1f0b4c9a515d85cdaa997, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  starEmptySprite: {fileID: 21300000, guid: d4a36d8a01e7d5742855408d095c829b, type: 3}
+  starFullSprite: {fileID: 21300000, guid: aeeaeaf298625af46ac01379474a0ece, type: 3}
+  shouldShow: 1

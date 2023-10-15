@@ -52,8 +52,8 @@ SpriteAtlas:
     packedSpriteRenderDataKeys:
     - e5ede6a28f16ac742a8e8d2e5184713a: 21300000
     - 1b8e71d3354f7ee4ea5fdb095e823ed3: 21300000
-    - db7e3d666296eea48918e2a2525651ef: 21300000
     - 10308679bc950b946bdaafc86115fb54: 21300000
+    - 9c0d759946bc8cc4a8ac459a3bf0c11b: 21300000
     - ac7f26a9c0fa76c4582459ac7da386ce: 21300000
     - d05e03d905b376a43b0f54b6bccacb1f: 21300000
     - 78eafdea84aa4c1488ee95182fd2d88b: 21300000
@@ -62,8 +62,8 @@ SpriteAtlas:
   m_PackedSprites:
   - {fileID: 21300000, guid: e5ede6a28f16ac742a8e8d2e5184713a, type: 3}
   - {fileID: 21300000, guid: 1b8e71d3354f7ee4ea5fdb095e823ed3, type: 3}
-  - {fileID: 21300000, guid: db7e3d666296eea48918e2a2525651ef, type: 3}
   - {fileID: 21300000, guid: 10308679bc950b946bdaafc86115fb54, type: 3}
+  - {fileID: 21300000, guid: 9c0d759946bc8cc4a8ac459a3bf0c11b, type: 3}
   - {fileID: 21300000, guid: ac7f26a9c0fa76c4582459ac7da386ce, type: 3}
   - {fileID: 21300000, guid: d05e03d905b376a43b0f54b6bccacb1f, type: 3}
   - {fileID: 21300000, guid: 78eafdea84aa4c1488ee95182fd2d88b, type: 3}
@@ -71,8 +71,8 @@ SpriteAtlas:
   m_PackedSpriteNamesToIndex:
   - NamePlate
   - NamePlateRightEdge
-  - ConvoBoxEdge
   - NextButton
+  - ConvoBoxMidArea
   - NamePlateLeftEdge
   - ConvoBoxTopEdge
   - ConvoBoxBottomEdge

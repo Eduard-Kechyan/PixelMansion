@@ -10,6 +10,7 @@ namespace Merge
     {
         // Variables
         public TransitionUI transitionUI;
+        public LikeMenu rateMenu;
         public float duration = 0.6f;
         public float fadeDuration = 0.5f;
 
@@ -20,20 +21,23 @@ namespace Merge
         private SoundManager soundManager;
         private LocaleManager localeManager;
 
-        void Start()
+        void OnEnable()
         {
-            Init();
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
-        void Init()
+        void OnDisable()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+
+        void Start()
         {
             // Cache
             soundManager = SoundManager.Instance;
             localeManager = Settings.Instance.GetComponent<LocaleManager>();
 
             InitializeScene();
-
-            SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
         void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -50,7 +54,7 @@ namespace Merge
                 SceneManager.LoadScene(sceneIndex);
             });
         }
-        
+
         public void LoadAsync(int sceneIndex)
         {
             transitionUI.Open();
@@ -77,6 +81,11 @@ namespace Merge
 
         void InitializeScene()
         {
+            soundManager = SoundManager.Instance;
+            localeManager = Settings.Instance.GetComponent<LocaleManager>();
+
+            Debug.Log(soundManager);
+
             // Play background music when the scene starts from the editor
             sceneName = SceneManager.GetActiveScene().name;
 
@@ -93,6 +102,11 @@ namespace Merge
                     Settings.Instance.Init();
 
                     localeManager.Init(sceneName);
+
+                    if (rateMenu != null && rateMenu.shouldShow)
+                    {
+                        rateMenu.Open();
+                    }
 
                     break;
 

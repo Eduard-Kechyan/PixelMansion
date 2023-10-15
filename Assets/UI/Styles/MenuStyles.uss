@@ -188,7 +188,7 @@
     border-bottom-width: 0;
     background-color: rgba(188, 188, 188, 0);
     background-image: url('project://database/Assets/Sprites/Buttons/LongButtonExtra.png?fileID=21300000&guid=5807375128b344f44a31b9300397a38e&type=3#LongButtonExtra');
-    width: 70px;
+    width: 68px;
     height: 20px;
     font-size: 6px;
     -unity-background-image-tint-color: rgb(113, 160, 246);
@@ -332,7 +332,7 @@
     padding-top: 0;
     padding-bottom: 0;
     height: 20px;
-    width: 70px;
+    width: 68px;
     transition-duration: 0.1s;
     border-left-width: 0;
     border-right-width: 0;
@@ -426,7 +426,7 @@
 }
 
 .energy_boxes .box .button {
-    width: 43px;
+    width: 42px;
     height: 18px;
     display: flex;
     -unity-background-image-tint-color: rgb(113, 160, 246);
@@ -582,7 +582,7 @@
     -unity-background-image-tint-color: rgb(85, 203, 152);
     font-size: 8px;
     padding-left: 12px;
-    width: 43px;
+    width: 42px;
     height: 18px;
     padding-right: 0;
     padding-top: 0;
@@ -1211,7 +1211,7 @@
 
 .task_item .task_button {
     background-image: url('project://database/Assets/Sprites/Buttons/LongButton.png?fileID=2800000&guid=e6292ec8b0b2a5743a0f00750e1f4db0&type=3#LongButton');
-    width: 43px;
+    width: 42px;
     height: 18px;
     -unity-background-image-tint-color: rgb(85, 203, 152);
     color: rgb(255, 255, 255);
@@ -1450,7 +1450,7 @@
 }
 
 .confirm_menu .content .button {
-    width: 43px;
+    width: 42px;
     height: 18px;
     color: rgb(255, 255, 255);
 }
@@ -1545,4 +1545,115 @@
 
 .menu_toggle .unity-toggle__input:checked .unity-toggle__checkmark {
     background-image: url('project://database/Assets/Sprites/Menus/Inputs/ToggleBoxChecked.png?fileID=2800000&guid=77474028355160f41a137258b8978732&type=3#ToggleBoxChecked');
+}
+
+.small_menu {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+    background-image: url('project://database/Assets/Sprites/Menus/SmallMenu.png?fileID=2800000&guid=108a1bc1916e1f84bad692ca76116993&type=3#SmallMenu');
+    width: 110px;
+    min-height: 50px;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 8px;
+    padding-bottom: 0;
+}
+
+.small_menu .bottom_border {
+    background-image: url('project://database/Assets/Sprites/Menus/SmallMenuBottomBorder.png?fileID=2800000&guid=24ba9de03ef515241af648c2aeae4ce0&type=3#SmallMenuBottomBorder');
+    width: 110px;
+    height: 6px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -5px;
+}
+
+.small_menu .title {
+    background-image: url('project://database/Assets/Sprites/Menus/LikeMenu/LikeTitle.png?fileID=2800000&guid=2db6b6d38ff2c28438e277731cda8f06&type=3#LikeTitle');
+    width: 126px;
+    height: 22px;
+    position: absolute;
+    top: -16px;
+    left: -8px;
+}
+
+.small_menu .title_label {
+    -unity-text-align: middle-center;
+    white-space: nowrap;
+    font-size: 8px;
+    color: rgb(255, 255, 255);
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 17px;
+    width: 100%;
+}
+
+.small_menu .stars_label {
+    width: 100%;
+    -unity-text-align: middle-center;
+    margin-bottom: 2px;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.small_menu .stars_box {
+    width: 100%;
+    margin-bottom: 4px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.small_menu .star_item {
+    background-image: url('project://database/Assets/Sprites/Menus/LikeMenu/StarEmpty.png?fileID=2800000&guid=d4a36d8a01e7d5742855408d095c829b&type=3#StarEmpty');
+    width: 16px;
+    height: 20px;
+    margin-left: 1px;
+    margin-right: 1px;
+}
+
+.small_menu .like_label {
+    font-size: 6px;
+    color: rgb(65, 65, 65);
+    -unity-text-align: upper-center;
+    white-space: normal;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 2px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.small_menu .button_box {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    margin-top: 4px;
+}
+
+.small_menu .like_button {
+    background-image: url('project://database/Assets/Sprites/Menus/LikeMenu/SmallButton.png?fileID=2800000&guid=5e9285690bdecc44991f6dfcbfbb849b&type=3#SmallButton');
+    width: 60px;
+    height: 18px;
+    margin-bottom: 2px;
+    color: rgb(255, 255, 255);
+    font-size: 10px;
 }

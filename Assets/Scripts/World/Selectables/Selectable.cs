@@ -131,24 +131,17 @@ namespace Merge
 
         public Sprite[] GetSpriteOptions()
         {
-            Sprite[] sprites = new Sprite[0];
-
             switch (type)
             {
                 case Type.Floor:
-                    sprites = changeFloor.optionSprites;
-                    break;
+                    return changeFloor.optionSprites;
 
                 case Type.Wall:
-                    sprites = changeWall.optionSprites;
-                    break;
+                    return changeWall.optionSprites;
 
-                case Type.Furniture:
-                    sprites = changeFurniture.optionSprites;
-                    break;
+                default: // Type.Furniture
+                    return changeFurniture.optionSprites;
             }
-
-            return sprites;
         }
 
         public void SetSprites(int order)

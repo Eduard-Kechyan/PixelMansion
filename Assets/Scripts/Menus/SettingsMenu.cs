@@ -17,9 +17,10 @@ namespace Merge
         private MenuUI menuUI;
         private LocaleMenu localeMenu;
         private ConfirmMenu confirmMenu;
+        private LikeMenu rateMenu;
         private I18n LOCALE;
         private Settings settings;
-        private Notifics notifics;
+        private Notices notifics;
         private ResetHandler resetHandler;
 
         // UI
@@ -37,6 +38,7 @@ namespace Merge
         private Button languageButton;
         private Button resetButton;
         private Button exitButton;
+        private Button rateButton;
 
         private Button googleSignInButton;
         private VisualElement googleSignInCheck;
@@ -71,9 +73,10 @@ namespace Merge
             menuUI = GetComponent<MenuUI>();
             localeMenu = GetComponent<LocaleMenu>();
             confirmMenu = GetComponent<ConfirmMenu>();
+            rateMenu = GetComponent<LikeMenu>();
             LOCALE = I18n.Instance;
             settings = Settings.Instance;
-            notifics = Services.Instance.GetComponent<Notifics>();
+            notifics = Services.Instance.GetComponent<Notices>();
             resetHandler = GetComponent<ResetHandler>();
 
             // UI
@@ -92,6 +95,7 @@ namespace Merge
             languageButton = settingsMenu.Q<Button>("LanguageButton");
             resetButton = settingsMenu.Q<Button>("ResetButton");
             exitButton = settingsMenu.Q<Button>("ExitButton");
+            rateButton = settingsMenu.Q<Button>("RateButton");
 
             googleSignInButton = settingsMenu.Q<Button>("GoogleSignInButton");
             facebookSignInButton = settingsMenu.Q<Button>("FacebookSignInButton");
@@ -125,6 +129,7 @@ namespace Merge
             languageButton.clicked += () => localeMenu.Open();
             resetButton.clicked += () => confirmMenu.Open("reset", resetHandler.RestartAndResetApp);
             exitButton.clicked += () => confirmMenu.Open("exit", Application.Quit);
+            rateButton.clicked += () => rateMenu.Open();
 
             googleSignInButton.clicked += () => Debug.Log("Google Sing In Button Clicked!"); ////
             facebookSignInButton.clicked += () => Debug.Log("Facebook Sing In Button Clicked!"); ////
@@ -149,6 +154,11 @@ namespace Merge
             // Make sure the menu is closed
             settingsMenu.style.display = DisplayStyle.None;
             settingsMenu.style.opacity = 0;
+
+            if (!Debug.isDebugBuild || !Application.isEditor)
+            {
+                languageButton.style.display = DisplayStyle.None;
+            }
         }
 
         public void Open()
@@ -156,7 +166,11 @@ namespace Merge
             // Set the title
             string title = LOCALE.Get("settings_menu_title");
 
-            Debug.Log(GameData.Instance.userId);
+            // Hide the rate menu button if it's disabled
+            if (rateMenu == null)
+            {
+                rateButton.style.display = DisplayStyle.None;
+            }
 
             // TODO - Get the user ID
             idLabel.text = "User ID: " + GameData.Instance.userId;

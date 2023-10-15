@@ -60,7 +60,7 @@ namespace Merge
             bottomBox = hubUIDoc.rootVisualElement.Q<VisualElement>("BottomBox");
 
             // UI taps
-            denyButton.clicked += () => DenySelection();
+            denyButton.clicked += () => CancelSelection();
             confirmButton.clicked += () => ConfirmSelection();
 
             option1Button.clicked += () => SelectOption(0);
@@ -92,17 +92,18 @@ namespace Merge
 
         void SelectOption(int order)
         {
-            option1Button.RemoveFromClassList("selector_option_selected");
-            option2Button.RemoveFromClassList("selector_option_selected");
-            option3Button.RemoveFromClassList("selector_option_selected");
-
             SelectOptionButton(order);
 
             selector.SelectOption(order);
         }
 
-        void SelectOptionButton(int order){
-            if (order == 0)
+        void SelectOptionButton(int order)
+        {
+            option1Button.RemoveFromClassList("selector_option_selected");
+            option2Button.RemoveFromClassList("selector_option_selected");
+            option3Button.RemoveFromClassList("selector_option_selected");
+
+            if (order == 0 || order == -1)
             {
                 option1Button.AddToClassList("selector_option_selected");
             }
@@ -159,7 +160,7 @@ namespace Merge
         }
 
         // Handle canceling
-        void DenySelection()
+        void CancelSelection()
         {
             selector.CancelSelecting(true);
 

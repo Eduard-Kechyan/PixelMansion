@@ -11,6 +11,7 @@ namespace Merge
         // Variables
         public BoardInteractions boardInteractions;
         public LoadingManager loadingManager;
+        public LikeMenu rateMenu;
         public float transitionDuration = 0.1f;
 
         // References
@@ -27,6 +28,7 @@ namespace Merge
         private VisualElement otherContainer;
         private Button adButton;
         private Button logsButton;
+        private Button rateButton;
 
         private VisualElement loadingContainer;
         private Button skipButton;
@@ -43,15 +45,6 @@ namespace Merge
             else
             {
                 Instance = this;
-             /*   if (Instance != null && Instance != this)
-                {
-                    Destroy(gameObject);
-                }
-                else
-                {
-                   Instance = this;
-                    DontDestroyOnLoad(gameObject);
-                }*/
             }
         }
 
@@ -71,6 +64,7 @@ namespace Merge
             otherContainer = debugMenu.Q<VisualElement>("OtherContainer");
             adButton = otherContainer.Q<Button>("AdButton");
             logsButton = otherContainer.Q<Button>("LogsButton");
+            rateButton = otherContainer.Q<Button>("RateButton");
 
             // Button taps
             menuBackground.AddManipulator(new Clickable(evt =>
@@ -87,6 +81,7 @@ namespace Merge
                 }
             });
             logsButton.clicked += () => logs.Toggle();
+            rateButton.clicked += () => rateMenu.Open();
 
             // Init
             debugMenu.style.display = DisplayStyle.None;
@@ -101,7 +96,8 @@ namespace Merge
                 skipButton = loadingContainer.Q<Button>("SkipButton");
 
                 // Button taps
-                skipButton.clicked += () => {
+                skipButton.clicked += () =>
+                {
                     loadingManager.LoadNextScene();
                     CloseMenu();
                 };
@@ -116,6 +112,12 @@ namespace Merge
             // Show the menu
             debugMenu.style.display = DisplayStyle.Flex;
             debugMenu.style.opacity = 1;
+
+            // Hide the rate menu button if it's disabled
+            if (rateMenu == null)
+            {
+                rateButton.style.display = DisplayStyle.None;
+            }
 
             ShowValues();
 
@@ -151,7 +153,8 @@ namespace Merge
 
         void ShowValues()
         {
-            if(valuesUI!=null){
+            if (valuesUI != null)
+            {
                 valuesUI.SetSortingOrder(12);
 
                 valuesUI.DisableButtons();

@@ -275,10 +275,12 @@
 .splash_container {
     position: absolute;
     left: 0;
-    top: 0;
+    top: 50%;
     right: 0;
-    bottom: 0;
-    background-color: rgb(10, 61, 89);
+    background-image: url('project://database/Assets/Sprites/Scenes/Gameplay/Background.png?fileID=2800000&guid=67e0e2f1b7ca3854b95261c156f6d02b&type=3#Background');
+    height: 500px;
+    width: 180px;
+    translate: 0 -50%;
 }
 
 .splash_logo {

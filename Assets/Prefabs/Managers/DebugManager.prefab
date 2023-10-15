@@ -65,6 +65,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boardInteractions: {fileID: 0}
   loadingManager: {fileID: 0}
+  likeMenu: {fileID: 0}
   transitionDuration: 0.1
 --- !u!114 &237811397895804709
 MonoBehaviour:

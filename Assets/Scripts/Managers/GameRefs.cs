@@ -32,6 +32,9 @@ namespace Merge
 
         // Menus
         [HideInInspector]
+        public ConfirmMenu confirmMenu;
+
+        [HideInInspector]
         public EnergyMenu energyMenu;
 
         [HideInInspector]
@@ -62,7 +65,7 @@ namespace Merge
         [HideInInspector]
         public bool initialized = false;
 
-                [HideInInspector]
+        [HideInInspector]
         public SafeAreaHandler safeAreaHandler;
 
         [HideInInspector]
@@ -87,14 +90,14 @@ namespace Merge
                 safeAreaHandler = gameplayUI.GetComponent<SafeAreaHandler>();
                 noteDotHandler = gameplayUI.GetComponent<NoteDotHandler>();
             }
-            
+
             if (hubUI != null)
             {
                 hubUIDoc = hubUI.GetComponent<UIDocument>();
                 safeAreaHandler = hubUI.GetComponent<SafeAreaHandler>();
                 noteDotHandler = hubUI.GetComponent<NoteDotHandler>();
             }
-            
+
             if (valuesUI != null)
             {
                 valuesUIDoc = valuesUI.GetComponent<UIDocument>();
@@ -105,6 +108,7 @@ namespace Merge
             {
                 menuUIDoc = menuUI.GetComponent<UIDocument>();
 
+                confirmMenu = menuUI.GetComponent<ConfirmMenu>();
                 energyMenu = menuUI.GetComponent<EnergyMenu>();
                 infoMenu = menuUI.GetComponent<InfoMenu>();
                 inventoryMenu = menuUI.GetComponent<InventoryMenu>();

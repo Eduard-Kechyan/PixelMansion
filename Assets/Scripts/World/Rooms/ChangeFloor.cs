@@ -231,6 +231,9 @@ namespace Merge
                 StopCoroutine("ChangeFloorTiles");
             }
 
+            // Reset the sprite order
+            spriteOrder = order;
+
             if (isOld)
             {
                 // Reset the sprites to the old ones

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -123,7 +124,7 @@ namespace Merge
             }
         }
 
-        public void CloseMenu(string menuName)
+        public void CloseMenu(string menuName, Action callback = null)
         {
             // Disable the menu to make it unclickable
             currentMenu.SetEnabled(false);
@@ -144,10 +145,10 @@ namespace Merge
 
             menus.RemoveAt(currentMenuIndex);
 
-            StartCoroutine(HideMenuAfter());
+            StartCoroutine(HideMenuAfter(null, 0, callback));
         }
 
-        IEnumerator HideMenuAfter(MenuItem menuItem = null, int index = 0)
+        IEnumerator HideMenuAfter(MenuItem menuItem = null, int index = 0, Action callback = null)
         {
             yield return new WaitForSeconds(transitionDuration);
 
@@ -164,6 +165,8 @@ namespace Merge
 
                 menus.RemoveAt(index);
             }
+
+            callback?.Invoke();
 
             CheckMenuClosed();
         }

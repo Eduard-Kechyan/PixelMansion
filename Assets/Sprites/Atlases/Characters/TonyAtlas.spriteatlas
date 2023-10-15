@@ -154,14 +154,7 @@ SpriteAtlas:
     - fb445a0bd20a2324d9d0a1783b210398: -1040438243
     - fb445a0bd20a2324d9d0a1783b210398: 1299604100
     - fb445a0bd20a2324d9d0a1783b210398: -1070375981
-    - f291892bd855e924db7f7010e940ae52: 934191477
-    - f291892bd855e924db7f7010e940ae52: 1299910636
-    - f291892bd855e924db7f7010e940ae52: -109396888
-    - f291892bd855e924db7f7010e940ae52: 244757351
-    - f291892bd855e924db7f7010e940ae52: -1634304257
-    - f291892bd855e924db7f7010e940ae52: 1570154288
-    - f291892bd855e924db7f7010e940ae52: -645235423
-    - f291892bd855e924db7f7010e940ae52: 189765256
+    - f291892bd855e924db7f7010e940ae52: 21300000
     - 1cf132ab12a60754b8e8ac86ae50038f: -2051279966
     - 1cf132ab12a60754b8e8ac86ae50038f: -1389539036
     - 1cf132ab12a60754b8e8ac86ae50038f: 457947868
@@ -284,14 +277,7 @@ SpriteAtlas:
   - {fileID: -1040438243, guid: fb445a0bd20a2324d9d0a1783b210398, type: 3}
   - {fileID: 1299604100, guid: fb445a0bd20a2324d9d0a1783b210398, type: 3}
   - {fileID: -1070375981, guid: fb445a0bd20a2324d9d0a1783b210398, type: 3}
-  - {fileID: 934191477, guid: f291892bd855e924db7f7010e940ae52, type: 3}
-  - {fileID: 1299910636, guid: f291892bd855e924db7f7010e940ae52, type: 3}
-  - {fileID: -109396888, guid: f291892bd855e924db7f7010e940ae52, type: 3}
-  - {fileID: 244757351, guid: f291892bd855e924db7f7010e940ae52, type: 3}
-  - {fileID: -1634304257, guid: f291892bd855e924db7f7010e940ae52, type: 3}
-  - {fileID: 1570154288, guid: f291892bd855e924db7f7010e940ae52, type: 3}
-  - {fileID: -645235423, guid: f291892bd855e924db7f7010e940ae52, type: 3}
-  - {fileID: 189765256, guid: f291892bd855e924db7f7010e940ae52, type: 3}
+  - {fileID: 21300000, guid: f291892bd855e924db7f7010e940ae52, type: 3}
   - {fileID: -2051279966, guid: 1cf132ab12a60754b8e8ac86ae50038f, type: 3}
   - {fileID: -1389539036, guid: 1cf132ab12a60754b8e8ac86ae50038f, type: 3}
   - {fileID: 457947868, guid: 1cf132ab12a60754b8e8ac86ae50038f, type: 3}
@@ -413,14 +399,7 @@ SpriteAtlas:
   - TonyIdleRight_5
   - TonyIdleRight_6
   - TonyIdleRight_7
-  - TonyWalking7Right_6
-  - TonyWalking7Right_7
-  - TonyWalking7Right_4
-  - TonyWalking7Right_5
-  - TonyWalking7Right_2
-  - TonyWalking7Right_3
-  - TonyWalking7Right_0
-  - TonyWalking7Right_1
+  - TonyWalking7Right
   - TonyWalking6UpRight_4
   - TonyWalking6UpRight_5
   - TonyWalking6UpRight_6

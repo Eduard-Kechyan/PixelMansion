@@ -14,7 +14,7 @@ using Unity.Notifications.iOS;
 
 namespace Merge
 {
-    public class Notifics : MonoBehaviour
+    public class Notices : MonoBehaviour
 {
     // Variables
     public Color accentColor;

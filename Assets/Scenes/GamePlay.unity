@@ -132,6 +132,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1798228451276164874, guid: d1ee4451982ab4743b3b309d3ca9f109, type: 3}
+      propertyPath: rateMenu
+      value: 
+      objectReference: {fileID: 2529494230138778358}
+    - target: {fileID: 1798228451276164874, guid: d1ee4451982ab4743b3b309d3ca9f109, type: 3}
       propertyPath: transitionUI
       value: 
       objectReference: {fileID: 1157297608025217543}
@@ -347,6 +351,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5111980928839035584, guid: f4034c2be9714cc41b0cf4ef9809c444, type: 3}
+      propertyPath: likeMenu
+      value: 
+      objectReference: {fileID: 2529494230138778358}
+    - target: {fileID: 5111980928839035584, guid: f4034c2be9714cc41b0cf4ef9809c444, type: 3}
       propertyPath: boardInteractions
       value: 
       objectReference: {fileID: 639326501}
@@ -488,6 +496,7 @@ MonoBehaviour:
   hubGameUIDoc: {fileID: 0}
   menuUIDoc: {fileID: 0}
   valuesUIDoc: {fileID: 0}
+  confirmMenu: {fileID: 0}
   energyMenu: {fileID: 0}
   infoMenu: {fileID: 0}
   inventoryMenu: {fileID: 0}
@@ -1179,6 +1188,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc801789153fc83458cd8fbccfd639be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2529494230138778358 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 574956127959172480, guid: 6a4bd6a5611eb914ea950405a066bcd8, type: 3}
+  m_PrefabInstance: {fileID: 2529494230138778356}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c4306c6e8b1f0b4c9a515d85cdaa997, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &3494549100534759792

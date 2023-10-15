@@ -71,8 +71,8 @@ namespace Merge
 
                 fill.style.width = new Length(fillCount, LengthUnit.Pixel);
 
-                // Terms of Service and Privacy Policy notice
-                // This phase is being checked once
+                // Check and get game data
+                // This phase is being checked every time
                 if (fillCount >= singlePhasePercent * 1 && phase == 1)
                 {
                     loading = false;
@@ -84,29 +84,9 @@ namespace Merge
                     }
                 }
 
-                // Age notice
+                // Terms of Service and Privacy Policy notice
                 // This phase is being checked once
                 if (fillCount >= singlePhasePercent * 2 && phase == 2)
-                {
-                    loading = false;
-                    if (PlayerPrefs.HasKey("ageAccepted"))
-                    {
-                        ContinueLoading();
-                    }
-                    else
-                    {
-                        loadingSceneUI.CheckAge(callbackAge);
-                    }
-
-                    if (logPhases)
-                    {
-                        Debug.Log("Phase 2");
-                    }
-                }
-
-                // Check and get game data
-                // This phase is being checked every time
-                if (fillCount >= singlePhasePercent * 3 && phase == 3)
                 {
                     loading = false;
                     if (PlayerPrefs.HasKey("termsAccepted"))
@@ -116,6 +96,26 @@ namespace Merge
                     else
                     {
                         loadingSceneUI.CheckTerms(callback);
+                    }
+
+                    if (logPhases)
+                    {
+                        Debug.Log("Phase 2");
+                    }
+                }
+
+                // Age notice
+                // This phase is being checked once
+                if (fillCount >= singlePhasePercent * 3 && phase == 3)
+                {
+                    loading = false;
+                    if (PlayerPrefs.HasKey("ageAccepted"))
+                    {
+                        ContinueLoading();
+                    }
+                    else
+                    {
+                        loadingSceneUI.CheckAge(callbackAge);
                     }
 
                     if (logPhases)
