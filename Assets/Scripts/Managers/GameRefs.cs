@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -47,6 +48,9 @@ namespace Merge
         public LevelMenu levelMenu;
 
         [HideInInspector]
+        public RateMenu rateMenu;
+
+        [HideInInspector]
         public NoteMenu noteMenu;
 
         [HideInInspector]
@@ -70,6 +74,14 @@ namespace Merge
 
         [HideInInspector]
         public NoteDotHandler noteDotHandler;
+
+        [Serializable]
+        public class SpriteArray
+        {
+            public Sprite[] content;
+        }
+
+        public SpriteArray[] crateBreakSprites;
 
         // Instance
         public static GameRefs Instance;
@@ -113,6 +125,7 @@ namespace Merge
                 infoMenu = menuUI.GetComponent<InfoMenu>();
                 inventoryMenu = menuUI.GetComponent<InventoryMenu>();
                 levelMenu = menuUI.GetComponent<LevelMenu>();
+                rateMenu = menuUI.GetComponent<RateMenu>();
                 noteMenu = menuUI.GetComponent<NoteMenu>();
                 settingsMenu = menuUI.GetComponent<SettingsMenu>();
                 shopMenu = menuUI.GetComponent<ShopMenu>();

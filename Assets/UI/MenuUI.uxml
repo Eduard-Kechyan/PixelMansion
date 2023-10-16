@@ -293,20 +293,21 @@
                 <ui:VisualElement name="Close" class="button_active_extra menu_close_button" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&apos;);" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="LikeMenu" class="menu confirm_menu" style="display: none; opacity: 0;">
+        <ui:VisualElement name="RateMenu" class="menu confirm_menu" style="display: none; opacity: 0;">
             <ui:VisualElement name="Background" class="background" />
             <ui:VisualElement name="Container" class="small_menu">
-                <ui:VisualElement name="Character" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/LikeMenu/Tony.png?fileID=2800000&amp;guid=3e54ba231e3fcdc4793a0225f304a4e1&amp;type=3#Tony&apos;); width: 18px; height: 26px; position: absolute; right: 21px; top: -41px;" />
+                <ui:VisualElement name="Character" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/LikeMenu/Tony.png?fileID=2800000&amp;guid=3e54ba231e3fcdc4793a0225f304a4e1&amp;type=3#Tony&apos;); width: 18px; height: 26px; position: absolute; right: 21px; top: -15px; transition-duration: 0.3s; transition-timing-function: ease-in-out-back;" />
+                <ui:VisualElement name="CharacterOverlay" style="position: absolute; width: 22px; height: 14px; background-color: rgb(238, 226, 195); right: 18px; top: -1px;" />
                 <ui:Label tabindex="-1" text="0/5" display-tooltip-when-elided="true" name="StarsLabel" class="stars_label" style="font-size: 8px; color: rgb(72, 72, 72);" />
                 <ui:VisualElement name="StarsBox" class="stars_box">
-                    <ui:Button text="Button" display-tooltip-when-elided="true" name="StarItem0" class="button button_active star_item" />
-                    <ui:Button text="Button" display-tooltip-when-elided="true" name="StarItem1" class="button button_active star_item" />
-                    <ui:Button text="Button" display-tooltip-when-elided="true" name="StarItem2" class="button button_active star_item" />
-                    <ui:Button text="Button" display-tooltip-when-elided="true" name="StarItem3" class="button button_active star_item" />
-                    <ui:Button text="Button" display-tooltip-when-elided="true" name="StarItem4" class="button button_active star_item" />
+                    <ui:Button display-tooltip-when-elided="true" name="StarItem0" class="button button_active star_item" />
+                    <ui:Button display-tooltip-when-elided="true" name="StarItem1" class="button button_active star_item" />
+                    <ui:Button display-tooltip-when-elided="true" name="StarItem2" class="button button_active star_item" />
+                    <ui:Button display-tooltip-when-elided="true" name="StarItem3" class="button button_active star_item" />
+                    <ui:Button display-tooltip-when-elided="true" name="StarItem4" class="button button_active star_item" />
                 </ui:VisualElement>
-                <ui:Label tabindex="-1" text="If you like playing GAME_NAME," display-tooltip-when-elided="true" name="LikeLabel" class="like_label" />
-                <ui:Label tabindex="-1" text="would you please rate us?" display-tooltip-when-elided="true" name="RateLabel" class="like_label" />
+                <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="RateLabel0" class="like_label" />
+                <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="RateLabel1" class="like_label" />
                 <ui:VisualElement name="ButtonBox" class="button_box">
                     <ui:Button text="Yeah" display-tooltip-when-elided="true" name="YesButton" class="button button_active like_button" style="-unity-background-image-tint-color: rgb(85, 203, 152);" />
                     <ui:Button text="Not Now" display-tooltip-when-elided="true" name="NoButton" class="button button_active like_button" style="-unity-background-image-tint-color: rgb(113, 160, 246);" />

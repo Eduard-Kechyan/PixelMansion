@@ -182,9 +182,7 @@ namespace Merge
                 collGroup = newItem.collGroup,
                 chestGroup = newItem.chestGroup,
                 state = newItem.state,
-                crate = int.Parse(
-                    newItem.crateSprite.name[(newItem.crateSprite.name.LastIndexOf('e') + 1)..]
-                ),
+                crate = newItem.crate,
                 order = newOrder,
                 gemPopped = newItem.gemPopped
             };

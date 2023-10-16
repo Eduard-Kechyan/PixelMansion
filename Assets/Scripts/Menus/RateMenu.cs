@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 namespace Merge
 {
-    public class LikeMenu : MonoBehaviour
+    public class RateMenu : MonoBehaviour
     {
         // Variables
         public Sprite starEmptySprite;
@@ -20,15 +20,17 @@ namespace Merge
 
         // References
         private MenuUI menuUI;
+        private GameData gameData;
         private I18n LOCALE;
 
         // UI
         private VisualElement root;
         private VisualElement rateMenu;
+        private VisualElement character;
         private VisualElement starsBox;
         private Label starsLabel;
-        private Label likeLabel;
-        private Label rateLabel;
+        private Label rateLabel0;
+        private Label rateLabel1;
         private Button yesButton;
         private Button noButton;
         private Button neverButton;
@@ -47,6 +49,7 @@ namespace Merge
         {
             // Cache
             menuUI = GetComponent<MenuUI>();
+            gameData = GameData.Instance;
             LOCALE = I18n.Instance;
 
             // UI
@@ -54,11 +57,13 @@ namespace Merge
 
             rateMenu = root.Q<VisualElement>("RateMenu");
 
+            character = rateMenu.Q<VisualElement>("Character");
+
             starsBox = rateMenu.Q<VisualElement>("StarsBox");
 
             starsLabel = rateMenu.Q<Label>("StarsLabel");
-            likeLabel = rateMenu.Q<Label>("LikeLabel");
-            rateLabel = rateMenu.Q<Label>("RateLabel");
+            rateLabel0 = rateMenu.Q<Label>("RateLabel0");
+            rateLabel1 = rateMenu.Q<Label>("RateLabel1");
 
             yesButton = rateMenu.Q<Button>("YesButton");
             noButton = rateMenu.Q<Button>("NoButton");
@@ -84,20 +89,25 @@ namespace Merge
             // Make sure the menu is closed
             rateMenu.style.display = DisplayStyle.None;
             rateMenu.style.opacity = 0;
+
+            character.style.top = -15;
         }
 
-        public void Open()
+        public void Open(bool ignoreCheck = false)
         {
-            // Set the title
-            string title = LOCALE.Get("rate_menu_title");
+            if (ignoreCheck || gameData.level >= 3)
+            {
+                // Set the title
+                string title = LOCALE.Get("rate_menu_title");
 
-            // Open menu
-            menuUI.OpenMenu(rateMenu, title);
+                // Open menu
+                menuUI.OpenMenu(rateMenu, title, false, false, true);
 
-            starsLabel.text = starCount + "/" + 5;
+                starsLabel.text = starCount + "/" + 5;
 
-            likeLabel.text = LOCALE.Get("rate_menu_like", GameData.GAME_TITLE);
-            rateLabel.text = LOCALE.Get("rate_menu_rate");
+                rateLabel0.text = LOCALE.Get("rate_menu_rate_label_0", GameData.GAME_TITLE);
+                rateLabel1.text = LOCALE.Get("rate_menu_rate_label_1");
+            }
         }
 
         void SetStar(string stringOrder)
@@ -107,6 +117,25 @@ namespace Merge
             starCount = order + 1;
 
             starsLabel.text = starCount + "/" + 5;
+
+            switch (order)
+            {
+                case 0:
+                    character.style.top = -26;
+                    break;
+                case 1:
+                    character.style.top = -30;
+                    break;
+                case 2:
+                    character.style.top = -34;
+                    break;
+                case 3:
+                    character.style.top = -37;
+                    break;
+                case 4:
+                    character.style.top = -41;
+                    break;
+            }
 
             for (int i = 0; i < starsBox.childCount; i++)
             {

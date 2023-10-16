@@ -10,7 +10,6 @@ namespace Merge
     {
         // Variables
         public TransitionUI transitionUI;
-        public LikeMenu rateMenu;
         public float duration = 0.6f;
         public float fadeDuration = 0.5f;
 
@@ -84,8 +83,6 @@ namespace Merge
             soundManager = SoundManager.Instance;
             localeManager = Settings.Instance.GetComponent<LocaleManager>();
 
-            Debug.Log(soundManager);
-
             // Play background music when the scene starts from the editor
             sceneName = SceneManager.GetActiveScene().name;
 
@@ -102,11 +99,6 @@ namespace Merge
                     Settings.Instance.Init();
 
                     localeManager.Init(sceneName);
-
-                    if (rateMenu != null && rateMenu.shouldShow)
-                    {
-                        rateMenu.Open();
-                    }
 
                     break;
 

@@ -17,7 +17,7 @@ namespace Merge
         private MenuUI menuUI;
         private LocaleMenu localeMenu;
         private ConfirmMenu confirmMenu;
-        private LikeMenu rateMenu;
+        private RateMenu rateMenu;
         private I18n LOCALE;
         private Settings settings;
         private Notices notifics;
@@ -73,7 +73,7 @@ namespace Merge
             menuUI = GetComponent<MenuUI>();
             localeMenu = GetComponent<LocaleMenu>();
             confirmMenu = GetComponent<ConfirmMenu>();
-            rateMenu = GetComponent<LikeMenu>();
+            rateMenu = GetComponent<RateMenu>();
             LOCALE = I18n.Instance;
             settings = Settings.Instance;
             notifics = Services.Instance.GetComponent<Notices>();
@@ -129,7 +129,7 @@ namespace Merge
             languageButton.clicked += () => localeMenu.Open();
             resetButton.clicked += () => confirmMenu.Open("reset", resetHandler.RestartAndResetApp);
             exitButton.clicked += () => confirmMenu.Open("exit", Application.Quit);
-            rateButton.clicked += () => rateMenu.Open();
+            rateButton.clicked += () => rateMenu.Open(true);
 
             googleSignInButton.clicked += () => Debug.Log("Google Sing In Button Clicked!"); ////
             facebookSignInButton.clicked += () => Debug.Log("Facebook Sing In Button Clicked!"); ////

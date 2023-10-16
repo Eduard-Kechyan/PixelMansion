@@ -15,6 +15,7 @@ namespace Merge
         public float touchThreshold = 20f; // How far can the finger be moved before starting to drag
         public float radius = 0.5f;
         public float radiusAlt = 0.5f;
+        public float crateBreakSpeed = 0.05f;
         public bool isDragging = false; // Are we currently dragging
         public bool isSelected = false; // Have we currently selected something
         public Item currentItem;
@@ -629,30 +630,30 @@ namespace Merge
                     switch (state)
                     {
                         case Types.State.Crate:
-                            currentItem.OpenCrate();
+                            OpenCrateCallback(currentItem);
+
+                            currentItem.OpenCrate(crateBreakSpeed);
 
                             // Play crate opening audio
                             soundManager.PlaySound("OpenCrate");
-
-                            OpenCrateCallback(currentItem);
                             break;
 
                         case Types.State.Bubble:
+                            PopBubbleCallback(currentItem);
+
                             currentItem.PopBubble();
 
                             // Play crate opening audio
                             soundManager.PlaySound("PopBubble" + UnityEngine.Random.Range(0, 3));
-
-                            PopBubbleCallback(currentItem);
                             break;
 
                         default:
+                            OpenLockCallback(currentItem);
+
                             currentItem.UnlockLock();
 
                             // Play unlocking audio
                             soundManager.PlaySound("UnlockLock");
-
-                            OpenLockCallback(currentItem);
                             break;
                     }
                 }

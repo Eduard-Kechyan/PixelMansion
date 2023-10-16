@@ -5,15 +5,15 @@ using UnityEngine;
 namespace Merge
 {
     public class ItemTypes : MonoBehaviour
-{
-    public enum GenGroup
     {
-        Toolbox,
-    }
+        public enum GenGroup
+        {
+            Toolbox,
+        }
 
-    public enum Group
-    {
-        Tools
-    };
-}
+        public enum Group
+        {
+            Tools
+        };
+    }
 }

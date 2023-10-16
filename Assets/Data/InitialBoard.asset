@@ -237,9 +237,9 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
-  - sprite: {fileID: 0}
+  - sprite: {fileID: 21300000, guid: 44fb2d4df3aa4f54f89d77dd7249aed7, type: 3}
     type: 0
-    state: 0
+    state: 1
     group: 0
     genGroup: 0
     collGroup: 0
@@ -251,9 +251,9 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
-  - sprite: {fileID: 0}
+  - sprite: {fileID: 21300000, guid: 44fb2d4df3aa4f54f89d77dd7249aed7, type: 3}
     type: 0
-    state: 0
+    state: 1
     group: 0
     genGroup: 0
     collGroup: 0
@@ -265,9 +265,9 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
-  - sprite: {fileID: 0}
+  - sprite: {fileID: 21300000, guid: 44fb2d4df3aa4f54f89d77dd7249aed7, type: 3}
     type: 0
-    state: 0
+    state: 1
     group: 0
     genGroup: 0
     collGroup: 0
@@ -279,9 +279,9 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
-  - sprite: {fileID: 0}
+  - sprite: {fileID: 21300000, guid: 44fb2d4df3aa4f54f89d77dd7249aed7, type: 3}
     type: 0
-    state: 0
+    state: 1
     group: 0
     genGroup: 0
     collGroup: 0
@@ -293,9 +293,9 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
-  - sprite: {fileID: 0}
+  - sprite: {fileID: 21300000, guid: 44fb2d4df3aa4f54f89d77dd7249aed7, type: 3}
     type: 0
-    state: 0
+    state: 1
     group: 0
     genGroup: 0
     collGroup: 0
@@ -307,9 +307,9 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
-  - sprite: {fileID: 0}
+  - sprite: {fileID: 21300000, guid: 44fb2d4df3aa4f54f89d77dd7249aed7, type: 3}
     type: 0
-    state: 0
+    state: 1
     group: 0
     genGroup: 0
     collGroup: 0
@@ -321,9 +321,9 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
-  - sprite: {fileID: 0}
+  - sprite: {fileID: 21300000, guid: 44fb2d4df3aa4f54f89d77dd7249aed7, type: 3}
     type: 0
-    state: 0
+    state: 1
     group: 0
     genGroup: 0
     collGroup: 0

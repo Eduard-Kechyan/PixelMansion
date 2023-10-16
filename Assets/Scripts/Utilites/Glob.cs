@@ -28,8 +28,8 @@ namespace Merge
         // Instance
         public static Glob Instance;
 
-        private static List<Coroutine> timeouts = new List<Coroutine>();
-        private static List<Coroutine> intervals = new List<Coroutine>();
+        private readonly static List<Coroutine> timeouts = new();
+        private readonly static List<Coroutine> intervals = new();
 
         void Awake()
         {
@@ -47,7 +47,7 @@ namespace Merge
         {
             if (seconds > 10f)
             {
-                Debug.LogWarning("Set timeout function seconds are too big!");
+                Debug.LogWarning("Set timeout function delay is too big!");
             }
 
             Coroutine newTimeout = Instance.StartCoroutine(SetTimeoutCoroutine(function, seconds));
@@ -70,15 +70,11 @@ namespace Merge
         }
 
         //// INTERVALS ////
-        public static Coroutine SetInterval(
-            Action function,
-            float seconds = 1f,
-            bool callOnce = true
-        )
+        public static Coroutine SetInterval(Action function, float seconds = 1f, bool callOnce = true)
         {
             if (seconds > 10f)
             {
-                Debug.LogWarning("Set interval function seconds are too big!");
+                Debug.LogWarning("Set interval function delay is too big!");
             }
 
             Coroutine newInterval = Instance.StartCoroutine(SetTimeoutCoroutine(function, seconds));
@@ -88,11 +84,7 @@ namespace Merge
             return Instance.StartCoroutine(SetIntervalCoroutine(function, seconds, callOnce));
         }
 
-        private static IEnumerator SetIntervalCoroutine(
-            Action function,
-            float seconds,
-            bool callOnce
-        )
+        private static IEnumerator SetIntervalCoroutine(Action function, float seconds, bool callOnce)
         {
             while (true)
             {

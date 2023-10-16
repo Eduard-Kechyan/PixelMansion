@@ -501,6 +501,7 @@ MonoBehaviour:
   infoMenu: {fileID: 0}
   inventoryMenu: {fileID: 0}
   levelMenu: {fileID: 0}
+  rateMenu: {fileID: 0}
   noteMenu: {fileID: 0}
   settingsMenu: {fileID: 0}
   shopMenu: {fileID: 0}
@@ -509,6 +510,22 @@ MonoBehaviour:
   initialized: 0
   safeAreaHandler: {fileID: 0}
   noteDotHandler: {fileID: 0}
+  crateBreakSprites:
+  - content:
+    - {fileID: -2080925376, guid: 3a30e2d0c41d7d944998714f91450bd6, type: 3}
+    - {fileID: 582241861, guid: 3a30e2d0c41d7d944998714f91450bd6, type: 3}
+    - {fileID: -24004613, guid: 3a30e2d0c41d7d944998714f91450bd6, type: 3}
+    - {fileID: 25909703, guid: 3a30e2d0c41d7d944998714f91450bd6, type: 3}
+  - content:
+    - {fileID: 1862503040, guid: 3078797be50a44a4c81503a76b206c67, type: 3}
+    - {fileID: -245944086, guid: 3078797be50a44a4c81503a76b206c67, type: 3}
+    - {fileID: 1900683017, guid: 3078797be50a44a4c81503a76b206c67, type: 3}
+    - {fileID: 1066697082, guid: 3078797be50a44a4c81503a76b206c67, type: 3}
+  - content:
+    - {fileID: 436150994, guid: 4780be5b5da79ed44b59725a93db5c9b, type: 3}
+    - {fileID: 590581419, guid: 4780be5b5da79ed44b59725a93db5c9b, type: 3}
+    - {fileID: 1184151187, guid: 4780be5b5da79ed44b59725a93db5c9b, type: 3}
+    - {fileID: -1299078420, guid: 4780be5b5da79ed44b59725a93db5c9b, type: 3}
 --- !u!1001 &1658164947
 PrefabInstance:
   m_ObjectHideFlags: 0

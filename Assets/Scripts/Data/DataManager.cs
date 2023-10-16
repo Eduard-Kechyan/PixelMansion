@@ -38,11 +38,6 @@ namespace Merge
         public QuickSaveWriter writer;
         public QuickSaveReader reader;
 
-        private ApiCalls apiCalls;
-        private GameData gameData;
-        private DataConverter dataConverter;
-        private TimeManager timeManager;
-
         [HideInInspector]
         public string boardJsonData;
         private string bonusData;
@@ -54,6 +49,13 @@ namespace Merge
         [HideInInspector]
         public string unlockedJsonData;
         private string unsentJsonData;
+
+        // References
+        private ApiCalls apiCalls;
+        private GameData gameData;
+        private DataConverter dataConverter;
+        private TimeManager timeManager;
+        private RateMenu rateMenu;
 
         // Instance
         public static DataManager Instance;
@@ -79,6 +81,7 @@ namespace Merge
             apiCalls = ApiCalls.Instance;
             dataConverter = GetComponent<DataConverter>();
             timeManager = gameData.GetComponent<TimeManager>();
+            rateMenu = GameRefs.Instance.rateMenu;
 
             // Set up Quick Save
             saveSettings = new QuickSaveSettings() { CompressionMode = CompressionMode.None }; //TODO -  Set CompressionMode in the final game to Gzip
@@ -87,14 +90,10 @@ namespace Merge
 #if UNITY_EDITOR
             isEditor = true;
 
+            string sceneName = SceneManager.GetActiveScene().name;
+
             // Make this script run if we aren't starting from the Loading scene
-            if (
-                !loaded
-                && (
-                    SceneManager.GetActiveScene().name == "Gameplay"
-                    || SceneManager.GetActiveScene().name == "Hub"
-                )
-            )
+            if (!loaded && (sceneName == "Gameplay" || sceneName == "Hub"))
             {
                 StartCoroutine(WaitForLoadedResources());
             }
@@ -106,15 +105,18 @@ namespace Merge
 #endif
         }
 
-        public void CheckForLoadedResources(Action callback = null){
+        public void CheckForLoadedResources(Action callback = null)
+        {
             StartCoroutine(WaitForLoadedResources(callback));
         }
 
-        public IEnumerator WaitForLoadedResources(Action callback = null){
-            while(!gameData.resourcesLoaded){
+        public IEnumerator WaitForLoadedResources(Action callback = null)
+        {
+            while (!gameData.resourcesLoaded)
+            {
                 yield return null;
             }
-            
+
             CheckInitialData(callback);
         }
 
@@ -241,21 +243,23 @@ namespace Merge
             // Finish Task
             loaded = true;
 
+            if (SceneManager.GetActiveScene().name == "Hub" && rateMenu.shouldShow)
+            {
+                rateMenu.Open();
+            }
+
             if (initialLoad)
             {
                 PlayerPrefs.SetInt("Loaded", 1);
                 PlayerPrefs.Save();
             }
 
-            if (callback != null)
-            {
-                callback();
-            }
+            callback?.Invoke();
         }
 
         //// SAVE ////
 
-        public void SaveBoard(bool fireEvent = true,bool fireEventForUndo = true)
+        public void SaveBoard(bool fireEvent = true, bool fireEventForUndo = true)
         {
             string newBoardData = dataConverter.ConvertBoardToJson(
                 dataConverter.ConvertBoardToArray(gameData.boardData)

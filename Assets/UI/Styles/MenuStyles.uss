@@ -1572,7 +1572,7 @@
 }
 
 .small_menu .title {
-    background-image: url('project://database/Assets/Sprites/Menus/LikeMenu/LikeTitle.png?fileID=2800000&guid=2db6b6d38ff2c28438e277731cda8f06&type=3#LikeTitle');
+    background-image: url('project://database/Assets/Sprites/Menus/RateMenu/LikeTitle.png?fileID=2800000&guid=2db6b6d38ff2c28438e277731cda8f06&type=3#LikeTitle');
     width: 126px;
     height: 22px;
     position: absolute;
@@ -1619,7 +1619,7 @@
 }
 
 .small_menu .star_item {
-    background-image: url('project://database/Assets/Sprites/Menus/LikeMenu/StarEmpty.png?fileID=2800000&guid=d4a36d8a01e7d5742855408d095c829b&type=3#StarEmpty');
+    background-image: url('project://database/Assets/Sprites/Menus/RateMenu/StarEmpty.png?fileID=2800000&guid=d4a36d8a01e7d5742855408d095c829b&type=3#StarEmpty');
     width: 16px;
     height: 20px;
     margin-left: 1px;
@@ -1650,7 +1650,7 @@
 }
 
 .small_menu .like_button {
-    background-image: url('project://database/Assets/Sprites/Menus/LikeMenu/SmallButton.png?fileID=2800000&guid=5e9285690bdecc44991f6dfcbfbb849b&type=3#SmallButton');
+    background-image: url('project://database/Assets/Sprites/Menus/RateMenu/SmallButton.png?fileID=2800000&guid=5e9285690bdecc44991f6dfcbfbb849b&type=3#SmallButton');
     width: 60px;
     height: 18px;
     margin-bottom: 2px;

@@ -58,7 +58,7 @@ namespace Merge
         }
 
         // Get ready to open the given menu
-        public void OpenMenu(VisualElement newMenu, string newTitle, bool showValues = false, bool closeAll = false)
+        public void OpenMenu(VisualElement newMenu, string newTitle, bool showValues = false, bool closeAll = false, bool ignoreClose = false)
         {
             // Add the menu to the menu list
             menus.Add(new MenuItem { menuItem = newMenu, showValues = showValues });
@@ -77,10 +77,10 @@ namespace Merge
 
             CheckMenuOpened();
 
-            ShowMenu(newTitle);
+            ShowMenu(newTitle, ignoreClose);
         }
 
-        void ShowMenu(string newTitle)
+        void ShowMenu(string newTitle, bool ignoreClose)
         {
             VisualElement newMenu = new();
 
@@ -91,23 +91,26 @@ namespace Merge
             currentMenu.style.display = DisplayStyle.Flex;
             currentMenu.style.opacity = 1f;
 
-            // Add background click handler
-            background = currentMenu.Q<VisualElement>("Background");
-
-            background.AddManipulator(new Clickable(evt =>
+            if (!ignoreClose)
             {
-                if (closeAllMenus)
-                {
-                    CloseAllMenus();
-                }
-                else
-                {
-                    CloseMenu(currentMenu.name);
-                }
-            }));
+                // Add background click handler
+                background = currentMenu.Q<VisualElement>("Background");
 
-            // Disable the close button
-            currentMenu.Q<VisualElement>("Close").pickingMode = PickingMode.Ignore;
+                background.AddManipulator(new Clickable(evt =>
+                {
+                    if (closeAllMenus)
+                    {
+                        CloseAllMenus();
+                    }
+                    else
+                    {
+                        CloseMenu(currentMenu.name);
+                    }
+                }));
+
+                // Disable the close button
+                currentMenu.Q<VisualElement>("Close").pickingMode = PickingMode.Ignore;
+            }
 
             // Set the menu's title
             title = currentMenu.Q<VisualElement>("Title").Q<Label>("Value");

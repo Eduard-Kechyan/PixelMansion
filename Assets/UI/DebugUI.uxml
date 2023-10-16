@@ -15,7 +15,6 @@
                         <ui:Label tabindex="-1" text="Other" display-tooltip-when-elided="true" name="ContainerLabel" class="debug_menu_container_label" />
                         <ui:Button text="Ads Inspector" display-tooltip-when-elided="true" name="AdButton" class="button_active debug_menu_button" />
                         <ui:Button text="Show Logs" display-tooltip-when-elided="true" name="LogsButton" class="button_active debug_menu_button" />
-                        <ui:Button text="Rate Menu" display-tooltip-when-elided="true" name="RateButton" class="button_active debug_menu_button" />
                     </ui:VisualElement>
                 </ui:ScrollView>
             </ui:VisualElement>

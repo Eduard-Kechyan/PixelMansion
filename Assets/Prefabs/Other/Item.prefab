@@ -97,6 +97,7 @@ Animation:
   m_Animation: {fileID: 7400000, guid: efe62e721835e11428ce221eef254bbf, type: 2}
   m_Animations:
   - {fileID: 7400000, guid: efe62e721835e11428ce221eef254bbf, type: 2}
+  - {fileID: 7400000, guid: 09a7a1ad309a510469612584b9f21f7a, type: 2}
   m_WrapMode: 0
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0
@@ -143,7 +144,7 @@ MonoBehaviour:
   chestItemsSet: 0
   gemPopped: 0
   sprite: {fileID: 0}
-  crateSprite: {fileID: 0}
+  crate: 0
   isMoving: 0
   useOverlay: 0
   crateChild: {fileID: 0}
@@ -585,7 +586,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8279182673428022283
 Transform:
   m_ObjectHideFlags: 0
