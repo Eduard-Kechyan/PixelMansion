@@ -32,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7628476360138686812
 MonoBehaviour:
@@ -48,6 +48,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   valuesData: {fileID: 11400000, guid: e82c58a155150ca47be106027d9ca637, type: 2}
   energyTimer: {fileID: 0}
+  countFPS: 30
+  numberIncreaseDuration: 1
   experience: 0
   energy: 100
   gold: 100
@@ -71,6 +73,7 @@ MonoBehaviour:
   timers: []
   userId: 
   greeted: 0
+  resourcesLoaded: 0
 --- !u!114 &2518802072706261672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109,4 +112,3 @@ MonoBehaviour:
   gameplayShopButtonPos: {x: 0, y: 0}
   gameplayTaskButtonPos: {x: 0, y: 0}
   gameplayBonusButtonPos: {x: 0, y: 0}
-  gameplayBonusButtonScreenPos: {x: 0, y: 0}

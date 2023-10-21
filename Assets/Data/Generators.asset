@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Generators
   m_EditorClassIdentifier: 
   content:
-  - type: 1
+  - name: Toolbox
+    type: 1
     group: 0
     genGroup: 0
     collGroup: 0
@@ -25,7 +26,9 @@ MonoBehaviour:
     parents: 
     creates:
     - group: 0
-      chance: 0
+      chance: 80
+    - group: 1
+      chance: 20
     content:
     - sprite: {fileID: 21300000, guid: 5843d96ae1fcc884080d43667c5b79b9, type: 3}
       customName: 0

@@ -78,6 +78,8 @@ namespace Merge
         [Serializable]
         public class Items
         {
+            [HideInInspector]
+            public string name;
             public Type type;
             public ItemTypes.Group group;
             public ItemTypes.GenGroup genGroup;

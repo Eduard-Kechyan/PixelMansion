@@ -11,6 +11,8 @@ namespace Merge
         // Variables
         public TasksData tasksData;
         public ProgressData progressData;
+        public WorldDataManager worldDataManager;
+        public ConvoUIHandler convoUIHandler;
 
         private bool initialSet = false;
         private bool settingInitial = false;
@@ -104,17 +106,9 @@ namespace Merge
             {
                 if (progressData.areas[i].id == areaId)
                 {
-                    // Add the area and its first task that is a step
-                    for (int j = 0; j < progressData.areas[i].steps.Length; j++)
-                    {
-                        if (progressData.areas[i].steps[j].stepType == Types.StepType.Task)
-                        {
-                            taskManager.TryToAddTask(areaId, progressData.areas[i].steps[j].id);
-
-                            break;
-                        }
-                    }
-
+                    // Add the area and its first and second step
+                    HandleNextStepType(progressData.areas[i].steps[0].stepType, areaId, progressData.areas[i].steps[0].id);
+                    HandleNextStepType(progressData.areas[i].steps[1].stepType, areaId, progressData.areas[i].steps[1].id);
 
                     break;
                 }
@@ -238,10 +232,42 @@ namespace Merge
                     taskManager.TryToAddTask(areaId, stepId);
                     break;
                 case Types.StepType.Conversation:
-                    Debug.Log("Handle conversation here!");
+                    if (worldDataManager != null)
+                    {
+                        convoUIHandler.Converse();
+                    }
+                    else
+                    {
+                        Debug.LogWarning("convoUIHandler is null");
+                    }
                     break;
                 case Types.StepType.RoomUnlocking:
-                    Debug.Log("Handle room unlocking here!");
+                    if (worldDataManager != null)
+                    {
+                        Transform foundRoom = worldDataManager.FindRoomInWorld(areaId);
+
+                        if (foundRoom != null)
+                        {
+                            RoomHandler foundRoomHandler = foundRoom.GetComponent<RoomHandler>();
+
+                            if (foundRoomHandler != null)
+                            {
+                                foundRoomHandler.Unlock();
+                            }
+                            else
+                            {
+                                Debug.LogWarning("foundRoomHandler is null");
+                            }
+                        }
+                        else
+                        {
+                            Debug.LogWarning("foundRoom is null");
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogWarning("worldDataManager is null");
+                    }
                     break;
             }
         }

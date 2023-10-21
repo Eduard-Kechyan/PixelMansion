@@ -13,7 +13,8 @@ namespace Merge
 
         public enum Group
         {
-            Tools
+            Tools,
+            Gloves
         };
     }
 }

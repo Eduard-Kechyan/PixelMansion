@@ -40,11 +40,17 @@ MonoBehaviour:
       id: Last
       stepType: 0
       nextIds:
-      - BedRoom
+      - KitchenRoom
       requiredIds: []
-  - name: BedRoom
-    id: BedRoom
+  - name: KitchenRoom
+    id: KitchenRoom
     steps:
+    - name: RoomUnlocking RoomUnlocking
+      id: RoomUnlocking
+      stepType: 2
+      nextIds:
+      - ChangeFloor
+      requiredIds: []
     - name: Task ChangeFloor
       id: ChangeFloor
       stepType: 0

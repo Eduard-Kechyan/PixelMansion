@@ -130,8 +130,8 @@ MonoBehaviour:
       completed: 0
     total: 0
     completed: 0
-  - name: BedRoom
-    id: BedRoom
+  - name: KitchenRoom
+    id: KitchenRoom
     tasks:
     - name: ChangeFloor
       id: ChangeFloor

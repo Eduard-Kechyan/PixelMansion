@@ -254,7 +254,11 @@
     position: absolute;
     left: 4px;
     right: 4px;
-    bottom: 4px;
+    bottom: -120px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 14px;
+    padding-bottom: 16px;
 }
 
 .convo_box .mid_area {
@@ -383,4 +387,18 @@
     position: absolute;
     top: 32px;
     right: 23px;
+}
+
+.convo_label {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    font-size: 6px;
+    color: rgb(77, 77, 77);
+    white-space: normal;
 }

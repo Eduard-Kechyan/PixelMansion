@@ -961,17 +961,9 @@ PrefabInstance:
       value: GameData
       objectReference: {fileID: 0}
     - target: {fileID: 7628476360138686812, guid: 9191de2ed2b660e45ac702f5b04303ad, type: 3}
-      propertyPath: countFPS
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 7628476360138686812, guid: 9191de2ed2b660e45ac702f5b04303ad, type: 3}
       propertyPath: energyTimer
       value: 
       objectReference: {fileID: 783295150}
-    - target: {fileID: 7628476360138686812, guid: 9191de2ed2b660e45ac702f5b04303ad, type: 3}
-      propertyPath: numberIncreaseSpeed
-      value: 0.1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

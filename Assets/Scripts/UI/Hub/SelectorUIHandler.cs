@@ -17,13 +17,13 @@ namespace Merge
         private UIDocument valuesUIDoc;
         private UIDocument hubUIDoc;
         private HubUI hubUI;
+        private SafeAreaHandler safeAreaHandler;
 
         // UI
         private VisualElement root;
         private VisualElement topBox;
         private VisualElement bottomBox;
         private VisualElement selectorBox;
-        private SafeAreaHandler safeAreaHandler;
 
         private Button denyButton;
         private Button confirmButton;
@@ -133,11 +133,12 @@ namespace Merge
                 topBox.style.transitionDelay = fullDelay;
                 bottomBox.style.bottom = -bottomOffset; // Note the -
                 bottomBox.style.transitionDelay = fullDelay;
-                selectorBox.style.bottom = 0;
-                selectorBox.style.transitionDelay = nullDelay;
 
                 valuesBox.style.top = -50f;
                 valuesBox.style.transitionDelay = fullDelay;
+
+                selectorBox.style.bottom = 0;
+                selectorBox.style.transitionDelay = nullDelay;
             }
             else
             {
@@ -146,11 +147,12 @@ namespace Merge
                 topBox.style.transitionDelay = nullDelay;
                 bottomBox.style.bottom = 0;
                 bottomBox.style.transitionDelay = nullDelay;
-                selectorBox.style.bottom = -60f;
-                selectorBox.style.transitionDelay = fullDelay;
 
                 valuesBox.style.top = safeAreaHandler.topPadding;
                 valuesBox.style.transitionDelay = nullDelay;
+
+                selectorBox.style.bottom = -60f;
+                selectorBox.style.transitionDelay = fullDelay;
             }
 
             if (isAlt)

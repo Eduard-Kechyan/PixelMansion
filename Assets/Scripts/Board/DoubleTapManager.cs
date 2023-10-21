@@ -10,9 +10,9 @@ namespace Merge
         public float moveSpeed = 14f;
         public float scaleSpeed = 8f;
 
-        [Tooltip("Will automaticaly adjust")]
+        [Tooltip("Will automatically adjust")]
         public AnimationCurve[] randomGoldCurves;
-        [Tooltip("Will automaticaly adjust")]
+        [Tooltip("Will automatically adjust")]
         public AnimationCurve[] generationCurves;
 
         [Tooltip("Lower values, higher chance. Default is 8")]
@@ -203,6 +203,8 @@ namespace Merge
             generationCurves[interactions.currentItem.level - interactions.currentItem.generatesAt].keys[^1].value = dataManager.GetGroupCount(selectedGroup);
 
             selectedItem = Mathf.FloorToInt(Glob.CalcCurvedChances(generationCurves[interactions.currentItem.level - interactions.currentItem.generatesAt]));
+
+            //Debug.Log(selectedItem);
 
             // Create item from selected group
             for (int i = 0; i < gameData.itemsData.Length; i++)

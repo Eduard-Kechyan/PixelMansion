@@ -432,6 +432,20 @@ namespace Merge
             return null;
         }
 
+        public Transform FindRoomInWorld(string roomName){
+            for (int i = 0; i < worldRoot.childCount; i++)
+            {
+                Transform tempArea = worldRoot.GetChild(i);
+
+                if (tempArea.name == roomName + "Area")
+                {
+                    return tempArea;
+                }
+            }
+
+            return null;
+        }
+
         // Find selectable items collider center position
         public Vector2 GetColliderCenter(Transform taskRef, Types.TaskRefType taskRefType)
         {

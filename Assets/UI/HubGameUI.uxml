@@ -41,7 +41,7 @@
         <ui:Button text="Skip" display-tooltip-when-elided="true" name="ConvoSkip" class="convo_skip button button_active">
             <ui:VisualElement name="Icon" class="icon" />
         </ui:Button>
-        <ui:VisualElement name="ConvoBox" class="convo_box" style="bottom: -120px;">
+        <ui:VisualElement name="ConvoBox" class="convo_box">
             <ui:VisualElement name="AvatarLeft" class="convo_avatar" style="left: -90px;">
                 <ui:VisualElement name="Eyes" class="eyes" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);" />
                 <ui:VisualElement name="Mouth" class="mouth" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);" />
@@ -49,6 +49,7 @@
             <ui:VisualElement name="TopBorder" class="top_border" />
             <ui:VisualElement name="MidArea" class="mid_area" />
             <ui:VisualElement name="BottomBorder" class="bottom_border" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);" />
+            <ui:Label tabindex="-1" text="Here goes convo text Here goes convo text Here goes convo text Here goes convo text Here goes convo text Here goes convo text Here goes convo text Here goes convo text Here goes convo text Here goes convo text" display-tooltip-when-elided="true" name="ConvoLabel" class="convo_label" />
             <ui:Button text="Next" display-tooltip-when-elided="true" name="NextButton" class="next_button button button_active">
                 <ui:VisualElement name="Icon" class="icon" />
             </ui:Button>
