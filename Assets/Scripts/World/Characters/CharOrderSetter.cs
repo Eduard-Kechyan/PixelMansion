@@ -14,6 +14,7 @@ namespace Merge
 
         private SpriteRenderer mainSpriteRenderer;
         private SpriteRenderer shadowSpriteRenderer;
+        
         [HideInInspector]
         public string currentRoomName = "";
 
@@ -66,6 +67,42 @@ namespace Merge
             else
             {
                 shadowSpriteRenderer.sprite = shadowWalkingSprite;
+            }
+        }
+
+        public void FadeIn()
+        {
+            StopCoroutine(FadeOutOvertime());
+
+            StartCoroutine(FadeInOvertime());
+        }
+
+        public void FadeOut()
+        {
+            StopCoroutine(FadeInOvertime());
+
+            StartCoroutine(FadeOutOvertime());
+        }
+
+        IEnumerator FadeInOvertime()
+        {
+            while (mainSpriteRenderer.color.a < 1f)
+            {
+                mainSpriteRenderer.color = new Color(1f, 1f, 1f, mainSpriteRenderer.color.a + 0.1f);
+                shadowSpriteRenderer.color = new Color(1f, 1f, 1f, shadowSpriteRenderer.color.a + 0.1f);
+
+                yield return new WaitForSeconds(0.03f);
+            }
+        }
+
+        IEnumerator FadeOutOvertime()
+        {
+            while (mainSpriteRenderer.color.a > 0f)
+            {
+                mainSpriteRenderer.color = new Color(1f, 1f, 1f, mainSpriteRenderer.color.a - 0.1f);
+                shadowSpriteRenderer.color = new Color(1f, 1f, 1f, shadowSpriteRenderer.color.a - 0.1f);
+
+                yield return new WaitForSeconds(0.03f);
             }
         }
     }

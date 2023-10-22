@@ -12,17 +12,15 @@ namespace Merge
         public float bottomOffset = 50f;
         [ReadOnly]
         public bool isSelectorOpen = false;
+        [ReadOnly]
+        public bool isSelectAlt = false;
 
         // References
-        private UIDocument valuesUIDoc;
-        private UIDocument hubUIDoc;
         private HubUI hubUI;
-        private SafeAreaHandler safeAreaHandler;
+        private ValuesUI valuesUI;
 
         // UI
         private VisualElement root;
-        private VisualElement topBox;
-        private VisualElement bottomBox;
         private VisualElement selectorBox;
 
         private Button denyButton;
@@ -32,15 +30,11 @@ namespace Merge
         private Button option2Button;
         private Button option3Button;
 
-        private VisualElement valuesBox;
-
         void Start()
         {
             // Cache
-            valuesUIDoc = GameRefs.Instance.valuesUIDoc;
-            hubUIDoc = GameRefs.Instance.hubUIDoc;
             hubUI = GameRefs.Instance.hubUI;
-            safeAreaHandler = GameRefs.Instance.hubUI.GetComponent<SafeAreaHandler>();
+            valuesUI = GameRefs.Instance.valuesUI;
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
@@ -53,11 +47,6 @@ namespace Merge
             option1Button = selectorBox.Q<Button>("Option1Button");
             option2Button = selectorBox.Q<Button>("Option2Button");
             option3Button = selectorBox.Q<Button>("Option3Button");
-
-            valuesBox = valuesUIDoc.rootVisualElement.Q<VisualElement>("ValuesBox");
-
-            topBox = hubUIDoc.rootVisualElement.Q<VisualElement>("TopBox");
-            bottomBox = hubUIDoc.rootVisualElement.Q<VisualElement>("BottomBox");
 
             // UI taps
             denyButton.clicked += () => CancelSelection();
@@ -76,6 +65,8 @@ namespace Merge
             option3Button.style.backgroundImage = new StyleBackground(sprites[2]);
 
             SelectOptionButton(order);
+
+            isSelectAlt = isAlt;
 
             if (initialSelection)
             {
@@ -120,36 +111,30 @@ namespace Merge
         // Open or close the selectorL
         void UpdateSelector(bool isAlt)
         {
-            List<TimeValue> nullDelay = new();
-            List<TimeValue> fullDelay = new();
-
-            nullDelay.Add(new TimeValue(0.0f));
-            fullDelay.Add(new TimeValue(0.3f));
+            List<TimeValue> nullDelay = new() { new TimeValue(0.0f) };
+            List<TimeValue> fullDelay = new() { new TimeValue(0.3f) };
 
             if (isSelectorOpen)
             {
-                topBox.style.left = -50f;
-                topBox.style.right = -50f;
-                topBox.style.transitionDelay = fullDelay;
-                bottomBox.style.bottom = -bottomOffset; // Note the -
-                bottomBox.style.transitionDelay = fullDelay;
+                hubUI.CloseUI();
 
-                valuesBox.style.top = -50f;
-                valuesBox.style.transitionDelay = fullDelay;
+                valuesUI.CloseUI();
 
                 selectorBox.style.bottom = 0;
                 selectorBox.style.transitionDelay = nullDelay;
             }
             else
             {
-                topBox.style.left = 0;
-                topBox.style.right = 0;
-                topBox.style.transitionDelay = nullDelay;
-                bottomBox.style.bottom = 0;
-                bottomBox.style.transitionDelay = nullDelay;
+                if (isSelectAlt)
+                {
+                    isSelectAlt = false;
+                }
+                else
+                {
+                    hubUI.OpenUI();
 
-                valuesBox.style.top = safeAreaHandler.topPadding;
-                valuesBox.style.transitionDelay = nullDelay;
+                    valuesUI.OpenUI();
+                }
 
                 selectorBox.style.bottom = -60f;
                 selectorBox.style.transitionDelay = fullDelay;

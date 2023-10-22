@@ -7,6 +7,31 @@ namespace Merge
 {
     public class Types : MonoBehaviour
     {
+        public enum Character
+        {
+            NONE,
+            Tony,
+            James,
+        };
+
+        public enum Expression
+        {
+            Normal,
+            Happy,
+            Surprised,
+            Angry,
+        };
+
+        [Serializable]
+        public class EyeColor
+        {
+            [HideInInspector]
+            public string name;
+            public Character character;
+            public Color eyeColor = Color.black;
+            public Color accentColor = Color.black;
+        }
+
         //// ITEMS ///
         public enum ChestGroup
         {
@@ -300,6 +325,36 @@ namespace Merge
             public string name;
             public string id;
             public bool isArea;
+        }
+
+        [Serializable]
+        public class ProgressStep
+        {
+            public string stepType;
+            public string id;
+        }
+
+        //// CONVERSATIONS ////
+
+        [Serializable]
+        public class ConvoGroup
+        {
+            [HideInInspector]
+            public string name;
+            public string id;
+            public bool hasTimeOut = true;
+            public Character characterA = Character.Tony;
+            public Character characterB = Character.NONE;
+            public List<Convo> content;
+        }
+
+        [Serializable]
+        public class Convo
+        {
+            public Character character;
+            public Expression expression;
+            public bool isRight;
+            public bool isSide;
         }
 
         //// TASKS ////

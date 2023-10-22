@@ -49,43 +49,10 @@ SpriteAtlas:
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
-    packedSpriteRenderDataKeys:
-    - fe507632932b4b6479ea4640d9448198: 21300000
-    - 1326f5930bceb1d4394a78127bd57e1b: 21300000
-    - 6952f1851d01e084c9d52ae3ea57c195: 21300000
-    - 6ae5eda71ca2ddd47a2a90dfd2e84561: 21300000
-    - 28959229fef9cbc4a9c8e0752ad8bd63: 21300000
-    - 6af6191b35c2d4c43b5bb64bbd1d835c: 21300000
-    - 8708c10d7a0b37643a02e2c8855ade28: 21300000
-    - a8fe156d72426ae4c983cf1efed76a2c: 21300000
-    - 80737dad34591b143a90e8e6e4408e63: 21300000
-    - 479cafdd944b51c49b7f7622e2e5b0cd: 21300000
-    - a433373e1b9335440b8076e7f0fdb9a5: 21300000
+    packedSpriteRenderDataKeys: []
   m_MasterAtlas: {fileID: 0}
-  m_PackedSprites:
-  - {fileID: 21300000, guid: fe507632932b4b6479ea4640d9448198, type: 3}
-  - {fileID: 21300000, guid: 1326f5930bceb1d4394a78127bd57e1b, type: 3}
-  - {fileID: 21300000, guid: 6952f1851d01e084c9d52ae3ea57c195, type: 3}
-  - {fileID: 21300000, guid: 6ae5eda71ca2ddd47a2a90dfd2e84561, type: 3}
-  - {fileID: 21300000, guid: 28959229fef9cbc4a9c8e0752ad8bd63, type: 3}
-  - {fileID: 21300000, guid: 6af6191b35c2d4c43b5bb64bbd1d835c, type: 3}
-  - {fileID: 21300000, guid: 8708c10d7a0b37643a02e2c8855ade28, type: 3}
-  - {fileID: 21300000, guid: a8fe156d72426ae4c983cf1efed76a2c, type: 3}
-  - {fileID: 21300000, guid: 80737dad34591b143a90e8e6e4408e63, type: 3}
-  - {fileID: 21300000, guid: 479cafdd944b51c49b7f7622e2e5b0cd, type: 3}
-  - {fileID: 21300000, guid: a433373e1b9335440b8076e7f0fdb9a5, type: 3}
-  m_PackedSpriteNamesToIndex:
-  - TonyAvatar
-  - TonyEyesSide1
-  - TonyEyesSide2
-  - TonyEyes1
-  - TonyMouth3
-  - TonyMouth2
-  - TonyMouth4
-  - TonyEyes3
-  - TonyMouth1
-  - TonyEyesSide3
-  - TonyEyes2
+  m_PackedSprites: []
+  m_PackedSpriteNamesToIndex: []
   m_RenderDataMap: {}
   m_Tag: AvatarAtlas
   m_IsVariant: 0

@@ -22,6 +22,9 @@ namespace Merge
         public static Color colorYellow = Color.yellow;
         public static Color colorRed = Color.red;
 
+        public static bool selectableIsChanging = false;
+        public static bool convoUILoading = true;
+
         // Temp data
         public static string taskToComplete = "";
 
@@ -136,6 +139,22 @@ namespace Merge
             }
 
             return curve.Evaluate(UnityEngine.Random.value);
+        }
+
+        //// WAITERS ////
+        public static void WaitForSelectable(Action function)
+        {
+            Instance.StartCoroutine(WaitForSelectableTimeout(function));
+        }
+
+        private static IEnumerator WaitForSelectableTimeout(Action function)
+        {
+            while (selectableIsChanging)
+            {
+                yield return null;
+            }
+
+            function();
         }
 
         //// OTHER ////

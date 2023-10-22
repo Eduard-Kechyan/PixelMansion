@@ -21,8 +21,14 @@ MonoBehaviour:
       id: ChangeFloor
       stepType: 0
       nextIds:
+      - Response
       - ChangeWallLeft
       - ChangeWallRight
+      requiredIds: []
+    - name: Conversation Response
+      id: Response
+      stepType: 1
+      nextIds: []
       requiredIds: []
     - name: Task ChangeWallLeft
       id: ChangeWallLeft

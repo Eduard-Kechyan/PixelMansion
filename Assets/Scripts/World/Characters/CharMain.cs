@@ -13,6 +13,7 @@ namespace Merge
         public CharMove charMove;
         [HideInInspector]
         public CharOrderSetter charOrderSetter;
+        private SpeechBubble speechBubble;
 
         // Instance
         public static CharMain Instance;
@@ -31,6 +32,11 @@ namespace Merge
             charSpeech = GetComponent<CharSpeech>();
             charMove = GetComponent<CharMove>();
             charOrderSetter = GetComponent<CharOrderSetter>();
+        }
+
+        void Start(){
+            // Cache
+            speechBubble = GameRefs.Instance.hubGameUI.GetComponent<SpeechBubble>();
         }
 
         public void SelectableTapped(Vector2 position, Selectable selectable = null)
@@ -76,6 +82,25 @@ namespace Merge
             }
 
             return inRoom;
+        }
+
+        public void Hide()
+        {
+            charSpeech.Closed();
+            charSpeech.enabled = false;
+
+            speechBubble.Close();
+
+            charMove.StopMoving();
+
+            charOrderSetter.FadeOut();
+        }
+
+        public void Show()
+        {
+            charSpeech.enabled = true;
+
+            charOrderSetter.FadeIn();
         }
     }
 }

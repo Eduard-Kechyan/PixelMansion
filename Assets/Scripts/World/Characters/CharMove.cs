@@ -124,6 +124,11 @@ namespace Merge
             }
         }
 
+       public void StopMoving()
+        {
+            agent.isStopped = true;
+        }
+
         // Calculate the direction/angle the character is facing
         int CalcDirection(Vector2 currentDir)
         {

@@ -295,6 +295,7 @@ namespace Merge
         IEnumerator ChangeFloorTiles()
         {
             isChanging = true;
+            Glob.selectableIsChanging = true;
 
             for (int i = 0; i < tiles.Count; i++)
             {
@@ -316,6 +317,7 @@ namespace Merge
             }
 
             isChanging = false;
+            Glob.selectableIsChanging = false;
         }
 
         //// OVERLAY ////

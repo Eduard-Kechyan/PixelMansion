@@ -1,4 +1,12 @@
 {
+    "________ CONVO_CONTAINER ________": "________________",
+    "convo_skip_button": "Skip",
+    "convo_next_button": "Next",
     "________ LIVING ROOM ________": "________________",
-    "Conversation_LivingRoom_Unlocking_0": "Hi"
+    "convo_Response_0": "Hi there!",
+    "convo_Response_1": "It's a me, Tony!",
+    "convo_Response_2": "And I am James",
+    "convo_Response_3": "Where did you come from!!!",
+    "convo_Response_4": "Well...",
+    "convo_Response_5": "Ok, Bye!"
 }

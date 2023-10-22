@@ -9,7 +9,6 @@ namespace Merge
     public class Selector : MonoBehaviour
     {
         // Variables
-        public UIDocument hubGameUiDoc;
         public CameraPan cameraPan;
         public bool checkForOld = true;
         public float tapDuration = 0.2f;
@@ -37,6 +36,7 @@ namespace Merge
         // References
         private Camera cam;
         private SoundManager soundManager;
+        private UIDocument hubGameUiDoc;
         private SelectorUIHandler selectorUIHandler;
         private PopupManager popupManager;
         private I18n LOCALE;
@@ -52,6 +52,7 @@ namespace Merge
             // Cache
             cam = Camera.main;
             soundManager = SoundManager.Instance;
+            hubGameUiDoc = GameRefs.Instance.hubGameUIDoc;
             selectorUIHandler = hubGameUiDoc.GetComponent<SelectorUIHandler>();
             popupManager = PopupManager.Instance;
             LOCALE = I18n.Instance;

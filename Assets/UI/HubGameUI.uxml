@@ -36,23 +36,30 @@
     </ui:Button>
     <ui:VisualElement name="ConvoContainer" class="convo_container">
         <ui:VisualElement name="ConvoUnderlay" class="convo_underlay" />
-        <ui:VisualElement name="TopShadow" class="convo_shadow" style="top: -200px;" />
-        <ui:VisualElement name="BottomShadow" class="convo_shadow" style="bottom: -200px; top: auto; rotate: 180deg;" />
-        <ui:Button text="Skip" display-tooltip-when-elided="true" name="ConvoSkip" class="convo_skip button button_active">
-            <ui:VisualElement name="Icon" class="icon" />
-        </ui:Button>
+        <ui:VisualElement name="SkipButtonContainer" class="convo_button_container" style="right: 8px; top: 22px;">
+            <ui:Label tabindex="-1" text="Skip" display-tooltip-when-elided="true" name="Label" class="convo_button_label" />
+            <ui:VisualElement name="Icon" class="icon convo_button_icon" />
+        </ui:VisualElement>
         <ui:VisualElement name="ConvoBox" class="convo_box">
-            <ui:VisualElement name="AvatarLeft" class="convo_avatar" style="left: -90px;">
-                <ui:VisualElement name="Eyes" class="eyes" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);" />
-                <ui:VisualElement name="Mouth" class="mouth" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);" />
+            <ui:VisualElement name="AvatarLeft" class="convo_avatar" style="background-image: resource(&apos;Sprites/Avatars/Main/AvatarTony&apos;);">
+                <ui:VisualElement name="EyeColor" class="eye_color" />
+                <ui:VisualElement name="Eyes" class="eyes" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); background-image: resource(&apos;Sprites/Avatars/Eyes/EyesNormal&apos;);" />
+                <ui:VisualElement name="Mouth" class="mouth" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); background-image: resource(&apos;Sprites/Avatars/Mouths/MouthNormal&apos;);" />
             </ui:VisualElement>
+            <ui:VisualElement name="AvatarRight" class="convo_avatar" style="background-image: resource(&apos;Sprites/Avatars/Main/AvatarJames&apos;); right: -96px; left: auto; scale: -1 1;">
+                <ui:VisualElement name="EyeColor" class="eye_color" />
+                <ui:VisualElement name="Eyes" class="eyes" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); background-image: resource(&apos;Sprites/Avatars/Eyes/EyesNormal&apos;);" />
+                <ui:VisualElement name="Mouth" class="mouth" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); background-image: resource(&apos;Sprites/Avatars/Mouths/MouthNormal&apos;);" />
+            </ui:VisualElement>
+            <ui:VisualElement name="ConvoBoxUnderlay" class="convo_box_underlay" style="rotate: 180deg;" />
             <ui:VisualElement name="TopBorder" class="top_border" />
             <ui:VisualElement name="MidArea" class="mid_area" />
             <ui:VisualElement name="BottomBorder" class="bottom_border" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);" />
             <ui:Label tabindex="-1" text="Here goes convo text Here goes convo text Here goes convo text Here goes convo text Here goes convo text Here goes convo text Here goes convo text Here goes convo text Here goes convo text Here goes convo text" display-tooltip-when-elided="true" name="ConvoLabel" class="convo_label" />
-            <ui:Button text="Next" display-tooltip-when-elided="true" name="NextButton" class="next_button button button_active">
-                <ui:VisualElement name="Icon" class="icon" />
-            </ui:Button>
+            <ui:VisualElement name="NextButtonContainer" class="convo_button_container" style="right: 8px; bottom: 4px;">
+                <ui:Label tabindex="-1" text="Next" display-tooltip-when-elided="true" name="Label" class="convo_button_label" style="height: 10px; color: rgb(169, 132, 95);" />
+                <ui:VisualElement name="Icon" class="icon convo_button_icon" style="background-image: url(&apos;project://database/Assets/Sprites/Conversation/NextButton.png?fileID=2800000&amp;guid=10308679bc950b946bdaafc86115fb54&amp;type=3#NextButton&apos;); height: 10px; width: 8px;" />
+            </ui:VisualElement>
             <ui:VisualElement name="NamePlate" class="name_plate" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
                 <ui:VisualElement name="EdgeLeft" class="name_edge" style="background-image: url(&apos;project://database/Assets/Sprites/Conversation/NamePlateLeftEdge.png?fileID=2800000&amp;guid=ac7f26a9c0fa76c4582459ac7da386ce&amp;type=3#NamePlateLeftEdge&apos;);" />
                 <ui:VisualElement name="EdgeRight" class="name_edge" style="background-image: url(&apos;project://database/Assets/Sprites/Conversation/NamePlateRightEdge.png?fileID=2800000&amp;guid=1b8e71d3354f7ee4ea5fdb095e823ed3&amp;type=3#NamePlateRightEdge&apos;); left: auto; right: -7px; top: -3px;" />

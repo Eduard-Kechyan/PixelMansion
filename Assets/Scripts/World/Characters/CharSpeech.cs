@@ -118,7 +118,6 @@ namespace Merge
 
         public void TryToSpeak(string content = "", bool speakIfEmpty = true)
         {
-
             if (!isSpeaking && !isTimeOut)
             {
                 Speak(content, speakIfEmpty);

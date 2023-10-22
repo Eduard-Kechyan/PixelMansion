@@ -28,8 +28,8 @@ namespace Merge
 
         private bool isButtonSlashing = false;
 
-        Scale nullScale = new(new Vector2(0f, 0f));
-        Scale fullScale = new(new Vector2(1f, 1f));
+       private Scale nullScale = new(new Vector2(0f, 0f));
+       private Scale fullScale = new(new Vector2(1f, 1f));
 
         private Coroutine levelFillTimeout;
 

@@ -8,7 +8,7 @@ namespace Merge
     {
         private static JSONNode config = null;
 
-        private static readonly I18n instance = new ();
+        private static readonly I18n instance = new();
 
         private static Types.Locale currentLocale = Types.Locale.English;
 
@@ -45,7 +45,7 @@ namespace Merge
 
         public static void Configure(
             string newLocalePath = null,
-            Types.Locale newLocale =Types.Locale.English,
+            Types.Locale newLocale = Types.Locale.English,
             bool newLogMissing = false
         )
         {
@@ -98,7 +98,13 @@ namespace Merge
                     "Missing translation for: " + key
                 );
             }
+
             return translation;
+        }
+
+        public bool CheckNext(string key)
+        {
+            return config[key] != null;
         }
 
         public int GetNestedLength(string key)

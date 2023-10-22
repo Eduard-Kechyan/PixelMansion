@@ -10,6 +10,7 @@ namespace Merge
         // Variables
         public SceneLoader sceneLoader;
         public float extraTopPadding = 15;
+        public float visibilityBottomOffset = 50f;
 
         private float singlePixelWidth;
 
@@ -27,6 +28,7 @@ namespace Merge
         private VisualElement topBox;
         private Button settingsButton;
         private Button shopButton;
+        private VisualElement bottomBox;
         private Button taskButton;
         private Button playButton;
 
@@ -53,6 +55,8 @@ namespace Merge
             topBox = root.Q<VisualElement>("TopBox");
             settingsButton = topBox.Q<Button>("SettingsButton");
             shopButton = topBox.Q<Button>("ShopButton");
+
+            bottomBox = root.Q<VisualElement>("BottomBox");
 
             taskButton = root.Q<Button>("TaskButton");
             playButton = root.Q<Button>("PlayButton");
@@ -129,6 +133,28 @@ namespace Merge
             uiButtons.hubShopButtonPos = CalcButtonPosition(shopButton);
             uiButtons.hubTaskButtonPos = CalcButtonPosition(taskButton, true);
             uiButtons.hubPlayButtonPos = CalcButtonPosition(playButton, true);
+        }
+
+        public void CloseUI()
+        {
+            List<TimeValue> fullDelay = new() { new TimeValue(0.6f) };
+
+            topBox.style.left = -50f;
+            topBox.style.right = -50f;
+            topBox.style.transitionDelay = fullDelay;
+            bottomBox.style.bottom = -visibilityBottomOffset; // Note the -
+            bottomBox.style.transitionDelay = fullDelay;
+        }
+
+        public void OpenUI()
+        {
+            List<TimeValue> nullDelay = new() { new TimeValue(0.0f) };
+
+            topBox.style.left = 0;
+            topBox.style.right = 0;
+            topBox.style.transitionDelay = nullDelay;
+            bottomBox.style.bottom = 0;
+            bottomBox.style.transitionDelay = nullDelay;
         }
     }
 }

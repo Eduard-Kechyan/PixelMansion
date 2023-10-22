@@ -12,6 +12,7 @@ namespace Merge
         [Header("UI Scripts")]
         public GameplayUI gameplayUI;
         public HubUI hubUI;
+        public HubGameUI hubGameUI;
         public MenuUI menuUI;
         public ValuesUI valuesUI;
 
@@ -23,6 +24,7 @@ namespace Merge
         [HideInInspector]
         public UIDocument hubUIDoc;
 
+        [HideInInspector]
         public UIDocument hubGameUIDoc;
 
         [HideInInspector]
@@ -106,6 +108,7 @@ namespace Merge
             if (hubUI != null)
             {
                 hubUIDoc = hubUI.GetComponent<UIDocument>();
+                hubGameUIDoc = hubGameUI.GetComponent<UIDocument>();
                 safeAreaHandler = hubUI.GetComponent<SafeAreaHandler>();
                 noteDotHandler = hubUI.GetComponent<NoteDotHandler>();
             }

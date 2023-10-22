@@ -20,12 +20,16 @@ namespace Merge
         // References
         private TaskManager taskManager;
         private GameData gameData;
+        private HubUI hubUI;
+        private ValuesUI valuesUI;
 
         void Start()
         {
             // Cache
             taskManager = GetComponent<TaskManager>();
             gameData = GameData.Instance;
+            hubUI = GameRefs.Instance.hubUI;
+            valuesUI = GameRefs.Instance.valuesUI;
 
             Glob.SetTimeout(() =>
             {
@@ -35,11 +39,16 @@ namespace Merge
                 }
             }, 0.3f);
 
-            // Subscribe to events
+            CheckForProgressSteps();
+        }
+
+        void OnEnable()
+        {
+            // Unsubscribe from events
             DataManager.CheckProgressEventAction += CheckInitialData;
         }
 
-        void OnDestroy()
+        void OnDisable()
         {
             // Unsubscribe from events
             DataManager.CheckProgressEventAction -= CheckInitialData;
@@ -131,9 +140,21 @@ namespace Merge
                             // Check if the step even has next ids
                             if (progressData.areas[i].steps[j].nextIds.Length > 0)
                             {
+                                bool shouldShowUI = true;
+
                                 for (int k = 0; k < progressData.areas[i].steps[j].nextIds.Length; k++)
                                 {
-                                    HandleNextStep(groupId, progressData.areas[i].steps[j].nextIds[k], progressData.areas[i].steps);
+                                    if (!HandleNextStep(groupId, progressData.areas[i].steps[j].nextIds[k], progressData.areas[i].steps))
+                                    {
+                                        shouldShowUI = false;
+                                    }
+                                }
+
+                                if (shouldShowUI)
+                                {
+                                    hubUI.OpenUI();
+
+                                    valuesUI.OpenUI();
                                 }
                             }
 
@@ -147,8 +168,10 @@ namespace Merge
         }
 
         // Check the next step's type
-        void HandleNextStep(string groupId, string nextStepId, Types.Step[] steps)
+        bool HandleNextStep(string groupId, string nextStepId, Types.Step[] steps)
         {
+            bool shouldShowUI = true;
+
             for (int i = 0; i < steps.Length; i++)
             {
                 if (steps[i].id == nextStepId)
@@ -164,7 +187,6 @@ namespace Merge
                     else if (steps[i].requiredIds.Length > 0)
                     {
                         int count = 0;
-
 
                         for (int j = 0; j < steps[i].requiredIds.Length; j++)
                         {
@@ -185,12 +207,19 @@ namespace Merge
 
                     if (addNewTask)
                     {
+                        if (shouldShowUI && steps[i].stepType == Types.StepType.Conversation)
+                        {
+                            shouldShowUI = false;
+                        }
+
                         HandleNextStepType(steps[i].stepType, groupId, steps[i].id);
                     }
 
                     break;
                 }
             }
+
+            return shouldShowUI;
         }
 
         bool CheckLastRequirements(string groupId)
@@ -234,7 +263,12 @@ namespace Merge
                 case Types.StepType.Conversation:
                     if (worldDataManager != null)
                     {
-                        convoUIHandler.Converse();
+                        SetProgressStep(stepType, stepId);
+
+                        Glob.WaitForSelectable(() =>
+                        {
+                            convoUIHandler.Converse(stepId);
+                        });
                     }
                     else
                     {
@@ -270,6 +304,43 @@ namespace Merge
                     }
                     break;
             }
+        }
+
+        void CheckForProgressSteps()
+        {
+            if (PlayerPrefs.HasKey("ProgressStep"))
+            {
+                Types.ProgressStep oldProgressStep = JsonConvert.DeserializeObject<Types.ProgressStep>(PlayerPrefs.GetString("ProgressStep"));
+
+                switch (Glob.ParseEnum<Types.StepType>(oldProgressStep.stepType))
+                {
+                    case Types.StepType.Conversation:
+                        if (worldDataManager != null)
+                        {
+                            Glob.SetTimeout(() =>
+                            {
+                                convoUIHandler.Converse(oldProgressStep.id);
+                            }, 0.2f);
+                        }
+                        break;
+                    default:
+                        Debug.LogWarning("Types.StepType " + oldProgressStep.stepType + " is not being properly handled!");
+                        break;
+                }
+            }
+        }
+
+        void SetProgressStep(Types.StepType stepType, string stepId)
+        {
+            Types.ProgressStep newProgressStep = new()
+            {
+                stepType = stepType.ToString(),
+                id = stepId,
+            };
+
+            PlayerPrefs.SetString("ProgressStep", JsonConvert.SerializeObject(newProgressStep));
+
+            PlayerPrefs.Save();
         }
     }
 }

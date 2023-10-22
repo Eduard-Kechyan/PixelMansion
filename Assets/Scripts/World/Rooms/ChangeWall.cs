@@ -278,6 +278,7 @@ namespace Merge
         IEnumerator ChangeWallChunks()
         {
             isChanging = true;
+            Glob.selectableIsChanging = true;
 
             for (int i = 0; i < chunks.Count; i++)
             {
@@ -293,6 +294,7 @@ namespace Merge
             }
 
             isChanging = false;
+            Glob.selectableIsChanging = false;
         }
 
         Sprite ConvertOrder(int order, string chunkName)

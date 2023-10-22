@@ -34,6 +34,7 @@ namespace Merge
         private LevelMenu levelMenu;
         private EnergyMenu energyMenu;
         private ShopMenu shopMenu;
+        private SafeAreaHandler safeAreaHandler;
         private EnergyTimer energyTimer;
 
         // Instances
@@ -69,6 +70,7 @@ namespace Merge
             levelMenu = GameRefs.Instance.levelMenu;
             energyMenu = GameRefs.Instance.energyMenu;
             shopMenu = GameRefs.Instance.shopMenu;
+            safeAreaHandler = GameRefs.Instance.hubUI.GetComponent<SafeAreaHandler>();
             energyTimer = TimeManager.Instance.GetComponent<EnergyTimer>();
 
             // Cache instances
@@ -425,6 +427,22 @@ namespace Merge
         public void SetSortingOrder(int order)
         {
             GetComponent<UIDocument>().sortingOrder = order;
+        }
+
+        public void CloseUI()
+        {
+            List<TimeValue> fullDelay = new() { new TimeValue(0.6f) };
+
+            valuesBox.style.top = -50f;
+            valuesBox.style.transitionDelay = fullDelay;
+        }
+
+        public void OpenUI()
+        {
+            List<TimeValue> nullDelay = new() { new TimeValue(0.0f) };
+
+            valuesBox.style.top = safeAreaHandler.topPadding;
+            valuesBox.style.transitionDelay = nullDelay;
         }
     }
 }
