@@ -25,6 +25,8 @@ namespace Merge
         private VisualElement itemSprite;
         private VisualElement unlockedItems;
         private VisualElement infoParent;
+        private VisualElement infoCollParent;
+        private Label obtainLabel;
         private Label itemName;
         private Label itemData;
 
@@ -46,12 +48,14 @@ namespace Merge
             infoMenu = root.Q<VisualElement>("InfoMenu");
 
             unlockedItems = infoMenu.Q<VisualElement>("UnlockedItems");
-
             infoParent = infoMenu.Q<VisualElement>("InfoParent");
+            infoCollParent = infoMenu.Q<VisualElement>("InfoCollParent");
 
             itemSprite = infoMenu.Q<VisualElement>("ItemSprite");
+
             itemName = infoMenu.Q<Label>("ItemName");
             itemData = infoMenu.Q<Label>("ItemData");
+            obtainLabel = infoCollParent.Q<Label>("Obtain");
 
             Init();
         }
@@ -83,7 +87,14 @@ namespace Merge
                         title = LOCALE.Get("Gen_" + item.genGroup);
                         break;
                     case Types.Type.Coll:
-                        title = LOCALE.Get("Coll_" + item.collGroup);
+                        if (item.collGroup == Types.CollGroup.Gems)
+                        {
+                            title = LOCALE.Get("Coll_" + item.collGroup, item.level);
+                        }
+                        else
+                        {
+                            title = LOCALE.Get("Coll_" + item.collGroup);
+                        }
                         break;
                     default: // Types.Type.Chest
                         title = LOCALE.Get("Chest_" + item.chestGroup);
@@ -129,6 +140,11 @@ namespace Merge
                 else
                 {
                     GetUnlockedItems(item);
+                }
+
+                if (item.type == Types.Type.Coll)
+                {
+                    CheckInfoCollParent(item);
                 }
 
                 if (item.type != Types.Type.Coll && item.type != Types.Type.Chest)
@@ -360,6 +376,51 @@ namespace Merge
             }
         }
 
+        void CheckInfoCollParent(Item item)
+        {
+            infoCollParent.style.display = DisplayStyle.Flex;
+
+            obtainLabel.text = LOCALE.Get("info_menu_obtain");
+
+            Label obtainInShop = new() { name = "ObtainInShop", text = LOCALE.Get("info_menu_obtain_shop") };
+            Label obtainWithGems = new() { name = "ObtainWithGems", text = LOCALE.Get("info_menu_obtain_gems") };
+            Label obtainByMerging = new() { name = "ObtainByMerging", text = LOCALE.Get("info_menu_obtain_merging") };
+            Label obtainFromAds = new() { name = "ObtainFromAds", text = LOCALE.Get("info_menu_obtain_ads") };
+            Label obtainFromChests = new() { name = "ObtainFromChests", text = LOCALE.Get("info_menu_obtain_chests") };
+            Label obtainFromTasks = new() { name = "ObtainFromTasks", text = LOCALE.Get("info_menu_obtain_tasks") };
+
+            obtainInShop.AddToClassList("obtain_from");
+            obtainWithGems.AddToClassList("obtain_from");
+            obtainByMerging.AddToClassList("obtain_from");
+            obtainFromAds.AddToClassList("obtain_from");
+            obtainFromChests.AddToClassList("obtain_from");
+            obtainFromTasks.AddToClassList("obtain_from");
+
+            switch (item.collGroup)
+            {
+                case Types.CollGroup.Energy:
+                    infoCollParent.Add(obtainInShop);
+                    infoCollParent.Add(obtainWithGems);
+                    infoCollParent.Add(obtainFromAds);
+                    infoCollParent.Add(obtainFromChests);
+                    break;
+                case Types.CollGroup.Experience:
+                    infoCollParent.Add(obtainFromTasks);
+                    infoCollParent.Add(obtainByMerging);
+                    infoCollParent.Add(obtainFromChests);
+                    break;
+                case Types.CollGroup.Gold:
+                    infoCollParent.Add(obtainFromTasks);
+                    infoCollParent.Add(obtainInShop);
+                    infoCollParent.Add(obtainFromChests);
+                    break;
+                case Types.CollGroup.Gems:
+                    infoCollParent.Add(obtainInShop);
+                    infoCollParent.Add(obtainFromChests);
+                    break;
+            }
+        }
+
         Sprite GetParentSprite(ItemTypes.GenGroup parentGroup)
         {
             Sprite sprite = null;
@@ -374,7 +435,7 @@ namespace Merge
                     }
                     else
                     {
-                        for (int j = gameData.generatorsData[i].content.Length-1; j >= 0;)
+                        for (int j = gameData.generatorsData[i].content.Length - 1; j >= 0;)
                         {
                             if (gameData.generatorsData[i].content[j].unlocked)
                             {

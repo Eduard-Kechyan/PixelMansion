@@ -35,11 +35,13 @@ namespace Merge
         // References
         private NavMeshManager navMeshManager;
         private DoorManager doorManager;
+        private DataManager dataManager;
 
         void Start()
         {
             navMeshManager = NavMeshManager.Instance;
             doorManager = DoorManager.Instance;
+            dataManager = DataManager.Instance;
 
             lockedOverlayPH = transform.GetComponentInChildren<LockedOverlayPH>();
             navPH = transform.GetComponentInChildren<NavPH>();
@@ -203,6 +205,8 @@ namespace Merge
                 {
                     Debug.LogWarning("This room with a door couldn't find the door: " + gameObject.name);
                 }
+
+                dataManager.UnlockRoom(gameObject.name);
 
                 locked = false;
             }

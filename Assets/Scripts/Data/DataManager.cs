@@ -20,6 +20,7 @@ namespace Merge
         public Items collectables;
         public Items chests;
         public InitialItems initialItems;
+        public WorldDataManager worldDataManager;
 
         public delegate void BoardSaveEvent();
         public static event BoardSaveEvent BoardSaveEventAction;
@@ -48,6 +49,7 @@ namespace Merge
         private string timersJsonData;
         [HideInInspector]
         public string unlockedJsonData;
+        public string unlockedRoomsJsonData;
         private string unsentJsonData;
 
         // References
@@ -148,6 +150,7 @@ namespace Merge
                     .Write("tasksData", tasksJsonData)
                     .Write("finishedTasks", finishedTasksJsonData)
                     .Write("unlockedData", dataConverter.GetInitialUnlocked())
+                    .Write("unlockedRoomsData", worldDataManager != null ? worldDataManager.GetInitialUnlockedRooms() : "[]")
                     .Write("timers", timersJsonData)
                     // Other
                     .Write("inventorySpace", gameData.inventorySpace)
@@ -175,6 +178,7 @@ namespace Merge
             string newFinishedTasks = "";
             string newTimersData = "";
             string newUnlockedData = "";
+            string newUnlockedRoomsData = "";
             string newUnsentData = "";
 
             if (initialLoad)
@@ -187,6 +191,7 @@ namespace Merge
                 newFinishedTasks = finishedTasksJsonData;
                 newTimersData = timersJsonData;
                 newUnlockedData = unlockedJsonData;
+                newUnlockedRoomsData = unlockedRoomsJsonData;
                 newUnsentData = unsentJsonData;
             }
             else
@@ -206,6 +211,7 @@ namespace Merge
                 reader.Read<string>("finishedTasks", r => newFinishedTasks = r);
                 reader.Read<string>("timers", r => newTimersData = r);
                 reader.Read<string>("unlockedData", r => newUnlockedData = r);
+                reader.Read<string>("unlockedRoomsData", r => newUnlockedRoomsData = r);
                 reader.Read<string>("unsentData", r => newUnsentData = r);
 
                 // Other
@@ -213,10 +219,21 @@ namespace Merge
                 gameData.inventorySlotPrice = reader.Read<int>("inventorySlotPrice");
             }
 
-            string[] unlockedDataTemp = JsonConvert.DeserializeObject<string[]>(newUnlockedData);
+            if (newUnlockedData != "")
+            {
+                string[] unlockedDataTemp = JsonConvert.DeserializeObject<string[]>(newUnlockedData);
 
-            gameData.unlockedData.CopyTo(unlockedDataTemp, 0);
-            gameData.unlockedData = unlockedDataTemp;
+                gameData.unlockedData.CopyTo(unlockedDataTemp, 0);
+                gameData.unlockedData = unlockedDataTemp;
+            }
+
+            if (newUnlockedRoomsData != "")
+            {
+                string[] unlockedRoomsDataTemp = JsonConvert.DeserializeObject<string[]>(newUnlockedRoomsData);
+
+                gameData.unlockedRoomsData.CopyTo(unlockedRoomsDataTemp, 0);
+                gameData.unlockedRoomsData = unlockedRoomsDataTemp;
+            }
 
             gameData.finishedTasks = JsonConvert.DeserializeObject<List<Types.FinishedTask>>(newFinishedTasks);
 
@@ -436,6 +453,41 @@ namespace Merge
                 default:
                     ErrorManager.Instance.Throw(Types.ErrorType.Code, "Wrong type: " + type);
                     break;
+            }
+
+            return found;
+        }
+
+        public bool UnlockRoom(string roomName)
+        {
+            bool found = false;
+
+            for (int i = 0; i < gameData.unlockedRoomsData.Length; i++)
+            {
+                if (roomName == gameData.unlockedRoomsData[i])
+                {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found)
+            {
+                string[] newUnlockedRoomsData = new string[gameData.unlockedRoomsData.Length + 1];
+
+                for (int i = 0; i < gameData.unlockedRoomsData.Length; i++)
+                {
+                    newUnlockedRoomsData[i] = gameData.unlockedRoomsData[i];
+                }
+
+                newUnlockedRoomsData[gameData.unlockedRoomsData.Length] = roomName;
+
+                gameData.unlockedRoomsData.CopyTo(newUnlockedRoomsData, 0);
+                gameData.unlockedRoomsData = newUnlockedRoomsData;
+
+                writer
+                    .Write("unlockedRoomsData", JsonConvert.SerializeObject(gameData.unlockedData))
+                    .Commit();
             }
 
             return found;

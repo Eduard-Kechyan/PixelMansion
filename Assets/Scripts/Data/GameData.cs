@@ -81,6 +81,8 @@ namespace Merge
         [HideInInspector]
         public string[] unlockedData = new string[0];
         [HideInInspector]
+        public string[] unlockedRoomsData = new string[0];
+        [HideInInspector]
         public Types.Items[] itemsData;
         [HideInInspector]
         public Types.Items[] collectablesData;

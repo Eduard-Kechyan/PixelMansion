@@ -182,6 +182,8 @@ namespace Merge
                     count++;
                 }
             }
+
+            boardManager.boardSet = true;
         }
     }
 }

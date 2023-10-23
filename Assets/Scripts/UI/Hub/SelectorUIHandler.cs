@@ -18,6 +18,8 @@ namespace Merge
         // References
         private HubUI hubUI;
         private ValuesUI valuesUI;
+        private CharMain charMain;
+        private Camera cam;
 
         // UI
         private VisualElement root;
@@ -35,6 +37,8 @@ namespace Merge
             // Cache
             hubUI = GameRefs.Instance.hubUI;
             valuesUI = GameRefs.Instance.valuesUI;
+            charMain = CharMain.Instance;
+            cam = Camera.main;
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
@@ -74,11 +78,11 @@ namespace Merge
             }
         }
 
-        void ToggleSelector(bool isAlt)
+        void ToggleSelector(bool isAlt, bool canceled = false)
         {
             isSelectorOpen = !isSelectorOpen;
 
-            UpdateSelector(isAlt);
+            UpdateSelector(isAlt, canceled);
         }
 
         void SelectOption(int order)
@@ -109,7 +113,7 @@ namespace Merge
         }
 
         // Open or close the selectorL
-        void UpdateSelector(bool isAlt)
+        void UpdateSelector(bool isAlt, bool canceled = false)
         {
             List<TimeValue> nullDelay = new() { new TimeValue(0.0f) };
             List<TimeValue> fullDelay = new() { new TimeValue(0.3f) };
@@ -120,12 +124,14 @@ namespace Merge
 
                 valuesUI.CloseUI();
 
+                charMain.Hide();
+
                 selectorBox.style.bottom = 0;
                 selectorBox.style.transitionDelay = nullDelay;
             }
             else
             {
-                if (isSelectAlt)
+                if (isSelectAlt && !canceled)
                 {
                     isSelectAlt = false;
                 }
@@ -134,6 +140,10 @@ namespace Merge
                     hubUI.OpenUI();
 
                     valuesUI.OpenUI();
+
+                    charMain.Show();
+
+                    charMain.SelectSelectableAtPosition(cam.transform.position);
                 }
 
                 selectorBox.style.bottom = -60f;
@@ -151,7 +161,7 @@ namespace Merge
         {
             selector.CancelSelecting(true);
 
-            ToggleSelector(false);
+            ToggleSelector(false, true);
         }
 
         // Handle confirming the selector

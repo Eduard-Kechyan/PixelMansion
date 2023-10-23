@@ -27,6 +27,7 @@ namespace Merge
 
         // References
         private NavMeshManager navMeshManager;
+        private DataManager dataManager;
         private DataConverter dataConverter;
         private GameData gameData;
 
@@ -39,7 +40,8 @@ namespace Merge
         {
             // Cache
             navMeshManager = NavMeshManager.Instance;
-            dataConverter = DataManager.Instance.GetComponent<DataConverter>();
+            dataManager = DataManager.Instance;
+            dataConverter = dataManager.GetComponent<DataConverter>();
             gameData = GameData.Instance;
 
             Init();
@@ -399,6 +401,37 @@ namespace Merge
             SaveData();
         }
 
+        public string GetInitialUnlockedRooms()
+        {
+            List<string> unlockedRooms = new();
+
+            for (int i = 0; i < worldRoot.childCount; i++)
+            {
+                Transform worldItem = worldRoot.GetChild(i);
+
+                if (worldItem.name.Contains("Area"))
+                {
+                    RoomHandler roomHandler = worldItem.GetComponent<RoomHandler>();
+
+                    if (roomHandler != null && !roomHandler.locked)
+                    {
+                        unlockedRooms.Add(worldItem.name);
+                    }
+                }
+            }
+
+            string[] initialUnlocked = new string[unlockedRooms.Count];
+
+            for (int i = 0; i < unlockedRooms.Count; i++)
+            {
+                initialUnlocked[i] = unlockedRooms[i];
+            }
+
+            dataManager.unlockedRoomsJsonData = JsonConvert.SerializeObject(initialUnlocked);
+
+            return dataManager.unlockedRoomsJsonData;
+        }
+
         public Transform GetWorldItem(string groupId, Types.Task task)
         {
             Transform worldArea = null;
@@ -432,7 +465,8 @@ namespace Merge
             return null;
         }
 
-        public Transform FindRoomInWorld(string roomName){
+        public Transform FindRoomInWorld(string roomName)
+        {
             for (int i = 0; i < worldRoot.childCount; i++)
             {
                 Transform tempArea = worldRoot.GetChild(i);

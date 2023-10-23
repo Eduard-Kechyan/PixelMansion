@@ -7,6 +7,7 @@ namespace Merge
     public class CharMain : MonoBehaviour
     {
         // References
+        public Selector selector;
         [HideInInspector]
         public CharSpeech charSpeech;
         [HideInInspector]
@@ -58,6 +59,21 @@ namespace Merge
             }
         }
 
+        public void SelectSelectableAtPosition(Vector2 position){
+            Selectable selectable = selector.SelectAndReturn(position);
+
+            if (selectable == null)
+            {
+                return;
+            }
+
+            charMove.SetDestination(position, CheckIfInRoom(selectable));
+
+            SelectableSpeech selectableSpeech = selectable.GetComponent<SelectableSpeech>();
+
+            charSpeech.Speak(selectableSpeech.GetSpeech(), false);
+        }
+
         // TODO - Do we really need this method?
         bool CheckIfInRoom(Selectable selectable)
         {
@@ -99,6 +115,8 @@ namespace Merge
         public void Show()
         {
             charSpeech.enabled = true;
+
+            charMove.ContinueMoving();
 
             charOrderSetter.FadeIn();
         }

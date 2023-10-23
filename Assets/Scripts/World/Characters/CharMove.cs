@@ -124,9 +124,25 @@ namespace Merge
             }
         }
 
-       public void StopMoving()
+        public void SetPosition(Vector2 newPos)
         {
             agent.isStopped = true;
+
+            transform.position = newPos;
+        }
+
+        public void StopMoving()
+        {
+            agent.isStopped = true;
+
+            enabled = false;
+        }
+
+        public void ContinueMoving()
+        {
+            agent.isStopped = false;
+
+            enabled = true;
         }
 
         // Calculate the direction/angle the character is facing

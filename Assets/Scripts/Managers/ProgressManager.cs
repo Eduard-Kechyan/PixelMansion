@@ -13,6 +13,7 @@ namespace Merge
         public ProgressData progressData;
         public WorldDataManager worldDataManager;
         public ConvoUIHandler convoUIHandler;
+        public BoardManager boardManager;
 
         private bool initialSet = false;
         private bool settingInitial = false;
@@ -22,6 +23,7 @@ namespace Merge
         private GameData gameData;
         private HubUI hubUI;
         private ValuesUI valuesUI;
+        private CharMain charMain;
 
         void Start()
         {
@@ -30,6 +32,7 @@ namespace Merge
             gameData = GameData.Instance;
             hubUI = GameRefs.Instance.hubUI;
             valuesUI = GameRefs.Instance.valuesUI;
+            charMain = CharMain.Instance;
 
             Glob.SetTimeout(() =>
             {
@@ -155,6 +158,8 @@ namespace Merge
                                     hubUI.OpenUI();
 
                                     valuesUI.OpenUI();
+
+                                    charMain.Show();
                                 }
                             }
 

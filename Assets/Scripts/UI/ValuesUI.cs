@@ -70,8 +70,11 @@ namespace Merge
             levelMenu = GameRefs.Instance.levelMenu;
             energyMenu = GameRefs.Instance.energyMenu;
             shopMenu = GameRefs.Instance.shopMenu;
-            safeAreaHandler = GameRefs.Instance.hubUI.GetComponent<SafeAreaHandler>();
-            energyTimer = TimeManager.Instance.GetComponent<EnergyTimer>();
+            if (GameRefs.Instance.hubUI != null)
+            {
+                safeAreaHandler = GameRefs.Instance.hubUI.GetComponent<SafeAreaHandler>();
+            }
+            //  energyTimer = TimeManager.Instance.GetComponent<EnergyTimer>();
 
             // Cache instances
             gameData = GameData.Instance;
@@ -142,31 +145,31 @@ namespace Merge
 
         void CheckTimer()
         {
-            if (energyTimer.timerOn)
-            {
-                Glob.StopTimeout(energyCoroutine);
+            /* if (energyTimer.timerOn)
+             {
+                 Glob.StopTimeout(energyCoroutine);
 
-                energyTimerLabel.style.display = DisplayStyle.Flex;
+                 energyTimerLabel.style.display = DisplayStyle.Flex;
 
-                float newTimeout = energyTimer.timeOut;
+                 float newTimeout = energyTimer.timeOut;
 
-                newTimeout++;
+                 newTimeout++;
 
-                float minutes = Mathf.FloorToInt(newTimeout / 60);
-                float seconds = Mathf.FloorToInt(newTimeout % 60);
+                 float minutes = Mathf.FloorToInt(newTimeout / 60);
+                 float seconds = Mathf.FloorToInt(newTimeout % 60);
 
-                string minutesText = minutes < 10 ? "0" + minutes : minutes.ToString();
-                string secondsText = seconds < 10 ? "0" + seconds : seconds.ToString();
+                 string minutesText = minutes < 10 ? "0" + minutes : minutes.ToString();
+                 string secondsText = seconds < 10 ? "0" + seconds : seconds.ToString();
 
-                energyTimerLabel.text = string.Format("{0}:{1}", minutesText, secondsText);
-            }
-            else if (!energyTimer.waiting)
-            {
-                energyCoroutine = Glob.SetTimeout(() =>
-                {
-                    energyTimerLabel.style.display = DisplayStyle.None;
-                }, 1f);
-            }
+                 energyTimerLabel.text = string.Format("{0}:{1}", minutesText, secondsText);
+             }
+             else if (!energyTimer.waiting)
+             {
+                 energyCoroutine = Glob.SetTimeout(() =>
+                 {
+                     energyTimerLabel.style.display = DisplayStyle.None;
+                 }, 1f);
+             }*/
         }
 
         public void UpdateValues()

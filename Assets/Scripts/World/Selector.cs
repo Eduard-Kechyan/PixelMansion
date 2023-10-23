@@ -116,106 +116,90 @@ namespace Merge
 
         void DefaultSelecting(Vector2 position, bool tapped = false, bool ignorePopup = false)
         {
-            List<RaycastHit2D> hits = new();
+            Selectable newSelectable = SelectAndReturn(position);
 
-            ContactFilter2D contactFilter2D = new();
-
-            contactFilter2D.SetLayerMask(LayerMask.GetMask("Selectable"));
+            if (newSelectable == null)
+            {
+                return;
+            }
 
             Vector2 worldPosition = cam.ScreenToWorldPoint(position);
 
-            Physics2D.Raycast(
-                           worldPosition,
-                           Vector2.zero,
-                           contactFilter2D,
-                           hits,
-                           Mathf.Infinity
-                       );
-
-            hits.Sort(SortColliders);
-
-            if (hits.Count > 0 && (hits[0] || hits[0].collider != null))
+            // Check if the selected selectable is the same
+            if (!tapped && isSelected && selectable != null && (selectable.id == newSelectable.id || (checkForOld && newSelectable.GetOld())))
             {
-                RaycastHit2D hit = hits[0];
-
-                Selectable newSelectable = hit.transform.GetComponent<Selectable>();
-
-                // Check if the selected selectable is the same
-                if (!tapped && isSelected && selectable != null && (selectable.id == newSelectable.id || (checkForOld && newSelectable.GetOld())))
+                return;
+            }
+            else
+            {
+                if (checkForOld && selectable != null && selectable.GetOld())
                 {
                     return;
                 }
-                else
+
+                // There is already a selectable, so cancel it
+                if (isSelected && selectable != null)
                 {
-                    if (checkForOld && selectable != null && selectable.GetOld())
-                    {
-                        return;
-                    }
-
-                    // There is already a selectable, so cancel it
-                    if (isSelected && selectable != null)
-                    {
-                        CancelSelectingAlt();
-                    }
-
-                    selectable = newSelectable;
+                    CancelSelectingAlt();
                 }
 
-                lastSpriteOrder = selectable.GetSpriteOrder();
+                selectable = newSelectable;
+            }
 
-                // Check if we can select the selectable
-                if (selectable.canBeSelected)
+            lastSpriteOrder = selectable.GetSpriteOrder();
+
+            // Check if we can select the selectable
+            if (selectable.canBeSelected)
+            {
+                if (tapped)
                 {
-                    if (tapped)
-                    {
-                        SelectableTapped();
-                    }
-                    else
-                    {
-                        if (isSelected)
-                        {
-                            selectable.Select();
-
-                            soundManager.PlaySound("", swapSound);
-
-                            selectorUIHandler.Open(selectable.GetSpriteOptions(), selectable.GetSpriteOrder(), false);
-                        }
-                        else
-                        {
-                            isSelected = false;
-                            isSelecting = true;
-
-                            Vector2 newUIPos = RuntimePanelUtils.CameraTransformWorldToPanel(
-                                root.panel,
-                                worldPosition,
-                                cam
-                            );
-
-                            StartCoroutine(ShowArrow(newUIPos, selectable));
-                        }
-                    }
+                    SelectableTapped();
                 }
                 else
                 {
-                    if (tapped)
+                    if (isSelected)
                     {
-                        SelectableTapped();
+                        selectable.Select();
+
+                        soundManager.PlaySound("", swapSound);
+
+                        selectorUIHandler.Open(selectable.GetSpriteOptions(), selectable.GetSpriteOrder(), false);
                     }
                     else
                     {
                         isSelected = false;
-                        isSelecting = false;
+                        isSelecting = true;
 
-                        bool notify = selectable.notifyCantBeSelected;
+                        Vector2 newUIPos = RuntimePanelUtils.CameraTransformWorldToPanel(
+                            root.panel,
+                            worldPosition,
+                            cam
+                        );
 
-                        selectable = null;
+                        StartCoroutine(ShowArrow(newUIPos, selectable));
+                    }
+                }
+            }
+            else
+            {
+                if (tapped)
+                {
+                    SelectableTapped();
+                }
+                else
+                {
+                    isSelected = false;
+                    isSelecting = false;
 
-                        triedToSelectUnselectable = true;
+                    bool notify = selectable.notifyCantBeSelected;
 
-                        if (!ignorePopup && notify)
-                        {
-                            popupManager.Pop(LOCALE.Get("pop_item_unselectable"), worldPosition, "", true, true);
-                        }
+                    selectable = null;
+
+                    triedToSelectUnselectable = true;
+
+                    if (!ignorePopup && notify)
+                    {
+                        popupManager.Pop(LOCALE.Get("pop_item_unselectable"), worldPosition, "", true, true);
                     }
                 }
             }
@@ -238,6 +222,32 @@ namespace Merge
             isSelecting = false;
             isSelected = false;
             selectable = null;
+        }
+
+        public Selectable SelectAndReturn(Vector2 position)
+        {
+            List<RaycastHit2D> hits = new();
+
+            ContactFilter2D contactFilter2D = new();
+
+            contactFilter2D.SetLayerMask(LayerMask.GetMask("Selectable"));
+
+            Physics2D.Raycast(
+                cam.ScreenToWorldPoint(position),
+                Vector2.zero,
+                contactFilter2D,
+                hits,
+                Mathf.Infinity
+            );
+
+            hits.Sort(SortColliders);
+
+            if (hits.Count > 0 && (hits[0] || hits[0].collider != null))
+            {
+                return hits[0].transform.GetComponent<Selectable>();
+            }
+
+            return null;
         }
 
         public void SelectAlt(Selectable newSelectable, Action newConfirmCallback = null, Action newCancelCallback = null)

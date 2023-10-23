@@ -151,7 +151,6 @@ namespace Merge
                     else if (item.type == Types.Type.Coll)
                     {
                         actionType = ActionType.None;
-                        infoButton.style.display = DisplayStyle.None;
                     }
                     else if (item.level > 3 || item.isMaxLevel)
                     {

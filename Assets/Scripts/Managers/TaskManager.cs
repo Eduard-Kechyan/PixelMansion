@@ -540,10 +540,29 @@ namespace Merge
             // Set board items to completed in the gameplay scene
             if (completedAtLeastOnItem && boardManager != null)
             {
-                boardManager.SetCompletedItems();
+                if (Application.isEditor)
+                {
+                    StopCoroutine(WaitForBoardInitialization());
+
+                    StartCoroutine(WaitForBoardInitialization());
+                }
+                else
+                {
+                    boardManager.SetCompletedItems();
+                }
             }
 
             CheckTaskNoteDot();
+        }
+
+        IEnumerator WaitForBoardInitialization()
+        {
+            while (!boardManager.boardSet)
+            {
+                yield return null;
+            }
+
+            boardManager.SetCompletedItems();
         }
 
         // Check if a task need exists on the board or in the inventory and get its amount

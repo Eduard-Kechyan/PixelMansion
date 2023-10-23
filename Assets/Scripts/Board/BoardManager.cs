@@ -12,6 +12,9 @@ namespace Merge
         public float scaleSpeed = 8f;
         public int experienceThreshold = 4;
 
+        [ReadOnly]
+        public bool boardSet = false;
+
         [Header("Bubbles")]
         public int minBubbleLevel = 4; // TODO - Change this to 6 or higher
         public int bubbleChance = 30; // In %
