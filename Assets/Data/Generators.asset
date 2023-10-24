@@ -9,26 +9,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad1dbff0d9e1b67449c032e521e80bbc, type: 3}
+  m_Script: {fileID: 11500000, guid: 78ad1a251a214c842bb7deced2ae5bdc, type: 3}
   m_Name: Generators
   m_EditorClassIdentifier: 
   content:
   - name: Toolbox
-    type: 1
-    group: 0
     genGroup: 0
-    collGroup: 0
-    chestGroup: 0
-    hasLevel: 0
+    hasLevel: 1
     customName: 0
-    hasTimer: 0
     generatesAt: 5
-    parents: 
+    coolDown:
+      maxCount: 3
+      seconds: 60
+      minutes: 1
     creates:
-    - group: 0
-      chance: 80
-    - group: 1
-      chance: 20
+    - name: Tools
+      group: 0
+      chance: 0
+    - name: Gloves
+      group: 1
+      chance: 0
     content:
     - sprite: {fileID: 21300000, guid: 5843d96ae1fcc884080d43667c5b79b9, type: 3}
       customName: 0
@@ -42,6 +42,10 @@ MonoBehaviour:
       collGroup: 0
       parents: 
       creates: []
+      coolDown:
+        maxCount: 0
+        seconds: 0
+        minutes: 0
       unlocked: 0
       isMaxLevel: 0
       hasLevel: 0
@@ -62,6 +66,10 @@ MonoBehaviour:
       collGroup: 0
       parents: 
       creates: []
+      coolDown:
+        maxCount: 0
+        seconds: 0
+        minutes: 0
       unlocked: 0
       isMaxLevel: 0
       hasLevel: 0
@@ -82,6 +90,10 @@ MonoBehaviour:
       collGroup: 0
       parents: 
       creates: []
+      coolDown:
+        maxCount: 0
+        seconds: 0
+        minutes: 0
       unlocked: 0
       isMaxLevel: 0
       hasLevel: 0
@@ -102,6 +114,10 @@ MonoBehaviour:
       collGroup: 0
       parents: 
       creates: []
+      coolDown:
+        maxCount: 0
+        seconds: 0
+        minutes: 0
       unlocked: 0
       isMaxLevel: 0
       hasLevel: 0
@@ -122,6 +138,10 @@ MonoBehaviour:
       collGroup: 0
       parents: 
       creates: []
+      coolDown:
+        maxCount: 0
+        seconds: 0
+        minutes: 0
       unlocked: 0
       isMaxLevel: 0
       hasLevel: 0
@@ -142,6 +162,10 @@ MonoBehaviour:
       collGroup: 0
       parents: 
       creates: []
+      coolDown:
+        maxCount: 0
+        seconds: 0
+        minutes: 0
       unlocked: 0
       isMaxLevel: 0
       hasLevel: 0

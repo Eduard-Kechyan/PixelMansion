@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 194810349795178729}
   - component: {fileID: 380637600984663935}
   - component: {fileID: 574956127959172480}
+  - component: {fileID: 3488903112042956216}
   m_Layer: 0
   m_Name: MenuUI
   m_TagString: Untagged
@@ -253,3 +254,15 @@ MonoBehaviour:
   starEmptySprite: {fileID: 21300000, guid: d4a36d8a01e7d5742855408d095c829b, type: 3}
   starFullSprite: {fileID: 21300000, guid: aeeaeaf298625af46ac01379474a0ece, type: 3}
   shouldShow: 1
+--- !u!114 &3488903112042956216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2529494229858904796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34229e0a942bc2c44ae7e9948e564901, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

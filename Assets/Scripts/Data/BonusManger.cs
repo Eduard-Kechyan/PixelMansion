@@ -43,7 +43,7 @@ namespace Merge
 
                 emptyBoard.Sort((p1, p2) => p1.distance.CompareTo(p2.distance));
 
-                Types.ItemsData itemData = new()
+                Types.ItemData itemData = new()
                 {
                     sprite = latestBonus.sprite,
                     type = latestBonus.type,

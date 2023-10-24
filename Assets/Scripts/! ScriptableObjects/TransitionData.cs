@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Merge
 {
-[CreateAssetMenu(fileName = "TransitionData", menuName = "ScriptableObject/TransitionData", order = 3)]
+[CreateAssetMenu(fileName = "TransitionData", menuName = "ScriptableObject/TransitionData")]
 public class TransitionData : ScriptableObject
 {
     [ReadOnly]

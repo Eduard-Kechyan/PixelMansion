@@ -47,10 +47,14 @@ namespace Merge
                     chestGroup = Glob.ParseEnum<Types.ChestGroup>(boardJson[i].chestGroup),
                     chestItems = boardJson[i].chestItems,
                     chestItemsSet = boardJson[i].chestItemsSet,
+                    id = boardJson[i].id,
                     generatesAt = boardJson[i].generatesAt,
                     crate = boardJson[i].crate,
                     gemPopped = boardJson[i].gemPopped,
                     isCompleted = boardJson[i].isCompleted,
+                    timerOn = boardJson[i].timerOn,
+                    timerStartTime = boardJson[i].timerStartTime,
+                    timerSeconds = boardJson[i].timerSeconds,
                 };
 
                 boardData[i] = newBoardData;
@@ -77,11 +81,15 @@ namespace Merge
                     collGroup = boardData[i].collGroup.ToString(),
                     chestGroup = boardData[i].chestGroup.ToString(),
                     chestItems = boardData[i].chestItems,
+                    id = boardData[i].id,
                     generatesAt = boardData[i].generatesAt,
                     chestItemsSet = boardData[i].chestItemsSet,
                     crate = initialLoop ? randomInt : boardData[i].crate,
                     gemPopped = boardData[i].gemPopped,
                     isCompleted = boardData[i].isCompleted,
+                    timerOn = boardData[i].timerOn,
+                    timerStartTime = boardData[i].timerStartTime,
+                    timerSeconds = boardData[i].timerSeconds,
                 };
 
                 boardJson[i] = newBoardJson;
@@ -114,8 +122,12 @@ namespace Merge
                         chestItems = boardArray[count].chestItems,
                         chestItemsSet = boardArray[count].chestItemsSet,
                         generatesAt = boardArray[count].generatesAt,
+                        id = boardArray[i].id,
                         gemPopped = boardArray[count].gemPopped,
-                        isCompleted = boardArray[count].isCompleted
+                        isCompleted = boardArray[count].isCompleted,
+                        timerOn = boardArray[count].timerOn,
+                        timerStartTime = boardArray[count].timerStartTime,
+                        timerSeconds = boardArray[count].timerSeconds,
                     };
 
                     count++;
@@ -145,9 +157,13 @@ namespace Merge
                     crate = boardItem.crate,
                     chestItems = boardItem.chestItems,
                     chestItemsSet = boardItem.chestItemsSet,
+                    id = boardItem.id,
                     generatesAt = boardItem.generatesAt,
                     gemPopped = boardItem.gemPopped,
-                    isCompleted = boardItem.isCompleted
+                    isCompleted = boardItem.isCompleted,
+                    timerOn = boardItem.timerOn,
+                    timerStartTime = boardItem.timerStartTime,
+                    timerSeconds = boardItem.timerSeconds,
                 };
 
                 count++;
@@ -515,11 +531,11 @@ namespace Merge
                 timers.Add(
                     new Types.Timer
                     {
-                        startDate = System.DateTime.Parse(timerJson[i].startDate),
+                        startTime = System.DateTime.Parse(timerJson[i].startTime),
                         seconds = timerJson[i].seconds,
                         on = timerJson[i].on,
                         type = Glob.ParseEnum<Types.TimerType>(timerJson[i].type),
-                        timerName = timerJson[i].timerName,
+                        id = timerJson[i].id,
                     }
                 );
             }
@@ -535,11 +551,11 @@ namespace Merge
             {
                 Types.TimerJson newTimerJson = new()
                 {
-                    startDate = timers[i].startDate.ToString(),
+                    startTime = timers[i].startTime.ToString(),
                     seconds = timers[i].seconds,
                     on = timers[i].on,
                     type = timers[i].type.ToString(),
-                    timerName = timers[i].timerName,
+                    id = timers[i].id,
                 };
 
                 timerJson[i] = newTimerJson;
@@ -581,7 +597,7 @@ namespace Merge
         {
             Types.ShopItemsContentJson[] shopContentJson = new Types.ShopItemsContentJson[shopContentData.Length];
 
-            for (int i = 0; i <shopContentJson.Length; i++)
+            for (int i = 0; i < shopContentJson.Length; i++)
             {
                 Types.ShopItemsContentJson newShopContentJson = new()
                 {
@@ -604,15 +620,15 @@ namespace Merge
         //// OTHER ////
 
         // Convert scriptable object data to gameplay data
-        public Types.Items[] ConvertItems(Types.Items[] itemsContent)
+        public Types.Item[] ConvertItems(Types.Item[] itemsContent)
         {
-            Types.Items[] convertedItems = new Types.Items[itemsContent.Length];
+            Types.Item[] convertedItems = new Types.Item[itemsContent.Length];
 
             for (int i = 0; i < itemsContent.Length; i++)
             {
                 int count = 1;
 
-                Types.Items newObjectData = new()
+                Types.Item newObjectData = new()
                 {
                     type = itemsContent[i].type,
                     group = itemsContent[i].group,
@@ -620,17 +636,17 @@ namespace Merge
                     collGroup = itemsContent[i].collGroup,
                     chestGroup = itemsContent[i].chestGroup,
                     hasLevel = itemsContent[i].hasLevel,
-                    hasTimer = itemsContent[i].hasTimer,
+                    coolDown = itemsContent[i].coolDown,
                     generatesAt = itemsContent[i].generatesAt,
                     customName = itemsContent[i].customName,
                     parents = itemsContent[i].parents,
                     creates = itemsContent[i].creates,
-                    content = new Types.ItemsData[itemsContent[i].content.Length]
+                    content = new Types.ItemData[itemsContent[i].content.Length]
                 };
 
                 for (int j = 0; j < itemsContent[i].content.Length; j++)
                 {
-                    Types.ItemsData newInnerObjectData = new()
+                    Types.ItemData newInnerObjectData = new()
                     {
                         type = itemsContent[i].type,
                         group = itemsContent[i].group,
@@ -641,7 +657,7 @@ namespace Merge
                         customName = itemsContent[i].content[j].customName,
                         parents = itemsContent[i].parents,
                         hasLevel = itemsContent[i].hasLevel,
-                        hasTimer = itemsContent[i].hasTimer,
+                        coolDown = itemsContent[i].coolDown,
                         generatesAt = itemsContent[i].generatesAt,
                         itemName = GetItemName(itemsContent[i].content[j], newObjectData, count),
                         level = count,
@@ -666,7 +682,58 @@ namespace Merge
             return convertedItems;
         }
 
-        string GetItemName(Types.ItemsData itemSingle, Types.Items itemsData, int count)
+        public Types.Item[] ConvertGensToItems(Types.Gen[] gensContent)
+        {
+            Types.Item[] convertedItems = new Types.Item[gensContent.Length];
+
+            for (int i = 0; i < gensContent.Length; i++)
+            {
+                int count = 1;
+
+                Types.Item newObjectData = new()
+                {
+                    type = Types.Type.Gen,
+                    genGroup = gensContent[i].genGroup,
+                    hasLevel = gensContent[i].hasLevel,
+                    generatesAt = gensContent[i].generatesAt,
+                    customName = gensContent[i].customName,
+                    creates = gensContent[i].creates,
+                    coolDown = gensContent[i].coolDown,
+                    content = new Types.ItemData[gensContent[i].content.Length]
+                };
+
+                for (int j = 0; j < gensContent[i].content.Length; j++)
+                {
+                    Types.ItemData newInnerObjectData = new()
+                    {
+                        type = Types.Type.Gen,
+                        genGroup = gensContent[i].genGroup,
+                        creates = gensContent[i].creates,
+                        coolDown = gensContent[i].coolDown,
+                        customName = gensContent[i].content[j].customName,
+                        hasLevel = gensContent[i].hasLevel,
+                        generatesAt = gensContent[i].generatesAt,
+                        itemName = GetItemName(gensContent[i].content[j], newObjectData, count),
+                        level = count,
+                        sprite = gensContent[i].content[j].sprite,
+                        unlocked = CheckUnlocked(gensContent[i].content[j].sprite.name),
+                        startTime = gensContent[i].content[j].startTime,
+                        seconds = gensContent[i].content[j].seconds,
+                        isMaxLevel = count == gensContent[i].content.Length,
+                    };
+
+                    newObjectData.content[j] = newInnerObjectData;
+
+                    count++;
+                }
+
+                convertedItems[i] = newObjectData;
+            }
+
+            return convertedItems;
+        }
+
+        string GetItemName(Types.ItemData itemSingle, Types.Item itemsData, int count)
         {
             // Get name based on custom item name
             if (itemSingle.customName && itemSingle.itemName != "")
@@ -733,7 +800,7 @@ namespace Merge
             return LOCALE.Get("Item_error_name");
         }
 
-        int InitChestItems(Types.ItemsData itemSingle, Types.Items itemsData, int count)
+        int InitChestItems(Types.ItemData itemSingle, Types.Item itemsData, int count)
         {
             int chestItemsCount;
 

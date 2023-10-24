@@ -138,7 +138,7 @@ namespace Merge
                         {
                             actionType = ActionType.UnlockChest;
                         }
-                        else if (item.hasTimer && item.timerOn)
+                        else if (item.timerOn)
                         {
                             actionType = ActionType.SpeedUp;
                         }
@@ -492,7 +492,7 @@ namespace Merge
                                         textToSet = LOCALE.Get("info_box_chest_locked", newItem.nextName);
                                     }
                                 }
-                                else if (newItem.hasTimer && newItem.timerOn)
+                                else if (newItem.timerOn)
                                 {
                                     if (newItem.isMaxLevel)
                                     {

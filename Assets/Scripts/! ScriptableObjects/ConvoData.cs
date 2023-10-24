@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Merge
 {
-    [CreateAssetMenu(fileName = "ConvoData", menuName = "ScriptableObject/ConvoData", order = 8)]
+    [CreateAssetMenu(fileName = "ConvoData", menuName = "ScriptableObject/ConvoData")]
     public class ConvoData : ScriptableObject
     {
         public Types.ConvoGroup[] convoGroups;

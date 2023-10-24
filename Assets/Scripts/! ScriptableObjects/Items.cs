@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace Merge
 {
-    [CreateAssetMenu(fileName = "Items", menuName = "ScriptableObject/Items", order = 1)]
+    [CreateAssetMenu(fileName = "Items", menuName = "ScriptableObject/Items")]
     public class Items : ScriptableObject
     {
-        public Types.Items[] content;
+        public Types.Item[] content;
 
         void OnValidate()
         {

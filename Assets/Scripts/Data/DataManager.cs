@@ -16,7 +16,7 @@ namespace Merge
 
         // Initial items
         public Items items;
-        public Items generators;
+        public Generators generators;
         public Items collectables;
         public Items chests;
         public InitialItems initialItems;
@@ -56,7 +56,6 @@ namespace Merge
         private ApiCalls apiCalls;
         private GameData gameData;
         private DataConverter dataConverter;
-        private TimeManager timeManager;
         private RateMenu rateMenu;
 
         // Instance
@@ -82,7 +81,6 @@ namespace Merge
             gameData = GameData.Instance;
             apiCalls = ApiCalls.Instance;
             dataConverter = GetComponent<DataConverter>();
-            timeManager = gameData.GetComponent<TimeManager>();
             rateMenu = GameRefs.Instance.rateMenu;
 
             // Set up Quick Save
@@ -239,7 +237,7 @@ namespace Merge
 
             // Convert data
             gameData.itemsData = dataConverter.ConvertItems(items.content);
-            gameData.generatorsData = dataConverter.ConvertItems(generators.content);
+            gameData.generatorsData = dataConverter.ConvertItems(dataConverter.ConvertGensToItems(generators.content));
             gameData.collectablesData = dataConverter.ConvertItems(collectables.content);
             gameData.chestsData = dataConverter.ConvertItems(chests.content);
 
@@ -252,8 +250,6 @@ namespace Merge
             apiCalls.unsentData = dataConverter.ConvertUnsentFromJson(newUnsentData);
 
             apiCalls.canCheckForUnsent = true;
-
-            //timeManager.CheckTimers();
 
             CheckProgressEventAction();
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Merge
 {
-    [CreateAssetMenu(fileName = "TasksData", menuName = "ScriptableObject/TasksData", order = 7)]
+    [CreateAssetMenu(fileName = "TasksData", menuName = "ScriptableObject/TasksData")]
     public class TasksData : ScriptableObject
     {
         public Types.TaskGroup[] taskGroups;

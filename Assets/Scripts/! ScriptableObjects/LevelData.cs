@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Merge
 {
-    [CreateAssetMenu(fileName = "LevelData", menuName = "ScriptableObject/LevelData", order = 5)]
+    [CreateAssetMenu(fileName = "LevelData", menuName = "ScriptableObject/LevelData")]
     public class LevelData : ScriptableObject
     {
         public Types.ShopItemsContent[] levelRewardContent;

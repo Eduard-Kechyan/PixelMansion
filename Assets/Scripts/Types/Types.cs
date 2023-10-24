@@ -67,6 +67,8 @@ namespace Merge
         [Serializable]
         public class Creates
         {
+            [HideInInspector]
+            public string name;
             public ItemTypes.Group group;
             public float chance;
         }
@@ -81,27 +83,43 @@ namespace Merge
         [Serializable]
         public class Timer
         {
-            public DateTime startDate;
+            public DateTime startTime;
             public int seconds;
             public bool on;
             public TimerType type;
-            public string timerName;
+            public string id;
         }
 
         [Serializable]
         public class TimerJson
         {
-            public string startDate;
+            public string startTime;
             public int seconds;
             public bool on;
             public string type;
-            public string timerName;
+            public string id;
+        }
+
+        [Serializable]
+        public class CoolDown
+        {
+            public int maxCount;
+            public int seconds;
+            [ReadOnly]
+            public int minutes;
+        }
+
+        [Serializable]
+        public class CollDownCount
+        {
+            public int count;
+            public string id;
         }
 
         //// ITEMS DATA ////
 
         [Serializable]
-        public class Items
+        public class Item
         {
             [HideInInspector]
             public string name;
@@ -114,15 +132,33 @@ namespace Merge
             public bool customName;
             public bool hasTimer;
             public int generatesAt;
+
             public ItemTypes.GenGroup[] parents;
+            public ItemData[] content;
 
+            [HideInInspector]
             public Creates[] creates;
-
-            public ItemsData[] content;
+            [HideInInspector]
+            public CoolDown coolDown;
         }
 
         [Serializable]
-        public class ItemsData
+        public class Gen
+        {
+            [HideInInspector]
+            public string name;
+            public ItemTypes.GenGroup genGroup;
+            public bool hasLevel;
+            public bool customName;
+            public int generatesAt;
+
+            public CoolDown coolDown;
+            public Creates[] creates;
+            public ItemData[] content;
+        }
+
+        [Serializable]
+        public class ItemData
         {
             public Sprite sprite;
             public bool customName;
@@ -154,6 +190,9 @@ namespace Merge
 
             [HideInInspector]
             public Creates[] creates;
+
+            [HideInInspector]
+            public CoolDown coolDown;
 
             [HideInInspector]
             public bool unlocked;
@@ -202,6 +241,10 @@ namespace Merge
             public ItemTypes.GenGroup genGroup;
             public CollGroup collGroup;
             public ChestGroup chestGroup;
+            public bool hasTimer;
+
+            [HideInInspector]
+            public string id;
 
             [HideInInspector]
             public int generatesAt;
@@ -224,9 +267,14 @@ namespace Merge
             [HideInInspector]
             public bool isCompleted;
 
-            /*public bool hasTimer;
-            public string startTime;
-            public int seconds;*/
+            [HideInInspector]
+            public bool timerOn;
+
+            [HideInInspector]
+            public string timerStartTime;
+
+            [HideInInspector]
+            public int timerSeconds;
         }
 
         [Serializable]
@@ -238,16 +286,18 @@ namespace Merge
             public string genGroup;
             public string collGroup;
             public string chestGroup;
+            public bool hasTimer;
+            public string id;
+            public int generatesAt;
             public int crate;
             public string state;
             public int chestItems;
-            public int generatesAt;
             public bool chestItemsSet;
             public bool gemPopped;
             public bool isCompleted;
-            /*public string startTime;
-            public bool hasTimer;
-            public int seconds;*/
+            public bool timerOn;
+            public string timerStartTime;
+            public int timerSeconds;
         }
 
         //// BONUS ////

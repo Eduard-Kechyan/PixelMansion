@@ -183,6 +183,8 @@ namespace Merge
                 }
             }
 
+            dataManager.SaveBoard(false, false);
+
             boardManager.boardSet = true;
         }
     }

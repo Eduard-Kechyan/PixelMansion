@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Merge
 {
-    [CreateAssetMenu(fileName = "ProgressData", menuName = "ScriptableObject/ProgressData", order = 6)]
+    [CreateAssetMenu(fileName = "ProgressData", menuName = "ScriptableObject/ProgressData")]
     public class ProgressData : ScriptableObject
     {
         public bool check;

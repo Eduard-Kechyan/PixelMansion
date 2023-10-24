@@ -8,204 +8,270 @@ using Newtonsoft.Json;
 namespace Merge
 {
     public class TimeManager : MonoBehaviour
-{
-    private DataManager dataManager;
-    private GameData gameData;
-    private EnergyTimer energyTimer;
-
-    [Serializable]
-    public class EnergyTimerClass
     {
-        public DateTime startDate;
-        public int seconds;
-    }
+        // Variables
+        public ClockManager clockManager;
 
-    // Instance
-    public static TimeManager Instance;
+        // References
+        private DataManager dataManager;
+        private GameData gameData;
+        private EnergyTimer energyTimer;
 
-    void Awake()
-    {
-        if (Instance != null && Instance != this)
+        [Serializable]
+        public class EnergyTimerClass
         {
-            Destroy(gameObject);
+            public DateTime startTime;
+            public int seconds;
         }
-        else
+
+        // Instance
+        public static TimeManager Instance;
+
+        void Awake()
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-    }
-
-    void Start()
-    {
-        dataManager = DataManager.Instance;
-        gameData = GameData.Instance;
-        energyTimer = GetComponent<EnergyTimer>();
-    }
-
-    public void AddTimer(Types.TimerType type, string timerName = "")
-    {
-        DateTime newTimer = DateTime.Now;
-
-        gameData.timers.Add(
-            new Types.Timer
+            if (Instance != null && Instance != this)
             {
-                startDate = newTimer,
-                type = type,
-                timerName = timerName
+                Destroy(gameObject);
             }
-        );
-
-        dataManager.SaveTimers();
-    }
-
-
-    public void RemoveTimer(string timerName)
-    {
-        int index = 0;
-        int count = 0;
-
-        for (int i = 0; i < gameData.timers.Count; i++)
-        {
-            if (gameData.timers[i].timerName == timerName)
+            else
             {
-                index = count;
+                Instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+        }
+
+        void Start()
+        {
+            dataManager = DataManager.Instance;
+            gameData = GameData.Instance;
+            energyTimer = GetComponent<EnergyTimer>();
+
+            StartCoroutine(WaitForGameData());
+        }
+
+        IEnumerator WaitForGameData()
+        {
+            while (!dataManager.loaded)
+            {
+                yield return null;
             }
 
-            count++;
+            CheckTimers();
         }
 
-        gameData.timers.RemoveAt(index);
-
-        dataManager.SaveTimers();
-    }
-
-    public bool CheckTimer(string timerName)
-    {
-        bool finished = false;
-
-        for (int i = 0; i < gameData.timers.Count; i++)
+        void CheckTimers()
         {
-            if (gameData.timers[i].timerName == timerName)
-            {
-                DateTime startDate = gameData.timers[i].startDate;
+            InvokeRepeating("HandleTimers", 0f, 0.5f);
+        }
 
-                TimeSpan diff = DateTime.Now - startDate;
+        //// Timers ////
+        public void AddTimer(Types.TimerType type, string id = "", Vector2 position = default, int seconds = 0)
+        {
+            DateTime startTime = DateTime.UtcNow;
 
-                int seconds = diff.Seconds + (diff.Minutes * 60);
-
-                if (seconds < 1)
+            gameData.timers.Add(
+                new Types.Timer
                 {
-                    finished = true;
+                    startTime = startTime,
+                    type = type,
+                    id = id,
+                    seconds = seconds
                 }
+            );
 
-                break;
-            }
+            clockManager.AddClock(position, id, startTime, seconds);
+
+            dataManager.SaveTimers();
         }
 
-        return finished;
-    }
-
-    public void CheckTimers()
-    {
-        for (int i = 0; i < gameData.timers.Count; i++)
+        public void RemoveTimer(string id)
         {
-            if (gameData.timers[i].type == Types.TimerType.Energy)
-            {
-                CheckEnergyTimer(gameData.timers[i]);
-            }
-            else if (gameData.timers[i].type == Types.TimerType.Item)
-            {
-                CheckItemTimer(gameData.timers[i]);
-            }
-        }
-    }
-
-    void CheckEnergyTimer(Types.Timer timer)
-    {
-        //RemoveTimer(timer.timerName);
-    }
-
-    void CheckItemTimer(Types.Timer timer)
-    {
-        //RemoveTimer(timer.timerName);
-    }
-
-    public void SetEnergyTimer(int newSeconds)
-    {
-        RemoveEnergyTimer(false);
-
-        Types.Timer newEnergyTimer = new()
-        {
-            startDate = DateTime.UtcNow,
-            seconds = newSeconds,
-            on = true,
-            type = Types.TimerType.Energy
-        };
-
-        gameData.timers.Add(newEnergyTimer);
-
-        dataManager.SaveTimers();
-    }
-
-    public Types.Timer GetEnergyTimer()
-    {
-        Types.Timer newEnergyTimer = new()
-        {
-            on = false,
-        };
-
-        if (gameData.timers.Count > 0)
-        {
-            int index = -1;
+            int index = 0;
+            int count = 0;
 
             for (int i = 0; i < gameData.timers.Count; i++)
             {
-                if (gameData.timers[i].type == Types.TimerType.Energy)
+                if (gameData.timers[i].id == id)
                 {
-                    index = i;
+                    index = count;
+                }
+
+                count++;
+            }
+
+            gameData.timers.RemoveAt(index);
+
+            dataManager.SaveTimers();
+        }
+
+        public bool CheckTimer(string id)
+        {
+            bool finished = false;
+
+            for (int i = 0; i < gameData.timers.Count; i++)
+            {
+                if (gameData.timers[i].id == id)
+                {
+                    DateTime startTime = gameData.timers[i].startTime;
+
+                    TimeSpan diff = DateTime.Now - startTime;
+
+                    int seconds = diff.Seconds + (diff.Minutes * 60);
+
+                    if (seconds < 1)
+                    {
+                        finished = true;
+                    }
+
+                    break;
                 }
             }
 
-            if (index >= 0)
+            return finished;
+        }
+
+        //// Energy ////
+        public void SetEnergyTimer(int newSeconds)
+        {
+            RemoveEnergyTimer(false);
+
+            Types.Timer newEnergyTimer = new()
             {
-                return gameData.timers[index];
+                startTime = DateTime.UtcNow,
+                seconds = newSeconds,
+                on = true,
+                type = Types.TimerType.Energy
+            };
+
+            gameData.timers.Add(newEnergyTimer);
+
+            dataManager.SaveTimers();
+        }
+
+        public Types.Timer GetEnergyTimer()
+        {
+            Types.Timer newEnergyTimer = new()
+            {
+                on = false,
+            };
+
+            if (gameData.timers.Count > 0)
+            {
+                int index = -1;
+
+                for (int i = 0; i < gameData.timers.Count; i++)
+                {
+                    if (gameData.timers[i].type == Types.TimerType.Energy)
+                    {
+                        index = i;
+                    }
+                }
+
+                if (index >= 0)
+                {
+                    return gameData.timers[index];
+                }
+                else
+                {
+                    return newEnergyTimer;
+                }
             }
             else
             {
                 return newEnergyTimer;
             }
         }
-        else
-        {
-            return newEnergyTimer;
-        }
-    }
 
-    public void RemoveEnergyTimer(bool save = true)
-    {
-        if (gameData.timers.Count > 0)
+        public void RemoveEnergyTimer(bool save = true)
         {
-            int index = -1;
+            if (gameData.timers.Count > 0)
+            {
+                int index = -1;
+
+                for (int i = 0; i < gameData.timers.Count; i++)
+                {
+                    if (gameData.timers[i].type == Types.TimerType.Energy)
+                    {
+                        index = i;
+                    }
+                }
+
+                if (index >= 0)
+                {
+                    gameData.timers.RemoveAt(index);
+
+                    if (save)
+                    {
+                        dataManager.SaveTimers();
+                    }
+                }
+            }
+        }
+
+        void HandleTimers()
+        {
+            List<int> indexesToRemove = new();
 
             for (int i = 0; i < gameData.timers.Count; i++)
             {
-                if (gameData.timers[i].type == Types.TimerType.Energy)
+                if (gameData.timers[i].type == Types.TimerType.Item)
                 {
-                    index = i;
+                    DateTime endTime = DateTime.UtcNow;
+
+                    TimeSpan timeDiff = endTime - gameData.timers[i].startTime;
+
+                    if (timeDiff.TotalSeconds >= gameData.timers[i].seconds)
+                    {
+                        // End
+                        indexesToRemove.Add(i);
+                    }
+                    else
+                    {
+                        // Continue
+                        clockManager.SetFillAmount(gameData.timers[i].id, endTime);
+                    }
                 }
             }
 
-            if (index >= 0)
+            for (int i = 0; i < indexesToRemove.Count; i++)
             {
-                gameData.timers.RemoveAt(index);
+                clockManager.RemoveClock(gameData.timers[indexesToRemove[i]].id);
 
-                if (save)
-                {
-                    dataManager.SaveTimers();
-                }
+                gameData.timers.RemoveAt(indexesToRemove[i]);
             }
         }
+
+        //// Other ////
+        public void CheckCoolDown(Item item)
+        {
+            // Check if cool down already exists
+            if (gameData.coolDowns.Count > 0)
+            {
+                for (int i = 0; i < gameData.coolDowns.Count; i++)
+                {
+                    if (gameData.coolDowns[i].id == item.id)
+                    {
+                        gameData.coolDowns[i].count++;
+
+                        if (gameData.coolDowns[i].count == item.coolDown.maxCount)
+                        {
+                            item.timerOn = true;
+                            item.timerSeconds = item.coolDown.seconds;
+
+                            AddTimer(Types.TimerType.Item, item.id, item.transform.position, item.coolDown.seconds);
+                        }
+
+                        return;
+                    }
+                }
+            }
+
+            // If cool down doesn't exists, add one
+            gameData.coolDowns.Add(new()
+            {
+                count = 1,
+                id = item.id,
+            });
+        }
     }
-}
 }

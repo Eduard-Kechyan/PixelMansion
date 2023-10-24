@@ -90,7 +90,7 @@ namespace Merge
         {
             // Get the item's location from the board by its tile's order
 
-            Vector2Int loc = new (0, 0);
+            Vector2Int loc = new(0, 0);
 
             if (tile != null)
             {
@@ -118,6 +118,26 @@ namespace Merge
             return loc;
         }
 
+        public int GetBoardOrderFromTile(GameObject tile)
+        {
+            Vector2Int loc = GetBoardLocation(0, tile);
+
+            return GetBoardOrder(loc.x,loc.y);
+        }
+
+        public Vector2 GetBoardItem(int checkX, int checkY)
+        {
+            for (int i = 0; i < boardTiles.transform.childCount; i++)
+            {
+                if (i == GetBoardOrder(checkX, checkY))
+                {
+                    return boardTiles.transform.GetChild(i).position;
+                }
+            }
+
+            return Vector2.zero;
+        }
+
         /////// SET BOARD DATA ////////
 
         public void SwapBoardData(GameObject oldTile, GameObject newTile)
@@ -131,7 +151,7 @@ namespace Merge
             Types.Board newItem = gameData.boardData[newLoc.x, newLoc.y];
 
             // Set items
-            gameData.boardData[oldLoc.x, oldLoc.y] = new Types.Board
+            gameData.boardData[oldLoc.x, oldLoc.y] = new ()
             {
                 sprite = newItem.sprite,
                 type = newItem.type,
@@ -142,10 +162,14 @@ namespace Merge
                 state = newItem.state,
                 crate = newItem.crate,
                 order = oldItem.order,
-                gemPopped = newItem.gemPopped
+                gemPopped = newItem.gemPopped,
+                isCompleted = newItem.isCompleted,
+                timerOn = newItem.timerOn,
+                timerStartTime = newItem.timerStartTime,
+                timerSeconds = newItem.timerSeconds,
             };
 
-            gameData.boardData[newLoc.x, newLoc.y] = new Types.Board
+            gameData.boardData[newLoc.x, newLoc.y] = new ()
             {
                 sprite = oldItem.sprite,
                 type = oldItem.type,
@@ -156,7 +180,11 @@ namespace Merge
                 state = oldItem.state,
                 crate = oldItem.crate,
                 order = newItem.order,
-                gemPopped = newItem.gemPopped
+                gemPopped = newItem.gemPopped,
+                isCompleted = newItem.isCompleted,
+                timerOn = oldItem.timerOn,
+                timerStartTime = oldItem.timerStartTime,
+                timerSeconds = oldItem.timerSeconds,
             };
 
             // Save the board to disk
@@ -173,10 +201,10 @@ namespace Merge
             int newOrder = gameData.boardData[newLoc.x, newLoc.y].order;
 
             // Clear old items
-            gameData.boardData[oldLoc.x, oldLoc.y] = new Types.Board { order = oldOrder };
+            gameData.boardData[oldLoc.x, oldLoc.y] = new () { order = oldOrder };
 
             // Set new item
-            gameData.boardData[newLoc.x, newLoc.y] = new Types.Board
+            gameData.boardData[newLoc.x, newLoc.y] = new ()
             {
                 sprite = newItem.sprite,
                 type = newItem.type,
@@ -187,7 +215,11 @@ namespace Merge
                 state = newItem.state,
                 crate = newItem.crate,
                 order = newOrder,
-                gemPopped = newItem.gemPopped
+                gemPopped = newItem.gemPopped,
+                isCompleted = newItem.isCompleted,
+                timerOn = newItem.timerOn,
+                timerStartTime = newItem.timerStartTime,
+                timerSeconds = newItem.timerSeconds,
             };
 
             // Save the board to disk
@@ -346,7 +378,7 @@ namespace Merge
         }
 
         public void CreateItemOnEmptyTile(
-            Types.ItemsData itemData,
+            Types.ItemData itemData,
             Types.BoardEmpty emptyBoard,
             Vector2 initialPosition,
             bool canUnlock = true,
@@ -422,7 +454,7 @@ namespace Merge
 
         public List<Types.BoardEmpty> GetEmptyBoardItems(Vector2Int tileLoc, bool useTileLoc = true)
         {
-            List<Types.BoardEmpty> emptyBoard = new ();
+            List<Types.BoardEmpty> emptyBoard = new();
 
             for (int x = 0; x < gameData.boardData.GetLength(0); x++)
             {

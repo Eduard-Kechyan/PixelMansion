@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,12 +27,17 @@ namespace Merge
             string spriteName = ""
         )
         {
-            Types.ItemsData itemData = FindItem(boardItem, null, spriteName);
+            Types.ItemData itemData = FindItem(boardItem, null, spriteName);
 
             // Instantiate item
             GameObject newItemPre = Instantiate(item, tile.transform.position, Quaternion.identity);
             Item newItem = newItemPre.GetComponent<Item>();
 
+            string guid = Guid.NewGuid().ToString();
+
+            AddIdToBoardData(guid, boardItem);
+
+            newItem.id = guid;
             newItem.sprite = itemData.sprite;
             newItem.itemName = itemData.itemName;
             newItem.level = itemData.level;
@@ -41,14 +47,15 @@ namespace Merge
             newItem.hasLevel = itemData.hasLevel;
             newItem.parents = itemData.parents;
             newItem.creates = itemData.creates;
+            newItem.coolDown = itemData.coolDown;
             newItem.isMaxLevel = itemData.isMaxLevel;
             newItem.group = itemData.group;
             newItem.genGroup = itemData.genGroup;
             newItem.collGroup = itemData.collGroup;
             newItem.chestGroup = itemData.chestGroup;
-            newItem.hasTimer = itemData.hasTimer;
-            newItem.startTime = itemData.startTime;
-            newItem.seconds = itemData.seconds;
+            newItem.timerOn = boardItem.timerOn;
+            newItem.timerStartTime = boardItem.timerStartTime;
+            newItem.timerSeconds = boardItem.timerSeconds;
             newItem.generatesAt = itemData.generatesAt;
             newItem.chestItems = itemData.chestItems;
             newItem.chestItemsSet = itemData.chestItemsSet;
@@ -78,9 +85,23 @@ namespace Merge
             return newItem;
         }
 
+        void AddIdToBoardData(string id, Types.Board boardItem)
+        {
+            for (int x = 0; x < gameData.boardData.GetLength(0); x++)
+            {
+                for (int y = 0; y < gameData.boardData.GetLength(1); y++)
+                {
+                    if (gameData.boardData[x, y].order == boardItem.order)
+                    {
+                        gameData.boardData[x, y].id = id;
+                    }
+                }
+            }
+        }
+
         public Item CreateItemTemp(Types.ShopItemsContent shopItem)
         {
-            Types.ItemsData itemData = FindItem(null, shopItem);
+            Types.ItemData itemData = FindItem(null, shopItem);
 
             // Instantiate item
             GameObject newItemPre = Instantiate(item, Vector3.zero, Quaternion.identity);
@@ -100,9 +121,6 @@ namespace Merge
             newItem.group = shopItem.group;
             newItem.genGroup = shopItem.genGroup;
             newItem.chestGroup = shopItem.chestGroup;
-            newItem.hasTimer = itemData.hasTimer;
-            newItem.startTime = itemData.startTime;
-            newItem.seconds = itemData.seconds;
 
             Destroy(newItemPre);
 
@@ -110,13 +128,13 @@ namespace Merge
         }
 
         // Find the given item for the scriptable object
-        public Types.ItemsData FindItem(
+        public Types.ItemData FindItem(
             Types.Board boardItem = null,
             Types.ShopItemsContent shopItem = null,
             string newSpriteName = ""
         )
         {
-            Types.ItemsData foundItem = new ();
+            Types.ItemData foundItem = new();
 
             string spriteName;
             Types.Type type;
@@ -151,7 +169,7 @@ namespace Merge
             switch (type)
             {
                 case Types.Type.Item:
-                    Types.Items[] itemsData = gameData.itemsData;
+                    Types.Item[] itemsData = gameData.itemsData;
 
                     for (int i = 0; i < itemsData.Length; i++)
                     {
@@ -173,7 +191,7 @@ namespace Merge
                     break;
 
                 case Types.Type.Gen:
-                    Types.Items[] generatorsData = gameData.generatorsData;
+                    Types.Item[] generatorsData = gameData.generatorsData;
 
                     for (int i = 0; i < generatorsData.Length; i++)
                     {
@@ -195,7 +213,7 @@ namespace Merge
                     break;
 
                 case Types.Type.Coll:
-                    Types.Items[] collectablesData = gameData.collectablesData;
+                    Types.Item[] collectablesData = gameData.collectablesData;
 
                     for (int i = 0; i < collectablesData.Length; i++)
                     {
@@ -217,7 +235,7 @@ namespace Merge
                     break;
 
                 case Types.Type.Chest:
-                    Types.Items[] chestData = gameData.chestsData;
+                    Types.Item[] chestData = gameData.chestsData;
 
                     for (int i = 0; i < chestData.Length; i++)
                     {
@@ -254,7 +272,7 @@ namespace Merge
             switch (boardItem.type)
             {
                 case Types.Type.Item:
-                    Types.Items[] itemsData = gameData.itemsData;
+                    Types.Item[] itemsData = gameData.itemsData;
 
                     for (int i = 0; i < itemsData.Length; i++)
                     {
@@ -279,11 +297,11 @@ namespace Merge
                     break;
 
                 case Types.Type.Gen:
-                    Types.Items[] generatorsData = gameData.generatorsData;
+                    Types.Item[] generatorsData = gameData.generatorsData;
 
                     for (int i = 0; i < generatorsData.Length; i++)
                     {
-                        if (boardItem.group == generatorsData[i].group)
+                        if (boardItem.genGroup == generatorsData[i].genGroup)
                         {
                             for (int j = 0; j < generatorsData[i].content.Length; j++)
                             {
@@ -304,11 +322,11 @@ namespace Merge
                     break;
 
                 case Types.Type.Coll:
-                    Types.Items[] collectablesData = gameData.collectablesData;
+                    Types.Item[] collectablesData = gameData.collectablesData;
 
                     for (int i = 0; i < collectablesData.Length; i++)
                     {
-                        if (boardItem.group == collectablesData[i].group)
+                        if (boardItem.collGroup == collectablesData[i].collGroup)
                         {
                             for (int j = 0; j < collectablesData[i].content.Length; j++)
                             {
@@ -329,11 +347,11 @@ namespace Merge
                     break;
 
                 case Types.Type.Chest:
-                    Types.Items[] chestsData = gameData.chestsData;
+                    Types.Item[] chestsData = gameData.chestsData;
 
                     for (int i = 0; i < chestsData.Length; i++)
                     {
-                        if (boardItem.group == chestsData[i].group)
+                        if (boardItem.chestGroup == chestsData[i].chestGroup)
                         {
                             for (int j = 0; j < chestsData[i].content.Length; j++)
                             {

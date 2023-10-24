@@ -160,7 +160,7 @@ namespace Merge
 
         void GetUnlockedItems(Item item)
         {
-            Types.Items[] items;
+            Types.Item[] items;
             bool isGroup = false;
             bool isGenGroup = false;
             bool isCollGroup = false;

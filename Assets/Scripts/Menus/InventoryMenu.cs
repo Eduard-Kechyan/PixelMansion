@@ -239,7 +239,7 @@ namespace Merge
                     uiButtons.gameplayBonusButtonPos,
                     () =>
                     {
-                        Types.ItemsData itemData = GetItemData(gameData.inventoryData[order]);
+                        Types.ItemData itemData = GetItemData(gameData.inventoryData[order]);
 
                         boardManager.CreateItemOnEmptyTile(itemData, emptyBoard[0], uiButtons.gameplayBonusButtonPos, false);
 
@@ -263,9 +263,9 @@ namespace Merge
             }
         }
 
-        Types.ItemsData GetItemData(Types.Inventory inventoryItem)
+        Types.ItemData GetItemData(Types.Inventory inventoryItem)
         {
-            Types.ItemsData newItemData = new Types.ItemsData();
+            Types.ItemData newItemData = new Types.ItemData();
 
             if (inventoryItem.type == Types.Type.Item)
             {

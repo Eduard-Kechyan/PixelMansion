@@ -19,6 +19,7 @@ namespace Merge
         public bool isDragging = false; // Are we currently dragging
         public bool isSelected = false; // Have we currently selected something
         public Item currentItem;
+        public ClockManager clockManager;
 
         [HideInInspector]
         public GameObject tempTile;
@@ -267,6 +268,12 @@ namespace Merge
             // Set the item's layer to Dragging
             currentItem.gameObject.layer = LayerMask.NameToLayer("ItemDragging");
 
+            // Hide the clock
+            if (currentItem.type == Types.Type.Gen)
+            {
+                clockManager.HideClock(currentItem.id);
+            }
+
             // Set the item's initial position
             initialPos = new Vector2(
                 currentItem.transform.position.x,
@@ -450,6 +457,12 @@ namespace Merge
             // Set the item's layer back to Item
             currentItem.gameObject.layer = LayerMask.NameToLayer("Item");
 
+            // Move the clock
+            if (currentItem.type == Types.Type.Gen)
+            {
+                clockManager.MoveClock(tile.transform.position, currentItem.id);
+            }
+
             // Set board data
             boardManager.SwapBoardData(initialTile, tile);
 
@@ -560,6 +573,12 @@ namespace Merge
 
             // Set the item's layer back to Item
             currentItem.gameObject.layer = LayerMask.NameToLayer("Item");
+
+            // Move the clock
+            if (currentItem.type == Types.Type.Gen)
+            {
+                clockManager.MoveClock(otherTile.transform.position, currentItem.id);
+            }
 
             // Set board data
             boardManager.SwapBoardData(initialTile, otherTile);
@@ -747,7 +766,7 @@ namespace Merge
             if (item.name == currentItem.name)
             {
                 boardIndication.CheckIfShouldStop(item);
-                
+
                 if (canUndoPre)
                 {
                     CancelUndo();

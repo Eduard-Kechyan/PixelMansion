@@ -138,7 +138,7 @@ namespace Merge
 
                 if (timerData.on)
                 {
-                    startDate = timerData.startDate;
+                    startDate = timerData.startTime;
                     startSeconds = timerData.seconds;
 
                     TimeSpan difference = endDate - startDate;

@@ -9,6 +9,7 @@ namespace Merge
         // Variables
         public float moveSpeed = 14f;
         public float scaleSpeed = 8f;
+        public ClockManager clockManager;
 
         [Tooltip("Will automatically adjust")]
         public AnimationCurve[] randomGoldCurves;
@@ -24,8 +25,7 @@ namespace Merge
         private PopupManager popupManager;
         private BoardIndication boardIndication;
         private DataManager dataManager;
-
-        // Instances
+        private TimeManager timeManager;
         private GameData gameData;
         private I18n LOCALE;
         private EnergyMenu energyMenu;
@@ -43,8 +43,7 @@ namespace Merge
             boardIndication = GetComponent<BoardIndication>();
             dataManager = DataManager.Instance;
             levelMenu = GameRefs.Instance.levelMenu;
-
-            // Cache instances
+            timeManager = TimeManager.Instance;
             gameData = GameData.Instance;
             LOCALE = I18n.Instance;
             energyMenu = GameRefs.Instance.energyMenu;
@@ -75,7 +74,7 @@ namespace Merge
 
         void DoubleTappedGenerator()
         {
-            if (interactions.currentItem.creates.Length > 0 && interactions.currentItem.level >= interactions.currentItem.generatesAt)
+            if (interactions.currentItem.creates.Length > 0 && interactions.currentItem.level >= interactions.currentItem.generatesAt && !interactions.currentItem.timerOn)
             {
                 // Check if we have enough energy to generate an item
                 if (gameData.energy >= 1)
@@ -94,6 +93,8 @@ namespace Merge
                         boardIndication.StopPossibleMergeCheck();
 
                         SelectRandomGroupAndItem(emptyBoard[0], tile.transform.position);
+
+                        timeManager.CheckCoolDown(interactions.currentItem);
                     }
                     else
                     {
@@ -179,11 +180,11 @@ namespace Merge
         {
             Types.Creates[] creates = interactions.currentItem.creates;
 
-            System.Random random = new ();
+            System.Random random = new();
             double diceRoll = random.NextDouble();
             double cumulative = 0.0;
 
-            ItemTypes.Group selectedGroup = new ();
+            ItemTypes.Group selectedGroup = new();
 
             // Randomly select a group of items to choose from
             for (int i = 0; i < creates.Length; i++)
@@ -236,7 +237,7 @@ namespace Merge
                 int energyCollCount = 0;
                 int randomEnergyOrder;
 
-                Types.Items energyItems = new Types.Items();
+                Types.Item energyItems = new Types.Item();
 
                 for (int i = 0; i < gameData.collectablesData.Length; i++)
                 {
@@ -268,7 +269,7 @@ namespace Merge
                 int collCount = 0;
                 int randomCollOrder = 0;
 
-                Types.Items collItems = new Types.Items();
+                Types.Item collItems = new Types.Item();
 
                 // Make sure at least once a gem is created
                 if (last && !interactions.currentItem.gemPopped)

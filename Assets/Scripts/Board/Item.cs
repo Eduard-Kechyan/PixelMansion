@@ -44,16 +44,18 @@ namespace Merge
         public Types.Creates[] creates;
         public ItemTypes.GenGroup[] parents;
 
-        // Timer and Chest
+        // Chest
         public bool chestLocked; // TODO - Check this
-        public bool timerOn; // TODO - Check this
-        public bool hasTimer;
-        public DateTime startTime;
-        public int seconds;
         private Coroutine chestCoroutine;
         public int chestItems;
         public bool chestItemsSet;
         public bool gemPopped = false;
+
+        // Timer
+        public bool timerOn;
+        public int timerSeconds;
+        public string timerStartTime;
+        public Types.CoolDown coolDown;
 
         [HideInInspector]
         public Sprite sprite = null;
@@ -90,17 +92,15 @@ namespace Merge
 
             // Cache children
             selectionChild = transform.GetChild(0).gameObject; // Selection
-            crateChild = transform.GetChild(1).gameObject; // Crate (In SetCrateSprite() too)
-            lockerChild = transform.GetChild(2).gameObject; // Locker
-            bubbleChild = transform.GetChild(3).gameObject; // Bubble
-            completionChild = transform.GetChild(4).gameObject; // Completion
-            itemChild = transform.GetChild(5).gameObject; // Item
+            crateChild = transform.GetChild(2).gameObject; // Crate (In SetCrateSprite() too)
+            lockerChild = transform.GetChild(3).gameObject; // Locker
+            bubbleChild = transform.GetChild(4).gameObject; // Bubble
+            completionChild = transform.GetChild(5).gameObject; // Completion
+            itemChild = transform.GetChild(6).gameObject; // Item
 
             crateSpriteRenderer = crateChild.GetComponent<SpriteRenderer>();
 
             CheckChildren();
-
-            GenerateRandomId();
 
             SetItemInitial();
         }
@@ -234,13 +234,6 @@ namespace Merge
             CheckChildren();
         }
 
-        void GenerateRandomId()
-        {
-            Guid guid = Guid.NewGuid();
-
-            id = guid.ToString();
-        }
-
         void CheckChildren()
         {
             if (state == Types.State.Default)
@@ -292,7 +285,7 @@ namespace Merge
 
                 itemChild.transform.localScale = Vector2.zero;
                 itemChild.SetActive(true);
-                
+
                 lockerChild.transform.localScale = Vector2.zero;
                 lockerChild.SetActive(true);
 
@@ -341,7 +334,7 @@ namespace Merge
         {
             if (crateChild == null)
             {
-                crateChild = transform.GetChild(1).gameObject; // Crate
+                crateChild = transform.GetChild(2).gameObject; // Crate
             }
 
             crateChild.GetComponent<SpriteRenderer>().sprite = newSprite;

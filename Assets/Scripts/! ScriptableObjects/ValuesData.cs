@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Merge
 {
-    [CreateAssetMenu(fileName = "ValuesData", menuName = "ScriptableObject/ValuesData", order = 4)]
+    [CreateAssetMenu(fileName = "ValuesData", menuName = "ScriptableObject/ValuesData")]
     public class ValuesData : ScriptableObject
     {
         public int[] maxExperienceMultiplier;

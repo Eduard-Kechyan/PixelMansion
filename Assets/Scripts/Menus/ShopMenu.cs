@@ -584,12 +584,12 @@ namespace Merge
             // Add item to the board or to the bonus button
             List<Types.BoardEmpty> emptyBoard = boardManager.GetEmptyBoardItems(Vector2Int.zero, false);
 
-            Types.ItemsData boardItem;
+            Types.ItemData boardItem;
             Item newItem;
 
             if (shopItemType == Types.ShopItemType.Item)
             {
-                boardItem = new Types.ItemsData
+                boardItem = new Types.ItemData
                 {
                     sprite = shopData.itemsContent[order].sprite,
                     type = shopData.itemsContent[order].type,
@@ -603,7 +603,7 @@ namespace Merge
             }
             else
             {
-                boardItem = new Types.ItemsData
+                boardItem = new Types.ItemData
                 {
                     sprite = shopData.dailyContent[order].sprite,
                     type = shopData.dailyContent[order].type,

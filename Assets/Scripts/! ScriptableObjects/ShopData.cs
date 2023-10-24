@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Merge
 {
-    [CreateAssetMenu(fileName = "ShopData", menuName = "ScriptableObject/ShopData", order = 2)]
+    [CreateAssetMenu(fileName = "ShopData", menuName = "ScriptableObject/ShopData")]
 public class ShopData : ScriptableObject
 {
     public Types.ShopItemsContent[] dailyContent;

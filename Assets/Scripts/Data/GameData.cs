@@ -83,13 +83,15 @@ namespace Merge
         [HideInInspector]
         public string[] unlockedRoomsData = new string[0];
         [HideInInspector]
-        public Types.Items[] itemsData;
+        public Types.Item[] itemsData;
         [HideInInspector]
-        public Types.Items[] collectablesData;
+        public Types.Item[] collectablesData;
         [HideInInspector]
-        public Types.Items[] generatorsData;
+        public Types.Item[] generatorsData;
         [HideInInspector]
-        public Types.Items[] chestsData;
+        public Types.Item[] chestsData;
+        [HideInInspector]
+        public List<Types.CollDownCount> coolDowns = new();
 
         // Timers
         [HideInInspector]

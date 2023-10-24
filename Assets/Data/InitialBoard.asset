@@ -27,6 +27,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 21300000, guid: 72c12047381ac164bacebf632ab19986, type: 3}
     type: 1
     state: 0
@@ -41,6 +42,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 21300000, guid: 528913ed5f5ea1e4f9001ccdbfd74204, type: 3}
     type: 1
     state: 0
@@ -55,6 +57,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 21300000, guid: 47920b00aa2d3be49a5e4d6ec621c353, type: 3}
     type: 1
     state: 0
@@ -69,6 +72,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 21300000, guid: 42bead8e5cf2e514785ce37d0791b327, type: 3}
     type: 1
     state: 0
@@ -83,6 +87,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 1
   - sprite: {fileID: 21300000, guid: 61b6c1b4a68790a4a85c26fdd18031fa, type: 3}
     type: 1
     state: 0
@@ -97,6 +102,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -111,6 +117,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -125,6 +132,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -139,6 +147,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 21300000, guid: a9d008ddf5722a544b962044313cc03f, type: 3}
     type: 0
     state: 0
@@ -153,6 +162,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 21300000, guid: 4da96ee078478da4eb4e8cde276d0dbf, type: 3}
     type: 0
     state: 0
@@ -167,6 +177,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 21300000, guid: 9d1f8eb97b2caa54e9805a6d14e594ad, type: 3}
     type: 0
     state: 0
@@ -181,6 +192,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 21300000, guid: ef488eadea2597c4f8d11a7763e15512, type: 3}
     type: 0
     state: 0
@@ -195,6 +207,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 21300000, guid: ef488eadea2597c4f8d11a7763e15512, type: 3}
     type: 0
     state: 0
@@ -209,6 +222,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 21300000, guid: cb6ce5f5a51a81a439116edb839e4a4c, type: 3}
     type: 0
     state: 0
@@ -223,6 +237,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 21300000, guid: bd57e4d2a154c3a45a79b424e2cb6b6a, type: 3}
     type: 0
     state: 0
@@ -237,6 +252,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 21300000, guid: bd57e4d2a154c3a45a79b424e2cb6b6a, type: 3}
     type: 0
     state: 0
@@ -251,6 +267,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -265,6 +282,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -279,6 +297,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -293,6 +312,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -307,6 +327,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -321,6 +342,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -335,6 +357,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -349,6 +372,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -363,6 +387,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -377,6 +402,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -391,6 +417,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -405,6 +432,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -419,6 +447,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -433,6 +462,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -447,6 +477,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -461,6 +492,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -475,6 +507,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -489,6 +522,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -503,6 +537,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -517,6 +552,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -531,6 +567,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -545,6 +582,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -559,6 +597,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -573,6 +612,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -587,6 +627,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -601,6 +642,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -615,6 +657,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -629,6 +672,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -643,6 +687,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -657,6 +702,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -671,6 +717,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -685,6 +732,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -699,6 +747,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -713,6 +762,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -727,6 +777,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -741,6 +792,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -755,6 +807,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -769,6 +822,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -783,6 +837,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 0}
     type: 0
     state: 0
@@ -797,6 +852,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 21300000, guid: da6874323b904f447a71d7619a151c71, type: 3}
     type: 3
     state: 0
@@ -811,6 +867,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 21300000, guid: 148bffa316f33b94b87dacbf79f875c8, type: 3}
     type: 3
     state: 0
@@ -825,6 +882,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 21300000, guid: ad22a0c7abb0b994babf951ccee30852, type: 3}
     type: 3
     state: 0
@@ -839,6 +897,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 21300000, guid: 9248f883107471145b9e3db8f5d3ec1a, type: 3}
     type: 2
     state: 0
@@ -853,6 +912,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 21300000, guid: d58e076bfa16ab84ca83c028755c7917, type: 3}
     type: 2
     state: 0
@@ -867,6 +927,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 21300000, guid: 7a2ac0667b8c36b4aa5641e6d10a9fc1, type: 3}
     type: 2
     state: 0
@@ -881,6 +942,7 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
   - sprite: {fileID: 21300000, guid: 69417eebe82810f43876239658178873, type: 3}
     type: 2
     state: 0
@@ -895,3 +957,4 @@ MonoBehaviour:
     chestItemsSet: 0
     gemPopped: 0
     isCompleted: 0
+    hasTimer: 0
