@@ -26,6 +26,10 @@
         "other": "TAP to collect {0} Gems. This item is at MAX level, it can't be MERGED!"
     },
     "info_box_button_remove": "Remove",
+    "info_box_button_open": "Open",
+    "info_box_button_unlock": "Unlock",
+    "info_box_button_speed_up": "Speed Up",
+    "info_box_button_sell": "Sell",
     "info_box_button_undo": "Undo",
     "info_box_coll_Experience": "Experience",
     "info_box_coll_Gold": "Gold",

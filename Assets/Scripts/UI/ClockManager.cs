@@ -26,9 +26,8 @@ namespace Merge
 
         private List<ClockData> clocks = new();
 
-        private bool canCheck = false;
-
         // References
+        private TimeManager timeManager;
         private GameData gameData;
         private DataManager dataManager;
         private Camera cam;
@@ -36,9 +35,42 @@ namespace Merge
         void Start()
         {
             // Cache
+            timeManager = TimeManager.Instance;
             gameData = GameData.Instance;
             dataManager = DataManager.Instance;
             cam = Camera.main;
+
+            timeManager.clockManager = this;
+
+            StartCoroutine(WaitForGameData());
+        }
+
+        IEnumerator WaitForGameData()
+        {
+            while (!dataManager.loaded)
+            {
+                yield return null;
+            }
+
+            CheckTimers();
+        }
+
+        void CheckTimers()
+        {
+            for (int i = 0; i < gameData.timers.Count; i++)
+            {
+                if (gameData.timers[i].type == Types.TimerType.Item)
+                {
+                    DateTime endTime = DateTime.UtcNow;
+
+                    if ((gameData.timers[i].startTime - endTime).TotalSeconds < gameData.timers[i].seconds)
+                    {
+                        Vector2 position = boardManager.GetBoardItemPosById(gameData.timers[i].id);
+
+                        AddClock(position, gameData.timers[i].id, gameData.timers[i].startTime, gameData.timers[i].seconds);
+                    }
+                }
+            }
         }
 
         public void AddClock(Vector2 position, string id, DateTime startTime, int seconds = 0)
@@ -57,8 +89,6 @@ namespace Merge
                 startTime = startTime,
                 seconds = seconds
             });
-
-            // canCheck = true;
         }
 
         public void RemoveClock(string id)
@@ -78,11 +108,6 @@ namespace Merge
             }
 
             clocks.RemoveAt(index);
-
-            /*   if (clocks.Count == 0)
-               {
-                   canCheck = false;
-               }*/
         }
 
         public void HideClock(string id)
@@ -113,13 +138,13 @@ namespace Merge
             }
         }
 
-        public void SetFillAmount(string id, DateTime endTime)
+        public void SetFillAmount(string id, double diffSeconds)
         {
             for (int i = 0; i < clocks.Count; i++)
             {
                 if (clocks[i].id == id)
                 {
-                    float fillAmount = CalcFillAmount(clocks[i].startTime, endTime, clocks[i].seconds);
+                    float fillAmount = CalcFillAmount(diffSeconds, clocks[i].seconds);
 
                     clocks[i].clockAmountImage.fillAmount = fillAmount;
                 }
@@ -138,10 +163,8 @@ namespace Merge
             newClockItemRectTransform.anchoredPosition = offset;
         }
 
-        float CalcFillAmount(DateTime startTime, DateTime endTime, int seconds)
+        float CalcFillAmount(double diffSeconds, int seconds)
         {
-            double diffSeconds = (endTime - startTime).TotalSeconds;
-
             float singleFillAmount = 1f / seconds;
 
             double currentFillAmount = 0.01d + (singleFillAmount * diffSeconds);

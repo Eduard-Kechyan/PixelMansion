@@ -15,7 +15,8 @@
     margin-bottom: 15px;
     flex-direction: column;
     width: 172px;
-    height: 28px;
+    height: 38px;
+    background-image: url('project://database/Assets/Sprites/Scenes/Gameplay/InfoBox.png?fileID=2800000&guid=08c0e298129b6a54ca567e82f7614357&type=3#InfoBox');
 }
 
 .info_box .info_item {
@@ -23,10 +24,14 @@
     height: 24px;
     background-color: rgba(123, 219, 132, 0);
     position: absolute;
-    top: 2px;
-    left: 16px;
+    top: 7px;
+    left: 2px;
     -unity-text-outline-color: rgba(0, 0, 0, 0.35);
     background-image: none;
+}
+
+.info_box .info_item_has_timer {
+    top: 2px;
 }
 
 .info_box .info_item_locked {
@@ -35,7 +40,7 @@
     background-color: rgba(123, 219, 132, 0);
     position: absolute;
     top: 2px;
-    left: 16px;
+    left: 2px;
     -unity-text-outline-color: rgba(0, 0, 0, 0.35);
     display: none;
 }
@@ -46,8 +51,29 @@
     background-color: rgba(123, 219, 132, 0);
     position: absolute;
     top: 2px;
-    left: 16px;
+    left: 2px;
     -unity-text-outline-color: rgba(0, 0, 0, 0.35);
+    display: none;
+}
+
+.info_box .info_timer {
+    background-image: url('project://database/Assets/Sprites/Scenes/Gameplay/InfoBoxTimer.png?fileID=2800000&guid=766ffd76950db664486e655c708a4a47&type=3#InfoBoxTimer');
+    width: 24px;
+    height: 8px;
+    position: absolute;
+    left: 2px;
+    bottom: 2px;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    -unity-text-align: middle-center;
+    font-size: 6px;
+    color: rgb(87, 87, 87);
     display: none;
 }
 
@@ -55,12 +81,20 @@
     color: rgb(58, 58, 58);
     font-size: 6px;
     position: absolute;
-    top: -3px;
+    top: 0;
     padding-left: 0;
     padding-right: 0;
     padding-top: 0;
     padding-bottom: 0;
-    left: 40px;
+    left: 28px;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    -unity-text-align: middle-left;
+    white-space: nowrap;
+    height: 9px;
+    right: 20px;
 }
 
 .info_box .item_data {
@@ -71,34 +105,36 @@
     padding-top: 0;
     padding-bottom: 0;
     position: absolute;
-    left: 40px;
-    top: 7px;
+    left: 28px;
+    top: 11px;
     white-space: normal;
-    width: 80px;
+    width: 74px;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    height: 25px;
 }
 
 .info_box_button {
     width: 12px;
-    height: 24px;
+    height: 12px;
     position: absolute;
-    left: 2px;
-    top: 2px;
+    top: 4px;
     display: none;
+    background-image: url('project://database/Assets/Sprites/Buttons/Menu/ShopBoxInfoButton.png?fileID=2800000&guid=5b1619c1a050de54a94113d994ffd7cf&type=3#ShopBoxInfoButton');
+    right: 4px;
 }
 
 .info_box_action_button {
-    font-size: 8px;
-    width: 42px;
-    height: 18px;
-    color: rgb(255, 255, 255);
+    width: 32px;
+    height: 14px;
     right: 2px;
     bottom: 2px;
     position: absolute;
     display: none;
-}
-
-.info_box_action_button_has_value {
-    padding-left: 14px;
+    background-image: url('project://database/Assets/Sprites/Scenes/Gameplay/InfoBoxButton.png?fileID=2800000&guid=4845d5095b10cf142966fd25e7f7cf8c&type=3#InfoBoxButton');
+    overflow: visible;
 }
 
 .info_box_action_button .value {
@@ -106,9 +142,60 @@
     width: 12px;
     height: 12px;
     position: absolute;
-    bottom: 3px;
-    right: auto;
-    left: 3px;
+    left: 1px;
+    top: 1px;
+    display: none;
+}
+
+.info_box_action_button .amount_label {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    -unity-text-align: middle-center;
+    white-space: nowrap;
+    font-size: 6px;
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.info_box_action_button .name_label {
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    position: absolute;
+    width: 32px;
+    height: 6px;
+    font-size: 4px;
+    top: -6px;
+    left: 0;
+    right: 0;
+}
+
+.info_box_action_button .remove_icon {
+    background-image: url('project://database/Assets/Sprites/Scenes/Gameplay/InfoBoxRemove.png?fileID=2800000&guid=b46655c522c065045be06c5139afd1bf&type=3#InfoBoxRemove');
+    width: 10px;
+    height: 12px;
+    position: absolute;
+    top: 1px;
+    left: 11px;
+    display: none;
+}
+
+.info_box_action_button_has_value .amount_label {
+    left: 11px;
 }
 
 .board {

@@ -1458,6 +1458,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 872003827445705007, guid: 8ef5fa76673152d4b9adea8d834064d1, type: 3}
+      propertyPath: infoBox
+      value: 
+      objectReference: {fileID: 6663394658226059765}
+    - target: {fileID: 872003827445705007, guid: 8ef5fa76673152d4b9adea8d834064d1, type: 3}
       propertyPath: clockManager
       value: 
       objectReference: {fileID: 1566288111}

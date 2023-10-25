@@ -33,11 +33,7 @@ namespace Merge
             GameObject newItemPre = Instantiate(item, tile.transform.position, Quaternion.identity);
             Item newItem = newItemPre.GetComponent<Item>();
 
-            string guid = Guid.NewGuid().ToString();
-
-            AddIdToBoardData(guid, boardItem);
-
-            newItem.id = guid;
+            newItem.id = boardItem.id;
             newItem.sprite = itemData.sprite;
             newItem.itemName = itemData.itemName;
             newItem.level = itemData.level;
@@ -83,20 +79,6 @@ namespace Merge
             newItem.transform.parent = tile.transform;
 
             return newItem;
-        }
-
-        void AddIdToBoardData(string id, Types.Board boardItem)
-        {
-            for (int x = 0; x < gameData.boardData.GetLength(0); x++)
-            {
-                for (int y = 0; y < gameData.boardData.GetLength(1); y++)
-                {
-                    if (gameData.boardData[x, y].order == boardItem.order)
-                    {
-                        gameData.boardData[x, y].id = id;
-                    }
-                }
-            }
         }
 
         public Item CreateItemTemp(Types.ShopItemsContent shopItem)

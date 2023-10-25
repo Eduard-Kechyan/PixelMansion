@@ -560,7 +560,7 @@ namespace Merge
 
         void Swap(Item otherItem)
         {
-            // Save the other item's data in memory
+            // Save the other item's data in 
             GameObject otherTile = otherItem.transform.parent.gameObject;
 
             // Set the current item's pos and parent

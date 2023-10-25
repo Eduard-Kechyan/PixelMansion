@@ -161,11 +161,16 @@ namespace Merge
                     // Create item
                     Types.Board boardItem = gameData.boardData[x, y];
 
+                    if (gameData.boardData[x, y].id == "")
+                    {
+                        gameData.boardData[x, y].id = Guid.NewGuid().ToString();
+                    }
+
                     if (boardItem != null && boardItem.sprite != null)
                     {
                         Item newItem = itemHandler.CreateItem(newTile, tileSize, boardItem);
 
-                        if (newItem) /////////////
+                        if (newItem)
                         {
                             dataManager.UnlockItem(
                                 newItem.sprite.name,

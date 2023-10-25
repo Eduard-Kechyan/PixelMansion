@@ -796,8 +796,8 @@
     position: absolute;
     top: -2px;
     right: -2px;
-    width: 11px;
-    height: 11px;
+    width: 12px;
+    height: 12px;
     margin-left: 0;
     margin-right: 0;
     margin-top: 0;
@@ -994,8 +994,8 @@
     border-top-width: 0;
     border-bottom-width: 0;
     background-color: rgba(188, 188, 188, 0);
-    width: 11px;
-    height: 11px;
+    width: 12px;
+    height: 12px;
     position: absolute;
     top: -2px;
     right: -2px;
@@ -1280,8 +1280,8 @@
 
 .task_need .info_button {
     background-image: url('project://database/Assets/Sprites/Buttons/Menu/ShopBoxInfoButton.png?fileID=2800000&guid=5b1619c1a050de54a94113d994ffd7cf&type=3#ShopBoxInfoButton');
-    width: 11px;
-    height: 11px;
+    width: 12px;
+    height: 12px;
     position: absolute;
     right: -4px;
     top: -4px;

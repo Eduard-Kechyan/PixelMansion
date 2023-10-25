@@ -20,6 +20,9 @@ namespace Merge
         public int sellAmount = 5;
 
         private Item item;
+
+        private Sprite sprite;
+
         private string textToSet = "";
 
         public enum ActionType
@@ -35,12 +38,14 @@ namespace Merge
             None
         };
 
-        private ActionType actionType;
+        private ActionType mainActionType;
+        private ActionType secondaryActionType;
 
         // References
         private InfoMenu infoMenu;
         private ShopMenu shopMenu;
         private GameData gameData;
+        private TimeManager timeManager;
         private I18n LOCALE;
 
         // UI
@@ -49,11 +54,18 @@ namespace Merge
         private VisualElement infoItemLocked;
         private VisualElement infoItemBubble;
         private Button infoButton;
-        private Button infoActionButton;
-        private VisualElement infoActionValue;
+        private Button infoMainButton;
+        private VisualElement infoMainValue;
+        private Label infoMainAmountLabel;
+        private Label infoMainNameLabel;
+        private VisualElement infoMainRemoveIcon;
+        private Button infoSecondaryButton;
+        private VisualElement infoSecondaryValue;
+        private Label infoSecondaryAmountLabel;
+        private Label infoSecondaryNameLabel;
         private Label infoName;
         private Label infoData;
-        private Sprite sprite;
+        private Label infoTimer;
 
         void Start()
         {
@@ -61,7 +73,10 @@ namespace Merge
             infoMenu = GameRefs.Instance.infoMenu;
             shopMenu = GameRefs.Instance.shopMenu;
             gameData = GameData.Instance;
+            timeManager = TimeManager.Instance;
             LOCALE = I18n.Instance;
+
+            timeManager.infoBox = this;
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
@@ -72,63 +87,77 @@ namespace Merge
 
             infoButton = root.Q<Button>("InfoButton");
 
-            infoActionButton = root.Q<Button>("InfoActionButton");
-            infoActionValue = infoActionButton.Q<VisualElement>("Value");
+            infoMainButton = root.Q<Button>("InfoMainButton");
+            infoMainValue = infoMainButton.Q<VisualElement>("Value");
+            infoMainAmountLabel = infoMainButton.Q<Label>("AmountLabel");
+            infoMainNameLabel = infoMainButton.Q<Label>("NameLabel");
+            infoMainRemoveIcon = infoMainButton.Q<VisualElement>("RemoveIcon");
+
+            infoSecondaryButton = root.Q<Button>("InfoSecondaryButton");
+            infoSecondaryValue = infoSecondaryButton.Q<VisualElement>("Value");
+            infoSecondaryAmountLabel = infoSecondaryButton.Q<Label>("AmountLabel");
+            infoSecondaryNameLabel = infoSecondaryButton.Q<Label>("NameLabel");
 
             infoName = root.Q<Label>("InfoName");
             infoData = root.Q<Label>("InfoData");
 
-            // Initiate info box
-            infoName.text = "";
-            infoData.text = LOCALE.Get("info_box_default");
+            infoTimer = root.Q<Label>("InfoTimer");
 
             // UI taps
             infoButton.clicked += () => infoMenu.Open(item);
 
-            infoActionButton.clicked += () => InfoAction();
+            infoMainButton.clicked += () => InfoAction();
+
+            infoSecondaryButton.clicked += () => InfoAction(false);
+
+            Init();
         }
 
-        //// Info Box ////
+        void Init()
+        {
+            infoName.text = "";
+            infoData.text = LOCALE.Get("info_box_default");
+        }
 
         // Show the selected item's info
         public void Select(Item newItem)
         {
             item = newItem;
 
+            infoItemLocked.style.display = DisplayStyle.None;
+            infoItemBubble.style.display = DisplayStyle.None;
+
+            infoButton.style.display = DisplayStyle.None;
+
             switch (item.state)
             {
-                case Types.State.Crate: //////// CRATE ////////
+                case Types.State.Crate: //// CRATE ////
                     infoName.text = LOCALE.Get("info_box_crate");
 
                     sprite = item.crateChild.GetComponent<SpriteRenderer>().sprite;
 
-                    actionType = ActionType.Open;
+                    mainActionType = ActionType.Open;
                     break;
-                case Types.State.Locker: //////// LOCKER ////////
+                case Types.State.Locker: //// LOCKER ////
                     infoName.text = item.itemName + " " + LOCALE.Get("info_box_locker");
 
                     sprite = item.itemChild.GetComponent<SpriteRenderer>().sprite;
 
-                    infoItemLocked.style.display = DisplayStyle.Flex;
-
-                    actionType = ActionType.Unlock;
+                    mainActionType = ActionType.Unlock;
                     break;
-                case Types.State.Bubble: //////// BUBBLE ////////
+                case Types.State.Bubble: //// BUBBLE ////
                     infoName.text = item.itemName + " " + LOCALE.Get("info_box_bubble");
 
                     sprite = item.itemChild.GetComponent<SpriteRenderer>().sprite;
 
                     infoItemBubble.style.display = DisplayStyle.Flex;
 
-                    actionType = ActionType.Pop;
+                    mainActionType = ActionType.Pop;
                     break;
-                default: //////// ITEM ////////
+                default: //// ITEM ////
                     infoName.text = item.itemLevelName;
 
                     sprite = item.itemChild.GetComponent<SpriteRenderer>().sprite;
-
-                    infoItemLocked.style.display = DisplayStyle.None;
-                    infoItemBubble.style.display = DisplayStyle.None;
 
                     infoButton.style.display = DisplayStyle.Flex;
 
@@ -136,29 +165,33 @@ namespace Merge
                     {
                         if (item.chestLocked)
                         {
-                            actionType = ActionType.UnlockChest;
-                        }
-                        else if (item.timerOn)
-                        {
-                            actionType = ActionType.SpeedUp;
+                            mainActionType = ActionType.UnlockChest;
                         }
                         else
                         {
-                            actionType = ActionType.None;
-                            // infoButton.style.display = DisplayStyle.None;
+                            mainActionType = ActionType.None;
                         }
                     }
                     else if (item.type == Types.Type.Coll)
                     {
-                        actionType = ActionType.None;
+                        mainActionType = ActionType.None;
                     }
                     else if (item.level > 3 || item.isMaxLevel)
                     {
-                        actionType = ActionType.Sell;
+                        mainActionType = ActionType.Sell;
                     }
                     else
                     {
-                        actionType = ActionType.Remove;
+                        mainActionType = ActionType.Remove;
+                    }
+
+                    if (item.timerOn)
+                    {
+                        secondaryActionType = ActionType.SpeedUp;
+                    }
+                    else
+                    {
+                        secondaryActionType = ActionType.None;
                     }
 
                     break;
@@ -183,6 +216,7 @@ namespace Merge
             sprite = null;
 
             infoButton.style.display = DisplayStyle.None;
+
             infoName.text = "";
 
             textToSet = "";
@@ -193,15 +227,27 @@ namespace Merge
             }
             else
             {
-                infoActionButton.style.display = DisplayStyle.None;
+                infoMainButton.style.display = DisplayStyle.None;
 
-                infoActionButton.RemoveFromClassList("info_box_action_button_has_value");
+                infoMainButton.RemoveFromClassList("info_box_action_button_has_value");
 
-                infoActionButton.RemoveFromClassList("info_box_button_disabled");
+                infoMainButton.RemoveFromClassList("info_box_button_disabled");
 
-                infoActionValue.style.display = DisplayStyle.None;
+                infoMainValue.style.display = DisplayStyle.None;
+
+                infoSecondaryButton.style.display = DisplayStyle.None;
+
+                infoSecondaryButton.RemoveFromClassList("info_box_action_button_has_value");
+
+                infoSecondaryButton.RemoveFromClassList("info_box_button_disabled");
+
+                infoSecondaryValue.style.display = DisplayStyle.None;
 
                 infoData.text = LOCALE.Get("info_box_default");
+
+                infoItem.RemoveFromClassList("info_item_has_timer");
+                
+                infoTimer.style.display = DisplayStyle.None;
             }
         }
 
@@ -218,74 +264,110 @@ namespace Merge
             }
         }
 
+        // Set timer text
+        public void TryToSetTimer(string id, string time)
+        {
+            if (item != null && item.id == id)
+            {
+                infoTimer.text = time;
+            }
+        }
+
         // Set the buttons
         void HandleActionButton()
         {
-            switch (actionType)
+            infoMainRemoveIcon.style.display = DisplayStyle.None;
+            infoItem.RemoveFromClassList("info_item_has_timer");
+            infoTimer.style.display = DisplayStyle.None;
+
+            switch (mainActionType)
             {
                 case ActionType.Open:
-                    infoActionButton.text = openAmount.ToString();
-                    infoActionButton.AddToClassList("info_box_action_button_has_value");
-                    infoActionButton.style.display = DisplayStyle.Flex;
-                    infoActionButton.style.unityBackgroundImageTintColor = Glob.colorBlue;
+                    infoMainButton.style.display = DisplayStyle.Flex;
+                    infoMainButton.style.unityBackgroundImageTintColor = Glob.colorBlue;
 
-                    infoActionValue.style.backgroundImage = new StyleBackground(gemValue);
-                    infoActionValue.style.display = DisplayStyle.Flex;
+                    infoMainAmountLabel.text = openAmount.ToString();
+                    infoMainNameLabel.text = LOCALE.Get("info_box_button_open");
+
+                    infoMainButton.AddToClassList("info_box_action_button_has_value");
+                    infoMainValue.style.backgroundImage = new StyleBackground(gemValue);
+                    infoMainValue.style.display = DisplayStyle.Flex;
                     break;
                 case ActionType.Unlock:
-                    infoActionButton.text = unlockAmount.ToString();
-                    infoActionButton.AddToClassList("info_box_action_button_has_value");
-                    infoActionButton.style.display = DisplayStyle.Flex;
-                    infoActionButton.style.unityBackgroundImageTintColor = Glob.colorBlue;
+                    infoMainButton.style.display = DisplayStyle.Flex;
+                    infoMainButton.style.unityBackgroundImageTintColor = Glob.colorBlue;
 
-                    infoActionValue.style.backgroundImage = new StyleBackground(gemValue);
-                    infoActionValue.style.display = DisplayStyle.Flex;
+                    infoMainAmountLabel.text = unlockAmount.ToString();
+                    infoMainNameLabel.text = LOCALE.Get("info_box_button_unlock");
+
+                    infoMainButton.AddToClassList("info_box_action_button_has_value");
+                    infoMainValue.style.backgroundImage = new StyleBackground(gemValue);
+                    infoMainValue.style.display = DisplayStyle.Flex;
                     break;
                 case ActionType.UnlockChest:
-                    infoActionButton.RemoveFromClassList("info_box_action_button_has_value");
-                    infoActionButton.style.display = DisplayStyle.Flex;
-                    infoActionButton.style.unityBackgroundImageTintColor = Glob.colorBlue;
+                    infoMainButton.style.display = DisplayStyle.Flex;
+                    infoMainButton.style.unityBackgroundImageTintColor = Glob.colorBlue;
 
-                    infoActionValue.style.display = DisplayStyle.None;
-                    break;
-                case ActionType.SpeedUp:
-                    infoActionButton.text = speedUpAmount.ToString();
-                    infoActionButton.AddToClassList("info_box_action_button_has_value");
-                    infoActionButton.style.display = DisplayStyle.Flex;
-                    infoActionButton.style.unityBackgroundImageTintColor = Glob.colorGreen;
+                    infoMainAmountLabel.text = LOCALE.Get("info_box_button_open");
+                    infoMainNameLabel.text = "";
 
-                    infoActionValue.style.backgroundImage = new StyleBackground(gemValue);
-                    infoActionValue.style.display = DisplayStyle.Flex;
+                    infoMainButton.RemoveFromClassList("info_box_action_button_has_value");
+                    infoMainValue.style.display = DisplayStyle.None;
                     break;
                 case ActionType.Sell:
-                    infoActionButton.text = sellAmount.ToString();
-                    infoActionButton.AddToClassList("info_box_action_button_has_value");
-                    infoActionButton.style.display = DisplayStyle.Flex;
-                    infoActionButton.style.unityBackgroundImageTintColor = Glob.colorGreen;
+                    infoMainButton.style.display = DisplayStyle.Flex;
+                    infoMainButton.style.unityBackgroundImageTintColor = Glob.colorGreen;
 
-                    infoActionValue.style.backgroundImage = new StyleBackground(goldValue);
-                    infoActionValue.style.display = DisplayStyle.Flex;
+                    infoMainAmountLabel.text = sellAmount.ToString();
+                    infoMainNameLabel.text = LOCALE.Get("info_box_button_sell");
+
+                    infoMainButton.AddToClassList("info_box_action_button_has_value");
+                    infoMainValue.style.backgroundImage = new StyleBackground(goldValue);
+                    infoMainValue.style.display = DisplayStyle.Flex;
                     break;
                 case ActionType.Remove:
-                    infoActionButton.text = LOCALE.Get("info_box_button_remove");
-                    infoActionButton.RemoveFromClassList("info_box_action_button_has_value");
-                    infoActionButton.style.display = DisplayStyle.Flex;
-                    infoActionButton.style.unityBackgroundImageTintColor = Glob.colorRed;
+                    infoMainButton.style.display = DisplayStyle.Flex;
+                    infoMainButton.style.unityBackgroundImageTintColor = Glob.colorRed;
 
-                    infoActionValue.style.display = DisplayStyle.None;
+                    infoMainAmountLabel.text = "";
+                    infoMainNameLabel.text = LOCALE.Get("info_box_button_remove");
+
+                    infoMainButton.RemoveFromClassList("info_box_action_button_has_value");
+                    infoMainValue.style.display = DisplayStyle.None;
+
+                    infoMainRemoveIcon.style.display = DisplayStyle.Flex;
                     break;
                 case ActionType.None:
-                    infoActionButton.style.display = DisplayStyle.None;
+                    infoMainButton.style.display = DisplayStyle.None;
+                    break;
+            }
 
-                    infoActionValue.style.display = DisplayStyle.None;
+            switch (secondaryActionType)
+            {
+                case ActionType.SpeedUp:
+                    infoSecondaryButton.style.display = DisplayStyle.Flex;
+                    infoSecondaryButton.style.unityBackgroundImageTintColor = Glob.colorGreen;
+
+                    infoSecondaryAmountLabel.text = speedUpAmount.ToString();
+                    infoSecondaryNameLabel.text = LOCALE.Get("info_box_button_speed_up");
+
+                    infoItem.AddToClassList("info_item_has_timer");
+                    infoTimer.style.display = DisplayStyle.Flex;
+
+                    infoSecondaryButton.AddToClassList("info_box_action_button_has_value");
+                    infoSecondaryValue.style.backgroundImage = new StyleBackground(gemValue);
+                    infoSecondaryValue.style.display = DisplayStyle.Flex;
+                    break;
+                case ActionType.None:
+                    infoSecondaryButton.style.display = DisplayStyle.None;
                     break;
             }
         }
 
         // Handle the buttons
-        void InfoAction()
+        void InfoAction(bool mainButton = true)
         {
-            switch (actionType)
+            switch (mainActionType)
             {
                 case ActionType.Open:
                     if (gameData.gems < openAmount)
@@ -316,18 +398,6 @@ namespace Merge
                     Select(item);
                     selectionManager.Select("both", false);
                     break;
-                case ActionType.SpeedUp:
-                    if (gameData.gems < speedUpAmount)
-                    {
-                        shopMenu.Open("Gems");
-                    }
-                    else
-                    {
-                        boardInteractions.SpeedUpItem(item, speedUpAmount);
-                        Select(item);
-                        selectionManager.Select("both", false);
-                    }
-                    break;
                 case ActionType.Pop:
                     if (gameData.gems < popAmount)
                     {
@@ -354,6 +424,23 @@ namespace Merge
                     break;
                 case ActionType.Undo:
                     boardInteractions.UndoLastStep();
+                    Refresh();
+                    break;
+            }
+
+            switch (secondaryActionType)
+            {
+                case ActionType.SpeedUp:
+                    if (gameData.gems < speedUpAmount)
+                    {
+                        shopMenu.Open("Gems");
+                    }
+                    else
+                    {
+                        boardInteractions.SpeedUpItem(item, speedUpAmount);
+                        Select(item);
+                        selectionManager.Select("both", false);
+                    }
                     break;
             }
         }
@@ -361,18 +448,22 @@ namespace Merge
         // Set the undo button either sold or removed
         void SetUndoButton(bool sold = false)
         {
-            actionType = ActionType.Undo;
+            mainActionType = ActionType.Undo;
 
-            infoActionButton.text = LOCALE.Get("info_box_button_undo");
-            infoActionButton.style.display = DisplayStyle.Flex;
-            infoActionButton.style.unityBackgroundImageTintColor = Glob.colorYellow;
+            infoMainButton.style.display = DisplayStyle.Flex;
+            infoMainButton.style.unityBackgroundImageTintColor = Glob.colorYellow;
+
+            infoMainAmountLabel.text = LOCALE.Get("info_box_button_undo");
+            infoMainNameLabel.text = "";
+
+            infoMainRemoveIcon.style.display = DisplayStyle.None;
 
             if (sold)
             {
-                infoActionButton.AddToClassList("info_box_action_button_has_value");
+                infoMainButton.AddToClassList("info_box_action_button_has_value");
 
-                infoActionValue.style.backgroundImage = new StyleBackground(goldValue);
-                infoActionValue.style.display = DisplayStyle.Flex;
+                infoMainValue.style.backgroundImage = new StyleBackground(goldValue);
+                infoMainValue.style.display = DisplayStyle.Flex;
             }
         }
 
@@ -380,6 +471,7 @@ namespace Merge
         int GetMultipliedValue(int level, Types.CollGroup collGroup)
         {
             int multipliedValue = 0;
+
             switch (collGroup)
             {
                 case Types.CollGroup.Experience:
@@ -394,16 +486,12 @@ namespace Merge
                 case Types.CollGroup.Energy:
                     multipliedValue = gameData.valuesData.energyMultiplier[level - 1];
                     break;
-                default:
-                    Debug.Log("Wrong collectables group");
-                    break;
             }
 
             return multipliedValue;
         }
 
-        //// Other ////
-
+        // Get the current selected item's data
         public string GetItemData(Item newItem, bool alt = false)
         {
             switch (newItem.state)

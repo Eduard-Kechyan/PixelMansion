@@ -10,6 +10,7 @@ namespace Merge
         // Variables
         public float moveSpeed = 14f;
         public float scaleSpeed = 8f;
+        public float readySpeed = 1f;
         public int experienceThreshold = 4;
 
         [ReadOnly]
@@ -27,13 +28,12 @@ namespace Merge
         // References
         private InitializeBoard initializeBoard;
         private BoardInteractions interactions;
-
-        // Instances
         private DataManager dataManager;
         private SoundManager soundManager;
         private GameData gameData;
         private ItemHandler itemHandler;
         private ValuePop valuePop;
+        private TimeManager timeManager;
 
         void Start()
         {
@@ -41,13 +41,14 @@ namespace Merge
             boardTiles = transform.GetChild(0).gameObject;
             initializeBoard = GetComponent<InitializeBoard>();
             interactions = GetComponent<BoardInteractions>();
-
-            // Cache instances
             dataManager = DataManager.Instance;
             soundManager = SoundManager.Instance;
             gameData = GameData.Instance;
             itemHandler = dataManager.GetComponent<ItemHandler>();
             valuePop = GameRefs.Instance.valuePop;
+            timeManager = TimeManager.Instance;
+
+            timeManager.boardManager = this;
         }
 
 #if UNITY_EDITOR
@@ -122,16 +123,32 @@ namespace Merge
         {
             Vector2Int loc = GetBoardLocation(0, tile);
 
-            return GetBoardOrder(loc.x,loc.y);
+            return GetBoardOrder(loc.x, loc.y);
         }
 
-        public Vector2 GetBoardItem(int checkX, int checkY)
+        public Vector2 GetBoardItemPosByLoc(int checkX, int checkY)
         {
             for (int i = 0; i < boardTiles.transform.childCount; i++)
             {
                 if (i == GetBoardOrder(checkX, checkY))
                 {
                     return boardTiles.transform.GetChild(i).position;
+                }
+            }
+
+            return Vector2.zero;
+        }
+
+        public Vector2 GetBoardItemPosById(string id)
+        {
+            for (int x = 0; x < gameData.boardData.GetLength(0); x++)
+            {
+                for (int y = 0; y < gameData.boardData.GetLength(1); y++)
+                {
+                    if (gameData.boardData[x, y].id == id)
+                    {
+                        return GetBoardItemPosByLoc(x, y);
+                    }
                 }
             }
 
@@ -151,7 +168,7 @@ namespace Merge
             Types.Board newItem = gameData.boardData[newLoc.x, newLoc.y];
 
             // Set items
-            gameData.boardData[oldLoc.x, oldLoc.y] = new ()
+            gameData.boardData[oldLoc.x, oldLoc.y] = new()
             {
                 sprite = newItem.sprite,
                 type = newItem.type,
@@ -169,7 +186,7 @@ namespace Merge
                 timerSeconds = newItem.timerSeconds,
             };
 
-            gameData.boardData[newLoc.x, newLoc.y] = new ()
+            gameData.boardData[newLoc.x, newLoc.y] = new()
             {
                 sprite = oldItem.sprite,
                 type = oldItem.type,
@@ -201,10 +218,10 @@ namespace Merge
             int newOrder = gameData.boardData[newLoc.x, newLoc.y].order;
 
             // Clear old items
-            gameData.boardData[oldLoc.x, oldLoc.y] = new () { order = oldOrder };
+            gameData.boardData[oldLoc.x, oldLoc.y] = new() { order = oldOrder };
 
             // Set new item
-            gameData.boardData[newLoc.x, newLoc.y] = new ()
+            gameData.boardData[newLoc.x, newLoc.y] = new()
             {
                 sprite = newItem.sprite,
                 type = newItem.type,
@@ -244,6 +261,11 @@ namespace Merge
 
             // Save the board to disk
             dataManager.SaveBoard();
+        }
+
+        public void ToggleTimerOnItem(int order, bool enable)
+        {
+            boardTiles.transform.GetChild(order).GetChild(0).GetComponent<Item>().ToggleTimer(enable, readySpeed);
         }
 
         /////// CRATE ////////
@@ -395,7 +417,8 @@ namespace Merge
                 genGroup = itemData.genGroup,
                 collGroup = itemData.collGroup,
                 chestGroup = itemData.chestGroup,
-                gemPopped = itemData.gemPopped
+                gemPopped = itemData.gemPopped,
+                id = Guid.NewGuid().ToString()
             };
 
             // Create the item on the board

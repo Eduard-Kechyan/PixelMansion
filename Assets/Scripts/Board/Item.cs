@@ -28,6 +28,7 @@ namespace Merge
         public bool isCompleted;
         public bool isDragging;
         public bool isPlaying;
+        public bool isReadyPlaying;
         public bool isMaxLevel;
         public bool isIndicating;
         public bool hasLevel;
@@ -73,17 +74,21 @@ namespace Merge
         public bool useOverlay = false;
         private Vector2 position;
         private Vector2 scale;
-        private Animation anim;
         private Action callback;
+
+        private Animation anim;
+        private Animation animReady;
 
         private GameObject selectionChild;
         public GameObject crateChild;
         private GameObject lockerChild;
         private GameObject bubbleChild;
+        public GameObject readyChild;
         private GameObject completionChild;
         public GameObject itemChild;
 
         private SpriteRenderer crateSpriteRenderer;
+        private SpriteRenderer lockSpriteRenderer;
 
         void Start()
         {
@@ -92,17 +97,32 @@ namespace Merge
 
             // Cache children
             selectionChild = transform.GetChild(0).gameObject; // Selection
-            crateChild = transform.GetChild(2).gameObject; // Crate (In SetCrateSprite() too)
-            lockerChild = transform.GetChild(3).gameObject; // Locker
-            bubbleChild = transform.GetChild(4).gameObject; // Bubble
+            crateChild = transform.GetChild(1).gameObject; // Crate (In SetCrateSprite() too)
+            lockerChild = transform.GetChild(2).gameObject; // Locker
+            bubbleChild = transform.GetChild(3).gameObject; // Bubble
+            readyChild = transform.GetChild(4).gameObject; // Ready
             completionChild = transform.GetChild(5).gameObject; // Completion
             itemChild = transform.GetChild(6).gameObject; // Item
 
+            if (type == Types.Type.Gen)
+            {
+                readyChild.SetActive(true);
+
+                animReady = readyChild.GetComponent<Animation>();
+
+                animReady.enabled = true;
+
+                readyChild.SetActive(false);
+            }
+
             crateSpriteRenderer = crateChild.GetComponent<SpriteRenderer>();
+            lockSpriteRenderer = lockerChild.GetComponent<SpriteRenderer>();
 
             CheckChildren();
 
             SetItemInitial();
+
+            ToggleTimer(timerOn);
         }
 
         void Update()
@@ -267,13 +287,44 @@ namespace Merge
                 bubbleChild.SetActive(true); //
             }
 
+            if (timerOn && level >= generatesAt)
+            {
+                readyChild.SetActive(false);
+            }
+            else
+            {
+                readyChild.SetActive(true); //
+            }
+
             if (isCompleted)
             {
-                completionChild.SetActive(true);
+                completionChild.SetActive(true); //
             }
             else
             {
                 completionChild.SetActive(false);
+            }
+        }
+
+        public void ToggleTimer(bool enable, float newSpeed = 1f)
+        {
+            timerOn = enable;
+
+            CheckChildren();
+
+            if (type == Types.Type.Gen)
+            {
+                if (timerOn)
+                {
+                    StopAnimateReady();
+                }
+                else
+                {
+                    if (level >= generatesAt)
+                    {
+                        AnimateReady(newSpeed);
+                    }
+                }
             }
         }
 
@@ -340,14 +391,35 @@ namespace Merge
             crateChild.GetComponent<SpriteRenderer>().sprite = newSprite;
         }
 
-        public void UnlockLock()
+        public void UnlockLock(float lockOpenSpeed = 0.05f)
         {
             if (state == Types.State.Locker)
             {
                 state = Types.State.Default;
 
-                CheckChildren();
+                StartCoroutine(WaitForLockToOpenAnimation(lockOpenSpeed));
             }
+        }
+
+        IEnumerator WaitForLockToOpenAnimation(float lockOpenSpeed)
+        {
+            GameRefs.SpriteArray[] crateBreakSprites = GameRefs.Instance.crateBreakSprites;
+
+            WaitForSeconds wait = new(lockOpenSpeed);
+
+            lockSpriteRenderer.sprite = crateBreakSprites[crate].content[0];
+
+            yield return wait;
+
+            lockSpriteRenderer.sprite = crateBreakSprites[crate].content[1];
+
+            yield return wait;
+
+            lockSpriteRenderer.sprite = crateBreakSprites[crate].content[2];
+
+            yield return wait;
+
+            CheckChildren();
         }
 
         public void PopBubble()
@@ -392,6 +464,11 @@ namespace Merge
             {
                 completionChild.SetActive(false);
             }
+
+            if (type == Types.Type.Gen && isReadyPlaying)
+            {
+                StopAnimateReady();
+            }
         }
 
         public void Dropped()
@@ -401,6 +478,11 @@ namespace Merge
             if (isCompleted)
             {
                 completionChild.SetActive(true);
+            }
+
+            if (type == Types.Type.Gen && level >= generatesAt && !timerOn && !isReadyPlaying)
+            {
+                AnimateReady();
             }
         }
 
@@ -467,6 +549,28 @@ namespace Merge
             anim.Stop();
 
             StopCoroutine(WaitForItemSelectAnimation());
+        }
+
+        void AnimateReady(float newSpeed = 1f)
+        {
+            readyChild.SetActive(true);
+
+            isReadyPlaying = true;
+
+            animReady["GenReady"].speed = newSpeed;
+            animReady.Play("GenReady");
+        }
+
+        void StopAnimateReady()
+        {
+            isReadyPlaying = false;
+
+            animReady.Rewind();
+            animReady.Play();
+            animReady.Sample();
+            animReady.Stop();
+
+            readyChild.SetActive(false);
         }
 
         IEnumerator WaitForItemSelectAnimation()
