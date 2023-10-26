@@ -13,6 +13,7 @@ namespace Merge
         public Sprite gemValue;
         public BoardInteractions boardInteractions;
         public SelectionManager selectionManager;
+        public TimeManager timeManager;
         public int openAmount = 10;
         public int unlockAmount = 5;
         public int speedUpAmount = 5;
@@ -45,7 +46,6 @@ namespace Merge
         private InfoMenu infoMenu;
         private ShopMenu shopMenu;
         private GameData gameData;
-        private TimeManager timeManager;
         private I18n LOCALE;
 
         // UI
@@ -73,10 +73,7 @@ namespace Merge
             infoMenu = GameRefs.Instance.infoMenu;
             shopMenu = GameRefs.Instance.shopMenu;
             gameData = GameData.Instance;
-            timeManager = TimeManager.Instance;
             LOCALE = I18n.Instance;
-
-            timeManager.infoBox = this;
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
@@ -188,6 +185,8 @@ namespace Merge
                     if (item.timerOn)
                     {
                         secondaryActionType = ActionType.SpeedUp;
+
+                        infoTimer.text = timeManager.GetTimerText(item.id);
                     }
                     else
                     {

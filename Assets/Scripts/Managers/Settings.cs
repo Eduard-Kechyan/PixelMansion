@@ -7,21 +7,23 @@ namespace Merge
 {
     public class Settings : MonoBehaviour
     {
-        // References
-        private SoundManager soundManager;
-        private I18n LOCALE;
-        private SettingsMenu settingsMenu;
-
+        // Variables
         public bool soundOn = true;
         public bool musicOn = true;
         public bool vibrationOn = true;
-        public bool notificationsOn = false;
+        public bool notificationsOn = true;
 
         public bool googleSignedIn = false;
         public bool facebookSignedIn = false;
         public bool appleSignedIn = false;
 
         public Types.Locale currentLocale;
+
+        // References
+        private SoundManager soundManager;
+        private I18n LOCALE;
+        private SettingsMenu settingsMenu;
+        private NotificsManager notificsManager;
 
         // Instance
         public static Settings Instance;
@@ -43,6 +45,7 @@ namespace Merge
         {
             soundManager = SoundManager.Instance;
             LOCALE = I18n.Instance;
+            notificsManager = Services.Instance.GetComponent<NotificsManager>();
 
             GetSound();
             GetMusic();
@@ -99,10 +102,40 @@ namespace Merge
         {
             notificationsOn = !notificationsOn;
 
-            PlayerPrefs.SetInt("notifications", notificationsOn ? 1 : 0);
-            PlayerPrefs.Save();
+            if (notificationsOn)
+            {
+                notificsManager.CheckPermission(null, (bool granted) =>
+                {
+                    if (granted)
+                    {
+                        PlayerPrefs.SetInt("notifications", 1);
+                        PlayerPrefs.Save();
 
-            settingsMenu.SetUIOptionsButtons();
+                        settingsMenu.SetUIOptionsButtons();
+                        // TODO - Clear scheduled notifications
+                    }
+                    else
+                    {
+                        // TODO - Notify the play that notifications are disabled in the settings 
+                        notificationsOn = false;
+                    }
+                });
+            }
+            else
+            {
+                PlayerPrefs.SetInt("notifications", 0);
+                PlayerPrefs.Save();
+
+                settingsMenu.SetUIOptionsButtons();
+            }
+        }
+
+        public void SetNotifications(bool enable)
+        {
+            notificationsOn = enable;
+
+            PlayerPrefs.SetInt("notifications", enable ? 1 : 0);
+            PlayerPrefs.Save();         
         }
 
         public void SetLocale(Types.Locale newLocale, bool initial = false)
@@ -117,7 +150,7 @@ namespace Merge
                 }
                 else
                 {
-                    List<string> locales = new ();
+                    List<string> locales = new();
 
                     foreach (Types.Locale locale in System.Enum.GetValues(typeof(Types.Locale)))
                     {

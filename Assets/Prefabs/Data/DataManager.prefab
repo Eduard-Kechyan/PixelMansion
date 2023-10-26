@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2647993437880791096}
   - component: {fileID: 5574773175297324107}
   - component: {fileID: 8380244147946217097}
+  - component: {fileID: 4560125844292514778}
   m_Layer: 0
   m_Name: DataManager
   m_TagString: Untagged
@@ -33,7 +34,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &-7698504415603008170
 MonoBehaviour:
@@ -106,3 +107,22 @@ MonoBehaviour:
   dailyItem1: 0
   dailyItem2: 0
   dailyContent: []
+--- !u!114 &4560125844292514778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2434679965947527676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a16276c7ea9d8942b3f61d6e1b76ac7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  logsEnabled: 1
+  shakingEnabled: 0
+  titleHight: 20
+  defaultLogColor: {r: 0.7019608, g: 0.78039217, b: 0.83137256, a: 1}
+  debug: 1
+  toggle: 0
+  logsOpen: 0

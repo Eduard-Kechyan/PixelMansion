@@ -85,9 +85,10 @@ namespace Merge
         {
             public DateTime startTime;
             public int seconds;
-            public bool on;
+            public bool running = true;
             public TimerType type;
             public string id;
+            public int notificationId;
         }
 
         [Serializable]
@@ -95,9 +96,10 @@ namespace Merge
         {
             public string startTime;
             public int seconds;
-            public bool on;
+            public bool running;
             public string type;
             public string id;
+            public int notificationId;
         }
 
         [Serializable]
@@ -269,12 +271,6 @@ namespace Merge
 
             [HideInInspector]
             public bool timerOn;
-
-            [HideInInspector]
-            public string timerStartTime;
-
-            [HideInInspector]
-            public int timerSeconds;
         }
 
         [Serializable]
@@ -296,8 +292,6 @@ namespace Merge
             public bool gemPopped;
             public bool isCompleted;
             public bool timerOn;
-            public string timerStartTime;
-            public int timerSeconds;
         }
 
         //// BONUS ////
@@ -327,7 +321,11 @@ namespace Merge
             public ItemTypes.Group group;
             public ItemTypes.GenGroup genGroup;
             public ChestGroup chestGroup;
+            public string id;
             public bool isCompleted;
+            public bool timerOn;
+            public DateTime timerAltTime;
+            public bool gemPopped;
         }
 
         public class InventoryJson
@@ -337,7 +335,11 @@ namespace Merge
             public string group;
             public string genGroup;
             public string chestGroup;
+            public string id;
             public bool isCompleted;
+            public bool timerOn;
+            public string timerAltTime;
+            public bool gemPopped;
         }
 
         //// PROGRESS ////
@@ -560,6 +562,28 @@ namespace Merge
             public Sprite sprite;
             public bool hasBonus;
             public bool isPopular;
+        }
+
+        //// NOTIFICATIONS ////
+        public enum NotificationType
+        {
+            Gen,
+            Chest,
+            Energy,
+        }
+
+        [Serializable]
+        public class Notification
+        {
+            public int id;
+            public DateTime fireTime;
+        }
+
+        [Serializable]
+        public class NotificationJson
+        {
+            public int id;
+            public string fireTime;
         }
 
         //// OTHER ////

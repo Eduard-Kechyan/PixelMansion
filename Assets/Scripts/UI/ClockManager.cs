@@ -20,14 +20,12 @@ namespace Merge
             public string id;
             public GameObject clockItem;
             public Image clockAmountImage;
-            public DateTime startTime;
             public int seconds;
         }
 
         private List<ClockData> clocks = new();
 
         // References
-        private TimeManager timeManager;
         private GameData gameData;
         private DataManager dataManager;
         private Camera cam;
@@ -35,19 +33,16 @@ namespace Merge
         void Start()
         {
             // Cache
-            timeManager = TimeManager.Instance;
             gameData = GameData.Instance;
             dataManager = DataManager.Instance;
             cam = Camera.main;
-
-            timeManager.clockManager = this;
 
             StartCoroutine(WaitForGameData());
         }
 
         IEnumerator WaitForGameData()
         {
-            while (!dataManager.loaded)
+            while (!dataManager.loaded || !boardManager.boardSet)
             {
                 yield return null;
             }
@@ -67,13 +62,13 @@ namespace Merge
                     {
                         Vector2 position = boardManager.GetBoardItemPosById(gameData.timers[i].id);
 
-                        AddClock(position, gameData.timers[i].id, gameData.timers[i].startTime, gameData.timers[i].seconds);
+                        AddClock(position, gameData.timers[i].id, gameData.timers[i].seconds);
                     }
                 }
             }
         }
 
-        public void AddClock(Vector2 position, string id, DateTime startTime, int seconds = 0)
+        public void AddClock(Vector2 position, string id, int seconds = 0)
         {
             GameObject newClockItem = Instantiate(clockObject, Vector2.zero, Quaternion.identity);
 
@@ -86,7 +81,6 @@ namespace Merge
                 id = id,
                 clockItem = newClockItem,
                 clockAmountImage = newClockItem.transform.GetChild(0).GetComponent<Image>(),
-                startTime = startTime,
                 seconds = seconds
             });
         }

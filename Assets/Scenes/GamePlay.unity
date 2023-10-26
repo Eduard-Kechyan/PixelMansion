@@ -423,6 +423,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69ab62d1bcf3a2046be9055d75c664b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &783295151 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 872003827445705007, guid: 8ef5fa76673152d4b9adea8d834064d1, type: 3}
+  m_PrefabInstance: {fileID: 3776396747405725668}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3e4614f32e736e4ab12bfb061afb02f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &938188114
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -484,6 +495,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: af9e0bfb46c520a4fac5c30843ed2d4e, type: 3}
+--- !u!114 &946986279 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 352704914890339314, guid: f4034c2be9714cc41b0cf4ef9809c444, type: 3}
+  m_PrefabInstance: {fileID: 656374330}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1566288106
 GameObject:
   m_ObjectHideFlags: 0
@@ -653,6 +675,7 @@ MonoBehaviour:
   hubGameUI: {fileID: 0}
   menuUI: {fileID: 2529494230138778357}
   valuesUI: {fileID: 7866921526989002608}
+  debugUI: {fileID: 946986279}
   gameplayUIDoc: {fileID: 0}
   hubUIDoc: {fileID: 0}
   hubGameUIDoc: {fileID: 0}
@@ -669,6 +692,10 @@ MonoBehaviour:
   shopMenu: {fileID: 0}
   taskMenu: {fileID: 0}
   valuePop: {fileID: 0}
+  readySpeed: 1
+  clockManager: {fileID: 1566288111}
+  infoBox: {fileID: 6663394658226059765}
+  boardManager: {fileID: 639326507}
   initialized: 0
   safeAreaHandler: {fileID: 0}
   noteDotHandler: {fileID: 0}
@@ -688,6 +715,10 @@ MonoBehaviour:
     - {fileID: 590581419, guid: 4780be5b5da79ed44b59725a93db5c9b, type: 3}
     - {fileID: 1184151187, guid: 4780be5b5da79ed44b59725a93db5c9b, type: 3}
     - {fileID: -1299078420, guid: 4780be5b5da79ed44b59725a93db5c9b, type: 3}
+  lockOpenSprites:
+  - {fileID: -204737844, guid: a3863c2f2ff768542adf220576e55519, type: 3}
+  - {fileID: 452446565, guid: a3863c2f2ff768542adf220576e55519, type: 3}
+  - {fileID: 989579714, guid: a3863c2f2ff768542adf220576e55519, type: 3}
 --- !u!1001 &1658164947
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -981,7 +1012,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1144520811996853875, guid: dcade7c572afad84bbcc90dfe1bb5ff8, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1341,6 +1373,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3570785117545677035, guid: 6a4bd6a5611eb914ea950405a066bcd8, type: 3}
+      propertyPath: timeManager
+      value: 
+      objectReference: {fileID: 783295151}
     - target: {fileID: 3570785117545677035, guid: 6a4bd6a5611eb914ea950405a066bcd8, type: 3}
       propertyPath: boardManager
       value: 
@@ -1707,6 +1743,7 @@ MonoBehaviour:
   gemValue: {fileID: 21300000, guid: 324e7e0db7beb9248b629fa2da728b06, type: 3}
   boardInteractions: {fileID: 639326501}
   selectionManager: {fileID: 639326506}
+  timeManager: {fileID: 783295151}
   openAmount: 10
   unlockAmount: 5
   speedUpAmount: 5
@@ -1846,6 +1883,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1769535901462366456, guid: fb6bd1ade9d0e614da3b3eabc6c46c06, type: 3}
+      propertyPath: readySpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1769535901462366456, guid: fb6bd1ade9d0e614da3b3eabc6c46c06, type: 3}
       propertyPath: taskManager
       value: 
       objectReference: {fileID: 1754641311}
@@ -1901,6 +1942,10 @@ PrefabInstance:
       propertyPath: clockManager
       value: 
       objectReference: {fileID: 1566288111}
+    - target: {fileID: 8002734882105849631, guid: fb6bd1ade9d0e614da3b3eabc6c46c06, type: 3}
+      propertyPath: timeManager
+      value: 
+      objectReference: {fileID: 783295151}
     - target: {fileID: 8002734882105849631, guid: fb6bd1ade9d0e614da3b3eabc6c46c06, type: 3}
       propertyPath: generationCurves.Array.size
       value: 10

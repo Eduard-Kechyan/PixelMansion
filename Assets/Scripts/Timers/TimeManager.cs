@@ -2,76 +2,127 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using CI.QuickSave;
-using Newtonsoft.Json;
+using UnityEngine.SceneManagement;
 
 namespace Merge
 {
     public class TimeManager : MonoBehaviour
     {
         // Variables
-        [HideInInspector]
-        public ClockManager clockManager;
-        [HideInInspector]
-        public InfoBox infoBox;
-        [HideInInspector]
-        public BoardManager boardManager;
-
         private bool handlingTimers;
 
         // References
         private DataManager dataManager;
         private GameData gameData;
         private EnergyTimer energyTimer;
-
-        [Serializable]
-        public class EnergyTimerClass
-        {
-            public DateTime startTime;
-            public int seconds;
-        }
-
-        // Instance
-        public static TimeManager Instance;
-
-        void Awake()
-        {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(gameObject);
-            }
-            else
-            {
-                Instance = this;
-                DontDestroyOnLoad(gameObject);
-            }
-        }
+        private ClockManager clockManager;
+        private InfoBox infoBox;
+        private BoardManager boardManager;
+        private NotificsManager notificsManager;
 
         void Start()
         {
             dataManager = DataManager.Instance;
             gameData = GameData.Instance;
             energyTimer = GetComponent<EnergyTimer>();
+            notificsManager = Services.Instance.GetComponent<NotificsManager>();
+
+            Init();
+        }
+
+        void Init()
+        {
+            string sceneName = SceneManager.GetActiveScene().name;
+
+            if (sceneName == "Gameplay")
+            {
+                clockManager = GameRefs.Instance.clockManager;
+                infoBox = GameRefs.Instance.infoBox;
+                boardManager = GameRefs.Instance.boardManager;
+            }
 
             StartCoroutine(WaitForGameData());
         }
 
-        IEnumerator WaitForGameData()
+        //// Timers ////
+
+        void HandleTimers()
         {
-            while (!dataManager.loaded)
+            List<int> indexesToRemove = new();
+
+            for (int i = 0; i < gameData.timers.Count; i++)
             {
-                yield return null;
+                if (gameData.timers[i].running && gameData.timers[i].type == Types.TimerType.Item)
+                {
+                    DateTime endTime = DateTime.UtcNow;
+
+                    double timeDiffInSeconds = (endTime - gameData.timers[i].startTime).TotalSeconds;
+
+                    if (timeDiffInSeconds >= gameData.timers[i].seconds)
+                    {
+                        // End
+                        indexesToRemove.Add(i);
+                    }
+                    else
+                    {
+                        // Continue
+                        if (clockManager != null)
+                        {
+                            clockManager.SetFillAmount(gameData.timers[i].id, timeDiffInSeconds);
+                        }
+
+                        if (infoBox != null)
+                        {
+                            infoBox.TryToSetTimer(gameData.timers[i].id, CalcTimerText(gameData.timers[i].seconds, timeDiffInSeconds));
+                        }
+                    }
+                }
             }
 
-            CheckInitialTimers();
+            for (int i = 0; i < indexesToRemove.Count; i++)
+            {
+                if (clockManager != null)
+                {
+                    clockManager.RemoveClock(gameData.timers[indexesToRemove[i]].id);
+                }
+
+                ToggleTimerOnBoardData(gameData.timers[indexesToRemove[i]].id, false);
+
+                gameData.timers.RemoveAt(indexesToRemove[i]);
+
+                dataManager.SaveTimers();
+            }
+
+            if (gameData.timers.Count == 0)
+            {
+                CancelInvoke("HandleTimers");
+
+                handlingTimers = false;
+            }
         }
 
-        //// Timers ////
-        public void AddTimer(Types.TimerType type, string id, Vector2 position = default, int seconds = 0)
+        public string GetTimerText(string id)
+        {
+            for (int i = 0; i < gameData.timers.Count; i++)
+            {
+                if (gameData.timers[i].id == id)
+                {
+                    DateTime endTime = DateTime.UtcNow;
+
+                    double timeDiffInSeconds = (endTime - gameData.timers[i].startTime).TotalSeconds;
+
+                    return CalcTimerText(gameData.timers[i].seconds, timeDiffInSeconds);
+                }
+            }
+
+            return "00:00";
+        }
+
+        public void AddTimer(Types.TimerType type, Types.NotificationType notificationType, string itemName, string id, Vector2 position = default, int seconds = 0)
         {
             DateTime startTime = DateTime.UtcNow;
 
-            // TODO - Add notification
+            int notificationId = notificsManager.Add(notificationType, startTime.AddSeconds(seconds), itemName);
 
             gameData.timers.Add(
                 new Types.Timer
@@ -79,7 +130,8 @@ namespace Merge
                     startTime = startTime,
                     type = type,
                     id = id,
-                    seconds = seconds
+                    seconds = seconds,
+                    notificationId = notificationId
                 }
             );
 
@@ -87,7 +139,7 @@ namespace Merge
             {
                 ToggleTimerOnBoardData(id, true);
 
-                clockManager.AddClock(position, id, startTime, seconds);
+                clockManager.AddClock(position, id, seconds);
             }
 
             if (!handlingTimers)
@@ -107,7 +159,11 @@ namespace Merge
             {
                 if (gameData.timers[i].id == id)
                 {
+                    notificsManager.Remove(gameData.timers[i].notificationId);
+
                     index = count;
+
+                    break;
                 }
 
                 count++;
@@ -144,105 +200,6 @@ namespace Merge
             return finished;
         }
 
-        void CheckInitialTimers()
-        {
-            // Start time handler
-            if (gameData.timers.Count > 0)
-            {
-                InvokeRepeating("HandleTimers", 0f, 0.5f);
-
-                handlingTimers = true;
-            }
-        }
-
-        void HandleTimers()
-        {
-            List<int> indexesToRemove = new();
-
-            for (int i = 0; i < gameData.timers.Count; i++)
-            {
-                if (gameData.timers[i].type == Types.TimerType.Item)
-                {
-                    DateTime endTime = DateTime.UtcNow;
-
-                    double timeDiffInSeconds = (endTime - gameData.timers[i].startTime).TotalSeconds;
-
-                    if (timeDiffInSeconds >= gameData.timers[i].seconds)
-                    {
-                        // End
-                        indexesToRemove.Add(i);
-
-                        ToggleTimerOnBoardData(gameData.timers[i].id, false);
-                    }
-                    else
-                    {
-                        // Continue
-                        if (clockManager != null)
-                        {
-                            clockManager.SetFillAmount(gameData.timers[i].id, timeDiffInSeconds);
-                        }
-
-                        if (infoBox != null)
-                        {
-                            infoBox.TryToSetTimer(gameData.timers[i].id, CalcTimerText(gameData.timers[i].seconds, timeDiffInSeconds));
-                        }
-                    }
-                }
-            }
-
-            for (int i = 0; i < indexesToRemove.Count; i++)
-            {
-                if (clockManager != null)
-                {
-                    clockManager.RemoveClock(gameData.timers[indexesToRemove[i]].id);
-                }
-
-                gameData.timers.RemoveAt(indexesToRemove[i]);
-
-                dataManager.SaveTimers();
-            }
-
-            if (gameData.timers.Count == 0)
-            {
-                CancelInvoke("HandleTimers");
-
-                handlingTimers = false;
-            }
-        }
-
-        void ToggleTimerOnBoardData(string id, bool enable)
-        {
-            bool found = false;
-
-            int count = 0;
-
-            for (int x = 0; x < gameData.boardData.GetLength(0); x++)
-            {
-                for (int y = 0; y < gameData.boardData.GetLength(1); y++)
-                {
-                    if (gameData.boardData[x, y].id == id)
-                    {
-                        gameData.boardData[x, y].timerOn = enable;
-
-                        boardManager.ToggleTimerOnItem(count, enable);
-
-                        found = true;
-
-                        break;
-                    }
-
-                    count++;
-                }
-            }
-
-            if (found)
-            {
-                dataManager.SaveBoard(false, false);
-
-                infoBox.Refresh();
-            }
-        }
-
         string CalcTimerText(int totalSeconds, double passedSeconds)
         {
             string minutes;
@@ -275,6 +232,63 @@ namespace Merge
             return minutes + ":" + seconds;
         }
 
+        IEnumerator WaitForGameData()
+        {
+            while (!dataManager.loaded)
+            {
+                yield return null;
+            }
+
+            // Start time handler
+            if (gameData.timers.Count > 0)
+            {
+                InvokeRepeating("HandleTimers", 0f, 0.5f);
+
+                handlingTimers = true;
+            }
+        }
+
+        //// Items ////
+
+        void ToggleTimerOnBoardData(string id, bool enable)
+        {
+            bool found = false;
+
+            int count = 0;
+
+            for (int x = 0; x < gameData.boardData.GetLength(0); x++)
+            {
+                for (int y = 0; y < gameData.boardData.GetLength(1); y++)
+                {
+                    if (gameData.boardData[x, y].id == id)
+                    {
+                        gameData.boardData[x, y].timerOn = enable;
+
+                        if (boardManager != null)
+                        {
+                            boardManager.ToggleTimerOnItem(count, enable);
+                        }
+
+                        found = true;
+
+                        break;
+                    }
+
+                    count++;
+                }
+            }
+
+            if (found)
+            {
+                dataManager.SaveBoard(false, false);
+
+                if (infoBox != null)
+                {
+                    infoBox.Refresh();
+                }
+            }
+        }
+
         public void CheckCoolDown(Item item)
         {
             // Check if cool down already exists
@@ -289,9 +303,11 @@ namespace Merge
                         if (gameData.coolDowns[i].count == item.coolDown.maxCount)
                         {
                             item.timerOn = true;
-                            item.timerSeconds = item.coolDown.seconds;
 
-                            AddTimer(Types.TimerType.Item, item.id, item.transform.position, item.coolDown.seconds);
+                            Types.NotificationType notificationType = item.type == Types.Type.Gen ? Types.NotificationType.Gen : Types.NotificationType.Chest;
+                            
+                            // Note: use item.itemName not item.name 
+                            AddTimer(Types.TimerType.Item, notificationType, item.itemName, item.id, item.transform.position, item.coolDown.seconds); 
 
                             gameData.coolDowns.RemoveAt(i);
                         }
@@ -309,7 +325,57 @@ namespace Merge
             });
         }
 
+        public void ItemPutIntoInventory(string id, DateTime altTime)
+        {
+            for (int i = 0; i < gameData.timers.Count; i++)
+            {
+                if (gameData.timers[i].id == id)
+                {
+                    int leftOverSeconds = Mathf.FloorToInt(gameData.timers[i].seconds - (float)(altTime - gameData.timers[i].startTime).TotalSeconds);
+
+                    gameData.timers[i].seconds = leftOverSeconds;
+                    gameData.timers[i].startTime = altTime;
+                    gameData.timers[i].running = false;
+
+                    break;
+                }
+            }
+
+            dataManager.SaveTimers();
+
+            clockManager.RemoveClock(id);
+        }
+
+        public void ItemTakenOutOfInventory(string id)
+        {
+            for (int i = 0; i < gameData.timers.Count; i++)
+            {
+                if (gameData.timers[i].id == id)
+                {
+                    gameData.timers[i].running = true;
+
+                    break;
+                }
+            }
+
+            dataManager.SaveTimers();
+        }
+
+        public void ItemTakenOutOfInventoryAfter(Vector2 position, string id)
+        {
+            for (int i = 0; i < gameData.timers.Count; i++)
+            {
+                if (gameData.timers[i].id == id)
+                {
+                    clockManager.AddClock(position, id, gameData.timers[i].seconds);
+
+                    break;
+                }
+            }
+        }
+
         //// Energy ////
+
         public void SetEnergyTimer(int newSeconds)
         {
             RemoveEnergyTimer(false);
@@ -318,7 +384,7 @@ namespace Merge
             {
                 startTime = DateTime.UtcNow,
                 seconds = newSeconds,
-                on = true,
+                running = true,
                 type = Types.TimerType.Energy
             };
 
@@ -331,7 +397,7 @@ namespace Merge
         {
             Types.Timer newEnergyTimer = new()
             {
-                on = false,
+                running = false,
             };
 
             if (gameData.timers.Count > 0)

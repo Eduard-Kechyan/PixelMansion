@@ -53,8 +53,6 @@ namespace Merge
                     gemPopped = boardJson[i].gemPopped,
                     isCompleted = boardJson[i].isCompleted,
                     timerOn = boardJson[i].timerOn,
-                    timerStartTime = boardJson[i].timerStartTime,
-                    timerSeconds = boardJson[i].timerSeconds,
                 };
 
                 boardData[i] = newBoardData;
@@ -88,8 +86,6 @@ namespace Merge
                     gemPopped = boardData[i].gemPopped,
                     isCompleted = boardData[i].isCompleted,
                     timerOn = boardData[i].timerOn,
-                    timerStartTime = boardData[i].timerStartTime,
-                    timerSeconds = boardData[i].timerSeconds,
                 };
 
                 boardJson[i] = newBoardJson;
@@ -126,8 +122,6 @@ namespace Merge
                         gemPopped = boardArray[count].gemPopped,
                         isCompleted = boardArray[count].isCompleted,
                         timerOn = boardArray[count].timerOn,
-                        timerStartTime = boardArray[count].timerStartTime,
-                        timerSeconds = boardArray[count].timerSeconds,
                     };
 
                     count++;
@@ -162,8 +156,6 @@ namespace Merge
                     gemPopped = boardItem.gemPopped,
                     isCompleted = boardItem.isCompleted,
                     timerOn = boardItem.timerOn,
-                    timerStartTime = boardItem.timerStartTime,
-                    timerSeconds = boardItem.timerSeconds,
                 };
 
                 count++;
@@ -239,7 +231,11 @@ namespace Merge
                     group = Glob.ParseEnum<ItemTypes.Group>(inventoryJson[i].group),
                     genGroup = Glob.ParseEnum<ItemTypes.GenGroup>(inventoryJson[i].genGroup),
                     chestGroup = Glob.ParseEnum<Types.ChestGroup>(inventoryJson[i].chestGroup),
-                    isCompleted = inventoryJson[i].isCompleted
+                    id = inventoryJson[i].id,
+                    isCompleted = inventoryJson[i].isCompleted,
+                    timerOn = inventoryJson[i].timerOn,
+                    timerAltTime = System.DateTime.Parse(inventoryJson[i].timerAltTime),
+                    gemPopped = inventoryJson[i].gemPopped
                 };
 
                 inventoryData.Add(newInventoryData);
@@ -261,7 +257,11 @@ namespace Merge
                     group = inventoryData[i].group.ToString(),
                     genGroup = inventoryData[i].genGroup.ToString(),
                     chestGroup = inventoryData[i].chestGroup.ToString(),
-                    isCompleted = inventoryData[i].isCompleted
+                    id = inventoryData[i].id,
+                    isCompleted = inventoryData[i].isCompleted,
+                    timerOn = inventoryData[i].timerOn,
+                    timerAltTime = inventoryData[i].timerAltTime.ToString(),
+                    gemPopped = inventoryData[i].gemPopped
                 };
 
                 inventoryJson[i] = newInventoryJson;
@@ -533,9 +533,10 @@ namespace Merge
                     {
                         startTime = System.DateTime.Parse(timerJson[i].startTime),
                         seconds = timerJson[i].seconds,
-                        on = timerJson[i].on,
+                        running = timerJson[i].running,
                         type = Glob.ParseEnum<Types.TimerType>(timerJson[i].type),
                         id = timerJson[i].id,
+                        notificationId= timerJson[i].notificationId,
                     }
                 );
             }
@@ -553,15 +554,58 @@ namespace Merge
                 {
                     startTime = timers[i].startTime.ToString(),
                     seconds = timers[i].seconds,
-                    on = timers[i].on,
+                    running = timers[i].running,
                     type = timers[i].type.ToString(),
                     id = timers[i].id,
+                    notificationId = timers[i].notificationId,
                 };
 
                 timerJson[i] = newTimerJson;
             }
 
             return JsonConvert.SerializeObject(timerJson);
+        }
+
+        //// NOTIFICATIONS ////
+
+        public List<Types.Notification> ConvertNotificationsFromJson(string notificationsString)
+        {
+            List<Types.Notification> notifications = new();
+
+            Types.NotificationJson[] notificationsJson = JsonConvert.DeserializeObject<Types.NotificationJson[]>(
+                notificationsString
+            );
+
+            for (int i = 0; i < notificationsJson.Length; i++)
+            {
+                notifications.Add(
+                    new Types.Notification
+                    {
+                        id = notificationsJson[i].id,
+                        fireTime = System.DateTime.Parse(notificationsJson[i].fireTime),
+                    }
+                );
+            }
+
+            return notifications;
+        }
+
+        public string ConvertNotificationsToJson(List<Types.Notification> notifications)
+        {
+            Types.NotificationJson[] notificationJson = new Types.NotificationJson[notifications.Count];
+
+            for (int i = 0; i < notifications.Count; i++)
+            {
+                Types.NotificationJson newNotificationJson = new()
+                {
+                    id = notifications[i].id,
+                    fireTime = notifications[i].fireTime.ToString(),
+                };
+
+                notificationJson[i] = newNotificationJson;
+            }
+
+            return JsonConvert.SerializeObject(notificationJson);
         }
 
         //// SHOP CONTENT ////

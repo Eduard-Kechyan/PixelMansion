@@ -106,6 +106,9 @@ namespace Merge
         [HideInInspector]
         public bool resourcesLoaded = false;
 
+        // Notifications
+        public List<Types.Notification> notifications = new();
+
         // Sprites
         private Sprite[] itemsSprites;
         private Sprite[] generatorsSprites;

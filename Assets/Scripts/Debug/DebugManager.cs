@@ -27,6 +27,7 @@ namespace Merge
         private VisualElement otherContainer;
         private Button adButton;
         private Button logsButton;
+        private Button logsShakingButton;
 
         private VisualElement loadingContainer;
         private Button skipButton;
@@ -50,7 +51,7 @@ namespace Merge
         {
             // Cache
             logsUI = GetComponent<UIDocument>();
-            logs = GetComponent<Logs>();
+            logs = Logs.Instance;
             valuesUI = GameRefs.Instance.valuesUI;
 
             // UI
@@ -62,6 +63,7 @@ namespace Merge
             otherContainer = debugMenu.Q<VisualElement>("OtherContainer");
             adButton = otherContainer.Q<Button>("AdButton");
             logsButton = otherContainer.Q<Button>("LogsButton");
+            logsShakingButton = otherContainer.Q<Button>("LogsShakingButton");
 
             // Button taps
             menuBackground.AddManipulator(new Clickable(evt =>
@@ -78,6 +80,7 @@ namespace Merge
                 }
             });
             logsButton.clicked += () => logs.Toggle();
+            logsShakingButton.clicked += () => ToggleLogsShaking();
 
             // Init
             debugMenu.style.display = DisplayStyle.None;
@@ -115,6 +118,33 @@ namespace Merge
             if (boardInteractions != null)
             {
                 boardInteractions.DisableInteractions();
+            }
+        }
+
+        void ToggleLogsShaking()
+        {
+            logs.shakingEnabled = !logs.shakingEnabled;
+
+            if (logs.shakingEnabled)
+            {
+                logsShakingButton.text = "Shaking: On";
+            }
+            else
+            {
+                logsShakingButton.text = "Shaking: Off";
+            }
+
+            PlayerPrefs.SetInt("logsShaking", logs.shakingEnabled ? 1 : 0);
+            PlayerPrefs.Save();
+        }
+
+        public void CheckLogsShaking()
+        {
+            if (PlayerPrefs.HasKey("logsShaking"))
+            {
+                logs.shakingEnabled = PlayerPrefs.GetInt("logsShaking") == 1 ? false : true; // In reverse
+
+                ToggleLogsShaking();
             }
         }
 

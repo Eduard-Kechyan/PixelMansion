@@ -13,6 +13,7 @@
     "________ INVENTORY_MENU ________": "________________",
     "menu_inventory_title": "Inventory",
     "menu_inventory_description": "Drag items from to the Inventory button to store them there. Tap on an item to put it on the board.",
+    "menu_inventory_pause":"NOTE: Timers in the Inventory are paused!",
     "menu_inventory_buy_more": "Buy more slots:",
     "menu_inventory_max_slots": "Max slots reached!",
     "________ ENERGY_MENU ________": "________________",

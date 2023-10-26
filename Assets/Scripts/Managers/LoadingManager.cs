@@ -37,14 +37,14 @@ namespace Merge
         // References
         private DataManager dataManager;
         private UserDataHandler userDataHandler;
-        //private Notifics notifics;
+        private NotificsManager notificsManager;
 
         void Start()
         {
             // Cache
             dataManager = DataManager.Instance;
             userDataHandler = GetComponent<UserDataHandler>();
-            //notifics = Services.Instance.GetComponent<Notifics>();
+            notificsManager = Services.Instance.GetComponent<NotificsManager>();
 
             // UI
             VisualElement root = uiDocument.GetComponent<UIDocument>().rootVisualElement;
@@ -109,6 +109,8 @@ namespace Merge
                 if (fillCount >= singlePhasePercent * 3 && phase == 3)
                 {
                     loading = false;
+                    ContinueLoading();
+                   /* loading = false;
                     if (PlayerPrefs.HasKey("ageAccepted"))
                     {
                         ContinueLoading();
@@ -116,7 +118,7 @@ namespace Merge
                     else
                     {
                         loadingSceneUI.CheckAge(callbackAge);
-                    }
+                    }*/
 
                     if (logPhases)
                     {
@@ -157,24 +159,22 @@ namespace Merge
 
                 // Get notification permission
                 // This phase is being checked once
-                /*if (fillCount >= singlePhasePercent*5 && phase==5)
+                if (fillCount >= singlePhasePercent * 5 && phase == 5)
                 {
                     loading = false;
 
                     // Check notifications
-                    if (SystemInfo.operatingSystem.Contains("13") && SystemInfo.operatingSystem.Contains("33"))
+                    if (SystemInfo.operatingSystem.Contains("13") && SystemInfo.operatingSystem.Contains("33") || Application.isEditor)
                     {
                         loading = false;
-                        //StartCoroutine(notifics.RequestPermission()); await Task.Delay(750);
-                        notifics.CheckNotifications();
-                        loading = true;
+                        notificsManager.CheckPermission(callback);
                     }
 
                     if (logPhases)
                     {
                         Debug.Log("Phase 5");
                     }
-                }*/
+                }
 
                 // Load next scene
                 if (fillCount >= 100f)

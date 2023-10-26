@@ -14,7 +14,7 @@ namespace Merge
     {
         // Variables
         public bool logsEnabled = true;
-        public bool shakingEnabled = true;
+        public bool shakingEnabled = false;
         public int titleHight = 20;
         public Color defaultLogColor;
 
@@ -41,10 +41,7 @@ namespace Merge
             public Color color;
         }
 
-        private List<LogData> logsData = new();
-
-        // References
-        private UIDocument logsUI;
+        private readonly List<LogData> logsData = new();
 
         // UI
         private VisualElement root;
@@ -54,6 +51,21 @@ namespace Merge
         private ScrollView logsScrollView;
         private Button clearButton;
         private Button closeButton;
+
+        // Instance
+        public static Logs Instance;
+
+        void Awake()
+        {
+            if ((Instance != null && Instance != this) || (!Debug.isDebugBuild && !Application.isEditor))
+            {
+                Destroy(this);
+            }
+            else
+            {
+                Instance = this;
+            }
+        }
 
         void OnDisable()
         {
@@ -65,13 +77,9 @@ namespace Merge
             Application.logMessageReceivedThreaded += HandleNewLog;
         }
 
-        void Start()
-        {
-            // Cache
-            logsUI = GetComponent<UIDocument>();
-
+        public void Init(UIDocument debugUI){
             // UI
-            root = logsUI.rootVisualElement;
+            root = debugUI.rootVisualElement;
             logsContainer = root.Q<VisualElement>("LogsContainer");
 
             logsTop = logsContainer.Q<VisualElement>("LogsTop");
@@ -121,7 +129,7 @@ namespace Merge
         public void Toggle()
         {
             logsOpen = !logsOpen;
-
+            
             if (logsOpen)
             {
                 Glob.StopTimeout(clearTimeout);
@@ -178,7 +186,7 @@ namespace Merge
         }
 
         void HandleNewLog(string newMessage, string newStackTrace, LogType newType)
-        {   
+        {
             LogData newLogData = new()
             {
                 message = newMessage,

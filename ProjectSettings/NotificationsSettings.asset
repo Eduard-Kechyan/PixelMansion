@@ -13,7 +13,8 @@
                 "UnityNotificationRequestAuthorizationForRemoteNotificationsOnAppLaunch",
                 "UnityRemoteNotificationForegroundPresentationOptions",
                 "UnityUseAPSReleaseEnvironment",
-                "UnityUseLocationNotificationTrigger"
+                "UnityUseLocationNotificationTrigger",
+                "UnityAddTimeSensitiveEntitlement"
             ],
             "m_Values": [
                 "True",
@@ -21,6 +22,7 @@
                 "False",
                 "False",
                 "-1",
+                "False",
                 "False",
                 "False"
             ]
@@ -36,25 +38,43 @@
                 "True",
                 "False",
                 "com.unity3d.player.UnityPlayerActivity",
-                "0"
+                "7"
             ]
         },
         "DrawableResources": [
             {
-                "Id": "small_icon",
+                "Id": "main_icon",
                 "Type": 0,
                 "Asset": {
                     "fileID": 2800000,
-                    "guid": "b351ff70d7443b143bcd7433eb7d495b",
+                    "guid": "3d176f7c073f525438a726844f358f44",
                     "type": 3
                 }
             },
             {
-                "Id": "large_icon",
+                "Id": "ready_icon",
                 "Type": 1,
                 "Asset": {
                     "fileID": 2800000,
-                    "guid": "a15d4615812546e4488d8a769952ea65",
+                    "guid": "a32c2e0d365cbbb41ac6c1e09741e80f",
+                    "type": 3
+                }
+            },
+            {
+                "Id": "open_icon",
+                "Type": 1,
+                "Asset": {
+                    "fileID": 2800000,
+                    "guid": "d4ae7f67a5c1fc341b442b8e74c35233",
+                    "type": 3
+                }
+            },
+            {
+                "Id": "energy_icon",
+                "Type": 1,
+                "Asset": {
+                    "fileID": 2800000,
+                    "guid": "c0063ad6fa3f5a047a887fd1ebe700bc",
                     "type": 3
                 }
             }

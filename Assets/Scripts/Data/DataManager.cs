@@ -47,6 +47,7 @@ namespace Merge
         [HideInInspector]
         public string finishedTasksJsonData;
         private string timersJsonData;
+        private string notificationsJsonData;
         [HideInInspector]
         public string unlockedJsonData;
         public string unlockedRoomsJsonData;
@@ -130,6 +131,7 @@ namespace Merge
                 inventoryData = dataConverter.ConvertInventoryToJson(gameData.inventoryData);
                 tasksJsonData = dataConverter.ConvertTaskGroupsToJson(gameData.tasksData);
                 timersJsonData = dataConverter.ConvertTimersToJson(gameData.timers);
+                notificationsJsonData = dataConverter.ConvertNotificationsToJson(gameData.notifications);
                 unsentJsonData = dataConverter.ConvertUnsentToJson(apiCalls.unsentData);
                 finishedTasksJsonData = JsonConvert.SerializeObject(gameData.finishedTasks);
 
@@ -150,6 +152,7 @@ namespace Merge
                     .Write("unlockedData", dataConverter.GetInitialUnlocked())
                     .Write("unlockedRoomsData", worldDataManager != null ? worldDataManager.GetInitialUnlockedRooms() : "[]")
                     .Write("timers", timersJsonData)
+                    .Write("notificationsData", notificationsJsonData)
                     // Other
                     .Write("inventorySpace", gameData.inventorySpace)
                     .Write("inventorySlotPrice", gameData.inventorySlotPrice)
@@ -175,6 +178,7 @@ namespace Merge
             string newTasksData = "";
             string newFinishedTasks = "";
             string newTimersData = "";
+            string newNotificationsData = "";
             string newUnlockedData = "";
             string newUnlockedRoomsData = "";
             string newUnsentData = "";
@@ -188,6 +192,7 @@ namespace Merge
                 newTasksData = tasksJsonData;
                 newFinishedTasks = finishedTasksJsonData;
                 newTimersData = timersJsonData;
+                newNotificationsData = notificationsJsonData;
                 newUnlockedData = unlockedJsonData;
                 newUnlockedRoomsData = unlockedRoomsJsonData;
                 newUnsentData = unsentJsonData;
@@ -208,6 +213,7 @@ namespace Merge
                 reader.Read<string>("tasksData", r => newTasksData = r);
                 reader.Read<string>("finishedTasks", r => newFinishedTasks = r);
                 reader.Read<string>("timers", r => newTimersData = r);
+                reader.Read<string>("notificationsData", r => newNotificationsData = r);
                 reader.Read<string>("unlockedData", r => newUnlockedData = r);
                 reader.Read<string>("unlockedRoomsData", r => newUnlockedRoomsData = r);
                 reader.Read<string>("unsentData", r => newUnsentData = r);
@@ -242,6 +248,7 @@ namespace Merge
             gameData.chestsData = dataConverter.ConvertItems(chests.content);
 
             gameData.timers = dataConverter.ConvertTimersFromJson(newTimersData);
+            gameData.notifications = dataConverter.ConvertNotificationsFromJson(newNotificationsData);
             gameData.boardData = dataConverter.ConvertArrayToBoard(dataConverter.ConvertBoardFromJson(newBoardData));
             gameData.bonusData = dataConverter.ConvertBonusFromJson(newBonusData);
             gameData.inventoryData = dataConverter.ConvertInventoryFromJson(newInventoryData);
@@ -296,6 +303,13 @@ namespace Merge
             string newTimers = dataConverter.ConvertTimersToJson(gameData.timers);
 
             writer.Write("timers", newTimers).Commit();
+        }
+
+        public void SaveNotifications()
+        {
+            string newNotifications = dataConverter.ConvertNotificationsToJson(gameData.notifications);
+
+            writer.Write("notificationsData", newNotifications).Commit();
         }
 
         public void SaveBonus()

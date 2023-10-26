@@ -10,6 +10,7 @@ namespace Merge
         public float moveSpeed = 14f;
         public float scaleSpeed = 8f;
         public ClockManager clockManager;
+        public TimeManager timeManager;
 
         [Tooltip("Will automatically adjust")]
         public AnimationCurve[] randomGoldCurves;
@@ -25,7 +26,6 @@ namespace Merge
         private PopupManager popupManager;
         private BoardIndication boardIndication;
         private DataManager dataManager;
-        private TimeManager timeManager;
         private GameData gameData;
         private I18n LOCALE;
         private EnergyMenu energyMenu;
@@ -43,7 +43,6 @@ namespace Merge
             boardIndication = GetComponent<BoardIndication>();
             dataManager = DataManager.Instance;
             levelMenu = GameRefs.Instance.levelMenu;
-            timeManager = TimeManager.Instance;
             gameData = GameData.Instance;
             LOCALE = I18n.Instance;
             energyMenu = GameRefs.Instance.energyMenu;

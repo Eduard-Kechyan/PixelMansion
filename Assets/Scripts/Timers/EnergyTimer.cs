@@ -136,7 +136,7 @@ namespace Merge
 
                 Types.Timer timerData = timeManager.GetEnergyTimer();
 
-                if (timerData.on)
+                if (timerData.running)
                 {
                     startDate = timerData.startTime;
                     startSeconds = timerData.seconds;

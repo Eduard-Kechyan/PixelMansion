@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3856526671071279619}
   - component: {fileID: 352704914890339314}
   - component: {fileID: 5111980928839035584}
-  - component: {fileID: 237811397895804709}
   - component: {fileID: 1537458401331318770}
   m_Layer: 0
   m_Name: DebugManager
@@ -33,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &352704914890339314
 MonoBehaviour:
@@ -65,27 +64,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boardInteractions: {fileID: 0}
   loadingManager: {fileID: 0}
-  likeMenu: {fileID: 0}
   transitionDuration: 0.1
---- !u!114 &237811397895804709
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5872986444647865221}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a16276c7ea9d8942b3f61d6e1b76ac7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  logsEnabled: 1
-  shakingEnabled: 0
-  titleHight: 20
-  defaultLogColor: {r: 0.7019608, g: 0.78039217, b: 0.83137256, a: 1}
-  debug: 1
-  toggle: 0
-  logsOpen: 0
 --- !u!114 &1537458401331318770
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -586,6 +586,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f321621033fa8c4c8321a5344743d7c, type: 3}
+--- !u!114 &555455122 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 352704914890339314, guid: f4034c2be9714cc41b0cf4ef9809c444, type: 3}
+  m_PrefabInstance: {fileID: 22735357}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &662076463 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 142857561901966347, guid: 8ef5fa76673152d4b9adea8d834064d1, type: 3}
@@ -700,25 +711,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameplayUI: {fileID: 0}
   hubUI: {fileID: 0}
+  hubGameUI: {fileID: 0}
   menuUI: {fileID: 0}
   valuesUI: {fileID: 0}
+  debugUI: {fileID: 555455122}
   gameplayUIDoc: {fileID: 0}
   hubUIDoc: {fileID: 0}
   hubGameUIDoc: {fileID: 0}
   menuUIDoc: {fileID: 0}
   valuesUIDoc: {fileID: 0}
+  confirmMenu: {fileID: 0}
   energyMenu: {fileID: 0}
   infoMenu: {fileID: 0}
   inventoryMenu: {fileID: 0}
   levelMenu: {fileID: 0}
+  rateMenu: {fileID: 0}
   noteMenu: {fileID: 0}
   settingsMenu: {fileID: 0}
   shopMenu: {fileID: 0}
   taskMenu: {fileID: 0}
   valuePop: {fileID: 0}
+  readySpeed: 1
+  clockManager: {fileID: 0}
+  infoBox: {fileID: 0}
+  boardManager: {fileID: 0}
   initialized: 0
   safeAreaHandler: {fileID: 0}
   noteDotHandler: {fileID: 0}
+  crateBreakSprites: []
+  lockOpenSprites: []
 --- !u!4 &993497632
 Transform:
   m_ObjectHideFlags: 0

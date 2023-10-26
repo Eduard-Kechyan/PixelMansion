@@ -20,7 +20,7 @@ namespace Merge
         private RateMenu rateMenu;
         private I18n LOCALE;
         private Settings settings;
-        private Notices notifics;
+      //  private Notifics notifics;
         private ResetHandler resetHandler;
 
         // UI
@@ -76,7 +76,7 @@ namespace Merge
             rateMenu = GetComponent<RateMenu>();
             LOCALE = I18n.Instance;
             settings = Settings.Instance;
-            notifics = Services.Instance.GetComponent<Notices>();
+          //  notifics = Services.Instance.GetComponent<Notifics>();
             resetHandler = GetComponent<ResetHandler>();
 
             // UI

@@ -9,13 +9,12 @@ namespace Merge
     {
         // References
         private MenuUI menuUI;
+        private I18n LOCALE;
 
         // UI
         private VisualElement root;
         private VisualElement noteMenu;
         private VisualElement menuContent;
-
-        private I18n LOCALE;
 
         void Start()
         {

@@ -140,6 +140,7 @@
                             <ui:VisualElement name="Value" class="value" style="background-image: url(&apos;project://database/Assets/Sprites/Values/SmallGold.png?fileID=2800000&amp;guid=9927c70a39873234ead5f8d41fb591bf&amp;type=3#SmallGold&apos;);" />
                         </ui:Button>
                     </ui:VisualElement>
+                    <ui:Label tabindex="-1" text="Paused" display-tooltip-when-elided="true" name="PauseLabel" class="menu_label" style="margin-top: 5px; margin-bottom: 0; font-size: 6px;" />
                 </ui:VisualElement>
                 <ui:VisualElement name="BorderBottom" class="border_bottom" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuBorderBottom.png?fileID=2800000&amp;guid=80923a0de08b2cb4ca2cad385b4f59c7&amp;type=3#MenuBorderBottom&apos;);" />
                 <ui:VisualElement name="ShadowDot" class="shadow_dot" />

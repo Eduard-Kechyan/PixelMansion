@@ -44,14 +44,108 @@ SpriteAtlas:
       enableAlphaDilation: 0
     secondaryTextureSettings: {}
     variantMultiplier: 1
-    packables: []
+    packables:
+    - {fileID: 102900000, guid: b287e26bd913af24293632aaeb477dd4, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
-    packedSpriteRenderDataKeys: []
+    packedSpriteRenderDataKeys:
+    - c8062c102cc839f4ba6db1c68b782c03: 21300000
+    - 3a30e2d0c41d7d944998714f91450bd6: 25909703
+    - 3a30e2d0c41d7d944998714f91450bd6: -24004613
+    - 3a30e2d0c41d7d944998714f91450bd6: 582241861
+    - 3a30e2d0c41d7d944998714f91450bd6: -2080925376
+    - 1c7c7461fb449e748864b63e8d6d22d1: 21300000
+    - 1d0028721c85c0e4291294d613c8103d: 21300000
+    - 5889a0a2b4de54b42ae7c45d4adf1e0a: 21300000
+    - 738a22a3b8e6c9d49959bb6bd14fad0f: 659565183
+    - 738a22a3b8e6c9d49959bb6bd14fad0f: -41857420
+    - 738a22a3b8e6c9d49959bb6bd14fad0f: 245273580
+    - 738a22a3b8e6c9d49959bb6bd14fad0f: 2027211438
+    - 738a22a3b8e6c9d49959bb6bd14fad0f: -1821375194
+    - 738a22a3b8e6c9d49959bb6bd14fad0f: 1917365507
+    - 47c024a3d93ed024682db3aea79ab753: 21300000
+    - 24854bc316a55d14f9e9432226be36f0: 21300000
+    - 10ae97084fab2e84aa049483478f1099: 21300000
+    - f71e5ad897003bf4b9546bbf9fe1d382: 21300000
+    - 54a459897a9654e438b730019c89f977: 21300000
+    - a47610faeca58b3499fb8790b4d36113: 21300000
+    - 4780be5b5da79ed44b59725a93db5c9b: 590581419
+    - 4780be5b5da79ed44b59725a93db5c9b: 436150994
+    - 4780be5b5da79ed44b59725a93db5c9b: -1299078420
+    - 4780be5b5da79ed44b59725a93db5c9b: 1184151187
+    - 3078797be50a44a4c81503a76b206c67: 1862503040
+    - 3078797be50a44a4c81503a76b206c67: -245944086
+    - 3078797be50a44a4c81503a76b206c67: 1900683017
+    - 3078797be50a44a4c81503a76b206c67: 1066697082
+    - a3863c2f2ff768542adf220576e55519: -204737844
+    - a3863c2f2ff768542adf220576e55519: 452446565
+    - a3863c2f2ff768542adf220576e55519: 989579714
   m_MasterAtlas: {fileID: 0}
-  m_PackedSprites: []
-  m_PackedSpriteNamesToIndex: []
+  m_PackedSprites:
+  - {fileID: 21300000, guid: c8062c102cc839f4ba6db1c68b782c03, type: 3}
+  - {fileID: 25909703, guid: 3a30e2d0c41d7d944998714f91450bd6, type: 3}
+  - {fileID: -24004613, guid: 3a30e2d0c41d7d944998714f91450bd6, type: 3}
+  - {fileID: 582241861, guid: 3a30e2d0c41d7d944998714f91450bd6, type: 3}
+  - {fileID: -2080925376, guid: 3a30e2d0c41d7d944998714f91450bd6, type: 3}
+  - {fileID: 21300000, guid: 1c7c7461fb449e748864b63e8d6d22d1, type: 3}
+  - {fileID: 21300000, guid: 1d0028721c85c0e4291294d613c8103d, type: 3}
+  - {fileID: 21300000, guid: 5889a0a2b4de54b42ae7c45d4adf1e0a, type: 3}
+  - {fileID: 659565183, guid: 738a22a3b8e6c9d49959bb6bd14fad0f, type: 3}
+  - {fileID: -41857420, guid: 738a22a3b8e6c9d49959bb6bd14fad0f, type: 3}
+  - {fileID: 245273580, guid: 738a22a3b8e6c9d49959bb6bd14fad0f, type: 3}
+  - {fileID: 2027211438, guid: 738a22a3b8e6c9d49959bb6bd14fad0f, type: 3}
+  - {fileID: -1821375194, guid: 738a22a3b8e6c9d49959bb6bd14fad0f, type: 3}
+  - {fileID: 1917365507, guid: 738a22a3b8e6c9d49959bb6bd14fad0f, type: 3}
+  - {fileID: 21300000, guid: 47c024a3d93ed024682db3aea79ab753, type: 3}
+  - {fileID: 21300000, guid: 24854bc316a55d14f9e9432226be36f0, type: 3}
+  - {fileID: 21300000, guid: 10ae97084fab2e84aa049483478f1099, type: 3}
+  - {fileID: 21300000, guid: f71e5ad897003bf4b9546bbf9fe1d382, type: 3}
+  - {fileID: 21300000, guid: 54a459897a9654e438b730019c89f977, type: 3}
+  - {fileID: 21300000, guid: a47610faeca58b3499fb8790b4d36113, type: 3}
+  - {fileID: 590581419, guid: 4780be5b5da79ed44b59725a93db5c9b, type: 3}
+  - {fileID: 436150994, guid: 4780be5b5da79ed44b59725a93db5c9b, type: 3}
+  - {fileID: -1299078420, guid: 4780be5b5da79ed44b59725a93db5c9b, type: 3}
+  - {fileID: 1184151187, guid: 4780be5b5da79ed44b59725a93db5c9b, type: 3}
+  - {fileID: 1862503040, guid: 3078797be50a44a4c81503a76b206c67, type: 3}
+  - {fileID: -245944086, guid: 3078797be50a44a4c81503a76b206c67, type: 3}
+  - {fileID: 1900683017, guid: 3078797be50a44a4c81503a76b206c67, type: 3}
+  - {fileID: 1066697082, guid: 3078797be50a44a4c81503a76b206c67, type: 3}
+  - {fileID: -204737844, guid: a3863c2f2ff768542adf220576e55519, type: 3}
+  - {fileID: 452446565, guid: a3863c2f2ff768542adf220576e55519, type: 3}
+  - {fileID: 989579714, guid: a3863c2f2ff768542adf220576e55519, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - ClockBG
+  - Crate1Breaking_3
+  - Crate1Breaking_2
+  - Crate1Breaking_1
+  - Crate1Breaking_0
+  - Bubble
+  - Clock
+  - Locker
+  - Shine_1
+  - Shine_0
+  - Shine_3
+  - Shine_2
+  - Shine_5
+  - Shine_4
+  - Completion
+  - Crate2
+  - Crate3
+  - Crate1
+  - Ready
+  - Selection
+  - Crate3Breaking_1
+  - Crate3Breaking_0
+  - Crate3Breaking_3
+  - Crate3Breaking_2
+  - Crate2Breaking_0
+  - Crate2Breaking_1
+  - Crate2Breaking_2
+  - Crate2Breaking_3
+  - LockerOpening_0
+  - LockerOpening_1
+  - LockerOpening_2
   m_RenderDataMap: {}
   m_Tag: ItemExtrasAtlas
   m_IsVariant: 0

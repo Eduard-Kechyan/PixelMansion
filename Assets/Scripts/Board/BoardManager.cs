@@ -10,7 +10,6 @@ namespace Merge
         // Variables
         public float moveSpeed = 14f;
         public float scaleSpeed = 8f;
-        public float readySpeed = 1f;
         public int experienceThreshold = 4;
 
         [ReadOnly]
@@ -33,7 +32,6 @@ namespace Merge
         private GameData gameData;
         private ItemHandler itemHandler;
         private ValuePop valuePop;
-        private TimeManager timeManager;
 
         void Start()
         {
@@ -46,9 +44,6 @@ namespace Merge
             gameData = GameData.Instance;
             itemHandler = dataManager.GetComponent<ItemHandler>();
             valuePop = GameRefs.Instance.valuePop;
-            timeManager = TimeManager.Instance;
-
-            timeManager.boardManager = this;
         }
 
 #if UNITY_EDITOR
@@ -182,8 +177,7 @@ namespace Merge
                 gemPopped = newItem.gemPopped,
                 isCompleted = newItem.isCompleted,
                 timerOn = newItem.timerOn,
-                timerStartTime = newItem.timerStartTime,
-                timerSeconds = newItem.timerSeconds,
+                id = newItem.id,
             };
 
             gameData.boardData[newLoc.x, newLoc.y] = new()
@@ -200,8 +194,7 @@ namespace Merge
                 gemPopped = newItem.gemPopped,
                 isCompleted = newItem.isCompleted,
                 timerOn = oldItem.timerOn,
-                timerStartTime = oldItem.timerStartTime,
-                timerSeconds = oldItem.timerSeconds,
+                id = oldItem.id,
             };
 
             // Save the board to disk
@@ -235,8 +228,7 @@ namespace Merge
                 gemPopped = newItem.gemPopped,
                 isCompleted = newItem.isCompleted,
                 timerOn = newItem.timerOn,
-                timerStartTime = newItem.timerStartTime,
-                timerSeconds = newItem.timerSeconds,
+                id = newItem.id,
             };
 
             // Save the board to disk
@@ -265,7 +257,7 @@ namespace Merge
 
         public void ToggleTimerOnItem(int order, bool enable)
         {
-            boardTiles.transform.GetChild(order).GetChild(0).GetComponent<Item>().ToggleTimer(enable, readySpeed);
+            boardTiles.transform.GetChild(order).GetChild(0).GetComponent<Item>().ToggleTimer(enable);
         }
 
         /////// CRATE ////////
@@ -404,22 +396,49 @@ namespace Merge
             Types.BoardEmpty emptyBoard,
             Vector2 initialPosition,
             bool canUnlock = true,
-            bool useEnergy = false
+            bool useEnergy = false,
+            Types.Inventory inventoryItem = null,
+            Action<Vector2> callBack = null
         )
         {
             GameObject emptyTile = boardTiles.transform.GetChild(emptyBoard.order).gameObject;
 
-            Types.Board boardItem = new()
+            Types.Board boardItem;
+
+            if (inventoryItem != null && itemData == null)
             {
-                sprite = itemData.sprite,
-                type = itemData.type,
-                group = itemData.group,
-                genGroup = itemData.genGroup,
-                collGroup = itemData.collGroup,
-                chestGroup = itemData.chestGroup,
-                gemPopped = itemData.gemPopped,
-                id = Guid.NewGuid().ToString()
-            };
+                boardItem = new()
+                {
+                    sprite = inventoryItem.sprite,
+                    type = inventoryItem.type,
+                    group = inventoryItem.group,
+                    genGroup = inventoryItem.genGroup,
+                    chestGroup = inventoryItem.chestGroup,
+                    gemPopped = inventoryItem.gemPopped,
+                    timerOn = inventoryItem.timerOn,
+                    isCompleted = inventoryItem.isCompleted,
+                    id = inventoryItem.id
+                };
+            }
+            else
+            {
+                boardItem = new()
+                {
+                    sprite = itemData.sprite,
+                    type = itemData.type,
+                    group = itemData.group,
+                    genGroup = itemData.genGroup,
+                    collGroup = itemData.collGroup,
+                    chestGroup = itemData.chestGroup,
+                    gemPopped = itemData.gemPopped,
+                    id = ""
+                };
+            }
+
+            if (boardItem.id == "")
+            {
+                boardItem.id = Guid.NewGuid().ToString();
+            }
 
             // Create the item on the board
             Item newItem = itemHandler.CreateItem(emptyTile, initializeBoard.tileSize, boardItem);
@@ -439,7 +458,13 @@ namespace Merge
 
             newItem.transform.localScale = Vector2.zero;
 
-            newItem.MoveAndScale(emptyTile.transform.position, tempScale, moveSpeed, scaleSpeed);
+            newItem.MoveAndScale(emptyTile.transform.position, tempScale, moveSpeed, scaleSpeed, () =>
+            {
+                if (callBack != null)
+                {
+                    callBack(newItem.transform.position);
+                }
+            });
 
             gameData.boardData[emptyBoard.loc.x, emptyBoard.loc.y] = new()
             {
@@ -450,6 +475,9 @@ namespace Merge
                 collGroup = newItem.collGroup,
                 chestGroup = newItem.chestGroup,
                 gemPopped = newItem.gemPopped,
+                timerOn = inventoryItem != null ? inventoryItem.timerOn : false,
+                isCompleted = inventoryItem != null ? inventoryItem.isCompleted : false,
+                id = newItem.id,
                 state = newItem.state,
                 crate = 0,
                 order = emptyBoard.order

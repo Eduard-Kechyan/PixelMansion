@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,7 @@ namespace Merge
         public BoardManager boardManager;
         public int newSlotPrice = 50;
         public float slotPriceMultiplier = 0.5f;
+        public TimeManager timeManager;
 
         // References
         private MenuUI menuUI;
@@ -35,6 +37,7 @@ namespace Merge
         private VisualElement slotsContainer;
         private Label amountLabel;
         private Label descriptionLabel;
+        private Label pauseLabel;
         private VisualElement buyMoreContainer;
         private Button buyMoreButton;
         private Label buyMoreLabel;
@@ -70,6 +73,7 @@ namespace Merge
 
             amountLabel = inventoryMenu.Q<Label>("AmountLabel");
             descriptionLabel = inventoryMenu.Q<Label>("DescriptionLabel");
+            pauseLabel = inventoryMenu.Q<Label>("PauseLabel");
 
             buyMoreContainer = inventoryMenu.Q<VisualElement>("BuyMoreContainer");
             buyMoreLabel = buyMoreContainer.Q<Label>("BuyMoreLabel");
@@ -85,6 +89,12 @@ namespace Merge
             // Make sure the menu is closed
             inventoryMenu.style.display = DisplayStyle.None;
             inventoryMenu.style.opacity = 0;
+
+            // Description
+            descriptionLabel.text = LOCALE.Get("menu_inventory_description");
+
+            // Pause
+            pauseLabel.text = LOCALE.Get("menu_inventory_pause");
         }
 
         public void Open()
@@ -103,9 +113,6 @@ namespace Merge
         {
             // Amount
             amountLabel.text = gameData.inventoryData.Count + "/" + gameData.inventorySpace;
-
-            // Description
-            descriptionLabel.text = LOCALE.Get("menu_inventory_description");
 
             // Container content
             for (int i = 0; i < gameData.inventorySpace; i++)
@@ -164,7 +171,7 @@ namespace Merge
         {
             int amount = int.Parse(buyMoreButton.text);
 
-            if (gameData.UpdateValue( -amount, Types.CollGroup.Gold, false, true))
+            if (gameData.UpdateValue(-amount, Types.CollGroup.Gold, false, true))
             {
                 gameData.inventorySpace++;
 
@@ -231,6 +238,7 @@ namespace Merge
             {
                 slot.Clear();
 
+                Types.Inventory inventoryItem = gameData.inventoryData[order];
 
                 // Pop out the item
                 valuePop.PopInventoryItem(
@@ -239,19 +247,29 @@ namespace Merge
                     uiButtons.gameplayBonusButtonPos,
                     () =>
                     {
-                        Types.ItemData itemData = GetItemData(gameData.inventoryData[order]);
-
-                        boardManager.CreateItemOnEmptyTile(itemData, emptyBoard[0], uiButtons.gameplayBonusButtonPos, false);
-
-                        gameData.inventoryData.RemoveAt(order);
-
-                        dataManager.SaveInventory();
+                        Debug.Log(inventoryItem.id);
+                        boardManager.CreateItemOnEmptyTile(null, emptyBoard[0], uiButtons.gameplayBonusButtonPos, false, false, inventoryItem, (Vector2 position) =>
+                        {
+                            if (inventoryItem.timerOn && inventoryItem.type == Types.Type.Gen)
+                            {
+                                timeManager.ItemTakenOutOfInventoryAfter(position, inventoryItem.id);
+                            }
+                        });
 
                         ClearData();
 
                         SetUI();
                     }
                 );
+
+                if (inventoryItem.timerOn && inventoryItem.type == Types.Type.Gen)
+                {
+                    timeManager.ItemTakenOutOfInventory(inventoryItem.id);
+                }
+
+                gameData.inventoryData.RemoveAt(order);
+
+                dataManager.SaveInventory();
             }
             else
             {
@@ -265,7 +283,7 @@ namespace Merge
 
         Types.ItemData GetItemData(Types.Inventory inventoryItem)
         {
-            Types.ItemData newItemData = new Types.ItemData();
+            Types.ItemData newItemData = new();
 
             if (inventoryItem.type == Types.Type.Item)
             {
@@ -300,8 +318,6 @@ namespace Merge
                     }
                 }
             }
-
-
 
             return newItemData;
         }
@@ -342,7 +358,19 @@ namespace Merge
                             group = item.group,
                             genGroup = item.genGroup,
                             chestGroup = item.chestGroup,
+                            id = item.id,
+                            gemPopped = item.gemPopped,
                         };
+
+                        if (item.type == Types.Type.Gen && item.timerOn)
+                        {
+                            DateTime altTime = DateTime.UtcNow;
+
+                            newInventoryItem.timerOn = true;
+                            newInventoryItem.timerAltTime = altTime;
+
+                            timeManager.ItemPutIntoInventory(item.id, altTime);
+                        }
 
                         gameData.inventoryData.Add(newInventoryItem);
 
@@ -360,6 +388,7 @@ namespace Merge
                         int order = gameData.boardData[loc.x, loc.y].order;
 
                         gameData.boardData[loc.x, loc.y] = new Types.Board { order = order };
+
 
                         dataManager.SaveBoard();
 

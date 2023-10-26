@@ -15,9 +15,9 @@ namespace Merge
         public HubGameUI hubGameUI;
         public MenuUI menuUI;
         public ValuesUI valuesUI;
+        public UIDocument debugUI;
 
         // UI documents
-        [Header("UI Documents")]
         [HideInInspector]
         public UIDocument gameplayUIDoc;
 
@@ -68,6 +68,12 @@ namespace Merge
         public ValuePop valuePop;
 
         // Other
+        [Header("Other")]
+        public float readySpeed = 1f;
+        public ClockManager clockManager;
+        public InfoBox infoBox;
+        public BoardManager boardManager;
+
         [HideInInspector]
         public bool initialized = false;
 
@@ -84,6 +90,8 @@ namespace Merge
         }
 
         public SpriteArray[] crateBreakSprites;
+
+        public Sprite[] lockOpenSprites;
 
         // Instance
         public static GameRefs Instance;
@@ -135,6 +143,11 @@ namespace Merge
                 taskMenu = menuUI.GetComponent<TaskMenu>();
 
                 valuePop = menuUI.GetComponent<ValuePop>();
+            }
+
+            if (debugUI != null && Logs.Instance != null)
+            {
+                Logs.Instance.Init(debugUI);
             }
 
             initialized = true;

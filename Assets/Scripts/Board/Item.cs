@@ -54,8 +54,6 @@ namespace Merge
 
         // Timer
         public bool timerOn;
-        public int timerSeconds;
-        public string timerStartTime;
         public Types.CoolDown coolDown;
 
         [HideInInspector]
@@ -205,6 +203,8 @@ namespace Merge
 
                         itemChild.GetComponent<SpriteRenderer>().sortingOrder = 1;
                         gameObject.layer = LayerMask.NameToLayer("Item");
+
+                        callback?.Invoke(); // Null propagation
                     }
                 }
 
@@ -256,44 +256,43 @@ namespace Merge
 
         void CheckChildren()
         {
-            if (state == Types.State.Default)
+            switch (state)
             {
-                lockerChild.SetActive(false);
-                crateChild.SetActive(false);
-                itemChild.SetActive(true); //
-                bubbleChild.SetActive(false);
+                case Types.State.Default:
+                    lockerChild.SetActive(false);
+                    crateChild.SetActive(false);
+                    itemChild.SetActive(true); //
+                    bubbleChild.SetActive(false);
+                    break;
+                case Types.State.Crate:
+                    crateChild.SetActive(true); //
+                    itemChild.SetActive(false);
+                    bubbleChild.SetActive(false);
+                    break;
+                case Types.State.Locker:
+                    lockerChild.SetActive(true); //
+                    crateChild.SetActive(false);
+                    itemChild.SetActive(true); //
+                    bubbleChild.SetActive(false);
+                    break;
+                case Types.State.Bubble:
+                    lockerChild.SetActive(false);
+                    crateChild.SetActive(false);
+                    itemChild.SetActive(true); //
+                    bubbleChild.SetActive(true); //
+                    break;
             }
 
-            if (state == Types.State.Crate)
+            if (type == Types.Type.Gen)
             {
-                crateChild.SetActive(true); //
-                itemChild.SetActive(false);
-                bubbleChild.SetActive(false);
-            }
-
-            if (state == Types.State.Locker)
-            {
-                lockerChild.SetActive(true); //
-                crateChild.SetActive(false);
-                itemChild.SetActive(true);
-                bubbleChild.SetActive(false);
-            }
-
-            if (state == Types.State.Bubble)
-            {
-                lockerChild.SetActive(false);
-                crateChild.SetActive(false);
-                itemChild.SetActive(false);
-                bubbleChild.SetActive(true); //
-            }
-
-            if (timerOn && level >= generatesAt)
-            {
-                readyChild.SetActive(false);
-            }
-            else
-            {
-                readyChild.SetActive(true); //
+                if (timerOn && level >= generatesAt)
+                {
+                    readyChild.SetActive(false);
+                }
+                else
+                {
+                    readyChild.SetActive(true); //
+                }
             }
 
             if (isCompleted)
@@ -306,7 +305,7 @@ namespace Merge
             }
         }
 
-        public void ToggleTimer(bool enable, float newSpeed = 1f)
+        public void ToggleTimer(bool enable)
         {
             timerOn = enable;
 
@@ -322,7 +321,7 @@ namespace Merge
                 {
                     if (level >= generatesAt)
                     {
-                        AnimateReady(newSpeed);
+                        AnimateReady();
                     }
                 }
             }
@@ -385,7 +384,7 @@ namespace Merge
         {
             if (crateChild == null)
             {
-                crateChild = transform.GetChild(2).gameObject; // Crate
+                crateChild = transform.GetChild(1).gameObject; // Crate
             }
 
             crateChild.GetComponent<SpriteRenderer>().sprite = newSprite;
@@ -403,19 +402,19 @@ namespace Merge
 
         IEnumerator WaitForLockToOpenAnimation(float lockOpenSpeed)
         {
-            GameRefs.SpriteArray[] crateBreakSprites = GameRefs.Instance.crateBreakSprites;
+            Sprite[] lockOpenSprites = GameRefs.Instance.lockOpenSprites;
 
             WaitForSeconds wait = new(lockOpenSpeed);
 
-            lockSpriteRenderer.sprite = crateBreakSprites[crate].content[0];
+            lockSpriteRenderer.sprite = lockOpenSprites[0];
 
             yield return wait;
 
-            lockSpriteRenderer.sprite = crateBreakSprites[crate].content[1];
+            lockSpriteRenderer.sprite = lockOpenSprites[1];
 
             yield return wait;
 
-            lockSpriteRenderer.sprite = crateBreakSprites[crate].content[2];
+            lockSpriteRenderer.sprite = lockOpenSprites[2];
 
             yield return wait;
 
@@ -551,13 +550,13 @@ namespace Merge
             StopCoroutine(WaitForItemSelectAnimation());
         }
 
-        void AnimateReady(float newSpeed = 1f)
+        void AnimateReady()
         {
             readyChild.SetActive(true);
 
             isReadyPlaying = true;
 
-            animReady["GenReady"].speed = newSpeed;
+            animReady["GenReady"].speed = GameRefs.Instance.readySpeed;
             animReady.Play("GenReady");
         }
 
@@ -616,7 +615,8 @@ namespace Merge
             Vector2 newPos,
             Vector2 newScale,
             float newMoveSpeed,
-            float newScaleSpeed
+            float newScaleSpeed,
+            Action newCallback = null
         )
         {
             isMovingAndScaling = true;
@@ -624,6 +624,7 @@ namespace Merge
             scale = newScale;
             moveSpeed = newMoveSpeed;
             scaleSpeed = newScaleSpeed;
+            callback = newCallback;
         }
     }
 }
