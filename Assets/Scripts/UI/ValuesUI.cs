@@ -8,7 +8,6 @@ namespace Merge
 {
     public class ValuesUI : MonoBehaviour
     {
-        public EnergyTimer energyTimer;
         public Sprite[] levelUpIndicatorSprites = new Sprite[0];
 
         // Variables
@@ -34,6 +33,8 @@ namespace Merge
         private EnergyMenu energyMenu;
         private ShopMenu shopMenu;
         private SafeAreaHandler safeAreaHandler;
+        [HideInInspector]
+        public EnergyTimer energyTimer;
 
         // Instances
         private GameData gameData;
@@ -143,7 +144,7 @@ namespace Merge
 
         void HandleEnergyTimer()
         {
-            if (energyTimer.timerOn)
+            if (energyTimer != null && energyTimer.timerOn)
             {
                 if (energyTimer.timeout > 0)
                 {

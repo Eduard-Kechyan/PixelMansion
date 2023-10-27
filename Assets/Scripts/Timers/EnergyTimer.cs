@@ -44,6 +44,8 @@ namespace Merge
             dataManager = DataManager.Instance;
             valuesUI = GameRefs.Instance.valuesUI;
 
+            valuesUI.energyTimer = this;
+
             // Change the time if we are in dev mode
 #if UNITY_EDITOR
             if (devMode)
@@ -117,7 +119,10 @@ namespace Merge
 
                     Glob.StopTimeout(counterCoroutine);
 
-                    StopCoroutine(HandleTimer());
+                    if (this != null)
+                    {
+                        StopCoroutine(HandleTimer());
+                    }
                 }
                 else
                 {

@@ -271,7 +271,7 @@ namespace Merge
             }
             else
             {
-                energyTimerChecked = true; 
+                energyTimerChecked = true;
             }
         }
 
@@ -405,15 +405,18 @@ namespace Merge
 
         public void AddEnergyTimer(int seconds)
         {
-            RemoveEnergyTimer(false);
+            int pastSeconds = RemoveEnergyTimer(false);
+
+            pastSeconds+=seconds;
+
             DateTime startTime = DateTime.UtcNow;
 
-            int notificationId = notificsManager.Add(Types.NotificationType.Energy, startTime.AddSeconds(seconds));
+            int notificationId = notificsManager.Add(Types.NotificationType.Energy, startTime.AddSeconds(pastSeconds));
 
             Types.Timer newEnergyTimer = new()
             {
                 startTime = DateTime.UtcNow,
-                seconds = seconds,
+                seconds = pastSeconds,
                 id = "energy_timer",
                 type = Types.TimerType.Energy,
                 notificationId = notificationId
@@ -424,15 +427,21 @@ namespace Merge
             dataManager.SaveTimers();
         }
 
-        public void RemoveEnergyTimer(bool save = true)
+        public int RemoveEnergyTimer(bool save = true)
         {
+            int seconds = 0;
+
             for (int i = gameData.timers.Count - 1; i >= 0; i--)
             {
                 if (gameData.timers[i].type == Types.TimerType.Energy)
                 {
+                    seconds = gameData.timers[i].seconds;
+
                     notificsManager.Remove(gameData.timers[i].notificationId);
 
                     gameData.timers.Remove(gameData.timers[i]);
+
+                    break;
                 }
             }
 
@@ -440,6 +449,8 @@ namespace Merge
             {
                 dataManager.SaveTimers();
             }
+
+            return seconds;
         }
     }
 }
