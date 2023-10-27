@@ -2,7 +2,7 @@
     <Style src="project://database/Assets/UI/Styles/ValuesStyles.uss?fileID=7433441132597879392&amp;guid=fdd662583d3420b43a2f35180b16b042&amp;type=3#ValuesStyles" />
     <ui:VisualElement name="ValuesBox" class="values_box">
         <ui:VisualElement name="Values" class="values">
-            <ui:Button display-tooltip-when-elided="true" name="LevelButton" class="value_button level_button" style="background-image: url(&apos;project://database/Assets/Sprites/Values/ValueLevel.png?fileID=2800000&amp;guid=db2a0b434fd00d148947a026afc58439&amp;type=3#ValueLevel&apos;);">
+            <ui:Button display-tooltip-when-elided="true" name="LevelButton" class="value_button level_button" style="background-image: url(&apos;project://database/Assets/Sprites/Values/ValueLevel.png?fileID=2800000&amp;guid=db2a0b434fd00d148947a026afc58439&amp;type=3#ValueLevel&apos;); padding-bottom: 0;">
                 <ui:VisualElement name="Indicator" class="indicator" />
                 <ui:VisualElement name="FillContainer" class="fill_container" style="background-image: none; display: flex;">
                     <ui:VisualElement name="Fill" class="fill" style="background-image: none; width: 50%; display: flex;" />
@@ -11,20 +11,20 @@
                 <ui:VisualElement name="Extra" class="extra" style="background-image: url(&apos;project://database/Assets/Sprites/Values/ValueLevelExtra.png?fileID=2800000&amp;guid=7376b57cbcfa0cf4784e7a2a910b2c38&amp;type=3#ValueLevelExtra&apos;);" />
                 <ui:Label tabindex="-1" text="00" display-tooltip-when-elided="true" name="Value" class="value" />
             </ui:Button>
-            <ui:Button display-tooltip-when-elided="true" name="EnergyButton" text="0000" class="value_button energy_button" style="background-image: url(&apos;project://database/Assets/Sprites/Values/ValueBox.png?fileID=2800000&amp;guid=7f2582712c649454cac7fdacf465ec27&amp;type=3#ValueBox&apos;); overflow: hidden;">
+            <ui:Button display-tooltip-when-elided="true" name="EnergyButton" text="0000" class="value_button energy_button">
                 <ui:VisualElement name="Slash" class="slash" />
                 <ui:VisualElement name="Item" style="background-image: url(&apos;project://database/Assets/Sprites/Values/ValueBoxEnergy.png?fileID=2800000&amp;guid=ddd9df73c1cda4346ade788ba7efec3b&amp;type=3#ValueBoxEnergy&apos;); width: 18px; height: 18px; position: absolute; top: 0; left: 0;" />
                 <ui:VisualElement name="Plus" class="plus" style="background-image: url(&apos;project://database/Assets/Sprites/Values/ValuePlus.png?fileID=2800000&amp;guid=c164332ef8545e14c804928c22c83a7b&amp;type=3#ValuePlus&apos;);" />
                 <ui:Label tabindex="-1" text="00:00" display-tooltip-when-elided="true" name="EnergyTimer" enable-rich-text="false" class="timer" />
                 <ui:VisualElement name="Edge" class="edge" />
             </ui:Button>
-            <ui:Button display-tooltip-when-elided="true" name="GoldButton" text="0000" class="value_button gold_button" style="background-image: url(&apos;project://database/Assets/Sprites/Values/ValueBox.png?fileID=2800000&amp;guid=7f2582712c649454cac7fdacf465ec27&amp;type=3#ValueBox&apos;); overflow: hidden;">
+            <ui:Button display-tooltip-when-elided="true" name="GoldButton" text="0000" class="value_button gold_button" style="overflow: hidden;">
                 <ui:VisualElement name="Slash" class="slash" />
                 <ui:VisualElement name="Item" style="background-image: url(&apos;project://database/Assets/Sprites/Values/ValueBoxGold.png?fileID=2800000&amp;guid=c1cd829e51693f342ab508d6f519052f&amp;type=3#ValueBoxGold&apos;); position: absolute; left: 0; top: 0; width: 18px; height: 18px;" />
                 <ui:VisualElement name="Plus" class="plus" style="background-image: url(&apos;project://database/Assets/Sprites/Values/ValuePlus.png?fileID=2800000&amp;guid=c164332ef8545e14c804928c22c83a7b&amp;type=3#ValuePlus&apos;);" />
                 <ui:VisualElement name="Edge" class="edge" />
             </ui:Button>
-            <ui:Button display-tooltip-when-elided="true" name="GemsButton" text="0000" class="value_button gems_button" style="background-image: url(&apos;project://database/Assets/Sprites/Values/ValueBox.png?fileID=2800000&amp;guid=7f2582712c649454cac7fdacf465ec27&amp;type=3#ValueBox&apos;); overflow: hidden;">
+            <ui:Button display-tooltip-when-elided="true" name="GemsButton" text="0000" class="value_button gems_button" style="overflow: hidden;">
                 <ui:VisualElement name="Slash" class="slash" />
                 <ui:VisualElement name="Item" style="background-image: url(&apos;project://database/Assets/Sprites/Values/ValueBoxGems.png?fileID=2800000&amp;guid=33008d2d55001e24b9e3d814fc8c0a30&amp;type=3#ValueBoxGems&apos;); width: 18px; height: 18px; position: absolute; left: 0; top: 0;" />
                 <ui:VisualElement name="Plus" class="plus" style="background-image: url(&apos;project://database/Assets/Sprites/Values/ValuePlus.png?fileID=2800000&amp;guid=c164332ef8545e14c804928c22c83a7b&amp;type=3#ValuePlus&apos;);" />

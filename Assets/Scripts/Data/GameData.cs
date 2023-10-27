@@ -11,7 +11,6 @@ namespace Merge
     {
         // Variables
         public ValuesData valuesData;
-        public EnergyTimer energyTimer;
         public float countFPS = 10f;
         public float numberIncreaseDuration = 1f;
 
@@ -41,6 +40,9 @@ namespace Merge
         public int energy = 100;
         public int gold = 100;
         public int gems = 100;
+
+        [HideInInspector]
+        public int energyTemp = 100;
 
         private bool updatingEnergy = false;
         private bool updatingGold = false;
@@ -115,6 +117,10 @@ namespace Merge
         private Sprite[] collectablesSprites;
         private Sprite[] chestsSprites;
         private Sprite[] taskSprites;
+
+        // Events
+        public delegate void EnergyUpdatedEvent(bool addTimer);
+        public static event EnergyUpdatedEvent EnergyUpdatedEventAction;
 
         // References
         private ValuesUI valuesUI;
@@ -211,6 +217,7 @@ namespace Merge
         public void SetEnergy(int amount, bool slash = false)
         {
             energy = amount;
+            energyTemp = amount;
 
             if (valuesUI != null)
             {
@@ -221,6 +228,8 @@ namespace Merge
             {
                 valuesUI.SlashValues(Types.CollGroup.Energy);
             }
+
+            EnergyUpdatedEventAction?.Invoke(true);
         }
 
         public void SetGold(int amount, bool slash = false)
@@ -280,9 +289,9 @@ namespace Merge
 
             valuesUI.UpdateLevel(callback);
 
-            if (energy < 100)
+            if (energy < MAX_ENERGY)
             {
-                SetEnergy(100, true);
+                SetEnergy(MAX_ENERGY, true);
             }
         }
 
@@ -340,6 +349,13 @@ namespace Merge
                 default: //Types.CollGroup.Experience
                     UpdateExperience(tempAmount);
                     return false;
+            }
+
+            if (type == Types.CollGroup.Energy)
+            {
+                energyTemp = CalcNewAmount(amount, type, useMultiplier);
+
+                EnergyUpdatedEventAction?.Invoke(true);
             }
 
             dataManager.writer.Write(type.ToString().ToLower(), tempAmount).Commit();
@@ -437,7 +453,6 @@ namespace Merge
                         return experience + amount;
                     }
             }
-
         }
 
         IEnumerator UpdateNumber(Types.CollGroup type, int amount, int newAmount, bool slash)
@@ -477,12 +492,6 @@ namespace Merge
                     valuesUI.SlashValues(type);
                 }
 
-                if (type == Types.CollGroup.Energy)
-                {
-                    // TODO - Check this
-                    // energyTimer.Check();
-                }
-
                 SetUpdating(type, false);
             }
             else
@@ -506,12 +515,6 @@ namespace Merge
                 if (slash)
                 {
                     valuesUI.SlashValues(type);
-                }
-
-                if (type == Types.CollGroup.Energy)
-                {
-                    // TODO - Check this
-                    // energyTimer.Check();
                 }
 
                 SetUpdating(type, false);

@@ -112,7 +112,7 @@ namespace Merge
                         PlayerPrefs.Save();
 
                         settingsMenu.SetUIOptionsButtons();
-                        // TODO - Clear scheduled notifications
+                        notificsManager.EnableNotifications();
                     }
                     else
                     {
@@ -123,6 +123,8 @@ namespace Merge
             }
             else
             {
+                notificsManager.DisableNotifications();
+
                 PlayerPrefs.SetInt("notifications", 0);
                 PlayerPrefs.Save();
 
@@ -135,7 +137,7 @@ namespace Merge
             notificationsOn = enable;
 
             PlayerPrefs.SetInt("notifications", enable ? 1 : 0);
-            PlayerPrefs.Save();         
+            PlayerPrefs.Save();
         }
 
         public void SetLocale(Types.Locale newLocale, bool initial = false)

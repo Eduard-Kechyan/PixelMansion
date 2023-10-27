@@ -11,6 +11,9 @@ namespace Merge
         // Variables
         private bool handlingTimers;
 
+        [HideInInspector]
+        public bool energyTimerChecked = false;
+
         // References
         private DataManager dataManager;
         private GameData gameData;
@@ -48,11 +51,9 @@ namespace Merge
 
         void HandleTimers()
         {
-            List<int> indexesToRemove = new();
-
-            for (int i = 0; i < gameData.timers.Count; i++)
+            for (int i = gameData.timers.Count - 1; i >= 0; i--)
             {
-                if (gameData.timers[i].running && gameData.timers[i].type == Types.TimerType.Item)
+                if (gameData.timers[i].running)
                 {
                     DateTime endTime = DateTime.UtcNow;
 
@@ -61,37 +62,53 @@ namespace Merge
                     if (timeDiffInSeconds >= gameData.timers[i].seconds)
                     {
                         // End
-                        indexesToRemove.Add(i);
+                        ToggleTimerOnBoardData(gameData.timers[i].id, false);
+
+                        if (clockManager != null && gameData.timers[i].type == Types.TimerType.Item)
+                        {
+                            clockManager.RemoveClock(gameData.timers[i].id);
+                        }
+
+                        if (!energyTimerChecked && gameData.timers[i].type == Types.TimerType.Energy)
+                        {
+                            energyTimerChecked = true;
+
+                            energyTimer.TimerEnd();
+                        }
+
+                        gameData.timers.RemoveAt(i);
+
+                        dataManager.SaveTimers();
                     }
                     else
                     {
                         // Continue
-                        if (clockManager != null)
+                        if (gameData.timers[i].type == Types.TimerType.Energy)
                         {
-                            clockManager.SetFillAmount(gameData.timers[i].id, timeDiffInSeconds);
-                        }
+                            if (!energyTimerChecked)
+                            {
+                                energyTimerChecked = true;
 
-                        if (infoBox != null)
+                                energyTimer.TimerContinue((float)timeDiffInSeconds);
+                            }
+                        }
+                        else
                         {
-                            infoBox.TryToSetTimer(gameData.timers[i].id, CalcTimerText(gameData.timers[i].seconds, timeDiffInSeconds));
+                            if (clockManager != null)
+                            {
+                                clockManager.SetFillAmount(gameData.timers[i].id, timeDiffInSeconds);
+                            }
+
+                            if (infoBox != null)
+                            {
+                                infoBox.TryToSetTimer(gameData.timers[i].id, CalcTimerText(gameData.timers[i].seconds, timeDiffInSeconds));
+                            }
                         }
                     }
                 }
             }
 
-            for (int i = 0; i < indexesToRemove.Count; i++)
-            {
-                if (clockManager != null)
-                {
-                    clockManager.RemoveClock(gameData.timers[indexesToRemove[i]].id);
-                }
-
-                ToggleTimerOnBoardData(gameData.timers[indexesToRemove[i]].id, false);
-
-                gameData.timers.RemoveAt(indexesToRemove[i]);
-
-                dataManager.SaveTimers();
-            }
+            energyTimerChecked = true;
 
             if (gameData.timers.Count == 0)
             {
@@ -120,6 +137,11 @@ namespace Merge
 
         public void AddTimer(Types.TimerType type, Types.NotificationType notificationType, string itemName, string id, Vector2 position = default, int seconds = 0)
         {
+            if (type == Types.TimerType.Energy)
+            {
+                Debug.LogWarning("You gave TimerType Energy to the AddTimer method. Use AddEnergyTimer instead!");
+            }
+
             DateTime startTime = DateTime.UtcNow;
 
             int notificationId = notificsManager.Add(notificationType, startTime.AddSeconds(seconds), itemName);
@@ -131,6 +153,7 @@ namespace Merge
                     type = type,
                     id = id,
                     seconds = seconds,
+                    running = true,
                     notificationId = notificationId
                 }
             );
@@ -246,6 +269,10 @@ namespace Merge
 
                 handlingTimers = true;
             }
+            else
+            {
+                energyTimerChecked = true; 
+            }
         }
 
         //// Items ////
@@ -305,9 +332,9 @@ namespace Merge
                             item.timerOn = true;
 
                             Types.NotificationType notificationType = item.type == Types.Type.Gen ? Types.NotificationType.Gen : Types.NotificationType.Chest;
-                            
+
                             // Note: use item.itemName not item.name 
-                            AddTimer(Types.TimerType.Item, notificationType, item.itemName, item.id, item.transform.position, item.coolDown.seconds); 
+                            AddTimer(Types.TimerType.Item, notificationType, item.itemName, item.id, item.transform.position, item.coolDown.seconds);
 
                             gameData.coolDowns.RemoveAt(i);
                         }
@@ -376,16 +403,20 @@ namespace Merge
 
         //// Energy ////
 
-        public void SetEnergyTimer(int newSeconds)
+        public void AddEnergyTimer(int seconds)
         {
             RemoveEnergyTimer(false);
+            DateTime startTime = DateTime.UtcNow;
+
+            int notificationId = notificsManager.Add(Types.NotificationType.Energy, startTime.AddSeconds(seconds));
 
             Types.Timer newEnergyTimer = new()
             {
                 startTime = DateTime.UtcNow,
-                seconds = newSeconds,
-                running = true,
-                type = Types.TimerType.Energy
+                seconds = seconds,
+                id = "energy_timer",
+                type = Types.TimerType.Energy,
+                notificationId = notificationId
             };
 
             gameData.timers.Add(newEnergyTimer);
@@ -393,63 +424,21 @@ namespace Merge
             dataManager.SaveTimers();
         }
 
-        public Types.Timer GetEnergyTimer()
-        {
-            Types.Timer newEnergyTimer = new()
-            {
-                running = false,
-            };
-
-            if (gameData.timers.Count > 0)
-            {
-                int index = -1;
-
-                for (int i = 0; i < gameData.timers.Count; i++)
-                {
-                    if (gameData.timers[i].type == Types.TimerType.Energy)
-                    {
-                        index = i;
-                    }
-                }
-
-                if (index >= 0)
-                {
-                    return gameData.timers[index];
-                }
-                else
-                {
-                    return newEnergyTimer;
-                }
-            }
-            else
-            {
-                return newEnergyTimer;
-            }
-        }
-
         public void RemoveEnergyTimer(bool save = true)
         {
-            if (gameData.timers.Count > 0)
+            for (int i = gameData.timers.Count - 1; i >= 0; i--)
             {
-                int index = -1;
-
-                for (int i = 0; i < gameData.timers.Count; i++)
+                if (gameData.timers[i].type == Types.TimerType.Energy)
                 {
-                    if (gameData.timers[i].type == Types.TimerType.Energy)
-                    {
-                        index = i;
-                    }
-                }
+                    notificsManager.Remove(gameData.timers[i].notificationId);
 
-                if (index >= 0)
-                {
-                    gameData.timers.RemoveAt(index);
-
-                    if (save)
-                    {
-                        dataManager.SaveTimers();
-                    }
+                    gameData.timers.Remove(gameData.timers[i]);
                 }
+            }
+
+            if (save)
+            {
+                dataManager.SaveTimers();
             }
         }
     }

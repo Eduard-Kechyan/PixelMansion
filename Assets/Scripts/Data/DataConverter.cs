@@ -536,7 +536,7 @@ namespace Merge
                         running = timerJson[i].running,
                         type = Glob.ParseEnum<Types.TimerType>(timerJson[i].type),
                         id = timerJson[i].id,
-                        notificationId= timerJson[i].notificationId,
+                        notificationId = timerJson[i].notificationId,
                     }
                 );
             }
@@ -583,6 +583,8 @@ namespace Merge
                     {
                         id = notificationsJson[i].id,
                         fireTime = System.DateTime.Parse(notificationsJson[i].fireTime),
+                        type = Glob.ParseEnum<Types.NotificationType>(notificationsJson[i].type),
+                        itemName = notificationsJson[i].itemName,
                     }
                 );
             }
@@ -600,6 +602,8 @@ namespace Merge
                 {
                     id = notifications[i].id,
                     fireTime = notifications[i].fireTime.ToString(),
+                    type = notifications[i].type.ToString(),
+                    itemName = notifications[i].itemName,
                 };
 
                 notificationJson[i] = newNotificationJson;

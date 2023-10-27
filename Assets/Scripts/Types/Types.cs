@@ -577,6 +577,8 @@ namespace Merge
         {
             public int id;
             public DateTime fireTime;
+            public NotificationType type;
+            public string itemName;
         }
 
         [Serializable]
@@ -584,6 +586,8 @@ namespace Merge
         {
             public int id;
             public string fireTime;
+            public string type;
+            public string itemName;
         }
 
         //// OTHER ////

@@ -161,7 +161,7 @@ namespace Merge
             {
                 Debug.Log("Initializing notifications (" + request.Status.ToString() + ")");
             }
-            
+
             if (request.Status == PermissionStatus.Allowed)
             {
                 Init();
@@ -190,7 +190,7 @@ namespace Merge
             {
                 bool removedAny = false;
 
-                for (int i = 0; i < gameData.notifications.Count; i++)
+                for (int i = gameData.notifications.Count - 1; i >= 0; i--)
                 {
                     DateTime currentTime = DateTime.UtcNow;
 
@@ -215,7 +215,7 @@ namespace Merge
 
         //// Send ////
 
-        public int Add(Types.NotificationType notificationType, DateTime fireTime, string itemName = "")
+        public int Add(Types.NotificationType notificationType, DateTime fireTime, string itemName = "", bool addToGameData = true)
         {
             if (allowed && settings.notificationsOn)
             {
@@ -232,14 +232,20 @@ namespace Merge
                 // newNotification.IntentData = "Custom Intent Data!";
                 newNotification.ShowInForeground = false;
                 newNotification.SmallIcon = "main_icon"; // Main icon
+                newNotification.ShouldAutoCancel = true;
 
                 int id = AndroidNotificationCenter.SendNotification(newNotification, CHANNEL_ID);
 
-                gameData.notifications.Add(new()
+                if (addToGameData)
                 {
-                    id = id,
-                    fireTime = fireTime
-                });
+                    gameData.notifications.Add(new()
+                    {
+                        id = id,
+                        type = notificationType,
+                        itemName = itemName,
+                        fireTime = fireTime
+                    });
+                }
 
                 dataManager.SaveNotifications();
 
@@ -268,6 +274,7 @@ namespace Merge
                     }
 
                     gameData.notifications.Remove(gameData.notifications[i]);
+
                     break;
                 }
             }
@@ -308,6 +315,30 @@ namespace Merge
                 Text = text,
                 LargeIcon = largeIcon // Secondary icon
             };
+        }
+
+        //// Other ////
+
+        public void DisableNotifications()
+        {
+            AndroidNotificationCenter.CancelAllScheduledNotifications();
+        }
+
+        public void EnableNotifications()
+        {
+            for (int i = gameData.notifications.Count - 1; i >= 0; i--)
+            {
+                DateTime currentTime = DateTime.UtcNow;
+
+                if (gameData.notifications[i].fireTime > currentTime)
+                {
+                    Add(gameData.notifications[i].type, gameData.notifications[i].fireTime, gameData.notifications[i].itemName, false);
+                }
+                else
+                {
+                    gameData.notifications.Remove(gameData.notifications[i]);
+                }
+            }
         }
     }
 }

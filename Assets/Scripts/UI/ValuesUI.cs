@@ -8,6 +8,7 @@ namespace Merge
 {
     public class ValuesUI : MonoBehaviour
     {
+        public EnergyTimer energyTimer;
         public Sprite[] levelUpIndicatorSprites = new Sprite[0];
 
         // Variables
@@ -24,8 +25,6 @@ namespace Merge
 
         private bool levelBlipping = false;
 
-        private Coroutine energyCoroutine;
-
         private bool isEnergySlashing = false;
         private bool isGoldSlashing = false;
         private bool isGemsSlashing = false;
@@ -35,7 +34,6 @@ namespace Merge
         private EnergyMenu energyMenu;
         private ShopMenu shopMenu;
         private SafeAreaHandler safeAreaHandler;
-        private EnergyTimer energyTimer;
 
         // Instances
         private GameData gameData;
@@ -70,11 +68,11 @@ namespace Merge
             levelMenu = GameRefs.Instance.levelMenu;
             energyMenu = GameRefs.Instance.energyMenu;
             shopMenu = GameRefs.Instance.shopMenu;
+
             if (GameRefs.Instance.hubUI != null)
             {
                 safeAreaHandler = GameRefs.Instance.hubUI.GetComponent<SafeAreaHandler>();
             }
-            //  energyTimer = TimeManager.Instance.GetComponent<EnergyTimer>();
 
             // Cache instances
             gameData = GameData.Instance;
@@ -116,7 +114,7 @@ namespace Merge
 
         void Update()
         {
-            CheckTimer();
+            HandleEnergyTimer();
         }
 
         void SetValues()
@@ -143,33 +141,39 @@ namespace Merge
             gemsButton.clicked += () => shopMenu.Open("Gems");
         }
 
-        void CheckTimer()
+        void HandleEnergyTimer()
         {
-            /* if (energyTimer.timerOn)
-             {
-                 Glob.StopTimeout(energyCoroutine);
+            if (energyTimer.timerOn)
+            {
+                if (energyTimer.timeout > 0)
+                {
+                    energyTimer.timeout -= Time.deltaTime;
+                }
 
-                 energyTimerLabel.style.display = DisplayStyle.Flex;
+                float newTimeout = energyTimer.timeout;
 
-                 float newTimeout = energyTimer.timeOut;
+                newTimeout++;
 
-                 newTimeout++;
+                float minutes = Mathf.FloorToInt(newTimeout / 60);
+                float seconds = Mathf.FloorToInt(newTimeout % 60);
 
-                 float minutes = Mathf.FloorToInt(newTimeout / 60);
-                 float seconds = Mathf.FloorToInt(newTimeout % 60);
+                string minutesText = minutes < 10 ? "0" + minutes : minutes.ToString();
+                string secondsText = seconds < 10 ? "0" + seconds : seconds.ToString();
 
-                 string minutesText = minutes < 10 ? "0" + minutes : minutes.ToString();
-                 string secondsText = seconds < 10 ? "0" + seconds : seconds.ToString();
+                energyTimerLabel.text = string.Format("{0}:{1}", minutesText, secondsText);
+            }
+        }
 
-                 energyTimerLabel.text = string.Format("{0}:{1}", minutesText, secondsText);
-             }
-             else if (!energyTimer.waiting)
-             {
-                 energyCoroutine = Glob.SetTimeout(() =>
-                 {
-                     energyTimerLabel.style.display = DisplayStyle.None;
-                 }, 1f);
-             }*/
+        public void ToggleEnergyTimer(bool enable)
+        {
+            if (enable)
+            {
+                energyTimerLabel.style.display = DisplayStyle.Flex;
+            }
+            else
+            {
+                energyTimerLabel.style.display = DisplayStyle.None;
+            }
         }
 
         public void UpdateValues()
@@ -222,10 +226,10 @@ namespace Merge
         {
             levelValue.text = gameData.level.ToString();
 
-            StartCoroutine(UpdateEnergyFullAfter(callback));
+            StartCoroutine(UpdateLevelFullAfter(callback));
         }
 
-        IEnumerator UpdateEnergyFullAfter(Action callback)
+        IEnumerator UpdateLevelFullAfter(Action callback)
         {
             yield return new WaitForSeconds(0.3f);
 

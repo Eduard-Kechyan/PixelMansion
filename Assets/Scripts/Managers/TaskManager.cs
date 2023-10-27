@@ -56,7 +56,6 @@ namespace Merge
 
         void OnEnable()
         {
-
             // Subscribe to events
             DataManager.BoardSaveEventAction += CheckBoardAndInventoryForTasks;
         }

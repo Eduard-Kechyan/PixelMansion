@@ -1493,14 +1493,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 872003827445705007, guid: 8ef5fa76673152d4b9adea8d834064d1, type: 3}
-      propertyPath: infoBox
-      value: 
-      objectReference: {fileID: 6663394658226059765}
-    - target: {fileID: 872003827445705007, guid: 8ef5fa76673152d4b9adea8d834064d1, type: 3}
-      propertyPath: clockManager
-      value: 
-      objectReference: {fileID: 1566288111}
+    - target: {fileID: 142857561901966347, guid: 8ef5fa76673152d4b9adea8d834064d1, type: 3}
+      propertyPath: devMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 142857561901966347, guid: 8ef5fa76673152d4b9adea8d834064d1, type: 3}
+      propertyPath: timeoutMinutes
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 142857561901966347, guid: 8ef5fa76673152d4b9adea8d834064d1, type: 3}
+      propertyPath: timeoutSeconds
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 1127735895219222118, guid: 8ef5fa76673152d4b9adea8d834064d1, type: 3}
+      propertyPath: resetData
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3619978155029921504, guid: 8ef5fa76673152d4b9adea8d834064d1, type: 3}
       propertyPath: m_RootOrder
       value: 19
@@ -1792,6 +1800,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ValuesUI
       objectReference: {fileID: 0}
+    - target: {fileID: 5620125642504170655, guid: e40cfcf418a8eb04ca91a1f444eb3a9f, type: 3}
+      propertyPath: energyTimer
+      value: 
+      objectReference: {fileID: 783295150}
     - target: {fileID: 6853033041420144743, guid: e40cfcf418a8eb04ca91a1f444eb3a9f, type: 3}
       propertyPath: m_RootOrder
       value: 7

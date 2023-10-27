@@ -9,158 +9,201 @@ namespace Merge
     public class EnergyTimer : MonoBehaviour
     {
         // Variables
-        public int time = 120;
+        public int timeoutSeconds = 120;
+        [ReadOnly]
+        public int timeoutMinutes = 2;
+
+        [HideInInspector]
+        public float timeout;
+
+        [ReadOnly]
+        public bool timerOn = false;
 
         [Header("Debug")]
         public bool devMode = false;
         [Condition("devMode", true)]
-        public int energyTimeDevMode = 10;
+        public int timeoutSecondsDev = 10;
 
-        [Header("Stats")]
-        [ReadOnly]
-        public bool timerOn = false;
-        [ReadOnly]
-        public bool waiting = false;
-        [ReadOnly]
-        public float timeOut;
+        [HideInInspector]
+        public bool timerChecked = false;
+        private bool running = false;
 
-        private DateTime startDate;
-        private int startSeconds = 0;
-
-        private Coroutine energyCoroutine;
-        private bool gottenData = false;
+        private Coroutine counterCoroutine;
 
         // References
         private TimeManager timeManager;
         private GameData gameData;
+        private DataManager dataManager;
+        private ValuesUI valuesUI;
 
         void Start()
         {
-            // References
+            // Cache
             timeManager = GetComponent<TimeManager>();
             gameData = GameData.Instance;
+            dataManager = DataManager.Instance;
+            valuesUI = GameRefs.Instance.valuesUI;
 
             // Change the time if we are in dev mode
 #if UNITY_EDITOR
             if (devMode)
             {
-                time = energyTimeDevMode;
+                timeoutSeconds = timeoutSecondsDev;
             }
 #endif
 
-            // Set the time
-            timeOut = time;
+            timeout = timeoutSeconds;
 
-            // GetTimerDate();
+            StartCoroutine(WaitForGameData());
         }
 
-        void Update()
+        void OnEnable()
         {
-            if (timerOn)
+            // Subscribe to events
+            GameData.EnergyUpdatedEventAction += CheckEnergy;
+        }
+
+        void OnDisable()
+        {
+            // Unsubscribe to events
+            GameData.EnergyUpdatedEventAction += CheckEnergy;
+        }
+
+        void OnValidate()
+        {
+            timeoutMinutes = timeoutSeconds / 60;
+        }
+
+        IEnumerator WaitForGameData()
+        {
+            while (!dataManager.loaded || !timeManager.energyTimerChecked)
             {
-                if (timeOut > 0)
+                yield return null;
+            }
+
+            // Start time handler
+            bool found = false;
+
+            for (int i = 0; i < gameData.timers.Count; i++)
+            {
+                if (gameData.timers[i].type == Types.TimerType.Energy)
                 {
-                    timeOut -= Time.deltaTime;
+                    found = true;
+
+                    break;
                 }
-                else
+            }
+
+            if (!found)
+            {
+                timerChecked = true;
+
+                CheckEnergy();
+            }
+        }
+
+        public void CheckEnergy(bool addTimer = true)
+        {
+            if (timerChecked)
+            {
+                if (gameData.energyTemp >= GameData.MAX_ENERGY)
                 {
-                    // Stop the timer here is important
                     timerOn = false;
-                    waiting = true;
 
-                    energyCoroutine = Glob.SetTimeout(() =>
-                    {
-                        waiting = false;
-                        gameData.UpdateValue( 1, Types.CollGroup.Energy, false, true);
-                    }, 0.5f);
-                }
-            }
-        }
-
-        // Check if there is a need for the timer to be on
-        public void Check(int newTimeOut = -1)
-        {
-            // Reset the time out
-            if (newTimeOut == -1)
-            {
-                if (!timerOn || timeOut <= 0)
-                {
-                    timeOut = time;
-                }
-            }
-            else
-            {
-                timeOut = newTimeOut;
-            }
-
-            // Check if energy is less than the maximum amount
-            if (gameData.energy < GameData.MAX_ENERGY)
-            {
-                // Enable the timer
-                timerOn = true;
-
-                Glob.StopTimeout(energyCoroutine);
-
-                SetTimerDate();
-            }
-            else
-            {
-                // Disable the timer
-                timerOn = false;
-
-                // TODO - Notifiy the player that energy is full, and remove this line after that
-                Debug.Log("Energy full!");
-
-                ClearTimerDate();
-            }
-
-        }
-
-        void SetTimerDate()
-        {
-            startDate = DateTime.UtcNow;
-            startSeconds = ((time * (GameData.MAX_ENERGY - gameData.energy)) - time) + (int)timeOut;
-
-            Debug.Log("AAAAAAAAAA");
-
-            timeManager.SetEnergyTimer(startSeconds);
-        }
-
-        void GetTimerDate(GeometryChangedEvent evt = null)
-        {
-            if (!gottenData)
-            {
-                gottenData = true;
-
-                DateTime endDate = DateTime.UtcNow;
-
-                Types.Timer timerData = timeManager.GetEnergyTimer();
-
-                if (timerData.running)
-                {
-                    startDate = timerData.startTime;
-                    startSeconds = timerData.seconds;
-
-                    TimeSpan difference = endDate - startDate;
-
-                    if (difference.Seconds >= startSeconds)
+                    if (addTimer)
                     {
                         timeManager.RemoveEnergyTimer();
                     }
-                    else
-                    {
-                        int test1 = startSeconds / time;
-                        int test2 = startSeconds - ((time - 1) * test1);
 
-                        Check(test2);
+                    Glob.StopTimeout(counterCoroutine);
+
+                    StopCoroutine(HandleTimer());
+                }
+                else
+                {
+                    int neededEnergy = 100 - gameData.energyTemp;
+
+                    int neededSeconds = neededEnergy * timeoutSeconds;
+
+                    if (addTimer)
+                    {
+                        timeManager.AddEnergyTimer(neededSeconds);
+                    }
+
+                    if (!running)
+                    {
+                        counterCoroutine = Glob.SetTimeout(() =>
+                        {
+                            if (!running)
+                            {
+                                timerOn = true;
+
+                                StartCoroutine(HandleTimer());
+                            }
+                        }, 0.3f);
                     }
                 }
             }
         }
 
-        void ClearTimerDate()
+        public void TimerEnd()
         {
-            timeManager.RemoveEnergyTimer();
+            if (gameData.energyTemp < GameData.MAX_ENERGY)
+            {
+                gameData.SetEnergy(GameData.MAX_ENERGY);
+            }
+
+            timerChecked = true;
+        }
+
+        public void TimerContinue(float passedSeconds)
+        {
+            int left = Mathf.CeilToInt(passedSeconds / timeoutSeconds);
+
+            int leftoverSeconds = (left * timeoutSeconds) - Mathf.RoundToInt(passedSeconds);
+
+            timerOn = true;
+
+            StartCoroutine(HandleTimer(leftoverSeconds));
+        }
+
+        IEnumerator HandleTimer(int leftoverSeconds = 0)
+        {
+            running = true;
+
+            int currentTimeout = timeoutSeconds;
+
+            if (leftoverSeconds > 0)
+            {
+                currentTimeout = leftoverSeconds;
+
+                timerChecked = true;
+            }
+
+            WaitForSeconds waitA = new(currentTimeout);
+            WaitForSeconds waitB = new(1);
+
+            if (timerOn)
+            {
+                valuesUI.ToggleEnergyTimer(true);
+
+                while (gameData.energyTemp < GameData.MAX_ENERGY)
+                {
+                    timeout = currentTimeout;
+
+                    yield return waitA;
+
+                    gameData.UpdateValue(1, Types.CollGroup.Energy, false, true);
+
+                    yield return waitB;
+                }
+
+                valuesUI.ToggleEnergyTimer(false);
+
+                running = false;
+
+                CheckEnergy();
+            }
         }
     }
 }

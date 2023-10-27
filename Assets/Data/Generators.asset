@@ -19,7 +19,7 @@ MonoBehaviour:
     customName: 0
     generatesAt: 5
     coolDown:
-      maxCount: 3
+      maxCount: 50
       seconds: 60
       minutes: 1
     creates:

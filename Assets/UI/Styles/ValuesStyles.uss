@@ -38,9 +38,11 @@
     margin-top: 0;
     margin-bottom: 0;
     padding-top: 0;
-    padding-bottom: 0;
+    padding-bottom: 2px;
     width: 40px;
-    height: 18px;
+    height: 20px;
+    overflow: hidden;
+    background-image: url('project://database/Assets/Sprites/Values/ValueBox.png?fileID=2800000&guid=7f2582712c649454cac7fdacf465ec27&type=3#ValueBox');
 }
 
 .value_button:active {
@@ -156,7 +158,6 @@
 }
 
 .energy_button {
-    overflow: visible;
     padding-left: 16px;
     font-size: 5px;
 }
@@ -173,7 +174,7 @@
     padding-right: 0;
     padding-top: 0;
     padding-bottom: 0;
-    bottom: -3px;
+    bottom: 0;
     display: none;
     -unity-font-definition: url('project://database/Assets/Fonts/RobotoMono%20SDF.asset?fileID=11400000&guid=26200f3517d34d040a046d6ffe9a951f&type=2#RobotoMono SDF');
 }
