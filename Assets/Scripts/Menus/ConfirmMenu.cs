@@ -55,9 +55,9 @@ namespace Merge
         confirmMenu.style.opacity = 0;
     }
 
-    public void Open(string preFix, Action newCllback, Action newCallbackAlt = null, bool alt = false, bool closeAll = false)
+    public void Open(string preFix, Action newCallback, Action newCallbackAlt = null, bool alt = false, bool closeAll = false)
     {
-        callback = newCllback;
+        callback = newCallback;
 
         if (!denyTapped)
         {

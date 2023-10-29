@@ -46,8 +46,7 @@ namespace Merge
         public ItemTypes.GenGroup[] parents;
 
         // Chest
-        public bool chestLocked; // TODO - Check this
-        private Coroutine chestCoroutine;
+        public bool chestOpen = false;
         public int chestItems;
         public bool chestItemsSet;
         public bool gemPopped = false;
@@ -82,6 +81,7 @@ namespace Merge
         private GameObject lockerChild;
         private GameObject bubbleChild;
         public GameObject readyChild;
+        public GameObject readyAltChild;
         private GameObject completionChild;
         public GameObject itemChild;
 
@@ -99,10 +99,10 @@ namespace Merge
             lockerChild = transform.GetChild(2).gameObject; // Locker
             bubbleChild = transform.GetChild(3).gameObject; // Bubble
             readyChild = transform.GetChild(4).gameObject; // Ready
-            completionChild = transform.GetChild(5).gameObject; // Completion
-            itemChild = transform.GetChild(6).gameObject; // Item
+            completionChild = transform.GetChild(6).gameObject; // Completion
+            itemChild = transform.GetChild(7).gameObject; // Item
 
-            if (type == Types.Type.Gen)
+            if (type == Types.Type.Gen && level >= generatesAt)
             {
                 readyChild.SetActive(true);
 
@@ -113,6 +113,13 @@ namespace Merge
                 readyChild.SetActive(false);
             }
 
+            if (type == Types.Type.Chest && chestGroup == Types.ChestGroup.Item)
+            {
+                readyAltChild = transform.GetChild(5).gameObject; // Ready Chest
+
+                readyAltChild.SetActive(true);
+            }
+
             crateSpriteRenderer = crateChild.GetComponent<SpriteRenderer>();
             lockSpriteRenderer = lockerChild.GetComponent<SpriteRenderer>();
 
@@ -120,7 +127,7 @@ namespace Merge
 
             SetItemInitial();
 
-            ToggleTimer(timerOn);
+            ToggleTimer(timerOn, true);
         }
 
         void Update()
@@ -283,15 +290,30 @@ namespace Merge
                     break;
             }
 
-            if (type == Types.Type.Gen)
+            if (type == Types.Type.Gen && level >= generatesAt)
             {
-                if (timerOn && level >= generatesAt)
+                if (timerOn)
                 {
                     readyChild.SetActive(false);
                 }
                 else
                 {
                     readyChild.SetActive(true); //
+                }
+            }
+
+            if (type == Types.Type.Chest && chestGroup == Types.ChestGroup.Item)
+            {
+                if (timerOn)
+                {
+                    readyAltChild.SetActive(false);
+                }
+                else
+                {
+                    if (!chestOpen)
+                    {
+                        readyAltChild.SetActive(true);
+                    }
                 }
             }
 
@@ -305,13 +327,11 @@ namespace Merge
             }
         }
 
-        public void ToggleTimer(bool enable)
+        public void ToggleTimer(bool enable, bool initial = false)
         {
             timerOn = enable;
 
-            CheckChildren();
-
-            if (type == Types.Type.Gen)
+            if (type == Types.Type.Gen && level >= generatesAt)
             {
                 if (timerOn)
                 {
@@ -319,12 +339,16 @@ namespace Merge
                 }
                 else
                 {
-                    if (level >= generatesAt)
-                    {
-                        AnimateReady();
-                    }
+                    AnimateReady();
                 }
             }
+
+            if (!chestOpen && type == Types.Type.Chest && chestGroup == Types.ChestGroup.Item && !enable && !initial)
+            {
+                chestOpen = true;
+            }
+
+            CheckChildren();
         }
 
         public void OpenCrate(float crateBreakSpeed = 0.05f, float newSpeed = 1f)
@@ -431,30 +455,6 @@ namespace Merge
             }
         }
 
-        public void UnlockChest()
-        {
-            if (chestLocked)
-            {
-                chestLocked = false;
-
-                // TODO - Start the timer
-                timerOn = true;
-
-                chestCoroutine = Glob.SetTimeout(() =>
-                {
-                    SpeedUpChest();
-                }, 5f);
-            }
-        }
-
-        public void SpeedUpChest()
-        {
-            // TODO - Stop the timer
-            timerOn = false;
-
-            Glob.StopTimeout(chestCoroutine);
-        }
-
         public void Dragging()
         {
             isDragging = true;
@@ -464,9 +464,14 @@ namespace Merge
                 completionChild.SetActive(false);
             }
 
-            if (type == Types.Type.Gen && isReadyPlaying)
+            if (type == Types.Type.Gen && level >= generatesAt && isReadyPlaying)
             {
                 StopAnimateReady();
+            }
+
+            if (type == Types.Type.Chest && chestGroup == Types.ChestGroup.Item)
+            {
+                readyAltChild.SetActive(false);
             }
         }
 
@@ -482,6 +487,11 @@ namespace Merge
             if (type == Types.Type.Gen && level >= generatesAt && !timerOn && !isReadyPlaying)
             {
                 AnimateReady();
+            }
+
+            if (type == Types.Type.Chest && chestGroup == Types.ChestGroup.Item && !chestOpen && !timerOn)
+            {
+                readyAltChild.SetActive(true);
             }
         }
 

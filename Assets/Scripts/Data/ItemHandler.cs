@@ -51,6 +51,7 @@ namespace Merge
             newItem.chestGroup = itemData.chestGroup;
             newItem.timerOn = boardItem.timerOn;
             newItem.generatesAt = itemData.generatesAt;
+            newItem.chestOpen = boardItem.chestOpen;
             newItem.chestItems = itemData.chestItems;
             newItem.chestItemsSet = itemData.chestItemsSet;
             newItem.crate = boardItem.crate;

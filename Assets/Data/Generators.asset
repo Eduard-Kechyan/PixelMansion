@@ -19,9 +19,9 @@ MonoBehaviour:
     customName: 0
     generatesAt: 5
     coolDown:
-      maxCount: 50
-      seconds: 60
-      minutes: 1
+      maxCounts: 0300000018000000
+      seconds: 120
+      minutes: 2
     creates:
     - name: Tools
       group: 0
@@ -43,7 +43,7 @@ MonoBehaviour:
       parents: 
       creates: []
       coolDown:
-        maxCount: 0
+        maxCounts: 
         seconds: 0
         minutes: 0
       unlocked: 0
@@ -67,7 +67,7 @@ MonoBehaviour:
       parents: 
       creates: []
       coolDown:
-        maxCount: 0
+        maxCounts: 
         seconds: 0
         minutes: 0
       unlocked: 0
@@ -91,7 +91,7 @@ MonoBehaviour:
       parents: 
       creates: []
       coolDown:
-        maxCount: 0
+        maxCounts: 
         seconds: 0
         minutes: 0
       unlocked: 0
@@ -115,7 +115,7 @@ MonoBehaviour:
       parents: 
       creates: []
       coolDown:
-        maxCount: 0
+        maxCounts: 
         seconds: 0
         minutes: 0
       unlocked: 0
@@ -139,7 +139,7 @@ MonoBehaviour:
       parents: 
       creates: []
       coolDown:
-        maxCount: 0
+        maxCounts: 
         seconds: 0
         minutes: 0
       unlocked: 0
@@ -163,7 +163,7 @@ MonoBehaviour:
       parents: 
       creates: []
       coolDown:
-        maxCount: 0
+        maxCounts: 
         seconds: 0
         minutes: 0
       unlocked: 0

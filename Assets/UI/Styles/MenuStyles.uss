@@ -1219,7 +1219,7 @@
     font-size: 8px;
 }
 
-.task_button_last {
+.task_item .task_button_last {
     margin-left: auto;
     margin-right: auto;
 }

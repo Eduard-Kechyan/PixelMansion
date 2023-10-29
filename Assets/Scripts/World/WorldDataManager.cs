@@ -480,6 +480,17 @@ namespace Merge
             return null;
         }
 
+        public void UnlockRoom(string roomName){
+            for (int i = 0; i < gameData.areasData.Count; i++)
+            {
+                if(gameData.areasData[i].name==roomName){
+                    gameData.areasData[i].isLocked=false;
+                }
+            }
+
+            SaveData();
+        }
+
         // Find selectable items collider center position
         public Vector2 GetColliderCenter(Transform taskRef, Types.TaskRefType taskRefType)
         {

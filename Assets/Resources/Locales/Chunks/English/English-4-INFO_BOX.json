@@ -36,9 +36,9 @@
     "info_box_coll_Gems": "Gems",
     "info_box_coll_Energy": "Energy",
     "________ CHEST ________": "________________",
-    "info_box_chest_Piggy": "TAP to get Gold and Gems. MERGE with the same item to get the next level of {1}.",
-    "info_box_chest_Energy": "TAP to get Energy. MERGE with the same item to get the next level of {1}.",
-    "info_box_chest_Item": "TAP to get the items within.. MERGE with the same item to get the next level of {1}.",
+    "info_box_chest_Piggy": "TAP to get Gold and Gems. MERGE with the same item to get the next level of {0}.",
+    "info_box_chest_Energy": "TAP to get Energy. MERGE with the same item to get the next level of {0}.",
+    "info_box_chest_Item": "TAP to get the items within.. MERGE with the same item to get the next level of {0}.",
     "info_box_chest_max_Piggy": "TAP to get Gold and Gems. This item is at MAX level, it can't be MERGED!",
     "info_box_chest_max_Energy": "TAP to get Energy. This item is at MAX level, it can't be MERGED!",
     "info_box_chest_max_Item": "TAP to get the items within. This item is at MAX level, it can't be MERGED!",
@@ -48,8 +48,8 @@
     "info_box_chest_alt_Piggy": "Full of Gold and Gems. Tap to get them out.",
     "info_box_chest_alt_Energy": "Full of Energy. Tap to get them out.",
     "info_box_chest_alt_Item": "Full of these items. Tap to get them out.",
-    "info_box_chest_locked": "Unlock to get the items within. MERGE with the same item to get the next level of {1}.",
+    "info_box_chest_locked": "Unlock to get the items within. MERGE with the same item to get the next level of {0}.",
     "info_box_chest_max_locked": "Unlock to get the items within. This item is at MAX level, it can't be MERGED!",
-    "info_box_chest_timer": "Don't wait. Speed up with Gems. MERGE with the same item to get the next level of {1}.",
+    "info_box_chest_timer": "Don't wait. Speed up with Gems. MERGE with the same item to get the next level of {0}.",
     "info_box_chest_max_timer": "Don't wait. Speed up with Gems. This item is at MAX level, it can't be MERGED!"
 }

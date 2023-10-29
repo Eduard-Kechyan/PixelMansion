@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1499400838582952208}
   - component: {fileID: 387303008456136004}
   - component: {fileID: 7478335895050211340}
+  - component: {fileID: 3983480608486499071}
   m_Layer: 0
   m_Name: Services
   m_TagString: Untagged
@@ -33,7 +34,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3013487443836980529
 MonoBehaviour:
@@ -76,6 +77,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18377d77fa2a702418dfc5ea8f318a84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shopData: {fileID: 11400000, guid: 9ccd7e0ffc1f88547b1138b322dfed0d, type: 2}
 --- !u!114 &7478335895050211340
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89,3 +91,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   accentColor: {r: 0.30588236, g: 0.5529412, b: 0.5764706, a: 1}
+  log: 0
+--- !u!114 &3983480608486499071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2958170130881514855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8973b2d22fa2eb747b45668331cf0b59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initialized: 0

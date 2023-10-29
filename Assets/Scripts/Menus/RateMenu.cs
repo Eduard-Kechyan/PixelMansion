@@ -14,7 +14,7 @@ namespace Merge
 
         [HideInInspector]
         public bool shouldShow = true;
-        private string rateData;
+        private string rateDate;
 
         private int starCount = 0;
 
@@ -37,9 +37,9 @@ namespace Merge
 
         void Awake()
         {
-            rateData = DateTime.UtcNow.Date.ToString();
+            rateDate = DateTime.UtcNow.Date.ToString();
 
-            if (PlayerPrefs.HasKey("rateResult") || (PlayerPrefs.HasKey("rateDate") && PlayerPrefs.GetString("rateDate") == rateData))
+            if (PlayerPrefs.HasKey("rateResult") || (PlayerPrefs.HasKey("rateDate") && PlayerPrefs.GetString("rateDate") == rateDate))
             {
                 shouldShow = false;
             }
@@ -90,6 +90,13 @@ namespace Merge
             rateMenu.style.display = DisplayStyle.None;
             rateMenu.style.opacity = 0;
 
+            yesButton.text = LOCALE.Get("rate_menu_yes_button");
+            noButton.text = LOCALE.Get("rate_menu_no_button");
+            neverButton.text = LOCALE.Get("rate_menu_never_button");
+
+            rateLabel0.text = LOCALE.Get("rate_menu_rate_label_0", GameData.GAME_TITLE);
+            rateLabel1.text = LOCALE.Get("rate_menu_rate_label_1");
+
             character.style.top = -15;
         }
 
@@ -104,9 +111,6 @@ namespace Merge
                 menuUI.OpenMenu(rateMenu, title, false, false, true);
 
                 starsLabel.text = starCount + "/" + 5;
-
-                rateLabel0.text = LOCALE.Get("rate_menu_rate_label_0", GameData.GAME_TITLE);
-                rateLabel1.text = LOCALE.Get("rate_menu_rate_label_1");
             }
         }
 

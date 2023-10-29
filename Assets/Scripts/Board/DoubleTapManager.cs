@@ -138,39 +138,36 @@ namespace Merge
 
         void DoubleTappedChest()
         {
-            if (!interactions.currentItem.chestLocked && !interactions.currentItem.timerOn)
+            if (!interactions.currentItem.timerOn)
             {
-                // Check if we have enough energy to generate an item
-                if (gameData.energy >= 1)
+                if (interactions.currentItem.chestGroup == Types.ChestGroup.Item && !interactions.currentItem.chestOpen)
                 {
-                    GameObject tile = interactions.currentItem.transform.parent.gameObject;
+                    return;
+                }
 
-                    Vector2Int tileLoc = boardManager.GetBoardLocation(0, tile);
+                GameObject tile = interactions.currentItem.transform.parent.gameObject;
 
-                    List<Types.BoardEmpty> emptyBoard = boardManager.GetEmptyBoardItems(tileLoc);
+                Vector2Int tileLoc = boardManager.GetBoardLocation(0, tile);
 
-                    // Check if the board is full
-                    if (emptyBoard.Count > 0)
-                    {
-                        emptyBoard.Sort((p1, p2) => p1.distance.CompareTo(p2.distance));
+                List<Types.BoardEmpty> emptyBoard = boardManager.GetEmptyBoardItems(tileLoc);
 
-                        boardIndication.StopPossibleMergeCheck();
+                // Check if the board is full
+                if (emptyBoard.Count > 0)
+                {
+                    emptyBoard.Sort((p1, p2) => p1.distance.CompareTo(p2.distance));
 
-                        SelectRandomItemFromChest(emptyBoard[0], tile.transform.position, interactions.currentItem.chestItems == 1);
-                    }
-                    else
-                    {
-                        popupManager.Pop(
-                            LOCALE.Get("pop_board_full"),
-                            interactions.currentItem.transform.position,
-                            "Buzz",
-                            true
-                        );
-                    }
+                    boardIndication.StopPossibleMergeCheck();
+
+                    SelectRandomItemFromChest(emptyBoard[0], tile.transform.position, interactions.currentItem.chestItems == 1);
                 }
                 else
                 {
-                    energyMenu.Open();
+                    popupManager.Pop(
+                        LOCALE.Get("pop_board_full"),
+                        interactions.currentItem.transform.position,
+                        "Buzz",
+                        true
+                    );
                 }
             }
         }

@@ -86,7 +86,8 @@ namespace Merge
             public DateTime startTime;
             public int seconds;
             public bool running = true;
-            public TimerType type;
+            public TimerType timerType;
+            public Type itemType;
             public string id;
             public int notificationId;
         }
@@ -97,7 +98,7 @@ namespace Merge
             public string startTime;
             public int seconds;
             public bool running;
-            public string type;
+            public string timerType;
             public string id;
             public int notificationId;
         }
@@ -105,7 +106,7 @@ namespace Merge
         [Serializable]
         public class CoolDown
         {
-            public int maxCount;
+            public int[] maxCounts;
             public int seconds;
             [ReadOnly]
             public int minutes;
@@ -115,7 +116,18 @@ namespace Merge
         public class CollDownCount
         {
             public int count;
+            public int level;
             public string id;
+            public DateTime startTime;
+        }
+
+        [Serializable]
+        public class CollDownCountJson
+        {
+            public int count;
+            public int level;
+            public string id;
+            public string startTime;
         }
 
         //// ITEMS DATA ////
@@ -264,6 +276,9 @@ namespace Merge
             public bool chestItemsSet;
 
             [HideInInspector]
+            public bool chestOpen;
+
+            [HideInInspector]
             public bool gemPopped;
 
             [HideInInspector]
@@ -289,6 +304,7 @@ namespace Merge
             public string state;
             public int chestItems;
             public bool chestItemsSet;
+            public bool chestOpen;
             public bool gemPopped;
             public bool isCompleted;
             public bool timerOn;
@@ -555,9 +571,12 @@ namespace Merge
         [Serializable]
         public class ShopValuesContent
         {
+            public string name;
+            public string id;
+            public string desc;
+            public float price;
             public int amount;
             public int bonusAmount;
-            public float price;
             public ShopValuesType type;
             public Sprite sprite;
             public bool hasBonus;
@@ -604,5 +623,12 @@ namespace Merge
             Korean, // 한국어 (ko-KR)
             Chinese // 中文 (zh-CN)
         };
+
+        public enum SocialMediaType
+        {
+            Instagram,
+            Facebook,
+            Youtube
+        }
     }
 }

@@ -20,6 +20,7 @@ namespace Merge
         public bool isSelected = false; // Have we currently selected something
         public Item currentItem;
         public ClockManager clockManager;
+        public TimeManager timeManager;
 
         [HideInInspector]
         public GameObject tempTile;
@@ -33,7 +34,6 @@ namespace Merge
         private Vector2 undoScale;
         private int sellUndoAmount = 0;
 
-        public GameObject boardTiles;
         private GameObject initialTile;
         private bool touchBeganOutsideItem = false;
         private bool previousInteractionsEnabled = true;
@@ -683,13 +683,17 @@ namespace Merge
         {
             if (item.name == currentItem.name && item.type == Types.Type.Chest)
             {
-                currentItem.UnlockChest();
-
                 // Play unlocking audio
                 soundManager.PlaySound("UnlockLock");
 
-                // TODO - Create this function if we need it
-                // UnlockChestCallback(currentItem);
+                int seconds = 1800; // 30 minutes
+
+                if (item.level >= 2 && item.level <= 4)
+                {
+                    seconds *= item.level;
+                }
+
+                timeManager.AddTimer(Types.TimerType.Item, Types.NotificationType.Chest, item.name, item.id, item.transform.position, seconds);
             }
         }
 
@@ -699,16 +703,21 @@ namespace Merge
             {
                 if (gameData.UpdateValue(-amount, Types.CollGroup.Gems, false, true))
                 {
+                    // TODO - Remove switch statement
+                    
                     switch (currentItem.type)
                     {
                         case Types.Type.Chest:
-                            currentItem.SpeedUpChest();
-
                             // Play speeding up audio
-                            soundManager.PlaySound("SpeedUpItem");
+                            soundManager.PlaySound("Generate");
 
-                            // TODO - Create this function if we need it
-                            // SpeedUpChestCallback(currentItem);
+                            timeManager.RemoveTimer(item.id);
+                            break;
+                        case Types.Type.Gen:
+                            // Play speeding up audio
+                            soundManager.PlaySound("Generate");
+
+                            timeManager.RemoveTimer(item.id);
                             break;
 
                         default:

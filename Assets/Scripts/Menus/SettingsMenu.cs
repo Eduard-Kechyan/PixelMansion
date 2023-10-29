@@ -20,7 +20,7 @@ namespace Merge
         private RateMenu rateMenu;
         private I18n LOCALE;
         private Settings settings;
-      //  private Notifics notifics;
+        //  private Notifics notifics;
         private ResetHandler resetHandler;
 
         // UI
@@ -59,14 +59,6 @@ namespace Merge
         private Button idCopyButton;
         private VisualElement copyCheck;
 
-        // Enums
-        enum SocialMediaType
-        {
-            Instagram,
-            Facebook,
-            Youtube
-        }
-
         void Start()
         {
             // Cache
@@ -76,7 +68,7 @@ namespace Merge
             rateMenu = GetComponent<RateMenu>();
             LOCALE = I18n.Instance;
             settings = Settings.Instance;
-          //  notifics = Services.Instance.GetComponent<Notifics>();
+            //  notifics = Services.Instance.GetComponent<Notifics>();
             resetHandler = GetComponent<ResetHandler>();
 
             // UI
@@ -135,8 +127,8 @@ namespace Merge
             facebookSignInButton.clicked += () => Debug.Log("Facebook Sing In Button Clicked!"); ////
             appleSignInButton.clicked += () => Debug.Log("Apple Sing In Button Clicked!"); ////
 
-            instagramFollowButton.clicked += () => OpenSocialMediaLink(SocialMediaType.Instagram);
-            facebookFollowButton.clicked += () => OpenSocialMediaLink(SocialMediaType.Facebook);
+            instagramFollowButton.clicked += () => OpenSocialMediaLink(Types.SocialMediaType.Instagram);
+            facebookFollowButton.clicked += () => OpenSocialMediaLink(Types.SocialMediaType.Facebook);
             // youtubeFollowButton.clicked += () => OpenSocialMediaLink(SocialMediaType.Youtube);
 
             idCopyButton.clicked += () => CopyIdToClipboard();
@@ -286,29 +278,37 @@ namespace Merge
             copyCheck.style.opacity = 0;
         }
 
-        void OpenSocialMediaLink(SocialMediaType type)
+        public void OpenSocialMediaLink(Types.SocialMediaType type)
         {
             switch (type)
             {
-                case SocialMediaType.Instagram:
+                case Types.SocialMediaType.Instagram:
                     Application.OpenURL("instragram://user?username=" + GameData.STUDIO_NAME);
 
                     break;
-                case SocialMediaType.Facebook:
+                case Types.SocialMediaType.Facebook:
                     Application.OpenURL("https://facebook.com/" + GameData.STUDIO_NAME);
 
                     break;
-                case SocialMediaType.Youtube:
+                case Types.SocialMediaType.Youtube:
                     Application.OpenURL("https://youtube.com/@" + GameData.STUDIO_NAME);
 
                     break;
             }
+
+            if (!PlayerPrefs.HasKey("followResult"))
+            {
+                PlayerPrefs.SetInt("followResult", 1);
+            }
+
+            // TODO - Send statistic to the server (type)
+
             externalAppOpened = false;
 
             StartCoroutine(CheckSocialMediaLink(type));
         }
 
-        IEnumerator CheckSocialMediaLink(SocialMediaType type)
+        IEnumerator CheckSocialMediaLink(Types.SocialMediaType type)
         {
             yield return new WaitForSeconds(1f);
 
@@ -316,15 +316,15 @@ namespace Merge
             {
                 switch (type)
                 {
-                    case SocialMediaType.Instagram:
+                    case Types.SocialMediaType.Instagram:
                         Application.OpenURL("https://instagram.com/" + "nasa");
 
                         break;
-                    case SocialMediaType.Facebook:
+                    case Types.SocialMediaType.Facebook:
                         Application.OpenURL("https://facebook.com/" + "nasa");
 
                         break;
-                    case SocialMediaType.Youtube:
+                    case Types.SocialMediaType.Youtube:
                         Application.OpenURL("https://youtube.com/@" + "nasa");
 
                         break;

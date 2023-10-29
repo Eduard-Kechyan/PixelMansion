@@ -64,12 +64,12 @@ namespace Merge
                         // End
                         ToggleTimerOnBoardData(gameData.timers[i].id, false);
 
-                        if (clockManager != null && gameData.timers[i].type == Types.TimerType.Item)
+                        if (clockManager != null && gameData.timers[i].timerType == Types.TimerType.Item)
                         {
                             clockManager.RemoveClock(gameData.timers[i].id);
                         }
 
-                        if (!energyTimerChecked && gameData.timers[i].type == Types.TimerType.Energy)
+                        if (!energyTimerChecked && gameData.timers[i].timerType == Types.TimerType.Energy)
                         {
                             energyTimerChecked = true;
 
@@ -78,12 +78,14 @@ namespace Merge
 
                         gameData.timers.RemoveAt(i);
 
+                        ResetCoolDown(gameData.timers[i].id);
+
                         dataManager.SaveTimers();
                     }
                     else
                     {
                         // Continue
-                        if (gameData.timers[i].type == Types.TimerType.Energy)
+                        if (gameData.timers[i].timerType == Types.TimerType.Energy)
                         {
                             if (!energyTimerChecked)
                             {
@@ -108,6 +110,8 @@ namespace Merge
                 }
             }
 
+            HandleCoolDowns();
+
             energyTimerChecked = true;
 
             if (gameData.timers.Count == 0)
@@ -115,6 +119,21 @@ namespace Merge
                 CancelInvoke("HandleTimers");
 
                 handlingTimers = false;
+            }
+        }
+
+        void HandleCoolDowns()
+        {
+            for (int i = gameData.coolDowns.Count - 1; i >= 0; i--)
+            {
+                DateTime endTime = DateTime.UtcNow;
+
+                double timeDiffInSeconds = (endTime - gameData.coolDowns[i].startTime).TotalSeconds;
+
+                if (timeDiffInSeconds > (gameData.coolDowns[i].level == 0 ? 30 : 20))
+                {
+                    ResetCoolDown(gameData.coolDowns[i].id);
+                }
             }
         }
 
@@ -135,9 +154,9 @@ namespace Merge
             return "00:00";
         }
 
-        public void AddTimer(Types.TimerType type, Types.NotificationType notificationType, string itemName, string id, Vector2 position = default, int seconds = 0)
+        public void AddTimer(Types.TimerType timerType, Types.NotificationType notificationType, string itemName, string id, Vector2 position = default, int seconds = 0)
         {
-            if (type == Types.TimerType.Energy)
+            if (timerType == Types.TimerType.Energy)
             {
                 Debug.LogWarning("You gave TimerType Energy to the AddTimer method. Use AddEnergyTimer instead!");
             }
@@ -150,7 +169,7 @@ namespace Merge
                 new Types.Timer
                 {
                     startTime = startTime,
-                    type = type,
+                    timerType = timerType,
                     id = id,
                     seconds = seconds,
                     running = true,
@@ -158,7 +177,7 @@ namespace Merge
                 }
             );
 
-            if (type == Types.TimerType.Item)
+            if (timerType == Types.TimerType.Item)
             {
                 ToggleTimerOnBoardData(id, true);
 
@@ -183,6 +202,15 @@ namespace Merge
                 if (gameData.timers[i].id == id)
                 {
                     notificsManager.Remove(gameData.timers[i].notificationId);
+
+                    if (gameData.timers[i].timerType == Types.TimerType.Item)
+                    {
+                        ToggleTimerOnBoardData(id, false);
+
+                        clockManager.RemoveClock(id);
+
+                        ResetCoolDown(id);
+                    }
 
                     index = count;
 
@@ -291,6 +319,11 @@ namespace Merge
                     {
                         gameData.boardData[x, y].timerOn = enable;
 
+                        if (gameData.boardData[x, y].type == Types.Type.Chest && !enable)
+                        {
+                            gameData.boardData[x, y].chestOpen = true;
+                        }
+
                         if (boardManager != null)
                         {
                             boardManager.ToggleTimerOnItem(count, enable);
@@ -327,7 +360,7 @@ namespace Merge
                     {
                         gameData.coolDowns[i].count++;
 
-                        if (gameData.coolDowns[i].count == item.coolDown.maxCount)
+                        if (gameData.coolDowns[i].count == item.coolDown.maxCounts[gameData.coolDowns[i].level])
                         {
                             item.timerOn = true;
 
@@ -336,7 +369,14 @@ namespace Merge
                             // Note: use item.itemName not item.name 
                             AddTimer(Types.TimerType.Item, notificationType, item.itemName, item.id, item.transform.position, item.coolDown.seconds);
 
-                            gameData.coolDowns.RemoveAt(i);
+                            if (gameData.coolDowns[i].level == 0)
+                            {
+                                gameData.coolDowns[i].level = 1;
+                            }
+
+                            gameData.coolDowns[i].count = 0;
+
+                            gameData.coolDowns[i].startTime = DateTime.UtcNow;
                         }
 
                         return;
@@ -348,8 +388,28 @@ namespace Merge
             gameData.coolDowns.Add(new()
             {
                 count = 1,
+                level = 0,
                 id = item.id,
+                startTime = DateTime.UtcNow
             });
+
+            dataManager.SaveCollDowns();
+        }
+
+        void ResetCoolDown(string id)
+        {
+            for (int i = 0; i < gameData.coolDowns.Count; i++)
+            {
+                if (gameData.coolDowns[i].id == id)
+                {
+                    gameData.coolDowns[i].level = 0;
+
+                    gameData.coolDowns[i].count = 0;
+                    return;
+                }
+            }
+
+            dataManager.SaveCollDowns();
         }
 
         public void ItemPutIntoInventory(string id, DateTime altTime)
@@ -407,7 +467,7 @@ namespace Merge
         {
             int pastSeconds = RemoveEnergyTimer(false);
 
-            pastSeconds+=seconds;
+            pastSeconds += seconds;
 
             DateTime startTime = DateTime.UtcNow;
 
@@ -418,7 +478,7 @@ namespace Merge
                 startTime = DateTime.UtcNow,
                 seconds = pastSeconds,
                 id = "energy_timer",
-                type = Types.TimerType.Energy,
+                timerType = Types.TimerType.Energy,
                 notificationId = notificationId
             };
 
@@ -433,7 +493,7 @@ namespace Merge
 
             for (int i = gameData.timers.Count - 1; i >= 0; i--)
             {
-                if (gameData.timers[i].type == Types.TimerType.Energy)
+                if (gameData.timers[i].timerType == Types.TimerType.Energy)
                 {
                     seconds = gameData.timers[i].seconds;
 

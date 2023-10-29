@@ -47,6 +47,7 @@ namespace Merge
         [HideInInspector]
         public string finishedTasksJsonData;
         private string timersJsonData;
+        private string coolDownsJsonData;
         private string notificationsJsonData;
         [HideInInspector]
         public string unlockedJsonData;
@@ -58,6 +59,7 @@ namespace Merge
         private GameData gameData;
         private DataConverter dataConverter;
         private RateMenu rateMenu;
+        private FollowMenu followMenu;
 
         // Instance
         public static DataManager Instance;
@@ -83,9 +85,10 @@ namespace Merge
             apiCalls = ApiCalls.Instance;
             dataConverter = GetComponent<DataConverter>();
             rateMenu = GameRefs.Instance.rateMenu;
+            followMenu = GameRefs.Instance.followMenu;
 
             // Set up Quick Save
-            saveSettings = new QuickSaveSettings() { CompressionMode = CompressionMode.None }; //TODO -  Set CompressionMode in the final game to Gzip
+            saveSettings = new QuickSaveSettings() { CompressionMode = CompressionMode.None }; // TODO -  Set CompressionMode in the final game to Gzip
             writer = QuickSaveWriter.Create("Root", saveSettings);
 
 #if UNITY_EDITOR
@@ -131,6 +134,7 @@ namespace Merge
                 inventoryData = dataConverter.ConvertInventoryToJson(gameData.inventoryData);
                 tasksJsonData = dataConverter.ConvertTaskGroupsToJson(gameData.tasksData);
                 timersJsonData = dataConverter.ConvertTimersToJson(gameData.timers);
+                coolDownsJsonData = dataConverter.ConvertCoolDownsToJson(gameData.coolDowns);
                 notificationsJsonData = dataConverter.ConvertNotificationsToJson(gameData.notifications);
                 unsentJsonData = dataConverter.ConvertUnsentToJson(apiCalls.unsentData);
                 finishedTasksJsonData = JsonConvert.SerializeObject(gameData.finishedTasks);
@@ -152,6 +156,7 @@ namespace Merge
                     .Write("unlockedData", dataConverter.GetInitialUnlocked())
                     .Write("unlockedRoomsData", worldDataManager != null ? worldDataManager.GetInitialUnlockedRooms() : "[]")
                     .Write("timers", timersJsonData)
+                    .Write("coolDowns", coolDownsJsonData)
                     .Write("notificationsData", notificationsJsonData)
                     // Other
                     .Write("inventorySpace", gameData.inventorySpace)
@@ -178,6 +183,7 @@ namespace Merge
             string newTasksData = "";
             string newFinishedTasks = "";
             string newTimersData = "";
+            string newCoolDownsData = "";
             string newNotificationsData = "";
             string newUnlockedData = "";
             string newUnlockedRoomsData = "";
@@ -192,6 +198,7 @@ namespace Merge
                 newTasksData = tasksJsonData;
                 newFinishedTasks = finishedTasksJsonData;
                 newTimersData = timersJsonData;
+                newCoolDownsData = coolDownsJsonData;
                 newNotificationsData = notificationsJsonData;
                 newUnlockedData = unlockedJsonData;
                 newUnlockedRoomsData = unlockedRoomsJsonData;
@@ -213,6 +220,7 @@ namespace Merge
                 reader.Read<string>("tasksData", r => newTasksData = r);
                 reader.Read<string>("finishedTasks", r => newFinishedTasks = r);
                 reader.Read<string>("timers", r => newTimersData = r);
+                reader.Read<string>("coolDowns", r => newCoolDownsData = r);
                 reader.Read<string>("notificationsData", r => newNotificationsData = r);
                 reader.Read<string>("unlockedData", r => newUnlockedData = r);
                 reader.Read<string>("unlockedRoomsData", r => newUnlockedRoomsData = r);
@@ -248,6 +256,7 @@ namespace Merge
             gameData.chestsData = dataConverter.ConvertItems(chests.content);
 
             gameData.timers = dataConverter.ConvertTimersFromJson(newTimersData);
+            gameData.coolDowns = dataConverter.ConvertCoolDownsFromJson(newCoolDownsData);
             gameData.notifications = dataConverter.ConvertNotificationsFromJson(newNotificationsData);
             gameData.boardData = dataConverter.ConvertArrayToBoard(dataConverter.ConvertBoardFromJson(newBoardData));
             gameData.bonusData = dataConverter.ConvertBonusFromJson(newBonusData);
@@ -263,9 +272,17 @@ namespace Merge
             // Finish Task
             loaded = true;
 
-            if (SceneManager.GetActiveScene().name == "Hub" && rateMenu.shouldShow)
+            if (SceneManager.GetActiveScene().name == "Hub")
             {
-                rateMenu.Open();
+                if (rateMenu.shouldShow)
+                {
+                    rateMenu.Open();
+                }
+
+                if (followMenu.shouldShow)
+                {
+                    followMenu.Open();
+                }
             }
 
             if (initialLoad)
@@ -303,6 +320,13 @@ namespace Merge
             string newTimers = dataConverter.ConvertTimersToJson(gameData.timers);
 
             writer.Write("timers", newTimers).Commit();
+        }
+
+        public void SaveCollDowns()
+        {
+            string newCoolDowns = dataConverter.ConvertCoolDownsToJson(gameData.coolDowns);
+
+            writer.Write("coolDowns", newCoolDowns).Commit();
         }
 
         public void SaveNotifications()

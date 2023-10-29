@@ -18,13 +18,14 @@ namespace Merge
         public int unlockAmount = 5;
         public int speedUpAmount = 5;
         public int popAmount = 5;
-        public int sellAmount = 5;
 
         private Item item;
 
         private Sprite sprite;
 
         private string textToSet = "";
+
+        private int sellAmount = 1;
 
         public enum ActionType
         {
@@ -45,6 +46,7 @@ namespace Merge
         // References
         private InfoMenu infoMenu;
         private ShopMenu shopMenu;
+        private ConfirmMenu confirmMenu;
         private GameData gameData;
         private I18n LOCALE;
 
@@ -72,6 +74,7 @@ namespace Merge
             // Cache
             infoMenu = GameRefs.Instance.infoMenu;
             shopMenu = GameRefs.Instance.shopMenu;
+            confirmMenu = GameRefs.Instance.confirmMenu;
             gameData = GameData.Instance;
             LOCALE = I18n.Instance;
 
@@ -160,7 +163,7 @@ namespace Merge
 
                     if (item.type == Types.Type.Chest)
                     {
-                        if (item.chestLocked)
+                        if (!item.chestOpen && item.chestGroup == Types.ChestGroup.Item && !item.timerOn)
                         {
                             mainActionType = ActionType.UnlockChest;
                         }
@@ -173,8 +176,10 @@ namespace Merge
                     {
                         mainActionType = ActionType.None;
                     }
-                    else if (item.level > 3 || item.isMaxLevel)
+                    else if (item.type == Types.Type.Gen || (item.type == Types.Type.Item && item.level > 3) || item.isMaxLevel)
                     {
+                        CalcSellPrice(item.level);
+
                         mainActionType = ActionType.Sell;
                     }
                     else
@@ -245,7 +250,7 @@ namespace Merge
                 infoData.text = LOCALE.Get("info_box_default");
 
                 infoItem.RemoveFromClassList("info_item_has_timer");
-                
+
                 infoTimer.style.display = DisplayStyle.None;
             }
         }
@@ -307,7 +312,7 @@ namespace Merge
                     infoMainButton.style.display = DisplayStyle.Flex;
                     infoMainButton.style.unityBackgroundImageTintColor = Glob.colorBlue;
 
-                    infoMainAmountLabel.text = LOCALE.Get("info_box_button_open");
+                    infoMainAmountLabel.text = LOCALE.Get("info_box_button_unlock");
                     infoMainNameLabel.text = "";
 
                     infoMainButton.RemoveFromClassList("info_box_action_button_has_value");
@@ -366,81 +371,93 @@ namespace Merge
         // Handle the buttons
         void InfoAction(bool mainButton = true)
         {
-            switch (mainActionType)
+            if (mainButton)
             {
-                case ActionType.Open:
-                    if (gameData.gems < openAmount)
-                    {
-                        shopMenu.Open("Gems");
-                    }
-                    else
-                    {
-                        boardInteractions.OpenItem(item, openAmount, Types.State.Crate);
+                switch (mainActionType)
+                {
+                    case ActionType.Open:
+                        if (gameData.gems < openAmount)
+                        {
+                            shopMenu.Open("Gems");
+                        }
+                        else
+                        {
+                            boardInteractions.OpenItem(item, openAmount, Types.State.Crate);
+                            Select(item);
+                            selectionManager.Select("both", false);
+                        }
+                        break;
+                    case ActionType.Unlock:
+                        if (gameData.gems < unlockAmount)
+                        {
+                            shopMenu.Open("Gems");
+                        }
+                        else
+                        {
+                            boardInteractions.OpenItem(item, unlockAmount, Types.State.Locker);
+                            Select(item);
+                            selectionManager.Select("both", false);
+                        }
+                        break;
+                    case ActionType.UnlockChest:
+                        boardInteractions.UnlockChest(item);
                         Select(item);
                         selectionManager.Select("both", false);
-                    }
-                    break;
-                case ActionType.Unlock:
-                    if (gameData.gems < unlockAmount)
-                    {
-                        shopMenu.Open("Gems");
-                    }
-                    else
-                    {
-                        boardInteractions.OpenItem(item, unlockAmount, Types.State.Locker);
-                        Select(item);
-                        selectionManager.Select("both", false);
-                    }
-                    break;
-                case ActionType.UnlockChest:
-                    boardInteractions.UnlockChest(item);
-                    Select(item);
-                    selectionManager.Select("both", false);
-                    break;
-                case ActionType.Pop:
-                    if (gameData.gems < popAmount)
-                    {
-                        shopMenu.Open("Gems");
-                    }
-                    else
-                    {
-                        boardInteractions.OpenItem(item, unlockAmount, Types.State.Bubble);
-                        Select(item);
-                        selectionManager.Select("both", false);
-                    }
-                    break;
-                case ActionType.Sell:
-                    boardInteractions.RemoveItem(item, sellAmount);
-                    Unselect(true);
-                    selectionManager.UnselectAlt();
-                    SetUndoButton(true);
-                    break;
-                case ActionType.Remove:
-                    boardInteractions.RemoveItem(item);
-                    Unselect(true);
-                    selectionManager.UnselectAlt();
-                    SetUndoButton();
-                    break;
-                case ActionType.Undo:
-                    boardInteractions.UndoLastStep();
-                    Refresh();
-                    break;
+                        break;
+                    case ActionType.Pop:
+                        if (gameData.gems < popAmount)
+                        {
+                            shopMenu.Open("Gems");
+                        }
+                        else
+                        {
+                            boardInteractions.OpenItem(item, unlockAmount, Types.State.Bubble);
+                            Select(item);
+                            selectionManager.Select("both", false);
+                        }
+                        break;
+                    case ActionType.Sell:
+                        // Confirm selling item if it's a generator or at least level 10
+                        if (item.type == Types.Type.Gen || item.level > 9)
+                        {
+                            confirmMenu.Open("sell_gen", () =>
+                            {
+                                boardInteractions.RemoveItem(item, sellAmount);
+                                Unselect(true);
+                                selectionManager.UnselectAlt();
+                                SetUndoButton(true);
+                            });
+                        }
+                        break;
+                    case ActionType.Remove:
+                        boardInteractions.RemoveItem(item);
+                        Unselect(true);
+                        selectionManager.UnselectAlt();
+                        SetUndoButton();
+                        break;
+                    case ActionType.Undo:
+                        boardInteractions.UndoLastStep();
+                        Refresh();
+                        break;
+                }
             }
-
-            switch (secondaryActionType)
+            else
             {
-                case ActionType.SpeedUp:
-                    if (gameData.gems < speedUpAmount)
-                    {
-                        shopMenu.Open("Gems");
-                    }
-                    else
-                    {
-                        boardInteractions.SpeedUpItem(item, speedUpAmount);
-                        Select(item);
-                        selectionManager.Select("both", false);
-                    }
-                    break;
+                switch (secondaryActionType)
+                {
+                    case ActionType.SpeedUp:
+                        if (gameData.gems < speedUpAmount)
+                        {
+                            shopMenu.Open("Gems");
+                        }
+                        else
+                        {
+                            boardInteractions.SpeedUpItem(item, speedUpAmount);
+                            Select(item);
+                            selectionManager.Select("both", false);
+                        }
+                        break;
+                }
             }
         }
 
@@ -488,6 +505,11 @@ namespace Merge
             }
 
             return multipliedValue;
+        }
+
+        void CalcSellPrice(int level)
+        {
+            sellAmount = gameData.valuesData.sellPriceMultiplier[level - 1];
         }
 
         // Get the current selected item's data
@@ -568,18 +590,7 @@ namespace Merge
                             }
                             else
                             {
-                                if (newItem.chestLocked)
-                                {
-                                    if (newItem.isMaxLevel)
-                                    {
-                                        textToSet = LOCALE.Get("info_box_chest_max_locked");
-                                    }
-                                    else
-                                    {
-                                        textToSet = LOCALE.Get("info_box_chest_locked", newItem.nextName);
-                                    }
-                                }
-                                else if (newItem.timerOn)
+                                if (newItem.timerOn)
                                 {
                                     if (newItem.isMaxLevel)
                                     {
@@ -588,6 +599,17 @@ namespace Merge
                                     else
                                     {
                                         textToSet = LOCALE.Get("info_box_chest_timer", newItem.nextName);
+                                    }
+                                }
+                                else if (!newItem.chestOpen)
+                                {
+                                    if (newItem.isMaxLevel)
+                                    {
+                                        textToSet = LOCALE.Get("info_box_chest_max_locked");
+                                    }
+                                    else
+                                    {
+                                        textToSet = LOCALE.Get("info_box_chest_locked", newItem.nextName);
                                     }
                                 }
                                 else

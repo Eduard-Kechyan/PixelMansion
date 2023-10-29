@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.Purchasing;
 
 namespace Merge
 {
@@ -329,7 +330,8 @@ namespace Merge
                     Label buyButtonLabel = buyButton.Q<Label>("Label");
                     buyButton.Q<VisualElement>("Value").style.display = DisplayStyle.None;
 
-                    buyButtonLabel.text = GetPrice(shopValues[i].price, shopValues[i].type);
+                    // buyButtonLabel.text = GetPrice(shopValues[i].price, shopValues[i].type);
+                    buyButtonLabel.text = LOCALE.Get("shop_menu_buy_button_loading");
                     buyButtonLabel.AddToClassList("shop_box_buy_button_label_full");
 
                     buyButton.clicked += () =>
@@ -502,7 +504,7 @@ namespace Merge
 
             Types.ShopValuesContent shopGem = shopData.gemsContent[order];
 
-            paymentsManager.Purchase(shopGem.price, () =>
+            paymentsManager.Purchase(shopGem.id, () =>
             {
                 if (sceneLoader.sceneName == "Gameplay")
                 {
@@ -538,7 +540,7 @@ namespace Merge
 
             Types.ShopValuesContent shopGold = shopData.goldContent[order];
 
-            paymentsManager.Purchase(shopGold.price, () =>
+            paymentsManager.Purchase(shopGold.id, () =>
             {
                 if (sceneLoader.sceneName == "Gameplay")
                 {
@@ -556,6 +558,10 @@ namespace Merge
 
                 noteMenu.Open("note_menu_purchase_failed", notes);
             });
+        }
+
+        public void FinalizePurchase(){
+
         }
 
         void Restore(string type)

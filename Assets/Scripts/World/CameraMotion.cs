@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +15,8 @@ namespace Merge
         private Vector3 desiredPos;
         private bool useAltMoveSpeed = false;
         private float altMoveSpeed = -1f;
+
+        private Action callBack;
 
         // References
         private HubUI hubUI;
@@ -48,14 +51,18 @@ namespace Merge
                     hubUI.SetUIButtons();
 
                     enabled = false;
+
+                    callBack?.Invoke();
                 }
             }
         }
 
-        public void MoveTo(Vector2 pos, float newMotionSpeed = -1)
+        public void MoveTo(Vector2 pos, float newMotionSpeed = -1,Action newCallBack =null)
         {
             desiredPos = new Vector3(pos.x, pos.y, transform.position.z);
             moving = true;
+
+            callBack = newCallBack;
 
             if (newMotionSpeed > -1)
             {

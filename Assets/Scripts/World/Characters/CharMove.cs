@@ -84,6 +84,8 @@ namespace Merge
         public void SetDestination(Vector2 newPos, bool stayInRoom = false)
         {
             destinationPos = newPos;
+            
+            enabled = true;
 
             MoveChar();
 

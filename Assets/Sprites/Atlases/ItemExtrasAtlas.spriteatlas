@@ -67,6 +67,7 @@ SpriteAtlas:
     - 47c024a3d93ed024682db3aea79ab753: 21300000
     - 24854bc316a55d14f9e9432226be36f0: 21300000
     - 10ae97084fab2e84aa049483478f1099: 21300000
+    - 62ab0ca8cc14d2c47a6bd3acf0fe70e5: 21300000
     - f71e5ad897003bf4b9546bbf9fe1d382: 21300000
     - 54a459897a9654e438b730019c89f977: 21300000
     - a47610faeca58b3499fb8790b4d36113: 21300000
@@ -100,6 +101,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 47c024a3d93ed024682db3aea79ab753, type: 3}
   - {fileID: 21300000, guid: 24854bc316a55d14f9e9432226be36f0, type: 3}
   - {fileID: 21300000, guid: 10ae97084fab2e84aa049483478f1099, type: 3}
+  - {fileID: 21300000, guid: 62ab0ca8cc14d2c47a6bd3acf0fe70e5, type: 3}
   - {fileID: 21300000, guid: f71e5ad897003bf4b9546bbf9fe1d382, type: 3}
   - {fileID: 21300000, guid: 54a459897a9654e438b730019c89f977, type: 3}
   - {fileID: 21300000, guid: a47610faeca58b3499fb8790b4d36113, type: 3}
@@ -132,6 +134,7 @@ SpriteAtlas:
   - Completion
   - Crate2
   - Crate3
+  - ReadyChest
   - Crate1
   - Ready
   - Selection

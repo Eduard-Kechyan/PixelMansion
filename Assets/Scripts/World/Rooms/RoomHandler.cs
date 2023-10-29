@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -36,12 +37,16 @@ namespace Merge
         private NavMeshManager navMeshManager;
         private DoorManager doorManager;
         private DataManager dataManager;
+        private SoundManager soundManager;
+        private CharMove charMove;
 
         void Start()
         {
             navMeshManager = NavMeshManager.Instance;
             doorManager = DoorManager.Instance;
             dataManager = DataManager.Instance;
+            soundManager = SoundManager.Instance;
+            charMove = CharMain.Instance.charMove;
 
             lockedOverlayPH = transform.GetComponentInChildren<LockedOverlayPH>();
             navPH = transform.GetComponentInChildren<NavPH>();
@@ -119,19 +124,27 @@ namespace Merge
             }
         }
 
-        public void EnableNav()
+        public void EnableNav(Action callback = null)
         {
             if (nav == null)
             {
                 navPH = transform.GetComponentInChildren<NavPH>();
+
+                if (navPH != null)
+                {
+                    nav = navPH.gameObject;
+                }
             }
 
-            if (navPH != null)
+            if (nav != null)
             {
-                nav = navPH.gameObject;
-
-                nav.SetActive(true);
+                for (int i = 0; i < nav.transform.childCount; i++)
+                {
+                    nav.transform.GetChild(i).gameObject.SetActive(true);
+                }
             }
+
+            callback?.Invoke();
         }
 
         public void DisableNav()
@@ -139,13 +152,19 @@ namespace Merge
             if (nav == null)
             {
                 navPH = transform.GetComponentInChildren<NavPH>();
+
+                if (navPH != null)
+                {
+                    nav = navPH.gameObject;
+                }
             }
 
-            if (navPH != null)
+            if (nav != null)
             {
-                nav = navPH.gameObject;
-
-                nav.SetActive(false);
+                for (int i = 0; i < nav.transform.childCount; i++)
+                {
+                    nav.transform.GetChild(i).gameObject.SetActive(false);
+                }
             }
         }
 
@@ -163,55 +182,56 @@ namespace Merge
                 }
             }
 
-            if (nav != null)
-            {
-                nav.SetActive(false);
-            }
+            DisableNav();
 
             locked = true;
         }
 
-        public void Unlock()
-        {
-            if (locked)
+        public void UnlockPre()
+        {           
+            dataManager.UnlockRoom(gameObject.name);
+
+            if (lockedOverlay != null)
             {
-                if (lockedOverlay != null)
-                {
-                    lockedOverlay.SetActive(false);
-                }
-
-                if (nav != null)
-                {
-                    nav.SetActive(true);
-
-                    navMeshManager.Bake();
-                }
-
-                bool found = false;
-
-                for (int i = 0; i < doorManager.doors.Length; i++)
-                {
-                    if (doorManager.doors[i].roomSortingLayer == roomSortingLayer)
-                    {
-                        doorManager.doors[i].gameObject.SetActive(false);
-
-                        found = true;
-
-                        break;
-                    }
-                }
-
-                if (!found && hasDoor)
-                {
-                    Debug.LogWarning("This room with a door couldn't find the door: " + gameObject.name);
-                }
-
-                dataManager.UnlockRoom(gameObject.name);
-
-                locked = false;
+                lockedOverlay.SetActive(false);
             }
 
-            Debug.Log(gameObject.name + " unlocked!");
+            EnableNav(() =>
+            {
+                navMeshManager.Bake();
+            });
+
+            bool found = false;
+
+            for (int i = 0; i < doorManager.doors.Length; i++)
+            {
+                if (doorManager.doors[i].roomSortingLayer == roomSortingLayer)
+                {
+                    charMove.SetPosition(doorManager.doors[i].transform.position);
+
+                    doorManager.doors[i].gameObject.SetActive(false);
+
+                    found = true;
+
+                    break;
+                }
+            }
+
+            if (!found && hasDoor)
+            {
+                Debug.LogWarning("This room with a door couldn't find the door: " + gameObject.name);
+            }
+
+            locked = false;
+        }
+
+        public void Unlock()
+        {
+            charMove.SetDestination(transform.localPosition);
+
+            soundManager.PlaySound("LevelUp"); // TODO add proper unlocking sfx (RoomUnlocking)
+
+            // TODO - Add a nice particle effect here
         }
 
         void UnlockAlt()

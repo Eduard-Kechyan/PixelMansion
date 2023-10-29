@@ -23,8 +23,8 @@ namespace Merge
         private string levelRewardText1;
         private string levelRewardText2;
 
-        private List<TimeValue> nullTransition = new();
-        private List<TimeValue> fullTransition = new();
+        private readonly List<TimeValue> nullTransition = new();
+        private readonly List<TimeValue> fullTransition = new();
 
         private bool isButtonSlashing = false;
 
@@ -55,7 +55,6 @@ namespace Merge
         private VisualElement levelUpButtonSlash;
         private Label levelUpLabel;
         private Button levelUpDummyButton;
-        private Label levelUpDummyLabel;
 
         private Label levelFillLabel;
         private VisualElement levelRewards;
@@ -92,7 +91,6 @@ namespace Merge
             levelUpButtonSlash = levelUpButton.Q<VisualElement>("ButtonSlash");
             levelUpLabel = levelUpButton.Q<Label>("LevelUpLabel");
             levelUpDummyButton= levelMenu.Q<Button>("LevelUpDummyButton");
-            levelUpDummyLabel = levelUpDummyButton.Q<Label>("LevelUpLabel");
 
             levelRewards = levelMenu.Q<VisualElement>("LevelRewards");
             levelRewardsLabel = levelRewards.Q<Label>("Label");

@@ -70,7 +70,7 @@ namespace Merge
             UserData newUserData = new()
             {
                 userId = userId,
-                email = dummyEmail, //TODO - Email should be empty and should only be filled if the player signs ins using social media
+                email = dummyEmail, // TODO - Email should be empty and should only be filled if the player signs ins using social media
                 location = "USA",
                 language = "en-US",
                 age = tempAge

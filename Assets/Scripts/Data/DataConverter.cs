@@ -47,6 +47,7 @@ namespace Merge
                     chestGroup = Glob.ParseEnum<Types.ChestGroup>(boardJson[i].chestGroup),
                     chestItems = boardJson[i].chestItems,
                     chestItemsSet = boardJson[i].chestItemsSet,
+                    chestOpen = boardJson[i].chestOpen,
                     id = boardJson[i].id,
                     generatesAt = boardJson[i].generatesAt,
                     crate = boardJson[i].crate,
@@ -82,6 +83,7 @@ namespace Merge
                     id = boardData[i].id,
                     generatesAt = boardData[i].generatesAt,
                     chestItemsSet = boardData[i].chestItemsSet,
+                    chestOpen = boardData[i].chestOpen,
                     crate = initialLoop ? randomInt : boardData[i].crate,
                     gemPopped = boardData[i].gemPopped,
                     isCompleted = boardData[i].isCompleted,
@@ -117,6 +119,7 @@ namespace Merge
                         order = count,
                         chestItems = boardArray[count].chestItems,
                         chestItemsSet = boardArray[count].chestItemsSet,
+                        chestOpen = boardArray[count].chestOpen,
                         generatesAt = boardArray[count].generatesAt,
                         id = boardArray[count].id,
                         gemPopped = boardArray[count].gemPopped,
@@ -151,6 +154,7 @@ namespace Merge
                     crate = boardItem.crate,
                     chestItems = boardItem.chestItems,
                     chestItemsSet = boardItem.chestItemsSet,
+                    chestOpen = boardItem.chestOpen,
                     id = boardItem.id,
                     generatesAt = boardItem.generatesAt,
                     gemPopped = boardItem.gemPopped,
@@ -534,7 +538,7 @@ namespace Merge
                         startTime = System.DateTime.Parse(timerJson[i].startTime),
                         seconds = timerJson[i].seconds,
                         running = timerJson[i].running,
-                        type = Glob.ParseEnum<Types.TimerType>(timerJson[i].type),
+                        timerType = Glob.ParseEnum<Types.TimerType>(timerJson[i].timerType),
                         id = timerJson[i].id,
                         notificationId = timerJson[i].notificationId,
                     }
@@ -555,7 +559,7 @@ namespace Merge
                     startTime = timers[i].startTime.ToString(),
                     seconds = timers[i].seconds,
                     running = timers[i].running,
-                    type = timers[i].type.ToString(),
+                    timerType = timers[i].timerType.ToString(),
                     id = timers[i].id,
                     notificationId = timers[i].notificationId,
                 };
@@ -564,6 +568,50 @@ namespace Merge
             }
 
             return JsonConvert.SerializeObject(timerJson);
+        }
+
+        //// COOL DOWNS ////
+
+        public List<Types.CollDownCount> ConvertCoolDownsFromJson(string coolDownsString)
+        {
+            List<Types.CollDownCount> coolDowns = new();
+
+            Types.CollDownCountJson[] timerJson = JsonConvert.DeserializeObject<Types.CollDownCountJson[]>(
+                coolDownsString
+            );
+
+            for (int i = 0; i < timerJson.Length; i++)
+            {
+                coolDowns.Add(
+                    new Types.CollDownCount
+                    {
+                        level = timerJson[i].level,
+                        count = timerJson[i].count,
+                        id = timerJson[i].id,
+                    }
+                );
+            }
+
+            return coolDowns;
+        }
+
+        public string ConvertCoolDownsToJson(List<Types.CollDownCount> coolDowns)
+        {
+            Types.CollDownCountJson[] coolDownJson = new Types.CollDownCountJson[coolDowns.Count];
+
+            for (int i = 0; i < coolDowns.Count; i++)
+            {
+                Types.CollDownCountJson neCoolDownsJson = new()
+                {
+                    level = coolDowns[i].level,
+                    count = coolDowns[i].count,
+                    id = coolDowns[i].id,
+                };
+
+                coolDownJson[i] = neCoolDownsJson;
+            }
+
+            return JsonConvert.SerializeObject(coolDownJson);
         }
 
         //// NOTIFICATIONS ////

@@ -126,12 +126,16 @@
     right: 4px;
 }
 
+.info_box_button_container {
+    position: absolute;
+    bottom: 2px;
+    flex-direction: row;
+    right: 2px;
+}
+
 .info_box_action_button {
     width: 32px;
     height: 14px;
-    right: 2px;
-    bottom: 2px;
-    position: absolute;
     display: none;
     background-image: url('project://database/Assets/Sprites/Scenes/Gameplay/InfoBoxButton.png?fileID=2800000&guid=4845d5095b10cf142966fd25e7f7cf8c&type=3#InfoBoxButton');
     overflow: visible;

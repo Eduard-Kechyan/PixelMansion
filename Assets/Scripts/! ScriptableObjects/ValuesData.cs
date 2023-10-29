@@ -12,5 +12,6 @@ namespace Merge
         public int[] energyMultiplier;
         public int[] goldMultiplier;
         public int[] gemsMultiplier;
+        public int[] sellPriceMultiplier;
     }
 }

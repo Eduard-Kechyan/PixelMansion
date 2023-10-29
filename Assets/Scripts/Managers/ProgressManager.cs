@@ -24,6 +24,7 @@ namespace Merge
         private HubUI hubUI;
         private ValuesUI valuesUI;
         private CharMain charMain;
+        private CameraMotion cameraMotion;
 
         void Start()
         {
@@ -33,6 +34,7 @@ namespace Merge
             hubUI = GameRefs.Instance.hubUI;
             valuesUI = GameRefs.Instance.valuesUI;
             charMain = CharMain.Instance;
+            cameraMotion = Camera.main.GetComponent<CameraMotion>();
 
             Glob.SetTimeout(() =>
             {
@@ -291,7 +293,14 @@ namespace Merge
 
                             if (foundRoomHandler != null)
                             {
-                                foundRoomHandler.Unlock();
+                                worldDataManager.UnlockRoom(areaId);
+
+                                foundRoomHandler.UnlockPre();
+
+                                cameraMotion.MoveTo(foundRoom.localPosition, 250, () =>
+                                {
+                                    foundRoomHandler.Unlock();
+                                });
                             }
                             else
                             {

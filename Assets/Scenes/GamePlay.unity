@@ -687,6 +687,7 @@ MonoBehaviour:
   inventoryMenu: {fileID: 0}
   levelMenu: {fileID: 0}
   rateMenu: {fileID: 0}
+  followMenu: {fileID: 0}
   noteMenu: {fileID: 0}
   settingsMenu: {fileID: 0}
   shopMenu: {fileID: 0}
@@ -1756,7 +1757,6 @@ MonoBehaviour:
   unlockAmount: 5
   speedUpAmount: 5
   popAmount: 5
-  sellAmount: 5
 --- !u!4 &6786505432524341889
 Transform:
   m_ObjectHideFlags: 0
@@ -1950,6 +1950,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6103699518242801327, guid: fb6bd1ade9d0e614da3b3eabc6c46c06, type: 3}
+      propertyPath: timeManager
+      value: 
+      objectReference: {fileID: 783295151}
     - target: {fileID: 6103699518242801327, guid: fb6bd1ade9d0e614da3b3eabc6c46c06, type: 3}
       propertyPath: clockManager
       value: 
