@@ -49,6 +49,7 @@ namespace Merge
         private ConfirmMenu confirmMenu;
         private GameData gameData;
         private I18n LOCALE;
+        private AdsManager adsManager;
 
         // UI
         private VisualElement root;
@@ -61,6 +62,7 @@ namespace Merge
         private Label infoMainAmountLabel;
         private Label infoMainNameLabel;
         private VisualElement infoMainRemoveIcon;
+        private VisualElement infoSecondaryWatchIcon;
         private Button infoSecondaryButton;
         private VisualElement infoSecondaryValue;
         private Label infoSecondaryAmountLabel;
@@ -77,6 +79,7 @@ namespace Merge
             confirmMenu = GameRefs.Instance.confirmMenu;
             gameData = GameData.Instance;
             LOCALE = I18n.Instance;
+            adsManager = Services.Instance.GetComponent<AdsManager>();
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
@@ -97,6 +100,7 @@ namespace Merge
             infoSecondaryValue = infoSecondaryButton.Q<VisualElement>("Value");
             infoSecondaryAmountLabel = infoSecondaryButton.Q<Label>("AmountLabel");
             infoSecondaryNameLabel = infoSecondaryButton.Q<Label>("NameLabel");
+            infoSecondaryWatchIcon = infoSecondaryButton.Q<VisualElement>("WatchIcon");
 
             infoName = root.Q<Label>("InfoName");
             infoData = root.Q<Label>("InfoData");
@@ -153,6 +157,7 @@ namespace Merge
                     infoItemBubble.style.display = DisplayStyle.Flex;
 
                     mainActionType = ActionType.Pop;
+                    secondaryActionType = ActionType.Pop;
                     break;
                 default: //// ITEM ////
                     infoName.text = item.itemLevelName;
@@ -250,6 +255,8 @@ namespace Merge
                 infoData.text = LOCALE.Get("info_box_default");
 
                 infoItem.RemoveFromClassList("info_item_has_timer");
+                infoItemLocked.RemoveFromClassList("info_item_has_timer");
+                infoItemBubble.RemoveFromClassList("info_item_has_timer");
 
                 infoTimer.style.display = DisplayStyle.None;
             }
@@ -280,8 +287,11 @@ namespace Merge
         // Set the buttons
         void HandleActionButton()
         {
+            infoSecondaryWatchIcon.style.display = DisplayStyle.None;
             infoMainRemoveIcon.style.display = DisplayStyle.None;
             infoItem.RemoveFromClassList("info_item_has_timer");
+            infoItemLocked.RemoveFromClassList("info_item_has_timer");
+            infoItemBubble.RemoveFromClassList("info_item_has_timer");
             infoTimer.style.display = DisplayStyle.None;
 
             switch (mainActionType)
@@ -317,6 +327,17 @@ namespace Merge
 
                     infoMainButton.RemoveFromClassList("info_box_action_button_has_value");
                     infoMainValue.style.display = DisplayStyle.None;
+                    break;
+                case ActionType.Pop:
+                    infoMainButton.style.display = DisplayStyle.Flex;
+                    infoMainButton.style.unityBackgroundImageTintColor = Glob.colorBlue;
+
+                    infoMainAmountLabel.text = popAmount.ToString();
+                    infoMainNameLabel.text = LOCALE.Get("info_box_button_pop");
+
+                    infoMainButton.AddToClassList("info_box_action_button_has_value");
+                    infoMainValue.style.backgroundImage = new StyleBackground(gemValue);
+                    infoMainValue.style.display = DisplayStyle.Flex;
                     break;
                 case ActionType.Sell:
                     infoMainButton.style.display = DisplayStyle.Flex;
@@ -356,14 +377,25 @@ namespace Merge
                     infoSecondaryNameLabel.text = LOCALE.Get("info_box_button_speed_up");
 
                     infoItem.AddToClassList("info_item_has_timer");
+                    infoItemLocked.AddToClassList("info_item_has_timer");
+                    infoItemBubble.AddToClassList("info_item_has_timer");
                     infoTimer.style.display = DisplayStyle.Flex;
 
                     infoSecondaryButton.AddToClassList("info_box_action_button_has_value");
                     infoSecondaryValue.style.backgroundImage = new StyleBackground(gemValue);
                     infoSecondaryValue.style.display = DisplayStyle.Flex;
                     break;
+                case ActionType.Pop:
+                    infoSecondaryButton.style.display = DisplayStyle.Flex;
+                    infoSecondaryButton.style.unityBackgroundImageTintColor = Glob.colorGreen;
+
+                    infoSecondaryAmountLabel.text = LOCALE.Get("info_box_button_watch_ad");
+                    infoSecondaryNameLabel.text = "";
+                    break;
                 case ActionType.None:
                     infoSecondaryButton.style.display = DisplayStyle.None;
+
+                    infoSecondaryWatchIcon.style.display = DisplayStyle.Flex;
                     break;
             }
         }
@@ -457,6 +489,14 @@ namespace Merge
                             selectionManager.Select("both", false);
                         }
                         break;
+                    case ActionType.Pop:
+                        adsManager.WatchAd(Types.AdType.Bubble, (int reward) =>
+                        {
+                            boardInteractions.OpenItem(item, unlockAmount, Types.State.Bubble);
+                            Select(item);
+                            selectionManager.Select("both", false);
+                        });
+                        break;
                 }
             }
         }
@@ -538,7 +578,15 @@ namespace Merge
                             }
                             else
                             {
-                                textToSet = LOCALE.Get("info_box_gen", newItem.nextName);
+                                if (newItem.level >= newItem.generatesAt)
+                                {
+                                    textToSet = LOCALE.Get("info_box_gen", newItem.nextName);
+                                }
+                                else
+                                {
+
+                                    textToSet = LOCALE.Get("info_box_gen_pre", newItem.nextName);
+                                }
                             }
                             break;
                         case Types.Type.Coll:
@@ -586,7 +634,21 @@ namespace Merge
                         case Types.Type.Chest:
                             if (alt)
                             {
-                                textToSet = LOCALE.Get("info_box_chest_alt_" + newItem.chestGroup); // Note the +
+                                if (!newItem.chestOpen)
+                                {
+                                    if (newItem.isMaxLevel)
+                                    {
+                                        textToSet = LOCALE.Get("info_box_chest_max_locked");
+                                    }
+                                    else
+                                    {
+                                        textToSet = LOCALE.Get("info_box_chest_locked", newItem.nextName);
+                                    }
+                                }
+                                else
+                                {
+                                    textToSet = LOCALE.Get("info_box_chest_alt_" + newItem.chestGroup); // Note the +
+                                }
                             }
                             else
                             {

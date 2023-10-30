@@ -32,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1888629426759165983
 MonoBehaviour:
@@ -60,7 +60,7 @@ MonoBehaviour:
   - clip: {fileID: 8300000, guid: 3ec3e4d5663e5fa4e83b1e9d9909f319, type: 3}
     volume: 1
   - clip: {fileID: 8300000, guid: b2a05aa60a3e51e4ab9cb5dabf05f7cc, type: 3}
-    volume: 0.1
+    volume: 0.5
   - clip: {fileID: 8300000, guid: dfc344e7c5889e042ae509663040c2b2, type: 3}
     volume: 1
   - clip: {fileID: 8300000, guid: 237f49a584ca15a45bb2288a94d9dff7, type: 3}
@@ -72,6 +72,12 @@ MonoBehaviour:
   - clip: {fileID: 8300000, guid: f00e00f888db0e2438d4e5b8d8df30de, type: 3}
     volume: 1
   - clip: {fileID: 8300000, guid: e51a92b056eba48418b4f5ee96b6734e, type: 3}
+    volume: 0.4
+  - clip: {fileID: 8300000, guid: 7fbd43df2f7d8584f99cbb6aad8834ee, type: 3}
+    volume: 1
+  - clip: {fileID: 8300000, guid: f575e7edbf94f3d46ba09f868ca8c198, type: 3}
+    volume: 1
+  - clip: {fileID: 8300000, guid: 2d3ae4f881e3ec449968c12b3e49db15, type: 3}
     volume: 1
   sourceSound: {fileID: 2007152343}
   musicClips:

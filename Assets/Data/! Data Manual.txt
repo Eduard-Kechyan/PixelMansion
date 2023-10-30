@@ -1,0 +1,20 @@
+1. Generator
+
+- Generates at
+- Has level
+- No custom name
+- "Creates" only need:
+    - Type (Item)
+    - Group
+    - Chance
+
+2. Chest
+
+- Has level
+- No custom name
+- "Creates" only need:
+    - Type (Gen/Coll)
+    - GenGroup
+    - CollGroup (No Experience)
+    - Chance (Only for chest type Item)
+    - Sprite (Only for chest type Item)

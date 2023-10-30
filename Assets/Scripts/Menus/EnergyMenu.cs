@@ -100,7 +100,7 @@ namespace Merge
         // Add energy after successfully watching an ad
         void WatchAdHandle()
         {
-            adsManager.WatchAd((int newEnergyAmount) =>
+            adsManager.WatchAd(Types.AdType.Energy, (int newEnergyAmount) =>
             {
                 valuePop.PopValue(newEnergyAmount, Types.CollGroup.Energy, watchButton.worldBound.center, false, true);
             }, () =>

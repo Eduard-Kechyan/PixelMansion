@@ -76,9 +76,16 @@ namespace Merge
                             energyTimer.TimerEnd();
                         }
 
-                        gameData.timers.RemoveAt(i);
+                        if (gameData.timers[i].notificationType == Types.NotificationType.Gen)
+                        {
+                            ResetCoolDown(gameData.timers[i].id);
+                        }
+                        else if (gameData.timers[i].notificationType == Types.NotificationType.Bubble)
+                        {
+                            boardManager.RemoveBubble(gameData.timers[i].id);
+                        }
 
-                        ResetCoolDown(gameData.timers[i].id);
+                        gameData.timers.RemoveAt(i);
 
                         dataManager.SaveTimers();
                     }
@@ -163,7 +170,12 @@ namespace Merge
 
             DateTime startTime = DateTime.UtcNow;
 
-            int notificationId = notificsManager.Add(notificationType, startTime.AddSeconds(seconds), itemName);
+            int notificationId = 0;
+
+            if (notificationType != Types.NotificationType.Bubble)
+            {
+                notificsManager.Add(notificationType, startTime.AddSeconds(seconds), itemName);
+            }
 
             gameData.timers.Add(
                 new Types.Timer
@@ -173,7 +185,8 @@ namespace Merge
                     id = id,
                     seconds = seconds,
                     running = true,
-                    notificationId = notificationId
+                    notificationId = notificationId,
+                    notificationType = notificationType
                 }
             );
 
@@ -201,7 +214,10 @@ namespace Merge
             {
                 if (gameData.timers[i].id == id)
                 {
-                    notificsManager.Remove(gameData.timers[i].notificationId);
+                    if (gameData.timers[i].notificationType == Types.NotificationType.Bubble)
+                    {
+                        notificsManager.Remove(gameData.timers[i].notificationId);
+                    }
 
                     if (gameData.timers[i].timerType == Types.TimerType.Item)
                     {

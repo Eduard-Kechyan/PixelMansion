@@ -181,6 +181,8 @@ namespace Merge
             double cumulative = 0.0;
 
             ItemTypes.Group selectedGroup = new();
+            int maxLevel = 0;
+            bool canIncreaseMaxLevel = false;
 
             // Randomly select a group of items to choose from
             for (int i = 0; i < creates.Length; i++)
@@ -190,6 +192,9 @@ namespace Merge
                 if (diceRoll < cumulative)
                 {
                     selectedGroup = creates[i].group;
+                    maxLevel = creates[i].maxLevel;
+                    canIncreaseMaxLevel = creates[i].canIncreaseMaxLevel;
+
                     break;
                 }
             }
@@ -201,13 +206,26 @@ namespace Merge
 
             selectedItem = Mathf.FloorToInt(Glob.CalcCurvedChances(generationCurves[interactions.currentItem.level - interactions.currentItem.generatesAt]));
 
-            //Debug.Log(selectedItem);
+            if (canIncreaseMaxLevel)
+            {
+                maxLevel += interactions.currentItem.level;
+            }
+
+            if (selectedItem > maxLevel)
+            {
+                selectedItem = maxLevel;
+            }
 
             // Create item from selected group
             for (int i = 0; i < gameData.itemsData.Length; i++)
             {
                 if (gameData.itemsData[i].group == selectedGroup)
                 {
+                    if (selectedItem >= gameData.itemsData[i].content.Length)
+                    {
+                        selectedItem = gameData.itemsData[i].content.Length - 1;
+                    }
+
                     boardManager.CreateItemOnEmptyTile(
                         gameData.itemsData[i].content[selectedItem],
                         emptyBoard,
@@ -215,6 +233,8 @@ namespace Merge
                         true,
                         true
                     );
+
+                    break;
                 }
             }
         }
@@ -233,7 +253,7 @@ namespace Merge
                 int energyCollCount = 0;
                 int randomEnergyOrder;
 
-                Types.Item energyItems = new Types.Item();
+                Types.Item energyItems = new();
 
                 for (int i = 0; i < gameData.collectablesData.Length; i++)
                 {
@@ -242,6 +262,8 @@ namespace Merge
                         energyItems = gameData.collectablesData[i];
 
                         energyCollCount = gameData.collectablesData[i].content.Length;
+
+                        break;
                     }
                 }
 
@@ -249,7 +271,7 @@ namespace Merge
 
                 randomEnergyOrder = Mathf.FloorToInt(Glob.CalcCurvedChances(randomGoldCurves[interactions.currentItem.level - 1]));
 
-                boardManager.RemoveItemForChest(interactions.currentItem);
+                boardManager.RemoveItemFromChest(interactions.currentItem);
 
                 boardManager.CreateItemOnEmptyTile(
                     energyItems.content[randomEnergyOrder],
@@ -265,7 +287,7 @@ namespace Merge
                 int collCount = 0;
                 int randomCollOrder = 0;
 
-                Types.Item collItems = new Types.Item();
+                Types.Item collItems = new();
 
                 // Make sure at least once a gem is created
                 if (last && !interactions.currentItem.gemPopped)
@@ -283,6 +305,8 @@ namespace Merge
                             collItems = gameData.collectablesData[i];
 
                             interactions.currentItem.gemPopped = true;
+
+                            break;
                         }
                     }
                 }
@@ -296,6 +320,8 @@ namespace Merge
                             collItems = gameData.collectablesData[i];
 
                             collCount = gameData.collectablesData[i].content.Length;
+
+                            break;
                         }
                     }
 
@@ -304,7 +330,7 @@ namespace Merge
                     randomCollOrder = Mathf.FloorToInt(Glob.CalcCurvedChances(randomGoldCurves[interactions.currentItem.level - 1]));
                 }
 
-                boardManager.RemoveItemForChest(interactions.currentItem);
+                boardManager.RemoveItemFromChest(interactions.currentItem);
 
                 boardManager.CreateItemOnEmptyTile(
                     collItems.content[randomCollOrder],
@@ -314,10 +340,90 @@ namespace Merge
                     true
                 );
             }
-            else
+            else // Types.ChestGroup.Items
             {
-                //interactions.currentItem.chestItems--;
-                // TODO - Create items on the board
+                Types.Creates[] creates = interactions.currentItem.creates;
+
+                System.Random random = new();
+                double diceRoll = random.NextDouble();
+                double cumulative = 0.0;
+
+                string selectedSpriteName = "";
+                Types.Type selectedType = new();
+                ItemTypes.GenGroup selectedGenGroup = new();
+                Types.CollGroup selectedCollGroup = new();
+
+                // Randomly select a group of items to choose from
+                for (int i = 0; i < creates.Length; i++)
+                {
+                    cumulative += creates[i].chance / 100;
+
+                    if (diceRoll < cumulative)
+                    {
+                        selectedSpriteName = creates[i].sprite.name;
+                        selectedType = creates[i].type;
+                        selectedGenGroup = creates[i].genGroup;
+                        selectedCollGroup = creates[i].collGroup;
+
+                        break;
+                    }
+                }
+
+                boardManager.RemoveItemFromChest(interactions.currentItem);
+
+                // Create item from selected group
+                if (selectedType == Types.Type.Gen)
+                {
+                    for (int i = 0; i < gameData.generatorsData.Length; i++)
+                    {
+                        if (gameData.generatorsData[i].genGroup == selectedGenGroup)
+                        {
+                            for (int j = 0; j < gameData.generatorsData[i].content.Length; j++)
+                            {
+                                if (gameData.generatorsData[i].content[j].sprite.name == selectedSpriteName)
+                                {
+                                    boardManager.CreateItemOnEmptyTile(
+                                    gameData.generatorsData[i].content[j],
+                                    emptyBoard,
+                                    initialPosition,
+                                    true,
+                                    true
+                                    );
+
+                                    break;
+                                }
+                            }
+
+                            break;
+                        }
+                    }
+                }
+                else //Types.Type.Coll
+                {
+                    for (int i = 0; i < gameData.collectablesData.Length; i++)
+                    {
+                        if (gameData.collectablesData[i].collGroup == selectedCollGroup)
+                        {
+                            for (int j = 0; j < gameData.collectablesData[i].content.Length; j++)
+                            {
+                                if (gameData.collectablesData[i].content[j].sprite.name == selectedSpriteName)
+                                {
+                                    boardManager.CreateItemOnEmptyTile(
+                                        gameData.collectablesData[i].content[j],
+                                        emptyBoard,
+                                        initialPosition,
+                                        true,
+                                        true
+                                    );
+
+                                    break;
+                                }
+                            }
+
+                            break;
+                        }
+                    }
+                }
             }
         }
     }

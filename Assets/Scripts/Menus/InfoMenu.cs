@@ -24,9 +24,8 @@ namespace Merge
         private VisualElement infoMenu;
         private VisualElement itemSprite;
         private VisualElement unlockedItems;
+        private VisualElement containItems;
         private VisualElement infoParent;
-        private VisualElement infoCollParent;
-        private Label obtainLabel;
         private Label itemName;
         private Label itemData;
 
@@ -48,14 +47,13 @@ namespace Merge
             infoMenu = root.Q<VisualElement>("InfoMenu");
 
             unlockedItems = infoMenu.Q<VisualElement>("UnlockedItems");
+            containItems = infoMenu.Q<VisualElement>("ContainItems");
             infoParent = infoMenu.Q<VisualElement>("InfoParent");
-            infoCollParent = infoMenu.Q<VisualElement>("InfoCollParent");
 
             itemSprite = infoMenu.Q<VisualElement>("ItemSprite");
 
             itemName = infoMenu.Q<Label>("ItemName");
             itemData = infoMenu.Q<Label>("ItemData");
-            obtainLabel = infoCollParent.Q<Label>("Obtain");
 
             Init();
         }
@@ -66,6 +64,7 @@ namespace Merge
             infoMenu.style.display = DisplayStyle.None;
             infoMenu.style.opacity = 0;
 
+            containItems.style.display = DisplayStyle.Flex;
             infoParent.style.display = DisplayStyle.None;
         }
 
@@ -74,32 +73,6 @@ namespace Merge
             if (infoMenu != null)
             {
                 ClearData();
-
-                // Title
-                string title;
-
-                switch (item.type)
-                {
-                    case Types.Type.Item:
-                        title = LOCALE.Get("Item_" + item.group + "_" + item.level);
-                        break;
-                    case Types.Type.Gen:
-                        title = LOCALE.Get("Gen_" + item.genGroup);
-                        break;
-                    case Types.Type.Coll:
-                        if (item.collGroup == Types.CollGroup.Gems)
-                        {
-                            title = LOCALE.Get("Coll_" + item.collGroup, item.level);
-                        }
-                        else
-                        {
-                            title = LOCALE.Get("Coll_" + item.collGroup);
-                        }
-                        break;
-                    default: // Types.Type.Chest
-                        title = LOCALE.Get("Chest_" + item.chestGroup);
-                        break;
-                }
 
                 // Item data
                 itemSprite.style.backgroundImage = new StyleBackground(item.sprite);
@@ -123,34 +96,46 @@ namespace Merge
                     );
                 }
 
-                // Unlocked items
-                if (item.type == Types.Type.Chest)
+                // Content
+                string title;
+
+                switch (item.type)
                 {
-                    if (item.chestGroup == Types.ChestGroup.Item)
-                    {
+                    case Types.Type.Item:
+                        title = LOCALE.Get("Item_" + item.group + "_" + item.level);
+
                         GetUnlockedItems(item);
-                    }
-                    else
-                    {
-                        infoParent.style.display = DisplayStyle.None;
+                        GetParent(item);
+                        break;
+                    case Types.Type.Gen:
+                        title = LOCALE.Get("Gen_" + item.genGroup);
 
+                        GetUnlockedItems(item);
+                        GetParent(item);
+                        break;
+                    case Types.Type.Coll:
+                        if (item.collGroup == Types.CollGroup.Gems)
+                        {
+                            title = LOCALE.Get("Coll_" + item.collGroup, item.level);
+                        }
+                        else
+                        {
+                            title = LOCALE.Get("Coll_" + item.collGroup);
+                        }
+
+                        GetUnlockedItems(item, true);
+
+                        if (item.collGroup != Types.CollGroup.Experience)
+                        {
+                            GetParent(item);
+                        }
+                        break;
+                    default: // Types.Type.Chest
+                        title = LOCALE.Get("Chest_" + item.chestGroup);
+
+                        GetUnlockedItems(item);
                         GetChestItems(item);
-                    }
-                }
-                else
-                {
-                    GetUnlockedItems(item);
-                }
-
-                if (item.type == Types.Type.Coll)
-                {
-                    CheckInfoCollParent(item);
-                }
-
-                if (item.type != Types.Type.Coll && item.type != Types.Type.Chest)
-                {
-                    // Check info parent
-                    CheckInfoParent(item);
+                        break;
                 }
 
                 // Open menu
@@ -158,7 +143,7 @@ namespace Merge
             }
         }
 
-        void GetUnlockedItems(Item item)
+        void GetUnlockedItems(Item item, bool showAll = false)
         {
             Types.Item[] items;
             bool isGroup = false;
@@ -226,6 +211,7 @@ namespace Merge
                         }
 
                         if (
+                            showAll ||
                             items[i].content[j].unlocked
                             || items[i].content[j].sprite.name == item.sprite.name
                         )
@@ -261,85 +247,7 @@ namespace Merge
             }
         }
 
-        void GetChestItems(Item item)
-        {
-            List<Sprite> itemSprites = new();
-
-            if (item.chestGroup == Types.ChestGroup.Item)
-            {
-                // TODO - Handle item chests
-                // Have a list of possible items that the chest might hold
-            }
-            else if (item.chestGroup == Types.ChestGroup.Piggy)
-            {
-                for (int i = 0; i < gameData.collectablesData.Length; i++)
-                {
-                    if (
-                        gameData.collectablesData[i].collGroup == Types.CollGroup.Gold
-                        || gameData.collectablesData[i].collGroup == Types.CollGroup.Gems
-                    )
-                    {
-                        for (int j = 0; j < gameData.collectablesData[i].content.Length; j++)
-                        {
-                            itemSprites.Add(gameData.collectablesData[i].content[j].sprite);
-                        }
-                    }
-                }
-            }
-            else
-            {
-                for (int i = 0; i < gameData.collectablesData.Length; i++)
-                {
-                    if (gameData.collectablesData[i].collGroup == Types.CollGroup.Energy)
-                    {
-                        for (int j = 0; j < gameData.collectablesData[i].content.Length; j++)
-                        {
-                            itemSprites.Add(gameData.collectablesData[i].content[j].sprite);
-                        }
-                    }
-                }
-            }
-
-            // Show the items
-            for (int i = 0; i < itemSprites.Count; i++)
-            {
-                VisualElement current = new VisualElement { name = "Current" };
-                VisualElement unlockedItem = new VisualElement { name = "UnlockedItem" + i };
-                VisualElement line = new VisualElement { name = "Line" };
-
-                // Current
-                current.AddToClassList("current_item");
-
-                // Item
-                unlockedItem.AddToClassList("item");
-
-                if (i % 5 == 4)
-                {
-                    current.style.marginRight = 0;
-
-                    line.style.display = DisplayStyle.None;
-                }
-
-                if (i == itemSprites.Count - 1)
-                {
-                    line.style.display = DisplayStyle.None;
-                }
-
-                unlockedItem.style.backgroundImage = new StyleBackground(itemSprites[i]);
-
-                // Line
-                line.AddToClassList("line");
-
-                // Add to UI
-                unlockedItem.Add(line);
-
-                current.Add(unlockedItem);
-
-                unlockedItems.Add(current);
-            }
-        }
-
-        void CheckInfoParent(Item item)
+        void GetParent(Item item)
         {
             infoParent.style.display = DisplayStyle.None;
 
@@ -376,82 +284,156 @@ namespace Merge
             }
         }
 
-        void CheckInfoCollParent(Item item)
+        void GetChestItems(Item item)
         {
-            infoCollParent.style.display = DisplayStyle.Flex;
+            List<Sprite> itemSprites = new();
+            
+            containItems.style.display = DisplayStyle.Flex;
 
-            obtainLabel.text = LOCALE.Get("info_menu_obtain");
-
-            Label obtainInShop = new() { name = "ObtainInShop", text = LOCALE.Get("info_menu_obtain_shop") };
-            Label obtainWithGems = new() { name = "ObtainWithGems", text = LOCALE.Get("info_menu_obtain_gems") };
-            Label obtainByMerging = new() { name = "ObtainByMerging", text = LOCALE.Get("info_menu_obtain_merging") };
-            Label obtainFromAds = new() { name = "ObtainFromAds", text = LOCALE.Get("info_menu_obtain_ads") };
-            Label obtainFromChests = new() { name = "ObtainFromChests", text = LOCALE.Get("info_menu_obtain_chests") };
-            Label obtainFromTasks = new() { name = "ObtainFromTasks", text = LOCALE.Get("info_menu_obtain_tasks") };
-
-            obtainInShop.AddToClassList("obtain_from");
-            obtainWithGems.AddToClassList("obtain_from");
-            obtainByMerging.AddToClassList("obtain_from");
-            obtainFromAds.AddToClassList("obtain_from");
-            obtainFromChests.AddToClassList("obtain_from");
-            obtainFromTasks.AddToClassList("obtain_from");
-
-            switch (item.collGroup)
+            if (item.chestGroup == Types.ChestGroup.Item)
             {
-                case Types.CollGroup.Energy:
-                    infoCollParent.Add(obtainInShop);
-                    infoCollParent.Add(obtainWithGems);
-                    infoCollParent.Add(obtainFromAds);
-                    infoCollParent.Add(obtainFromChests);
-                    break;
-                case Types.CollGroup.Experience:
-                    infoCollParent.Add(obtainFromTasks);
-                    infoCollParent.Add(obtainByMerging);
-                    infoCollParent.Add(obtainFromChests);
-                    break;
-                case Types.CollGroup.Gold:
-                    infoCollParent.Add(obtainFromTasks);
-                    infoCollParent.Add(obtainInShop);
-                    infoCollParent.Add(obtainFromChests);
-                    break;
-                case Types.CollGroup.Gems:
-                    infoCollParent.Add(obtainInShop);
-                    infoCollParent.Add(obtainFromChests);
-                    break;
+                for (int i = 0; i < item.creates.Length; i++)
+                {
+                    itemSprites.Add(item.creates[i].sprite);
+                }
+            }
+            else if (item.chestGroup == Types.ChestGroup.Piggy)
+            {
+                for (int i = 0; i < gameData.collectablesData.Length; i++)
+                {
+                    if (
+                        gameData.collectablesData[i].collGroup == Types.CollGroup.Gold
+                        || gameData.collectablesData[i].collGroup == Types.CollGroup.Gems
+                    )
+                    {
+                        for (int j = 0; j < gameData.collectablesData[i].content.Length; j++)
+                        {
+                            itemSprites.Add(gameData.collectablesData[i].content[j].sprite);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < gameData.collectablesData.Length; i++)
+                {
+                    if (gameData.collectablesData[i].collGroup == Types.CollGroup.Energy)
+                    {
+                        for (int j = 0; j < gameData.collectablesData[i].content.Length; j++)
+                        {
+                            itemSprites.Add(gameData.collectablesData[i].content[j].sprite);
+                        }
+                    }
+                }
+            }
+
+            Label value = new() { name = "Value", text = LOCALE.Get("info_menu_may_contain") };
+
+            value.AddToClassList("value");
+
+            containItems.Add(value);
+
+            // Show the items
+            for (int i = 0; i < itemSprites.Count; i++)
+            {
+                VisualElement current = new() { name = "Current" };
+                VisualElement unlockedItem = new() { name = "UnlockedItem" + i };
+                VisualElement line = new() { name = "Line" };
+
+                // Current
+                current.AddToClassList("current_item");
+
+                // Item
+                unlockedItem.AddToClassList("item");
+
+                if (i % 5 == 4)
+                {
+                    current.style.marginRight = 0;
+
+                    line.style.display = DisplayStyle.None;
+                }
+
+                if (i == itemSprites.Count - 1)
+                {
+                    line.style.display = DisplayStyle.None;
+                }
+
+                unlockedItem.style.backgroundImage = new StyleBackground(itemSprites[i]);
+
+                // Line
+                line.AddToClassList("line");
+
+                // Add to UI
+                unlockedItem.Add(line);
+
+                current.Add(unlockedItem);
+
+                containItems.Add(current);
             }
         }
 
-        Sprite GetParentSprite(ItemTypes.GenGroup parentGroup)
+        Sprite GetParentSprite(Types.ParentData parentData)
         {
             Sprite sprite = null;
 
-            for (int i = 0; i < gameData.generatorsData.Length; i++)
+            if (parentData.type == Types.Type.Gen)
             {
-                if (parentGroup == gameData.generatorsData[i].genGroup)
+                for (int i = 0; i < gameData.generatorsData.Length; i++)
                 {
-                    if (gameData.generatorsData[i].content.Length == 1)
+                    if (gameData.generatorsData[i].genGroup == parentData.genGroup)
                     {
-                        sprite = gameData.generatorsData[i].content[0].sprite;
-                    }
-                    else
-                    {
-                        for (int j = gameData.generatorsData[i].content.Length - 1; j >= 0;)
+                        if (gameData.generatorsData[i].content.Length == 1)
                         {
-                            if (gameData.generatorsData[i].content[j].unlocked)
-                            {
-                                sprite = gameData.generatorsData[i].content[j].sprite;
-
-                                break;
-                            }
-
-                            sprite = unlockedQuestionMarkSprite;
-
-                            break;
+                            sprite = gameData.generatorsData[i].content[0].sprite;
                         }
-                    }
+                        else
+                        {
+                            for (int j = gameData.generatorsData[i].content.Length - 1; j >= 0; j--)
+                            {
+                                if (gameData.generatorsData[i].content[j].unlocked)
+                                {
+                                    sprite = gameData.generatorsData[i].content[j].sprite;
 
-                    break;
+                                    break;
+                                }
+                            }
+                        }
+
+                        break;
+                    }
                 }
+            }
+            else
+            {
+                for (int i = 0; i < gameData.chestsData.Length; i++)
+                {
+                    if (gameData.chestsData[i].chestGroup == parentData.chestGroup)
+                    {
+                        if (gameData.chestsData[i].content.Length == 1)
+                        {
+                            sprite = gameData.chestsData[i].content[0].sprite;
+                        }
+                        else
+                        {
+                            for (int j = gameData.chestsData[i].content.Length - 1; j >= 0; j--)
+                            {
+                                if (gameData.chestsData[i].content[j].unlocked)
+                                {
+                                    sprite = gameData.chestsData[i].content[j].sprite;
+
+                                    break;
+                                }
+                            }
+                        }
+
+                        break;
+                    }
+                }
+            }
+
+            if (sprite == null)
+            {
+                sprite = unlockedQuestionMarkSprite;
             }
 
             return sprite;
@@ -464,11 +446,17 @@ namespace Merge
                 unlockedItems.Clear();
             }
 
+            if (containItems.childCount > 0)
+            {
+                containItems.Clear();
+            }
+
             if (infoParent.childCount > 0)
             {
                 infoParent.Clear();
             }
 
+            containItems.style.display = DisplayStyle.None;
             infoParent.style.display = DisplayStyle.None;
         }
     }

@@ -96,6 +96,8 @@ namespace Merge
 
         public Sprite[] lockOpenSprites;
 
+        public Sprite[] bubblePopSprites;
+
         // Instance
         public static GameRefs Instance;
 

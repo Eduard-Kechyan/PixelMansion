@@ -34,7 +34,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &-7698504415603008170
 MonoBehaviour:
@@ -51,7 +51,7 @@ MonoBehaviour:
   ignoreInitialCheck: 0
   items: {fileID: 11400000, guid: c8cb055841d16d4418a75072be1f69f5, type: 2}
   generators: {fileID: 11400000, guid: e137e4880bf3a1b47af8d97ac8c94988, type: 2}
-  collectables: {fileID: 11400000, guid: bed7c08ca8af31748b66ffc88a9a245e, type: 2}
+  colls: {fileID: 11400000, guid: 0d151817da1d697479bdb1a307eafd0e, type: 2}
   chests: {fileID: 11400000, guid: 4269ec268f2435744bcb14fe4886b718, type: 2}
   initialItems: {fileID: 11400000, guid: 4e4dfc5175592b245906d52a6ec1dcd6, type: 2}
   worldDataManager: {fileID: 0}

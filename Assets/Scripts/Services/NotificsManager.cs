@@ -29,6 +29,8 @@ namespace Merge
         private const string CHANNEL_NAME = " Notifications Channel";
         private const string CHANNEL_DESC = "'s main channel of notifications";
 
+        private const string NOTIFICATION_GROUP_ID = "Merge_notification_group";
+
         private bool checkedPre = false;
         private bool initialized = false;
         private bool allowed = false;
@@ -233,6 +235,7 @@ namespace Merge
                 newNotification.ShowInForeground = false;
                 newNotification.SmallIcon = "main_icon"; // Main icon
                 newNotification.ShouldAutoCancel = true;
+                newNotification.Group = NOTIFICATION_GROUP_ID;
 
                 int id = AndroidNotificationCenter.SendNotification(newNotification, CHANNEL_ID);
 

@@ -19,16 +19,33 @@ MonoBehaviour:
     customName: 0
     generatesAt: 5
     coolDown:
-      maxCounts: 0300000018000000
+      maxCounts: 3200000018000000
       seconds: 120
       minutes: 2
+    parents:
+    - name: 
+      type: 3
+      genGroup: 0
+      chestGroup: 0
     creates:
     - name: Tools
+      sprite: {fileID: 0}
+      type: 0
       group: 0
-      chance: 0
+      genGroup: 0
+      collGroup: 0
+      maxLevel: 0
+      canIncreaseMaxLevel: 1
+      chance: 90
     - name: Gloves
+      sprite: {fileID: 0}
+      type: 0
       group: 1
-      chance: 0
+      genGroup: 0
+      collGroup: 0
+      maxLevel: 0
+      canIncreaseMaxLevel: 0
+      chance: 10
     content:
     - sprite: {fileID: 21300000, guid: 5843d96ae1fcc884080d43667c5b79b9, type: 3}
       customName: 0
@@ -40,7 +57,7 @@ MonoBehaviour:
       generatesAt: 0
       genGroup: 0
       collGroup: 0
-      parents: 
+      parents: []
       creates: []
       coolDown:
         maxCounts: 
@@ -64,7 +81,7 @@ MonoBehaviour:
       generatesAt: 0
       genGroup: 0
       collGroup: 0
-      parents: 
+      parents: []
       creates: []
       coolDown:
         maxCounts: 
@@ -88,7 +105,7 @@ MonoBehaviour:
       generatesAt: 0
       genGroup: 0
       collGroup: 0
-      parents: 
+      parents: []
       creates: []
       coolDown:
         maxCounts: 
@@ -112,7 +129,7 @@ MonoBehaviour:
       generatesAt: 0
       genGroup: 0
       collGroup: 0
-      parents: 
+      parents: []
       creates: []
       coolDown:
         maxCounts: 
@@ -136,7 +153,7 @@ MonoBehaviour:
       generatesAt: 0
       genGroup: 0
       collGroup: 0
-      parents: 
+      parents: []
       creates: []
       coolDown:
         maxCounts: 
@@ -160,7 +177,7 @@ MonoBehaviour:
       generatesAt: 0
       genGroup: 0
       collGroup: 0
-      parents: 
+      parents: []
       creates: []
       coolDown:
         maxCounts: 

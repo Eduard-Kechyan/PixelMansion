@@ -259,16 +259,9 @@
                         <ui:Label text="Item Name" display-tooltip-when-elided="true" name="ItemName" class="item_name" />
                         <ui:Label text="Item Data" display-tooltip-when-elided="true" name="ItemData" class="item_data" />
                     </ui:VisualElement>
-                    <ui:VisualElement name="UnlockedItems" class="unlocked_items">
-                        <ui:VisualElement class="bg" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/InfoMenu/UnlockedQuestionMark.png?fileID=2800000&amp;guid=dffe992878748814ba040e5f4b6c4e2a&amp;type=3#UnlockedQuestionMark&apos;);">
-                            <ui:Label text="00" display-tooltip-when-elided="true" class="label" />
-                            <ui:VisualElement style="width: 2px; height: 1px; position: absolute; left: 25px; top: 50%; translate: 0 -50%; background-color: rgba(0, 0, 0, 0.11);" />
-                        </ui:VisualElement>
-                    </ui:VisualElement>
+                    <ui:VisualElement name="UnlockedItems" class="unlocked_items" />
+                    <ui:VisualElement name="ContainItems" class="unlocked_items" style="margin-top: 14px;" />
                     <ui:VisualElement name="InfoParent" class="info_parent" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/InfoMenu/InfoParent.png?fileID=2800000&amp;guid=28abd295326bb634cb3348e6d2a1849a&amp;type=3#InfoParent&apos;);" />
-                    <ui:VisualElement name="InfoCollParent" class="info_coll_parent" style="display: none;">
-                        <ui:Label tabindex="-1" text="How to obtain:" display-tooltip-when-elided="true" name="Obtain" class="obtain" />
-                    </ui:VisualElement>
                 </ui:VisualElement>
                 <ui:VisualElement name="BorderBottom" class="border_bottom" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuBorderBottom.png?fileID=2800000&amp;guid=80923a0de08b2cb4ca2cad385b4f59c7&amp;type=3#MenuBorderBottom&apos;);" />
                 <ui:VisualElement name="ShadowDot" class="shadow_dot" />

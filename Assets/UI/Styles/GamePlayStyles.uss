@@ -30,16 +30,12 @@
     background-image: none;
 }
 
-.info_box .info_item_has_timer {
-    top: 2px;
-}
-
 .info_box .info_item_locked {
     width: 24px;
     height: 24px;
     background-color: rgba(123, 219, 132, 0);
     position: absolute;
-    top: 2px;
+    top: 7px;
     left: 2px;
     -unity-text-outline-color: rgba(0, 0, 0, 0.35);
     display: none;
@@ -50,10 +46,14 @@
     height: 24px;
     background-color: rgba(123, 219, 132, 0);
     position: absolute;
-    top: 2px;
+    top: 7px;
     left: 2px;
     -unity-text-outline-color: rgba(0, 0, 0, 0.35);
     display: none;
+}
+
+.info_box .info_item_has_timer {
+    top: 2px;
 }
 
 .info_box .info_timer {

@@ -69,7 +69,13 @@ namespace Merge
         {
             [HideInInspector]
             public string name;
+            public Sprite sprite;
+            public Type type;
             public ItemTypes.Group group;
+            public ItemTypes.GenGroup genGroup;
+            public CollGroup collGroup;
+            public int maxLevel;
+            public bool canIncreaseMaxLevel;
             public float chance;
         }
 
@@ -90,6 +96,7 @@ namespace Merge
             public Type itemType;
             public string id;
             public int notificationId;
+            public NotificationType notificationType;
         }
 
         [Serializable]
@@ -101,6 +108,7 @@ namespace Merge
             public string timerType;
             public string id;
             public int notificationId;
+            public string notificationType;
         }
 
         [Serializable]
@@ -139,17 +147,22 @@ namespace Merge
             public string name;
             public Type type;
             public ItemTypes.Group group;
-            public ItemTypes.GenGroup genGroup;
-            public CollGroup collGroup;
-            public ChestGroup chestGroup;
             public bool hasLevel;
             public bool customName;
-            public bool hasTimer;
-            public int generatesAt;
 
-            public ItemTypes.GenGroup[] parents;
+            public ParentData[] parents;
             public ItemData[] content;
 
+            [HideInInspector]
+            public CollGroup collGroup;
+            [HideInInspector]
+            public ChestGroup chestGroup;
+            [HideInInspector]
+            public ItemTypes.GenGroup genGroup;
+            [HideInInspector]
+            public bool hasTimer;
+            [HideInInspector]
+            public int generatesAt;
             [HideInInspector]
             public Creates[] creates;
             [HideInInspector]
@@ -167,8 +180,45 @@ namespace Merge
             public int generatesAt;
 
             public CoolDown coolDown;
+            public ParentData[] parents;
             public Creates[] creates;
             public ItemData[] content;
+        }
+
+        [Serializable]
+        public class Chest
+        {
+            [HideInInspector]
+            public string name;
+            public ChestGroup chestGroup;
+            public bool hasLevel;
+            public bool customName;
+
+            public Creates[] creates;
+            public ItemData[] content;
+        }
+
+        [Serializable]
+        public class Coll
+        {
+            [HideInInspector]
+            public string name;
+            public CollGroup collGroup;
+            public bool hasLevel;
+            public bool customName;
+
+            public ParentData[] parents;
+            public ItemData[] content;
+        }
+
+        [Serializable]
+        public class ParentData
+        {
+            [HideInInspector]
+            public string name;
+            public Type type;
+            public ItemTypes.GenGroup genGroup;
+            public ChestGroup chestGroup;
         }
 
         [Serializable]
@@ -200,7 +250,7 @@ namespace Merge
             public CollGroup collGroup;
 
             [HideInInspector]
-            public ItemTypes.GenGroup[] parents;
+            public ParentData[] parents;
 
             [HideInInspector]
             public Creates[] creates;
@@ -589,6 +639,7 @@ namespace Merge
             Gen,
             Chest,
             Energy,
+            Bubble,
         }
 
         [Serializable]
@@ -629,6 +680,12 @@ namespace Merge
             Instagram,
             Facebook,
             Youtube
+        }
+
+        public enum AdType
+        {
+            Energy,
+            Bubble
         }
     }
 }

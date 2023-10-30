@@ -720,6 +720,10 @@ MonoBehaviour:
   - {fileID: -204737844, guid: a3863c2f2ff768542adf220576e55519, type: 3}
   - {fileID: 452446565, guid: a3863c2f2ff768542adf220576e55519, type: 3}
   - {fileID: 989579714, guid: a3863c2f2ff768542adf220576e55519, type: 3}
+  bubblePopSprites:
+  - {fileID: 435106307, guid: 2cc5fcac1541bbb4392c9e86b6059bbe, type: 3}
+  - {fileID: 1565363511, guid: 2cc5fcac1541bbb4392c9e86b6059bbe, type: 3}
+  - {fileID: 383109696, guid: 2cc5fcac1541bbb4392c9e86b6059bbe, type: 3}
 --- !u!1001 &1658164947
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1603,14 +1607,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SoundManager
       objectReference: {fileID: 0}
-    - target: {fileID: 1888629426759165983, guid: 3745bd78f7038594bb16e1e12adb1156, type: 3}
-      propertyPath: soundClips.Array.data[6].volume
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1888629426759165983, guid: 3745bd78f7038594bb16e1e12adb1156, type: 3}
-      propertyPath: soundClips.Array.data[12].volume
-      value: 0.4
-      objectReference: {fileID: 0}
     - target: {fileID: 2493642430407458550, guid: 3745bd78f7038594bb16e1e12adb1156, type: 3}
       propertyPath: m_RootOrder
       value: 13
@@ -1902,6 +1898,18 @@ PrefabInstance:
       propertyPath: taskManager
       value: 
       objectReference: {fileID: 1754641311}
+    - target: {fileID: 1769535901462366456, guid: fb6bd1ade9d0e614da3b3eabc6c46c06, type: 3}
+      propertyPath: timeManager
+      value: 
+      objectReference: {fileID: 783295151}
+    - target: {fileID: 1769535901462366456, guid: fb6bd1ade9d0e614da3b3eabc6c46c06, type: 3}
+      propertyPath: altMoveSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1769535901462366456, guid: fb6bd1ade9d0e614da3b3eabc6c46c06, type: 3}
+      propertyPath: altScaleSpeed
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4494591135200674788, guid: fb6bd1ade9d0e614da3b3eabc6c46c06, type: 3}
       propertyPath: m_Name
       value: Board

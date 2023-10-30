@@ -70,7 +70,7 @@ namespace Merge
         }
 
         // Watch an simple ad
-        public void WatchAd(Action<int> callback = null, Action failCallback = null)
+        public void WatchAd(Types.AdType adType, Action<int> callback = null, Action failCallback = null)
         {
             rewardCallback = callback;
             rewardFailedCallback = failCallback;
@@ -81,7 +81,11 @@ namespace Merge
             }
             else
             {
-                rewardCallback?.Invoke(energyRewardAmount);
+                if(adType==Types.AdType.Energy){
+                    rewardCallback?.Invoke(energyRewardAmount);
+                }else{
+                    rewardCallback?.Invoke(0);
+                }
 
                 ResetData();
             }

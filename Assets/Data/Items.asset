@@ -13,17 +13,16 @@ MonoBehaviour:
   m_Name: Items
   m_EditorClassIdentifier: 
   content:
-  - type: 0
+  - name: Tools
+    type: 0
     group: 0
-    genGroup: 0
-    collGroup: 0
-    chestGroup: 0
     hasLevel: 1
     customName: 1
-    hasTimer: 0
-    generatesAt: 0
-    parents: 00000000
-    creates: []
+    parents:
+    - name: Gen Toolbox
+      type: 1
+      genGroup: 0
+      chestGroup: 0
     content:
     - sprite: {fileID: 21300000, guid: 44fb2d4df3aa4f54f89d77dd7249aed7, type: 3}
       customName: 0
@@ -35,8 +34,12 @@ MonoBehaviour:
       generatesAt: 0
       genGroup: 0
       collGroup: 0
-      parents: 
+      parents: []
       creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
       unlocked: 0
       isMaxLevel: 0
       hasLevel: 0
@@ -55,8 +58,12 @@ MonoBehaviour:
       generatesAt: 0
       genGroup: 0
       collGroup: 0
-      parents: 
+      parents: []
       creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
       unlocked: 0
       isMaxLevel: 0
       hasLevel: 0
@@ -75,8 +82,12 @@ MonoBehaviour:
       generatesAt: 0
       genGroup: 0
       collGroup: 0
-      parents: 
+      parents: []
       creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
       unlocked: 0
       isMaxLevel: 0
       hasLevel: 0
@@ -95,8 +106,12 @@ MonoBehaviour:
       generatesAt: 0
       genGroup: 0
       collGroup: 0
-      parents: 
+      parents: []
       creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
       unlocked: 0
       isMaxLevel: 0
       hasLevel: 0
@@ -115,8 +130,12 @@ MonoBehaviour:
       generatesAt: 0
       genGroup: 0
       collGroup: 0
-      parents: 
+      parents: []
       creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
       unlocked: 0
       isMaxLevel: 0
       hasLevel: 0
@@ -135,8 +154,12 @@ MonoBehaviour:
       generatesAt: 0
       genGroup: 0
       collGroup: 0
-      parents: 
+      parents: []
       creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
       unlocked: 0
       isMaxLevel: 0
       hasLevel: 0
@@ -155,8 +178,12 @@ MonoBehaviour:
       generatesAt: 0
       genGroup: 0
       collGroup: 0
-      parents: 
+      parents: []
       creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
       unlocked: 0
       isMaxLevel: 0
       hasLevel: 0
@@ -175,8 +202,12 @@ MonoBehaviour:
       generatesAt: 0
       genGroup: 0
       collGroup: 0
-      parents: 
+      parents: []
       creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
       unlocked: 0
       isMaxLevel: 0
       hasLevel: 0
@@ -195,8 +226,12 @@ MonoBehaviour:
       generatesAt: 0
       genGroup: 0
       collGroup: 0
-      parents: 
+      parents: []
       creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
       unlocked: 0
       isMaxLevel: 0
       hasLevel: 0
@@ -205,17 +240,26 @@ MonoBehaviour:
       chestItemsSet: 0
       seconds: 0
       gemPopped: 0
-  - type: 0
-    group: 1
-    genGroup: 0
     collGroup: 0
     chestGroup: 0
-    hasLevel: 1
-    customName: 1
+    genGroup: 0
     hasTimer: 0
     generatesAt: 0
-    parents: 00000000
     creates: []
+    coolDown:
+      maxCounts: 
+      seconds: 0
+      minutes: 0
+  - name: Gloves
+    type: 0
+    group: 1
+    hasLevel: 1
+    customName: 1
+    parents:
+    - name: Gen Toolbox
+      type: 1
+      genGroup: 0
+      chestGroup: 0
     content:
     - sprite: {fileID: 21300000, guid: a9d008ddf5722a544b962044313cc03f, type: 3}
       customName: 0
@@ -227,8 +271,12 @@ MonoBehaviour:
       generatesAt: 0
       genGroup: 0
       collGroup: 0
-      parents: 
+      parents: []
       creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
       unlocked: 0
       isMaxLevel: 0
       hasLevel: 0
@@ -247,8 +295,12 @@ MonoBehaviour:
       generatesAt: 0
       genGroup: 0
       collGroup: 0
-      parents: 
+      parents: []
       creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
       unlocked: 0
       isMaxLevel: 0
       hasLevel: 0
@@ -267,8 +319,12 @@ MonoBehaviour:
       generatesAt: 0
       genGroup: 0
       collGroup: 0
-      parents: 
+      parents: []
       creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
       unlocked: 0
       isMaxLevel: 0
       hasLevel: 0
@@ -277,3 +333,13 @@ MonoBehaviour:
       chestItemsSet: 0
       seconds: 0
       gemPopped: 0
+    collGroup: 0
+    chestGroup: 0
+    genGroup: 0
+    hasTimer: 0
+    generatesAt: 0
+    creates: []
+    coolDown:
+      maxCounts: 
+      seconds: 0
+      minutes: 0

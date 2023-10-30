@@ -79,6 +79,9 @@ SpriteAtlas:
     - 3078797be50a44a4c81503a76b206c67: -245944086
     - 3078797be50a44a4c81503a76b206c67: 1900683017
     - 3078797be50a44a4c81503a76b206c67: 1066697082
+    - 2cc5fcac1541bbb4392c9e86b6059bbe: 383109696
+    - 2cc5fcac1541bbb4392c9e86b6059bbe: 1565363511
+    - 2cc5fcac1541bbb4392c9e86b6059bbe: 435106307
     - a3863c2f2ff768542adf220576e55519: -204737844
     - a3863c2f2ff768542adf220576e55519: 452446565
     - a3863c2f2ff768542adf220576e55519: 989579714
@@ -113,6 +116,9 @@ SpriteAtlas:
   - {fileID: -245944086, guid: 3078797be50a44a4c81503a76b206c67, type: 3}
   - {fileID: 1900683017, guid: 3078797be50a44a4c81503a76b206c67, type: 3}
   - {fileID: 1066697082, guid: 3078797be50a44a4c81503a76b206c67, type: 3}
+  - {fileID: 383109696, guid: 2cc5fcac1541bbb4392c9e86b6059bbe, type: 3}
+  - {fileID: 1565363511, guid: 2cc5fcac1541bbb4392c9e86b6059bbe, type: 3}
+  - {fileID: 435106307, guid: 2cc5fcac1541bbb4392c9e86b6059bbe, type: 3}
   - {fileID: -204737844, guid: a3863c2f2ff768542adf220576e55519, type: 3}
   - {fileID: 452446565, guid: a3863c2f2ff768542adf220576e55519, type: 3}
   - {fileID: 989579714, guid: a3863c2f2ff768542adf220576e55519, type: 3}
@@ -146,6 +152,9 @@ SpriteAtlas:
   - Crate2Breaking_1
   - Crate2Breaking_2
   - Crate2Breaking_3
+  - BubblePopping_2
+  - BubblePopping_1
+  - BubblePopping_0
   - LockerOpening_0
   - LockerOpening_1
   - LockerOpening_2

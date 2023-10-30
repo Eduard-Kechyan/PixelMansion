@@ -269,7 +269,7 @@ namespace Merge
             currentItem.gameObject.layer = LayerMask.NameToLayer("ItemDragging");
 
             // Hide the clock
-            if (currentItem.type == Types.Type.Gen)
+            if (currentItem.type == Types.Type.Gen || (currentItem.type == Types.Type.Chest && currentItem.chestGroup == Types.ChestGroup.Item))
             {
                 clockManager.HideClock(currentItem.id);
             }
@@ -458,7 +458,7 @@ namespace Merge
             currentItem.gameObject.layer = LayerMask.NameToLayer("Item");
 
             // Move the clock
-            if (currentItem.type == Types.Type.Gen)
+            if (currentItem.type == Types.Type.Gen || (currentItem.type == Types.Type.Chest && currentItem.chestGroup == Types.ChestGroup.Item))
             {
                 clockManager.MoveClock(tile.transform.position, currentItem.id);
             }
@@ -575,7 +575,7 @@ namespace Merge
             currentItem.gameObject.layer = LayerMask.NameToLayer("Item");
 
             // Move the clock
-            if (currentItem.type == Types.Type.Gen)
+            if (currentItem.type == Types.Type.Gen || (currentItem.type == Types.Type.Chest && currentItem.chestGroup == Types.ChestGroup.Item))
             {
                 clockManager.MoveClock(otherTile.transform.position, currentItem.id);
             }
@@ -704,7 +704,7 @@ namespace Merge
                 if (gameData.UpdateValue(-amount, Types.CollGroup.Gems, false, true))
                 {
                     // TODO - Remove switch statement
-                    
+
                     switch (currentItem.type)
                     {
                         case Types.Type.Chest:

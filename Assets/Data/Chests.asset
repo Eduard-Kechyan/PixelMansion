@@ -9,21 +9,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad1dbff0d9e1b67449c032e521e80bbc, type: 3}
+  m_Script: {fileID: 11500000, guid: 1729d5327c4a46e43b264aebe6d97e76, type: 3}
   m_Name: Chests
   m_EditorClassIdentifier: 
   content:
-  - type: 3
-    group: 0
-    genGroup: 0
-    collGroup: 0
+  - name: Piggy
     chestGroup: 1
-    hasLevel: 1
-    customName: 1
-    hasTimer: 0
-    generatesAt: 0
-    parents: 
-    creates: []
+    hasLevel: 0
+    customName: 0
+    creates:
+    - name: Gold
+      sprite: {fileID: 0}
+      type: 2
+      group: 0
+      genGroup: 0
+      collGroup: 1
+      chance: 0
+    - name: Gems
+      sprite: {fileID: 0}
+      type: 2
+      group: 0
+      genGroup: 0
+      collGroup: 2
+      chance: 0
     content:
     - sprite: {fileID: 21300000, guid: 148bffa316f33b94b87dacbf79f875c8, type: 3}
       customName: 0
@@ -35,8 +43,12 @@ MonoBehaviour:
       generatesAt: 0
       genGroup: 0
       collGroup: 0
-      parents: 
+      parents: []
       creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
       unlocked: 0
       isMaxLevel: 0
       hasLevel: 0
@@ -55,8 +67,12 @@ MonoBehaviour:
       generatesAt: 0
       genGroup: 0
       collGroup: 0
-      parents: 
+      parents: []
       creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
       unlocked: 0
       isMaxLevel: 0
       hasLevel: 0
@@ -75,8 +91,12 @@ MonoBehaviour:
       generatesAt: 0
       genGroup: 0
       collGroup: 0
-      parents: 
+      parents: []
       creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
       unlocked: 0
       isMaxLevel: 0
       hasLevel: 0
@@ -85,17 +105,18 @@ MonoBehaviour:
       chestItemsSet: 0
       seconds: 0
       gemPopped: 0
-  - type: 3
-    group: 0
-    genGroup: 0
-    collGroup: 0
+  - name: Energy
     chestGroup: 2
-    hasLevel: 1
-    customName: 1
-    hasTimer: 0
-    generatesAt: 0
-    parents: 
-    creates: []
+    hasLevel: 0
+    customName: 0
+    creates:
+    - name: Energy
+      sprite: {fileID: 0}
+      type: 2
+      group: 0
+      genGroup: 0
+      collGroup: 3
+      chance: 0
     content:
     - sprite: {fileID: 21300000, guid: da6874323b904f447a71d7619a151c71, type: 3}
       customName: 0
@@ -107,8 +128,12 @@ MonoBehaviour:
       generatesAt: 0
       genGroup: 0
       collGroup: 0
-      parents: 
+      parents: []
       creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
       unlocked: 0
       isMaxLevel: 0
       hasLevel: 0
@@ -127,8 +152,12 @@ MonoBehaviour:
       generatesAt: 0
       genGroup: 0
       collGroup: 0
-      parents: 
+      parents: []
       creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
       unlocked: 0
       isMaxLevel: 0
       hasLevel: 0
@@ -147,8 +176,12 @@ MonoBehaviour:
       generatesAt: 0
       genGroup: 0
       collGroup: 0
-      parents: 
+      parents: []
       creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
       unlocked: 0
       isMaxLevel: 0
       hasLevel: 0
@@ -157,17 +190,46 @@ MonoBehaviour:
       chestItemsSet: 0
       seconds: 0
       gemPopped: 0
-  - type: 3
-    group: 0
-    genGroup: 0
-    collGroup: 0
+  - name: Item
     chestGroup: 0
-    hasLevel: 1
-    customName: 1
-    hasTimer: 1
-    generatesAt: 0
-    parents: 
-    creates: []
+    hasLevel: 0
+    customName: 0
+    creates:
+    - name: Toolbox
+      sprite: {fileID: 21300000, guid: 5843d96ae1fcc884080d43667c5b79b9, type: 3}
+      type: 1
+      group: 0
+      genGroup: 0
+      collGroup: 0
+      chance: 20
+    - name: Toolbox
+      sprite: {fileID: 21300000, guid: 72c12047381ac164bacebf632ab19986, type: 3}
+      type: 1
+      group: 0
+      genGroup: 0
+      collGroup: 0
+      chance: 10
+    - name: Gold
+      sprite: {fileID: 21300000, guid: 57ad0ef4820afde4f8afb343ae1b5083, type: 3}
+      type: 2
+      group: 0
+      genGroup: 0
+      collGroup: 1
+      chance: 25
+    - name: Gems
+      sprite: {fileID: 21300000, guid: d9aa7229a4950d74195693da1dd5f82c, type: 3}
+      type: 2
+      group: 0
+      genGroup: 0
+      collGroup: 2
+      chance: 5
+    - name: Energy
+      sprite: {fileID: 21300000, guid: 21d21c3ce2f226544ae36351b749377c, type: 3}
+      type: 2
+      group: 0
+      genGroup: 0
+      collGroup: 3
+      chance: 40
     content:
     - sprite: {fileID: 21300000, guid: ad22a0c7abb0b994babf951ccee30852, type: 3}
       customName: 0
@@ -179,8 +241,12 @@ MonoBehaviour:
       generatesAt: 0
       genGroup: 0
       collGroup: 0
-      parents: 
+      parents: []
       creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
       unlocked: 0
       isMaxLevel: 0
       hasLevel: 0
@@ -199,8 +265,12 @@ MonoBehaviour:
       generatesAt: 0
       genGroup: 0
       collGroup: 0
-      parents: 
+      parents: []
       creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
       unlocked: 0
       isMaxLevel: 0
       hasLevel: 0
@@ -219,8 +289,12 @@ MonoBehaviour:
       generatesAt: 0
       genGroup: 0
       collGroup: 0
-      parents: 
+      parents: []
       creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
       unlocked: 0
       isMaxLevel: 0
       hasLevel: 0

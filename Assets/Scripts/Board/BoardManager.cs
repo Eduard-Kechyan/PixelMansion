@@ -9,8 +9,11 @@ namespace Merge
     {
         // Variables
         public float moveSpeed = 14f;
+        public float altMoveSpeed = 14f;
         public float scaleSpeed = 8f;
+        public float altScaleSpeed = 8f;
         public int experienceThreshold = 4;
+        public TimeManager timeManager;
 
         [ReadOnly]
         public bool boardSet = false;
@@ -19,7 +22,6 @@ namespace Merge
         public int minBubbleLevel = 4; // TODO - Change this to 6 or higher
         public int bubbleChance = 30; // In %
         public int bubbleCount = 1000;
-        public bool popBubbles = false;
 
         [HideInInspector]
         public GameObject boardTiles;
@@ -45,18 +47,6 @@ namespace Merge
             itemHandler = dataManager.GetComponent<ItemHandler>();
             valuePop = GameRefs.Instance.valuePop;
         }
-
-#if UNITY_EDITOR
-        void OnValidate()
-        {
-            if (popBubbles)
-            {
-                popBubbles = false;
-
-                CheckForBubble();
-            }
-        }
-#endif
 
         /////// GET BOARD DATA ////////
 
@@ -316,44 +306,124 @@ namespace Merge
 
         /////// BUBBLE ////////
 
-        public void CheckForBubble(Item item = null)
+        public void CheckForBubble(Item item)
         {
-            float a = 0;
-            float b = 0;
-
-            float single = 100f / (float)bubbleCount;
-
-            // Check if it's a high level item
-            /* if (item.level >= minBubbleLevel)
-             {
-                 float randomNum = UnityEngine.Random.Range(0, 101);
-
-                 if (randomNum <= bubbleChance)
-                 {
-                     a++;
-                 }else{
-                     b++;
-                 }
-             }*/
-
-            for (int i = 0; i < bubbleCount; i++)
+            if (item.level >= minBubbleLevel && item.type == Types.Type.Item)
             {
-                float randomNum = UnityEngine.Random.Range(0, 101);
+                float a = 0;
+                float b = 0;
 
-                if (randomNum <= bubbleChance)
+                float single = 100f / (float)bubbleCount;
+
+                for (int i = 0; i < bubbleCount; i++)
                 {
-                    a += 1f;
+                    float randomNum = UnityEngine.Random.Range(0, 101);
+
+                    if (randomNum <= bubbleChance)
+                    {
+                        a += 1f;
+                    }
+                    else
+                    {
+                        b += 1f;
+                    }
                 }
-                else
+
+                if ((a * single) < bubbleChance)
                 {
-                    b += 1f;
+                    GameObject tile = item.transform.parent.gameObject;
+
+                    Vector2Int tileLoc = GetBoardLocation(0, tile);
+
+                    List<Types.BoardEmpty> emptyBoard = GetEmptyBoardItems(tileLoc);
+
+                    // Check if the board is full
+                    if (emptyBoard.Count > 0)
+                    {
+                        emptyBoard.Sort((p1, p2) => p1.distance.CompareTo(p2.distance));
+
+                        for (int i = 0; i < gameData.itemsData.Length; i++)
+                        {
+                            if (gameData.itemsData[i].group == item.group)
+                            {
+                                for (int j = 0; j < gameData.itemsData[i].content.Length; j++)
+                                {
+                                    if (j == (item.level - 1))
+                                    {
+                                        CreateItemOnEmptyTile(
+                                            gameData.itemsData[i].content[j],
+                                            emptyBoard[0],
+                                            item.transform.position,
+                                            true,
+                                            true,
+                                            null,
+                                            null,
+                                            Types.State.Bubble
+                                        );
+
+                                        break;
+                                    }
+                                }
+
+                                break;
+                            }
+                        }
+                    }
                 }
             }
+        }
 
-            //  Debug.Log(a * single + ":" + b * single);
+        public void RemoveBubble(string id)
+        {
+            int count = 0;
 
+            for (int x = 0; x < gameData.boardData.GetLength(0); x++)
+            {
+                for (int y = 0; y < gameData.boardData.GetLength(1); y++)
+                {
+                    if (gameData.boardData[x, y].id == id)
+                    {
+                        Item bubbleItem = boardTiles.transform.GetChild(count).GetChild(0).GetComponent<Item>();
 
-            // TODO - Add timer for bubble
+                        int itemLevel = bubbleItem.level;
+                        Vector2 position = bubbleItem.transform.position;
+
+                        GameObject parentTile = bubbleItem.transform.parent.gameObject;
+
+                        bubbleItem.PopBubble(true);
+
+                        for (int i = 0; i < gameData.collectablesData.Length; i++)
+                        {
+                            if (gameData.collectablesData[i].collGroup == Types.CollGroup.Gold)
+                            {
+                                for (int j = 0; j < gameData.collectablesData[i].content.Length; j++)
+                                {
+                                    if (itemLevel >= minBubbleLevel && j < minBubbleLevel)
+                                    {
+                                        CreateItemOnEmptyTile(
+                                            gameData.collectablesData[i].content[j],
+                                            null,
+                                            position,
+                                            false,
+                                            false,
+                                            null,
+                                            null,
+                                            Types.State.Default,
+                                            parentTile
+                                        );
+                                    }
+                                }
+
+                                break;
+                            }
+                        }
+
+                        count++;
+
+                        return;
+                    }
+                }
+            }
         }
 
         /////// CREATE ITEM ON THE BOARD ////////
@@ -398,10 +468,21 @@ namespace Merge
             bool canUnlock = true,
             bool useEnergy = false,
             Types.Inventory inventoryItem = null,
-            Action<Vector2> callBack = null
+            Action<Vector2> callBack = null,
+            Types.State newState = Types.State.Default,
+            GameObject emptyBoardTile = null
         )
         {
-            GameObject emptyTile = boardTiles.transform.GetChild(emptyBoard.order).gameObject;
+            GameObject emptyTile;
+
+            if (emptyBoardTile != null)
+            {
+                emptyTile = emptyBoardTile;
+            }
+            else
+            {
+                emptyTile = boardTiles.transform.GetChild(emptyBoard.order).gameObject;
+            }
 
             Types.Board boardItem;
 
@@ -427,6 +508,7 @@ namespace Merge
                     sprite = itemData.sprite,
                     type = itemData.type,
                     group = itemData.group,
+                    state = newState,
                     genGroup = itemData.genGroup,
                     collGroup = itemData.collGroup,
                     chestGroup = itemData.chestGroup,
@@ -458,11 +540,13 @@ namespace Merge
 
             newItem.transform.localScale = Vector2.zero;
 
-            newItem.MoveAndScale(emptyTile.transform.position, tempScale, moveSpeed, scaleSpeed, () =>
+            newItem.MoveAndScale(emptyTile.transform.position, tempScale, altMoveSpeed, altScaleSpeed, () =>
             {
-                if (callBack != null)
+                callBack?.Invoke(newItem.transform.position);
+
+                if (newState == Types.State.Bubble)
                 {
-                    callBack(newItem.transform.position);
+                    timeManager.AddTimer(Types.TimerType.Item, Types.NotificationType.Bubble, newItem.itemName, newItem.id, newItem.transform.position, 60);
                 }
             });
 
@@ -537,7 +621,7 @@ namespace Merge
             return emptyBoard.Count > 0;
         }
 
-        public void RemoveItemForChest(Item item)
+        public void RemoveItemFromChest(Item item)
         {
             if (item.chestItems > 1)
             {

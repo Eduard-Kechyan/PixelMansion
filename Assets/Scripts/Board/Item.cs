@@ -43,7 +43,7 @@ namespace Merge
         public Types.ChestGroup chestGroup;
         public Types.State state = Types.State.Default;
         public Types.Creates[] creates;
-        public ItemTypes.GenGroup[] parents;
+        public Types.ParentData[] parents;
 
         // Chest
         public bool chestOpen = false;
@@ -87,6 +87,7 @@ namespace Merge
 
         private SpriteRenderer crateSpriteRenderer;
         private SpriteRenderer lockSpriteRenderer;
+        private SpriteRenderer bubbleSpriteRenderer;
 
         void Start()
         {
@@ -120,8 +121,19 @@ namespace Merge
                 readyAltChild.SetActive(true);
             }
 
-            crateSpriteRenderer = crateChild.GetComponent<SpriteRenderer>();
-            lockSpriteRenderer = lockerChild.GetComponent<SpriteRenderer>();
+            if (state == Types.State.Crate)
+            {
+                crateSpriteRenderer = crateChild.GetComponent<SpriteRenderer>();
+                lockSpriteRenderer = lockerChild.GetComponent<SpriteRenderer>();
+            }
+            else if (state == Types.State.Locker)
+            {
+                lockSpriteRenderer = lockerChild.GetComponent<SpriteRenderer>();
+            }
+            else if (state == Types.State.Bubble)
+            {
+                bubbleSpriteRenderer = bubbleChild.GetComponent<SpriteRenderer>();
+            }
 
             CheckChildren();
 
@@ -290,29 +302,32 @@ namespace Merge
                     break;
             }
 
-            if (type == Types.Type.Gen && level >= generatesAt)
+            if (state == Types.State.Default)
             {
-                if (timerOn)
+                if (type == Types.Type.Gen && level >= generatesAt)
                 {
-                    readyChild.SetActive(false);
-                }
-                else
-                {
-                    readyChild.SetActive(true); //
-                }
-            }
-
-            if (type == Types.Type.Chest && chestGroup == Types.ChestGroup.Item)
-            {
-                if (timerOn)
-                {
-                    readyAltChild.SetActive(false);
-                }
-                else
-                {
-                    if (!chestOpen)
+                    if (timerOn)
                     {
-                        readyAltChild.SetActive(true);
+                        readyChild.SetActive(false);
+                    }
+                    else
+                    {
+                        readyChild.SetActive(true); //
+                    }
+                }
+
+                if (type == Types.Type.Chest && chestGroup == Types.ChestGroup.Item)
+                {
+                    if (timerOn)
+                    {
+                        readyAltChild.SetActive(false);
+                    }
+                    else
+                    {
+                        if (!chestOpen)
+                        {
+                            readyAltChild.SetActive(true);
+                        }
                     }
                 }
             }
@@ -351,7 +366,7 @@ namespace Merge
             CheckChildren();
         }
 
-        public void OpenCrate(float crateBreakSpeed = 0.05f, float newSpeed = 1f)
+        public void OpenCrate(float crateBreakSpeed = 0.07f, float newSpeed = 1f)
         {
             if (state == Types.State.Crate)
             {
@@ -373,21 +388,12 @@ namespace Merge
 
             WaitForSeconds wait = new(crateBreakSpeed);
 
-            crateSpriteRenderer.sprite = crateBreakSprites[crate].content[0];
+            for (int i = 0; i < crateBreakSprites.Length; i++)
+            {
+                crateSpriteRenderer.sprite = crateBreakSprites[crate].content[i];
 
-            yield return wait;
-
-            crateSpriteRenderer.sprite = crateBreakSprites[crate].content[1];
-
-            yield return wait;
-
-            crateSpriteRenderer.sprite = crateBreakSprites[crate].content[2];
-
-            yield return wait;
-
-            crateSpriteRenderer.sprite = crateBreakSprites[crate].content[3];
-
-            yield return wait;
+                yield return wait;
+            }
 
             anim["PostCrateBreak"].speed = newSpeed;
             anim.Play("PostCrateBreak");
@@ -414,7 +420,7 @@ namespace Merge
             crateChild.GetComponent<SpriteRenderer>().sprite = newSprite;
         }
 
-        public void UnlockLock(float lockOpenSpeed = 0.05f)
+        public void UnlockLock(float lockOpenSpeed = 0.07f)
         {
             if (state == Types.State.Locker)
             {
@@ -430,27 +436,45 @@ namespace Merge
 
             WaitForSeconds wait = new(lockOpenSpeed);
 
-            lockSpriteRenderer.sprite = lockOpenSprites[0];
+            for (int i = 0; i < lockOpenSprites.Length; i++)
+            {
+                lockSpriteRenderer.sprite = lockOpenSprites[i];
 
-            yield return wait;
-
-            lockSpriteRenderer.sprite = lockOpenSprites[1];
-
-            yield return wait;
-
-            lockSpriteRenderer.sprite = lockOpenSprites[2];
-
-            yield return wait;
+                yield return wait;
+            }
 
             CheckChildren();
         }
 
-        public void PopBubble()
+        public void PopBubble(bool destroy = false, float bubblePopSpeed = 0.07f)
         {
             if (state == Types.State.Bubble)
             {
                 state = Types.State.Default;
 
+                StartCoroutine(WaitForBubbleToPopAnimation(destroy, bubblePopSpeed));
+            }
+        }
+
+        IEnumerator WaitForBubbleToPopAnimation(bool destroy, float bubblePopSpeed)
+        {
+            Sprite[] bubblePopSprites = GameRefs.Instance.bubblePopSprites;
+
+            WaitForSeconds wait = new(bubblePopSpeed);
+
+            for (int i = 0; i < bubblePopSprites.Length; i++)
+            {
+                bubbleSpriteRenderer.sprite = bubblePopSprites[i];
+
+                yield return wait;
+            }
+
+            if (destroy)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
                 CheckChildren();
             }
         }

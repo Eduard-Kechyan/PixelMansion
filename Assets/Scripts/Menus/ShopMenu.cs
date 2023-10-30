@@ -330,8 +330,8 @@ namespace Merge
                     Label buyButtonLabel = buyButton.Q<Label>("Label");
                     buyButton.Q<VisualElement>("Value").style.display = DisplayStyle.None;
 
-                    // buyButtonLabel.text = GetPrice(shopValues[i].price, shopValues[i].type);
-                    buyButtonLabel.text = LOCALE.Get("shop_menu_buy_button_loading");
+                     buyButtonLabel.text = GetPrice(shopValues[i].price, shopValues[i].type);
+                    //buyButtonLabel.text = LOCALE.Get("shop_menu_buy_button_loading");
                     buyButtonLabel.AddToClassList("shop_box_buy_button_label_full");
 
                     buyButton.clicked += () =>

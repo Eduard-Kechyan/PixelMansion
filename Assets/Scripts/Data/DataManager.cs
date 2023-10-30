@@ -17,8 +17,8 @@ namespace Merge
         // Initial items
         public Items items;
         public Generators generators;
-        public Items collectables;
-        public Items chests;
+        public Colls colls;
+        public Chests chests;
         public InitialItems initialItems;
         public WorldDataManager worldDataManager;
 
@@ -252,8 +252,8 @@ namespace Merge
             // Convert data
             gameData.itemsData = dataConverter.ConvertItems(items.content);
             gameData.generatorsData = dataConverter.ConvertItems(dataConverter.ConvertGensToItems(generators.content));
-            gameData.collectablesData = dataConverter.ConvertItems(collectables.content);
-            gameData.chestsData = dataConverter.ConvertItems(chests.content);
+            gameData.collectablesData = dataConverter.ConvertItems(dataConverter.ConvertCollsToItems(colls.content));
+            gameData.chestsData = dataConverter.ConvertItems(dataConverter.ConvertChestsToItems(chests.content));
 
             gameData.timers = dataConverter.ConvertTimersFromJson(newTimersData);
             gameData.coolDowns = dataConverter.ConvertCoolDownsFromJson(newCoolDownsData);

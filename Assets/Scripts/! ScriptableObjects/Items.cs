@@ -28,6 +28,13 @@ namespace Merge
                         content[i].name = content[i].chestGroup.ToString();
                         break;
                 }
+
+                for (int j = 0; j < content[i].parents.Length; j++)
+                {
+                    content[i].parents[j].name = content[i].parents[j].type.ToString() + " " + (content[i].parents[j].type == Types.Type.Gen
+                    ? content[i].parents[j].genGroup.ToString()
+                    : content[i].parents[j].chestGroup.ToString());
+                }
             }
         }
     }

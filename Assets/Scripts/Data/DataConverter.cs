@@ -541,6 +541,7 @@ namespace Merge
                         timerType = Glob.ParseEnum<Types.TimerType>(timerJson[i].timerType),
                         id = timerJson[i].id,
                         notificationId = timerJson[i].notificationId,
+                        notificationType = Glob.ParseEnum<Types.NotificationType>(timerJson[i].notificationType),
                     }
                 );
             }
@@ -562,6 +563,7 @@ namespace Merge
                     timerType = timers[i].timerType.ToString(),
                     id = timers[i].id,
                     notificationId = timers[i].notificationId,
+                    notificationType = timers[i].notificationType.ToString(),
                 };
 
                 timerJson[i] = newTimerJson;
@@ -742,6 +744,8 @@ namespace Merge
 
                 for (int j = 0; j < itemsContent[i].content.Length; j++)
                 {
+                    int chestItemsCount = itemsContent[i].type == Types.Type.Chest ? InitChestItems(itemsContent[i].content[j], itemsContent[i], count) : 0;
+
                     Types.ItemData newInnerObjectData = new()
                     {
                         type = itemsContent[i].type,
@@ -762,8 +766,8 @@ namespace Merge
                         startTime = itemsContent[i].content[j].startTime,
                         seconds = itemsContent[i].content[j].seconds,
                         isMaxLevel = count == itemsContent[i].content.Length,
-                        chestItems = InitChestItems(itemsContent[i].content[j], itemsContent[i], count),
-                        chestItemsSet = itemsContent[i].content[j].chestItemsSet,
+                        chestItems = chestItemsCount,
+                        chestItemsSet = chestItemsCount == 0 ? itemsContent[i].content[j].chestItemsSet : true,
                         gemPopped = itemsContent[i].content[j].gemPopped,
                     };
 
@@ -795,6 +799,7 @@ namespace Merge
                     customName = gensContent[i].customName,
                     creates = gensContent[i].creates,
                     coolDown = gensContent[i].coolDown,
+                    parents = gensContent[i].parents,
                     content = new Types.ItemData[gensContent[i].content.Length]
                 };
 
@@ -808,6 +813,7 @@ namespace Merge
                         coolDown = gensContent[i].coolDown,
                         customName = gensContent[i].content[j].customName,
                         hasLevel = gensContent[i].hasLevel,
+                        parents = gensContent[i].parents,
                         generatesAt = gensContent[i].generatesAt,
                         itemName = GetItemName(gensContent[i].content[j], newObjectData, count),
                         level = count,
@@ -816,6 +822,96 @@ namespace Merge
                         startTime = gensContent[i].content[j].startTime,
                         seconds = gensContent[i].content[j].seconds,
                         isMaxLevel = count == gensContent[i].content.Length,
+                    };
+
+                    newObjectData.content[j] = newInnerObjectData;
+
+                    count++;
+                }
+
+                convertedItems[i] = newObjectData;
+            }
+
+            return convertedItems;
+        }
+
+        public Types.Item[] ConvertChestsToItems(Types.Chest[] chestContent)
+        {
+            Types.Item[] convertedItems = new Types.Item[chestContent.Length];
+
+            for (int i = 0; i < chestContent.Length; i++)
+            {
+                int count = 1;
+
+                Types.Item newObjectData = new()
+                {
+                    type = Types.Type.Chest,
+                    chestGroup = chestContent[i].chestGroup,
+                    customName = chestContent[i].customName,
+                    hasLevel = chestContent[i].hasLevel,
+                    creates = chestContent[i].creates,
+                    content = new Types.ItemData[chestContent[i].content.Length]
+                };
+
+                for (int j = 0; j < chestContent[i].content.Length; j++)
+                {
+                    Types.ItemData newInnerObjectData = new()
+                    {
+                        type = Types.Type.Chest,
+                        creates = chestContent[i].creates,
+                        chestGroup = chestContent[i].chestGroup,
+                        hasLevel = chestContent[i].hasLevel,
+                        customName = chestContent[i].content[j].customName,
+                        itemName = GetItemName(chestContent[i].content[j], newObjectData, count),
+                        level = count,
+                        sprite = chestContent[i].content[j].sprite,
+                        unlocked = CheckUnlocked(chestContent[i].content[j].sprite.name),
+                        isMaxLevel = count == chestContent[i].content.Length,
+                    };
+
+                    newObjectData.content[j] = newInnerObjectData;
+
+                    count++;
+                }
+
+                convertedItems[i] = newObjectData;
+            }
+
+            return convertedItems;
+        }
+
+        public Types.Item[] ConvertCollsToItems(Types.Coll[] collsContent)
+        {
+            Types.Item[] convertedItems = new Types.Item[collsContent.Length];
+
+            for (int i = 0; i < collsContent.Length; i++)
+            {
+                int count = 1;
+
+                Types.Item newObjectData = new()
+                {
+                    type = Types.Type.Coll,
+                    collGroup = collsContent[i].collGroup,
+                    customName = collsContent[i].customName,
+                    hasLevel = collsContent[i].hasLevel,
+                    parents = collsContent[i].parents,
+                    content = new Types.ItemData[collsContent[i].content.Length]
+                };
+
+                for (int j = 0; j < collsContent[i].content.Length; j++)
+                {
+                    Types.ItemData newInnerObjectData = new()
+                    {
+                        type = Types.Type.Coll,
+                        collGroup = collsContent[i].collGroup,
+                        hasLevel = collsContent[i].hasLevel,
+                        parents = collsContent[i].parents,
+                        customName = collsContent[i].content[j].customName,
+                        itemName = GetItemName(collsContent[i].content[j], newObjectData, count),
+                        level = count,
+                        sprite = collsContent[i].content[j].sprite,
+                        unlocked = CheckUnlocked(collsContent[i].content[j].sprite.name),
+                        isMaxLevel = count == collsContent[i].content.Length,
                     };
 
                     newObjectData.content[j] = newInnerObjectData;
@@ -911,7 +1007,7 @@ namespace Merge
                         chestItemsCount = Random.Range(4 + count, 6 + count);
                         break;
                     default: // Types.ChestGroup.Item
-                        chestItemsCount = Random.Range(3 + count, 5 + count);
+                        chestItemsCount = Random.Range(5 + count, 7 + count);
                         break;
                 }
             }

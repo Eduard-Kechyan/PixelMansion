@@ -16,6 +16,7 @@
                         <ui:VisualElement name="Value" class="value" style="background-image: url(&apos;project://database/Assets/Sprites/Values/SmallGold.png?fileID=2800000&amp;guid=9927c70a39873234ead5f8d41fb591bf&amp;type=3#SmallGold&apos;);" />
                         <ui:Label tabindex="-1" text="1000" display-tooltip-when-elided="true" name="AmountLabel" class="amount_label" />
                         <ui:Label tabindex="-1" text="Remove" display-tooltip-when-elided="true" name="NameLabel" class="name_label" />
+                        <ui:VisualElement name="WatchIcon" class="remove_icon" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/Gameplay/InfoBoxWatchAd.png?fileID=2800000&amp;guid=8118ed60cabb05c4bb72de3744f7d7dc&amp;type=3#InfoBoxWatchAd&apos;); width: 20px;" />
                     </ui:Button>
                     <ui:Button display-tooltip-when-elided="true" name="InfoMainButton" enable-rich-text="false" class="button button_active info_box_action_button" style="margin-left: 2px; display: none;">
                         <ui:VisualElement name="Value" class="value" style="background-image: url(&apos;project://database/Assets/Sprites/Values/SmallGold.png?fileID=2800000&amp;guid=9927c70a39873234ead5f8d41fb591bf&amp;type=3#SmallGold&apos;);" />

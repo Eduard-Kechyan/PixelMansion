@@ -142,7 +142,7 @@ namespace Merge
 
         public void CheckIfShouldStop(Item currentItem)
         {
-            if (currentItem.id == item1.id || currentItem.id == item2.id)
+            if (item1.id != null && currentItem.id == item1.id || item2.id != null && currentItem.id == item2.id)
             {
                 StopPossibleMergeCheck();
             }

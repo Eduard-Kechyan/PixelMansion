@@ -50,6 +50,7 @@ SpriteAtlas:
     isAtlasV2: 0
     cachedData: {fileID: 0}
     packedSpriteRenderDataKeys:
+    - 8118ed60cabb05c4bb72de3744f7d7dc: 21300000
     - 67e0e2f1b7ca3854b95261c156f6d02b: 21300000
     - 257ae422f8b72cf4d9b4d527d769b323: 21300000
     - b46655c522c065045be06c5139afd1bf: 21300000
@@ -59,6 +60,7 @@ SpriteAtlas:
     - 4845d5095b10cf142966fd25e7f7cf8c: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: 21300000, guid: 8118ed60cabb05c4bb72de3744f7d7dc, type: 3}
   - {fileID: 21300000, guid: 67e0e2f1b7ca3854b95261c156f6d02b, type: 3}
   - {fileID: 21300000, guid: 257ae422f8b72cf4d9b4d527d769b323, type: 3}
   - {fileID: 21300000, guid: b46655c522c065045be06c5139afd1bf, type: 3}
@@ -67,6 +69,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: dcdc28b82ad02ce469c4a972cf5733b0, type: 3}
   - {fileID: 21300000, guid: 4845d5095b10cf142966fd25e7f7cf8c, type: 3}
   m_PackedSpriteNamesToIndex:
+  - InfoBoxWatchAd
   - Background
   - EmptyTile
   - InfoBoxRemove
