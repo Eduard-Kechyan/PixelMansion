@@ -61,6 +61,8 @@ namespace Merge
         [HideInInspector]
         public int crate = 0;
 
+        private bool loaded= false;
+
         private float moveSpeed;
         private float scaleSpeed;
         [HideInInspector]
@@ -134,8 +136,6 @@ namespace Merge
             {
                 bubbleSpriteRenderer = bubbleChild.GetComponent<SpriteRenderer>();
             }
-
-            CheckChildren();
 
             SetItemInitial();
 
@@ -271,6 +271,8 @@ namespace Merge
             itemChild.GetComponent<SpriteRenderer>().sprite = sprite;
 
             CheckChildren();
+
+            loaded = true;
         }
 
         void CheckChildren()
@@ -366,7 +368,7 @@ namespace Merge
             CheckChildren();
         }
 
-        public void OpenCrate(float crateBreakSpeed = 0.07f, float newSpeed = 1f)
+        public void OpenCrate(float crateBreakSpeed = 0.05f, float newSpeed = 1f)
         {
             if (state == Types.State.Crate)
             {
@@ -420,7 +422,7 @@ namespace Merge
             crateChild.GetComponent<SpriteRenderer>().sprite = newSprite;
         }
 
-        public void UnlockLock(float lockOpenSpeed = 0.07f)
+        public void UnlockLock(float lockOpenSpeed = 0.05f)
         {
             if (state == Types.State.Locker)
             {
@@ -446,7 +448,7 @@ namespace Merge
             CheckChildren();
         }
 
-        public void PopBubble(bool destroy = false, float bubblePopSpeed = 0.07f)
+        public void PopBubble(bool destroy = false, float bubblePopSpeed = 0.05f)
         {
             if (state == Types.State.Bubble)
             {
@@ -545,9 +547,12 @@ namespace Merge
         {
             isSelected = false;
 
-            selectionChild.SetActive(false);
+            if (loaded)
+            {
+                selectionChild.SetActive(false);
 
-            StopAnimate();
+                StopAnimate();
+            }
         }
 
         public void Animate(float newSpeed, bool indicating = false)

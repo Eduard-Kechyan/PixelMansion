@@ -1753,6 +1753,8 @@ MonoBehaviour:
   unlockAmount: 5
   speedUpAmount: 5
   popAmount: 5
+  itemSellLevel: 3
+  genSellLevel: 5
 --- !u!4 &6786505432524341889
 Transform:
   m_ObjectHideFlags: 0
@@ -1907,8 +1909,16 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1769535901462366456, guid: fb6bd1ade9d0e614da3b3eabc6c46c06, type: 3}
+      propertyPath: bubbleChance
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1769535901462366456, guid: fb6bd1ade9d0e614da3b3eabc6c46c06, type: 3}
       propertyPath: altScaleSpeed
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1769535901462366456, guid: fb6bd1ade9d0e614da3b3eabc6c46c06, type: 3}
+      propertyPath: bubblePopTimeout
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 4494591135200674788, guid: fb6bd1ade9d0e614da3b3eabc6c46c06, type: 3}
       propertyPath: m_Name

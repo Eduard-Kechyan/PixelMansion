@@ -230,9 +230,11 @@ namespace Merge
             {
                 Item item = hit.transform.gameObject.GetComponent<Item>();
 
-                // Check if game object is a item and isn't empty and if it isn't a crate or locked
+                // Check if game object is an item and isn't empty and if it isn't a crate or locked
                 if (item != null && item.state != Types.State.Crate && item.state != Types.State.Locker)
                 {
+                    CancelUndo();
+                    
                     if (currentItem != null && currentItem.isSelected)
                     {
                         selectionManager.Unselect("both");
@@ -269,7 +271,7 @@ namespace Merge
             currentItem.gameObject.layer = LayerMask.NameToLayer("ItemDragging");
 
             // Hide the clock
-            if (currentItem.type == Types.Type.Gen || (currentItem.type == Types.Type.Chest && currentItem.chestGroup == Types.ChestGroup.Item))
+            if (currentItem.timerOn)
             {
                 clockManager.HideClock(currentItem.id);
             }
@@ -411,7 +413,8 @@ namespace Merge
                         sameGroup
                         && otherItem.type == currentItem.type
                         && otherItem.level == currentItem.level
-                        && (otherItem.state != Types.State.Bubble || currentItem.state != Types.State.Bubble)
+                        && otherItem.state != Types.State.Bubble
+                        && currentItem.state != Types.State.Bubble
                     )
                     {
                         if (!otherItem.isMaxLevel && otherItem.state != Types.State.Crate)
@@ -458,7 +461,7 @@ namespace Merge
             currentItem.gameObject.layer = LayerMask.NameToLayer("Item");
 
             // Move the clock
-            if (currentItem.type == Types.Type.Gen || (currentItem.type == Types.Type.Chest && currentItem.chestGroup == Types.ChestGroup.Item))
+            if (currentItem.timerOn)
             {
                 clockManager.MoveClock(tile.transform.position, currentItem.id);
             }
@@ -575,7 +578,7 @@ namespace Merge
             currentItem.gameObject.layer = LayerMask.NameToLayer("Item");
 
             // Move the clock
-            if (currentItem.type == Types.Type.Gen || (currentItem.type == Types.Type.Chest && currentItem.chestGroup == Types.ChestGroup.Item))
+            if (currentItem.timerOn)
             {
                 clockManager.MoveClock(otherTile.transform.position, currentItem.id);
             }
@@ -661,6 +664,8 @@ namespace Merge
                             PopBubbleCallback(currentItem);
 
                             currentItem.PopBubble();
+
+                            timeManager.RemoveTimer(currentItem.id);
 
                             // Play crate opening audio
                             soundManager.PlaySound("PopBubble" + UnityEngine.Random.Range(0, 3));
@@ -793,6 +798,8 @@ namespace Merge
                     undoTile = undoItem.transform.parent.gameObject;
                     undoScale = undoItem.transform.localScale;
 
+                    currentItem = null;
+
                     Vector2Int loc = boardManager.GetBoardLocation(0, undoTile);
 
                     undoBoardItem = gameData.boardData[loc.x, loc.y];
@@ -814,6 +821,8 @@ namespace Merge
                     selectionManager.Unselect("info");
 
                     currentItem.ScaleToSize(Vector2.zero, scaleSpeed, true);
+
+                    currentItem = null;
 
                     gameData.boardData[loc.x, loc.y] = new Types.Board { order = removeBoardItem.order };
                 }
@@ -861,6 +870,8 @@ namespace Merge
         {
             if (canUndo)
             {
+                canUndo = false;
+                
                 if (undoItem != null)
                 {
                     undoItem = null;

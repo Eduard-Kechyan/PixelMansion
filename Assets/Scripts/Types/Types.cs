@@ -83,7 +83,8 @@ namespace Merge
         public enum TimerType
         {
             Item,
-            Energy
+            Energy,
+            Bubble
         };
 
         [Serializable]
@@ -639,7 +640,6 @@ namespace Merge
             Gen,
             Chest,
             Energy,
-            Bubble,
         }
 
         [Serializable]

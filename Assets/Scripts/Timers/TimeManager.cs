@@ -76,13 +76,14 @@ namespace Merge
                             energyTimer.TimerEnd();
                         }
 
+                        if (gameData.timers[i].timerType == Types.TimerType.Bubble)
+                        {
+                            boardManager.RemoveBubble(gameData.timers[i].id);
+                        }
+
                         if (gameData.timers[i].notificationType == Types.NotificationType.Gen)
                         {
                             ResetCoolDown(gameData.timers[i].id);
-                        }
-                        else if (gameData.timers[i].notificationType == Types.NotificationType.Bubble)
-                        {
-                            boardManager.RemoveBubble(gameData.timers[i].id);
                         }
 
                         gameData.timers.RemoveAt(i);
@@ -103,7 +104,7 @@ namespace Merge
                         }
                         else
                         {
-                            if (clockManager != null)
+                            if (clockManager != null && gameData.timers[i].timerType != Types.TimerType.Bubble)
                             {
                                 clockManager.SetFillAmount(gameData.timers[i].id, timeDiffInSeconds);
                             }
@@ -172,7 +173,7 @@ namespace Merge
 
             int notificationId = 0;
 
-            if (notificationType != Types.NotificationType.Bubble)
+            if (timerType == Types.TimerType.Item)
             {
                 notificsManager.Add(notificationType, startTime.AddSeconds(seconds), itemName);
             }
@@ -197,6 +198,11 @@ namespace Merge
                 clockManager.AddClock(position, id, seconds);
             }
 
+            if (timerType == Types.TimerType.Bubble)
+            {
+                ToggleTimerOnBoardData(id, true);
+            }
+
             if (!handlingTimers)
             {
                 InvokeRepeating("HandleTimers", 0f, 0.5f);
@@ -214,18 +220,20 @@ namespace Merge
             {
                 if (gameData.timers[i].id == id)
                 {
-                    if (gameData.timers[i].notificationType == Types.NotificationType.Bubble)
-                    {
-                        notificsManager.Remove(gameData.timers[i].notificationId);
-                    }
-
                     if (gameData.timers[i].timerType == Types.TimerType.Item)
                     {
+                        notificsManager.Remove(gameData.timers[i].notificationId);
+
                         ToggleTimerOnBoardData(id, false);
 
                         clockManager.RemoveClock(id);
 
                         ResetCoolDown(id);
+                    }
+
+                    if (gameData.timers[i].timerType == Types.TimerType.Bubble)
+                    {
+                        ToggleTimerOnBoardData(id, false);
                     }
 
                     index = count;

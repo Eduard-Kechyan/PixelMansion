@@ -44,7 +44,10 @@ namespace Merge
             dataManager = DataManager.Instance;
             valuesUI = GameRefs.Instance.valuesUI;
 
-            valuesUI.energyTimer = this;
+            if (valuesUI != null)
+            {
+                valuesUI.energyTimer = this;
+            }
 
             // Change the time if we are in dev mode
 #if UNITY_EDITOR

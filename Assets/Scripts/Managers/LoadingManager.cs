@@ -12,12 +12,10 @@ namespace Merge
         // Variables
         public bool stayOnScene = false;
         public bool logPhases = false;
-        public bool skipSplash = false;
         public float fillSpeed = 30f;
         public SceneLoader sceneLoader;
         public GameObject uiDocument;
         public LoadingSceneUI loadingSceneUI;
-        public SplashManager splashManager;
         public int phase = 1;
         public float maxPhase = 6;
 
@@ -38,6 +36,7 @@ namespace Merge
         private DataManager dataManager;
         private UserDataHandler userDataHandler;
         private NotificsManager notificsManager;
+        private SoundManager soundManager;
 
         void Start()
         {
@@ -45,6 +44,7 @@ namespace Merge
             dataManager = DataManager.Instance;
             userDataHandler = GetComponent<UserDataHandler>();
             notificsManager = Services.Instance.GetComponent<NotificsManager>();
+            soundManager=SoundManager.Instance;
 
             // UI
             VisualElement root = uiDocument.GetComponent<UIDocument>().rootVisualElement;
@@ -60,7 +60,7 @@ namespace Merge
 
             initial = !PlayerPrefs.HasKey("InitialLoaded"); // Note the "!"
 
-            splashManager.Init();
+            StartLoading();
         }
 
         void Update()
@@ -196,6 +196,9 @@ namespace Merge
 
         public void StartLoading()
         {
+            // PLay background music
+            soundManager.PlayMusic("Loading");
+            
             loading = true;
         }
 

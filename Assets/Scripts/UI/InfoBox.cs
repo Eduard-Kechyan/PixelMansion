@@ -18,6 +18,8 @@ namespace Merge
         public int unlockAmount = 5;
         public int speedUpAmount = 5;
         public int popAmount = 5;
+        public int itemSellLevel = 3;
+        public int genSellLevel = 5;
 
         private Item item;
 
@@ -26,6 +28,8 @@ namespace Merge
         private string textToSet = "";
 
         private int sellAmount = 1;
+
+        private bool timeOn = false;
 
         public enum ActionType
         {
@@ -133,6 +137,8 @@ namespace Merge
 
             infoButton.style.display = DisplayStyle.None;
 
+            timeOn = false;
+
             switch (item.state)
             {
                 case Types.State.Crate: //// CRATE ////
@@ -158,6 +164,13 @@ namespace Merge
 
                     mainActionType = ActionType.Pop;
                     secondaryActionType = ActionType.Pop;
+
+                    if (item.timerOn)
+                    {
+                        infoTimer.text = timeManager.GetTimerText(item.id);
+
+                        timeOn = true;
+                    }
                     break;
                 default: //// ITEM ////
                     infoName.text = item.itemLevelName;
@@ -181,7 +194,7 @@ namespace Merge
                     {
                         mainActionType = ActionType.None;
                     }
-                    else if (item.type == Types.Type.Gen || (item.type == Types.Type.Item && item.level > 3) || item.isMaxLevel)
+                    else if ((item.type == Types.Type.Gen && item.level > genSellLevel) || (item.type == Types.Type.Item && item.level > itemSellLevel) || item.isMaxLevel)
                     {
                         CalcSellPrice(item.level);
 
@@ -197,6 +210,8 @@ namespace Merge
                         secondaryActionType = ActionType.SpeedUp;
 
                         infoTimer.text = timeManager.GetTimerText(item.id);
+
+                        timeOn = true;
                     }
                     else
                     {
@@ -221,6 +236,8 @@ namespace Merge
             infoItem.style.backgroundImage = null;
 
             infoItemLocked.style.display = DisplayStyle.None;
+
+            infoItemBubble.style.display = DisplayStyle.None;
 
             sprite = null;
 
@@ -376,11 +393,6 @@ namespace Merge
                     infoSecondaryAmountLabel.text = speedUpAmount.ToString();
                     infoSecondaryNameLabel.text = LOCALE.Get("info_box_button_speed_up");
 
-                    infoItem.AddToClassList("info_item_has_timer");
-                    infoItemLocked.AddToClassList("info_item_has_timer");
-                    infoItemBubble.AddToClassList("info_item_has_timer");
-                    infoTimer.style.display = DisplayStyle.Flex;
-
                     infoSecondaryButton.AddToClassList("info_box_action_button_has_value");
                     infoSecondaryValue.style.backgroundImage = new StyleBackground(gemValue);
                     infoSecondaryValue.style.display = DisplayStyle.Flex;
@@ -397,6 +409,14 @@ namespace Merge
 
                     infoSecondaryWatchIcon.style.display = DisplayStyle.Flex;
                     break;
+            }
+
+            if (timeOn)
+            {
+                infoItem.AddToClassList("info_item_has_timer");
+                infoItemLocked.AddToClassList("info_item_has_timer");
+                infoItemBubble.AddToClassList("info_item_has_timer");
+                infoTimer.style.display = DisplayStyle.Flex;
             }
         }
 
@@ -450,7 +470,7 @@ namespace Merge
                         break;
                     case ActionType.Sell:
                         // Confirm selling item if it's a generator or at least level 10
-                        if (item.type == Types.Type.Gen || item.level > 9)
+                        if (item.type == Types.Type.Gen)
                         {
                             confirmMenu.Open("sell_gen", () =>
                             {
@@ -459,6 +479,13 @@ namespace Merge
                                 selectionManager.UnselectAlt();
                                 SetUndoButton(true);
                             });
+                        }
+                        else
+                        {
+                            boardInteractions.RemoveItem(item, sellAmount);
+                            Unselect(true);
+                            selectionManager.UnselectAlt();
+                            SetUndoButton(true);
                         }
                         break;
                     case ActionType.Remove:
@@ -487,6 +514,7 @@ namespace Merge
                             boardInteractions.SpeedUpItem(item, speedUpAmount);
                             Select(item);
                             selectionManager.Select("both", false);
+                            timeOn = false;
                         }
                         break;
                     case ActionType.Pop:
@@ -495,6 +523,7 @@ namespace Merge
                             boardInteractions.OpenItem(item, unlockAmount, Types.State.Bubble);
                             Select(item);
                             selectionManager.Select("both", false);
+                            timeOn = false;
                         });
                         break;
                 }

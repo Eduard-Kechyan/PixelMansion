@@ -79,8 +79,9 @@ namespace Merge
             gemsBoxes = shopMenu.Q<VisualElement>("GemsBoxes");
             goldBoxes = shopMenu.Q<VisualElement>("GoldBoxes");
 
-            restoreGems = shopMenu.Q<Button>("RestoreGems");
-            restoreGold = shopMenu.Q<Button>("RestoreGold");
+#if UNITY_IOS
+            CheckRestore();
+#endif
 
             shopItemBoxPrefab = Resources.Load<VisualTreeAsset>("Uxml/ShopItemBox");
 
@@ -99,19 +100,28 @@ namespace Merge
             gemsSubtitle.text = LOCALE.Get("shop_menu_subtitle_gems");
             goldSubtitle.text = LOCALE.Get("shop_menu_subtitle_gold");
 
-            // Restore
-            string restoreText = LOCALE.Get("shop_menu_restore");
-            restoreGems.Q<Label>("RestoreLabel").text = restoreText;
-            restoreGold.Q<Label>("RestoreLabel").text = restoreText;
-
-            restoreGems.clicked += () => Restore("Gems");
-            restoreGold.clicked += () => Restore("Gold");
-
             InitializeShopItems(Types.ShopItemType.Item);
             InitializeShopItems(Types.ShopItemType.Gold);
             InitializeShopItems(Types.ShopItemType.Gems);
 
             StartCoroutine(WaitForDailyContent());
+        }
+
+        void CheckRestore()
+        {
+            restoreGems = shopMenu.Q<Button>("RestoreGems");
+            restoreGold = shopMenu.Q<Button>("RestoreGold");
+
+            string restoreText = LOCALE.Get("shop_menu_restore");
+
+            restoreGems.Q<Label>("RestoreLabel").text = restoreText;
+            restoreGold.Q<Label>("RestoreLabel").text = restoreText;
+
+            restoreGems.style.display = DisplayStyle.Flex;
+            restoreGold.style.display = DisplayStyle.Flex;
+
+            restoreGems.clicked += () => Restore("Gems");
+            restoreGold.clicked += () => Restore("Gold");
         }
 
         IEnumerator WaitForDailyContent()
@@ -330,7 +340,7 @@ namespace Merge
                     Label buyButtonLabel = buyButton.Q<Label>("Label");
                     buyButton.Q<VisualElement>("Value").style.display = DisplayStyle.None;
 
-                     buyButtonLabel.text = GetPrice(shopValues[i].price, shopValues[i].type);
+                    buyButtonLabel.text = GetPrice(shopValues[i].price, shopValues[i].type);
                     //buyButtonLabel.text = LOCALE.Get("shop_menu_buy_button_loading");
                     buyButtonLabel.AddToClassList("shop_box_buy_button_label_full");
 
@@ -396,6 +406,9 @@ namespace Merge
 
             switch (scrollLocation)
             {
+                case "Daily":
+                    scrollContainer.ScrollTo(dailySubtitle);
+                    break;
                 case "Items":
                     scrollContainer.ScrollTo(itemsSubtitle);
                     break;
@@ -412,19 +425,8 @@ namespace Merge
 
             // Calculate the scroll location
             float subtitleHeight = gemsSubtitle.resolvedStyle.height;
-            float scrollContainerHeight = 0;
-            float subtitleBottomMargin = 0;
-
-            if (scrollContainer.scrollOffset.y == 0)
-            {
-                scrollContainerHeight = scrollContainer.resolvedStyle.height / 2;
-                subtitleBottomMargin = 20;
-            }
-            else
-            {
-                scrollContainerHeight = scrollContainer.resolvedStyle.height;
-                subtitleBottomMargin = 10;
-            }
+            float scrollContainerHeight = scrollContainer.resolvedStyle.height;
+            float subtitleBottomMargin = 10;
 
             float scrollOffset = scrollContainerHeight - (subtitleHeight + subtitleBottomMargin);
 
@@ -560,7 +562,8 @@ namespace Merge
             });
         }
 
-        public void FinalizePurchase(){
+        public void FinalizePurchase()
+        {
 
         }
 

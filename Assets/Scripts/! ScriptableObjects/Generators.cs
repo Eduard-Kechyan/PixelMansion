@@ -15,9 +15,22 @@ namespace Merge
             {
                 content[i].name = content[i].genGroup.ToString();
 
+                float createsFullPercent = 0;
+
                 for (int j = 0; j < content[i].creates.Length; j++)
                 {
                     content[i].creates[j].name = content[i].creates[j].group.ToString();
+
+                    createsFullPercent += content[i].creates[j].chance;
+                }
+
+                if (createsFullPercent > 100)
+                {
+                    Debug.LogWarning(content[i].name +" created percent is too big.");
+                }
+                else if (createsFullPercent < 100)
+                {
+                    Debug.LogWarning(content[i].name + " created percent is too small.");
                 }
 
                 content[i].coolDown.minutes = content[i].coolDown.seconds / 60;

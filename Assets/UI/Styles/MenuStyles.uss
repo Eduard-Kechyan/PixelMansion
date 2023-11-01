@@ -752,7 +752,7 @@
     position: absolute;
     left: 4px;
     bottom: 4px;
-    font-size: 10px;
+    font-size: 8px;
     color: rgb(255, 255, 255);
     margin-left: 0;
     margin-right: 0;

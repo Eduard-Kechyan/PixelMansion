@@ -22,6 +22,7 @@ namespace Merge
         public int minBubbleLevel = 4; // TODO - Change this to 6 or higher
         public int bubbleChance = 30; // In %
         public int bubbleCount = 1000;
+        public int bubblePopTimeout = 60;
 
         [HideInInspector]
         public GameObject boardTiles;
@@ -29,6 +30,7 @@ namespace Merge
         // References
         private InitializeBoard initializeBoard;
         private BoardInteractions interactions;
+        private SelectionManager selectionManager;
         private DataManager dataManager;
         private SoundManager soundManager;
         private GameData gameData;
@@ -41,6 +43,7 @@ namespace Merge
             boardTiles = transform.GetChild(0).gameObject;
             initializeBoard = GetComponent<InitializeBoard>();
             interactions = GetComponent<BoardInteractions>();
+            selectionManager = GetComponent<SelectionManager>();
             dataManager = DataManager.Instance;
             soundManager = SoundManager.Instance;
             gameData = GameData.Instance;
@@ -383,45 +386,67 @@ namespace Merge
                 {
                     if (gameData.boardData[x, y].id == id)
                     {
-                        Item bubbleItem = boardTiles.transform.GetChild(count).GetChild(0).GetComponent<Item>();
+                        Transform tile = boardTiles.transform.GetChild(count);
 
-                        int itemLevel = bubbleItem.level;
-                        Vector2 position = bubbleItem.transform.position;
+                        Item bubbleItem = null;
 
-                        GameObject parentTile = bubbleItem.transform.parent.gameObject;
-
-                        bubbleItem.PopBubble(true);
-
-                        for (int i = 0; i < gameData.collectablesData.Length; i++)
+                        if (tile != null)
                         {
-                            if (gameData.collectablesData[i].collGroup == Types.CollGroup.Gold)
-                            {
-                                for (int j = 0; j < gameData.collectablesData[i].content.Length; j++)
-                                {
-                                    if (itemLevel >= minBubbleLevel && j < minBubbleLevel)
-                                    {
-                                        CreateItemOnEmptyTile(
-                                            gameData.collectablesData[i].content[j],
-                                            null,
-                                            position,
-                                            false,
-                                            false,
-                                            null,
-                                            null,
-                                            Types.State.Default,
-                                            parentTile
-                                        );
-                                    }
-                                }
-
-                                break;
-                            }
+                            bubbleItem = tile.GetChild(0).GetComponent<Item>();
                         }
 
-                        count++;
+                        if (bubbleItem != null)
+                        {
+                            int itemLevel = bubbleItem.level;
+
+                            Vector2 position = bubbleItem.transform.position;
+
+                            selectionManager.Unselect("none");
+
+                            Types.BoardEmpty boardEmpty = new()
+                            {
+                                order = count,
+                                loc = new(x, y),
+                                distance = 0f
+                            };
+
+                            bubbleItem.ScaleToSize(Vector2.zero, scaleSpeed, true, () =>
+                            {
+                                gameData.boardData[x, y] = new();
+
+                                for (int i = 0; i < gameData.collectablesData.Length; i++)
+                                {
+                                    if (gameData.collectablesData[i].collGroup == Types.CollGroup.Gold)
+                                    {
+                                        for (int j = 0; j < gameData.collectablesData[i].content.Length; j++)
+                                        {
+                                            if (itemLevel >= minBubbleLevel && j < minBubbleLevel)
+                                            {
+                                                CreateItemOnEmptyTile(
+                                                    gameData.collectablesData[i].content[j],
+                                                    boardEmpty,
+                                                    position,
+                                                    false,
+                                                    false,
+                                                    null,
+                                                    null,
+                                                    Types.State.Default
+                                                );
+
+                                                break;
+                                            }
+                                        }
+
+                                        break;
+                                    }
+                                }
+                            });
+                        }
 
                         return;
                     }
+
+                    count++;
                 }
             }
         }
@@ -469,20 +494,10 @@ namespace Merge
             bool useEnergy = false,
             Types.Inventory inventoryItem = null,
             Action<Vector2> callBack = null,
-            Types.State newState = Types.State.Default,
-            GameObject emptyBoardTile = null
+            Types.State newState = Types.State.Default
         )
         {
-            GameObject emptyTile;
-
-            if (emptyBoardTile != null)
-            {
-                emptyTile = emptyBoardTile;
-            }
-            else
-            {
-                emptyTile = boardTiles.transform.GetChild(emptyBoard.order).gameObject;
-            }
+            GameObject emptyTile = boardTiles.transform.GetChild(emptyBoard.order).gameObject;
 
             Types.Board boardItem;
 
@@ -546,9 +561,11 @@ namespace Merge
 
                 if (newState == Types.State.Bubble)
                 {
-                    timeManager.AddTimer(Types.TimerType.Item, Types.NotificationType.Bubble, newItem.itemName, newItem.id, newItem.transform.position, 60);
+                    timeManager.AddTimer(Types.TimerType.Bubble, Types.NotificationType.Chest, newItem.itemName, newItem.id, newItem.transform.position, bubblePopTimeout);
                 }
             });
+
+            Vector2Int boardLoc = Vector2Int.zero;
 
             gameData.boardData[emptyBoard.loc.x, emptyBoard.loc.y] = new()
             {
