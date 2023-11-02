@@ -1,31 +1,114 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Merge
 {
-public class DoorManager : MonoBehaviour
-{
-    // Variables
-    [HideInInspector]
-    public DoorPH[] doors;
-
-    // Instance
-    public static DoorManager Instance;
-
-    void Awake()
+    public class DoorManager : MonoBehaviour
     {
-        Instance = this;
-    }
+        // Variables
+        public float doorOffset = 40;
+        public WorldDataManager worldDataManager;
+        [HideInInspector]
+        public DoorPH[] doors;
 
-    void Start()
-    {
-        doors = new DoorPH[transform.childCount];
+        private List<string> unlockedDoors;
 
-        for (int i = 0; i < transform.childCount; i++)
+        // Instance
+        public static DoorManager Instance;
+
+        void Awake()
         {
-            doors[i] = transform.GetChild(i).GetComponent<DoorPH>();
+            Instance = this;
+        }
+
+        void Start()
+        {
+            StartCoroutine(WaitForWorldData());
+        }
+
+        IEnumerator WaitForWorldData()
+        {
+            while (!worldDataManager.loaded)
+            {
+                yield return null;
+            }
+
+            if (worldDataManager.CheckDoors())
+            {
+                unlockedDoors = worldDataManager.LoadDoors();
+
+                GetDoors();
+            }
+            else
+            {
+                GetDoors();
+            }
+        }
+
+        public void GetDoors()
+        {
+            doors = new DoorPH[transform.childCount];
+
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                doors[i] = transform.GetChild(i).GetComponent<DoorPH>();
+
+                for (int j = 0; j < unlockedDoors.Count; j++)
+                {
+                    if (unlockedDoors[j] == doors[i].roomSortingLayer)
+                    {
+                        doors[i].gameObject.SetActive(false);
+
+                        break;
+                    }
+                }
+            }
+        }
+
+        public void OpenDoor(string roomSortingLayer, Action<Vector2> callback = null)
+        {
+            Vector2 foundDoorPosition = Vector2.zero;
+
+            bool foundDoor = false;
+            bool foundRoomSortingLayer = false;
+
+            for (int i = 0; i < doors.Length; i++)
+            {
+                if (doors[i].roomSortingLayer == roomSortingLayer)
+                {
+                    foundDoorPosition = doors[i].transform.position;
+
+                    doors[i].gameObject.SetActive(false);
+
+                    foundDoor = true;
+
+                    break;
+                }
+            }
+
+            if (foundDoor)
+            {
+                for (int i = 0; i < unlockedDoors.Count; i++)
+                {
+                    if (unlockedDoors[i] == roomSortingLayer)
+                    {
+                        foundRoomSortingLayer = true;
+
+                        break;
+                    }
+                }
+
+                if (!foundRoomSortingLayer)
+                {
+                    unlockedDoors.Add(roomSortingLayer);
+
+                    worldDataManager.SaveDoors(unlockedDoors);
+                }
+            }
+
+            callback?.Invoke(new Vector2(foundDoorPosition.x, foundDoorPosition.y - doorOffset));
         }
     }
-}
 }

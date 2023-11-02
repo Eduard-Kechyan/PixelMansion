@@ -229,6 +229,47 @@ namespace Merge
             return shouldShowUI;
         }
 
+        public bool CheckIfNextIsConvo(string groupId, string stepId)
+        {
+            bool nextIsConvo = false;
+
+            for (int i = 0; i < progressData.areas.Length; i++)
+            {
+                if (progressData.areas[i].id == groupId)
+                {
+                    for (int j = 0; j < progressData.areas[i].steps.Length; j++)
+                    {
+                        if (progressData.areas[i].steps[j].id == stepId && progressData.areas[i].steps[j].nextIds.Length > 0)
+                        {
+                            for (int k = 0; k < progressData.areas[i].steps[j].nextIds.Length; k++)
+                            {
+                                if (!nextIsConvo)
+                                {
+                                    for (int l = 0; l < progressData.areas[i].steps.Length; l++)
+                                    {
+                                        if (progressData.areas[i].steps[l].id == progressData.areas[i].steps[j].nextIds[k])
+                                        {
+                                            nextIsConvo = true;
+
+                                            break;
+                                        }
+                                    }
+
+                                    break;
+                                }
+                            }
+
+                            break;
+                        }
+                    }
+
+                    break;
+                }
+            }
+
+            return nextIsConvo;
+        }
+
         bool CheckLastRequirements(string groupId)
         {
             int taskCount = 0;
@@ -293,14 +334,12 @@ namespace Merge
 
                             if (foundRoomHandler != null)
                             {
-                                worldDataManager.UnlockRoom(areaId);
-
-                                foundRoomHandler.UnlockPre();
-
-                                cameraMotion.MoveTo(foundRoom.localPosition, 250, () =>
+                                foundRoomHandler.Unlock(() =>
                                 {
-                                    foundRoomHandler.Unlock();
+                                    worldDataManager.UnlockRoom(areaId);
                                 });
+
+                                cameraMotion.MoveTo(foundRoom.localPosition, 250);
                             }
                             else
                             {

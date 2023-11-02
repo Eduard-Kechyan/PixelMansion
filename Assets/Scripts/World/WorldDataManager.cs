@@ -5,6 +5,7 @@ using System.IO;
 using UnityEngine;
 using CI.QuickSave;
 using Newtonsoft.Json;
+using Unity.VisualScripting;
 
 namespace Merge
 {
@@ -142,42 +143,47 @@ namespace Merge
                         // Rooms
                         if (gameData.areasData[i].isRoom)
                         {
-                            // Wall left
-                            if (gameData.areasData[i].wallLeftOrder >= 0 && worldArea.GetChild(0).TryGetComponent(out ChangeWall changeWallLeft))
+                            if (!gameData.areasData[i].isLocked)
                             {
-                                changeWallLeft.SetSprites(gameData.areasData[i].wallLeftOrder, true);
+                                worldRoot.GetComponent<RoomHandler>().UnlockAlt();
 
-                                changeWallLeft.GetComponent<Selectable>().canBeSelected = true;
-                            }
-
-                            // Wall right
-                            if (gameData.areasData[i].wallRightOrder >= 0 && worldArea.GetChild(1).TryGetComponent(out ChangeWall changeWallRight))
-                            {
-                                changeWallRight.SetSprites(gameData.areasData[i].wallRightOrder, true);
-
-                                changeWallRight.GetComponent<Selectable>().canBeSelected = true;
-                            }
-
-                            // Floor
-                            if (gameData.areasData[i].floorOrder >= 0 && worldArea.GetChild(2).TryGetComponent(out ChangeFloor changeFloor))
-                            {
-                                changeFloor.SetSprites(gameData.areasData[i].floorOrder, true);
-
-                                changeFloor.GetComponent<Selectable>().canBeSelected = true;
-                            }
-
-                            // Furniture
-                            for (int k = 0; k < gameData.areasData[i].furniture.Count; k++)
-                            {
-                                Transform furniture = worldArea.GetChild(3).GetChild(k);
-
-                                if (furniture.name == gameData.areasData[i].furniture[k].name)
+                                // Wall left
+                                if (gameData.areasData[i].wallLeftOrder >= 0 && worldArea.GetChild(0).TryGetComponent(out ChangeWall changeWallLeft))
                                 {
-                                    if (gameData.areasData[i].furniture[k].order >= 0 && furniture.TryGetComponent(out ChangeFurniture changeFurniture))
-                                    {
-                                        changeFurniture.SetSprites(gameData.areasData[i].furniture[k].order, true);
+                                    changeWallLeft.SetSprites(gameData.areasData[i].wallLeftOrder, true);
 
-                                        changeFurniture.GetComponent<Selectable>().canBeSelected = true;
+                                    changeWallLeft.GetComponent<Selectable>().canBeSelected = true;
+                                }
+
+                                // Wall right
+                                if (gameData.areasData[i].wallRightOrder >= 0 && worldArea.GetChild(1).TryGetComponent(out ChangeWall changeWallRight))
+                                {
+                                    changeWallRight.SetSprites(gameData.areasData[i].wallRightOrder, true);
+
+                                    changeWallRight.GetComponent<Selectable>().canBeSelected = true;
+                                }
+
+                                // Floor
+                                if (gameData.areasData[i].floorOrder >= 0 && worldArea.GetChild(2).TryGetComponent(out ChangeFloor changeFloor))
+                                {
+                                    changeFloor.SetSprites(gameData.areasData[i].floorOrder, true);
+
+                                    changeFloor.GetComponent<Selectable>().canBeSelected = true;
+                                }
+
+                                // Furniture
+                                for (int k = 0; k < gameData.areasData[i].furniture.Count; k++)
+                                {
+                                    Transform furniture = worldArea.GetChild(3).GetChild(k);
+
+                                    if (furniture.name == gameData.areasData[i].furniture[k].name)
+                                    {
+                                        if (gameData.areasData[i].furniture[k].order >= 0 && furniture.TryGetComponent(out ChangeFurniture changeFurniture))
+                                        {
+                                            changeFurniture.SetSprites(gameData.areasData[i].furniture[k].order, true);
+
+                                            changeFurniture.GetComponent<Selectable>().canBeSelected = true;
+                                        }
                                     }
                                 }
                             }
@@ -185,6 +191,8 @@ namespace Merge
                     }
                 }
             }
+
+            StartCoroutine(BakeNavMeshAfterPhysicsUpdate());
 
             StartCoroutine(TryCheckingForTasks());
         }
@@ -480,15 +488,40 @@ namespace Merge
             return null;
         }
 
-        public void UnlockRoom(string roomName){
+        public void UnlockRoom(string roomName)
+        {
             for (int i = 0; i < gameData.areasData.Count; i++)
             {
-                if(gameData.areasData[i].name==roomName){
-                    gameData.areasData[i].isLocked=false;
+                if (gameData.areasData[i].name == roomName)
+                {
+                    gameData.areasData[i].isLocked = false;
                 }
             }
 
             SaveData();
+        }
+
+        // Doors
+        public void SaveDoors(List<string> unlockedDoors)
+        {
+            writer
+            .Write("doorSet", JsonConvert.SerializeObject(unlockedDoors))
+            .Write("unlockedDoors", JsonConvert.SerializeObject(unlockedDoors))
+            .Commit();
+        }
+
+        public List<string> LoadDoors()
+        {
+            string newUnlockedDoors = "";
+
+            reader.Read<string>("unlockedDoors", r => newUnlockedDoors = r);
+
+            return JsonConvert.DeserializeObject<List<string>>(newUnlockedDoors);
+        }
+
+        public bool CheckDoors()
+        {
+            return writer.Exists("doorSet");
         }
 
         // Find selectable items collider center position

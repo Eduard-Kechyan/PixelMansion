@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: db8f164643505f24f84ff102ef052072, type: 3}
-  m_Name: ProgressData
+  m_Name: ProgressData 1
   m_EditorClassIdentifier: 
   check: 0
   areas:
@@ -19,6 +19,25 @@ MonoBehaviour:
     steps:
     - name: Task ChangeFloor
       id: ChangeFloor
+      stepType: 0
+      nextIds:
+      - Response
+      - ChangeWallLeft
+      - ChangeWallRight
+      requiredIds: []
+    - name: Conversation Response
+      id: Response
+      stepType: 1
+      nextIds: []
+      requiredIds: []
+    - name: Task ChangeWallLeft
+      id: ChangeWallLeft
+      stepType: 0
+      nextIds:
+      - Last
+      requiredIds: []
+    - name: Task ChangeWallRight
+      id: ChangeWallRight
       stepType: 0
       nextIds:
       - Last

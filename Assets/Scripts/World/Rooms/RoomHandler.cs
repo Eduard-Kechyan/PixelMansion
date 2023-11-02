@@ -34,7 +34,6 @@ namespace Merge
         private GameObject nav;
 
         // References
-        private NavMeshManager navMeshManager;
         private DoorManager doorManager;
         private DataManager dataManager;
         private SoundManager soundManager;
@@ -42,7 +41,6 @@ namespace Merge
 
         void Start()
         {
-            navMeshManager = NavMeshManager.Instance;
             doorManager = DoorManager.Instance;
             dataManager = DataManager.Instance;
             soundManager = SoundManager.Instance;
@@ -69,7 +67,7 @@ namespace Merge
             }
             else
             {
-                UnlockAlt();
+                UnlockAlt(true);
             }
         }
 
@@ -187,8 +185,8 @@ namespace Merge
             locked = true;
         }
 
-        public void UnlockPre()
-        {           
+        public void Unlock(Action callback = null)
+        {
             dataManager.UnlockRoom(gameObject.name);
 
             if (lockedOverlay != null)
@@ -196,36 +194,22 @@ namespace Merge
                 lockedOverlay.SetActive(false);
             }
 
-            EnableNav(() =>
+            EnableNav();
+
+            doorManager.OpenDoor(roomSortingLayer, (Vector2 position) =>
             {
-                navMeshManager.Bake();
+                charMove.SetPosition(position,()=>
+                {
+                    UnlockAfter();
+                });
             });
 
-            bool found = false;
-
-            for (int i = 0; i < doorManager.doors.Length; i++)
-            {
-                if (doorManager.doors[i].roomSortingLayer == roomSortingLayer)
-                {
-                    charMove.SetPosition(doorManager.doors[i].transform.position);
-
-                    doorManager.doors[i].gameObject.SetActive(false);
-
-                    found = true;
-
-                    break;
-                }
-            }
-
-            if (!found && hasDoor)
-            {
-                Debug.LogWarning("This room with a door couldn't find the door: " + gameObject.name);
-            }
-
             locked = false;
+
+            callback?.Invoke();
         }
 
-        public void Unlock()
+        public void UnlockAfter()
         {
             charMove.SetDestination(transform.localPosition);
 
@@ -234,11 +218,18 @@ namespace Merge
             // TODO - Add a nice particle effect here
         }
 
-        void UnlockAlt()
+        public void UnlockAlt(bool initial = false)
         {
             if (lockedOverlay != null)
             {
                 lockedOverlay.SetActive(false);
+            }
+
+            if (!initial)
+            {
+                EnableNav();
+
+                locked = false;
             }
         }
     }

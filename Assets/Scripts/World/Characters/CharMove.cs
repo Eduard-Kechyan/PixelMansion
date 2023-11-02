@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -84,7 +85,7 @@ namespace Merge
         public void SetDestination(Vector2 newPos, bool stayInRoom = false)
         {
             destinationPos = newPos;
-            
+
             enabled = true;
 
             MoveChar();
@@ -126,11 +127,15 @@ namespace Merge
             }
         }
 
-        public void SetPosition(Vector2 newPos)
+        public void SetPosition(Vector2 newPos,Action callback = null)
         {
             agent.isStopped = true;
 
-            transform.position = newPos;
+            agent.Warp(newPos);
+
+            agent.isStopped = false;
+
+            callback?.Invoke();
         }
 
         public void StopMoving()

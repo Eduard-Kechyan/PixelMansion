@@ -281,7 +281,7 @@ namespace Merge
 
                     Glob.SetTimeout(() =>
                     {
-                        HandleRewards(rewards);
+                        HandleRewards(rewards, groupId, taskId);
                     }, 0.35f);
 
                     TaskCompleted(groupId, taskId);
@@ -401,23 +401,32 @@ namespace Merge
         //// Rewards ////
 
         // Get the rewards and handle them as needed
-        void HandleRewards(Types.TaskItem[] rewards)
+        void HandleRewards(Types.TaskItem[] rewards, string groupId, string taskId)
         {
+            bool nextIsConvo = progressManager.CheckIfNextIsConvo(groupId, taskId);
+
             for (int k = 0; k < rewards.Length; k++)
             {
                 if (rewards[k].type == Types.Type.Coll)
                 {
-                    valuePop.PopValue(rewards[k].amount, rewards[k].collGroup, uiButtons.hubTaskButtonPos, false);
+                    if (nextIsConvo)
+                    {
+                        gameData.UpdateValue(rewards[k].amount, rewards[k].collGroup, false, true);
+                    }
+                    else
+                    {
+                        valuePop.PopValue(rewards[k].amount, rewards[k].collGroup, uiButtons.hubTaskButtonPos, false);
+                    }
                 }
                 else
                 {
-                    AddItemToBonus(rewards[k]);
+                    AddItemToBonus(rewards[k], nextIsConvo);
                 }
             }
         }
 
         // Handle Items, Generators and Chests
-        IEnumerator AddItemToBonus(Types.TaskItem reward)
+        IEnumerator AddItemToBonus(Types.TaskItem reward, bool nextIsConvo = false)
         {
             yield return new WaitForSeconds(0.5f);
 
@@ -430,21 +439,28 @@ namespace Merge
                 chestGroup = reward.chestGroup
             };
 
-            Vector2 initialPosition;
-            Vector2 buttonPosition;
-
-            if (noteDotHandler.isHub)
+            if (nextIsConvo)
             {
-                initialPosition = uiButtons.hubTaskButtonPos;
-                buttonPosition = uiButtons.hubPlayButtonPos;
+                gameData.AddToBonus(newItem);
             }
             else
             {
-                initialPosition = uiButtons.gameplayTaskButtonPos;
-                buttonPosition = uiButtons.gameplayBonusButtonPos;
-            }
+                Vector2 initialPosition;
+                Vector2 buttonPosition;
 
-            valuePop.PopBonus(newItem, initialPosition, buttonPosition, true);
+                if (noteDotHandler.isHub)
+                {
+                    initialPosition = uiButtons.hubTaskButtonPos;
+                    buttonPosition = uiButtons.hubPlayButtonPos;
+                }
+                else
+                {
+                    initialPosition = uiButtons.gameplayTaskButtonPos;
+                    buttonPosition = uiButtons.gameplayBonusButtonPos;
+                }
+
+                valuePop.PopBonus(newItem, initialPosition, buttonPosition, true);
+            }
         }
 
         //// Checks ////
