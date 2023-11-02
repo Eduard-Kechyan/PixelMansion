@@ -4,116 +4,115 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-
 namespace Merge
 {
     public class ConfirmMenu : MonoBehaviour
-{
-    // References
-    private MenuUI menuUI;
-    private I18n LOCALE;
-
-    private bool denyTapped = false;
-    private Action callback;
-    private Action callbackAlt;
-
-    // UI
-    private VisualElement root;
-    private VisualElement confirmMenu;
-    private VisualElement menuContent;
-
-    private Label confirmLabel;
-    private Button confirmButton;
-    private Button denyButton;
-
-    void Start()
     {
-        // Cache
-        menuUI = GetComponent<MenuUI>();
-        LOCALE = I18n.Instance;
+        // References
+        private MenuUI menuUI;
+        private I18n LOCALE;
+
+        private bool denyTapped = false;
+        private Action callback;
+        private Action callbackAlt;
 
         // UI
-        root = GetComponent<UIDocument>().rootVisualElement;
+        private VisualElement root;
+        private VisualElement confirmMenu;
+        private VisualElement menuContent;
 
-        confirmMenu = root.Q<VisualElement>("ConfirmMenu");
-        menuContent = confirmMenu.Q<VisualElement>("Content");
-
-        confirmLabel = menuContent.Q<Label>("Label");
-        confirmButton = menuContent.Q<Button>("ConfirmButton");
-        denyButton = menuContent.Q<Button>("DenyButton");
-
-        confirmButton.clicked += () => ConfirmButtonClicked();
-        denyButton.clicked += () => DenyButtonClicked();
-
-        Init();
-    }
-
-    void Init()
-    {
-        // Make sure the menu is closed
-        confirmMenu.style.display = DisplayStyle.None;
-        confirmMenu.style.opacity = 0;
-    }
-
-    public void Open(string preFix, Action newCallback, Action newCallbackAlt = null, bool alt = false, bool closeAll = false)
-    {
-        callback = newCallback;
-
-        if (!denyTapped)
+        private Label confirmLabel;
+        private Button confirmButton;
+        private Button denyButton;
+        
+        void Start()
         {
-            if (newCallbackAlt != null)
+            // Cache
+            menuUI = GetComponent<MenuUI>();
+            LOCALE = I18n.Instance;
+
+            // UI
+            root = GetComponent<UIDocument>().rootVisualElement;
+
+            confirmMenu = root.Q<VisualElement>("ConfirmMenu");
+            menuContent = confirmMenu.Q<VisualElement>("Content");
+
+            confirmLabel = menuContent.Q<Label>("Label");
+            confirmButton = menuContent.Q<Button>("ConfirmButton");
+            denyButton = menuContent.Q<Button>("DenyButton");
+
+            confirmButton.clicked += () => ConfirmButtonClicked();
+            denyButton.clicked += () => DenyButtonClicked();
+
+            Init();
+        }
+
+        void Init()
+        {
+            // Make sure the menu is closed
+            confirmMenu.style.display = DisplayStyle.None;
+            confirmMenu.style.opacity = 0;
+        }
+
+        public void Open(string preFix, Action newCallback, Action newCallbackAlt = null, bool alt = false, bool closeAll = false)
+        {
+            callback = newCallback;
+
+            if (!denyTapped)
             {
-                callbackAlt = newCallbackAlt;
+                if (newCallbackAlt != null)
+                {
+                    callbackAlt = newCallbackAlt;
+                }
+
+                denyTapped = true;
+
+                Glob.SetTimeout(() =>
+                {
+                    denyTapped = false;
+                }, 0.35f);
             }
 
-            denyTapped = true;
+            // Set the title
+            string title = LOCALE.Get("confirm_title_" + preFix);
 
-            Glob.SetTimeout(() =>
+            confirmLabel.text = LOCALE.Get("confirm_label_" + preFix);
+
+            if (alt)
             {
-                denyTapped = false;
-            }, 0.35f);
+                confirmButton.text = LOCALE.Get("confirm_button_" + preFix);
+                denyButton.text = LOCALE.Get("confirm_deny_button_" + preFix);
+            }
+            else
+            {
+                confirmButton.text = LOCALE.Get("confirm_button");
+                denyButton.text = LOCALE.Get("confirm_deny_button");
+            }
+
+            // Open menu
+            menuUI.OpenMenu(confirmMenu, title, false, closeAll);
         }
 
-        // Set the title
-        string title = LOCALE.Get("confirm_title_" + preFix);
-
-        confirmLabel.text = LOCALE.Get("confirm_label_" + preFix);
-
-        if (alt)
+        void ConfirmButtonClicked()
         {
-            confirmButton.text = LOCALE.Get("confirm_button_" + preFix);
-            denyButton.text = LOCALE.Get("confirm_deny_button_" + preFix);
-        }
-        else
-        {
-            confirmButton.text = LOCALE.Get("confirm_button");
-            denyButton.text = LOCALE.Get("confirm_deny_button");
+            callback?.Invoke();
         }
 
-        // Open menu
-        menuUI.OpenMenu(confirmMenu, title, false, closeAll);
-    }
-
-    void ConfirmButtonClicked()
-    {
-        callback?.Invoke();
-    }
-
-    void DenyButtonClicked()
-    {
-        if (callbackAlt != null)
+        void DenyButtonClicked()
         {
-            callbackAlt();
+            if (callbackAlt != null)
+            {
+                callbackAlt();
+            }
+            else
+            {
+                Close();
+            }
         }
-        else
+
+        public void Close()
         {
-            Close();
+            menuUI.CloseMenu(confirmMenu.name);
         }
     }
-
-    public void Close()
-    {
-        menuUI.CloseMenu(confirmMenu.name);
-    }
-}
 }
