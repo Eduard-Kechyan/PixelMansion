@@ -1,0 +1,151 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82e8a683d2747de4f856146c05a3c226, type: 3}
+  m_Name: TutorialData
+  m_EditorClassIdentifier: 
+  steps:
+  - name: Story First
+    id: First
+    scene: 0
+    type: 2
+    taskType: 0
+    taskRef: 
+    addTask: 0
+    taskOrder: 0
+  - name: Convo Greeting
+    id: Greeting
+    scene: 0
+    type: 1
+    taskType: 0
+    taskRef: 
+    addTask: 0
+    taskOrder: 0
+  - name: Task Press Play1
+    id: Play1
+    scene: 0
+    type: 0
+    taskType: 0
+    taskRef: Play
+    addTask: 0
+    taskOrder: 0
+  - name: Task Merge MergeGloves1
+    id: MergeGloves1
+    scene: 1
+    type: 0
+    taskType: 1
+    taskRef: 
+    addTask: 0
+    taskOrder: 0
+  - name: Task Merge MergeGloves2
+    id: MergeGloves2
+    scene: 1
+    type: 0
+    taskType: 1
+    taskRef: 
+    addTask: 0
+    taskOrder: 0
+  - name: Task Press Home
+    id: Home
+    scene: 1
+    type: 0
+    taskType: 0
+    taskRef: Home
+    addTask: 0
+    taskOrder: 0
+  - name: Task Press Task1
+    id: Task1
+    scene: 0
+    type: 0
+    taskType: 0
+    taskRef: Task
+    addTask: 0
+    taskOrder: 0
+  - name: Task Menu TaskMenu1
+    id: TaskMenu1
+    scene: 0
+    type: 0
+    taskType: 3
+    taskRef: Task
+    addTask: 0
+    taskOrder: 0
+  - name: Convo Great
+    id: Great
+    scene: 0
+    type: 1
+    taskType: 0
+    taskRef: 
+    addTask: 0
+    taskOrder: 0
+  - name: Task Press Play2
+    id: Play2
+    scene: 0
+    type: 0
+    taskType: 0
+    taskRef: Play
+    addTask: 0
+    taskOrder: 0
+  - name: Task Gen GenGloves1
+    id: GenGloves1
+    scene: 1
+    type: 0
+    taskType: 2
+    taskRef: 
+    addTask: 1
+    taskOrder: 0
+  - name: Task Merge MergeGloves4
+    id: MergeGloves4
+    scene: 1
+    type: 0
+    taskType: 1
+    taskRef: 
+    addTask: 0
+    taskOrder: 0
+  - name: Task Merge MergeGloves5
+    id: MergeGloves5
+    scene: 1
+    type: 0
+    taskType: 1
+    taskRef: 
+    addTask: 0
+    taskOrder: 0
+  - name: Task Merge MergeGloves6
+    id: MergeGloves6
+    scene: 1
+    type: 0
+    taskType: 1
+    taskRef: 
+    addTask: 0
+    taskOrder: 0
+  - name: Task Press Task2
+    id: Task2
+    scene: 1
+    type: 0
+    taskType: 0
+    taskRef: Task
+    addTask: 0
+    taskOrder: 0
+  - name: Task Menu TaskMenu1
+    id: TaskMenu1
+    scene: 1
+    type: 0
+    taskType: 3
+    taskRef: Task
+    addTask: 0
+    taskOrder: 0
+  - name: Convo Continue
+    id: Continue
+    scene: 0
+    type: 1
+    taskType: 0
+    taskRef: 
+    addTask: 0
+    taskOrder: 0

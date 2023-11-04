@@ -25,7 +25,7 @@ MonoBehaviour:
       - ChangeWallLeft
       - ChangeWallRight
       requiredIds: []
-    - name: Conversation Response
+    - name: Convo Response
       id: Response
       stepType: 1
       nextIds: []
@@ -47,6 +47,11 @@ MonoBehaviour:
       stepType: 0
       nextIds:
       - KitchenRoom
+      requiredIds: []
+    - name: 3 TutorialFirst
+      id: TutorialFirst
+      stepType: 3
+      nextIds: []
       requiredIds: []
   - name: KitchenRoom
     id: KitchenRoom

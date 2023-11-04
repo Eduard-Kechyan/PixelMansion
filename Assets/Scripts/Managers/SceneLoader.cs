@@ -22,12 +22,18 @@ namespace Merge
 
         void OnEnable()
         {
+            // Subscribe to events
             SceneManager.sceneLoaded += OnSceneLoaded;
+
+            SceneManager.sceneUnloaded += OnSceneUnloaded;
         }
 
         void OnDisable()
         {
+            // Unsubscribe from events
             SceneManager.sceneLoaded -= OnSceneLoaded;
+
+            SceneManager.sceneUnloaded += OnSceneUnloaded;
         }
 
         void Start()
@@ -41,7 +47,14 @@ namespace Merge
 
         void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
+            Debug.Log("Loaded " + scene.name);
             InitializeScene();
+        }
+
+        void OnSceneUnloaded(Scene scene)
+        {
+            Debug.Log("Unloaded " + scene.name);
+            Glob.lastSceneName = scene.name;
         }
 
         public void Load(int sceneIndex)

@@ -10,6 +10,9 @@ namespace Merge
     {
         public Sprite[] levelUpIndicatorSprites = new Sprite[0];
 
+        [HideInInspector]
+        public bool loaded = false;
+
         // Variables
         private bool levelEnabled = false;
         private bool energyEnabled = false;
@@ -111,11 +114,20 @@ namespace Merge
             SetValues();
 
             CheckForTaps();
+
+            root.RegisterCallback<GeometryChangedEvent>(SetLoaded);
         }
 
         void Update()
         {
             HandleEnergyTimer();
+        }
+
+        void SetLoaded(GeometryChangedEvent evt)
+        {
+            root.UnregisterCallback<GeometryChangedEvent>(SetLoaded);
+
+            loaded = true;
         }
 
         void SetValues()

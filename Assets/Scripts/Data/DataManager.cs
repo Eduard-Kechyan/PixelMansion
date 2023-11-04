@@ -26,8 +26,6 @@ namespace Merge
         public static event BoardSaveEvent BoardSaveEventAction;
         public delegate void BoardSaveUndoEvent(bool unselect);
         public static event BoardSaveUndoEvent BoardSaveUndoEventAction;
-        public delegate void CheckProgressEvent();
-        public static event CheckProgressEvent CheckProgressEventAction;
 
         // Whether data has been fully loaded
         public bool loaded;
@@ -266,8 +264,6 @@ namespace Merge
             apiCalls.unsentData = dataConverter.ConvertUnsentFromJson(newUnsentData);
 
             apiCalls.canCheckForUnsent = true;
-
-            CheckProgressEventAction();
 
             // Finish Task
             loaded = true;

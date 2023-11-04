@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,6 +24,9 @@ namespace Merge
 
         private Types.ConvoGroup currentConvoGroup;
         private int currentConvo;
+
+        private bool canSkip = true;
+        private Action callback;
 
         private Sprite[] avatarsSprites;
         private Sprite[] eyesSprites;
@@ -148,7 +152,7 @@ namespace Merge
             }
         }
 
-        public void Converse(string convoId)
+        public void Converse(string convoId, bool newCanSkip = true, Action newCallback = null)
         {
             for (int i = 0; i < convoData.convoGroups.Length; i++)
             {
@@ -162,6 +166,9 @@ namespace Merge
                     SetAvatarFace(currentConvoGroup.content[0]);
 
                     isConvoOpen = true;
+
+                    callback = newCallback;
+                    canSkip = newCanSkip;
 
                     if (currentConvoGroup.hasTimeOut)
                     {
@@ -209,8 +216,12 @@ namespace Merge
 
                 convoBoxUnderlay.style.height = 58;
                 convoBoxUnderlay.style.transitionDelay = nullDelay;
-                skipButton.style.opacity = 1;
-                skipButton.style.transitionDelay = halfDelay;
+
+                if (canSkip)
+                {
+                    skipButton.style.opacity = 1;
+                    skipButton.style.transitionDelay = halfDelay;
+                }
 
                 avatarLeft.style.left = 4;
                 avatarLeft.style.transitionDelay = nullDelay;
@@ -251,6 +262,12 @@ namespace Merge
                 avatarLeft.style.transitionDelay = fullDelay;
                 avatarRight.style.right = -96;
                 avatarRight.style.transitionDelay = fullDelay;
+
+                callback?.Invoke();
+
+                callback = null;
+
+                canSkip = true;
             }
         }
 

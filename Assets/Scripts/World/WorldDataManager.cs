@@ -145,7 +145,7 @@ namespace Merge
                         {
                             if (!gameData.areasData[i].isLocked)
                             {
-                                worldRoot.GetComponent<RoomHandler>().UnlockAlt();
+                                worldArea.GetComponent<RoomHandler>().UnlockAlt();
 
                                 // Wall left
                                 if (gameData.areasData[i].wallLeftOrder >= 0 && worldArea.GetChild(0).TryGetComponent(out ChangeWall changeWallLeft))

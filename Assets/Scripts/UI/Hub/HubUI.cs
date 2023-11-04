@@ -12,6 +12,9 @@ namespace Merge
         public float extraTopPadding = 15;
         public float visibilityBottomOffset = 50f;
 
+        [HideInInspector]
+        public bool loaded = false;
+
         private float singlePixelWidth;
 
         // References
@@ -94,6 +97,8 @@ namespace Merge
         {
             root.UnregisterCallback<GeometryChangedEvent>(Init);
 
+            loaded = true;
+
             // Set top box top padding based on the values position on the screen
             topBox.style.top = safeAreaHandler.GetTopOffset() + extraTopPadding;
 
@@ -135,6 +140,40 @@ namespace Merge
             uiButtons.hubPlayButtonPos = CalcButtonPosition(playButton, true);
         }
 
+        public void DisableButtons()
+        {
+            playButton.SetEnabled(false);
+            settingsButton.SetEnabled(false);
+            shopButton.SetEnabled(false);
+            taskButton.SetEnabled(false);
+        }
+
+        public void EnableButtons()
+        {
+            playButton.SetEnabled(true);
+            settingsButton.SetEnabled(true);
+            shopButton.SetEnabled(true);
+            taskButton.SetEnabled(true);
+        }
+
+        public void ToggleButton(string name, bool enabled = false)
+        {
+            switch (name)
+            {
+                case "play":
+                    playButton.SetEnabled(enabled);
+                    break;
+                case "settings":
+                    settingsButton.SetEnabled(enabled);
+                    break;
+                case "shop":
+                    shopButton.SetEnabled(enabled);
+                    break;
+                case "task":
+                    taskButton.SetEnabled(enabled);
+                    break;
+            }
+        }
         public void CloseUI()
         {
             List<TimeValue> fullDelay = new() { new TimeValue(0.6f) };

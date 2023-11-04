@@ -13,8 +13,31 @@ MonoBehaviour:
   m_Name: ConvoData
   m_EditorClassIdentifier: 
   convoGroups:
+  - name: TutorialGreeting
+    id: TutorialGreeting
+    hasTimeOut: 0
+    characterA: 1
+    characterB: 0
+    content:
+    - character: 1
+      expression: 1
+      isRight: 0
+      isSide: 0
+  - name: TutorialGreat
+    id: TutorialGreat
+    hasTimeOut: 0
+    characterA: 1
+    characterB: 0
+    content:
+    - character: 1
+      expression: 0
+      isRight: 0
+      isSide: 0
   - name: Response
     id: Response
+    hasTimeOut: 1
+    characterA: 1
+    characterB: 2
     content:
     - character: 1
       expression: 0
@@ -40,5 +63,3 @@ MonoBehaviour:
       expression: 0
       isRight: 0
       isSide: 0
-    characterA: 1
-    characterB: 2

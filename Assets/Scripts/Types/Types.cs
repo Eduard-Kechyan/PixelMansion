@@ -413,7 +413,7 @@ namespace Merge
         public enum StepType
         {
             Task,
-            Conversation,
+            Convo,
             RoomUnlocking
         };
 
@@ -454,7 +454,6 @@ namespace Merge
         }
 
         //// CONVERSATIONS ////
-
         [Serializable]
         public class ConvoGroup
         {
@@ -568,6 +567,42 @@ namespace Merge
             public int amount;
             public int completed;
         }
+
+        //// TUTORIAL ////
+         public enum TutorialStepType
+         {
+             Task,
+             Convo,
+             Story,
+         };
+
+         public enum TutorialStepTask
+         {
+             Press,
+             Merge,
+             Gen,
+             Menu
+         };
+
+         public enum TutorialStepScene
+         {
+             Hub,
+             Gameplay
+         };
+
+         [Serializable]
+         public class TutorialStep
+         {
+             [HideInInspector]
+             public string name;
+             public string id;
+             public TutorialStepScene scene;
+             public TutorialStepType type;
+             public TutorialStepTask taskType;
+             public string taskRef;
+             public bool addTask;
+             public int taskOrder;
+         }
 
         //// ERROR ////
         public enum ErrorType

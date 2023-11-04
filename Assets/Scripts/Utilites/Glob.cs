@@ -25,6 +25,8 @@ namespace Merge
         public static bool selectableIsChanging = false;
         public static bool convoUILoading = true;
 
+        public static string lastSceneName = "";
+
         // Temp data
         public static string taskToComplete = "";
 

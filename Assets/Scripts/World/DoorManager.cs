@@ -13,7 +13,7 @@ namespace Merge
         [HideInInspector]
         public DoorPH[] doors;
 
-        private List<string> unlockedDoors;
+        private List<string> unlockedDoors = new();
 
         // Instance
         public static DoorManager Instance;

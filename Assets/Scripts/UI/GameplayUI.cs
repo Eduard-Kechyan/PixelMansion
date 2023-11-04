@@ -10,6 +10,9 @@ namespace Merge
         // Variables
         public SceneLoader sceneLoader;
 
+        [HideInInspector]
+        public bool loaded = false;
+
         [Header("Indicators")]
         public Sprite[] inventoryIndicatorSprites;
         public Sprite[] bonusIndicatorSprites;
@@ -29,6 +32,7 @@ namespace Merge
         private TaskMenu taskMenu;
         private SoundManager soundManager;
         private UIButtons uiButtons;
+        private TutorialManager tutorialManager;
 
         // UI
         private VisualElement root;
@@ -124,6 +128,8 @@ namespace Merge
         {
             root.UnregisterCallback<GeometryChangedEvent>(evt => SetUIButtons(evt, true));
 
+            loaded = true;
+
             bool setButtons = true;
 
             if (initial && uiButtons.gameplayButtonsSet)
@@ -138,6 +144,53 @@ namespace Merge
                 uiButtons.gameplayShopButtonPos = CalcButtonPosition(shopButton);
                 uiButtons.gameplayTaskButtonPos = CalcButtonPosition(taskButton);
                 uiButtons.gameplayBonusButtonPos = CalcButtonPosition(bonusButton);
+            }
+        }
+
+        void CheckButtons()
+        {
+            if (tutorialManager.skipTutorial)
+            {
+                // TODO - Enable necessary buttons
+            }
+            else
+            {
+                // TODO - Disable unnecessary buttons
+            }
+        }
+
+        public void DisableButtons()
+        {
+            homeButton.SetEnabled(false);
+            inventoryButton.SetEnabled(false);
+            shopButton.SetEnabled(false);
+            taskButton.SetEnabled(false);
+        }
+
+        public void EnableButtons()
+        {
+            homeButton.SetEnabled(true);
+            inventoryButton.SetEnabled(true);
+            shopButton.SetEnabled(true);
+            taskButton.SetEnabled(true);
+        }
+
+        public void ToggleButton(string name, bool enabled = false)
+        {
+            switch (name)
+            {
+                case "home":
+                    homeButton.SetEnabled(enabled);
+                    break;
+                case "inventory":
+                    inventoryButton.SetEnabled(enabled);
+                    break;
+                case "shop":
+                    shopButton.SetEnabled(enabled);
+                    break;
+                case "task":
+                    taskButton.SetEnabled(enabled);
+                    break;
             }
         }
 

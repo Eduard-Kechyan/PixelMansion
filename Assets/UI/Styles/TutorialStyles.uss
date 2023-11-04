@@ -1,0 +1,70 @@
+.story_container {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    right: 0;
+    background-image: url('project://database/Assets/Sprites/Scenes/Gameplay/Background.png?fileID=2800000&guid=67e0e2f1b7ca3854b95261c156f6d02b&type=3#Background');
+    height: 500px;
+    translate: 0 -50%;
+    transition-duration: 0.2s;
+    display: none;
+    opacity: 0;
+}
+
+.story_container .no_transition {
+    transition-duration: 0s;
+}
+
+.skip_button_container {
+    position: absolute;
+    flex-direction: row;
+    opacity: 0;
+    transition-duration: 0.3s;
+    display: none;
+}
+
+.skip_button_container:active {
+    scale: 0.9 0.9;
+}
+
+.skip_button_label {
+    height: 16px;
+    -unity-text-align: middle-right;
+    font-size: 8px;
+    color: rgb(255, 255, 255);
+    -unity-font-definition: url('project://database/Assets/Fonts/Roboto%20SDF.asset?fileID=11400000&guid=1c5dedeb0ccefb74ebe6e5ff0a6f7e56&type=2#Roboto SDF');
+    transition-duration: 0.3s;
+    margin-right: 4px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-left: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    white-space: nowrap;
+}
+
+.skip_button_icon {
+    background-image: url('project://database/Assets/Sprites/Conversation/SkipButton.png?fileID=2800000&guid=0536b98ce4b8f2c4b9b1f1fa5287e241&type=3#SkipButton');
+    width: 16px;
+    height: 16px;
+}
+
+.skip_button_container .no_transition {
+    transition-duration: 0s;
+}
+
+.pointer {
+    background-image: url('project://database/Assets/Sprites/Other/Pointer1.png?fileID=2800000&guid=cbf41892304d91b4d89b2cff8147e68e&type=3#Pointer1');
+    width: 42px;
+    height: 36px;
+    position: absolute;
+    transition-duration: 0.1s;
+    display: none;
+    opacity: 0;
+}
+
+.pointer_tap {
+    background-image: url('project://database/Assets/Sprites/Other/Pointer2.png?fileID=2800000&guid=205243edaf1fe3b4b92fadab572454e4&type=3#Pointer2');
+}

@@ -14,6 +14,7 @@ namespace Merge
         public WorldDataManager worldDataManager;
         public ConvoUIHandler convoUIHandler;
         public BoardManager boardManager;
+        public TutorialManager tutorialManager;
 
         private bool initialSet = false;
         private bool settingInitial = false;
@@ -47,41 +48,26 @@ namespace Merge
             CheckForProgressSteps();
         }
 
-        void OnEnable()
-        {
-            // Unsubscribe from events
-            DataManager.CheckProgressEventAction += CheckInitialData;
-        }
-
-        void OnDisable()
-        {
-            // Unsubscribe from events
-            DataManager.CheckProgressEventAction -= CheckInitialData;
-        }
-
-        // Dummy function for testing
-        // TODO - Remove this
-        public void CheckInitialData()
+        public void SetInitialData(int order = 0, bool last = false)
         {
             settingInitial = true;
 
-            if (!initialSet)
+            if (last)
             {
-                if (GameData.Instance.tasksData.Count == 0 && !PlayerPrefs.HasKey("TempTaskDataSet"))
+                PlayerPrefs.SetInt("initialTaskDataSet", 1);
+            }
+            else if (!initialSet)
+            {
+                if (GameData.Instance.tasksData.Count == 0 && !PlayerPrefs.HasKey("initialTaskDataSet"))
                 {
-                    taskManager.TryToAddTask(
-                        progressData.areas[0].id,
-                        progressData.areas[0].steps[0].id
-                    );
-
-                    PlayerPrefs.SetInt("TempTaskDataSet", 1);
+                    taskManager.TryToAddTask(progressData.areas[0].id, progressData.areas[0].steps[order].id);
                 }
 
                 taskManager.CheckTaskNoteDot();
-
-                initialSet = true;
-                settingInitial = false;
             }
+
+            initialSet = true;
+            settingInitial = false;
         }
 
         //// Next Area ////
@@ -214,7 +200,7 @@ namespace Merge
 
                     if (addNewTask)
                     {
-                        if (shouldShowUI && steps[i].stepType == Types.StepType.Conversation)
+                        if (shouldShowUI && steps[i].stepType == Types.StepType.Convo)
                         {
                             shouldShowUI = false;
                         }
@@ -308,7 +294,7 @@ namespace Merge
                 case Types.StepType.Task:
                     taskManager.TryToAddTask(areaId, stepId);
                     break;
-                case Types.StepType.Conversation:
+                case Types.StepType.Convo:
                     if (worldDataManager != null)
                     {
                         SetProgressStep(stepType, stepId);
@@ -367,7 +353,7 @@ namespace Merge
 
                 switch (Glob.ParseEnum<Types.StepType>(oldProgressStep.stepType))
                 {
-                    case Types.StepType.Conversation:
+                    case Types.StepType.Convo:
                         if (worldDataManager != null)
                         {
                             Glob.SetTimeout(() =>
