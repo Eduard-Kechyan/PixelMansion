@@ -70,6 +70,7 @@ SpriteAtlas:
     - d700eaac57d46024283bbf2c2ebb0951: 21300000
     - 42c93ccd0c642b8489745835f3ad703f: 21300000
     - 75cfcdeeff0b510459b184b452921749: 21300000
+    - b31d31fed61fa994f80446fd42d310d1: 1061297433894834710
     - 51d6745f8e967da45b734a9906c8fdfc: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
@@ -93,6 +94,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: d700eaac57d46024283bbf2c2ebb0951, type: 3}
   - {fileID: 21300000, guid: 42c93ccd0c642b8489745835f3ad703f, type: 3}
   - {fileID: 21300000, guid: 75cfcdeeff0b510459b184b452921749, type: 3}
+  - {fileID: 1061297433894834710, guid: b31d31fed61fa994f80446fd42d310d1, type: 3}
   - {fileID: 21300000, guid: 51d6745f8e967da45b734a9906c8fdfc, type: 3}
   m_PackedSpriteNamesToIndex:
   - SelectionArrows5
@@ -115,6 +117,7 @@ SpriteAtlas:
   - SelectionArrows4
   - SpeechBubbleBorderRightBottom
   - SpeechBubbleTailTopRight
+  - Sprite-0002
   - SelectionArrows1
   m_RenderDataMap: {}
   m_Tag: HubSceneAtlas

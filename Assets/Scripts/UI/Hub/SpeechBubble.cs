@@ -330,6 +330,7 @@ namespace Merge
         // Open the bubble multiple times until the character finishes talking
         void OpenMulti(string newContent, Vector2 newPos, CharSpeech newCharSpeech)
         {
+            // TODO - Properly handle multiline speech
             charSpeech = newCharSpeech;
 
             SetPos(newPos);

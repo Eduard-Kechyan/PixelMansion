@@ -21,7 +21,7 @@ namespace Merge
         private bool canCheck = false;
 
         // Enums
-        public enum Dir
+       /* public enum Dir
         {
             DownRight,
             Down,
@@ -31,6 +31,14 @@ namespace Merge
             Up,
             UpRight,
             Right
+        };*/
+
+        public enum Dir
+        {
+            Up,
+            Right,
+            Down,
+            Left,
         };
 
         // References
@@ -51,8 +59,10 @@ namespace Merge
             agent.updateUpAxis = false;
 
             // Initialize direction
-            direction = Dir.DownRight;
+            direction = Dir.Right;
             directionOrder = (int)direction;
+
+            animator.SetFloat("Direction", directionOrder);
 
             enabled = false;
         }
@@ -114,9 +124,9 @@ namespace Merge
                 }
                 else
                 {
-                    float direction = CalcDirection(agent.velocity.normalized);
+                    float dir = CalcDirection(agent.velocity.normalized);
 
-                    animator.SetFloat("Direction", direction);
+                    animator.SetFloat("Direction", dir);
 
                     animator.SetBool("Walking", true);
 
@@ -165,53 +175,77 @@ namespace Merge
                 angle = 360 - angle;
             }
 
-            if (Between(angle, 0f, 22.5f) || Between(angle, 337.5f, 360f))
+            if (Between(angle, 0f, 45f) || Between(angle, 315f, 360f))
             {
                 // Up
                 direction = Dir.Up;
             }
 
-            if (Between(angle, 22.5f, 67.5f))
-            {
-                // Up Right
-                direction = Dir.UpRight;
-            }
-
-            if (Between(angle, 67.5f, 112.5f))
+            if (Between(angle, 45f, 135f))
             {
                 // Right
                 direction = Dir.Right;
             }
 
-            if (Between(angle, 112.5f, 157.5f))
-            {
-                // Down Right
-                direction = Dir.DownRight;
-            }
-
-            if (Between(angle, 157.5f, 202.5f))
+            if (Between(angle, 135f, 225f))
             {
                 // Down
                 direction = Dir.Down;
             }
 
-            if (Between(angle, 202.5f, 247.5f))
+            if (Between(angle, 225f, 315f))
             {
-                // Down Left
-                direction = Dir.DownLeft;
-            }
-
-            if (Between(angle, 247.5f, 292.5f))
-            {
-                // Left
+                // Right
                 direction = Dir.Left;
             }
 
-            if (Between(angle, 292.5f, 337.5f))
-            {
-                // Up Left
-                direction = Dir.UpLeft;
-            }
+            /* if (Between(angle, 0f, 22.5f) || Between(angle, 337.5f, 360f))
+             {
+                 // Up
+                 direction = Dir.Up;
+             }
+
+             if (Between(angle, 22.5f, 67.5f))
+             {
+                 // Up Right
+                 direction = Dir.UpRight;
+             }
+
+             if (Between(angle, 67.5f, 112.5f))
+             {
+                 // Right
+                 direction = Dir.Right;
+             }
+
+             if (Between(angle, 112.5f, 157.5f))
+             {
+                 // Down Right
+                 direction = Dir.DownRight;
+             }
+
+             if (Between(angle, 157.5f, 202.5f))
+             {
+                 // Down
+                 direction = Dir.Down;
+             }
+
+             if (Between(angle, 202.5f, 247.5f))
+             {
+                 // Down Left
+                 direction = Dir.DownLeft;
+             }
+
+             if (Between(angle, 247.5f, 292.5f))
+             {
+                 // Left
+                 direction = Dir.Left;
+             }
+
+             if (Between(angle, 292.5f, 337.5f))
+             {
+                 // Up Left
+                 direction = Dir.UpLeft;
+             }*/
 
             directionOrder = (int)direction;
 

@@ -7,12 +7,12 @@
         "other": "I have had better photos taken of me."
     },
     "speech_Painting_1": {
-        "zero": "The pixels are so small, I can't see what it is. (-) Well at least it looks nice.",
+        "zero": "The pixels are so small, I can't see what it is. Well at least it looks nice.",
         "one": "Quantity over quality, huh?"
     },
     "speech_Painting_2": {
-        "zero": "Aah, yes. Abstract art. (-) Nope, don't get it",
-        "one": "They say it's not about the beauty, but about the feeling when it comes to abstract art. (-) Well, I feel beautiful. What does that mean?"
+        "zero": "Aah, yes. Abstract art. Nope, don't get it",
+        "one": "They say it's not about the beauty, but about the feeling when it comes to abstract art."
     },
     "________ BOOKCASE ________": "________________",
     "speech_Bookcase_-1": {
@@ -53,7 +53,7 @@
     "________ FRIDGE ________": "________________",
     "speech_Fridge_-1": {
         "zero": "It simply doesn't work.",
-        "one": "This things melts everything i put in it. Is it just a big oven? (-) I'm confused!"
+        "one": "This things melts everything i put in it. Is it just a big oven? I'm confused!"
     },
     "speech_Fridge_0": {
         "zero": "Much better. It even has a working freezer.",
@@ -82,7 +82,7 @@
     },
     "speech_Bed_2": {
         "zero": "Incredible!",
-        "one": "Huh, look at that! (-) It's a bed!"
+        "one": "Huh, look at that! It's a bed!"
     },
     "________ BEDSIDE_TABLE ________": "________________",
     "speech_BedsideTable_-1": {
@@ -94,8 +94,8 @@
         "one": "Jup, still here."
     },
     "speech_BedsideTable_1": {
-        "zero": "Am i forgetting something? (-) Nah.",
-        "one": "Does it pay taxes? (-) I hope so!"
+        "zero": "Am i forgetting something? Nah.",
+        "one": "Does it pay taxes? I hope so!"
     },
     "speech_BedsideTable_2": {
         "zero": "Ooooh, what a luxury!",
