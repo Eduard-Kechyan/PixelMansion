@@ -44,7 +44,7 @@
     width: 120px;
     margin-left: auto;
     margin-right: auto;
-    max-height: 40%;
+    max-height: 66px;
 }
 
 .main_title .chunk {
@@ -64,6 +64,24 @@
     -unity-font-definition: url('project://database/Assets/Fonts/Venice%20SDF.asset?fileID=11400000&guid=3c03944c7f3e946479e761eb649b302c&type=2#Venice SDF');
     -unity-font-style: normal;
     text-shadow: 1px 1px 0 rgb(255, 255, 255);
+}
+
+.subtitle {
+    width: 100%;
+    font-size: 16px;
+    color: rgb(255, 255, 255);
+    -unity-text-align: middle-center;
+    white-space: nowrap;
+    -unity-font-definition: url('project://database/Assets/Fonts/Venice%20SDF.asset?fileID=11400000&guid=3c03944c7f3e946479e761eb649b302c&type=2#Venice SDF');
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    text-shadow: 1px 1px 0 rgb(8, 79, 156);
 }
 
 .loader {

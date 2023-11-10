@@ -39,6 +39,7 @@ namespace Merge
 
         private VisualElement background;
         private VisualElement mainTitle;
+        private Label subtitle;
         private Label versionLabel;
         private VisualElement skyUp;
         private VisualElement skyDown;
@@ -80,6 +81,7 @@ namespace Merge
 
             background = root.Q<VisualElement>("Background");
             mainTitle = root.Q<VisualElement>("MainTitle");
+            subtitle = root.Q<Label>("SubtitleLabel");
             versionLabel = root.Q<Label>("Version");
             skyUp = root.Q<VisualElement>("SkyUp");
             skyDown = root.Q<VisualElement>("SkyDown");
@@ -125,9 +127,9 @@ namespace Merge
 
             if (Application.isEditor || Debug.isDebugBuild)
             {
-                Button debugButton =root.Q<Button>("DebugButton");
+                Button debugButton = root.Q<Button>("DebugButton");
 
-                debugButton.style.display=DisplayStyle.Flex;
+                debugButton.style.display = DisplayStyle.Flex;
 
                 debugButton.clicked += () => DebugManager.Instance.OpenMenu();
             }
@@ -169,6 +171,8 @@ namespace Merge
                 // Add to the title container
                 mainTitle.Add(titleChunk);
             }
+
+            subtitle.text = GameData.GAME_SUBTITLE;
         }
 
         //// Animations ////

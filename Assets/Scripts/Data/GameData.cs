@@ -30,8 +30,9 @@ namespace Merge
         public static float GAME_PIXEL_HEIGHT = 0f;
 
         public const string WEB_ADDRESS = "https://solonodegames.com"; // TODO - Replace WEBSITE with proper website name
-        public const string STUDIO_NAME = "solonodegames"; // TODO - Replace STUDIO_NAME with the proper studio name
-        public const string GAME_TITLE = "Pixel Merge"; // TODO - Replace GAME_TITLE with the proper game title
+        public const string STUDIO_NAME = "solonodegames";
+        public const string GAME_TITLE = "Pixel Mansion";
+        public const string GAME_SUBTITLE = "Merge Mystery";
 
         [HideInInspector]
         public string playerName;
