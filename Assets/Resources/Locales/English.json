@@ -17,8 +17,6 @@
     "task_button_finish": "Finish",
     "task_empty": "No tasks found!",
     "________ LIVING ROOM TASKS________": "________________",
-    "task_LivingRoom_TutorialGloves1": "Clear up",
-    "task_LivingRoom_TutorialGloves2": "Continue clearing",
     "task_LivingRoom_ChangeFloor": "Repair the floor",
     "task_LivingRoom_ChangeWallLeft": "Repair The Walls (1)",
     "task_LivingRoom_ChangeWallRight": "Repair The Walls (2)",
@@ -32,12 +30,24 @@
     "convo_skip_button": "Skip",
     "convo_next_button": "Next",
     "________ TUTORIAL ________": "________________",
-    "convo_TutorialGreeting_0": "Hi there! I am Tony",
-    "convo_TutorialGreat_0": "Great, but there is more to clean up!",
-    "convo_TutorialContinue_0": "Okey, now we can continue exploring!",
+    "convo_TutorialFirst_0": "........",
+    "convo_TutorialFirst_1": "Ugh, Where am I???",
+    "convo_TutorialFirst_2": "This place is... strange. What happened?",
+    "convo_TutorialFirst_3": "What? I can't remember anything!",
+    "convo_TutorialFirst_4": "Ooh. Hi there! Good thing I still remember you, my friend!",
+    "convo_TutorialFirst_5": "But wait! I can't remember your name. Do you mind reminding me?",
+    "convo_TutorialPart1_0": "{0}? Sounds familiar. Something is coming back to me.",
+    "convo_TutorialPart1_1": "Uuuuh! No, got nothing. But, don't worry! I will do my best to remember.",
+    "convo_TutorialPart1_2": "For now, let's see where we are.",
+    "convo_TutorialPart1_3": "A mansion? And a locked gate!",
+    "convo_TutorialPart1_4": "Well, let's see if there is someone inside who can help us.",
+    "convo_TutorialPart1_5": "But, before we can go inside, we bust clear up the entrance. Let's look around for some gloves.",
+    "convo_TutorialPart2_0": "Great, but there is still some left.",
+    "convo_TutorialPart3_0": "Good, now we need a hammer to pry these planks off",
+    "convo_TutorialPart4_0": "Fantastic, now we can explore the mansion!",
     "________ LIVING ROOM ________": "________________",
     "convo_Response_0": "Hi there!",
-    "convo_Response_1": "It's a me, Tony!",
+    "convo_Response_1": "It's a me, Julia!",
     "convo_Response_2": "And I am James",
     "convo_Response_3": "Where did you come from!!!",
     "convo_Response_4": "Well...",
@@ -189,6 +199,9 @@
     "settings_menu_follow_label": "Follow Us",
     "________ TASK_MENU ________": "________________",
     "task_menu_title": "Tasks",
+    "________ INPUT_MENU ________": "________________",
+    "input_menu_title_player_name": "Your name",
+    "input_menu_label_player_name": "Please type in your name:",
     "________ LOCALE_MENU ________": "________________",
     "locale_menu_title": "Languages",
     "________ TERMS_MENU ________": "________________",
@@ -261,12 +274,12 @@
         "other": "I have had better photos taken of me."
     },
     "speech_Painting_1": {
-        "zero": "The pixels are so small, I can't see what it is. (-) Well at least it looks nice.",
+        "zero": "The pixels are so small, I can't see what it is. Well at least it looks nice.",
         "one": "Quantity over quality, huh?"
     },
     "speech_Painting_2": {
-        "zero": "Aah, yes. Abstract art. (-) Nope, don't get it",
-        "one": "They say it's not about the beauty, but about the feeling when it comes to abstract art. (-) Well, I feel beautiful. What does that mean?"
+        "zero": "Aah, yes. Abstract art. Nope, don't get it",
+        "one": "They say it's not about the beauty, but about the feeling when it comes to abstract art."
     },
     "________ BOOKCASE ________": "________________",
     "speech_Bookcase_-1": {
@@ -307,7 +320,7 @@
     "________ FRIDGE ________": "________________",
     "speech_Fridge_-1": {
         "zero": "It simply doesn't work.",
-        "one": "This things melts everything i put in it. Is it just a big oven? (-) I'm confused!"
+        "one": "This things melts everything i put in it. Is it just a big oven? I'm confused!"
     },
     "speech_Fridge_0": {
         "zero": "Much better. It even has a working freezer.",
@@ -336,7 +349,7 @@
     },
     "speech_Bed_2": {
         "zero": "Incredible!",
-        "one": "Huh, look at that! (-) It's a bed!"
+        "one": "Huh, look at that! It's a bed!"
     },
     "________ BEDSIDE_TABLE ________": "________________",
     "speech_BedsideTable_-1": {
@@ -348,8 +361,8 @@
         "one": "Jup, still here."
     },
     "speech_BedsideTable_1": {
-        "zero": "Am i forgetting something? (-) Nah.",
-        "one": "Does it pay taxes? (-) I hope so!"
+        "zero": "Am i forgetting something? Nah.",
+        "one": "Does it pay taxes? I hope so!"
     },
     "speech_BedsideTable_2": {
         "zero": "Ooooh, what a luxury!",
@@ -360,17 +373,17 @@
     "speech_greeting_0": "Welcome back, {0}. How are you doing?",
     "speech_greeting_1": "Hello",
     "speech_greeting_2": "Welcome back, {0}!",
-    "speech_greeting_3": "Hi there! (-) Who? It's me Tony!!! (-) Whhaaaat? You forgat meee?!?",
+    "speech_greeting_3": "Hi there! Who? It's me Julia!!! Whhaaaat? You forgat meee?!?",
     "________ RANDOM ________": "________________",
-    "speech_Tony_random_0": "What a cramped room. Not that I'm complaining, mind you!",
-    "speech_Tony_random_1": "I really need a cup of coffee.",
-    "speech_Tony_random_2": "NO! Again, I'm not Tony Stark! It's just Tony!!",
-    "speech_Tony_random_3": "They say that 42 is the meaning of life. I say, it just a number!",
-    "speech_Tony_random_4": "I was born on  May 10, 2023. They call me Tony. You don't need my last name.",
-    "speech_Tony_random_5": "Sometimes I feel lonely.",
-    "speech_Tony_random_6": "PLEASE, don't hit me, I'll talk!",
-    "speech_Tony_random_7": "Chepue de munja",
-    "speech_Tony_random_8": "The boredom, it's killing me!"
+    "speech_Julia_random_0": "What a cramped room. Not that I'm complaining, mind you!",
+    "speech_Julia_random_1": "I really need a cup of coffee.",
+    "speech_Julia_random_2": "NO! Again, I'm not Julia Stark! It's just Julia!!",
+    "speech_Julia_random_3": "They say that 42 is the meaning of life. I say, it just a number!",
+    "speech_Julia_random_4": "I was born on  May 10, 2023. They call me Julia. You don't need my last name.",
+    "speech_Julia_random_5": "Sometimes I feel lonely.",
+    "speech_Julia_random_6": "PLEASE, don't hit me, I'll talk!",
+    "speech_Julia_random_7": "Chepue de munja",
+    "speech_Julia_random_8": "The boredom, it's killing me!"
 ,
     "________ AREAS ________": "________________",
     "area_LivingRoom": "The Living Room",

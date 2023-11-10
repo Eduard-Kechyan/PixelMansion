@@ -31,7 +31,6 @@ namespace Merge
         // UI
         private VisualElement root;
         private VisualElement menuLocaleWrapper;
-        private VisualElement background;
         private VisualElement currentMenu;
         private Label title;
 
@@ -94,22 +93,30 @@ namespace Merge
             if (!ignoreClose)
             {
                 // Add background click handler
-                background = currentMenu.Q<VisualElement>("Background");
+                VisualElement background = currentMenu.Q<VisualElement>("Background");
 
-                background.AddManipulator(new Clickable(evt =>
+                if (background != null)
                 {
-                    if (closeAllMenus)
+                    background.AddManipulator(new Clickable(evt =>
                     {
-                        CloseAllMenus();
-                    }
-                    else
-                    {
-                        CloseMenu(currentMenu.name);
-                    }
-                }));
+                        if (closeAllMenus)
+                        {
+                            CloseAllMenus();
+                        }
+                        else
+                        {
+                            CloseMenu(currentMenu.name);
+                        }
+                    }));
+                }
 
                 // Disable the close button
-                currentMenu.Q<VisualElement>("Close").pickingMode = PickingMode.Ignore;
+                VisualElement closeIcon = currentMenu.Q<VisualElement>("Close");
+
+                if (closeIcon != null)
+                {
+                    closeIcon.pickingMode = PickingMode.Ignore;
+                }
             }
 
             // Set the menu's title

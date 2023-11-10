@@ -22,6 +22,7 @@ namespace Merge
         private HubUI hubUI;
         private GameplayUI gameplayUI;
         private DataManager dataManager;
+        private InputMenu inputMenu;
 
         // UI
         private VisualElement root;
@@ -61,6 +62,7 @@ namespace Merge
             hubUI = GameRefs.Instance.hubUI;
             gameplayUI = GameRefs.Instance.gameplayUI;
             dataManager = DataManager.Instance;
+            inputMenu = GameRefs.Instance.inputMenu;
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
@@ -85,7 +87,7 @@ namespace Merge
 
         IEnumerator WaitForLoading()
         {
-            while (!dataManager.loaded || !valuesUI.loaded || (hubUI != null && !hubUI.loaded) || (gameplayUI != null && !gameplayUI.loaded))
+            while (!dataManager.loaded || !valuesUI.loaded || !convoUIHandler.loaded || (hubUI != null && !hubUI.loaded) || (gameplayUI != null && !gameplayUI.loaded))
             {
                 yield return null;
             }
@@ -130,6 +132,9 @@ namespace Merge
                             break;
                         case Types.TutorialStepType.Story:
                             HandleStory();
+                            break;
+                        case Types.TutorialStepType.Input:
+                            HandleInput(tutorialData.steps[i].id);
                             break;
                     }
 
@@ -177,7 +182,7 @@ namespace Merge
 
         void HandleConvo(string convoId)
         {
-            convoUIHandler.Converse(convoId, false, () =>
+            convoUIHandler.Converse(convoId, true, () =>
             {
                 Glob.SetTimeout(() =>
                 {
@@ -203,6 +208,27 @@ namespace Merge
             {
                 EndStory();
             }, 2f);
+        }
+
+        void HandleInput(string inputId)
+        {
+            if (inputId == "PlayerName")
+            {
+                inputMenu.Open(inputId, (string inputResult) =>
+                {
+                    GameData.Instance.playerName = inputResult;
+
+                    PlayerPrefs.SetString("playerName", inputResult);
+
+                    PlayerPrefs.Save();
+
+                    NextStep();
+                });
+            }
+            else
+            {
+                Debug.LogWarning("Wrong inputId given: " + inputId);
+            }
         }
 
         void EndStory()

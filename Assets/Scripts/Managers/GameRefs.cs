@@ -62,6 +62,9 @@ namespace Merge
         public SettingsMenu settingsMenu;
 
         [HideInInspector]
+        public InputMenu inputMenu;
+
+        [HideInInspector]
         public ShopMenu shopMenu;
 
         [HideInInspector]
@@ -145,6 +148,7 @@ namespace Merge
                 followMenu= menuUI.GetComponent<FollowMenu>();
                 noteMenu = menuUI.GetComponent<NoteMenu>();
                 settingsMenu = menuUI.GetComponent<SettingsMenu>();
+                inputMenu = menuUI.GetComponent<InputMenu>();
                 shopMenu = menuUI.GetComponent<ShopMenu>();
                 taskMenu = menuUI.GetComponent<TaskMenu>();
 

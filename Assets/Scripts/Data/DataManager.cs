@@ -20,6 +20,7 @@ namespace Merge
         public Colls colls;
         public Chests chests;
         public InitialItems initialItems;
+
         public WorldDataManager worldDataManager;
 
         public delegate void BoardSaveEvent();
@@ -264,6 +265,11 @@ namespace Merge
             apiCalls.unsentData = dataConverter.ConvertUnsentFromJson(newUnsentData);
 
             apiCalls.canCheckForUnsent = true;
+
+            if (PlayerPrefs.HasKey("playerName"))
+            {
+                gameData.playerName = PlayerPrefs.GetString("playerName");
+            }
 
             // Finish Task
             loaded = true;

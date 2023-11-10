@@ -17,20 +17,20 @@ MonoBehaviour:
   - name: LivingRoom
     id: LivingRoom
     steps:
-    - name: Task TutorialGloves1
-      id: TutorialGloves1
-      stepType: 0
-      nextIds:
-      - TutorialGloves2
-      requiredIds: []
-    - name: Task TutorialGloves2
-      id: TutorialGloves2
-      stepType: 0
-      nextIds:
-      - ChangeFloor
-      requiredIds: []
     - name: Task ChangeFloor
       id: ChangeFloor
+      stepType: 0
+      nextIds:
+      - ChangeWallLeft
+      requiredIds: []
+    - name: Task ChangeWallLeft
+      id: ChangeWallLeft
+      stepType: 0
+      nextIds:
+      - ChangeWallRight
+      requiredIds: []
+    - name: Task ChangeWallRight
+      id: ChangeWallRight
       stepType: 0
       nextIds:
       - Last

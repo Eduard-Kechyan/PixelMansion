@@ -33,6 +33,9 @@ namespace Merge
         public const string STUDIO_NAME = "solonodegames"; // TODO - Replace STUDIO_NAME with the proper studio name
         public const string GAME_TITLE = "Pixel Merge"; // TODO - Replace GAME_TITLE with the proper game title
 
+        [HideInInspector]
+        public string playerName;
+
         // Values
         [Header("Values")]
         [Tooltip("0% - 100%")]

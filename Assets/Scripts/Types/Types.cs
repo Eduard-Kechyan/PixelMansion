@@ -10,25 +10,26 @@ namespace Merge
         public enum Character
         {
             NONE,
-            Tony,
+            Julia,
             James,
         };
 
-        public enum Expression
+        public enum CharacterExpression
         {
-            Normal,
+            Natural,
             Happy,
             Surprised,
             Angry,
+            Sad,
+            Sleepy
         };
 
         [Serializable]
-        public class EyeColor
+        public class CharacterColor
         {
             [HideInInspector]
             public string name;
             public Character character;
-            public Color eyeColor = Color.black;
             public Color accentColor = Color.black;
         }
 
@@ -461,7 +462,7 @@ namespace Merge
             public string name;
             public string id;
             public bool hasTimeOut = true;
-            public Character characterA = Character.Tony;
+            public Character characterA = Character.Julia;
             public Character characterB = Character.NONE;
             public List<Convo> content;
         }
@@ -470,9 +471,10 @@ namespace Merge
         public class Convo
         {
             public Character character;
-            public Expression expression;
+            public CharacterExpression expression;
             public bool isRight;
             public bool isSide;
+            public string convoExtra;
         }
 
         //// TASKS ////
@@ -569,40 +571,41 @@ namespace Merge
         }
 
         //// TUTORIAL ////
-         public enum TutorialStepType
-         {
-             Task,
-             Convo,
-             Story,
-         };
+        public enum TutorialStepType
+        {
+            Task,
+            Convo,
+            Input,
+            Story,
+        };
 
-         public enum TutorialStepTask
-         {
-             Press,
-             Merge,
-             Gen,
-             Menu
-         };
+        public enum TutorialStepTask
+        {
+            Press,
+            Merge,
+            Gen,
+            Menu
+        };
 
-         public enum TutorialStepScene
-         {
-             Hub,
-             Gameplay
-         };
+        public enum TutorialStepScene
+        {
+            Hub,
+            Gameplay
+        };
 
-         [Serializable]
-         public class TutorialStep
-         {
-             [HideInInspector]
-             public string name;
-             public string id;
-             public TutorialStepScene scene;
-             public TutorialStepType type;
-             public TutorialStepTask taskType;
-             public string taskRef;
-             public bool addTask;
-             public int taskOrder;
-         }
+        [Serializable]
+        public class TutorialStep
+        {
+            [HideInInspector]
+            public string name;
+            public string id;
+            public TutorialStepScene scene;
+            public TutorialStepType type;
+            public TutorialStepTask taskType;
+            public string taskRef;
+            public bool addTask;
+            public int taskOrder;
+        }
 
         //// ERROR ////
         public enum ErrorType

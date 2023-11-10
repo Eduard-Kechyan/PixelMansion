@@ -32,7 +32,6 @@ namespace Merge
         private TaskMenu taskMenu;
         private SoundManager soundManager;
         private UIButtons uiButtons;
-        private TutorialManager tutorialManager;
 
         // UI
         private VisualElement root;
@@ -146,19 +145,7 @@ namespace Merge
                 uiButtons.gameplayBonusButtonPos = CalcButtonPosition(bonusButton);
             }
         }
-
-        void CheckButtons()
-        {
-            if (tutorialManager.skipTutorial)
-            {
-                // TODO - Enable necessary buttons
-            }
-            else
-            {
-                // TODO - Disable unnecessary buttons
-            }
-        }
-
+        
         public void DisableButtons()
         {
             homeButton.SetEnabled(false);

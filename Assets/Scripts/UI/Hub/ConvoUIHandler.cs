@@ -11,12 +11,15 @@ namespace Merge
         // Variables
         public ProgressManager progressManager;
         public ConvoData convoData;
-        public Types.EyeColor[] characterColors;
+        public Types.CharacterColor[] characterColors;
         [ReadOnly]
         public bool isConvoOpen = false;
 
         [Header("Debug")]
         public bool converse;
+
+        [HideInInspector]
+        public bool loaded = false;
 
         private Coroutine convoContainerTimeOut;
 
@@ -25,12 +28,13 @@ namespace Merge
         private Types.ConvoGroup currentConvoGroup;
         private int currentConvo;
 
+        private bool textTyped = false;
+        private string textToFadeIn = "";
+
         private bool canSkip = true;
         private Action callback;
 
         private Sprite[] avatarsSprites;
-        private Sprite[] eyesSprites;
-        private Sprite[] mouthsSprites;
 
         private Scale fullScale = new(new Vector2(1f, 1f));
         private Scale smallScale = new(new Vector2(0.8f, 0.8f));
@@ -52,6 +56,7 @@ namespace Merge
         private Label skipLabel;
 
         private VisualElement convoBox;
+        private VisualElement convoBoxOverlay;
         private VisualElement nextButton;
         private Label nextLabel;
         private VisualElement namePlate;
@@ -61,13 +66,7 @@ namespace Merge
         private Label convoLabel;
 
         private VisualElement avatarLeft;
-        private VisualElement avatarLeftEyes;
-        private VisualElement avatarLeftEyeColor;
-        private VisualElement avatarLeftMouth;
         private VisualElement avatarRight;
-        private VisualElement avatarRightEyes;
-        private VisualElement avatarRightEyeColor;
-        private VisualElement avatarRightMouth;
 
         void Start()
         {
@@ -88,6 +87,7 @@ namespace Merge
             skipLabel = skipButton.Q<Label>("Label");
 
             convoBox = convoContainer.Q<VisualElement>("ConvoBox");
+            convoBoxOverlay = convoBox.Q<VisualElement>("ConvoBoxOverlay");
             nextButton = convoBox.Q<VisualElement>("NextButtonContainer");
             nextLabel = nextButton.Q<Label>("Label");
             namePlate = convoBox.Q<VisualElement>("NamePlate");
@@ -97,13 +97,7 @@ namespace Merge
             convoLabel = convoBox.Q<Label>("ConvoLabel");
 
             avatarLeft = convoBox.Q<VisualElement>("AvatarLeft");
-            avatarLeftEyes = avatarLeft.Q<VisualElement>("Eyes");
-            avatarLeftEyeColor = avatarLeft.Q<VisualElement>("EyeColor");
-            avatarLeftMouth = avatarLeft.Q<VisualElement>("Mouth");
             avatarRight = convoBox.Q<VisualElement>("AvatarRight");
-            avatarRightEyes = avatarRight.Q<VisualElement>("Eyes");
-            avatarRightEyeColor = avatarRight.Q<VisualElement>("EyeColor");
-            avatarRightMouth = avatarRight.Q<VisualElement>("Mouth");
 
             // UI Taps
             skipButton.AddManipulator(new Clickable(evt =>
@@ -116,6 +110,11 @@ namespace Merge
                 HandleNext();
             }));
 
+            convoBoxOverlay.AddManipulator(new Clickable(evt =>
+            {
+                SkipText();
+            }));
+
             Init();
         }
 
@@ -126,9 +125,9 @@ namespace Merge
 
             nextButton.style.opacity = 0;
 
-            avatarsSprites = Resources.LoadAll<Sprite>("Sprites/Avatars/Main");
-            eyesSprites = Resources.LoadAll<Sprite>("Sprites/Avatars/Eyes");
-            mouthsSprites = Resources.LoadAll<Sprite>("Sprites/Avatars/Mouths");
+            avatarsSprites = Resources.LoadAll<Sprite>("Sprites/Avatars");
+
+            loaded = true;
         }
 
         void OnValidate()
@@ -162,8 +161,7 @@ namespace Merge
 
                     currentConvo = 0;
 
-                    SetAvatar();
-                    SetAvatarFace(currentConvoGroup.content[0]);
+                    SetAvatar(currentConvoGroup.content[0]);
 
                     isConvoOpen = true;
 
@@ -274,6 +272,7 @@ namespace Merge
         IEnumerator FadeInText(string text)
         {
             showText = true;
+            textTyped = false;
 
             while (showText)
             {
@@ -287,10 +286,30 @@ namespace Merge
                         nextButton.style.opacity = 1;
 
                         showText = false;
+                        textTyped = true;
+                        textToFadeIn = "";
                     }
 
                     yield return new WaitForSeconds(0.03f); // Less than a millisecond
                 }
+            }
+        }
+
+        void SkipText()
+        {
+            if (!textTyped && textToFadeIn != "")
+            {
+                showText = false;
+
+                StopCoroutine(FadeInText(""));
+
+                convoLabel.text = textToFadeIn;
+
+                nextButton.style.display = DisplayStyle.Flex;
+                nextButton.style.opacity = 1;
+
+                textTyped = true;
+                textToFadeIn = "";
             }
         }
 
@@ -337,7 +356,23 @@ namespace Merge
 
         void SetNameAndText(int order, bool hasTimeout = false)
         {
-            string text = LOCALE.Get("convo_" + currentConvoGroup.id + "_" + order);
+            string text;
+
+            if (currentConvoGroup.content[order].convoExtra == "")
+            {
+                text = LOCALE.Get("convo_" + currentConvoGroup.id + "_" + order);
+            }
+            else
+            {
+                string textExtra = "";
+
+                if (currentConvoGroup.content[order].convoExtra == "PlayerName")
+                {
+                    textExtra = GameData.Instance.playerName;
+                }
+
+                text = LOCALE.Get("convo_" + currentConvoGroup.id + "_" + order, textExtra);
+            }
 
             nameLabel.text = currentConvoGroup.content[order].character.ToString();
 
@@ -362,7 +397,7 @@ namespace Merge
                 avatarRight.style.scale = new StyleScale(smallScaleFlipped);
             }
 
-            SetAvatarFace(currentConvoGroup.content[order]);
+            SetAvatar(currentConvoGroup.content[order]);
 
             showText = false;
             StopCoroutine(FadeInText(""));
@@ -371,106 +406,72 @@ namespace Merge
             {
                 Glob.SetTimeout(() =>
                 {
+                    textToFadeIn=text;
+
                     StartCoroutine(FadeInText(text));
                 }, 0.6f);
             }
             else
             {
+                textToFadeIn = text;
+
                 StartCoroutine(FadeInText(text));
             }
         }
 
-        void SetAvatar()
+        void SetAvatar(Types.Convo convo = null)
         {
-            avatarLeft.style.backgroundImage = new StyleBackground(FindSprites("Avatar", Types.Expression.Normal, false, currentConvoGroup.characterA.ToString()));
-            avatarLeftEyes.style.backgroundImage = new StyleBackground(FindSprites("Eyes"));
-            avatarLeftEyeColor.style.unityBackgroundImageTintColor = GetColor(currentConvoGroup.characterA, true);
-            avatarLeftMouth.style.backgroundImage = new StyleBackground(FindSprites("Mouth"));
-
-            if (currentConvoGroup.characterB != Types.Character.NONE)
+            if (convo == null)
             {
-                avatarRight.style.backgroundImage = new StyleBackground(FindSprites("Avatar", Types.Expression.Normal, false, currentConvoGroup.characterB.ToString()));
-                avatarRightEyes.style.backgroundImage = new StyleBackground(FindSprites("Eyes"));
-                avatarRightEyeColor.style.unityBackgroundImageTintColor = GetColor(currentConvoGroup.characterB, true);
-                avatarRightMouth.style.backgroundImage = new StyleBackground(FindSprites("Mouth"));
-            }
-        }
+                avatarLeft.style.backgroundImage = new StyleBackground(FindSprites(currentConvoGroup.characterA.ToString(), Types.CharacterExpression.Natural, false));
 
-        void SetAvatarFace(Types.Convo convo)
-        {
-            if (convo.isRight)
-            {
-                avatarRightEyes.style.backgroundImage = new StyleBackground(FindSprites("Eyes", convo.expression, convo.isSide));
-                avatarRightMouth.style.backgroundImage = new StyleBackground(FindSprites("Mouth", convo.expression));
+                if (currentConvoGroup.characterB != Types.Character.NONE)
+                {
+                    avatarRight.style.backgroundImage = new StyleBackground(FindSprites(currentConvoGroup.characterB.ToString(), Types.CharacterExpression.Natural, false));
+                }
             }
             else
             {
-                avatarLeftEyes.style.backgroundImage = new StyleBackground(FindSprites("Eyes", convo.expression, convo.isSide));
-                avatarLeftMouth.style.backgroundImage = new StyleBackground(FindSprites("Mouth", convo.expression));
+                avatarLeft.style.backgroundImage = new StyleBackground(FindSprites(currentConvoGroup.characterA.ToString(), convo.expression, convo.isSide));
+
+                if (currentConvoGroup.characterB != Types.Character.NONE)
+                {
+                    avatarRight.style.backgroundImage = new StyleBackground(FindSprites(currentConvoGroup.characterB.ToString(), convo.expression, convo.isSide));
+                }
             }
         }
 
-        Color GetColor(Types.Character character, bool eyeColor = false)
+        Color GetColor(Types.Character character)
         {
             for (int i = 0; i < characterColors.Length; i++)
             {
                 if (characterColors[i].character == character)
                 {
-                    if (eyeColor)
-                    {
-                        return characterColors[i].eyeColor;
-                    }
-                    else
-                    {
-                        return characterColors[i].accentColor;
-                    }
+                    return characterColors[i].accentColor;
                 }
             }
 
             return Color.black;
         }
 
-        Sprite FindSprites(string type, Types.Expression expression = Types.Expression.Normal, bool isSide = false, string characterName = "")
+        Sprite FindSprites(string characterName, Types.CharacterExpression expression = Types.CharacterExpression.Natural, bool isSide = false)
         {
-            switch (type)
+            foreach (Sprite sprite in avatarsSprites)
             {
-                case "Avatar":
-                    foreach (Sprite sprite in avatarsSprites)
+                if (isSide)
+                {
+                    if (sprite.name == "Avatar" + characterName + "Side" + ((int)expression + 1))
                     {
-                        if (sprite.name == "Avatar" + characterName)
-                        {
-                            return sprite;
-                        }
+                        return sprite;
                     }
-                    break;
-                case "Eyes":
-                    foreach (Sprite sprite in eyesSprites)
+                }
+                else
+                {
+                    if (sprite.name == "Avatar" + characterName + ((int)expression + 1))
                     {
-                        if (isSide)
-                        {
-                            if (sprite.name == "EyesSide" + expression)
-                            {
-                                return sprite;
-                            }
-                        }
-                        else
-                        {
-                            if (sprite.name == "Eyes" + expression)
-                            {
-                                return sprite;
-                            }
-                        }
+                        return sprite;
                     }
-                    break;
-                case "Mouth":
-                    foreach (Sprite sprite in mouthsSprites)
-                    {
-                        if (sprite.name == "Mouth" + expression)
-                        {
-                            return sprite;
-                        }
-                    }
-                    break;
+                }
             }
 
             return null;

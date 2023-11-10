@@ -13,18 +13,80 @@ MonoBehaviour:
   m_Name: ConvoData
   m_EditorClassIdentifier: 
   convoGroups:
-  - name: TutorialGreeting
-    id: TutorialGreeting
+  - name: TutorialFirst
+    id: TutorialFirst
     hasTimeOut: 0
     characterA: 1
     characterB: 0
     content:
     - character: 1
+      expression: 5
+      isRight: 0
+      isSide: 0
+      convoExtra: 
+    - character: 1
+      expression: 2
+      isRight: 0
+      isSide: 0
+      convoExtra: 
+    - character: 1
+      expression: 2
+      isRight: 0
+      isSide: 0
+      convoExtra: 
+    - character: 1
+      expression: 4
+      isRight: 0
+      isSide: 0
+      convoExtra: 
+    - character: 1
       expression: 1
       isRight: 0
       isSide: 0
-  - name: TutorialGreat
-    id: TutorialGreat
+      convoExtra: 
+    - character: 1
+      expression: 0
+      isRight: 0
+      isSide: 0
+      convoExtra: 
+  - name: TutorialPart1
+    id: TutorialPart1
+    hasTimeOut: 0
+    characterA: 1
+    characterB: 0
+    content:
+    - character: 1
+      expression: 5
+      isRight: 0
+      isSide: 0
+      convoExtra: PlayerName
+    - character: 1
+      expression: 1
+      isRight: 0
+      isSide: 0
+      convoExtra: 
+    - character: 1
+      expression: 0
+      isRight: 0
+      isSide: 0
+      convoExtra: 
+    - character: 1
+      expression: 0
+      isRight: 0
+      isSide: 0
+      convoExtra: 
+    - character: 1
+      expression: 1
+      isRight: 0
+      isSide: 0
+      convoExtra: 
+    - character: 1
+      expression: 0
+      isRight: 0
+      isSide: 0
+      convoExtra: 
+  - name: TutorialPart2
+    id: TutorialPart2
     hasTimeOut: 0
     characterA: 1
     characterB: 0
@@ -33,33 +95,62 @@ MonoBehaviour:
       expression: 0
       isRight: 0
       isSide: 0
+      convoExtra: 
+  - name: TutorialPart3
+    id: TutorialPart3
+    hasTimeOut: 0
+    characterA: 1
+    characterB: 0
+    content:
+    - character: 1
+      expression: 0
+      isRight: 0
+      isSide: 0
+      convoExtra: 
+  - name: TutorialPart4
+    id: TutorialPart4
+    hasTimeOut: 0
+    characterA: 1
+    characterB: 0
+    content:
+    - character: 1
+      expression: 1
+      isRight: 0
+      isSide: 0
+      convoExtra: 
   - name: Response
     id: Response
     hasTimeOut: 1
     characterA: 1
-    characterB: 2
+    characterB: 0
     content:
     - character: 1
       expression: 0
       isRight: 0
       isSide: 0
+      convoExtra: 
     - character: 1
       expression: 1
       isRight: 0
       isSide: 0
-    - character: 2
+      convoExtra: 
+    - character: 1
       expression: 1
       isRight: 1
       isSide: 0
+      convoExtra: 
     - character: 1
       expression: 2
       isRight: 0
       isSide: 1
-    - character: 2
+      convoExtra: 
+    - character: 1
       expression: 3
       isRight: 1
       isSide: 1
+      convoExtra: 
     - character: 1
       expression: 0
       isRight: 0
       isSide: 0
+      convoExtra: 

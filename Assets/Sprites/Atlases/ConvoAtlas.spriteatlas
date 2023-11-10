@@ -52,6 +52,7 @@ SpriteAtlas:
     packedSpriteRenderDataKeys:
     - e5ede6a28f16ac742a8e8d2e5184713a: 21300000
     - 1b8e71d3354f7ee4ea5fdb095e823ed3: 21300000
+    - b0cffa4424a705440a1a48859b6d31dd: 21300000
     - 10308679bc950b946bdaafc86115fb54: 21300000
     - 9c0d759946bc8cc4a8ac459a3bf0c11b: 21300000
     - ac7f26a9c0fa76c4582459ac7da386ce: 21300000
@@ -62,6 +63,7 @@ SpriteAtlas:
   m_PackedSprites:
   - {fileID: 21300000, guid: e5ede6a28f16ac742a8e8d2e5184713a, type: 3}
   - {fileID: 21300000, guid: 1b8e71d3354f7ee4ea5fdb095e823ed3, type: 3}
+  - {fileID: 21300000, guid: b0cffa4424a705440a1a48859b6d31dd, type: 3}
   - {fileID: 21300000, guid: 10308679bc950b946bdaafc86115fb54, type: 3}
   - {fileID: 21300000, guid: 9c0d759946bc8cc4a8ac459a3bf0c11b, type: 3}
   - {fileID: 21300000, guid: ac7f26a9c0fa76c4582459ac7da386ce, type: 3}
@@ -71,6 +73,7 @@ SpriteAtlas:
   m_PackedSpriteNamesToIndex:
   - NamePlate
   - NamePlateRightEdge
+  - png-transparent-pixel-art-role-playing-game-non-player-character-fable-others
   - NextButton
   - ConvoBoxMidArea
   - NamePlateLeftEdge

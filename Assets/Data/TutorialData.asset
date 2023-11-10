@@ -13,16 +13,24 @@ MonoBehaviour:
   m_Name: TutorialData
   m_EditorClassIdentifier: 
   steps:
-  - name: Story First
+  - name: Convo First
     id: First
+    scene: 0
+    type: 1
+    taskType: 0
+    taskRef: 
+    addTask: 0
+    taskOrder: 0
+  - name: Input PlayerName
+    id: PlayerName
     scene: 0
     type: 2
     taskType: 0
     taskRef: 
     addTask: 0
     taskOrder: 0
-  - name: Convo Greeting
-    id: Greeting
+  - name: Convo Part1
+    id: Part1
     scene: 0
     type: 1
     taskType: 0
@@ -77,8 +85,8 @@ MonoBehaviour:
     taskRef: Task
     addTask: 0
     taskOrder: 0
-  - name: Convo Great
-    id: Great
+  - name: Convo Part2
+    id: Part2
     scene: 0
     type: 1
     taskType: 0
@@ -93,13 +101,21 @@ MonoBehaviour:
     taskRef: Play
     addTask: 0
     taskOrder: 0
-  - name: Task Gen GenGloves1
-    id: GenGloves1
+  - name: Task Gen GenGloves
+    id: GenGloves
     scene: 1
     type: 0
     taskType: 2
     taskRef: 
     addTask: 1
+    taskOrder: 0
+  - name: Task Merge MergeGloves3
+    id: MergeGloves3
+    scene: 1
+    type: 0
+    taskType: 1
+    taskRef: 
+    addTask: 0
     taskOrder: 0
   - name: Task Merge MergeGloves4
     id: MergeGloves4
@@ -117,14 +133,6 @@ MonoBehaviour:
     taskRef: 
     addTask: 0
     taskOrder: 0
-  - name: Task Merge MergeGloves6
-    id: MergeGloves6
-    scene: 1
-    type: 0
-    taskType: 1
-    taskRef: 
-    addTask: 0
-    taskOrder: 0
   - name: Task Press Task2
     id: Task2
     scene: 1
@@ -133,16 +141,80 @@ MonoBehaviour:
     taskRef: Task
     addTask: 0
     taskOrder: 0
-  - name: Task Menu TaskMenu1
-    id: TaskMenu1
+  - name: Task Menu TaskMenu2
+    id: TaskMenu2
     scene: 1
     type: 0
     taskType: 3
     taskRef: Task
     addTask: 0
     taskOrder: 0
-  - name: Convo Continue
-    id: Continue
+  - name: Convo Part3
+    id: Part3
+    scene: 0
+    type: 1
+    taskType: 0
+    taskRef: 
+    addTask: 0
+    taskOrder: 0
+  - name: Task Press Play3
+    id: Play3
+    scene: 0
+    type: 0
+    taskType: 0
+    taskRef: Play
+    addTask: 0
+    taskOrder: 0
+  - name: Task Gen GenHammer
+    id: GenHammer
+    scene: 1
+    type: 0
+    taskType: 2
+    taskRef: 
+    addTask: 0
+    taskOrder: 0
+  - name: Task Merge MergeHammer1
+    id: MergeHammer1
+    scene: 1
+    type: 0
+    taskType: 1
+    taskRef: 
+    addTask: 0
+    taskOrder: 0
+  - name: Task Merge MergeHammer2
+    id: MergeHammer2
+    scene: 1
+    type: 0
+    taskType: 1
+    taskRef: 
+    addTask: 0
+    taskOrder: 0
+  - name: Task Merge MergeHammer3
+    id: MergeHammer3
+    scene: 1
+    type: 0
+    taskType: 1
+    taskRef: 
+    addTask: 0
+    taskOrder: 0
+  - name: Task Press Task3
+    id: Task3
+    scene: 1
+    type: 0
+    taskType: 0
+    taskRef: Task
+    addTask: 0
+    taskOrder: 0
+  - name: Task Menu TaskMenu3
+    id: TaskMenu3
+    scene: 1
+    type: 0
+    taskType: 3
+    taskRef: Task
+    addTask: 0
+    taskOrder: 0
+  - name: Convo Part4
+    id: Part4
     scene: 0
     type: 1
     taskType: 0

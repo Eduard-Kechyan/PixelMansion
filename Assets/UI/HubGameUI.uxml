@@ -41,21 +41,14 @@
             <ui:VisualElement name="Icon" class="icon convo_button_icon" />
         </ui:VisualElement>
         <ui:VisualElement name="ConvoBox" class="convo_box">
-            <ui:VisualElement name="AvatarLeft" class="convo_avatar" style="background-image: resource(&apos;Sprites/Avatars/Main/AvatarTony&apos;);">
-                <ui:VisualElement name="EyeColor" class="eye_color" />
-                <ui:VisualElement name="Eyes" class="eyes" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); background-image: resource(&apos;Sprites/Avatars/Eyes/EyesNormal&apos;);" />
-                <ui:VisualElement name="Mouth" class="mouth" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); background-image: resource(&apos;Sprites/Avatars/Mouths/MouthNormal&apos;);" />
-            </ui:VisualElement>
-            <ui:VisualElement name="AvatarRight" class="convo_avatar" style="background-image: resource(&apos;Sprites/Avatars/Main/AvatarJames&apos;); right: -96px; left: auto; scale: -1 1;">
-                <ui:VisualElement name="EyeColor" class="eye_color" />
-                <ui:VisualElement name="Eyes" class="eyes" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); background-image: resource(&apos;Sprites/Avatars/Eyes/EyesNormal&apos;);" />
-                <ui:VisualElement name="Mouth" class="mouth" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); background-image: resource(&apos;Sprites/Avatars/Mouths/MouthNormal&apos;);" />
-            </ui:VisualElement>
+            <ui:VisualElement name="AvatarLeft" class="convo_avatar" />
+            <ui:VisualElement name="AvatarRight" class="convo_avatar" style="right: -96px; left: auto; scale: -1 1;" />
             <ui:VisualElement name="ConvoBoxUnderlay" class="convo_box_underlay" style="rotate: 180deg;" />
             <ui:VisualElement name="TopBorder" class="top_border" />
             <ui:VisualElement name="MidArea" class="mid_area" />
             <ui:VisualElement name="BottomBorder" class="bottom_border" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);" />
             <ui:Label tabindex="-1" text="Here goes convo text Here goes convo text Here goes convo text Here goes convo text Here goes convo text Here goes convo text Here goes convo text Here goes convo text Here goes convo text Here goes convo text" display-tooltip-when-elided="true" name="ConvoLabel" class="convo_label" />
+            <ui:VisualElement name="ConvoBoxOverlay" class="convo_box_overlay" />
             <ui:VisualElement name="NextButtonContainer" class="convo_button_container" style="right: 8px; bottom: 4px;">
                 <ui:Label tabindex="-1" text="Next" display-tooltip-when-elided="true" name="Label" class="convo_button_label" style="height: 10px; color: rgb(169, 132, 95);" />
                 <ui:VisualElement name="Icon" class="icon convo_button_icon" style="background-image: url(&apos;project://database/Assets/Sprites/Conversation/NextButton.png?fileID=2800000&amp;guid=10308679bc950b946bdaafc86115fb54&amp;type=3#NextButton&apos;); height: 10px; width: 8px;" />
