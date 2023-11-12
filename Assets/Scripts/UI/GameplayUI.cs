@@ -140,10 +140,13 @@ namespace Merge
             {
                 uiButtons.gameplayButtonsSet = true;
 
+                uiButtons.gameplayHomeButtonPos = CalcButtonPosition(homeButton);
                 uiButtons.gameplayShopButtonPos = CalcButtonPosition(shopButton);
                 uiButtons.gameplayTaskButtonPos = CalcButtonPosition(taskButton);
                 uiButtons.gameplayBonusButtonPos = CalcButtonPosition(bonusButton);
             }
+
+            HideButtons();
         }
         
         public void DisableButtons()
@@ -177,6 +180,60 @@ namespace Merge
                     break;
                 case "task":
                     taskButton.SetEnabled(enabled);
+                    break;
+            }
+        }
+
+        void HideButtons()
+        {
+            if (!PlayerPrefs.HasKey("gameplayHomeButtonShowing"))
+            {
+                homeButton.style.display = DisplayStyle.None;
+            }
+
+            if (!PlayerPrefs.HasKey("gameplayInventoryButtonShowing"))
+            {
+                inventoryButton.style.display = DisplayStyle.None;
+            }
+
+            if (!PlayerPrefs.HasKey("gameplayShopButtonShowing"))
+            {
+                shopButton.style.display = DisplayStyle.None;
+            }
+
+            if (!PlayerPrefs.HasKey("gameplayTaskButtonShowing"))
+            {
+                taskButton.style.display = DisplayStyle.None;
+            }
+        }
+
+        public void ShowButtons()
+        {
+            homeButton.style.display = DisplayStyle.Flex;
+            inventoryButton.style.display = DisplayStyle.Flex;
+            shopButton.style.display = DisplayStyle.Flex;
+            taskButton.style.display = DisplayStyle.Flex;
+        }
+
+        public void ShowButton(string name)
+        {
+            switch (name)
+            {
+                case "home":
+                    homeButton.style.display = DisplayStyle.Flex;
+                    PlayerPrefs.SetInt("gameplayHomeButtonShowing", 1);
+                    break;
+                case "settings":
+                    inventoryButton.style.display = DisplayStyle.Flex;
+                    PlayerPrefs.SetInt("gameplayInventoryButtonShowing", 1);
+                    break;
+                case "shop":
+                    shopButton.style.display = DisplayStyle.Flex;
+                    PlayerPrefs.SetInt("gameplayShopButtonShowing", 1);
+                    break;
+                case "task":
+                    taskButton.style.display = DisplayStyle.Flex;
+                    PlayerPrefs.SetInt("gameplayTaskButtonShowing", 1);
                     break;
             }
         }

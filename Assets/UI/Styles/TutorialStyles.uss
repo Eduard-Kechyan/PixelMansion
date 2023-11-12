@@ -56,15 +56,30 @@
 }
 
 .pointer {
-    background-image: url('project://database/Assets/Sprites/Other/Pointer1.png?fileID=2800000&guid=cbf41892304d91b4d89b2cff8147e68e&type=3#Pointer1');
-    width: 42px;
-    height: 36px;
+    width: 1px;
+    height: 1px;
     position: absolute;
-    transition-duration: 0.1s;
+    transition-duration: 0.1s, 0.1s;
     display: none;
     opacity: 0;
+    left: 0;
+    top: 0;
+    transition-property: opacity, scale;
 }
 
-.pointer_tap {
+.pointer_tap .pointer_image {
     background-image: url('project://database/Assets/Sprites/Other/Pointer2.png?fileID=2800000&guid=205243edaf1fe3b4b92fadab572454e4&type=3#Pointer2');
+}
+
+.pointer_image {
+    width: 42px;
+    height: 36px;
+    background-image: url('project://database/Assets/Sprites/Other/Pointer1.png?fileID=2800000&guid=cbf41892304d91b4d89b2cff8147e68e&type=3#Pointer1');
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.pointer_pos_transition {
+    transition-duration: 0.3s;
 }

@@ -9,6 +9,7 @@ namespace Merge
     {
         // Variables
         public SceneLoader sceneLoader;
+        public PointerHandler pointerHandler;
         public float extraTopPadding = 15;
         public float visibilityBottomOffset = 50f;
 
@@ -16,6 +17,8 @@ namespace Merge
         public bool loaded = false;
 
         private float singlePixelWidth;
+
+        private bool uiButtonHidden = false;
 
         // References
         private SafeAreaHandler safeAreaHandler;
@@ -74,11 +77,35 @@ namespace Merge
             settingsButton.clicked += () => settingsMenu.Open();
             shopButton.clicked += () => shopMenu.Open();
 
-            taskButton.clicked += () => taskMenu.Open();
+            taskButton.clicked += () =>
+            {
+                if (pointerHandler != null)
+                {
+                    pointerHandler.ButtonPress("Task", () =>
+                    {
+                        taskMenu.Open();
+                    });
+                }
+                else
+                {
+                    taskMenu.Open();
+                }
+            };
             playButton.clicked += () =>
             {
-                soundManager.PlaySound("Transition");
-                sceneLoader.Load(2);
+                if (pointerHandler != null)
+                {
+                    pointerHandler.ButtonPress("Play", () =>
+                    {
+                        soundManager.PlaySound("Transition");
+                        sceneLoader.Load(2);
+                    });
+                }
+                else
+                {
+                    soundManager.PlaySound("Transition");
+                    sceneLoader.Load(2);
+                }
             };
 
             if (Application.isEditor || Debug.isDebugBuild)
@@ -138,6 +165,12 @@ namespace Merge
             uiButtons.hubShopButtonPos = CalcButtonPosition(shopButton);
             uiButtons.hubTaskButtonPos = CalcButtonPosition(taskButton, true);
             uiButtons.hubPlayButtonPos = CalcButtonPosition(playButton, true);
+
+            if (!uiButtonHidden)
+            {
+                HideButtons();
+                uiButtonHidden = true;
+            }
         }
 
         public void DisableButtons()
@@ -174,6 +207,61 @@ namespace Merge
                     break;
             }
         }
+
+        void HideButtons()
+        {
+            if (!PlayerPrefs.HasKey("hubPlayButtonShowing"))
+            {
+                playButton.style.display = DisplayStyle.None;
+            }
+
+            if (!PlayerPrefs.HasKey("hubSettingsButtonShowing"))
+            {
+                settingsButton.style.display = DisplayStyle.None;
+            }
+
+            if (!PlayerPrefs.HasKey("hubShopButtonShowing"))
+            {
+                shopButton.style.display = DisplayStyle.None;
+            }
+
+            if (!PlayerPrefs.HasKey("hubTaskButtonShowing"))
+            {
+                taskButton.style.display = DisplayStyle.None;
+            }
+        }
+
+        public void ShowButtons()
+        {
+            playButton.style.display = DisplayStyle.Flex;
+            settingsButton.style.display = DisplayStyle.Flex;
+            shopButton.style.display = DisplayStyle.Flex;
+            taskButton.style.display = DisplayStyle.Flex;
+        }
+
+        public void ShowButton(string name)
+        {
+            switch (name)
+            {
+                case "play":
+                    playButton.style.display = DisplayStyle.Flex;
+                    PlayerPrefs.SetInt("hubPlayButtonShowing", 1);
+                    break;
+                case "settings":
+                    settingsButton.style.display = DisplayStyle.Flex;
+                    PlayerPrefs.SetInt("hubSettingsButtonShowing", 1);
+                    break;
+                case "shop":
+                    shopButton.style.display = DisplayStyle.Flex;
+                    PlayerPrefs.SetInt("hubShopButtonShowing", 1);
+                    break;
+                case "task":
+                    taskButton.style.display = DisplayStyle.Flex;
+                    PlayerPrefs.SetInt("hubTaskButtonShowing", 1);
+                    break;
+            }
+        }
+
         public void CloseUI()
         {
             List<TimeValue> fullDelay = new() { new TimeValue(0.6f) };

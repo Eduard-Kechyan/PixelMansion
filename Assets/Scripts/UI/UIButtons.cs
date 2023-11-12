@@ -39,6 +39,8 @@ namespace Merge
         [ReadOnly]
         public bool gameplayButtonsSet = false;
         [ReadOnly]
+        public Vector2 gameplayHomeButtonPos;
+        [ReadOnly]
         public Vector2 gameplayShopButtonPos;
         [ReadOnly]
         public Vector2 gameplayTaskButtonPos;

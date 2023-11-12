@@ -57,7 +57,7 @@
   </files>
   <settings>
     <setting name="androidAbis" value="armeabi-v7a" />
-    <setting name="bundleId" value="com.SoloNodeGames.MergeAndRescue" />
+    <setting name="bundleId" value="com.SoloNodeGames.PixelMansion" />
     <setting name="explodeAars" value="True" />
     <setting name="gradleBuildEnabled" value="True" />
     <setting name="gradlePropertiesTemplateEnabled" value="False" />

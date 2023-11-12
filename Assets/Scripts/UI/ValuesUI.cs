@@ -128,6 +128,8 @@ namespace Merge
             root.UnregisterCallback<GeometryChangedEvent>(SetLoaded);
 
             loaded = true;
+
+            DisableButtonsAlt();
         }
 
         void SetValues()
@@ -416,6 +418,21 @@ namespace Merge
             }
         }
 
+        public void DisableButtonsAlt()
+        {
+            levelButton.SetEnabled(false);
+            energyButton.SetEnabled(false);
+            goldButton.SetEnabled(false);
+            gemsButton.SetEnabled(false);
+
+            energyPlus.style.visibility = Visibility.Hidden;
+            energyPlus.style.opacity = 0f;
+            goldPlus.style.visibility = Visibility.Hidden;
+            goldPlus.style.opacity = 0f;
+            gemsPlus.style.visibility = Visibility.Hidden;
+            gemsPlus.style.opacity = 0f;
+        }
+
         public void EnableButtons()
         {
             levelButton.SetEnabled(levelEnabled);
@@ -442,6 +459,60 @@ namespace Merge
             }
 
             enabledSet = false;
+        }
+
+        public void HideButtons()
+        {
+            if (!PlayerPrefs.HasKey("valuesLevelButtonShowing"))
+            {
+                levelButton.style.display = DisplayStyle.None;
+            }
+
+            if (!PlayerPrefs.HasKey("valuesEnergyButtonShowing"))
+            {
+                energyButton.style.display = DisplayStyle.None;
+            }
+
+            if (!PlayerPrefs.HasKey("valuesGoldButtonShowing"))
+            {
+                goldButton.style.display = DisplayStyle.None;
+            }
+
+            if (!PlayerPrefs.HasKey("valuesGemsButtonShowing"))
+            {
+                gemsButton.style.display = DisplayStyle.None;
+            }
+        }
+
+        public void ShowButtons()
+        {
+            levelButton.style.display = DisplayStyle.Flex;
+            energyButton.style.display = DisplayStyle.Flex;
+            goldButton.style.display = DisplayStyle.Flex;
+            gemsButton.style.display = DisplayStyle.Flex;
+        }
+
+        public void ShowButton(string name)
+        {
+            switch (name)
+            {
+                case "level":
+                    levelButton.style.display = DisplayStyle.Flex;
+                    PlayerPrefs.SetInt("valuesLevelButtonShowing", 1);
+                    break;
+                case "energy":
+                    energyButton.style.display = DisplayStyle.Flex;
+                    PlayerPrefs.SetInt("valuesEnergyButtonShowing", 1);
+                    break;
+                case "gold":
+                    goldButton.style.display = DisplayStyle.Flex;
+                    PlayerPrefs.SetInt("valuesGoldButtonShowing", 1);
+                    break;
+                case "gems":
+                    gemsButton.style.display = DisplayStyle.Flex;
+                    PlayerPrefs.SetInt("valuesGemsButtonShowing", 1);
+                    break;
+            }
         }
 
         public void SetSortingOrder(int order)

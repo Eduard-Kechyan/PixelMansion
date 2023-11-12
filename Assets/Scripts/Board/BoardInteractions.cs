@@ -50,6 +50,7 @@ namespace Merge
         private GameData gameData;
         private ItemHandler itemHandler;
         private SoundManager soundManager;
+        private PointerHandler pointerHandler;
         private I18n LOCALE;
 
         // UI
@@ -74,7 +75,8 @@ namespace Merge
             dataManager = DataManager.Instance;
             gameData = GameData.Instance;
             itemHandler = dataManager.GetComponent<ItemHandler>();
-            LOCALE = I18n.Instance;
+            LOCALE = I18n.Instance; 
+            pointerHandler= GetComponent<PointerHandler>();
 
             // Cache root and dragOverlay
             root = GameRefs.Instance.gameplayUIDoc.rootVisualElement;
@@ -281,6 +283,8 @@ namespace Merge
                 currentItem.transform.position.x,
                 currentItem.transform.position.y
             );
+
+            pointerHandler.HidePointer();
         }
 
         void Drag()
@@ -318,6 +322,8 @@ namespace Merge
 
             // Hide the drag overlay in UI
             dragOverlay.style.visibility = Visibility.Hidden;
+
+            pointerHandler.ShowPointer();
 
             // Check what needs to happen when we drop the item
             CheckItemDropAction();

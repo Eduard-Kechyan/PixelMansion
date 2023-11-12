@@ -40,6 +40,9 @@ namespace Merge
         {
             Instance = this;
 
+            lastSceneName = "";
+            taskToComplete = "";
+
             colorBlue = FromHEX("71A0F6");
             colorCyan = FromHEX("55CBB3");
             colorGreen = FromHEX("3EC37B");

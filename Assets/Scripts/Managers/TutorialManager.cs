@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
+using Unity.Mathematics;
 
 namespace Merge
 {
@@ -14,44 +15,63 @@ namespace Merge
         public TutorialData tutorialData;
         public ProgressManager progressManager;
         public ConvoUIHandler convoUIHandler;
+        public ShineSprites[] shineSprites;
 
         private string tutorialStep = "First";
+        private bool pointsShone = false;
+
+        [Serializable]
+        public class ShineSprites
+        {
+            public Sprite[] sprites;
+            public float speed;
+        }
 
         // References
         private ValuesUI valuesUI;
         private HubUI hubUI;
+        private UIDocument hubGameUIDoc;
         private GameplayUI gameplayUI;
+        private UIButtons uiButtons;
         private DataManager dataManager;
         private InputMenu inputMenu;
+        private PointerHandler pointerHandler;
 
         // UI
         private VisualElement root;
 
         private VisualElement storyContainer;
 
-        private VisualElement pointer;
-
         private VisualElement skipButton;
         private Label skipLabel;
 
+        private VisualElement convoBackground;
+
         void Awake()
         {
-            if (PlayerPrefs.HasKey("tutorialFinished") || skipTutorial || (Glob.lastSceneName != "" && Glob.lastSceneName != SceneManager.GetActiveScene().name))
+            string sceneName = SceneManager.GetActiveScene().name;
+
+            if (PlayerPrefs.HasKey("tutorialFinished") || skipTutorial || (Glob.lastSceneName != "" && Glob.lastSceneName == sceneName))
             {
                 progressManager.SetInitialData(0, true);
 
-                Destroy(this);
-            }
+                HandleLast();
 
-            if (PlayerPrefs.HasKey("tutorialStep"))
-            {
-                tutorialStep = PlayerPrefs.GetString("tutorialStep");
+                Destroy(pointerHandler);
+                Destroy(this);
             }
             else
             {
-                PlayerPrefs.SetString("tutorialStep", "First");
+                if (PlayerPrefs.HasKey("tutorialStep"))
+                {
+                    tutorialStep = PlayerPrefs.GetString("tutorialStep");
+                }
+                else
+                {
+                    PlayerPrefs.SetString("tutorialStep", "First");
 
-                PlayerPrefs.Save();
+                    PlayerPrefs.Save();
+                }
             }
         }
 
@@ -60,16 +80,22 @@ namespace Merge
             // Cache
             valuesUI = GameRefs.Instance.valuesUI;
             hubUI = GameRefs.Instance.hubUI;
+            hubGameUIDoc = GameRefs.Instance.hubGameUIDoc;
             gameplayUI = GameRefs.Instance.gameplayUI;
             dataManager = DataManager.Instance;
             inputMenu = GameRefs.Instance.inputMenu;
+            uiButtons = GameData.Instance.GetComponent<UIButtons>();
+            pointerHandler = GetComponent<PointerHandler>();
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
 
             storyContainer = root.Q<VisualElement>("StoryContainer");
 
-            pointer = root.Q<VisualElement>("Pointer");
+            if (hubGameUIDoc != null)
+            {
+                convoBackground = hubGameUIDoc.GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("ConvoBackground");
+            }
 
             if (tutorialStep == "First")
             {
@@ -87,7 +113,7 @@ namespace Merge
 
         IEnumerator WaitForLoading()
         {
-            while (!dataManager.loaded || !valuesUI.loaded || !convoUIHandler.loaded || (hubUI != null && !hubUI.loaded) || (gameplayUI != null && !gameplayUI.loaded))
+            while (!dataManager.loaded || !valuesUI.loaded || (convoUIHandler != null && !convoUIHandler.loaded) || (hubUI != null && !hubUI.loaded) || (gameplayUI != null && !gameplayUI.loaded))
             {
                 yield return null;
             }
@@ -97,22 +123,102 @@ namespace Merge
 
         public void Init()
         {
-            valuesUI.DisableButtons();
-
-            if (hubUI != null)
-            {
-                hubUI.DisableButtons();
-            }
-            else
-            {
-                gameplayUI.DisableButtons();
-            }
+            progressManager.SetInitialData(0, false);
 
             HandleStep();
         }
 
+        public void CheckConvoBackground(bool alt = false)
+        {
+            if (convoBackground != null)
+            {
+                if ((tutorialStep == "First" || tutorialStep == "PlayerName" || tutorialStep == "Part1") && !alt)
+                {
+                    List<TimeValue> nullTransition = new() { new TimeValue(0.0f, TimeUnit.Second) };
+
+                    convoBackground.style.transitionDuration = new StyleList<TimeValue>(nullTransition);
+
+                    convoBackground.style.opacity = 1;
+                    convoBackground.style.display = DisplayStyle.Flex;
+
+                    if (!pointsShone)
+                    {
+                        ShinePoints();
+                    }
+                }
+                else
+                {
+                    List<TimeValue> fullTransition = new() { new TimeValue(0.3f, TimeUnit.Second) };
+
+                    convoBackground.style.transitionDuration = new StyleList<TimeValue>(fullTransition);
+
+                    convoBackground.style.opacity = 0;
+
+                    Glob.SetTimeout(() =>
+                    {
+                        convoBackground.style.display = DisplayStyle.None;
+                    }, 0.3f);
+                }
+            }
+        }
+
+        void ShinePoints()
+        {
+            foreach (var point in convoBackground.Children())
+            {
+                switch (point.name)
+                {
+                    case "ShineA":
+                        StartCoroutine(ShinePoint(point, 0));
+                        break;
+                    case "ShineB":
+                        StartCoroutine(ShinePoint(point, 1));
+                        break;
+                    case "ShineC":
+                        StartCoroutine(ShinePoint(point, 2));
+                        break;
+                    case "ShineD":
+                        StartCoroutine(ShinePoint(point, 3));
+                        break;
+                }
+            }
+
+            pointsShone = true;
+        }
+
+        IEnumerator ShinePoint(VisualElement point, int shineSpriteOrder)
+        {
+            int count = UnityEngine.Random.Range(0, shineSprites[shineSpriteOrder].sprites.Length - 1);
+            WaitForSeconds wait = new(shineSprites[shineSpriteOrder].speed);
+
+            while (convoBackground.resolvedStyle.display == DisplayStyle.Flex)
+            {
+                Sprite currentSprite = shineSprites[shineSpriteOrder].sprites[count];
+
+                point.style.backgroundImage = new StyleBackground(currentSprite);
+
+                point.style.width = currentSprite.rect.width;
+                point.style.height = currentSprite.rect.height;
+
+                if (count == shineSprites[shineSpriteOrder].sprites.Length - 1)
+                {
+                    count = 0;
+                }
+                else
+                {
+                    count++;
+                }
+
+                yield return wait;
+            }
+
+            yield return null;
+        }
+
         void HandleStep()
         {
+            CheckConvoBackground();
+
             for (int i = 0; i < tutorialData.steps.Length; i++)
             {
                 if (tutorialData.steps[i].id == tutorialStep)
@@ -120,15 +226,10 @@ namespace Merge
                     switch (tutorialData.steps[i].type)
                     {
                         case Types.TutorialStepType.Task:
-                            if (tutorialData.steps[i].addTask)
-                            {
-                                progressManager.SetInitialData(tutorialData.steps[i].taskOrder);
-                            }
-
-                            HandleTask();
+                            HandleTask(tutorialData.steps[i]);
                             break;
                         case Types.TutorialStepType.Convo:
-                            HandleConvo("Tutorial" + tutorialData.steps[i].id);
+                            HandleConvo(tutorialData.steps[i]);
                             break;
                         case Types.TutorialStepType.Story:
                             HandleStory();
@@ -143,7 +244,7 @@ namespace Merge
             }
         }
 
-        void NextStep()
+        void NextStep(bool handleNestStep = true)
         {
             for (int i = 0; i < tutorialData.steps.Length; i++)
             {
@@ -157,11 +258,17 @@ namespace Merge
 
                         PlayerPrefs.Save();
 
-                        HandleStep();
+                        if (handleNestStep)
+                        {
+                            HandleStep();
+                        }
                     }
                     else // Last
                     {
-                        HandleLast();
+                        if (handleNestStep)
+                        {
+                            HandleLast();
+                        }
                     }
 
                     break;
@@ -169,25 +276,77 @@ namespace Merge
             }
         }
 
-        void HandleTask()
+        void HandleTask(Types.TutorialStep step)
         {
-            // progressManager.SetInitialData();
+            switch (step.taskType)
+            {
+                case Types.TutorialStepTask.Press:
+                    TaskPress(step);
+                    break;
+                case Types.TutorialStepTask.Menu:
+                    pointerHandler.HandleMerge(step.taskRef, () =>
+                    {
+                        NextStep();
+                    });
+                    break;
+                case Types.TutorialStepTask.Merge:
+                    break;
+                case Types.TutorialStepTask.Gen:
+                    break;
+            }
 
-            // TODO - Handle task here
-
-            //pointer
-
-            NextStep();
+            // NextStep();
         }
 
-        void HandleConvo(string convoId)
+        void TaskPress(Types.TutorialStep step)
         {
-            convoUIHandler.Converse(convoId, true, () =>
+            if (step.scene == Types.TutorialStepScene.Hub)
+            {
+                if (step.taskRef == "Play")
+                {
+                    hubUI.ShowButton("play");
+
+                    Glob.SetTimeout(() =>
+                    {
+                        pointerHandler.HandlePress(uiButtons.hubPlayButtonPos, "Play", () =>
+                        {
+                            NextStep(false);
+                        });
+                    }, 0.5f);
+                }
+            }
+            else
+            {
+                if (step.taskRef == "Task")
+                {
+                    gameplayUI.ShowButton("task");
+
+                    pointerHandler.HandlePress(uiButtons.gameplayTaskButtonPos, "task", () =>
+                    {
+                        NextStep(false);
+                    });
+                }
+
+                if (step.taskRef == "Home")
+                {
+                    gameplayUI.ShowButton("home");
+
+                    pointerHandler.HandlePress(uiButtons.gameplayHomeButtonPos, "Home", () =>
+                    {
+                        NextStep(false);
+                    });
+                }
+            }
+        }
+
+        void HandleConvo(Types.TutorialStep step)
+        {
+            convoUIHandler.Converse("Tutorial" + step.id, true, !step.keepConvoOpen, false, () =>
             {
                 Glob.SetTimeout(() =>
                 {
                     NextStep();
-                }, 0.3f);
+                }, 0.4f);
             });
         }
 
@@ -251,17 +410,8 @@ namespace Merge
         void HandleLast()
         {
             valuesUI.EnableButtons();
-
-            if (hubUI != null)
-            {
-                hubUI.EnableButtons();
-            }
-            else
-            {
-                gameplayUI.EnableButtons();
-            }
-
-            progressManager.SetInitialData(0, true);
+            hubUI.ShowButtons();
+            gameplayUI.ShowButtons();
 
             PlayerPrefs.SetInt("tutorialFinished", 1);
 

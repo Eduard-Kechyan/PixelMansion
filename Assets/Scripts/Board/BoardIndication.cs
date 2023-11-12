@@ -10,6 +10,7 @@ namespace Merge
         // Variables
         public float indicateDelay = 2f;
         public float indicateSpeed = 1f;
+        public PointerHandler pointerHandler;
         // public float getCloserSpeed = 3f;
 
         Pair selectedPairs = null;
@@ -22,6 +23,7 @@ namespace Merge
         private Item item2 = null;
 
         private Coroutine checkCoroutine = null;
+        private Coroutine checkCoroutineAlt = null;
 
         // private Vector3 midPoint = Vector3.zero;
 
@@ -53,13 +55,23 @@ namespace Merge
 
         void Update()
         {
-            if (boardInteractions.interactionsEnabled && !boardInteractions.isDragging && dataManager.loaded)
+            if (pointerHandler.waitForBoardIndication)
             {
-                StartPossibleMergeCheck();
+                StopPossibleMergeCheck();
+                StartAltMergeCheck();
             }
             else
             {
-                StopPossibleMergeCheck();
+                StopAltMergeCheck();
+
+                if (boardInteractions.interactionsEnabled && !boardInteractions.isDragging && dataManager.loaded)
+                {
+                    StartPossibleMergeCheck();
+                }
+                else
+                {
+                    StopPossibleMergeCheck();
+                }
             }
         }
 
@@ -102,6 +114,14 @@ namespace Merge
             }
         }
 
+        public void StartAltMergeCheck()
+        {
+            if (checkCoroutineAlt == null)
+            {
+                checkCoroutineAlt = StartCoroutine(CheckAltMerge());
+            }
+        }
+
         public void StopPossibleMergeCheck()
         {
             if (selectedPairs != null)
@@ -138,6 +158,15 @@ namespace Merge
             // StopCoroutine(GetCloser());
 
             // ResetDistance();
+        }
+
+        public void StopAltMergeCheck()
+        {
+            if (checkCoroutineAlt != null)
+            {
+                StopCoroutine(checkCoroutineAlt);
+                checkCoroutineAlt = null;
+            }
         }
 
         public void CheckIfShouldStop(Item currentItem)
@@ -265,6 +294,72 @@ namespace Merge
             indicatingPossibleMerges = true;
 
             // StartCoroutine(GetCloser());
+        }
+
+        IEnumerator CheckAltMerge()
+        {
+            indicatingPossibleMerges = false;
+            checkingPossibleMerges = true;
+
+            yield return new WaitForSeconds(0.3f);
+
+            // Variables
+            List<Types.Board> singleArray = new();
+
+            List<Pair> pairs = new();
+
+            // Get all items
+            for (int i = 0; i < GameData.WIDTH; i++)
+            {
+                for (int j = 0; j < GameData.HEIGHT; j++)
+                {
+                    Types.Board singleItem = gameData.boardData[i, j];
+
+                    if (singleItem.state == Types.State.Default || singleItem.state == Types.State.Locker && singleItem.sprite != null)
+                    {
+                        if (!boardManager.boardTiles.transform.GetChild(singleItem.order).GetChild(0).gameObject.GetComponent<Item>().isMaxLevel)
+                        {
+                            if (singleItem.sprite.name.Contains(pointerHandler.boardIndicationItemName))
+                            {
+                                singleArray.Add(singleItem);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Check if we should continue
+            if (singleArray.Count == 0)
+            {
+                yield break;
+            }
+
+            // Sort the items
+            singleArray.Sort((a, b) => a.sprite.name.Substring(a.sprite.name.Length - 1).CompareTo(b.sprite.name.Substring(b.sprite.name.Length - 1)));
+            singleArray.Sort((a, b) => a.state.CompareTo(b.state));
+
+            // Remove last item if it's odd
+            if (singleArray.Count % 2 == 1)
+            {
+                singleArray.RemoveAt(singleArray.Count - 1);
+            }
+
+            pairs.Add(new Pair
+            {
+                item1 = singleArray[0],
+                item2 = singleArray[0 + 1]
+            });
+
+            // Select a random pair
+            selectedPairs = pairs[0];
+
+            // Select the items
+            item1 = boardManager.boardTiles.transform.GetChild(selectedPairs.item1.order).GetChild(0).gameObject.GetComponent<Item>();
+            item2 = boardManager.boardTiles.transform.GetChild(selectedPairs.item2.order).GetChild(0).gameObject.GetComponent<Item>();
+
+            indicatingPossibleMerges = true;
+
+            pointerHandler.IndicateMerge(item1.transform.position, item2.transform.position);
         }
 
         int SortPairs(Pair a, Pair b)

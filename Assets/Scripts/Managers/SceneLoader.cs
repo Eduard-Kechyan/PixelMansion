@@ -47,13 +47,11 @@ namespace Merge
 
         void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            Debug.Log("Loaded " + scene.name);
             InitializeScene();
         }
 
         void OnSceneUnloaded(Scene scene)
         {
-            Debug.Log("Unloaded " + scene.name);
             Glob.lastSceneName = scene.name;
         }
 
@@ -102,8 +100,16 @@ namespace Merge
             switch (sceneName)
             {
                 case "Hub":
-                    // Play background music
-                    soundManager.PlayMusic(sceneName);
+                    if (PlayerPrefs.HasKey("tutorialFinished"))
+                    {
+                        // Play hub background music
+                        soundManager.PlayMusic(sceneName);
+                    }
+                    else
+                    {
+                        // Play tutorial background music
+                        soundManager.PlayMusic("Magical");
+                    }
 
                     soundManager.FadeInMusic(fadeDuration);
 

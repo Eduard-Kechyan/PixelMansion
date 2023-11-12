@@ -190,6 +190,35 @@
     left: 0;
 }
 
+.convo_background {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgb(43, 98, 138);
+    display: none;
+}
+
+.convo_background_shadow {
+    width: 180px;
+    height: 180px;
+    top: -30px;
+    right: 0;
+    left: 0;
+    position: absolute;
+    background-image: url('project://database/Assets/Sprites/Scenes/BackgroundShadow.png?fileID=2800000&guid=5af0a1ef3db269a48ac96828aad562c5&type=3#BackgroundShadow');
+}
+
+.convo_background_shine {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-image: url('project://database/Assets/Sprites/Conversation/ConvoBackgroundShineA.png?fileID=-1797161231&guid=fd0f0afa5983bec4587b659d4b3f524d&type=3#ConvoBackgroundShineA_2');
+    width: 6px;
+    height: 6px;
+}
+
 .convo_container {
     position: absolute;
     left: 0;
@@ -276,7 +305,7 @@
     padding-left: 8px;
     padding-right: 8px;
     padding-top: 14px;
-    padding-bottom: 16px;
+    padding-bottom: 20px;
 }
 
 .convo_box .mid_area {
@@ -357,7 +386,6 @@
 }
 
 .convo_avatar {
-    background-image: url('project://database/Assets/Sprites/Characters/Julia/AvatarJulia1.png?fileID=2800000&guid=232ee125e6ed920439e50a9346e3c24b&type=3#AvatarJulia1');
     width: 72px;
     height: 80px;
     position: absolute;
@@ -365,6 +393,7 @@
     left: -96px;
     transition-duration: 0.3s;
     transition-delay: 0.2s;
+    background-image: resource('Sprites/Avatars/AvatarJulia1');
 }
 
 .convo_label {

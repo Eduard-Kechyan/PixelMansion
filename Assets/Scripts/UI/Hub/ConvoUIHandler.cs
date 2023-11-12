@@ -10,6 +10,7 @@ namespace Merge
     {
         // Variables
         public ProgressManager progressManager;
+        public TutorialManager tutorialManager;
         public ConvoData convoData;
         public Types.CharacterColor[] characterColors;
         [ReadOnly]
@@ -27,12 +28,12 @@ namespace Merge
 
         private Types.ConvoGroup currentConvoGroup;
         private int currentConvo;
-
-        private bool textTyped = false;
-        private string textToFadeIn = "";
+        private string convoId = "";
 
         private bool canSkip = true;
         private Action callback;
+        private bool closeAfter = true;
+        private bool showUnderlay = true;
 
         private Sprite[] avatarsSprites;
 
@@ -56,7 +57,6 @@ namespace Merge
         private Label skipLabel;
 
         private VisualElement convoBox;
-        private VisualElement convoBoxOverlay;
         private VisualElement nextButton;
         private Label nextLabel;
         private VisualElement namePlate;
@@ -87,7 +87,6 @@ namespace Merge
             skipLabel = skipButton.Q<Label>("Label");
 
             convoBox = convoContainer.Q<VisualElement>("ConvoBox");
-            convoBoxOverlay = convoBox.Q<VisualElement>("ConvoBoxOverlay");
             nextButton = convoBox.Q<VisualElement>("NextButtonContainer");
             nextLabel = nextButton.Q<Label>("Label");
             namePlate = convoBox.Q<VisualElement>("NamePlate");
@@ -108,11 +107,6 @@ namespace Merge
             nextButton.AddManipulator(new Clickable(evt =>
             {
                 HandleNext();
-            }));
-
-            convoBoxOverlay.AddManipulator(new Clickable(evt =>
-            {
-                SkipText();
             }));
 
             Init();
@@ -151,11 +145,15 @@ namespace Merge
             }
         }
 
-        public void Converse(string convoId, bool newCanSkip = true, Action newCallback = null)
+        public void Converse(string newConvoId, bool newCanSkip = true, bool newCloseAfter = true, bool newShowUnderlay = true, Action newCallback = null)
         {
+            convoId = newConvoId;
+            closeAfter = newCloseAfter;
+            showUnderlay = newShowUnderlay;
+
             for (int i = 0; i < convoData.convoGroups.Length; i++)
             {
-                if (convoData.convoGroups[i].id == convoId)
+                if (convoData.convoGroups[i].id == newConvoId)
                 {
                     currentConvoGroup = convoData.convoGroups[i];
 
@@ -209,11 +207,14 @@ namespace Merge
 
                 convoUnderlay.style.opacity = 1;
 
-                convoBox.style.bottom = 4;
+                convoBox.style.bottom = 24;
                 convoBox.style.transitionDelay = halfDelay;
 
-                convoBoxUnderlay.style.height = 58;
-                convoBoxUnderlay.style.transitionDelay = nullDelay;
+                if (showUnderlay)
+                {
+                    convoBoxUnderlay.style.height = 58;
+                    convoBoxUnderlay.style.transitionDelay = nullDelay;
+                }
 
                 if (canSkip)
                 {
@@ -221,7 +222,7 @@ namespace Merge
                     skipButton.style.transitionDelay = halfDelay;
                 }
 
-                avatarLeft.style.left = 4;
+                avatarLeft.style.left = 0;
                 avatarLeft.style.transitionDelay = nullDelay;
 
                 if (currentConvoGroup.characterB != Types.Character.NONE)
@@ -232,19 +233,22 @@ namespace Merge
             }
             else
             {
-                hubUI.OpenUI();
+                if (closeAfter)
+                {
+                    hubUI.OpenUI();
 
-                valuesUI.OpenUI();
+                    valuesUI.OpenUI();
+
+                    Glob.SetTimeout(() =>
+                    {
+                        charMain.Show();
+                    }, 0.3f);
+                }
 
                 convoContainerTimeOut = Glob.SetTimeout(() =>
                 {
                     convoContainer.style.display = DisplayStyle.None;
                 }, 0.6f);
-
-                Glob.SetTimeout(() =>
-                {
-                    charMain.Show();
-                }, 0.3f);
 
                 convoUnderlay.style.opacity = 0;
 
@@ -253,6 +257,7 @@ namespace Merge
 
                 convoBoxUnderlay.style.height = 0;
                 convoBoxUnderlay.style.transitionDelay = halfDelay;
+                
                 skipButton.style.opacity = 0;
                 skipButton.style.transitionDelay = halfDelay;
 
@@ -261,18 +266,14 @@ namespace Merge
                 avatarRight.style.right = -96;
                 avatarRight.style.transitionDelay = fullDelay;
 
-                callback?.Invoke();
-
-                callback = null;
-
                 canSkip = true;
+                closeAfter = true;
             }
         }
 
         IEnumerator FadeInText(string text)
         {
             showText = true;
-            textTyped = false;
 
             while (showText)
             {
@@ -286,30 +287,10 @@ namespace Merge
                         nextButton.style.opacity = 1;
 
                         showText = false;
-                        textTyped = true;
-                        textToFadeIn = "";
                     }
 
-                    yield return new WaitForSeconds(0.03f); // Less than a millisecond
+                    yield return new WaitForSeconds(0.01f); // Less than a millisecond
                 }
-            }
-        }
-
-        void SkipText()
-        {
-            if (!textTyped && textToFadeIn != "")
-            {
-                showText = false;
-
-                StopCoroutine(FadeInText(""));
-
-                convoLabel.text = textToFadeIn;
-
-                nextButton.style.display = DisplayStyle.Flex;
-                nextButton.style.opacity = 1;
-
-                textTyped = true;
-                textToFadeIn = "";
             }
         }
 
@@ -319,12 +300,15 @@ namespace Merge
             StopCoroutine(FadeInText(""));
 
             isConvoOpen = false;
-
             UpdateConvo();
 
             PlayerPrefs.DeleteKey("ProgressStep");
 
             PlayerPrefs.Save();
+
+            callback?.Invoke();
+
+            callback = null;
         }
 
         void HandleNext()
@@ -336,6 +320,11 @@ namespace Merge
 
             currentConvo++;
 
+            if (convoId == "TutorialPart1" && currentConvo == 3)
+            {
+                tutorialManager.CheckConvoBackground(true);
+            }
+
             if (LOCALE.CheckNext("convo_" + currentConvoGroup.id + "_" + currentConvo))
             {
                 // Next
@@ -344,13 +333,7 @@ namespace Merge
             else
             {
                 // Last
-                isConvoOpen = false;
-
-                UpdateConvo();
-
-                PlayerPrefs.DeleteKey("ProgressStep");
-
-                PlayerPrefs.Save();
+                HandleSkip();
             }
         }
 
@@ -406,15 +389,11 @@ namespace Merge
             {
                 Glob.SetTimeout(() =>
                 {
-                    textToFadeIn=text;
-
                     StartCoroutine(FadeInText(text));
                 }, 0.6f);
             }
             else
             {
-                textToFadeIn = text;
-
                 StartCoroutine(FadeInText(text));
             }
         }

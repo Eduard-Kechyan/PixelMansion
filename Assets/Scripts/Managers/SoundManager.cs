@@ -16,6 +16,8 @@ namespace Merge
         public SoundClip[] musicClips;
         public AudioSource sourceMusic;
 
+        [HideInInspector]
+        public string currentMusic = "";
 
         [Serializable]
         public class SoundClip
@@ -97,6 +99,8 @@ namespace Merge
 
         public void PlayMusic(string clipName = "", AudioClip clip = null)
         {
+            currentMusic = clipName;
+
             if (clip != null)
             {
                 sourceMusic.clip = clip;

@@ -53,32 +53,86 @@ SpriteAtlas:
     - e5ede6a28f16ac742a8e8d2e5184713a: 21300000
     - 1b8e71d3354f7ee4ea5fdb095e823ed3: 21300000
     - b0cffa4424a705440a1a48859b6d31dd: 21300000
+    - 1f4d7fe5983ff7c46bd20b08135b412c: 1305478060
+    - 1f4d7fe5983ff7c46bd20b08135b412c: -612297195
+    - 1f4d7fe5983ff7c46bd20b08135b412c: -1010537854
+    - 1f4d7fe5983ff7c46bd20b08135b412c: -1852985883
+    - 1f4d7fe5983ff7c46bd20b08135b412c: 1238636653
+    - 2de1e476573ef864a9fa1db1b130b2dc: 1361113653
+    - 2de1e476573ef864a9fa1db1b130b2dc: 2090243501
+    - 2de1e476573ef864a9fa1db1b130b2dc: -950273383
+    - 2de1e476573ef864a9fa1db1b130b2dc: -1469083911
+    - 2de1e476573ef864a9fa1db1b130b2dc: -547346566
+    - 90d6b0b7c97bfdf46930affea12b64be: 959299167
+    - 90d6b0b7c97bfdf46930affea12b64be: -511227595
+    - 90d6b0b7c97bfdf46930affea12b64be: 2090440864
+    - 90d6b0b7c97bfdf46930affea12b64be: -1977107366
+    - 90d6b0b7c97bfdf46930affea12b64be: -1743880633
     - 10308679bc950b946bdaafc86115fb54: 21300000
     - 9c0d759946bc8cc4a8ac459a3bf0c11b: 21300000
     - ac7f26a9c0fa76c4582459ac7da386ce: 21300000
     - d05e03d905b376a43b0f54b6bccacb1f: 21300000
     - 78eafdea84aa4c1488ee95182fd2d88b: 21300000
+    - fd0f0afa5983bec4587b659d4b3f524d: -1797161231
+    - fd0f0afa5983bec4587b659d4b3f524d: 2142118501
+    - fd0f0afa5983bec4587b659d4b3f524d: -1348284963
     - 0536b98ce4b8f2c4b9b1f1fa5287e241: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: e5ede6a28f16ac742a8e8d2e5184713a, type: 3}
   - {fileID: 21300000, guid: 1b8e71d3354f7ee4ea5fdb095e823ed3, type: 3}
   - {fileID: 21300000, guid: b0cffa4424a705440a1a48859b6d31dd, type: 3}
+  - {fileID: 1305478060, guid: 1f4d7fe5983ff7c46bd20b08135b412c, type: 3}
+  - {fileID: -612297195, guid: 1f4d7fe5983ff7c46bd20b08135b412c, type: 3}
+  - {fileID: -1010537854, guid: 1f4d7fe5983ff7c46bd20b08135b412c, type: 3}
+  - {fileID: -1852985883, guid: 1f4d7fe5983ff7c46bd20b08135b412c, type: 3}
+  - {fileID: 1238636653, guid: 1f4d7fe5983ff7c46bd20b08135b412c, type: 3}
+  - {fileID: 1361113653, guid: 2de1e476573ef864a9fa1db1b130b2dc, type: 3}
+  - {fileID: 2090243501, guid: 2de1e476573ef864a9fa1db1b130b2dc, type: 3}
+  - {fileID: -950273383, guid: 2de1e476573ef864a9fa1db1b130b2dc, type: 3}
+  - {fileID: -1469083911, guid: 2de1e476573ef864a9fa1db1b130b2dc, type: 3}
+  - {fileID: -547346566, guid: 2de1e476573ef864a9fa1db1b130b2dc, type: 3}
+  - {fileID: 959299167, guid: 90d6b0b7c97bfdf46930affea12b64be, type: 3}
+  - {fileID: -511227595, guid: 90d6b0b7c97bfdf46930affea12b64be, type: 3}
+  - {fileID: 2090440864, guid: 90d6b0b7c97bfdf46930affea12b64be, type: 3}
+  - {fileID: -1977107366, guid: 90d6b0b7c97bfdf46930affea12b64be, type: 3}
+  - {fileID: -1743880633, guid: 90d6b0b7c97bfdf46930affea12b64be, type: 3}
   - {fileID: 21300000, guid: 10308679bc950b946bdaafc86115fb54, type: 3}
   - {fileID: 21300000, guid: 9c0d759946bc8cc4a8ac459a3bf0c11b, type: 3}
   - {fileID: 21300000, guid: ac7f26a9c0fa76c4582459ac7da386ce, type: 3}
   - {fileID: 21300000, guid: d05e03d905b376a43b0f54b6bccacb1f, type: 3}
   - {fileID: 21300000, guid: 78eafdea84aa4c1488ee95182fd2d88b, type: 3}
+  - {fileID: -1797161231, guid: fd0f0afa5983bec4587b659d4b3f524d, type: 3}
+  - {fileID: 2142118501, guid: fd0f0afa5983bec4587b659d4b3f524d, type: 3}
+  - {fileID: -1348284963, guid: fd0f0afa5983bec4587b659d4b3f524d, type: 3}
   - {fileID: 21300000, guid: 0536b98ce4b8f2c4b9b1f1fa5287e241, type: 3}
   m_PackedSpriteNamesToIndex:
   - NamePlate
   - NamePlateRightEdge
   - png-transparent-pixel-art-role-playing-game-non-player-character-fable-others
+  - ConvoBackgroundShineD_4
+  - ConvoBackgroundShineD_2
+  - ConvoBackgroundShineD_3
+  - ConvoBackgroundShineD_0
+  - ConvoBackgroundShineD_1
+  - ConvoBackgroundShineC_4
+  - ConvoBackgroundShineC_1
+  - ConvoBackgroundShineC_0
+  - ConvoBackgroundShineC_3
+  - ConvoBackgroundShineC_2
+  - ConvoBackgroundShineB_4
+  - ConvoBackgroundShineB_0
+  - ConvoBackgroundShineB_1
+  - ConvoBackgroundShineB_2
+  - ConvoBackgroundShineB_3
   - NextButton
   - ConvoBoxMidArea
   - NamePlateLeftEdge
   - ConvoBoxTopEdge
   - ConvoBoxBottomEdge
+  - ConvoBackgroundShineA_2
+  - ConvoBackgroundShineA_1
+  - ConvoBackgroundShineA_0
   - SkipButton
   m_RenderDataMap: {}
   m_Tag: ConvoAtlas

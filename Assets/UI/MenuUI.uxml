@@ -251,7 +251,7 @@
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="InputMenu" class="menu input_menu" style="display: none; opacity: 0;">
-            <ui:VisualElement name="BackgroundAlt" class="background" style="background-color: rgba(0, 0, 0, 0.71);" />
+            <ui:VisualElement name="BackgroundAlt" class="background" style="background-color: rgba(0, 0, 0, 0.47);" />
             <ui:VisualElement name="Container" class="container">
                 <ui:VisualElement name="Content" class="content">
                     <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="InputLabel" class="input_label" />

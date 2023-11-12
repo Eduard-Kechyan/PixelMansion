@@ -64,6 +64,10 @@ namespace Merge
                 // Reset text field value
                 inputTextField.value = "";
 
+                inputTextField.Focus();
+
+                inputTextField.SelectAll();
+
                 // Set the title
                 title = LOCALE.Get("input_menu_title_player_name");
 

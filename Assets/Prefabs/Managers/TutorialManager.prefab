@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 1586295998450542351}
   - component: {fileID: 6551264188553690675}
   - component: {fileID: 6008772859430314081}
+  - component: {fileID: 6221008523312400612}
+  - component: {fileID: 5299132373515573405}
   m_Layer: 5
   m_Name: TutorialManager
   m_TagString: Untagged
@@ -61,7 +63,76 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6219ae9bd0bfa2048b2cca0e8b80149d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skipTutorial: 0
+  startFromStep: 0
+  stepToStartFrom: 
   tutorialData: {fileID: 11400000, guid: 46f222382f4fece48829f1645caddf12, type: 2}
   progressManager: {fileID: 0}
   convoUIHandler: {fileID: 0}
-  tutorialEnabled: 1
+  shineSprites:
+  - sprites:
+    - {fileID: -1348284963, guid: fd0f0afa5983bec4587b659d4b3f524d, type: 3}
+    - {fileID: 2142118501, guid: fd0f0afa5983bec4587b659d4b3f524d, type: 3}
+    - {fileID: -1797161231, guid: fd0f0afa5983bec4587b659d4b3f524d, type: 3}
+    - {fileID: -1797161231, guid: fd0f0afa5983bec4587b659d4b3f524d, type: 3}
+    - {fileID: 2142118501, guid: fd0f0afa5983bec4587b659d4b3f524d, type: 3}
+    - {fileID: -1348284963, guid: fd0f0afa5983bec4587b659d4b3f524d, type: 3}
+    speed: 0.3
+  - sprites:
+    - {fileID: -511227595, guid: 90d6b0b7c97bfdf46930affea12b64be, type: 3}
+    - {fileID: 2090440864, guid: 90d6b0b7c97bfdf46930affea12b64be, type: 3}
+    - {fileID: -1977107366, guid: 90d6b0b7c97bfdf46930affea12b64be, type: 3}
+    - {fileID: -1743880633, guid: 90d6b0b7c97bfdf46930affea12b64be, type: 3}
+    - {fileID: 959299167, guid: 90d6b0b7c97bfdf46930affea12b64be, type: 3}
+    - {fileID: 959299167, guid: 90d6b0b7c97bfdf46930affea12b64be, type: 3}
+    - {fileID: -1743880633, guid: 90d6b0b7c97bfdf46930affea12b64be, type: 3}
+    - {fileID: -1977107366, guid: 90d6b0b7c97bfdf46930affea12b64be, type: 3}
+    - {fileID: 2090440864, guid: 90d6b0b7c97bfdf46930affea12b64be, type: 3}
+    speed: 0.1
+  - sprites:
+    - {fileID: -950273383, guid: 2de1e476573ef864a9fa1db1b130b2dc, type: 3}
+    - {fileID: 2090243501, guid: 2de1e476573ef864a9fa1db1b130b2dc, type: 3}
+    - {fileID: -547346566, guid: 2de1e476573ef864a9fa1db1b130b2dc, type: 3}
+    - {fileID: -1469083911, guid: 2de1e476573ef864a9fa1db1b130b2dc, type: 3}
+    - {fileID: 1361113653, guid: 2de1e476573ef864a9fa1db1b130b2dc, type: 3}
+    - {fileID: 1361113653, guid: 2de1e476573ef864a9fa1db1b130b2dc, type: 3}
+    - {fileID: -1469083911, guid: 2de1e476573ef864a9fa1db1b130b2dc, type: 3}
+    - {fileID: -547346566, guid: 2de1e476573ef864a9fa1db1b130b2dc, type: 3}
+    - {fileID: 2090243501, guid: 2de1e476573ef864a9fa1db1b130b2dc, type: 3}
+    speed: 0.2
+  - sprites:
+    - {fileID: -1852985883, guid: 1f4d7fe5983ff7c46bd20b08135b412c, type: 3}
+    - {fileID: 1238636653, guid: 1f4d7fe5983ff7c46bd20b08135b412c, type: 3}
+    - {fileID: -612297195, guid: 1f4d7fe5983ff7c46bd20b08135b412c, type: 3}
+    - {fileID: -1010537854, guid: 1f4d7fe5983ff7c46bd20b08135b412c, type: 3}
+    - {fileID: 1305478060, guid: 1f4d7fe5983ff7c46bd20b08135b412c, type: 3}
+    - {fileID: 1305478060, guid: 1f4d7fe5983ff7c46bd20b08135b412c, type: 3}
+    - {fileID: -1010537854, guid: 1f4d7fe5983ff7c46bd20b08135b412c, type: 3}
+    - {fileID: -612297195, guid: 1f4d7fe5983ff7c46bd20b08135b412c, type: 3}
+    - {fileID: 1238636653, guid: 1f4d7fe5983ff7c46bd20b08135b412c, type: 3}
+    speed: 0.1
+--- !u!114 &6221008523312400612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8398883806428278736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25374eef02c3a894f8c4b17449b50c96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5299132373515573405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8398883806428278736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 656cade054fc22647b874535646fece0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resetData: 0

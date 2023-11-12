@@ -21,7 +21,8 @@ namespace Merge
             Surprised,
             Angry,
             Sad,
-            Sleepy
+            Sleepy,
+            Thinking
         };
 
         [Serializable]
@@ -603,8 +604,8 @@ namespace Merge
             public TutorialStepType type;
             public TutorialStepTask taskType;
             public string taskRef;
-            public bool addTask;
             public int taskOrder;
+            public bool keepConvoOpen;
         }
 
         //// ERROR ////

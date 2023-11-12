@@ -1,0 +1,156 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64050257abaadcc46912765acb66cca1, type: 3}
+  m_Name: ConvoData
+  m_EditorClassIdentifier: 
+  convoGroups:
+  - name: TutorialFirst
+    id: TutorialFirst
+    hasTimeOut: 0
+    characterA: 1
+    characterB: 0
+    content:
+    - character: 1
+      expression: 5
+      isRight: 0
+      isSide: 0
+      convoExtra: 
+    - character: 1
+      expression: 2
+      isRight: 0
+      isSide: 0
+      convoExtra: 
+    - character: 1
+      expression: 6
+      isRight: 0
+      isSide: 0
+      convoExtra: 
+    - character: 1
+      expression: 2
+      isRight: 0
+      isSide: 0
+      convoExtra: 
+    - character: 1
+      expression: 1
+      isRight: 0
+      isSide: 0
+      convoExtra: 
+    - character: 1
+      expression: 6
+      isRight: 0
+      isSide: 0
+      convoExtra: 
+  - name: TutorialPart1
+    id: TutorialPart1
+    hasTimeOut: 0
+    characterA: 1
+    characterB: 0
+    content:
+    - character: 1
+      expression: 6
+      isRight: 0
+      isSide: 0
+      convoExtra: PlayerName
+    - character: 1
+      expression: 1
+      isRight: 0
+      isSide: 0
+      convoExtra: 
+    - character: 1
+      expression: 0
+      isRight: 0
+      isSide: 0
+      convoExtra: 
+    - character: 1
+      expression: 6
+      isRight: 0
+      isSide: 0
+      convoExtra: 
+    - character: 1
+      expression: 1
+      isRight: 0
+      isSide: 0
+      convoExtra: 
+    - character: 1
+      expression: 0
+      isRight: 0
+      isSide: 0
+      convoExtra: 
+  - name: TutorialPart2
+    id: TutorialPart2
+    hasTimeOut: 0
+    characterA: 1
+    characterB: 0
+    content:
+    - character: 1
+      expression: 0
+      isRight: 0
+      isSide: 0
+      convoExtra: 
+  - name: TutorialPart3
+    id: TutorialPart3
+    hasTimeOut: 0
+    characterA: 1
+    characterB: 0
+    content:
+    - character: 1
+      expression: 0
+      isRight: 0
+      isSide: 0
+      convoExtra: 
+  - name: TutorialPart4
+    id: TutorialPart4
+    hasTimeOut: 0
+    characterA: 1
+    characterB: 0
+    content:
+    - character: 1
+      expression: 1
+      isRight: 0
+      isSide: 0
+      convoExtra: 
+  - name: Response
+    id: Response
+    hasTimeOut: 1
+    characterA: 1
+    characterB: 0
+    content:
+    - character: 1
+      expression: 0
+      isRight: 0
+      isSide: 0
+      convoExtra: 
+    - character: 1
+      expression: 1
+      isRight: 0
+      isSide: 0
+      convoExtra: 
+    - character: 1
+      expression: 1
+      isRight: 1
+      isSide: 0
+      convoExtra: 
+    - character: 1
+      expression: 2
+      isRight: 0
+      isSide: 1
+      convoExtra: 
+    - character: 1
+      expression: 3
+      isRight: 1
+      isSide: 1
+      convoExtra: 
+    - character: 1
+      expression: 0
+      isRight: 0
+      isSide: 0
+      convoExtra: 
