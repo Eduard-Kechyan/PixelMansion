@@ -103,18 +103,16 @@ namespace Merge
 
             if (dataManager.loaded)
             {
-                string sceneName = sceneLoader.GetSceneName();
-
-                switch (sceneName)
+                switch (sceneLoader.GetScene())
                 {
-                    case "Hub":
+                    case Types.Scene.Hub:
                         if (worldDataManager.loaded)
                         {
                             readyToOpen = true;
                         }
                         break;
 
-                    case "Gameplay":
+                    case Types.Scene.Gameplay:
                         readyToOpen = true;
                         break;
 

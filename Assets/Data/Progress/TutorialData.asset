@@ -15,7 +15,7 @@ MonoBehaviour:
   steps:
   - name: Convo First
     id: First
-    scene: 0
+    scene: 1
     type: 1
     taskType: 0
     taskRef: 
@@ -24,7 +24,7 @@ MonoBehaviour:
     keepConvoOpen: 1
   - name: Input PlayerName
     id: PlayerName
-    scene: 0
+    scene: 1
     type: 2
     taskType: 0
     taskRef: 
@@ -33,7 +33,7 @@ MonoBehaviour:
     keepConvoOpen: 0
   - name: Convo Part1
     id: Part1
-    scene: 0
+    scene: 1
     type: 1
     taskType: 0
     taskRef: 
@@ -42,7 +42,7 @@ MonoBehaviour:
     keepConvoOpen: 0
   - name: Task Press Play1
     id: Play1
-    scene: 0
+    scene: 1
     type: 0
     taskType: 0
     taskRef: Play
@@ -51,7 +51,7 @@ MonoBehaviour:
     keepConvoOpen: 0
   - name: Task Merge MergeGloves1
     id: MergeGloves1
-    scene: 1
+    scene: 2
     type: 0
     taskType: 1
     taskRef: 
@@ -60,7 +60,7 @@ MonoBehaviour:
     keepConvoOpen: 0
   - name: Task Merge MergeGloves2
     id: MergeGloves2
-    scene: 1
+    scene: 2
     type: 0
     taskType: 1
     taskRef: 
@@ -69,7 +69,7 @@ MonoBehaviour:
     keepConvoOpen: 0
   - name: Task Press Home
     id: Home
-    scene: 1
+    scene: 2
     type: 0
     taskType: 0
     taskRef: Home
@@ -78,7 +78,7 @@ MonoBehaviour:
     keepConvoOpen: 0
   - name: Task Press Task1
     id: Task1
-    scene: 0
+    scene: 1
     type: 0
     taskType: 0
     taskRef: Task
@@ -87,7 +87,7 @@ MonoBehaviour:
     keepConvoOpen: 0
   - name: Task Menu TaskMenu1
     id: TaskMenu1
-    scene: 0
+    scene: 1
     type: 0
     taskType: 3
     taskRef: Task
@@ -96,7 +96,7 @@ MonoBehaviour:
     keepConvoOpen: 0
   - name: Convo Part2
     id: Part2
-    scene: 0
+    scene: 1
     type: 1
     taskType: 0
     taskRef: 
@@ -105,7 +105,7 @@ MonoBehaviour:
     keepConvoOpen: 0
   - name: Task Press Play2
     id: Play2
-    scene: 0
+    scene: 1
     type: 0
     taskType: 0
     taskRef: Play
@@ -114,7 +114,7 @@ MonoBehaviour:
     keepConvoOpen: 0
   - name: Task Gen GenGloves
     id: GenGloves
-    scene: 1
+    scene: 2
     type: 0
     taskType: 2
     taskRef: 
@@ -123,7 +123,7 @@ MonoBehaviour:
     keepConvoOpen: 0
   - name: Task Merge MergeGloves3
     id: MergeGloves3
-    scene: 1
+    scene: 2
     type: 0
     taskType: 1
     taskRef: 
@@ -132,7 +132,7 @@ MonoBehaviour:
     keepConvoOpen: 0
   - name: Task Merge MergeGloves4
     id: MergeGloves4
-    scene: 1
+    scene: 2
     type: 0
     taskType: 1
     taskRef: 
@@ -141,7 +141,7 @@ MonoBehaviour:
     keepConvoOpen: 0
   - name: Task Merge MergeGloves5
     id: MergeGloves5
-    scene: 1
+    scene: 2
     type: 0
     taskType: 1
     taskRef: 
@@ -150,7 +150,7 @@ MonoBehaviour:
     keepConvoOpen: 0
   - name: Task Press Task2
     id: Task2
-    scene: 1
+    scene: 2
     type: 0
     taskType: 0
     taskRef: Task
@@ -159,7 +159,7 @@ MonoBehaviour:
     keepConvoOpen: 0
   - name: Task Menu TaskMenu2
     id: TaskMenu2
-    scene: 1
+    scene: 2
     type: 0
     taskType: 3
     taskRef: Task
@@ -168,7 +168,7 @@ MonoBehaviour:
     keepConvoOpen: 0
   - name: Convo Part3
     id: Part3
-    scene: 0
+    scene: 1
     type: 1
     taskType: 0
     taskRef: 
@@ -177,7 +177,7 @@ MonoBehaviour:
     keepConvoOpen: 0
   - name: Task Press Play3
     id: Play3
-    scene: 0
+    scene: 1
     type: 0
     taskType: 0
     taskRef: Play
@@ -186,7 +186,7 @@ MonoBehaviour:
     keepConvoOpen: 0
   - name: Task Gen GenHammer
     id: GenHammer
-    scene: 1
+    scene: 2
     type: 0
     taskType: 2
     taskRef: 
@@ -195,7 +195,7 @@ MonoBehaviour:
     keepConvoOpen: 0
   - name: Task Merge MergeHammer1
     id: MergeHammer1
-    scene: 1
+    scene: 2
     type: 0
     taskType: 1
     taskRef: 
@@ -204,7 +204,7 @@ MonoBehaviour:
     keepConvoOpen: 0
   - name: Task Merge MergeHammer2
     id: MergeHammer2
-    scene: 1
+    scene: 2
     type: 0
     taskType: 1
     taskRef: 
@@ -213,7 +213,7 @@ MonoBehaviour:
     keepConvoOpen: 0
   - name: Task Merge MergeHammer3
     id: MergeHammer3
-    scene: 1
+    scene: 2
     type: 0
     taskType: 1
     taskRef: 
@@ -222,7 +222,7 @@ MonoBehaviour:
     keepConvoOpen: 0
   - name: Task Press Task3
     id: Task3
-    scene: 1
+    scene: 2
     type: 0
     taskType: 0
     taskRef: Task
@@ -231,7 +231,7 @@ MonoBehaviour:
     keepConvoOpen: 0
   - name: Task Menu TaskMenu3
     id: TaskMenu3
-    scene: 1
+    scene: 2
     type: 0
     taskType: 3
     taskRef: Task
@@ -240,7 +240,7 @@ MonoBehaviour:
     keepConvoOpen: 0
   - name: Convo Part4
     id: Part4
-    scene: 0
+    scene: 1
     type: 1
     taskType: 0
     taskRef: 

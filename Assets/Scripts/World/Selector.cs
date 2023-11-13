@@ -15,8 +15,6 @@ namespace Merge
         public float secondTapDuration = 0.1f;
         public float arrowDuration = 1f;
         public Sprite[] arrowSprites;
-        public AudioClip arrowSound;
-        public AudioClip swapSound;
 
         [ReadOnly]
         public bool isSelecting = false;
@@ -111,7 +109,7 @@ namespace Merge
         {
             Vector2 worldPosition = cam.ScreenToWorldPoint(position);
 
-            popupManager.Pop(LOCALE.Get("pop_room_locked"), worldPosition, "", true, true);
+            popupManager.Pop(LOCALE.Get("pop_room_locked"), worldPosition, Types.SoundType.None, true, true);
         }
 
         void DefaultSelecting(Vector2 position, bool tapped = false, bool ignorePopup = false)
@@ -161,7 +159,7 @@ namespace Merge
                     {
                         selectable.Select();
 
-                        soundManager.PlaySound("", swapSound);
+                        soundManager.PlaySound(Types.SoundType.Generate);
 
                         selectorUIHandler.Open(selectable.GetSpriteOptions(), selectable.GetSpriteOrder(), false);
                     }
@@ -199,7 +197,7 @@ namespace Merge
 
                     if (!ignorePopup && notify)
                     {
-                        popupManager.Pop(LOCALE.Get("pop_item_unselectable"), worldPosition, "", true, true);
+                        popupManager.Pop(LOCALE.Get("pop_item_unselectable"), worldPosition, Types.SoundType.None, true, true);
                     }
                 }
             }
@@ -210,7 +208,7 @@ namespace Merge
         {
             if (selectable.Tapped())
             {
-                soundManager.PlaySound("", swapSound);
+                soundManager.PlaySound(Types.SoundType.Generate);
 
                 Vector2 newPos = new(selectable.transform.position.x, selectable.transform.position.y - selectable.charMoveOffset);
 
@@ -259,7 +257,7 @@ namespace Merge
 
             selectorUIHandler.Open(selectable.GetSpriteOptions(), selectable.GetSpriteOrder(), true, true);
 
-            soundManager.PlaySound("", arrowSound);
+            soundManager.PlaySound(Types.SoundType.Pop);
 
             isSelecting = false;
             isSelected = true;
@@ -271,7 +269,7 @@ namespace Merge
         {
             selectable.SetSprites(option);
 
-            soundManager.PlaySound("", swapSound);
+            soundManager.PlaySound(Types.SoundType.Generate);
         }
 
         public void CancelSelecting(bool denied = false)
@@ -348,31 +346,31 @@ namespace Merge
 
             selectorArrow.style.backgroundImage = new StyleBackground(arrowSprites[1]);
 
-            soundManager.PlaySound("", arrowSound);
+            soundManager.PlaySound(Types.SoundType.Pop);
 
             yield return new WaitForSeconds(duration);
 
             selectorArrow.style.backgroundImage = new StyleBackground(arrowSprites[2]);
 
-            soundManager.PlaySound("", arrowSound);
+            soundManager.PlaySound(Types.SoundType.Pop);
 
             yield return new WaitForSeconds(duration);
 
             selectorArrow.style.backgroundImage = new StyleBackground(arrowSprites[3]);
 
-            soundManager.PlaySound("", arrowSound);
+            soundManager.PlaySound(Types.SoundType.Pop);
 
             yield return new WaitForSeconds(duration);
 
             selectorArrow.style.backgroundImage = new StyleBackground(arrowSprites[4]);
 
-            soundManager.PlaySound("", arrowSound);
+            soundManager.PlaySound(Types.SoundType.Pop);
 
             yield return new WaitForSeconds(duration);
 
             selectorArrow.style.backgroundImage = new StyleBackground(arrowSprites[5]);
 
-            soundManager.PlaySound("", arrowSound);
+            soundManager.PlaySound(Types.SoundType.Pop);
 
             yield return new WaitForSeconds(duration);
 

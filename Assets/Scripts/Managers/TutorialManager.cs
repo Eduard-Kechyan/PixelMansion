@@ -15,10 +15,12 @@ namespace Merge
         public TutorialData tutorialData;
         public ProgressManager progressManager;
         public ConvoUIHandler convoUIHandler;
+        public SceneLoader sceneLoader;
         public ShineSprites[] shineSprites;
 
         private string tutorialStep = "First";
         private bool pointsShone = false;
+        private Types.Scene currentScene;
 
         [Serializable]
         public class ShineSprites
@@ -40,25 +42,22 @@ namespace Merge
         // UI
         private VisualElement root;
 
-        private VisualElement storyContainer;
+        /*  private VisualElement storyContainer;
 
-        private VisualElement skipButton;
-        private Label skipLabel;
+          private VisualElement skipButton;
+          private Label skipLabel;*/
 
         private VisualElement convoBackground;
 
         void Awake()
         {
-            string sceneName = SceneManager.GetActiveScene().name;
+            currentScene = Glob.ParseEnum<Types.Scene>(SceneManager.GetActiveScene().name);
 
-            if (PlayerPrefs.HasKey("tutorialFinished") || skipTutorial || (Glob.lastSceneName != "" && Glob.lastSceneName == sceneName))
+            if (PlayerPrefs.HasKey("tutorialFinished") || skipTutorial || (Glob.lastScene != Types.Scene.None && Glob.lastScene == currentScene))
             {
                 progressManager.SetInitialData(0, true);
 
                 HandleLast();
-
-                Destroy(pointerHandler);
-                Destroy(this);
             }
             else
             {
@@ -90,23 +89,25 @@ namespace Merge
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
 
-            storyContainer = root.Q<VisualElement>("StoryContainer");
+            valuesUI.SetSortingOrder(4);
+
+            // storyContainer = root.Q<VisualElement>("StoryContainer");
 
             if (hubGameUIDoc != null)
             {
                 convoBackground = hubGameUIDoc.GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("ConvoBackground");
             }
 
-            if (tutorialStep == "First")
-            {
-                skipButton = root.Q<VisualElement>("SkipButtonContainer");
-                skipLabel = skipButton.Q<Label>("Label");
+            /*  if (tutorialStep == "First")
+              {
+                  skipButton = root.Q<VisualElement>("SkipButtonContainer");
+                  skipLabel = skipButton.Q<Label>("Label");
 
-                skipButton.AddManipulator(new Clickable(evt =>
-                {
-                    EndStory();
-                }));
-            }
+                  skipButton.AddManipulator(new Clickable(evt =>
+                  {
+                      EndStory();
+                  }));
+              }*/
 
             StartCoroutine(WaitForLoading());
         }
@@ -121,12 +122,45 @@ namespace Merge
             Init();
         }
 
-        public void Init()
+#if UNITY_EDITOR
+        void Init()
+        {
+            if (CheckScene())
+            {
+                progressManager.SetInitialData(0, false);
+
+                HandleStep();
+            }
+        }
+
+        bool CheckScene()
+        {
+            for (int i = 0; i < tutorialData.steps.Length; i++)
+            {
+                if (tutorialData.steps[i].id == tutorialStep)
+                {
+                    if (tutorialData.steps[i].scene == Types.Scene.Gameplay && currentScene != Types.Scene.Gameplay)
+                    {
+                        // Gameplay scene
+                        sceneLoader.Load(Types.Scene.Gameplay);
+
+                        return false;
+                    }
+
+                    break;
+                }
+            }
+
+            return true; 
+        }
+#else
+        void Init()
         {
             progressManager.SetInitialData(0, false);
 
             HandleStep();
         }
+#endif
 
         public void CheckConvoBackground(bool alt = false)
         {
@@ -300,7 +334,7 @@ namespace Merge
 
         void TaskPress(Types.TutorialStep step)
         {
-            if (step.scene == Types.TutorialStepScene.Hub)
+            if (step.scene == Types.Scene.Hub)
             {
                 if (step.taskRef == "Play")
                 {
@@ -311,6 +345,8 @@ namespace Merge
                         pointerHandler.HandlePress(uiButtons.hubPlayButtonPos, "Play", () =>
                         {
                             NextStep(false);
+
+                            sceneLoader.Load(Types.Scene.Gameplay);
                         });
                     }, 0.5f);
                 }
@@ -334,6 +370,8 @@ namespace Merge
                     pointerHandler.HandlePress(uiButtons.gameplayHomeButtonPos, "Home", () =>
                     {
                         NextStep(false);
+
+                        sceneLoader.Load(Types.Scene.Hub);
                     });
                 }
             }
@@ -352,14 +390,14 @@ namespace Merge
 
         void HandleStory()
         {
-            storyContainer.AddToClassList("no_transition");
-            skipButton.AddToClassList("no_transition");
+            /*  storyContainer.AddToClassList("no_transition");
+              skipButton.AddToClassList("no_transition");
 
-            storyContainer.style.display = DisplayStyle.Flex;
-            skipButton.style.display = DisplayStyle.Flex;
+              storyContainer.style.display = DisplayStyle.Flex;
+              skipButton.style.display = DisplayStyle.Flex;
 
-            storyContainer.style.opacity = 1;
-            skipButton.style.opacity = 1;
+              storyContainer.style.opacity = 1;
+              skipButton.style.opacity = 1;*/
 
             // TODO - Play initial story here
 
@@ -392,16 +430,16 @@ namespace Merge
 
         void EndStory()
         {
-            storyContainer.RemoveFromClassList("no_transition");
-            skipButton.RemoveFromClassList("no_transition");
+            /*   storyContainer.RemoveFromClassList("no_transition");
+               skipButton.RemoveFromClassList("no_transition");
 
-            storyContainer.style.opacity = 0;
-            skipButton.style.opacity = 0;
+               storyContainer.style.opacity = 0;
+               skipButton.style.opacity = 0;*/
 
             Glob.SetTimeout(() =>
             {
-                storyContainer.style.display = DisplayStyle.None;
-                skipButton.style.display = DisplayStyle.None;
+                // storyContainer.style.display = DisplayStyle.None;
+                // skipButton.style.display = DisplayStyle.None;
 
                 NextStep();
             }, 0.3f);
@@ -409,13 +447,30 @@ namespace Merge
 
         void HandleLast()
         {
-            valuesUI.EnableButtons();
-            hubUI.ShowButtons();
-            gameplayUI.ShowButtons();
+            if (valuesUI != null)
+            {
+                valuesUI.SetSortingOrder(10);
+                valuesUI.EnableButtons();
+            }
+
+            if (hubUI != null)
+            {
+                hubUI.ShowButtons();
+            }
+
+            if (gameplayUI != null)
+            {
+                gameplayUI.ShowButtons();
+            }
 
             PlayerPrefs.SetInt("tutorialFinished", 1);
 
+            PlayerPrefs.DeleteKey("tutorialStep");
+
             PlayerPrefs.Save();
+
+            Destroy(pointerHandler);
+            Destroy(this);
         }
     }
 }

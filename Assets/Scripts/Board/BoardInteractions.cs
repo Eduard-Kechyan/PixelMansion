@@ -432,7 +432,7 @@ namespace Merge
                         else
                         {
                             // TODO - Check if we need this
-                            popupManager.Pop(LOCALE.Get("pop_max_level"), otherItem.transform.position, "", true);
+                            popupManager.Pop(LOCALE.Get("pop_max_level"), otherItem.transform.position, Types.SoundType.None, true);
                         }
                     }
                     else
@@ -523,12 +523,12 @@ namespace Merge
             if (isLocked)
             {
                 // Play unlocking audio
-                soundManager.PlaySound("UnlockLock");
+                soundManager.PlaySound(Types.SoundType.UnlockLock);
             }
             else
             {
                 // Play merge audio
-                soundManager.PlaySound("Merge");
+                soundManager.PlaySound(Types.SoundType.Merge);
             }
 
             if (currentItem.type != Types.Type.Coll)
@@ -663,7 +663,7 @@ namespace Merge
                             currentItem.OpenCrate(crateBreakSpeed);
 
                             // Play crate opening audio
-                            soundManager.PlaySound("OpenCrate");
+                            soundManager.PlaySound(Types.SoundType.OpenCrate);
                             break;
 
                         case Types.State.Bubble:
@@ -674,7 +674,7 @@ namespace Merge
                             timeManager.RemoveTimer(currentItem.id);
 
                             // Play crate opening audio
-                            soundManager.PlaySound("PopBubble" + UnityEngine.Random.Range(0, 3));
+                            soundManager.PlaySound(Types.SoundType.None,"PopBubble" + UnityEngine.Random.Range(0, 3));
                             break;
 
                         default:
@@ -683,7 +683,7 @@ namespace Merge
                             currentItem.UnlockLock();
 
                             // Play unlocking audio
-                            soundManager.PlaySound("UnlockLock");
+                            soundManager.PlaySound(Types.SoundType.UnlockLock);
                             break;
                     }
                 }
@@ -695,7 +695,7 @@ namespace Merge
             if (item.name == currentItem.name && item.type == Types.Type.Chest)
             {
                 // Play unlocking audio
-                soundManager.PlaySound("UnlockLock");
+                soundManager.PlaySound(Types.SoundType.UnlockLock);
 
                 int seconds = 1800; // 30 minutes
 
@@ -720,13 +720,13 @@ namespace Merge
                     {
                         case Types.Type.Chest:
                             // Play speeding up audio
-                            soundManager.PlaySound("Generate");
+                            soundManager.PlaySound(Types.SoundType.Generate);
 
                             timeManager.RemoveTimer(item.id);
                             break;
                         case Types.Type.Gen:
                             // Play speeding up audio
-                            soundManager.PlaySound("Generate");
+                            soundManager.PlaySound(Types.SoundType.Generate);
 
                             timeManager.RemoveTimer(item.id);
                             break;

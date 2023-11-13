@@ -276,7 +276,7 @@ namespace Merge
                 popupManager.Pop(
                     LOCALE.Get("pop_board_full"),
                     initialPosition,
-                    "Buzz"
+                    Types.SoundType.Buzz
                 );
             }
         }
@@ -376,7 +376,7 @@ namespace Merge
 
                         dataManager.SaveInventory();
 
-                        soundManager.PlaySound("OpenCrate"); // TODO - Set proper sound
+                        soundManager.PlaySound(Types.SoundType.OpenCrate); // TODO - Set proper sound
 
                         gameplayUI.BlipInventoryIndicator();
 
@@ -401,7 +401,7 @@ namespace Merge
                         popupManager.Pop(
                             LOCALE.Get("pop_inventory_full"),
                             item.transform.position,
-                            "Buzz",
+                            Types.SoundType.Buzz,
                             true
                         );
 

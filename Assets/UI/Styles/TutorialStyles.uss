@@ -72,8 +72,8 @@
 }
 
 .pointer_image {
-    width: 42px;
-    height: 36px;
+    width: 30px;
+    height: 26px;
     background-image: url('project://database/Assets/Sprites/Other/Pointer1.png?fileID=2800000&guid=cbf41892304d91b4d89b2cff8147e68e&type=3#Pointer1');
     position: absolute;
     left: 0;

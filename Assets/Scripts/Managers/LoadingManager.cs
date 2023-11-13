@@ -13,6 +13,7 @@ namespace Merge
         public bool stayOnScene = false;
         public bool logPhases = false;
         public float fillSpeed = 30f;
+        public TutorialData tutorialData;
         public SceneLoader sceneLoader;
         public GameObject uiDocument;
         public LoadingSceneUI loadingSceneUI;
@@ -25,7 +26,6 @@ namespace Merge
         [ReadOnly]
         [SerializeField]
         private float fillCount = 0;
-        private VisualElement fill;
         private Action callback;
         private Action<int> callbackAge;
         private float singlePhasePercent = 10f;
@@ -38,17 +38,20 @@ namespace Merge
         private NotificsManager notificsManager;
         private SoundManager soundManager;
 
+        // UI
+        // private VisualElement fill;
+
         void Start()
         {
             // Cache
             dataManager = DataManager.Instance;
             userDataHandler = GetComponent<UserDataHandler>();
             notificsManager = Services.Instance.GetComponent<NotificsManager>();
-            soundManager=SoundManager.Instance;
+            soundManager = SoundManager.Instance;
 
             // UI
-            VisualElement root = uiDocument.GetComponent<UIDocument>().rootVisualElement;
-            fill = root.Q<VisualElement>("Fill");
+            /* VisualElement root = uiDocument.GetComponent<UIDocument>().rootVisualElement;
+             fill = root.Q<VisualElement>("Fill");*/
 
             // Get Ready
             singlePhasePercent = 100f / (maxPhase + 1);
@@ -69,7 +72,7 @@ namespace Merge
             {
                 fillCount = Mathf.MoveTowards(fillCount, 100, fillSpeed * Time.deltaTime);
 
-                fill.style.width = new Length(fillCount, LengthUnit.Pixel);
+                // fill.style.width = new Length(fillCount, LengthUnit.Pixel);
 
                 // Check and get game data
                 // This phase is being checked every time
@@ -110,15 +113,15 @@ namespace Merge
                 {
                     loading = false;
                     ContinueLoading();
-                   /* loading = false;
-                    if (PlayerPrefs.HasKey("ageAccepted"))
-                    {
-                        ContinueLoading();
-                    }
-                    else
-                    {
-                        loadingSceneUI.CheckAge(callbackAge);
-                    }*/
+                    /* loading = false;
+                     if (PlayerPrefs.HasKey("ageAccepted"))
+                     {
+                         ContinueLoading();
+                     }
+                     else
+                     {
+                         loadingSceneUI.CheckAge(callbackAge);
+                     }*/
 
                     if (logPhases)
                     {
@@ -197,14 +200,37 @@ namespace Merge
         public void StartLoading()
         {
             // PLay background music
-            soundManager.PlayMusic("Loading");
-            
+            soundManager.PlayMusic(Types.MusicType.Loading);
+
             loading = true;
         }
 
         public void LoadNextScene()
         {
-            sceneLoader.Load(1);
+            // Check tutorial scene here
+            if (!PlayerPrefs.HasKey("tutorialFinished") && PlayerPrefs.HasKey("tutorialStep"))
+            {
+                string tutorialStep = PlayerPrefs.GetString("tutorialStep");
+
+                for (int i = 0; i < tutorialData.steps.Length; i++)
+                {
+                    if (tutorialData.steps[i].id == tutorialStep)
+                    {
+                        if (tutorialData.steps[i].scene == Types.Scene.Gameplay)
+                        {
+                            // Gameplay scene
+                            sceneLoader.Load(Types.Scene.Gameplay);
+
+                            return;
+                        }
+
+                        break;
+                    }
+                }
+            }
+            
+            // Hub scene
+            sceneLoader.Load(Types.Scene.Hub);
         }
 
         void HandleAge(int newValue)

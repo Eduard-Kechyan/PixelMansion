@@ -25,7 +25,7 @@ namespace Merge
         public static bool selectableIsChanging = false;
         public static bool convoUILoading = true;
 
-        public static string lastSceneName = "";
+        public static Types.Scene lastScene = Types.Scene.None;
 
         // Temp data
         public static string taskToComplete = "";
@@ -40,7 +40,7 @@ namespace Merge
         {
             Instance = this;
 
-            lastSceneName = "";
+            lastScene = Types.Scene.None;
             taskToComplete = "";
 
             colorBlue = FromHEX("71A0F6");

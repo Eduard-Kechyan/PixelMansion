@@ -61,8 +61,21 @@ SpriteAtlas:
     - 20feb4a762c72b3438394c05558c7909: 21300000
     - b4b5f8086a07abf49bc1dc2b8cf57e98: 21300000
     - aecefaf87cdaa094fb9f95ad7c7f400c: 21300000
+    - a68217ba1bc6f9a4dbb85ace70b9ca17: 21300000
     - da9216fa9b665944c9866f384cd15f39: 21300000
     - cf15db4c14889544f93c0531e528d239: 21300000
+    - 6d6177bc530c98e4894d8b9e6e631322: 553923557
+    - 6d6177bc530c98e4894d8b9e6e631322: 1509843095
+    - 6d6177bc530c98e4894d8b9e6e631322: 776455363
+    - 6d6177bc530c98e4894d8b9e6e631322: -1684836421
+    - 6d6177bc530c98e4894d8b9e6e631322: -648292492
+    - 6d6177bc530c98e4894d8b9e6e631322: 1255185831
+    - 6d6177bc530c98e4894d8b9e6e631322: 1921920836
+    - 6d6177bc530c98e4894d8b9e6e631322: -506458403
+    - 6d6177bc530c98e4894d8b9e6e631322: 1050164883
+    - 6d6177bc530c98e4894d8b9e6e631322: -845074983
+    - 6d6177bc530c98e4894d8b9e6e631322: 991938947
+    - 6d6177bc530c98e4894d8b9e6e631322: 1148935277
     - 12bad7cc644735748b7eb480727b50a4: 21300000
     - 1ebc37de54c49164095e17c603278279: 21300000
     - 5af0a1ef3db269a48ac96828aad562c5: 21300000
@@ -77,8 +90,21 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 20feb4a762c72b3438394c05558c7909, type: 3}
   - {fileID: 21300000, guid: b4b5f8086a07abf49bc1dc2b8cf57e98, type: 3}
   - {fileID: 21300000, guid: aecefaf87cdaa094fb9f95ad7c7f400c, type: 3}
+  - {fileID: 21300000, guid: a68217ba1bc6f9a4dbb85ace70b9ca17, type: 3}
   - {fileID: 21300000, guid: da9216fa9b665944c9866f384cd15f39, type: 3}
   - {fileID: 21300000, guid: cf15db4c14889544f93c0531e528d239, type: 3}
+  - {fileID: 553923557, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
+  - {fileID: 1509843095, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
+  - {fileID: 776455363, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
+  - {fileID: -1684836421, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
+  - {fileID: -648292492, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
+  - {fileID: 1255185831, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
+  - {fileID: 1921920836, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
+  - {fileID: -506458403, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
+  - {fileID: 1050164883, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
+  - {fileID: -845074983, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
+  - {fileID: 991938947, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
+  - {fileID: 1148935277, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
   - {fileID: 21300000, guid: 12bad7cc644735748b7eb480727b50a4, type: 3}
   - {fileID: 21300000, guid: 1ebc37de54c49164095e17c603278279, type: 3}
   - {fileID: 21300000, guid: 5af0a1ef3db269a48ac96828aad562c5, type: 3}
@@ -92,8 +118,21 @@ SpriteAtlas:
   - Title
   - Title
   - SliderDragger
+  - LoadingBackground
   - SkyDown
   - LoaderFrame
+  - Spinner_10
+  - Spinner_11
+  - Spinner_9
+  - Spinner_8
+  - Spinner_3
+  - Spinner_2
+  - Spinner_1
+  - Spinner_0
+  - Spinner_7
+  - Spinner_6
+  - Spinner_5
+  - Spinner_4
   - BorderTop
   - Fill
   - BackgroundShadow

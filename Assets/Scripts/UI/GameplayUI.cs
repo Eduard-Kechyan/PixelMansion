@@ -9,6 +9,7 @@ namespace Merge
     {
         // Variables
         public SceneLoader sceneLoader;
+        public PointerHandler pointerHandler;
 
         [HideInInspector]
         public bool loaded = false;
@@ -87,8 +88,15 @@ namespace Merge
             // UI taps
             homeButton.clicked += () =>
             {
-                soundManager.PlaySound("Transition");
-                sceneLoader.Load(1);
+                if (pointerHandler != null)
+                {
+                    pointerHandler.ButtonPress("Play");
+                }
+                else
+                {
+                    soundManager.PlaySound(Types.SoundType.Transition);
+                    sceneLoader.Load(Types.Scene.Hub);
+                }
             };
             inventoryButton.clicked += () => inventoryMenu.Open();
             bonusButton.clicked += () => bonusManager.GetBonus();

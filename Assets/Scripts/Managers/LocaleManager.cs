@@ -23,7 +23,7 @@ namespace Merge
     private VisualElement hubLocaleWrapper;
     private VisualElement gameplayLocaleWrapper;
 
-    public void Init(string sceneName)
+    public void Init(Types.Scene scene)
     {
         gameRefs = GameRefs.Instance;
 
@@ -36,7 +36,7 @@ namespace Merge
         }
 
         // Get hub locale wrapper
-        if (sceneName == "Hub")
+        if (scene == Types.Scene.Hub)
         {
             hubLocaleWrapper = gameRefs.hubUI.GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("LocaleWrapper");
 

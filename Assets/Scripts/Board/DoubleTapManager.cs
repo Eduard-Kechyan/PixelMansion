@@ -100,7 +100,7 @@ namespace Merge
                         popupManager.Pop(
                             LOCALE.Get("pop_board_full"),
                             interactions.currentItem.transform.position,
-                            "Buzz",
+                            Types.SoundType.Buzz,
                             true
                         );
                     }
@@ -165,7 +165,7 @@ namespace Merge
                     popupManager.Pop(
                         LOCALE.Get("pop_board_full"),
                         interactions.currentItem.transform.position,
-                        "Buzz",
+                        Types.SoundType.Buzz,
                         true
                     );
                 }

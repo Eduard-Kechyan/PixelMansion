@@ -10,6 +10,7 @@ namespace Merge
         // Variables
         public Sprite rootSprite;
         public Selector selector;
+        public TutorialManager tutorialManager;
 
         [Header("Pan")]
         public bool canPan = true;
@@ -198,7 +199,7 @@ namespace Merge
         void Update()
         {
             // Check if panning is enabled
-            if (canPan && !menuUI.menuOpen && !cameraMotion.moving)
+            if (canPan && !menuUI.menuOpen && !cameraMotion.moving && tutorialManager != null)
             {
                 if (Input.touchCount == 1) // Pan
                 {

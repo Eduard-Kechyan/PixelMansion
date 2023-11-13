@@ -40,7 +40,7 @@
 .main_title {
     flex-grow: 1;
     background-color: rgba(0, 0, 0, 0);
-    margin-top: 40px;
+    margin-top: 20px;
     width: 120px;
     margin-left: auto;
     margin-right: auto;
@@ -116,7 +116,7 @@
     position: absolute;
     left: 0;
     top: auto;
-    bottom: -4.5px;
+    bottom: 0;
     right: 0;
     width: 100%;
     -unity-text-align: upper-center;
@@ -271,4 +271,15 @@
     background-image: url('project://database/Assets/Sprites/Buttons/Main/DebugButton.png?fileID=2800000&guid=15ad31ceda532ec4892dda5273f74f24&type=3#DebugButton');
     width: 20px;
     height: 20px;
+}
+
+.spinner {
+    background-image: url('project://database/Assets/Sprites/Scenes/Loading/Spinner.png?fileID=1921920836&guid=6d6177bc530c98e4894d8b9e6e631322&type=3#Spinner_1');
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    left: 50%;
+    bottom: 16px;
+    scale: 1 1;
+    translate: -50% 0;
 }

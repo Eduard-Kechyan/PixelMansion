@@ -484,7 +484,7 @@ namespace Merge
                 HandleDailyItem(order);
             }
 
-            if (sceneLoader.sceneName == "Gameplay")
+            if (sceneLoader.scene == Types.Scene.Gameplay)
             {
                 StartCoroutine(AddItemToBoardOrBonusButton(order, shopItemType));
             }
@@ -508,7 +508,7 @@ namespace Merge
 
             paymentsManager.Purchase(shopGem.id, () =>
             {
-                if (sceneLoader.sceneName == "Gameplay")
+                if (sceneLoader.scene == Types.Scene.Gameplay)
                 {
                     valuePop.PopValue(shopGem.amount, Types.CollGroup.Gems, uiButtons.gameplayShopButtonPos);
 
@@ -544,7 +544,7 @@ namespace Merge
 
             paymentsManager.Purchase(shopGold.id, () =>
             {
-                if (sceneLoader.sceneName == "Gameplay")
+                if (sceneLoader.scene == Types.Scene.Gameplay)
                 {
                     valuePop.PopValue(shopGold.amount, Types.CollGroup.Gold, uiButtons.gameplayShopButtonPos);
                 }

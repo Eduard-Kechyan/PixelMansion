@@ -11,7 +11,6 @@ namespace Merge
         [HideInInspector]
         public bool isRight;
         public float changeSpeed = 0.1f;
-        public AudioClip changeSound;
         public int spriteOrder = -1;
         [Condition("isRight", true)]
         public Color shadowColor;
@@ -284,7 +283,7 @@ namespace Merge
             {
                 chunks[i].material.SetFloat("_FlashAmount", 1);
 
-                SoundManager.Instance.PlaySound("", changeSound);
+                SoundManager.Instance.PlaySound(Types.SoundType.Generate);
 
                 chunks[i].sprite = ConvertOrder(spriteOrder, chunks[i].name);
 

@@ -9,7 +9,6 @@ namespace Merge
     {
         // Variables
         public float changeSpeed = 0.1f;
-        public AudioClip changeSound;
         public int spriteOrder = -1;
 
         [Header("Flash")]
@@ -70,7 +69,7 @@ namespace Merge
             {
                 overlay = transform.GetChild(0).GetComponent<SpriteRenderer>();
 
-                List<Transform> preTiles = new ();
+                List<Transform> preTiles = new();
 
                 // Start at 1 since 0 is the overlay
                 for (int i = 1; i < transform.childCount; i++)
@@ -90,7 +89,7 @@ namespace Merge
                     {
                         SpriteRenderer newSpriteRenderer = preTiles[i].GetComponent<SpriteRenderer>();
 
-                        List<SpriteRenderer> tempTiles = new (){
+                        List<SpriteRenderer> tempTiles = new(){
                         newSpriteRenderer
                     };
 
@@ -101,7 +100,7 @@ namespace Merge
 
                         if (isOld)
                         {
-                            List<Sprite> tempTileSprites = new (){
+                            List<Sprite> tempTileSprites = new(){
                             newSpriteRenderer.sprite
                         };
 
@@ -125,7 +124,7 @@ namespace Merge
                         {
                             SpriteRenderer newSpriteRenderer = preTiles[i].GetComponent<SpriteRenderer>();
 
-                            List<SpriteRenderer> tempTiles = new (){
+                            List<SpriteRenderer> tempTiles = new(){
                         newSpriteRenderer
                     };
 
@@ -133,7 +132,7 @@ namespace Merge
 
                             if (isOld)
                             {
-                                List<Sprite> tempTileSprites = new (){
+                                List<Sprite> tempTileSprites = new(){
                                 newSpriteRenderer.sprite
                             };
 
@@ -303,7 +302,7 @@ namespace Merge
                 {
                     tiles[i][j].material.SetFloat("_FlashAmount", 1);
 
-                    SoundManager.Instance.PlaySound("", changeSound);
+                    SoundManager.Instance.PlaySound(Types.SoundType.Generate);
 
                     tiles[i][j].sprite = sprites[spriteOrder];
                 }

@@ -95,16 +95,12 @@ namespace Merge
             {
                 if (pointerHandler != null)
                 {
-                    pointerHandler.ButtonPress("Play", () =>
-                    {
-                        soundManager.PlaySound("Transition");
-                        sceneLoader.Load(2);
-                    });
+                    pointerHandler.ButtonPress("Play");
                 }
                 else
                 {
-                    soundManager.PlaySound("Transition");
-                    sceneLoader.Load(2);
+                    soundManager.PlaySound(Types.SoundType.Transition);
+                    sceneLoader.Load(Types.Scene.Gameplay);
                 }
             };
 

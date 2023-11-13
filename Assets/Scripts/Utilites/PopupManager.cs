@@ -47,7 +47,7 @@ namespace Merge
             root = popupUI.rootVisualElement;
         }
 
-        public void Pop(string newText, Vector2 position, string soundName = "", bool convertPosToUI = false, bool fromSelector = false)
+        public void Pop(string newText, Vector2 position, Types.SoundType soundType=Types.SoundType.None, bool convertPosToUI = false, bool fromSelector = false)
         {
             isSelectorPopup = fromSelector;
 
@@ -93,20 +93,20 @@ namespace Merge
             // Add popup to the UI
             root.Add(newPopupLabel);
 
-            newPopupLabel.RegisterCallback<GeometryChangedEvent>(evt => CheckForPopup(evt, position, newPopupLabel, soundName, convertPosToUI, fromSelector));
+            newPopupLabel.RegisterCallback<GeometryChangedEvent>(evt => CheckForPopup(evt, position, newPopupLabel, soundType, convertPosToUI, fromSelector));
         }
 
-        void CheckForPopup(GeometryChangedEvent evt, Vector2 position, Label newPopupLabel, string soundName, bool convertPosToUI, bool fromSelector)
+        void CheckForPopup(GeometryChangedEvent evt, Vector2 position, Label newPopupLabel, Types.SoundType soundType, bool convertPosToUI, bool fromSelector)
         {
-            root.UnregisterCallback<GeometryChangedEvent>(evt => CheckForPopup(evt, position, newPopupLabel, soundName, convertPosToUI, fromSelector));
+            root.UnregisterCallback<GeometryChangedEvent>(evt => CheckForPopup(evt, position, newPopupLabel, soundType, convertPosToUI, fromSelector));
 
             if (!isPopupShowing)
             {
-                StartCoroutine(PopText(position, newPopupLabel, soundName, convertPosToUI, fromSelector));
+                StartCoroutine(PopText(position, newPopupLabel, soundType, convertPosToUI, fromSelector));
             }
         }
 
-        IEnumerator PopText(Vector2 position, Label newPopupLabel, string soundName = "", bool convertPosToUI = false, bool fromSelector = false)
+        IEnumerator PopText(Vector2 position, Label newPopupLabel, Types.SoundType soundType, bool convertPosToUI = false, bool fromSelector = false)
         {
             isPopupShowing = true;
 
@@ -155,9 +155,9 @@ namespace Merge
             newPopupLabel.style.top = newPos.y - 10;
 
             // Play popup sound
-            if (soundName != "")
+            if (soundType != Types.SoundType.None)
             {
-                soundManager.PlaySound(soundName);
+                soundManager.PlaySound(soundType);
             }
 
             yield return new WaitForSeconds(timeOut * 2);

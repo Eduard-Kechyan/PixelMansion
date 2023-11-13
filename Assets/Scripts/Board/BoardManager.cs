@@ -290,7 +290,7 @@ namespace Merge
                 gameData.boardData[x, y].state = Types.State.Locker;
 
                 // Play crate opening audio
-                soundManager.PlaySound("OpenCrate");
+                soundManager.PlaySound(Types.SoundType.OpenCrate);
 
                 int order = GetBoardOrder(x, y);
 
@@ -549,7 +549,7 @@ namespace Merge
             newItem.gameObject.layer = LayerMask.NameToLayer("ItemDragging");
 
             // Play generating audio
-            soundManager.PlaySound("Generate");
+            soundManager.PlaySound(Types.SoundType.Generate);
 
             newItem.transform.position = initialPosition;
 

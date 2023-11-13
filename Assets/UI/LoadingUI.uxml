@@ -1,21 +1,24 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/Styles/LoadingStyle.uss?fileID=7433441132597879392&amp;guid=d3edca44cec65344aa261208ef07e1d2&amp;type=3#LoadingStyle" />
     <Style src="project://database/Assets/UI/Styles/Main.uss?fileID=7433441132597879392&amp;guid=b6d7ed9290f88c745af1e68e28dec072&amp;type=3#Main" />
-    <ui:VisualElement name="SkyUp" class="sky_up">
+    <ui:VisualElement name="SkyUp" class="sky_up" style="display: none;">
         <ui:VisualElement class="img" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/Loading/SkyUp.png?fileID=2800000&amp;guid=5cc777d5624f2a74b9c845b2ff6a4267&amp;type=3#SkyUp&apos;);" />
         <ui:VisualElement class="img" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/Loading/SkyUp.png?fileID=2800000&amp;guid=5cc777d5624f2a74b9c845b2ff6a4267&amp;type=3#SkyUp&apos;);" />
     </ui:VisualElement>
-    <ui:VisualElement name="SkyDown" class="sky_down">
+    <ui:VisualElement name="SkyDown" class="sky_down" style="display: none;">
         <ui:VisualElement class="img" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/Loading/SkyDown.png?fileID=2800000&amp;guid=da9216fa9b665944c9866f384cd15f39&amp;type=3#SkyDown&apos;);" />
         <ui:VisualElement class="img" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/Loading/SkyDown.png?fileID=2800000&amp;guid=da9216fa9b665944c9866f384cd15f39&amp;type=3#SkyDown&apos;);" />
     </ui:VisualElement>
-    <ui:VisualElement name="Background" class="background" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/Loading/ScenePlaceholder.png?fileID=2800000&amp;guid=5c1d5dd59e64e744ca01efb228801bb0&amp;type=3#ScenePlaceholder&apos;);" />
+    <ui:VisualElement name="Background" class="background" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/Loading/LoadingBackground.png?fileID=2800000&amp;guid=a68217ba1bc6f9a4dbb85ace70b9ca17&amp;type=3#LoadingBackground&apos;);" />
+    <ui:VisualElement name="ShadowBottom" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/BackgroundShadow.png?fileID=2800000&amp;guid=5af0a1ef3db269a48ac96828aad562c5&amp;type=3#BackgroundShadow&apos;); width: 180px; height: 180px; position: absolute; left: 0; right: 0; top: -90px;" />
+    <ui:VisualElement name="ShadowBottom" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/BackgroundShadow.png?fileID=2800000&amp;guid=5af0a1ef3db269a48ac96828aad562c5&amp;type=3#BackgroundShadow&apos;); rotate: 180deg; width: 180px; height: 180px; position: absolute; left: 0; right: 0; bottom: -90px;" />
     <ui:VisualElement name="MainTitle" class="main_title">
         <ui:Label tabindex="-1" text="Pixel" display-tooltip-when-elided="false" name="TitleLabel" class="chunk" />
         <ui:Label tabindex="-1" text="Mansion" display-tooltip-when-elided="false" name="TitleLabel" class="chunk" />
     </ui:VisualElement>
     <ui:Label tabindex="-1" text="Merge Mystery" display-tooltip-when-elided="false" name="SubtitleLabel" class="chunk subtitle" />
-    <ui:VisualElement name="Loader" class="loader" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/Loading/LoaderBackground.png?fileID=2800000&amp;guid=8d3c0e13abeda294daf3dafdd4914243&amp;type=3#LoaderBackground&apos;);">
+    <ui:VisualElement name="Spinner" class="spinner" />
+    <ui:VisualElement name="Loader" class="loader" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/Loading/LoaderBackground.png?fileID=2800000&amp;guid=8d3c0e13abeda294daf3dafdd4914243&amp;type=3#LoaderBackground&apos;); display: none;">
         <ui:VisualElement name="Fill" class="fill" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/Loading/Fill.png?fileID=2800000&amp;guid=1ebc37de54c49164095e17c603278279&amp;type=3#Fill&apos;);" />
         <ui:VisualElement name="Frame" class="frame" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/Loading/LoaderFrame.png?fileID=2800000&amp;guid=cf15db4c14889544f93c0531e528d239&amp;type=3#LoaderFrame&apos;);" />
     </ui:VisualElement>

@@ -1,10 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/Styles/TutorialStyles.uss?fileID=7433441132597879392&amp;guid=16f1bc00d653880468f40952555eef63&amp;type=3#TutorialStyles" />
-    <ui:VisualElement name="StoryContainer" class="story_container" />
-    <ui:VisualElement name="SkipButtonContainer" class="skip_button_container" style="right: 8px; top: 22px;">
-        <ui:Label tabindex="-1" text="Skip" display-tooltip-when-elided="true" name="Label" class="skip_button_label" />
-        <ui:VisualElement name="Icon" class="icon skip_button_icon" />
-    </ui:VisualElement>
     <ui:VisualElement name="Pointer" picking-mode="Ignore" class="pointer">
         <ui:VisualElement name="Image" class="pointer_image" />
     </ui:VisualElement>

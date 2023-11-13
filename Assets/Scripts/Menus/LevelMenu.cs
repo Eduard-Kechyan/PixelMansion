@@ -322,7 +322,7 @@ namespace Merge
                 StartCoroutine(PopOutBonus(i * 0.4f, i, check));
             }
 
-            soundManager.PlaySound("LevelUp");
+            soundManager.PlaySound(Types.SoundType.LevelUp);
         }
 
         IEnumerator PopOutBonus(float seconds, int order, bool newCheck = true)

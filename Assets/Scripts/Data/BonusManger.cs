@@ -68,7 +68,7 @@ namespace Merge
                 popupManager.Pop(
                     LOCALE.Get("pop_board_full"),
                     uiButtons.gameplayBonusButtonPos,
-                    "Buzz",
+                    Types.SoundType.Buzz,
                     true
                 );
             }

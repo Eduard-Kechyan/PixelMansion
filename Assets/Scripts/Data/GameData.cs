@@ -163,11 +163,11 @@ namespace Merge
             LoadSprites();
         }
 
-        public void Init(string sceneName)
+        public void Init(Types.Scene scene)
         {
             valuesUI = GameRefs.Instance.valuesUI;
 
-            if (sceneName == "Gameplay")
+            if (scene == Types.Scene.Gameplay)
             {
                 gameplayUI = GameRefs.Instance.gameplayUI;
             }
@@ -305,7 +305,7 @@ namespace Merge
             {
                 if (playSound && !canLevelUp)
                 {
-                    soundManager.PlaySound("LevelUpIndicator");
+                    soundManager.PlaySound(Types.SoundType.LevelUpIndicator);
                 }
                 ToggleCanLevelUpCheck(true);
 

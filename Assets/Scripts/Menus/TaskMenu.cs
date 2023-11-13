@@ -155,9 +155,9 @@ namespace Merge
 
                             playButton.style.unityBackgroundImageTintColor = Glob.colorBlue;
 
-                            if (sceneLoader.GetSceneName() == "Hub")
+                            if (sceneLoader.GetScene() == Types.Scene.Hub)
                             {
-                                playButton.clicked += () => sceneLoader.Load(2);
+                                playButton.clicked += () => sceneLoader.Load(Types.Scene.Gameplay);
                             }
                             else
                             {
@@ -228,7 +228,7 @@ namespace Merge
         // so it can be used in the hub scene
         void HandleCompletedTap(string groupId, string taskId)
         {
-            if (sceneLoader.GetSceneName() == "Hub")
+            if (sceneLoader.GetScene() == Types.Scene.Hub)
             {
                 taskManager.TryToCompleteTask(groupId, taskId);
 
@@ -238,7 +238,7 @@ namespace Merge
             {
                 Glob.taskToComplete = groupId + "|" + taskId;
 
-                sceneLoader.Load(1);
+                sceneLoader.Load(Types.Scene.Hub);
             }
         }
     }

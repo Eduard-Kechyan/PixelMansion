@@ -13,17 +13,26 @@ namespace Merge
         public AudioSource sourceSound;
 
         [Header("Music")]
-        public SoundClip[] musicClips;
+        public MusicClip[] musicClips;
         public AudioSource sourceMusic;
 
         [HideInInspector]
-        public string currentMusic = "";
+        public Types.MusicType currentMusic;
+
+        [Serializable]
+        public class MusicClip
+        {
+            public AudioClip clip;
+            public float volume = 1f;
+            public Types.MusicType type;
+        }
 
         [Serializable]
         public class SoundClip
         {
             public AudioClip clip;
             public float volume = 1f;
+            public Types.SoundType type;
         }
 
         // References
@@ -58,35 +67,28 @@ namespace Merge
             sourceSound.volume = volume;
         }
 
-        public void PlaySound(string clipName = "", AudioClip clip = null)
+        public void PlaySound(Types.SoundType soundType, string clipName = "")
         {
-            if (clip != null)
-            {
-                sourceSound.PlayOneShot(clip);
-            }
-            else
-            {
-                bool found = false;
+            bool found = false;
 
-                foreach (SoundClip i in soundClips)
+            foreach (SoundClip i in soundClips)
+            {
+                if (soundType == Types.SoundType.None ? i.clip.name == clipName : i.type == soundType)
                 {
-                    if (i.clip.name == clipName + "Sound")
+                    if (settings.soundOn)
                     {
-                        if (settings.soundOn)
-                        {
-                            sourceSound.volume = i.volume;
-                        }
-
-                        sourceSound.PlayOneShot(i.clip);
-
-                        found = true;
+                        sourceSound.volume = i.volume;
                     }
-                }
 
-                if (!found)
-                {
-                    Debug.Log("Sound \"" + clipName + "\" not found!");
+                    sourceSound.PlayOneShot(i.clip);
+
+                    found = true;
                 }
+            }
+
+            if (!found)
+            {
+                Debug.Log("Sound \"" + soundType.ToString() + "\" not found!");
             }
         }
 
@@ -97,52 +99,43 @@ namespace Merge
             sourceMusic.volume = volume;
         }
 
-        public void PlayMusic(string clipName = "", AudioClip clip = null)
+        public void PlayMusic(Types.MusicType musicType)
         {
-            currentMusic = clipName;
+            currentMusic = musicType;
 
-            if (clip != null)
+            bool found = false;
+
+            if (settings == null)
             {
-                sourceMusic.clip = clip;
+                settings = Settings.Instance;
             }
-            else
+
+            if (musicType == Types.MusicType.Loading && settings.musicOn)
             {
-                bool found = false;
+                sourceMusic.volume = 1f;
+            }
 
-                if (settings == null)
+            foreach (MusicClip i in musicClips)
+            {
+                if (i.type == musicType)
                 {
-                    settings = Settings.Instance;
-                }
-
-                if (clipName == "Loading" && settings.musicOn)
-                {
-                    sourceMusic.volume = 1f;
-                }
-
-                foreach (SoundClip i in musicClips)
-                {
-                    if (i.clip.name == clipName + "Music")
+                    if (settings.soundOn)
                     {
-                        if (settings.soundOn)
-                        {
-                            sourceMusic.volume = i.volume;
-                        }
-
-                        sourceMusic.clip = i.clip;
-
-                        sourceMusic.Play();
-
-                        found = true;
+                        sourceMusic.volume = i.volume;
                     }
-                }
 
-                if (!found)
-                {
-                    Debug.Log("Music \"" + clipName + "\" not found!");
+                    sourceMusic.clip = i.clip;
+
+                    sourceMusic.Play();
+
+                    found = true;
                 }
             }
 
-            // sourceMusic.Play(); // TODO - Check if we need this
+            if (!found)
+            {
+                Debug.Log("Music \"" + musicType.ToString() + "\" not found!");
+            }
         }
 
         public void FadeInMusic(float seconds)

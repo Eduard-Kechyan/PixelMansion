@@ -213,7 +213,7 @@ namespace Merge
         {
             charMove.SetDestination(transform.localPosition);
 
-            soundManager.PlaySound("LevelUp"); // TODO add proper unlocking sfx (RoomUnlocking)
+            soundManager.PlaySound(Types.SoundType.LevelUp); // TODO add proper unlocking sfx (RoomUnlocking)
 
             // TODO - Add a nice particle effect here
         }

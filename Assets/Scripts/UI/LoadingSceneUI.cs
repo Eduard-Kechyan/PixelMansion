@@ -21,6 +21,11 @@ namespace Merge
         [Header("Age")]
         public int ageHeight = 24;
 
+        [Header("Spinner")]
+        public float spinnerSpeed = 0.05f;
+        [SerializeField]
+        private Sprite[] spinnerSprites;
+
         private int backgroundCount = 0;
         private float skyUpCount = 0;
         private float skyDownCount = 0;
@@ -40,6 +45,7 @@ namespace Merge
         private VisualElement background;
         private VisualElement mainTitle;
         private Label subtitle;
+        private VisualElement spinner;
         private Label versionLabel;
         private VisualElement skyUp;
         private VisualElement skyDown;
@@ -74,17 +80,18 @@ namespace Merge
             LOCALE = I18n.Instance;
 
             // Load the sprites
-            backgroundSprites = Resources.LoadAll<Sprite>("Scenes/Loading/Scene");
+            // backgroundSprites = Resources.LoadAll<Sprite>("Scenes/Loading/Scene");
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
 
-            background = root.Q<VisualElement>("Background");
+            //  background = root.Q<VisualElement>("Background");
             mainTitle = root.Q<VisualElement>("MainTitle");
             subtitle = root.Q<Label>("SubtitleLabel");
+            spinner = root.Q<VisualElement>("Spinner");
             versionLabel = root.Q<Label>("Version");
-            skyUp = root.Q<VisualElement>("SkyUp");
-            skyDown = root.Q<VisualElement>("SkyDown");
+            //  skyUp = root.Q<VisualElement>("SkyUp");
+            // skyDown = root.Q<VisualElement>("SkyDown");
 
             overlayBackground = root.Q<VisualElement>("OverlayBackground");
 
@@ -137,9 +144,10 @@ namespace Merge
             Init();
 
             // Start the animation
-            InvokeRepeating("ChangeBackgroundSprite", 0.0f, backgroundDelay * Time.fixedDeltaTime);
-            InvokeRepeating("MoveSkyUpSprite", 0.0f, skyUpDelay * Time.fixedDeltaTime);
-            InvokeRepeating("MoveSkyDownSprite", 0.0f, skyDownDelay * Time.fixedDeltaTime);
+            StartCoroutine(SpinTheSpinner());
+            /*   InvokeRepeating("ChangeBackgroundSprite", 0.0f, backgroundDelay * Time.fixedDeltaTime);
+               InvokeRepeating("MoveSkyUpSprite", 0.0f, skyUpDelay * Time.fixedDeltaTime);
+               InvokeRepeating("MoveSkyDownSprite", 0.0f, skyDownDelay * Time.fixedDeltaTime);*/
         }
 
         void Init()
@@ -176,6 +184,29 @@ namespace Merge
         }
 
         //// Animations ////
+        
+        // Animate the spinner
+        IEnumerator SpinTheSpinner()
+        {
+            WaitForSeconds wait = new(spinnerSpeed);
+            int count = 0;
+
+            while (true)
+            {
+                spinner.style.backgroundImage = new StyleBackground(spinnerSprites[count]);
+
+                if (count == spinnerSprites.Length - 1)
+                {
+                    count = 0;
+                }
+                else
+                {
+                    count++;
+                }
+
+                yield return wait;
+            }
+        }
 
         // Animate the background
         void ChangeBackgroundSprite()

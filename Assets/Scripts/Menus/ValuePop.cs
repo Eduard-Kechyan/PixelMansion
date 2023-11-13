@@ -84,7 +84,7 @@ namespace Merge
         {
             Sprite valuePopSprite;
             float valuePopOffset;
-            string valuePopSFX;
+            Types.SoundType valuePopSoundType;
 
             // Get the value pop's sprite, offset and SFX name
             switch (type)
@@ -92,22 +92,24 @@ namespace Merge
                 case Types.CollGroup.Energy:
                     valuePopSprite = energySprite;
                     valuePopOffset = valuesUI.energyButton.layout.x;
+                    valuePopSoundType = Types.SoundType.Energy;
                     break;
                 case Types.CollGroup.Gold:
                     valuePopSprite = goldSprite;
                     valuePopOffset = valuesUI.goldButton.layout.x;
+                    valuePopSoundType = Types.SoundType.Gold;
                     break;
                 case Types.CollGroup.Gems:
                     valuePopSprite = gemsSprite;
                     valuePopOffset = valuesUI.gemsButton.layout.x;
+                    valuePopSoundType = Types.SoundType.Gems;
                     break;
                 default: // Types.CollGroup.Experience
                     valuePopSprite = experienceSprite;
                     valuePopOffset = valuesUI.levelButton.layout.x;
+                    valuePopSoundType = Types.SoundType.Experience;
                     break;
             }
-
-            valuePopSFX = type.ToString();
 
             // Add value pop element to the root
             VisualElement valuePop = InitializePopValueElement(valuePopSprite, position, false, isUIPosition);
@@ -140,7 +142,7 @@ namespace Merge
             callback?.Invoke();
 
             // Play value pop sound
-            soundManager.PlaySound(valuePopSFX);
+            soundManager.PlaySound(valuePopSoundType);
 
             // Hide the value pop
             valuePop.style.visibility = Visibility.Hidden;
@@ -217,7 +219,6 @@ namespace Merge
         )
         {
             Sprite valuePopSprite = item.sprite;
-            string valuePopSFX = "Experience";
 
             // Add value pop element to the root
             VisualElement valuePop = InitializePopValueElement(valuePopSprite, initialPosition, true, isUIPosition);
@@ -257,7 +258,7 @@ namespace Merge
             yield return new WaitForSeconds(0.1f);
 
             // Play value pop sound
-            soundManager.PlaySound(valuePopSFX);
+            soundManager.PlaySound(Types.SoundType.Experience);
 
             // Hide the value pop
             valuePop.style.visibility = Visibility.Hidden;

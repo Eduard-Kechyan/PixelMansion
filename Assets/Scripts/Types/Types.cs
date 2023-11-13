@@ -7,6 +7,7 @@ namespace Merge
 {
     public class Types : MonoBehaviour
     {
+        //// CHARACTER ////
         public enum Character
         {
             NONE,
@@ -588,19 +589,13 @@ namespace Merge
             Menu
         };
 
-        public enum TutorialStepScene
-        {
-            Hub,
-            Gameplay
-        };
-
         [Serializable]
         public class TutorialStep
         {
             [HideInInspector]
             public string name;
             public string id;
-            public TutorialStepScene scene;
+            public Scene scene;
             public TutorialStepType type;
             public TutorialStepTask taskType;
             public string taskRef;
@@ -699,7 +694,43 @@ namespace Merge
             public string itemName;
         }
 
+
+        //// AUDIO ////
+        public enum MusicType
+        {
+            Loading,
+            Hub,
+            Gameplay,
+            Magical,
+        };
+
+        public enum SoundType
+        {
+            None,
+            Merge,
+            Generate,
+            UnlockLock,
+            OpenCrate,
+            LevelUp,
+            LevelUpIndicator,
+            Transition,
+            Experience,
+            Energy,
+            Gold,
+            Gems,
+            Pop,
+            Buzz
+        };
+
         //// OTHER ////
+        public enum Scene
+        {
+            Loading,
+            Hub,
+            Gameplay,
+            None
+        };
+
         public enum Locale
         {
             English, // English (en-US)
