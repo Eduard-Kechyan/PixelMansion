@@ -10,6 +10,12 @@ namespace Merge
     {
         public SceneLoader sceneLoader;
         public TaskManager taskManager;
+        public PointerHandler pointerHandler;
+
+        [HideInInspector]
+        public bool loadingTaskMenuButton = true;
+        [HideInInspector]
+        public Vector2 tempTaskButtonPos;
 
         [Serializable]
         private class CompletedNeed
@@ -64,10 +70,13 @@ namespace Merge
             taskMenu.style.opacity = 0;
         }
 
-        public void Open()
+        public void Open(Action<Vector2> callback = null)
         {
             // Set the title
             string title = LOCALE.Get("task_menu_title");
+
+            loadingTaskMenuButton = true;
+            tempTaskButtonPos = Vector2.zero;
 
             SetTasks();
 
@@ -127,12 +136,31 @@ namespace Merge
                         string groupId = gameData.tasksData[i].id;
                         string taskId = gameData.tasksData[i].tasks[j].id;
 
+                        // Get the first task group's first task's play button position
+                        if (i == 0 && j == 0)
+                        {
+                            newTask.Q<Button>("PlayButton").RegisterCallback<GeometryChangedEvent>(SetTaskButtonPos);
+                        }
+
                         // Set button
                         if (taskId == "Last")
                         {
                             newTask.Q<VisualElement>("TaskNeeds").style.display = DisplayStyle.None;
 
-                            playButton.clicked += () => HandleCompletedTap(groupId, taskId);
+                            playButton.clicked += () =>
+                            {
+                                if (pointerHandler != null)
+                                {
+                                    pointerHandler.ButtonPress(Types.Button.TaskMenu, () =>
+                                    {
+                                        HandleCompletedTap(groupId, taskId);
+                                    });
+                                }
+                                else
+                                {
+                                    HandleCompletedTap(groupId, taskId);
+                                }
+                            };
 
                             playButton.text = LOCALE.Get("task_button_finish");
 
@@ -143,7 +171,20 @@ namespace Merge
                         }
                         else if (gameData.tasksData[i].tasks[j].needs.Length == gameData.tasksData[i].tasks[j].completed)
                         {
-                            playButton.clicked += () => HandleCompletedTap(groupId, taskId);
+                            playButton.clicked += () =>
+                            {
+                                if (pointerHandler != null)
+                                {
+                                    pointerHandler.ButtonPress(Types.Button.TaskMenu, () =>
+                                    {
+                                        HandleCompletedTap(groupId, taskId);
+                                    });
+                                }
+                                else
+                                {
+                                    HandleCompletedTap(groupId, taskId);
+                                }
+                            };
 
                             playButton.text = LOCALE.Get("task_button_complete");
 
@@ -157,7 +198,20 @@ namespace Merge
 
                             if (sceneLoader.GetScene() == Types.Scene.Hub)
                             {
-                                playButton.clicked += () => sceneLoader.Load(Types.Scene.Gameplay);
+                                playButton.clicked += () =>
+                                {
+                                    if (pointerHandler != null)
+                                    {
+                                        pointerHandler.ButtonPress(Types.Button.TaskMenu, () =>
+                                        {
+                                            sceneLoader.Load(Types.Scene.Gameplay);
+                                        });
+                                    }
+                                    else
+                                    {
+                                        sceneLoader.Load(Types.Scene.Gameplay);
+                                    }
+                                };
                             }
                             else
                             {
@@ -240,6 +294,18 @@ namespace Merge
 
                 sceneLoader.Load(Types.Scene.Hub);
             }
+        }
+
+        void SetTaskButtonPos(GeometryChangedEvent evt)
+        {
+            root.UnregisterCallback<GeometryChangedEvent>(SetTaskButtonPos);
+
+            foreach (var taskGroup in taskScrollView.Children())
+            {
+                tempTaskButtonPos = taskGroup.Q<Button>("PlayButton").worldBound.center;
+            }
+
+            loadingTaskMenuButton = false;
         }
     }
 }

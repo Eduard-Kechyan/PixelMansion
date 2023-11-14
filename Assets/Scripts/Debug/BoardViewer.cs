@@ -6,76 +6,49 @@ using UnityEngine.UIElements;
 
 namespace Merge
 {
-    public class InitializeBoard : MonoBehaviour
+    public class BoardViewer : MonoBehaviour
     {
         // Variables
         public GameObject tile;
+        public GameObject item;
+        public InitialItems initialItems;
         public float tileWidth = 24f;
-        public float tileSize;
+        public float bottomOffset = 20f;
 
-        // References
-        private BoardManager boardManager;
-        private DataManager dataManager;
-        private GameData gameData;
-        private ItemHandler itemHandler;
-        private GameplayUI gameplayUI;
-
-        private GameObject board;
         private float singlePixelWidth;
         private float screenUnitWidth;
         private float boardHalfWidth;
         private float boardHalfHeight;
-        private SafeAreaHandler safeAreaHandler;
-        private Camera cam;
-        private VisualElement root;
 
-        private bool set;
+        private GameObject board;
+        private GameObject tiles;
+        private Types.Board[,] boardData;
+        private float tileSize;
+
+        // References
+        private Camera cam;
 
         void Start()
         {
             // Cache
             cam = Camera.main;
-            boardManager = GetComponent<BoardManager>();
 
-            // Cache instances
-            dataManager = DataManager.Instance;
-            gameData = GameData.Instance;
-            itemHandler = dataManager.GetComponent<ItemHandler>();
-            gameplayUI = GameRefs.Instance.gameplayUI;
-            safeAreaHandler = gameplayUI.GetComponent<SafeAreaHandler>();
-
-            // UI
-            root = gameplayUI.GetComponent<UIDocument>().rootVisualElement;
+            boardData = ConvertArrayToBoard(initialItems.content);
 
             // Set the gameObject
             board = gameObject;
+            tiles = transform.GetChild(0).gameObject;
 
             // Cache the preferences
             singlePixelWidth = cam.pixelWidth / GameData.GAME_PIXEL_WIDTH;
             screenUnitWidth =
                 cam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 10)).x * 2;
+
+            SetBoard();
         }
 
-        void Update()
+        void SetBoard()
         {
-            if (dataManager.loaded && !set)
-            {
-                set = true;
-
-                // Calculate board scale
-                root.RegisterCallback<GeometryChangedEvent>(SetBoard);
-
-                // Stop running the update function
-                enabled = false;
-            }
-        }
-
-        void SetBoard(GeometryChangedEvent evt)
-        {
-            root.UnregisterCallback<GeometryChangedEvent>(SetBoard);
-
-            // Ready the board
-
             // Get board sprite width
             float boardWidth = board.GetComponent<SpriteRenderer>().sprite.rect.width;
 
@@ -100,7 +73,7 @@ namespace Merge
 
             float boardPosX =
                 (screenUnitHeight / 2)
-                - ((screenUnitHeight / gamePixelHeight) * safeAreaHandler.GetBottomOffset());
+                - ((screenUnitHeight / gamePixelHeight) * bottomOffset);
 
             board.transform.position = new Vector3(
                 board.transform.position.x,
@@ -129,7 +102,6 @@ namespace Merge
         void CreateBoard()
         {
             // Loop the items to the board
-
             int count = 0;
 
             for (int x = 0; x < GameData.WIDTH; x++)
@@ -154,41 +126,63 @@ namespace Merge
 
                     newTile.gameObject.name = "Tile" + count;
 
-                    newTile.transform.parent = boardManager.boardTiles.transform;
+                    newTile.transform.SetParent(tiles.transform);
 
                     // Create item
-                    Types.Board boardItem = gameData.boardData[x, y];
-
-                    if (gameData.boardData[x, y].id == "")
+                    if (boardData[x, y] != null && boardData[x, y].sprite != null)
                     {
-                        gameData.boardData[x, y].id = Guid.NewGuid().ToString();
-                    }
+                        GameObject newItem = Instantiate(item, newTile.transform.position, Quaternion.identity);
 
-                    if (boardItem != null && boardItem.sprite != null)
-                    {
-                        Item newItem = itemHandler.CreateItem(newTile, tileSize, boardItem);
+                        newItem.GetComponent<SpriteRenderer>().sprite = boardData[x, y].sprite;
 
-                        if (newItem)
-                        {
-                            dataManager.UnlockItem(
-                                newItem.sprite.name,
-                                newItem.type,
-                                newItem.group,
-                                newItem.genGroup,
-                                newItem.collGroup,
-                                newItem.chestGroup
-                            );
-                        }
+                        newItem.transform.SetParent(newTile.transform);
+
+                        newItem.transform.localScale = new Vector3(1, 1, 1);
+
                     }
 
                     // Increase count for the next loop
                     count++;
                 }
             }
+        }
 
-            dataManager.SaveBoard(false, false);
+        public Types.Board[,] ConvertArrayToBoard(Types.Board[] boardArray)
+        {
+            Types.Board[,] newBoardData = new Types.Board[GameData.WIDTH, GameData.HEIGHT];
 
-            boardManager.boardSet = true;
+            int count = 0;
+
+            for (int i = 0; i < GameData.WIDTH; i++)
+            {
+                for (int j = 0; j < GameData.HEIGHT; j++)
+                {
+                    newBoardData[i, j] = new Types.Board
+                    {
+                        sprite = boardArray[count].sprite,
+                        type = boardArray[count].type,
+                        group = boardArray[count].group,
+                        genGroup = boardArray[count].genGroup,
+                        collGroup = boardArray[count].collGroup,
+                        chestGroup = boardArray[count].chestGroup,
+                        state = boardArray[count].state,
+                        crate = boardArray[count].crate,
+                        order = count,
+                        chestItems = boardArray[count].chestItems,
+                        chestItemsSet = boardArray[count].chestItemsSet,
+                        chestOpen = boardArray[count].chestOpen,
+                        generatesAt = boardArray[count].generatesAt,
+                        id = boardArray[count].id,
+                        gemPopped = boardArray[count].gemPopped,
+                        isCompleted = boardArray[count].isCompleted,
+                        timerOn = boardArray[count].timerOn,
+                    };
+
+                    count++;
+                }
+            }
+
+            return newBoardData;
         }
     }
 }

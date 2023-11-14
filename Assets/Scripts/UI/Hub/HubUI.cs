@@ -81,7 +81,7 @@ namespace Merge
             {
                 if (pointerHandler != null)
                 {
-                    pointerHandler.ButtonPress("Task", () =>
+                    pointerHandler.ButtonPress(Types.Button.Task, () =>
                     {
                         taskMenu.Open();
                     });
@@ -95,7 +95,7 @@ namespace Merge
             {
                 if (pointerHandler != null)
                 {
-                    pointerHandler.ButtonPress("Play");
+                    pointerHandler.ButtonPress(Types.Button.Play);
                 }
                 else
                 {
@@ -235,28 +235,80 @@ namespace Merge
             taskButton.style.display = DisplayStyle.Flex;
         }
 
-        public void ShowButton(string name)
+        public void ShowButton(Types.Button button)
         {
-            switch (name)
+            switch (button)
             {
-                case "play":
+                case Types.Button.Play:
                     playButton.style.display = DisplayStyle.Flex;
                     PlayerPrefs.SetInt("hubPlayButtonShowing", 1);
                     break;
-                case "settings":
+                case Types.Button.Settings:
                     settingsButton.style.display = DisplayStyle.Flex;
                     PlayerPrefs.SetInt("hubSettingsButtonShowing", 1);
                     break;
-                case "shop":
+                case Types.Button.Shop:
                     shopButton.style.display = DisplayStyle.Flex;
                     PlayerPrefs.SetInt("hubShopButtonShowing", 1);
                     break;
-                case "task":
+                case Types.Button.Task:
                     taskButton.style.display = DisplayStyle.Flex;
                     PlayerPrefs.SetInt("hubTaskButtonShowing", 1);
                     break;
             }
         }
+
+        public void HideButton(Types.Button button, bool alt = false)
+        {
+            switch (button)
+            {
+                case Types.Button.Play:
+                    if (alt)
+                    {
+                        playButton.SetEnabled(false);
+                    }
+                    else
+                    {
+                        playButton.style.display = DisplayStyle.None;
+                        PlayerPrefs.DeleteKey("hubPlayButtonShowing");
+                    }
+                    break;
+                case Types.Button.Settings:
+                    if (alt)
+                    {
+                        settingsButton.SetEnabled(false);
+                    }
+                    else
+                    {
+                        settingsButton.style.display = DisplayStyle.None;
+                        PlayerPrefs.DeleteKey("hubSettingsButtonShowing");
+                    }
+                    break;
+                case Types.Button.Shop:
+                    if (alt)
+                    {
+                        shopButton.SetEnabled(false);
+                    }
+                    else
+                    {
+                        shopButton.style.display = DisplayStyle.None;
+                        PlayerPrefs.DeleteKey("hubShopButtonShowing");
+                    }
+                    break;
+                case Types.Button.Task:
+                    if (alt)
+                    {
+                        taskButton.SetEnabled(false);
+                    }
+                    else
+                    {
+                        taskButton.style.display = DisplayStyle.None;
+                        PlayerPrefs.DeleteKey("hubTaskButtonShowing");
+                    }
+                    break;
+            }
+        }
+
 
         public void CloseUI()
         {

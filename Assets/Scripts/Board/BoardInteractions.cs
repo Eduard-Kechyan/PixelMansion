@@ -21,6 +21,7 @@ namespace Merge
         public Item currentItem;
         public ClockManager clockManager;
         public TimeManager timeManager;
+        public PointerHandler pointerHandler;
 
         [HideInInspector]
         public GameObject tempTile;
@@ -50,7 +51,6 @@ namespace Merge
         private GameData gameData;
         private ItemHandler itemHandler;
         private SoundManager soundManager;
-        private PointerHandler pointerHandler;
         private I18n LOCALE;
 
         // UI
@@ -76,7 +76,6 @@ namespace Merge
             gameData = GameData.Instance;
             itemHandler = dataManager.GetComponent<ItemHandler>();
             LOCALE = I18n.Instance; 
-            pointerHandler= GetComponent<PointerHandler>();
 
             // Cache root and dragOverlay
             root = GameRefs.Instance.gameplayUIDoc.rootVisualElement;
@@ -485,6 +484,8 @@ namespace Merge
             GameObject otherTile = otherItem.transform.parent.gameObject;
             Vector3 initialScale = otherItem.transform.localScale;
             Vector3 initialPos = otherItem.transform.position;
+
+            pointerHandler.CheckMerge(currentItem.sprite);
 
             // Calc new item name
             Item item = otherItem;

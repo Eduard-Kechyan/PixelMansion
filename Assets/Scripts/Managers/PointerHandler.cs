@@ -8,35 +8,46 @@ namespace Merge
 {
     public class PointerHandler : MonoBehaviour
     {
+        // Variables
+        public BoardInteractions boardInteractions;
+
         private Scale fullScale = new(new Vector2(1f, 1f));
         private Scale tapScale = new(new Vector2(0.8f, 0.8f));
 
         private Action buttonCallback = null;
         private Action mergeCallback = null;
 
-        private string currentButtonName = "";
+        private Types.Button currentButton;
+
+        private Coroutine pressCoroutine;
+       // private bool pressing = false;
+        private bool animatePress = false;
+
+        private Coroutine mergeCoroutine;
+        [HideInInspector]
+        public bool merging = false;
+        private bool animateMerge = false;
+        private Vector2 mergeFirstPos;
+        private Vector2 mergeSecondPos;
+        [HideInInspector]
+        public Sprite mergeSprite;
 
         [HideInInspector]
         public bool waitForBoardIndication = false;
-        public string boardIndicationItemName = "";
+
+        // References
+        private TaskMenu taskMenu;
 
         // UI
         private VisualElement root;
         private VisualElement pointer;
         private VisualElement pointerBackground;
 
-        void OnEnable()
-        {
-
-        }
-
-        void OnDisable()
-        {
-
-        }
-
         void Start()
         {
+            // Cache 
+            taskMenu= GameRefs.Instance.taskMenu;
+
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
 
@@ -48,17 +59,48 @@ namespace Merge
             }
         }
 
+        /* void Update()
+        {if (boardInteractions.interactionsEnabled && !boardInteractions.isDragging)
+            {
+                pointer.style.visibility = Visibility.Visible;
+            }
+            else
+            {
+                pointer.style.visibility = Visibility.Hidden;
+            }
+        }*/
+
         //// Press ////
-        public void HandlePress(Vector2 position, string buttonName, Action callback)
+        public void HandlePress(Vector2 position, Types.Button button, Action callback)
         {
             StopAllAnimations();
 
             buttonCallback = callback;
 
-            currentButtonName = buttonName;
+            currentButton = button;
 
-            Vector2 uiPos = GetUIPos(position);
+            if (button == Types.Button.TaskMenu)
+            {
+                StartCoroutine(WaitForTaskMenu());
+            }
+            else
+            {
+                ContinuePress(GetUIPos(position));
+            }
+        }
 
+        IEnumerator WaitForTaskMenu()
+        {
+            while(taskMenu.loadingTaskMenuButton)
+            {
+                yield return null;
+            }
+
+            ContinuePress(taskMenu.tempTaskButtonPos);
+        }
+
+        void ContinuePress(Vector2 uiPos)
+        {
             pointer.style.opacity = 1;
             pointer.style.display = DisplayStyle.Flex;
 
@@ -70,12 +112,41 @@ namespace Merge
                 pointerBackground.style.display = DisplayStyle.Flex;
             }
 
-            StartCoroutine(AnimatePress());
+            // pressing = true;
+
+            animatePress = true;
+            pressCoroutine = StartCoroutine(AnimatePress());
+        }
+
+        public void ButtonPress(Types.Button button, Action callback = null)
+        {
+            if (currentButton == button && buttonCallback != null)
+            {
+                StopAllAnimations();
+
+                pointer.style.opacity = 0;
+                pointer.style.display = DisplayStyle.None;
+
+                if (pointerBackground != null)
+                {
+                    pointerBackground.style.display = DisplayStyle.None;
+                }
+
+              //  pressing = false;
+
+                buttonCallback();
+
+                callback?.Invoke();
+            }
+            else
+            {
+                callback?.Invoke();
+            }
         }
 
         IEnumerator AnimatePress()
         {
-            while (true)
+            while (animatePress)
             {
                 pointer.RemoveFromClassList("pointer_tap");
                 pointer.style.scale = new StyleScale(fullScale);
@@ -90,34 +161,53 @@ namespace Merge
         }
 
         //// Merge ////
-        public void HandleMerge(string itemName, Action callback)
+        public void HandleMerge(Sprite itemSprite, Action callback)
         {
             StopAllAnimations();
 
             mergeCallback = callback;
 
             waitForBoardIndication = true;
-            boardIndicationItemName = itemName;
+            mergeSprite = itemSprite;
         }
 
         public void IndicateMerge(Vector2 firstPos, Vector2 secondPos)
         {
             pointer.style.display = DisplayStyle.Flex;
+            pointer.style.opacity = 1;
 
-            Debug.Log(firstPos);
+            mergeFirstPos = firstPos;
+            mergeSecondPos = secondPos;
 
-            StartCoroutine(AnimateMerge(firstPos, secondPos));
+            merging = true;
+
+            animateMerge = true;
+            mergeCoroutine = StartCoroutine(AnimateMerge(firstPos, secondPos));
         }
 
-        public void Merged()
+        public void CheckMerge(Sprite itemSprite)
         {
-            StopAllAnimations();
+            if (itemSprite == mergeSprite)
+            {
+                StopAllAnimations();
 
-            pointer.style.opacity = 0;
-            pointer.style.display = DisplayStyle.None;
-            pointer.RemoveFromClassList("pointer_tap");
-            pointer.RemoveFromClassList("pointer_pos_transition");
-            pointer.style.scale = new StyleScale(tapScale);
+                pointer.style.opacity = 0;
+                pointer.style.display = DisplayStyle.None;
+                pointer.RemoveFromClassList("pointer_tap");
+                pointer.RemoveFromClassList("pointer_pos_transition");
+                pointer.style.scale = new StyleScale(tapScale);
+
+                waitForBoardIndication = false;
+
+                merging = false;
+
+                mergeSprite = null;
+
+                mergeFirstPos = Vector2.zero;
+                mergeSecondPos = Vector2.zero;
+
+                mergeCallback?.Invoke();
+            }
         }
 
         IEnumerator AnimateMerge(Vector2 firstPos, Vector2 secondPos)
@@ -125,7 +215,7 @@ namespace Merge
             Vector2 firstUIPos = GetUIPos(firstPos);
             Vector2 secondsUIPos = GetUIPos(secondPos);
 
-            while (true)
+            while (animateMerge)
             {
                 pointer.RemoveFromClassList("pointer_pos_transition");
                 pointer.style.opacity = 1;
@@ -140,15 +230,18 @@ namespace Merge
                 yield return new WaitForSeconds(0.6f);
 
                 pointer.AddToClassList("pointer_pos_transition");
+
+                yield return new WaitForSeconds(0.1f);
+
                 pointer.style.left = secondsUIPos.x;
                 pointer.style.top = secondsUIPos.y;
 
-                yield return new WaitForSeconds(0.4f);
+                yield return new WaitForSeconds(0.6f);
 
                 pointer.RemoveFromClassList("pointer_tap");
                 pointer.style.scale = new StyleScale(fullScale);
 
-                yield return new WaitForSeconds(0.3f);
+                yield return new WaitForSeconds(0.4f);
 
                 pointer.style.opacity = 0;
 
@@ -157,49 +250,42 @@ namespace Merge
         }
 
         //// Other ////
-        public void ButtonPress(string buttonName, Action callback = null)
-        {
-            if (currentButtonName != "" && currentButtonName == buttonName && buttonCallback != null)
-            {
-                pointer.style.opacity = 0;
-                pointer.style.display = DisplayStyle.None;
-
-                if (pointerBackground != null)
-                {
-                    pointerBackground.style.display = DisplayStyle.None;
-                }
-
-                currentButtonName = "";
-
-                buttonCallback();
-                buttonCallback = null;
-
-                callback?.Invoke();
-            }
-            else
-            {
-                callback?.Invoke();
-            }
-        }
-
-        public void ShowPointer()
-        {
-            pointer.style.visibility = Visibility.Visible;
-        }
-
-        public void HidePointer()
-        {
-            pointer.style.visibility = Visibility.Hidden;
-        }
-
         void StopAllAnimations()
         {
             pointer.RemoveFromClassList("pointer_tap");
             pointer.RemoveFromClassList("pointer_pos_transition");
             pointer.style.scale = new StyleScale(fullScale);
+            pointer.style.opacity = 0;
+            pointer.style.display = DisplayStyle.None;
 
-            StopCoroutine(AnimatePress());
-            StopCoroutine(AnimateMerge(Vector2.zero, Vector2.zero));
+            animatePress = false;
+            animateMerge = false;
+
+            if (pressCoroutine != null)
+            {
+                StopCoroutine(pressCoroutine);
+                pressCoroutine = null;
+            }
+
+            if (mergeCoroutine != null)
+            {
+                StopCoroutine(mergeCoroutine);
+                mergeCoroutine = null;
+            }
+        }
+
+        public void ShowPointer()
+        {
+            if (merging)
+            {
+                animateMerge = true;
+                mergeCoroutine = StartCoroutine(AnimateMerge(mergeFirstPos, mergeSecondPos));
+            }
+        }
+
+        public void HidePointer()
+        {
+            StopAllAnimations();
         }
 
         Vector2 GetUIPos(Vector2 position)

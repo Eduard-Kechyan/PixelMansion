@@ -199,7 +199,7 @@ namespace Merge
         void Update()
         {
             // Check if panning is enabled
-            if (canPan && !menuUI.menuOpen && !cameraMotion.moving && tutorialManager != null)
+            if (canPan && !menuUI.menuOpen && !cameraMotion.moving)
             {
                 if (Input.touchCount == 1) // Pan
                 {
@@ -281,7 +281,7 @@ namespace Merge
                                     selector.CancelSelecting();
                                 }
 
-                                if (!moved)
+                                if (!moved && tutorialManager != null)
                                 {
                                     if (debugCharacterMovement && !selector.isSelected)
                                     {
@@ -342,6 +342,7 @@ namespace Merge
                                         && !isPanning
                                         && !selector.isSelecting
                                         && !popupManager.isSelectorPopup
+                                        && tutorialManager != null
                                     )
                                     {
                                         selector.StartSelecting(

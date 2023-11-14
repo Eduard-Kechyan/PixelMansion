@@ -50,7 +50,7 @@ MonoBehaviour:
   m_PanelSettings: {fileID: 11400000, guid: 2e83536c46c9fb3449baddd42f9cfe72, type: 2}
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: cf92b1439bc6e9140bee568afd73cbcc, type: 3}
-  m_SortingOrder: 50
+  m_SortingOrder: 20
 --- !u!114 &6008772859430314081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,6 +69,7 @@ MonoBehaviour:
   tutorialData: {fileID: 11400000, guid: 46f222382f4fece48829f1645caddf12, type: 2}
   progressManager: {fileID: 0}
   convoUIHandler: {fileID: 0}
+  sceneLoader: {fileID: 0}
   shineSprites:
   - sprites:
     - {fileID: -1348284963, guid: fd0f0afa5983bec4587b659d4b3f524d, type: 3}
@@ -123,6 +124,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25374eef02c3a894f8c4b17449b50c96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boardInteractions: {fileID: 0}
+  merging: 0
+  mergeSprite: {fileID: 0}
+  waitForBoardIndication: 0
 --- !u!114 &5299132373515573405
 MonoBehaviour:
   m_ObjectHideFlags: 0

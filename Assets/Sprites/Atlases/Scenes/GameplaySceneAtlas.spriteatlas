@@ -57,6 +57,7 @@ SpriteAtlas:
     - 766ffd76950db664486e655c708a4a47: 21300000
     - 08c0e298129b6a54ca567e82f7614357: 21300000
     - dcdc28b82ad02ce469c4a972cf5733b0: 21300000
+    - 2ddee409164f0a14983daf1fef113f6b: 21300000
     - 4845d5095b10cf142966fd25e7f7cf8c: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
@@ -67,6 +68,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 766ffd76950db664486e655c708a4a47, type: 3}
   - {fileID: 21300000, guid: 08c0e298129b6a54ca567e82f7614357, type: 3}
   - {fileID: 21300000, guid: dcdc28b82ad02ce469c4a972cf5733b0, type: 3}
+  - {fileID: 21300000, guid: 2ddee409164f0a14983daf1fef113f6b, type: 3}
   - {fileID: 21300000, guid: 4845d5095b10cf142966fd25e7f7cf8c, type: 3}
   m_PackedSpriteNamesToIndex:
   - InfoBoxWatchAd
@@ -76,6 +78,7 @@ SpriteAtlas:
   - InfoBoxTimer
   - InfoBox
   - Board
+  - InfoBoxAvatar
   - InfoBoxButton
   m_RenderDataMap: {}
   m_Tag: GameplaySceneAtlas

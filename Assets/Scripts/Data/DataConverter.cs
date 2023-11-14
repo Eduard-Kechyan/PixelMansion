@@ -930,7 +930,18 @@ namespace Merge
             // Get name based on custom item name
             if (itemSingle.customName && itemSingle.itemName != "")
             {
-                return LOCALE.Get(itemsData.type + "_" + itemSingle.itemName);
+                switch (itemsData.type)
+                {
+                    case Types.Type.Item:
+                        return LOCALE.Get("Item_" + itemSingle.group + "_" + count);
+                    case Types.Type.Gen:
+                        return LOCALE.Get("Gen_" + itemSingle.genGroup + "_" + count);
+                    case Types.Type.Coll:
+                        return LOCALE.Get("Item_" + itemSingle.collGroup + "_" + count);
+                    case Types.Type.Chest:
+                        return LOCALE.Get("Item_" + itemSingle.chestGroup + "_" + count);
+                }
+
             }
 
             // Get name based on item order
@@ -940,11 +951,11 @@ namespace Merge
                 {
                     case Types.Type.Item:
                         return LOCALE.Get(
-                            itemsData.type + "_" + itemsData.group.ToString() + "_" + count
+                            itemsData.type + "_" + itemsData.group + "_" + count
                         );
                     case Types.Type.Gen:
                         return LOCALE.Get(
-                            itemsData.type + "_" + itemsData.genGroup.ToString() + "_" + count
+                            itemsData.type + "_" + itemsData.genGroup + "_" + count
                         );
                     case Types.Type.Coll:
                         return "";
@@ -965,25 +976,25 @@ namespace Merge
             // Get name based on the type
             if (itemsData.type == Types.Type.Item)
             {
-                Debug.Log("Item_" + itemsData.group.ToString());
+                Debug.Log("Item_" + itemsData.group);
                 Debug.Log("Item_" + itemsData.group); // TODO - Check if enums need to be converted to strings
-                return LOCALE.Get("Item_" + itemsData.group.ToString() + "_" + count);
+                return LOCALE.Get("Item_" + itemsData.group + "_" + count);
             }
 
             if (itemsData.type == Types.Type.Gen)
             {
 
-                return LOCALE.Get("Gen_" + itemsData.genGroup.ToString());
+                return LOCALE.Get("Gen_" + itemsData.genGroup);
             }
 
             if (itemsData.type == Types.Type.Coll)
             {
-                return LOCALE.Get("Coll_" + itemsData.collGroup.ToString(), count);
+                return LOCALE.Get("Coll_" + itemsData.collGroup, count);
             }
 
             if (itemsData.type == Types.Type.Chest)
             {
-                return LOCALE.Get("Chest_" + itemsData.chestGroup.ToString());
+                return LOCALE.Get("Chest_" + itemsData.chestGroup);
             }
 
             // No valid name was found

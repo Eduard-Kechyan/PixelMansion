@@ -11,9 +11,11 @@ namespace Merge
         // Variables
         public Sprite goldValue;
         public Sprite gemValue;
+        public Sprite avatarSprite;
         public BoardInteractions boardInteractions;
         public SelectionManager selectionManager;
         public TimeManager timeManager;
+        public TutorialManager tutorialManager;
         public int openAmount = 10;
         public int unlockAmount = 5;
         public int speedUpAmount = 5;
@@ -57,6 +59,7 @@ namespace Merge
 
         // UI
         private VisualElement root;
+        private VisualElement infoBox;
         private VisualElement infoItem;
         private VisualElement infoItemLocked;
         private VisualElement infoItemBubble;
@@ -88,28 +91,30 @@ namespace Merge
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
 
-            infoItem = root.Q<VisualElement>("InfoItem");
-            infoItemLocked = root.Q<VisualElement>("InfoItemLocked");
-            infoItemBubble = root.Q<VisualElement>("InfoItemBubble");
+            infoBox = root.Q<VisualElement>("InfoBox");
 
-            infoButton = root.Q<Button>("InfoButton");
+            infoItem = infoBox.Q<VisualElement>("InfoItem");
+            infoItemLocked = infoBox.Q<VisualElement>("InfoItemLocked");
+            infoItemBubble = infoBox.Q<VisualElement>("InfoItemBubble");
 
-            infoMainButton = root.Q<Button>("InfoMainButton");
+            infoButton = infoBox.Q<Button>("InfoButton");
+
+            infoMainButton = infoBox.Q<Button>("InfoMainButton");
             infoMainValue = infoMainButton.Q<VisualElement>("Value");
             infoMainAmountLabel = infoMainButton.Q<Label>("AmountLabel");
             infoMainNameLabel = infoMainButton.Q<Label>("NameLabel");
             infoMainRemoveIcon = infoMainButton.Q<VisualElement>("RemoveIcon");
 
-            infoSecondaryButton = root.Q<Button>("InfoSecondaryButton");
+            infoSecondaryButton = infoBox.Q<Button>("InfoSecondaryButton");
             infoSecondaryValue = infoSecondaryButton.Q<VisualElement>("Value");
             infoSecondaryAmountLabel = infoSecondaryButton.Q<Label>("AmountLabel");
             infoSecondaryNameLabel = infoSecondaryButton.Q<Label>("NameLabel");
             infoSecondaryWatchIcon = infoSecondaryButton.Q<VisualElement>("WatchIcon");
 
-            infoName = root.Q<Label>("InfoName");
-            infoData = root.Q<Label>("InfoData");
+            infoName = infoBox.Q<Label>("InfoName");
+            infoData = infoBox.Q<Label>("InfoData");
 
-            infoTimer = root.Q<Label>("InfoTimer");
+            infoTimer = infoBox.Q<Label>("InfoTimer");
 
             // UI taps
             infoButton.clicked += () => infoMenu.Open(item);
@@ -130,152 +135,158 @@ namespace Merge
         // Show the selected item's info
         public void Select(Item newItem)
         {
-            item = newItem;
-
-            infoItemLocked.style.display = DisplayStyle.None;
-            infoItemBubble.style.display = DisplayStyle.None;
-
-            infoButton.style.display = DisplayStyle.None;
-
-            timeOn = false;
-
-            switch (item.state)
+            if (tutorialManager == null)
             {
-                case Types.State.Crate: //// CRATE ////
-                    infoName.text = LOCALE.Get("info_box_crate");
+                item = newItem;
 
-                    sprite = item.crateChild.GetComponent<SpriteRenderer>().sprite;
+                infoItemLocked.style.display = DisplayStyle.None;
+                infoItemBubble.style.display = DisplayStyle.None;
 
-                    mainActionType = ActionType.Open;
-                    break;
-                case Types.State.Locker: //// LOCKER ////
-                    infoName.text = item.itemName + " " + LOCALE.Get("info_box_locker");
+                infoButton.style.display = DisplayStyle.None;
 
-                    sprite = item.itemChild.GetComponent<SpriteRenderer>().sprite;
+                timeOn = false;
 
-                    mainActionType = ActionType.Unlock;
-                    break;
-                case Types.State.Bubble: //// BUBBLE ////
-                    infoName.text = item.itemName + " " + LOCALE.Get("info_box_bubble");
+                switch (item.state)
+                {
+                    case Types.State.Crate: //// CRATE ////
+                        infoName.text = LOCALE.Get("info_box_crate");
 
-                    sprite = item.itemChild.GetComponent<SpriteRenderer>().sprite;
+                        sprite = item.crateChild.GetComponent<SpriteRenderer>().sprite;
 
-                    infoItemBubble.style.display = DisplayStyle.Flex;
+                        mainActionType = ActionType.Open;
+                        break;
+                    case Types.State.Locker: //// LOCKER ////
+                        infoName.text = item.itemName + " " + LOCALE.Get("info_box_locker");
 
-                    mainActionType = ActionType.Pop;
-                    secondaryActionType = ActionType.Pop;
+                        sprite = item.itemChild.GetComponent<SpriteRenderer>().sprite;
 
-                    if (item.timerOn)
-                    {
-                        infoTimer.text = timeManager.GetTimerText(item.id);
+                        mainActionType = ActionType.Unlock;
+                        break;
+                    case Types.State.Bubble: //// BUBBLE ////
+                        infoName.text = item.itemName + " " + LOCALE.Get("info_box_bubble");
 
-                        timeOn = true;
-                    }
-                    break;
-                default: //// ITEM ////
-                    infoName.text = item.itemLevelName;
+                        sprite = item.itemChild.GetComponent<SpriteRenderer>().sprite;
 
-                    sprite = item.itemChild.GetComponent<SpriteRenderer>().sprite;
+                        infoItemBubble.style.display = DisplayStyle.Flex;
 
-                    infoButton.style.display = DisplayStyle.Flex;
+                        mainActionType = ActionType.Pop;
+                        secondaryActionType = ActionType.Pop;
 
-                    if (item.type == Types.Type.Chest)
-                    {
-                        if (!item.chestOpen && item.chestGroup == Types.ChestGroup.Item && !item.timerOn)
+                        if (item.timerOn)
                         {
-                            mainActionType = ActionType.UnlockChest;
+                            infoTimer.text = timeManager.GetTimerText(item.id);
+
+                            timeOn = true;
                         }
-                        else
+                        break;
+                    default: //// ITEM ////
+                        infoName.text = item.itemLevelName;
+
+                        sprite = item.itemChild.GetComponent<SpriteRenderer>().sprite;
+
+                        infoButton.style.display = DisplayStyle.Flex;
+
+                        if (item.type == Types.Type.Chest)
+                        {
+                            if (!item.chestOpen && item.chestGroup == Types.ChestGroup.Item && !item.timerOn)
+                            {
+                                mainActionType = ActionType.UnlockChest;
+                            }
+                            else
+                            {
+                                mainActionType = ActionType.None;
+                            }
+                        }
+                        else if (item.type == Types.Type.Coll)
                         {
                             mainActionType = ActionType.None;
                         }
-                    }
-                    else if (item.type == Types.Type.Coll)
-                    {
-                        mainActionType = ActionType.None;
-                    }
-                    else if ((item.type == Types.Type.Gen && item.level > genSellLevel) || (item.type == Types.Type.Item && item.level > itemSellLevel) || item.isMaxLevel)
-                    {
-                        CalcSellPrice(item.level);
+                        else if ((item.type == Types.Type.Gen && item.level > genSellLevel) || (item.type == Types.Type.Item && item.level > itemSellLevel) || item.isMaxLevel)
+                        {
+                            CalcSellPrice(item.level);
 
-                        mainActionType = ActionType.Sell;
-                    }
-                    else
-                    {
-                        mainActionType = ActionType.Remove;
-                    }
+                            mainActionType = ActionType.Sell;
+                        }
+                        else
+                        {
+                            mainActionType = ActionType.Remove;
+                        }
 
-                    if (item.timerOn)
-                    {
-                        secondaryActionType = ActionType.SpeedUp;
+                        if (item.timerOn)
+                        {
+                            secondaryActionType = ActionType.SpeedUp;
 
-                        infoTimer.text = timeManager.GetTimerText(item.id);
+                            infoTimer.text = timeManager.GetTimerText(item.id);
 
-                        timeOn = true;
-                    }
-                    else
-                    {
-                        secondaryActionType = ActionType.None;
-                    }
+                            timeOn = true;
+                        }
+                        else
+                        {
+                            secondaryActionType = ActionType.None;
+                        }
 
-                    break;
+                        break;
+                }
+
+                infoItem.style.backgroundImage = new StyleBackground(sprite);
+
+                infoData.text = GetItemData(newItem);
+
+                HandleActionButton();
             }
-
-            infoItem.style.backgroundImage = new StyleBackground(sprite);
-
-            infoData.text = GetItemData(newItem);
-
-            HandleActionButton();
         }
 
         // Hide the existing info
         public void Unselect(bool isUndo = false)
         {
-            item = null;
-
-            infoItem.style.backgroundImage = null;
-
-            infoItemLocked.style.display = DisplayStyle.None;
-
-            infoItemBubble.style.display = DisplayStyle.None;
-
-            sprite = null;
-
-            infoButton.style.display = DisplayStyle.None;
-
-            infoName.text = "";
-
-            textToSet = "";
-
-            if (isUndo || boardInteractions.canUndo)
+            if (tutorialManager == null)
             {
-                infoData.text = LOCALE.Get("info_box_undo");
-            }
-            else
-            {
-                infoMainButton.style.display = DisplayStyle.None;
+                item = null;
 
-                infoMainButton.RemoveFromClassList("info_box_action_button_has_value");
+                infoItem.style.backgroundImage = null;
 
-                infoMainButton.RemoveFromClassList("info_box_button_disabled");
+                infoItemLocked.style.display = DisplayStyle.None;
 
-                infoMainValue.style.display = DisplayStyle.None;
+                infoItemBubble.style.display = DisplayStyle.None;
 
-                infoSecondaryButton.style.display = DisplayStyle.None;
+                sprite = null;
 
-                infoSecondaryButton.RemoveFromClassList("info_box_action_button_has_value");
+                infoButton.style.display = DisplayStyle.None;
 
-                infoSecondaryButton.RemoveFromClassList("info_box_button_disabled");
+                infoName.text = "";
 
-                infoSecondaryValue.style.display = DisplayStyle.None;
+                textToSet = "";
 
-                infoData.text = LOCALE.Get("info_box_default");
+                if (isUndo || boardInteractions.canUndo)
+                {
+                    infoData.text = LOCALE.Get("info_box_undo");
+                }
+                else
+                {
+                    infoMainButton.style.display = DisplayStyle.None;
 
-                infoItem.RemoveFromClassList("info_item_has_timer");
-                infoItemLocked.RemoveFromClassList("info_item_has_timer");
-                infoItemBubble.RemoveFromClassList("info_item_has_timer");
+                    infoMainButton.RemoveFromClassList("info_box_action_button_has_value");
 
-                infoTimer.style.display = DisplayStyle.None;
+                    infoMainButton.RemoveFromClassList("info_box_button_disabled");
+
+                    infoMainValue.style.display = DisplayStyle.None;
+
+                    infoSecondaryButton.style.display = DisplayStyle.None;
+
+                    infoSecondaryButton.RemoveFromClassList("info_box_action_button_has_value");
+
+                    infoSecondaryButton.RemoveFromClassList("info_box_button_disabled");
+
+                    infoSecondaryValue.style.display = DisplayStyle.None;
+
+                    infoData.text = LOCALE.Get("info_box_default");
+
+                    infoItem.RemoveFromClassList("info_item_has_timer");
+                    infoItemLocked.RemoveFromClassList("info_item_has_timer");
+                    infoItemBubble.RemoveFromClassList("info_item_has_timer");
+
+                    infoTimer.style.display = DisplayStyle.None;
+                }
             }
         }
 
@@ -736,6 +747,30 @@ namespace Merge
             }
 
             return textToSet;
+        }
+
+        public void SetTutorialData(string stepId)
+        {
+            if (tutorialManager != null && LOCALE.CheckIfExists("info_box_tutorial_" + stepId))
+            {
+                infoBox.AddToClassList("info_item_avatar");
+
+                infoData.text = LOCALE.Get("info_box_tutorial_" + stepId);
+
+                infoItem.style.backgroundImage = new StyleBackground(avatarSprite);
+            }
+        }
+
+        public void ResetTutorialData()
+        {
+            if (tutorialManager != null)
+            {
+                infoBox.RemoveFromClassList("info_item_avatar");
+
+                infoData.text = "";
+
+                infoItem.style.backgroundImage = null;
+            }
         }
     }
 }

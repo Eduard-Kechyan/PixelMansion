@@ -116,6 +116,24 @@
     height: 25px;
 }
 
+.info_item_avatar .info_item {
+    width: 34px;
+    height: 34px;
+    left: 2px;
+    top: 2px;
+}
+
+.info_item_avatar .item_name {
+    left: 40px;
+}
+
+.info_item_avatar .item_data {
+    left: 40px;
+    right: 2px;
+    width: auto;
+    font-size: 6px;
+}
+
 .info_box_button {
     width: 12px;
     height: 12px;

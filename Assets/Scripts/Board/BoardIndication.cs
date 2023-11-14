@@ -55,10 +55,18 @@ namespace Merge
 
         void Update()
         {
-            if (pointerHandler.waitForBoardIndication)
+            if (pointerHandler != null && pointerHandler.mergeSprite != null && !pointerHandler.merging)
             {
                 StopPossibleMergeCheck();
-                StartAltMergeCheck();
+
+                if (boardInteractions.interactionsEnabled && !boardInteractions.isDragging && dataManager.loaded)
+                {
+                    StartAltMergeCheck();
+                }
+                else
+                {
+                    StopAltMergeCheck();
+                }
             }
             else
             {
@@ -119,6 +127,11 @@ namespace Merge
             if (checkCoroutineAlt == null)
             {
                 checkCoroutineAlt = StartCoroutine(CheckAltMerge());
+            }
+
+            if (checkingPossibleMerges)
+            {
+                checkingPossibleMerges = false;
             }
         }
 
@@ -298,7 +311,6 @@ namespace Merge
 
         IEnumerator CheckAltMerge()
         {
-            indicatingPossibleMerges = false;
             checkingPossibleMerges = true;
 
             yield return new WaitForSeconds(0.3f);
@@ -315,11 +327,11 @@ namespace Merge
                 {
                     Types.Board singleItem = gameData.boardData[i, j];
 
-                    if (singleItem.state == Types.State.Default || singleItem.state == Types.State.Locker && singleItem.sprite != null)
+                    if ((singleItem.state == Types.State.Default || singleItem.state == Types.State.Locker) && singleItem.sprite != null)
                     {
-                        if (!boardManager.boardTiles.transform.GetChild(singleItem.order).GetChild(0).gameObject.GetComponent<Item>().isMaxLevel)
+                        if (boardManager.boardTiles.transform.GetChild(singleItem.order).childCount > 0 && !boardManager.boardTiles.transform.GetChild(singleItem.order).GetChild(0).gameObject.GetComponent<Item>().isMaxLevel)
                         {
-                            if (singleItem.sprite.name.Contains(pointerHandler.boardIndicationItemName))
+                            if (singleItem.sprite.name.Contains(pointerHandler.mergeSprite.name))
                             {
                                 singleArray.Add(singleItem);
                             }
@@ -344,22 +356,13 @@ namespace Merge
                 singleArray.RemoveAt(singleArray.Count - 1);
             }
 
-            pairs.Add(new Pair
-            {
-                item1 = singleArray[0],
-                item2 = singleArray[0 + 1]
-            });
-
-            // Select a random pair
-            selectedPairs = pairs[0];
-
             // Select the items
-            item1 = boardManager.boardTiles.transform.GetChild(selectedPairs.item1.order).GetChild(0).gameObject.GetComponent<Item>();
-            item2 = boardManager.boardTiles.transform.GetChild(selectedPairs.item2.order).GetChild(0).gameObject.GetComponent<Item>();
+            Item itemAlt1 = boardManager.boardTiles.transform.GetChild(singleArray[0].order).GetChild(0).gameObject.GetComponent<Item>();
+            Item itemAlt2 = boardManager.boardTiles.transform.GetChild(singleArray[0 + 1].order).GetChild(0).gameObject.GetComponent<Item>();
 
-            indicatingPossibleMerges = true;
+            pointerHandler.IndicateMerge(itemAlt1.transform.position, itemAlt2.transform.position);
 
-            pointerHandler.IndicateMerge(item1.transform.position, item2.transform.position);
+            checkCoroutineAlt = null;
         }
 
         int SortPairs(Pair a, Pair b)

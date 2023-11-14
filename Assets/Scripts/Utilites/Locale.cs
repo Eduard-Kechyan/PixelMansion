@@ -102,6 +102,11 @@ namespace Merge
             return translation;
         }
 
+        public bool CheckIfExists(string key)
+        {
+            return config[key] != null;
+        }
+
         public bool CheckNext(string key)
         {
             return config[key] != null;

@@ -832,14 +832,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5299132373515573405, guid: 1bd750316f540934998c943551a39ba8, type: 3}
+      propertyPath: resetData
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6008772859430314081, guid: 1bd750316f540934998c943551a39ba8, type: 3}
       propertyPath: sceneLoader
       value: 
       objectReference: {fileID: 2129448916}
     - target: {fileID: 6008772859430314081, guid: 1bd750316f540934998c943551a39ba8, type: 3}
+      propertyPath: startFromStep
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6008772859430314081, guid: 1bd750316f540934998c943551a39ba8, type: 3}
       propertyPath: progressManager
       value: 
       objectReference: {fileID: 1754641312}
+    - target: {fileID: 6008772859430314081, guid: 1bd750316f540934998c943551a39ba8, type: 3}
+      propertyPath: stepToStartFrom
+      value: MergeGloves1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6221008523312400612, guid: 1bd750316f540934998c943551a39ba8, type: 3}
+      propertyPath: boardInteractions
+      value: 
+      objectReference: {fileID: 639326501}
     - target: {fileID: 8398883806428278736, guid: 1bd750316f540934998c943551a39ba8, type: 3}
       propertyPath: m_Name
       value: TutorialManager
@@ -858,6 +874,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 25374eef02c3a894f8c4b17449b50c96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1663649672 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6008772859430314081, guid: 1bd750316f540934998c943551a39ba8, type: 3}
+  m_PrefabInstance: {fileID: 1663649670}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6219ae9bd0bfa2048b2cca0e8b80149d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1754641310
@@ -1412,6 +1439,10 @@ PrefabInstance:
       propertyPath: taskManager
       value: 
       objectReference: {fileID: 1754641311}
+    - target: {fileID: 990211674076651926, guid: 6a4bd6a5611eb914ea950405a066bcd8, type: 3}
+      propertyPath: pointerHandler
+      value: 
+      objectReference: {fileID: 1663649671}
     - target: {fileID: 2529494229858904796, guid: 6a4bd6a5611eb914ea950405a066bcd8, type: 3}
       propertyPath: m_Name
       value: MenuUI
@@ -1666,6 +1697,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneLoader: {fileID: 2129448916}
+  pointerHandler: {fileID: 1663649671}
   loaded: 0
   inventoryIndicatorSprites:
   - {fileID: -2105459946, guid: 4d91f211f5df6004391e14554e998da1, type: 3}
@@ -1833,9 +1865,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   goldValue: {fileID: 21300000, guid: 9927c70a39873234ead5f8d41fb591bf, type: 3}
   gemValue: {fileID: 21300000, guid: 324e7e0db7beb9248b629fa2da728b06, type: 3}
+  avatarSprite: {fileID: 21300000, guid: 2ddee409164f0a14983daf1fef113f6b, type: 3}
   boardInteractions: {fileID: 639326501}
   selectionManager: {fileID: 639326506}
   timeManager: {fileID: 783295151}
+  tutorialManager: {fileID: 1663649672}
   openAmount: 10
   unlockAmount: 5
   speedUpAmount: 5
@@ -2067,6 +2101,10 @@ PrefabInstance:
       propertyPath: clockManager
       value: 
       objectReference: {fileID: 1566288111}
+    - target: {fileID: 6103699518242801327, guid: fb6bd1ade9d0e614da3b3eabc6c46c06, type: 3}
+      propertyPath: pointerHandler
+      value: 
+      objectReference: {fileID: 1663649671}
     - target: {fileID: 8002734882105849631, guid: fb6bd1ade9d0e614da3b3eabc6c46c06, type: 3}
       propertyPath: timeManager
       value: 

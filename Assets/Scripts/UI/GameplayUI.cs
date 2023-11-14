@@ -90,7 +90,7 @@ namespace Merge
             {
                 if (pointerHandler != null)
                 {
-                    pointerHandler.ButtonPress("Play");
+                    pointerHandler.ButtonPress(Types.Button.Home);
                 }
                 else
                 {
@@ -101,7 +101,20 @@ namespace Merge
             inventoryButton.clicked += () => inventoryMenu.Open();
             bonusButton.clicked += () => bonusManager.GetBonus();
             shopButton.clicked += () => shopMenu.Open();
-            taskButton.clicked += () => taskMenu.Open();
+            taskButton.clicked += () =>
+            {
+                if (pointerHandler != null)
+                {
+                    pointerHandler.ButtonPress(Types.Button.Task, () =>
+                    {
+                        taskMenu.Open();
+                    });
+                }
+                else
+                {
+                    taskMenu.Open();
+                }
+            };
 
             // Calculate the button position on the screen and the world space
             singlePixelWidth = Camera.main.pixelWidth / GameData.GAME_PIXEL_WIDTH;
@@ -223,25 +236,76 @@ namespace Merge
             taskButton.style.display = DisplayStyle.Flex;
         }
 
-        public void ShowButton(string name)
+        public void ShowButton(Types.Button button)
         {
-            switch (name)
+            switch (button)
             {
-                case "home":
+                case Types.Button.Home:
                     homeButton.style.display = DisplayStyle.Flex;
                     PlayerPrefs.SetInt("gameplayHomeButtonShowing", 1);
                     break;
-                case "settings":
+                case Types.Button.Settings:
                     inventoryButton.style.display = DisplayStyle.Flex;
                     PlayerPrefs.SetInt("gameplayInventoryButtonShowing", 1);
                     break;
-                case "shop":
+                case Types.Button.Shop:
                     shopButton.style.display = DisplayStyle.Flex;
                     PlayerPrefs.SetInt("gameplayShopButtonShowing", 1);
                     break;
-                case "task":
+                case Types.Button.Task:
                     taskButton.style.display = DisplayStyle.Flex;
                     PlayerPrefs.SetInt("gameplayTaskButtonShowing", 1);
+                    break;
+            }
+        }
+
+        public void HideButton(Types.Button button, bool alt = false)
+        {
+            switch (button)
+            {
+                case Types.Button.Home:
+                    if (alt)
+                    {
+                        homeButton.SetEnabled(false);
+                    }
+                    else
+                    {
+                        homeButton.style.display = DisplayStyle.None;
+                        PlayerPrefs.DeleteKey("gameplayHomeButtonShowing");
+                    }
+                    break;
+                case Types.Button.Inventory:
+                    if (alt)
+                    {
+                        inventoryButton.SetEnabled(false);
+                    }
+                    else
+                    {
+                        inventoryButton.style.display = DisplayStyle.None;
+                        PlayerPrefs.DeleteKey("gameplayInventoryButtonShowing");
+                    }
+                    break;
+                case Types.Button.Shop:
+                    if (alt)
+                    {
+                        shopButton.SetEnabled(false);
+                    }
+                    else
+                    {
+                        shopButton.style.display = DisplayStyle.None;
+                        PlayerPrefs.DeleteKey("hubShopButtonShowing");
+                    }
+                    break;
+                case Types.Button.Task:
+                    if (alt)
+                    {
+                        taskButton.SetEnabled(false);
+                    }
+                    else
+                    {
+                        taskButton.style.display = DisplayStyle.None;
+                        PlayerPrefs.DeleteKey("hubTaskButtonShowing");
+                    }
                     break;
             }
         }

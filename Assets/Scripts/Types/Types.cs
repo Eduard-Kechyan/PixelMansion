@@ -598,7 +598,8 @@ namespace Merge
             public Scene scene;
             public TutorialStepType type;
             public TutorialStepTask taskType;
-            public string taskRef;
+            public Button taskButton;
+            public Sprite taskSprite;
             public int taskOrder;
             public bool keepConvoOpen;
         }
@@ -729,6 +730,19 @@ namespace Merge
             Hub,
             Gameplay,
             None
+        };
+
+        public enum Button
+        {
+            None,
+            Play,
+            Home,
+            Task,
+            TaskMenu,
+            Shop,
+            Bonus,
+            Settings,
+            Inventory,
         };
 
         public enum Locale

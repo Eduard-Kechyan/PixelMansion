@@ -13,6 +13,7 @@ namespace Merge
         public float scaleSpeed = 8f;
         public float altScaleSpeed = 8f;
         public int experienceThreshold = 4;
+        public float crateSoundTimeout = 1f;
         public TimeManager timeManager;
 
         [ReadOnly]
@@ -26,6 +27,9 @@ namespace Merge
 
         [HideInInspector]
         public GameObject boardTiles;
+
+        private Coroutine crateCoroutine;
+        private float crateTimeout = 0f;
 
         // References
         private InitializeBoard initializeBoard;
@@ -290,7 +294,20 @@ namespace Merge
                 gameData.boardData[x, y].state = Types.State.Locker;
 
                 // Play crate opening audio
-                soundManager.PlaySound(Types.SoundType.OpenCrate);
+                if (crateTimeout == 0)
+                {
+                    if(crateCoroutine!=null)
+                    {
+                        StopCoroutine(crateCoroutine);
+                        crateCoroutine = null;
+                    }
+
+                    soundManager.PlaySound(Types.SoundType.OpenCrate);
+
+                    crateTimeout = crateSoundTimeout;
+
+                    crateCoroutine = StartCoroutine(CrateTimeout());
+                }
 
                 int order = GetBoardOrder(x, y);
 
@@ -304,6 +321,18 @@ namespace Merge
                 }
 
                 dataManager.SaveBoard();
+            }
+        }
+
+        IEnumerator CrateTimeout()
+        {
+            WaitForSeconds wait = new(0.1f);
+
+            while (crateTimeout > 0)
+            {
+                yield return wait;
+
+                crateTimeout -= 0.1f;
             }
         }
 

@@ -261,7 +261,31 @@ MonoBehaviour:
       genGroup: 0
       chestGroup: 0
     content:
-    - sprite: {fileID: 21300000, guid: a9d008ddf5722a544b962044313cc03f, type: 3}
+    - sprite: {fileID: 21300000, guid: 6e077ce393ad2964b99f0b9570de9afe, type: 3}
+      customName: 1
+      itemName: Glove
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      generatesAt: 0
+      genGroup: 0
+      collGroup: 0
+      parents: []
+      creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
+      unlocked: 0
+      isMaxLevel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPopped: 0
+    - sprite: {fileID: 21300000, guid: 76493dcb8626c364db7ad859d09cef65, type: 3}
       customName: 0
       itemName: 
       level: 0
@@ -285,33 +309,9 @@ MonoBehaviour:
       chestItemsSet: 0
       seconds: 0
       gemPopped: 0
-    - sprite: {fileID: 21300000, guid: 4da96ee078478da4eb4e8cde276d0dbf, type: 3}
-      customName: 0
-      itemName: 
-      level: 0
-      group: 0
-      type: 0
-      chestGroup: 0
-      generatesAt: 0
-      genGroup: 0
-      collGroup: 0
-      parents: []
-      creates: []
-      coolDown:
-        maxCounts: 
-        seconds: 0
-        minutes: 0
-      unlocked: 0
-      isMaxLevel: 0
-      hasLevel: 0
-      hasTimer: 0
-      chestItems: 0
-      chestItemsSet: 0
-      seconds: 0
-      gemPopped: 0
-    - sprite: {fileID: 21300000, guid: 9d1f8eb97b2caa54e9805a6d14e594ad, type: 3}
-      customName: 0
-      itemName: 
+    - sprite: {fileID: 21300000, guid: ca76bd9341439e145a7e676f297f7ab0, type: 3}
+      customName: 1
+      itemName: Super Gloves
       level: 0
       group: 0
       type: 0
