@@ -723,6 +723,7 @@ MonoBehaviour:
   - {fileID: 435106307, guid: 2cc5fcac1541bbb4392c9e86b6059bbe, type: 3}
   - {fileID: 1565363511, guid: 2cc5fcac1541bbb4392c9e86b6059bbe, type: 3}
   - {fileID: 383109696, guid: 2cc5fcac1541bbb4392c9e86b6059bbe, type: 3}
+  ready: 0
 --- !u!1001 &1658164947
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -840,6 +841,10 @@ PrefabInstance:
       propertyPath: sceneLoader
       value: 
       objectReference: {fileID: 2129448916}
+    - target: {fileID: 6008772859430314081, guid: 1bd750316f540934998c943551a39ba8, type: 3}
+      propertyPath: skipTutorial
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6008772859430314081, guid: 1bd750316f540934998c943551a39ba8, type: 3}
       propertyPath: startFromStep
       value: 0

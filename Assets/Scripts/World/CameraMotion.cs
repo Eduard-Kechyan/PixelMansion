@@ -20,11 +20,13 @@ namespace Merge
 
         // References
         private HubUI hubUI;
+        private CharMain charMain;
 
         void Start()
         {
             // Cache
             hubUI = GameRefs.Instance.hubUI;
+            charMain= CharMain.Instance;
 
             enabled = false;
         }
@@ -57,7 +59,7 @@ namespace Merge
             }
         }
 
-        public void MoveTo(Vector2 pos, float newMotionSpeed = -1,Action newCallBack =null)
+        public void MoveTo(Vector2 pos, float newMotionSpeed = -1, Action newCallBack = null)
         {
             desiredPos = new Vector3(pos.x, pos.y, transform.position.z);
             moving = true;
@@ -76,6 +78,11 @@ namespace Merge
             }
 
             enabled = true;
+        }
+    
+        public void MoveToChar(float newMotionSpeed = 250, Action newCallBack = null)
+        {
+            MoveTo(charMain.transform.position, newMotionSpeed, newCallBack);
         }
     }
 }

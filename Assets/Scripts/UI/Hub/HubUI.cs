@@ -81,7 +81,7 @@ namespace Merge
             {
                 if (pointerHandler != null)
                 {
-                    pointerHandler.ButtonPress(Types.Button.Task, () =>
+                    pointerHandler.ButtonPress(Types.Button.Task,false, () =>
                     {
                         taskMenu.Open();
                     });
@@ -233,6 +233,11 @@ namespace Merge
             settingsButton.style.display = DisplayStyle.Flex;
             shopButton.style.display = DisplayStyle.Flex;
             taskButton.style.display = DisplayStyle.Flex;
+
+            PlayerPrefs.SetInt("hubPlayButtonShowing", 1);
+            PlayerPrefs.SetInt("hubSettingsButtonShowing", 1);
+            PlayerPrefs.SetInt("hubShopButtonShowing", 1);
+            PlayerPrefs.SetInt("hubTaskButtonShowing", 1);
         }
 
         public void ShowButton(Types.Button button)
@@ -241,18 +246,22 @@ namespace Merge
             {
                 case Types.Button.Play:
                     playButton.style.display = DisplayStyle.Flex;
+                    playButton.SetEnabled(true);
                     PlayerPrefs.SetInt("hubPlayButtonShowing", 1);
                     break;
                 case Types.Button.Settings:
                     settingsButton.style.display = DisplayStyle.Flex;
+                    settingsButton.SetEnabled(true);
                     PlayerPrefs.SetInt("hubSettingsButtonShowing", 1);
                     break;
                 case Types.Button.Shop:
                     shopButton.style.display = DisplayStyle.Flex;
+                    shopButton.SetEnabled(true);
                     PlayerPrefs.SetInt("hubShopButtonShowing", 1);
                     break;
                 case Types.Button.Task:
                     taskButton.style.display = DisplayStyle.Flex;
+                    taskButton.SetEnabled(true);
                     PlayerPrefs.SetInt("hubTaskButtonShowing", 1);
                     break;
             }

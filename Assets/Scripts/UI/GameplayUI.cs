@@ -105,7 +105,7 @@ namespace Merge
             {
                 if (pointerHandler != null)
                 {
-                    pointerHandler.ButtonPress(Types.Button.Task, () =>
+                    pointerHandler.ButtonPress(Types.Button.Task, false, () =>
                     {
                         taskMenu.Open();
                     });

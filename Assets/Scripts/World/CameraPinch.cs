@@ -52,6 +52,7 @@ namespace Merge
         private Camera cam;
         private MenuUI menuUI;
         private CameraPan cameraPan;
+        private CameraMotion cameraMotion;
 
         // UI
         private VisualElement root;
@@ -62,6 +63,7 @@ namespace Merge
             cam = Camera.main;
             menuUI = GameRefs.Instance.menuUI;
             cameraPan = GetComponent<CameraPan>();
+            cameraMotion = GetComponent<CameraMotion>();
 
             // UI
             root = GameRefs.Instance.hubUIDoc.rootVisualElement;
@@ -107,6 +109,8 @@ namespace Merge
                     if (DoubleClicked() && shouldReset)
                     {
                         isResetting = true;
+
+                        cameraMotion.MoveToChar();
                     }
                 }
                 else

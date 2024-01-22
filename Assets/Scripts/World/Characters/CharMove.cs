@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Device;
 
 namespace Merge
 {
@@ -16,22 +17,28 @@ namespace Merge
         [ReadOnly]
         public bool isWalking = false;
 
+        [HideInInspector]
+        public bool canWalk = true;
+
         private Vector2 destinationPos;
 
         private bool canCheck = false;
 
+        private bool checkRoamAfter = false;
+        private Action callback;
+
         // Enums
-       /* public enum Dir
-        {
-            DownRight,
-            Down,
-            DownLeft,
-            Left,
-            UpLeft,
-            Up,
-            UpRight,
-            Right
-        };*/
+        /* public enum Dir
+         {
+             DownRight,
+             Down,
+             DownLeft,
+             Left,
+             UpLeft,
+             Up,
+             UpRight,
+             Right
+         };*/
 
         public enum Dir
         {
@@ -45,6 +52,7 @@ namespace Merge
         private CharOrderSetter charOrderSetter;
         private NavMeshAgent agent;
         private Animator animator;
+        private CharRoam charRoam;
 
         // Start is called before the first frame update
         void Start()
@@ -53,6 +61,7 @@ namespace Merge
             charOrderSetter = GetComponent<CharOrderSetter>();
             agent = GetComponent<NavMeshAgent>();
             animator = GetComponent<Animator>();
+            charRoam = GetComponent<CharRoam>();
 
             // Initialize the character nav mesh agent
             agent.updateRotation = false;
@@ -63,8 +72,6 @@ namespace Merge
             directionOrder = (int)direction;
 
             animator.SetFloat("Direction", directionOrder);
-
-            enabled = false;
         }
 
         // Update is called once per frame
@@ -92,11 +99,29 @@ namespace Merge
             }
         }
 
-        public void SetDestination(Vector2 newPos, bool stayInRoom = false)
+        public void SetDestination(Vector2 newPos, bool stayInRoom = false, bool isRoaming = false, Action newCallback = null)
         {
             destinationPos = newPos;
 
             enabled = true;
+
+            isWalking = true;
+
+            callback = newCallback;
+
+            if (isRoaming)
+            {
+                checkRoamAfter = true;
+            }
+            else
+            {
+                checkRoamAfter = false;
+
+                if (charRoam != null)
+                {
+                    charRoam.StopRoaming();
+                }
+            }
 
             MoveChar();
 
@@ -121,6 +146,13 @@ namespace Merge
                     isWalking = false;
 
                     charOrderSetter.SetShadow();
+
+                    if (checkRoamAfter)
+                    {
+                        callback();
+
+                        ResetDirection();
+                    }
                 }
                 else
                 {
@@ -137,7 +169,7 @@ namespace Merge
             }
         }
 
-        public void SetPosition(Vector2 newPos,Action callback = null)
+        public void SetPosition(Vector2 newPos, Action callback = null)
         {
             agent.isStopped = true;
 
@@ -153,6 +185,8 @@ namespace Merge
             agent.isStopped = true;
 
             enabled = false;
+
+            canWalk = false;
         }
 
         public void ContinueMoving()
@@ -160,6 +194,8 @@ namespace Merge
             agent.isStopped = false;
 
             enabled = true;
+
+            canWalk = true;
         }
 
         // Calculate the direction/angle the character is facing
@@ -250,6 +286,15 @@ namespace Merge
             directionOrder = (int)direction;
 
             return directionOrder;
+        }
+
+        void ResetDirection()
+        {
+            // Reset direction
+            direction = Dir.Right;
+            directionOrder = (int)direction;
+
+            animator.SetFloat("Direction", directionOrder);
         }
 
         // Check if the value is between two variables

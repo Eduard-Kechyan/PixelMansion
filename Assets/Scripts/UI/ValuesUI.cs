@@ -128,8 +128,6 @@ namespace Merge
             root.UnregisterCallback<GeometryChangedEvent>(SetLoaded);
 
             loaded = true;
-
-            DisableButtonsAlt();
         }
 
         void SetValues()
@@ -439,6 +437,34 @@ namespace Merge
             energyButton.SetEnabled(energyEnabled);
             goldButton.SetEnabled(goldEnabled);
             gemsButton.SetEnabled(gemsEnabled);
+
+            if (energyPlusEnabled)
+            {
+                energyPlus.style.visibility = Visibility.Visible;
+                energyPlus.style.opacity = 1f;
+            }
+
+            if (goldPlusEnabled)
+            {
+                goldPlus.style.visibility = Visibility.Visible;
+                goldPlus.style.opacity = 1f;
+            }
+
+            if (gemsPlusEnabled)
+            {
+                gemsPlus.style.visibility = Visibility.Visible;
+                gemsPlus.style.opacity = 1f;
+            }
+
+            enabledSet = false;
+        }
+
+        public void EnableButtonsAlt()
+        {
+            levelButton.SetEnabled(true);
+            energyButton.SetEnabled(true);
+            goldButton.SetEnabled(true);
+            gemsButton.SetEnabled(true);
 
             if (energyPlusEnabled)
             {

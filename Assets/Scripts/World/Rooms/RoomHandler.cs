@@ -198,7 +198,7 @@ namespace Merge
 
             doorManager.OpenDoor(roomSortingLayer, (Vector2 position) =>
             {
-                charMove.SetPosition(position,()=>
+                charMove.SetPosition(position, () =>
                 {
                     UnlockAfter();
                 });
@@ -211,7 +211,20 @@ namespace Merge
 
         public void UnlockAfter()
         {
-            charMove.SetDestination(transform.localPosition);
+            if (nav != null)
+            {
+                Transform walkingArea = nav.transform.GetChild(0);
+
+                if (walkingArea != null)
+                {
+                    PolygonCollider2D navCollider = GetComponent<PolygonCollider2D>();
+
+                    if (navCollider != null)
+                    {
+                        charMove.SetDestination(navCollider.bounds.center);
+                    }
+                }
+            }
 
             soundManager.PlaySound(Types.SoundType.LevelUp); // TODO add proper unlocking sfx (RoomUnlocking)
 

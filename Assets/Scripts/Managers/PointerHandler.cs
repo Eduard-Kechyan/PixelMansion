@@ -20,7 +20,7 @@ namespace Merge
         private Types.Button currentButton;
 
         private Coroutine pressCoroutine;
-       // private bool pressing = false;
+        // private bool pressing = false;
         private bool animatePress = false;
 
         private Coroutine mergeCoroutine;
@@ -46,7 +46,7 @@ namespace Merge
         void Start()
         {
             // Cache 
-            taskMenu= GameRefs.Instance.taskMenu;
+            taskMenu = GameRefs.Instance.taskMenu;
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
@@ -91,7 +91,7 @@ namespace Merge
 
         IEnumerator WaitForTaskMenu()
         {
-            while(taskMenu.loadingTaskMenuButton)
+            while (taskMenu.loadingTaskMenuButton)
             {
                 yield return null;
             }
@@ -118,7 +118,7 @@ namespace Merge
             pressCoroutine = StartCoroutine(AnimatePress());
         }
 
-        public void ButtonPress(Types.Button button, Action callback = null)
+        public void ButtonPress(Types.Button button, bool alt = false, Action callback = null)
         {
             if (currentButton == button && buttonCallback != null)
             {
@@ -132,9 +132,12 @@ namespace Merge
                     pointerBackground.style.display = DisplayStyle.None;
                 }
 
-              //  pressing = false;
+                if (!alt)
+                {
+                    buttonCallback();
+                }
 
-                buttonCallback();
+                //  pressing = false;
 
                 callback?.Invoke();
             }
@@ -142,6 +145,11 @@ namespace Merge
             {
                 callback?.Invoke();
             }
+        }
+
+        public void ButtonPressFinish()
+        {
+            buttonCallback();
         }
 
         IEnumerator AnimatePress()

@@ -409,8 +409,8 @@ MonoBehaviour:
     gemPopped: 0
     isCompleted: 0
     timerOn: 0
-  - sprite: {fileID: 21300000, guid: ef488eadea2597c4f8d11a7763e15512, type: 3}
-    type: 0
+  - sprite: {fileID: 21300000, guid: 42bead8e5cf2e514785ce37d0791b327, type: 3}
+    type: 1
     state: 1
     group: 0
     genGroup: 0

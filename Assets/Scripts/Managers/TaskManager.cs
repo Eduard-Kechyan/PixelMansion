@@ -232,7 +232,7 @@ namespace Merge
         //// Completion ////
 
         // Trying to complete the task
-        public void TryToCompleteTask(string groupId, string taskId)
+        public void TryToCompleteTask(string groupId, string taskId,Action callback=null)
         {
             Transform taskRef = null;
             Vector2 taskRefPos = Vector2.zero;
@@ -277,7 +277,9 @@ namespace Merge
                 // Select the item
                 selector.SelectAlt(taskRef.GetComponent<Selectable>(), () =>
                 {
-                    // If successfully changed, give the rewards and complete the task 
+                    // If successfully changed, give the rewards and complete the task
+
+                    callback?.Invoke();
 
                     Glob.SetTimeout(() =>
                     {

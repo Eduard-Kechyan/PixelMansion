@@ -101,6 +101,9 @@ namespace Merge
 
         public Sprite[] bubblePopSprites;
 
+        [HideInInspector]
+        public bool ready;
+
         // Instance
         public static GameRefs Instance;
 
@@ -145,7 +148,7 @@ namespace Merge
                 inventoryMenu = menuUI.GetComponent<InventoryMenu>();
                 levelMenu = menuUI.GetComponent<LevelMenu>();
                 rateMenu = menuUI.GetComponent<RateMenu>();
-                followMenu= menuUI.GetComponent<FollowMenu>();
+                followMenu = menuUI.GetComponent<FollowMenu>();
                 noteMenu = menuUI.GetComponent<NoteMenu>();
                 settingsMenu = menuUI.GetComponent<SettingsMenu>();
                 inputMenu = menuUI.GetComponent<InputMenu>();
@@ -161,6 +164,8 @@ namespace Merge
             }
 
             initialized = true;
+
+            ready = true;
         }
     }
 }

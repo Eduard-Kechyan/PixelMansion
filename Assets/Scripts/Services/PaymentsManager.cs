@@ -31,19 +31,19 @@ namespace Merge
 
         //// Initialization ////
 
-    /*    public PaymentsManager()
+      /*  public PaymentsManager()
         {
             var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
 
-            for (int i = 0; i < shopData.goldContent.Length; i++)
-            {
-                builder.AddProduct(shopData.goldContent[i].id, ProductType.Consumable);
-            }
+              for (int i = 0; i < shopData.goldContent.Length; i++)
+              {
+                  builder.AddProduct(shopData.goldContent[i].id, ProductType.Consumable);
+              }
 
-            for (int i = 0; i < shopData.gemsContent.Length; i++)
-            {
-                builder.AddProduct(shopData.goldContent[i].id, ProductType.Consumable);
-            }
+              for (int i = 0; i < shopData.gemsContent.Length; i++)
+              {
+                  builder.AddProduct(shopData.goldContent[i].id, ProductType.Consumable);
+              }
 
             StartCoroutine(WaitForUnityServices(builder));
         }*/
@@ -55,12 +55,15 @@ namespace Merge
                 yield return null;
             }
 
+            Debug.Log("A");
+
             UnityPurchasing.Initialize(this, builder);
         }
 
         public void OnInitialized(IStoreController controller, IExtensionProvider extension)
         {
             this.controller = controller;
+            Debug.Log("B");
             //this.extension = extension;
 
             /*    for (int i = 0; i < controller.products.all.Length; i++)
@@ -84,6 +87,8 @@ namespace Merge
 
         public void Purchase(string id, Action newCallback = null, Action newFailCallback = null)
         {
+            Debug.Log(id);
+            Debug.Log(controller);
             controller.InitiatePurchase(id);
 
             callback = newCallback;

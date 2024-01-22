@@ -24,6 +24,8 @@ namespace Merge
         private bool pointsShone = false;
         private Types.Scene currentScene;
 
+        private bool handlingLast = false;
+
         [Serializable]
         public class ShineSprites
         {
@@ -45,25 +47,28 @@ namespace Merge
         // UI
         private VisualElement root;
 
-        /*  private VisualElement storyContainer;
-
-          private VisualElement skipButton;
-          private Label skipLabel;*/
-
         private VisualElement convoBackground;
 
         void Awake()
         {
             currentScene = Glob.ParseEnum<Types.Scene>(SceneManager.GetActiveScene().name);
 
+            //  Debug.Log(PlayerPrefs.HasKey("tutorialFinished"));
+            // Debug.Log(skipTutorial);
+            //  Debug.Log((Glob.lastScene != Types.Scene.None && Glob.lastScene == currentScene));
+
             if (PlayerPrefs.HasKey("tutorialFinished") || skipTutorial || (Glob.lastScene != Types.Scene.None && Glob.lastScene == currentScene))
             {
+                // Debug.Log("A");
                 progressManager.SetInitialData(0, true);
+
+                handlingLast = true;
 
                 HandleLast();
             }
             else
             {
+                // Debug.Log("B");
                 if (startFromStep && stepToStartFrom != "")
                 {
                     tutorialStep = stepToStartFrom;
@@ -104,32 +109,17 @@ namespace Merge
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
 
-            valuesUI.SetSortingOrder(4);
-
-            // storyContainer = root.Q<VisualElement>("StoryContainer");
-
             if (hubGameUIDoc != null)
             {
                 convoBackground = hubGameUIDoc.GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("ConvoBackground");
             }
-
-            /*  if (tutorialStep == "First")
-              {
-                  skipButton = root.Q<VisualElement>("SkipButtonContainer");
-                  skipLabel = skipButton.Q<Label>("Label");
-
-                  skipButton.AddManipulator(new Clickable(evt =>
-                  {
-                      EndStory();
-                  }));
-              }*/
 
             StartCoroutine(WaitForLoading());
         }
 
         IEnumerator WaitForLoading()
         {
-            while (!dataManager.loaded || !valuesUI.loaded || (convoUIHandler != null && !convoUIHandler.loaded) || (hubUI != null && !hubUI.loaded) || (gameplayUI != null && !gameplayUI.loaded))
+            while (handlingLast || !dataManager.loaded || !valuesUI.loaded || (convoUIHandler != null && !convoUIHandler.loaded) || (hubUI != null && !hubUI.loaded) || (gameplayUI != null && !gameplayUI.loaded))
             {
                 yield return null;
             }
@@ -142,6 +132,9 @@ namespace Merge
         {
             if (CheckScene())
             {
+                valuesUI.SetSortingOrder(4);
+                valuesUI.DisableButtonsAlt();
+
                 progressManager.SetInitialData(0, false);
 
                 HandleStep();
@@ -171,6 +164,9 @@ namespace Merge
 #else
         void Init()
         {
+            valuesUI.SetSortingOrder(4);
+            valuesUI.DisableButtonsAlt();
+
             progressManager.SetInitialData(0, false);
 
             HandleStep();
@@ -354,8 +350,6 @@ namespace Merge
                 case Types.TutorialStepTask.Gen:
                     break;
             }
-
-            // NextStep();
         }
 
         void TaskPress(Types.TutorialStep step)
@@ -490,27 +484,49 @@ namespace Merge
 
         void HandleLast()
         {
-            if (valuesUI != null)
-            {
-                valuesUI.SetSortingOrder(10);
-                valuesUI.EnableButtons();
-            }
-
-            if (hubUI != null)
-            {
-                hubUI.ShowButtons();
-            }
-
-            if (gameplayUI != null)
-            {
-                gameplayUI.ShowButtons();
-            }
-
             PlayerPrefs.SetInt("tutorialFinished", 1);
 
             PlayerPrefs.DeleteKey("tutorialStep");
 
             PlayerPrefs.Save();
+
+            StartCoroutine(WaitForGameReferences());
+        }
+
+        IEnumerator WaitForGameReferences()
+        {
+            if (!skipTutorial)
+            {
+                while (GameRefs.Instance == null)
+                {
+                    yield return null;
+                }
+
+                while (!GameRefs.Instance.ready)
+                {
+                    yield return null;
+                }
+
+                valuesUI = GameRefs.Instance.valuesUI;
+                hubUI = GameRefs.Instance.hubUI;
+                gameplayUI = GameRefs.Instance.gameplayUI;
+
+                if (valuesUI != null)
+                {
+                    valuesUI.SetSortingOrder(10);
+                    valuesUI.EnableButtonsAlt();
+                }
+
+                if (hubUI != null)
+                {
+                    hubUI.ShowButtons();
+                }
+
+                if (gameplayUI != null)
+                {
+                    gameplayUI.ShowButtons();
+                }
+            }
 
             Destroy(pointerHandler);
             Destroy(this);

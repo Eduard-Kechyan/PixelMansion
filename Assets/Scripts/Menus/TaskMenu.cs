@@ -151,7 +151,7 @@ namespace Merge
                             {
                                 if (pointerHandler != null)
                                 {
-                                    pointerHandler.ButtonPress(Types.Button.TaskMenu, () =>
+                                    pointerHandler.ButtonPress(Types.Button.TaskMenu, true, () =>
                                     {
                                         HandleCompletedTap(groupId, taskId);
                                     });
@@ -175,7 +175,7 @@ namespace Merge
                             {
                                 if (pointerHandler != null)
                                 {
-                                    pointerHandler.ButtonPress(Types.Button.TaskMenu, () =>
+                                    pointerHandler.ButtonPress(Types.Button.TaskMenu, true, () =>
                                     {
                                         HandleCompletedTap(groupId, taskId);
                                     });
@@ -202,7 +202,7 @@ namespace Merge
                                 {
                                     if (pointerHandler != null)
                                     {
-                                        pointerHandler.ButtonPress(Types.Button.TaskMenu, () =>
+                                        pointerHandler.ButtonPress(Types.Button.TaskMenu, true, () =>
                                         {
                                             sceneLoader.Load(Types.Scene.Gameplay);
                                         });
@@ -284,7 +284,10 @@ namespace Merge
         {
             if (sceneLoader.GetScene() == Types.Scene.Hub)
             {
-                taskManager.TryToCompleteTask(groupId, taskId);
+                taskManager.TryToCompleteTask(groupId, taskId, () =>
+                {
+                    StartCoroutine(WaitForTaskChangingToFinish());
+                });
 
                 menuUI.CloseMenu(taskMenu.name);
             }
@@ -294,6 +297,14 @@ namespace Merge
 
                 sceneLoader.Load(Types.Scene.Hub);
             }
+        }
+
+        IEnumerator WaitForTaskChangingToFinish(){
+            while(Glob.selectableIsChanging){
+                yield return null;
+            }
+
+            pointerHandler.ButtonPressFinish();
         }
 
         void SetTaskButtonPos(GeometryChangedEvent evt)
