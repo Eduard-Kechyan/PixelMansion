@@ -1,0 +1,30 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/AnExperiment/styles.uss?fileID=7433441132597879392&amp;guid=e8f33bfb4543dc94d99e2b6747819625&amp;type=3#styles" />
+    <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="TapperButton" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; opacity: 0;" />
+    <ui:VisualElement name="Box" style="position: absolute; bottom: 0; right: 0; left: 0; padding-top: 8px; padding-right: 8px; padding-bottom: 8px; padding-left: 8px; width: auto; opacity: 0;">
+        <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="SettingsButton" class="button" style="background-color: rgb(31, 43, 55);">
+            <ui:VisualElement name="Icon" class="button_icon" style="background-image: url(&apos;project://database/Assets/AnExperiment/IconOptions.png?fileID=2800000&amp;guid=9ee5fc45c0f33b54c9656f6e4b88b297&amp;type=3#IconOptions&apos;);" />
+        </ui:Button>
+        <ui:VisualElement name="ButtonBox" style="position: absolute; top: 50px; padding-top: 8px; padding-right: 6px; padding-bottom: 8px; padding-left: 8px; flex-direction: row; transition-duration: 0.3s; right: 0; transition-timing-function: ease-in-out-cubic;">
+            <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="MusicButton" class="button">
+                <ui:VisualElement name="Icon" class="button_icon" style="background-image: url(&apos;project://database/Assets/AnExperiment/IconMusicOn.png?fileID=2800000&amp;guid=0029ae2a0fb43b04f84035d94c478de5&amp;type=3#IconMusicOn&apos;);" />
+            </ui:Button>
+            <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="SpeedButton" class="button">
+                <ui:VisualElement name="Icon" class="button_icon" style="background-image: url(&apos;project://database/Assets/AnExperiment/IconSpeed2.png?fileID=2800000&amp;guid=0bc189c7b83fd7346be0721c7d0f4b99&amp;type=3#IconSpeed2&apos;);" />
+            </ui:Button>
+            <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="DayButton" class="button" style="background-color: rgb(33, 151, 202);">
+                <ui:VisualElement name="Icon" class="button_icon" style="background-image: url(&apos;project://database/Assets/AnExperiment/IconDay.png?fileID=2800000&amp;guid=397bb9eed809ec1459a05fa295f49557&amp;type=3#IconDay&apos;);" />
+            </ui:Button>
+            <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="DuskButton" class="button" style="background-color: rgb(185, 142, 36);">
+                <ui:VisualElement name="Icon" class="button_icon" style="background-image: url(&apos;project://database/Assets/AnExperiment/IconDusk.png?fileID=2800000&amp;guid=6dc9fec100c120642a9b3114d17adf21&amp;type=3#IconDusk&apos;);" />
+            </ui:Button>
+            <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="NightButton" class="button" style="background-color: rgb(25, 64, 106);">
+                <ui:VisualElement name="Icon" class="button_icon" style="background-image: url(&apos;project://database/Assets/AnExperiment/IconNight.png?fileID=2800000&amp;guid=181d38e53f04bec4789033bbb22811c6&amp;type=3#IconNight&apos;);" />
+            </ui:Button>
+            <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="DawnButton" class="button" style="background-color: rgb(140, 67, 23);">
+                <ui:VisualElement name="Icon" class="button_icon" style="background-image: url(&apos;project://database/Assets/AnExperiment/IconDawn.png?fileID=2800000&amp;guid=263f76ccbc462bd4fb95c1e0fcf0f35e&amp;type=3#IconDawn&apos;);" />
+            </ui:Button>
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:Label tabindex="-1" text="Day" parse-escape-sequences="true" display-tooltip-when-elided="true" name="TimeOfDayLabel" style="position: absolute; left: 0; right: 0; top: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 20px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; -unity-text-align: middle-center; color: rgb(255, 255, 255); font-size: 14px; -unity-font-definition: url(&apos;project://database/Assets/Fonts/Roboto%20SDF.asset?fileID=11400000&amp;guid=1c5dedeb0ccefb74ebe6e5ff0a6f7e56&amp;type=2#Roboto SDF&apos;); text-shadow: 1px 1px 0 rgb(0, 0, 0); transition-duration: 0.3s; opacity: 0;" />
+</ui:UXML>

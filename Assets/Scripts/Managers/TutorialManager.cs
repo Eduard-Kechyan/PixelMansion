@@ -427,6 +427,8 @@ namespace Merge
 
         void HandleStory()
         {
+            // Play initial story here if it exists
+
             /*  storyContainer.AddToClassList("no_transition");
               skipButton.AddToClassList("no_transition");
 
@@ -436,7 +438,7 @@ namespace Merge
               storyContainer.style.opacity = 1;
               skipButton.style.opacity = 1;*/
 
-            // TODO - Play initial story here
+            Debug.LogWarning("A Story bit of the tutorial should have been plating here. But, it isn't implemented yet or, there shouldn't be a Story bit here!");
 
             Glob.SetTimeout(() =>
             {

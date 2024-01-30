@@ -69,6 +69,8 @@
     "________ INPUT_MENU ________": "________________",
     "input_menu_title_player_name": "Your name",
     "input_menu_label_player_name": "Please type in your name:",
+    "input_menu_error_char_min": "Minimum 3 character",
+    "input_menu_error_char_max": "Maximum 12 character",
     "________ LOCALE_MENU ________": "________________",
     "locale_menu_title": "Languages",
     "________ TERMS_MENU ________": "________________",

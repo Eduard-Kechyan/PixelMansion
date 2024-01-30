@@ -150,7 +150,7 @@ namespace Merge
                      {
                          loading = false;
                          ContinueLoading();
-                         // TODO - Fix this function
+                         // FIX - Fix this function
                          // loadingSceneUI.CheckForUpdates(callback);
 
                          if (logPhases)

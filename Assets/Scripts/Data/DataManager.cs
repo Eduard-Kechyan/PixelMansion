@@ -87,7 +87,8 @@ namespace Merge
             followMenu = GameRefs.Instance.followMenu;
 
             // Set up Quick Save
-            saveSettings = new QuickSaveSettings() { CompressionMode = CompressionMode.None }; // TODO -  Set CompressionMode in the final game to Gzip
+            // Compression mode will be based on the game debug mode
+            saveSettings = new QuickSaveSettings() { CompressionMode = Debug.isDebugBuild ? CompressionMode.None : CompressionMode.Gzip };
             writer = QuickSaveWriter.Create("Root", saveSettings);
 
 #if UNITY_EDITOR
@@ -324,7 +325,7 @@ namespace Merge
             writer.Write("timers", newTimers).Commit();
         }
 
-        public void SaveCollDowns()
+        public void SaveCoolDowns()
         {
             string newCoolDowns = dataConverter.ConvertCoolDownsToJson(gameData.coolDowns);
 

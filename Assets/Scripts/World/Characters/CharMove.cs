@@ -26,6 +26,7 @@ namespace Merge
 
         private bool checkRoamAfter = false;
         private Action callback;
+        private string speechAfter = "";
 
         // Enums
         /* public enum Dir
@@ -53,6 +54,8 @@ namespace Merge
         private NavMeshAgent agent;
         private Animator animator;
         private CharRoam charRoam;
+        private CharSpeech charSpeech;
+        private I18n LOCALE;
 
         // Start is called before the first frame update
         void Start()
@@ -62,6 +65,8 @@ namespace Merge
             agent = GetComponent<NavMeshAgent>();
             animator = GetComponent<Animator>();
             charRoam = GetComponent<CharRoam>();
+            charSpeech = GetComponent<CharSpeech>();
+            LOCALE = I18n.Instance;
 
             // Initialize the character nav mesh agent
             agent.updateRotation = false;
@@ -99,13 +104,15 @@ namespace Merge
             }
         }
 
-        public void SetDestination(Vector2 newPos, bool stayInRoom = false, bool isRoaming = false, Action newCallback = null)
+        public void SetDestination(Vector2 newPos, bool stayInRoom = false, bool isRoaming = false, Action newCallback = null, string newSpeechAfter = "")
         {
             destinationPos = newPos;
 
             enabled = true;
 
             isWalking = true;
+
+            speechAfter = newSpeechAfter;
 
             callback = newCallback;
 
@@ -152,6 +159,11 @@ namespace Merge
                         callback();
 
                         ResetDirection();
+                    }
+
+                    if (speechAfter != "")
+                    {
+                        charSpeech.StopAndSpeak(LOCALE.Get(speechAfter));
                     }
                 }
                 else

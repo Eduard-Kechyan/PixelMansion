@@ -99,10 +99,10 @@ namespace Merge
 
             PlayerPrefs.SetInt("followResult", 1); // Note the 1
 
-            // TODO - Send statistic to the server (type)
+            // FIX - Send statistic to the server (type)
 
-            // TODO - Open the game's social media page
-            // TODO - Optionally reward the player
+            // FIX - Open the game's social media page
+            // FIX - Optionally reward the player
 
             CloseMenu();
         }
@@ -111,7 +111,7 @@ namespace Merge
         {
             PlayerPrefs.SetInt("followResult", 0); // Note the 0
 
-            // TODO - Send statistic to the server
+            // FIX - Send statistic to the server
 
             CloseMenu();
         }

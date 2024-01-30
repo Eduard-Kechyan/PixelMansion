@@ -124,6 +124,17 @@ namespace Merge
             }
         }
 
+        public void StopAndSpeak(string content = "", bool speakIfEmpty = true)
+        {
+            isSpeaking = false;
+
+            isTimeOut = true;
+
+            speechBubble.Close(true);
+
+            Speak(content, speakIfEmpty);
+        }
+
         public void Closed()
         {
             StartCoroutine(StopSpeaking(true));
@@ -170,7 +181,7 @@ namespace Merge
 
             gameData.greeted = true;
 
-            // TODO - Get player name and change Eduard
+            // FIX - Get player name and change Eduard
             Speak(string.Format(LOCALE.Get("speech_greeting_" + randomGreeting), "Eduard"));
         }
 

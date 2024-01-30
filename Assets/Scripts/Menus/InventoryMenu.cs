@@ -376,7 +376,7 @@ namespace Merge
 
                         dataManager.SaveInventory();
 
-                        soundManager.PlaySound(Types.SoundType.OpenCrate); // TODO - Set proper sound
+                        soundManager.PlaySound(Types.SoundType.OpenCrate); // FIX SOUND - Set proper sound
 
                         gameplayUI.BlipInventoryIndicator();
 

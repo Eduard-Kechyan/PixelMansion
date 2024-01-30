@@ -76,44 +76,6 @@ namespace Merge
 
         public void StartSelecting(Vector2 position, bool tapped = false, bool ignorePopup = false)
         {
-            List<RaycastHit2D> hits = new();
-
-            ContactFilter2D contactFilter2D = new();
-
-            contactFilter2D.SetLayerMask(LayerMask.GetMask("RoomLocked"));
-
-            Physics2D.Raycast(
-                           cam.ScreenToWorldPoint(position),
-                           Vector2.zero,
-                           contactFilter2D,
-                           hits,
-                           Mathf.Infinity
-                       );
-
-            hits.Sort(SortColliders);
-
-            if (hits.Count > 0 && (hits[0] || hits[0].collider != null))
-            {
-                if (!tapped && !ignorePopup)
-                {
-                    LockedRoomSelecting(position);
-                }
-            }
-            else
-            {
-                DefaultSelecting(position, tapped, ignorePopup);
-            }
-        }
-
-        void LockedRoomSelecting(Vector2 position)
-        {
-            Vector2 worldPosition = cam.ScreenToWorldPoint(position);
-
-            popupManager.Pop(LOCALE.Get("pop_room_locked"), worldPosition, Types.SoundType.None, true, true);
-        }
-
-        void DefaultSelecting(Vector2 position, bool tapped = false, bool ignorePopup = false)
-        {
             Selectable newSelectable = SelectAndReturn(position);
 
             if (newSelectable == null)

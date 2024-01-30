@@ -15,6 +15,7 @@ namespace Merge
         public ConvoUIHandler convoUIHandler;
         public BoardManager boardManager;
         public TutorialManager tutorialManager;
+        public NavMeshManager navMeshManager;
 
         private bool initialSet = false;
         private bool settingInitial = false;
@@ -320,12 +321,12 @@ namespace Merge
 
                             if (foundRoomHandler != null)
                             {
+                                navMeshManager.Bake();
+
                                 foundRoomHandler.Unlock(() =>
                                 {
                                     worldDataManager.UnlockRoom(areaId);
                                 });
-
-                                cameraMotion.MoveTo(foundRoom.localPosition, 250);
                             }
                             else
                             {

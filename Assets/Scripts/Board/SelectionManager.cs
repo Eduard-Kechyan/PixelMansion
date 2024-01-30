@@ -54,7 +54,7 @@ namespace Merge
                     }
 
                     //item.gameObject.layer == LayerMask.NameToLayer("Item")
-                    if (item.isIndicating || !item.isPlaying) // TODO - This was "!item.isPlaying", check if it's good now
+                    if (item.isIndicating || !item.isPlaying) // FIX - This was "!item.isPlaying", check if it's good now
                     {
                         // Unselect other items if they exist
                         Unselect("both");

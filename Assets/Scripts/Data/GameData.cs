@@ -29,7 +29,7 @@ namespace Merge
         [HideInInspector]
         public static float GAME_PIXEL_HEIGHT = 0f;
 
-        public const string WEB_ADDRESS = "https://solonodegames.com"; // TODO - Replace WEBSITE with proper website name
+        public const string WEB_ADDRESS = "https://solonodegames.com"; // FIX - Replace WEBSITE with proper website name
         public const string STUDIO_NAME = "solonodegames";
         public const string GAME_TITLE = "Pixel Mansion";
         public const string GAME_SUBTITLE = "Merge Mystery";
@@ -97,7 +97,7 @@ namespace Merge
         [HideInInspector]
         public Types.Item[] chestsData;
         [HideInInspector]
-        public List<Types.CollDownCount> coolDowns = new();
+        public List<Types.CoolDownCount> coolDowns = new();
 
         // Timers
         [HideInInspector]
@@ -559,7 +559,7 @@ namespace Merge
 
         //////// BONUS ////////
 
-        public void AddToBonus(Item item, bool check = true)
+        public void AddToBonus(Item item)
         {
             Types.Bonus newBonus = new()
             {
@@ -572,12 +572,12 @@ namespace Merge
 
             bonusData.Add(newBonus);
 
-            if (check)
-            {
-                gameplayUI.CheckBonusButton();
-            }
-
             dataManager.SaveBonus();
+        }
+
+        public void CheckBonus()
+        {
+            gameplayUI.CheckBonusButton();
         }
 
         public Types.Bonus GetAndRemoveLatestBonus()

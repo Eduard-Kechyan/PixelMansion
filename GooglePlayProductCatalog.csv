@@ -1,4 +1,4 @@
 Product ID,Published State,Purchase Type,Auto Translate,Locale; Title; Description,Auto Fill Prices,Price,Pricing Template ID
-gold1,published,managed_by_android,false,en_US;2500 Gold;Buy 2500 Gold,true,1990000,
-gold2,published,managed_by_android,false,en_US;6500 Gold;Buy 6500 Gold,true,4990000,
-gold3,published,managed_by_android,false,en_US;14000 Gold;Buy 14000 Gold,true,9990000,
+gold_1,published,managed_by_android,FALSE,en_US;2500 Gold;Buy 2500 Gold,TRUE,1990000,
+gold_2,published,managed_by_android,FALSE,en_US;6500 Gold;Buy 6500 Gold,TRUE,4990000,
+gold_3,published,managed_by_android,FALSE,en_US;14000 Gold;Buy 14000 Gold,TRUE,9990000,

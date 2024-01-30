@@ -86,14 +86,14 @@ namespace Merge
 
         public int GetLeftCount(string nameOrder, int total, Types.ShopItemType shopItemType)
         {
-            // TODO - Handle this
+            // FIX - Handle this
             int order = int.Parse(nameOrder);
             return 0;
         }
 
         public void SetBoughtItem(string nameOrder, Types.ShopItemType shopItemType)
         {
-            // TODO - Handle this
+            // FIX - Handle this
             int order = int.Parse(nameOrder);
 
 

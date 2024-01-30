@@ -574,18 +574,18 @@ namespace Merge
 
         //// COOL DOWNS ////
 
-        public List<Types.CollDownCount> ConvertCoolDownsFromJson(string coolDownsString)
+        public List<Types.CoolDownCount> ConvertCoolDownsFromJson(string coolDownsString)
         {
-            List<Types.CollDownCount> coolDowns = new();
+            List<Types.CoolDownCount> coolDowns = new();
 
-            Types.CollDownCountJson[] timerJson = JsonConvert.DeserializeObject<Types.CollDownCountJson[]>(
+            Types.CoolDownCountJson[] timerJson = JsonConvert.DeserializeObject<Types.CoolDownCountJson[]>(
                 coolDownsString
             );
 
             for (int i = 0; i < timerJson.Length; i++)
             {
                 coolDowns.Add(
-                    new Types.CollDownCount
+                    new Types.CoolDownCount
                     {
                         level = timerJson[i].level,
                         count = timerJson[i].count,
@@ -597,13 +597,13 @@ namespace Merge
             return coolDowns;
         }
 
-        public string ConvertCoolDownsToJson(List<Types.CollDownCount> coolDowns)
+        public string ConvertCoolDownsToJson(List<Types.CoolDownCount> coolDowns)
         {
-            Types.CollDownCountJson[] coolDownJson = new Types.CollDownCountJson[coolDowns.Count];
+            Types.CoolDownCountJson[] coolDownJson = new Types.CoolDownCountJson[coolDowns.Count];
 
             for (int i = 0; i < coolDowns.Count; i++)
             {
-                Types.CollDownCountJson neCoolDownsJson = new()
+                Types.CoolDownCountJson neCoolDownsJson = new()
                 {
                     level = coolDowns[i].level,
                     count = coolDowns[i].count,
@@ -976,8 +976,6 @@ namespace Merge
             // Get name based on the type
             if (itemsData.type == Types.Type.Item)
             {
-                Debug.Log("Item_" + itemsData.group);
-                Debug.Log("Item_" + itemsData.group); // TODO - Check if enums need to be converted to strings
                 return LOCALE.Get("Item_" + itemsData.group + "_" + count);
             }
 

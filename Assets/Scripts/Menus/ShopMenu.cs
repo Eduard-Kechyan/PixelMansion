@@ -176,7 +176,7 @@ namespace Merge
                     shopBox.name = shopItemType.ToString() + "ShopBox" + i;
                     shopBox.AddToClassList("shop_item_box_" + shopItemType.ToString().ToLower());
 
-                    // Top label // TODO - Add a check for th items left in the shop
+                    // Top label // FIX - Add a check for the items left in the shop
                     newShopItemBox.Q<Label>("TopLabel").text = dailyData.GetLeftCount(nameOrder, shopItems[i].total, shopItemType) + "/" + shopItems[i].total;
 
                     // Popular
@@ -374,7 +374,7 @@ namespace Merge
 
         string GetPrice(string id)
         {
-            // TODO - Add a real price here
+            // FIX - Add a real price here
             // NOTE -  The initial price is in dollars
 
             return "$" + 4;
@@ -630,11 +630,11 @@ namespace Merge
             {
                 emptyBoard.Sort((p1, p2) => p1.distance.CompareTo(p2.distance));
 
-                boardManager.CreateItemOnEmptyTile(boardItem, emptyBoard[0], uiButtons.gameplayShopButtonPos, false);
+                boardManager.CreateItemOnEmptyTile(boardItem, emptyBoard[0], uiButtons.gameplayShopButtonPos);
             }
             else
             {
-                valuePop.PopBonus(newItem, uiButtons.gameplayShopButtonPos, uiButtons.gameplayBonusButtonPos, true);
+                valuePop.PopBonus(newItem, uiButtons.gameplayShopButtonPos, uiButtons.gameplayBonusButtonPos);
             }
         }
 
@@ -653,7 +653,7 @@ namespace Merge
                 newItem = itemHandler.CreateItemTemp(shopData.dailyContent[order]);
             }
 
-            valuePop.PopBonus(newItem, uiButtons.hubShopButtonPos, uiButtons.hubPlayButtonPos, false);
+            valuePop.PopBonus(newItem, uiButtons.hubShopButtonPos, uiButtons.hubPlayButtonPos);
         }
     }
 }

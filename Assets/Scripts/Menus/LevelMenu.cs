@@ -257,7 +257,7 @@ namespace Merge
 
         void HandleRewards(bool newRewards = true)
         {
-            // TODO -  Also update the new rewards if "newRewards"
+            // FIX -  Also update the new rewards if "newRewards"
 
             levelReward0.style.backgroundImage = new StyleBackground(rewardContent[0].sprite);
             levelReward1.style.backgroundImage = new StyleBackground(rewardContent[1].sprite);
@@ -369,7 +369,7 @@ namespace Merge
                 check = false;
             }
 
-            valuePop.PopBonus(newItem, initialPosition, buttonPosition, check, true);
+            valuePop.PopBonus(newItem, initialPosition, buttonPosition, true);
         }
     }
 }

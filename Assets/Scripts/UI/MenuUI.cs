@@ -250,7 +250,7 @@ namespace Merge
 
         IEnumerator CloseAllAfter()
         {
-            for (int i = menus.Count - 1; i > -1; i--) // NOTE - We are counting backwards
+            for (int i = menus.Count - 1; i > -1; i--) // NOTE - Counting backwards
             {
                 menus[i].menuItem.SetEnabled(false);
                 menus[i].menuItem.style.opacity = 0f;

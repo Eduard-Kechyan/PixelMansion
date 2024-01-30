@@ -116,7 +116,7 @@ namespace Merge
                     }
                     else
                     {
-                        // TODO - Notify the play that notifications are disabled in the settings 
+                        // FIX - Notify the play that notifications are disabled in the settings 
                         notificationsOn = false;
                     }
                 });

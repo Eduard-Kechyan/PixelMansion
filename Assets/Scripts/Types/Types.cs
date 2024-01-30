@@ -125,7 +125,7 @@ namespace Merge
         }
 
         [Serializable]
-        public class CollDownCount
+        public class CoolDownCount
         {
             public int count;
             public int level;
@@ -134,7 +134,7 @@ namespace Merge
         }
 
         [Serializable]
-        public class CollDownCountJson
+        public class CoolDownCountJson
         {
             public int count;
             public int level;

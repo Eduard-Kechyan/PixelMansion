@@ -417,7 +417,7 @@ namespace Merge
                 startTime = DateTime.UtcNow
             });
 
-            dataManager.SaveCollDowns();
+            dataManager.SaveCoolDowns();
         }
 
         void ResetCoolDown(string id)
@@ -433,7 +433,7 @@ namespace Merge
                 }
             }
 
-            dataManager.SaveCollDowns();
+            dataManager.SaveCoolDowns();
         }
 
         public void ItemPutIntoInventory(string id, DateTime altTime)

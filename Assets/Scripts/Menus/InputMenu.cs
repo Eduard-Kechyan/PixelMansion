@@ -22,6 +22,7 @@ namespace Merge
         private Label inputLabel;
         private TextField inputTextField;
         private Button inputButton;
+        private Label inputLimitLabel;
 
         void Start()
         {
@@ -36,6 +37,7 @@ namespace Merge
             inputLabel = inputMenu.Q<Label>("InputLabel");
             inputTextField = inputMenu.Q<TextField>("InputTextField");
             inputButton = inputMenu.Q<Button>("InputButton");
+            inputLimitLabel = inputMenu.Q<Label>("InputLimitLabel");
 
             inputTextField.RegisterValueChangedCallback(evt => HandleInput(evt));
 
@@ -79,15 +81,26 @@ namespace Merge
             menuUI.OpenMenu(inputMenu, title);
         }
 
-        void HandleInput(ChangeEvent<string> newValue)
+        void HandleInput(ChangeEvent<string> changeEvent)
         {
-            if (newValue.newValue.Length > 12)
+            bool isMax = false;
+
+            if (changeEvent.newValue.Length > 12)
             {
-                inputTextField.value = inputText;
+                // Note - use this  to disable typing in more characters
+                // inputTextField.value = inputText;
+
+                inputLimitLabel.text = LOCALE.Get("input_menu_error_char_max");
+                inputLimitLabel.style.opacity = 1;
+
+                isMax = true;
             }
             else
             {
-                inputText = newValue.newValue;
+                inputText = changeEvent.newValue;
+
+                inputLimitLabel.style.opacity = 0;
+                Debug.Log("Nope");
             }
 
             if (inputText == "")
@@ -96,12 +109,19 @@ namespace Merge
             }
             else if (inputText.Length < 3)
             {
-                // TODO - Notify the player of the length limits
                 inputButton.SetEnabled(false);
+
+                inputLimitLabel.text = LOCALE.Get("input_menu_error_char_min");
+                inputLimitLabel.style.opacity = 1;
             }
             else
             {
                 inputButton.SetEnabled(true);
+
+                if (!isMax)
+                {
+                    inputLimitLabel.style.opacity = 0;
+                }
             }
         }
 

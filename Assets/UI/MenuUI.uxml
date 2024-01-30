@@ -256,6 +256,7 @@
                 <ui:VisualElement name="Content" class="content">
                     <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="InputLabel" class="input_label" />
                     <ui:TextField picking-mode="Ignore" label="Text Field" value="filler text" name="InputTextField" class="input_text_field" />
+                    <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="InputLimitLabel" class="input_label" style="color: rgb(204, 57, 57); opacity: 0; transition-duration: 0.3s;" />
                     <ui:Button text="Continue" parse-escape-sequences="true" display-tooltip-when-elided="true" name="InputButton" class="input_button button button_active" />
                 </ui:VisualElement>
                 <ui:VisualElement name="BorderBottom" class="border_bottom" style="background-image: url(&apos;project://database/Assets/Sprites/Menus/MenuBorderBottom.png?fileID=2800000&amp;guid=80923a0de08b2cb4ca2cad385b4f59c7&amp;type=3#MenuBorderBottom&apos;);" />

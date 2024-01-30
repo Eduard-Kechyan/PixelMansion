@@ -74,7 +74,7 @@ namespace Merge
             charSpeech.Speak(selectableSpeech.GetSpeech(), false);
         }
 
-        // TODO - Do we really need this method?
+        // FIX - Do we really need this method?
         bool CheckIfInRoom(Selectable selectable)
         {
             bool inRoom = false;

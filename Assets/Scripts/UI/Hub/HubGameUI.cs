@@ -7,6 +7,6 @@ namespace Merge
 {
     public class HubGameUI : MonoBehaviour
     {
-        // TODO - Remove this scripts if it isn't being used
+        // FIX - Remove this scripts if it isn't being used
     }
 }

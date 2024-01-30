@@ -47,7 +47,7 @@ namespace Merge
 
                 loadingCallback = callback;
 
-                // TODO - Check this
+                // FIX - Check this
                 //GetReadyToCreateUser(userId, tempAge);
 
                 if (saveUserId)
@@ -58,7 +58,7 @@ namespace Merge
 
                 GameData.Instance.userId = userId;
 
-                // TODO - Remove this line
+                // FIX - Remove this line
                 callback();
             }
         }
@@ -70,7 +70,7 @@ namespace Merge
             UserData newUserData = new()
             {
                 userId = userId,
-                email = dummyEmail, // TODO - Email should be empty and should only be filled if the player signs ins using social media
+                email = dummyEmail, // FIX - Email should be empty and should only be filled if the player signs ins using social media
                 location = "USA",
                 language = "en-US",
                 age = tempAge

@@ -156,17 +156,17 @@ namespace Merge
         {
             PlayerPrefs.SetInt("rateResult", 1); // Note the 1
 
-            // TODO - Send statistic to the server (starCount)
+            // FIX - Send statistic to the server (starCount)
 
-            // TODO - Open the game's app store page
-            // TODO - Optionally reward the player
+            // FIX - Open the game's app store page
+            // FIX - Optionally reward the player
 
             CloseMenu();
         }
 
         void HandleNoButton()
         {
-            // TODO - Send statistic to the server
+            // FIX - Send statistic to the server
 
             CloseMenu();
         }
@@ -175,9 +175,9 @@ namespace Merge
         {
             PlayerPrefs.SetInt("rateResult", 0); // Note the 0
 
-            // TODO - Send statistic to the server
+            // FIX - Send statistic to the server
 
-            // TODO - Open the feedback menu
+            // FIX - Open the feedback menu
 
             CloseMenu();
         }

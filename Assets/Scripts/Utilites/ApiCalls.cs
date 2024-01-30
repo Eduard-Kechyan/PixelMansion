@@ -11,8 +11,8 @@ namespace Merge
     public bool logConnection = false;
     public bool useDevUrl = false;
 
-    private string URL = ""; // TODO - Add real api address
-    //private string URL = "https://game-dev-backup.onrender.com/api"; // TODO - Add real api address
+    private string URL = ""; // FIX - Add real api address
+    //private string URL = "https://game-dev-backup.onrender.com/api"; // FIX - Add real api address
 
     public bool isConnected = false;
     public bool canCheckForUnsent = false;
@@ -56,7 +56,7 @@ namespace Merge
     {
         /*#if UNITY_EDITOR
         #endif*/
-        // TODO - Use the #if above here
+        // FIX - Use the #if above here
         if (Application.isEditor || Debug.isDebugBuild)
         {
             if (useDevUrl)

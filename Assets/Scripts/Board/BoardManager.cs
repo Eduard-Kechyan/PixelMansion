@@ -20,7 +20,7 @@ namespace Merge
         public bool boardSet = false;
 
         [Header("Bubbles")]
-        public int minBubbleLevel = 4; // TODO - Change this to 6 or higher
+        public int minBubbleLevel = 6;
         public int bubbleChance = 30; // In %
         public int bubbleCount = 1000;
         public int bubblePopTimeout = 60;

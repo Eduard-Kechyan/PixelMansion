@@ -10,7 +10,7 @@ namespace Merge
     {
         // Variables
         public bool bake;
-        public bool log=false;
+        public bool log = false;
         public Transform worldRoot;
 
         // References

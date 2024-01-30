@@ -85,7 +85,7 @@ namespace Merge
             }
 
             // Set up the writer
-            saveSettings = new QuickSaveSettings() { CompressionMode = CompressionMode.None }; // TODO - Change compression mode from None to Gzip on release
+            saveSettings = new QuickSaveSettings() { CompressionMode = CompressionMode.None }; // FIX - Change compression mode from None to Gzip on release
             writer = QuickSaveWriter.Create("Areas", saveSettings);
 
             if (PlayerPrefs.HasKey("areaSet") && writer.Exists("areaSet"))
@@ -286,7 +286,7 @@ namespace Merge
             else
             {
                 isRoom = false;
-                isLocked = false; // TODO - Check this here
+                isLocked = false; // FIX - Check this here
             }
 
             WorldTypes.Area newArea = new()
@@ -465,7 +465,7 @@ namespace Merge
                     case Types.TaskRefType.Floor:
                     default:
                         // Floor, Furniture, Item and others
-                        // TODO - Possible find Furniture and Item first before getting their children
+                        // FIX - Possible find Furniture and Item first before getting their children
                         return worldArea.Find(task.taskRefName == "" ? task.taskRefType.ToString() : task.taskRefName);
                 }
             }

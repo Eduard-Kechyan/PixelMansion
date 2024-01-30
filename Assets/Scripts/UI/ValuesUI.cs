@@ -132,13 +132,13 @@ namespace Merge
 
         void SetValues()
         {
-            // TODO - Remove comments and set to false
+            // FIX - Remove comments and set to false
             //levelButton.SetEnabled(false);
             //energyButton.SetEnabled(false);
             //goldButton.SetEnabled(false);
             //gemsButton.SetEnabled(false);
 
-            // TODO - Add a check for the plusses
+            // FIX - Add a check for the plusses
             //energyPlus.style.display = DisplayStyle.None;
             //goldPlus.style.display = DisplayStyle.None;
             //gemsPlus.style.display = DisplayStyle.None;

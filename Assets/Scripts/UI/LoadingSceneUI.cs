@@ -321,7 +321,7 @@ namespace Merge
             ageMenu.style.opacity = 1f;
 
             ageTitleLabel.text = LOCALE.Get("age_menu_title");
-            ageLabel.text = LOCALE.Get("age_menu_label", 12); // TODO - Change 12 to the propper age
+            ageLabel.text = LOCALE.Get("age_menu_label", 12); // FIX - Change 12 to the propper age
 
             ageAcceptButton.text = LOCALE.Get("age_accept");
             ageAcceptButton.SetEnabled(false);
@@ -434,7 +434,7 @@ namespace Merge
         {
             updateCallback = callback;
 
-            // TODO - Check here if the game version matches the latest available version on the app store
+            // FIX - Check here if the game version matches the latest available version on the app store
             if (true)
             {
                 if (updateCallback != null)
@@ -462,7 +462,7 @@ namespace Merge
 
         void UpdateGame()
         {
-            // TODO - Open the app store here, or update in game
+            // FIX - Open the app store here, or update in game
             Debug.Log("Updating!");
         }
     }

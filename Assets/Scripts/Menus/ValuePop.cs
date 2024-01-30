@@ -64,12 +64,11 @@ namespace Merge
             Item item,
             Vector2 initialPosition,
             Vector2 bonusButtonPosition,
-            bool check = true,
             bool isUIPosition = false
         )
         {
             StartCoroutine(
-                HandlePopBonus(item, initialPosition, bonusButtonPosition, check, isUIPosition)
+                HandlePopBonus(item, initialPosition, bonusButtonPosition, isUIPosition)
             );
         }
 
@@ -210,14 +209,15 @@ namespace Merge
             root.Remove(valuePop);
         }
 
-        public IEnumerator HandlePopBonus(
+        IEnumerator HandlePopBonus(
             Item item,
             Vector2 initialPosition,
             Vector2 bonusButtonPosition,
-            bool check = true,
             bool isUIPosition = false
         )
         {
+            gameData.AddToBonus(item);
+
             Sprite valuePopSprite = item.sprite;
 
             // Add value pop element to the root
@@ -269,7 +269,7 @@ namespace Merge
             // Remove the value pop
             root.Remove(valuePop);
 
-            gameData.AddToBonus(item, check); // TODO - Change the location of this line
+            gameData.CheckBonus();
         }
 
         VisualElement InitializePopValueElement(

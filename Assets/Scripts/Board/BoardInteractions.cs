@@ -430,7 +430,7 @@ namespace Merge
                         }
                         else
                         {
-                            // TODO - Check if we need this
+                            // FIX - Check if we need this
                             popupManager.Pop(LOCALE.Get("pop_max_level"), otherItem.transform.position, Types.SoundType.None, true);
                         }
                     }
@@ -715,7 +715,7 @@ namespace Merge
             {
                 if (gameData.UpdateValue(-amount, Types.CollGroup.Gems, false, true))
                 {
-                    // TODO - Remove switch statement
+                    // FIX - Remove switch statement
 
                     switch (currentItem.type)
                     {

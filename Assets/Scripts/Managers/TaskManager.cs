@@ -232,7 +232,7 @@ namespace Merge
         //// Completion ////
 
         // Trying to complete the task
-        public void TryToCompleteTask(string groupId, string taskId,Action callback=null)
+        public void TryToCompleteTask(string groupId, string taskId, Action callback = null)
         {
             Transform taskRef = null;
             Vector2 taskRefPos = Vector2.zero;
@@ -461,7 +461,7 @@ namespace Merge
                     buttonPosition = uiButtons.gameplayBonusButtonPos;
                 }
 
-                valuePop.PopBonus(newItem, initialPosition, buttonPosition, true);
+                valuePop.PopBonus(newItem, initialPosition, buttonPosition);
             }
         }
 

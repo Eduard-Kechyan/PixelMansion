@@ -234,11 +234,11 @@ namespace Merge
                     case "Energy":
                         energyRewardAmount = (int)reward.Amount;
                         break;
-                    case "Reward":// TODO - This is a dummy and should be fixed
+                    case "Reward":// FIX - This is a dummy and should be fixed
                         energyRewardAmount = (int)reward.Amount;
                         break;
                     default:
-                        // TODO - Handle error
+                        // FIX - Handle error
                         Debug.LogWarning("[AdsManager.cs] Ad reward type not found! Type: " + reward.Type + ", Amount: " + reward.Amount);
                         break;
                 }

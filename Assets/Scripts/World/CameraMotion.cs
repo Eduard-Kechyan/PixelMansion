@@ -37,7 +37,7 @@ namespace Merge
             {
                 speed = Mathf.SmoothStep(0, 100, speed);
 
-                // TODO - Add easing
+                // FIX - Add easing
                 transform.position = Vector3.MoveTowards(transform.position, desiredPos, (useAltMoveSpeed ? altMoveSpeed : speed) * Time.deltaTime);
 
                 if (Vector2.Distance(transform.position, desiredPos) < 0.01f)

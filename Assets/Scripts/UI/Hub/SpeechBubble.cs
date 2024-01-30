@@ -330,7 +330,7 @@ namespace Merge
         // Open the bubble multiple times until the character finishes talking
         void OpenMulti(string newContent, Vector2 newPos, CharSpeech newCharSpeech)
         {
-            // TODO - Properly handle multiline speech
+            // FIX - Properly handle multiline speech
             charSpeech = newCharSpeech;
 
             SetPos(newPos);
@@ -367,7 +367,7 @@ namespace Merge
             enabled = true;
         }
 
-        void HideSpeechBubble(Action callback = null)
+        void HideSpeechBubble(Action callback = null, bool immediately = false)
         {
             speechBubble.style.opacity = 0f;
             speechBubble.style.scale = new Vector2(0f, 0f);
@@ -375,21 +375,25 @@ namespace Merge
             isBubbleShowing = false;
             enabled = false;
 
-            StartCoroutine(CloseSpeechBubble(callback));
+            if (immediately)
+            {
+                speechBubble.style.display = DisplayStyle.None;
+            }
+            else
+            {
+                StartCoroutine(CloseSpeechBubble(callback));
+            }
         }
 
         IEnumerator CloseSpeechBubble(Action callback = null)
         {
             yield return new WaitForSeconds(0.3f);
 
-            speechBubble.style.display = DisplayStyle.None;
-
-            callback?.Invoke();
         }
 
-        public void Close()
+        public void Close(bool immediately = false)
         {
-            HideSpeechBubble();
+            HideSpeechBubble(null, immediately);
         }
 
         public void SetPos(Vector2 newPos)

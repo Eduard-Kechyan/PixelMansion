@@ -109,7 +109,7 @@ namespace Merge
             idCopyButton = settingsMenu.Q<Button>("IDCopyButton");
             copyCheck = settingsMenu.Q<VisualElement>("CopyCheck");
 
-            // Button clicks // TODO - Add all button clicks to ////
+            // Button clicks 
             soundButton.clicked += () => settings.ToggleSound();
             musicButton.clicked += () => settings.ToggleMusic();
             vibrationButton.clicked += () => settings.ToggleVibration();
@@ -123,6 +123,7 @@ namespace Merge
             exitButton.clicked += () => confirmMenu.Open("exit", Application.Quit);
             rateButton.clicked += () => rateMenu.Open(true);
 
+            // TODO - Add all button clicks to ////
             googleSignInButton.clicked += () => Debug.Log("Google Sing In Button Clicked!"); ////
             facebookSignInButton.clicked += () => Debug.Log("Facebook Sing In Button Clicked!"); ////
             appleSignInButton.clicked += () => Debug.Log("Apple Sing In Button Clicked!"); ////
@@ -164,7 +165,6 @@ namespace Merge
                 rateButton.style.display = DisplayStyle.None;
             }
 
-            // TODO - Get the user ID
             idLabel.text = "User ID: " + GameData.Instance.userId;
 
             versionLabel.text = "v." + Application.version;
@@ -301,7 +301,7 @@ namespace Merge
                 PlayerPrefs.SetInt("followResult", 1);
             }
 
-            // TODO - Send statistic to the server (type)
+            // FIX - Send statistic to the server (type)
 
             externalAppOpened = false;
 
