@@ -181,8 +181,8 @@ namespace Merge
 
             gameData.greeted = true;
 
-            // FIX - Get player name and change Eduard
-            Speak(string.Format(LOCALE.Get("speech_greeting_" + randomGreeting), "Eduard"));
+            // FIX - Get player name and change PLAYER to it
+            Speak(string.Format(LOCALE.Get("speech_greeting_" + randomGreeting), "PLAYER"));
         }
 
         IEnumerator RandomSpeech(bool useDelay = true)

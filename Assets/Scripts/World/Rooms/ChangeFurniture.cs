@@ -48,23 +48,12 @@ namespace Merge
                 //selectable.order = spriteRenderer.sortingOrder;
             }
 
-            SetPositionZ();
-
             enabled = false;
         }
 
         void Update()
         {
             HandleOverlay();
-        }
-
-        void SetPositionZ()
-        {
-            int parentLayerOrder = SortingLayer.GetLayerValueFromName(transform.parent.transform.parent.gameObject.GetComponent<RoomHandler>().roomSortingLayer);
-
-            int z = parentLayerOrder + spriteRenderer.sortingOrder + 3; // 3 is for this gameObjects' order in it's parent
-
-            transform.position = new Vector3(transform.position.x, transform.position.y, z);
         }
 
         //// SELECT ////
@@ -252,7 +241,7 @@ namespace Merge
                         flashSpeed * Time.deltaTime
                     );
                 }
-
+                
                 spriteRenderer.material.SetFloat("_FlashAmount", newFlashAmount);
             }
         }

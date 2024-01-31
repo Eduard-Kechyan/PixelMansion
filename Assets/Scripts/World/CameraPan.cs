@@ -341,8 +341,9 @@ namespace Merge
                                         Time.time - touchStartTime >= selector.tapDuration
                                         && !isPanning
                                         && !selector.isSelecting
+                                        && !selector.isSelected
                                         && !popupManager.isSelectorPopup
-                                        && tutorialManager != null
+                                        // &&  tutorialManager != null // FIX - Check if we need to check tutorialManager
                                     )
                                     {
                                         selector.StartSelecting(

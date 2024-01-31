@@ -291,7 +291,7 @@ namespace Merge
             string text = "";
             string largeIcon = "";
 
-            // FIX - Add different colors for the different types
+            // TODO - Add different colors for the different types
 
             switch (notificationType)
             {

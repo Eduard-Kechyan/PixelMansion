@@ -49,7 +49,7 @@ MonoBehaviour:
   soundClips:
   - clip: {fileID: 8300000, guid: b9e9300cfbd4d744398fa9f0734814af, type: 3}
     volume: 1
-    type: 12
+    type: 13
   - clip: {fileID: 8300000, guid: 9c19f97c7362daf4f8669eada6db5697, type: 3}
     volume: 1
     type: 9
@@ -107,7 +107,7 @@ MonoBehaviour:
     volume: 0.6
     type: 0
   - clip: {fileID: 8300000, guid: d9c7c184bad526345bb40d7ce150d1cd, type: 3}
-    volume: 0.6
+    volume: 0.4
     type: 3
   sourceMusic: {fileID: 2129766215703338103}
   currentMusic: 0

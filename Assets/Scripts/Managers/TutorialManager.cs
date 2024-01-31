@@ -530,8 +530,7 @@ namespace Merge
                 }
             }
 
-            Destroy(pointerHandler);
-            Destroy(this);
+            Destroy(gameObject);
         }
     }
 }

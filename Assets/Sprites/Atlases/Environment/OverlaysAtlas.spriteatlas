@@ -50,54 +50,45 @@ SpriteAtlas:
     isAtlasV2: 0
     cachedData: {fileID: 0}
     packedSpriteRenderDataKeys:
-    - c53f8be101f8349429d34f7f175eb8b2: 21300000
-    - 040e34429a305e44aba23e72f6744b30: 21300000
+    - d19101e1f303918438113f4e29a29b9f: 21300000
+    - 6f011ca20c493a948bffc3d071c6ffba: 21300000
     - 26349d13dffec714eaaf7161b427b7d2: 21300000
+    - f1dcd463d8b24644aaf343ee4732d613: 21300000
     - 4b012e7378d3b0243aa6933915aeb5b2: 21300000
-    - 306edfe3c6a5bf4488c9a455de2df6cc: 21300000
-    - 478bfa45df628be4fa5358c507505e24: 21300000
-    - 7cef98f66d3478647bdd7b1dbb81797d: 21300000
+    - 63a05678cb2c7b9499dc67187ab82e64: 21300000
     - 696aa3f9a38da8c469abaf2634d206a1: 21300000
     - 9cea662b43079d543b0ba8ba23813a9f: 21300000
-    - 2fc50a5ce7afe1f43b25c7a969fb3072: 21300000
+    - 57267f4c9d00b074f85d349b865320c6: 21300000
+    - e00b369c324f66148b8726f899e5c0aa: 21300000
     - bc275d2d6b9b3014f85d064d1d453b9a: 21300000
-    - fc67306e54634ab4188f9429c8a94ff1: 21300000
-    - d07b3dbe3ecbda84fb6839ee513e05b8: 21300000
     - e87025ce0c806194eb4edb454d064911: 21300000
-    - ad26cdce60c349e4c893e59086201bb4: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
-  - {fileID: 21300000, guid: c53f8be101f8349429d34f7f175eb8b2, type: 3}
-  - {fileID: 21300000, guid: 040e34429a305e44aba23e72f6744b30, type: 3}
+  - {fileID: 21300000, guid: d19101e1f303918438113f4e29a29b9f, type: 3}
+  - {fileID: 21300000, guid: 6f011ca20c493a948bffc3d071c6ffba, type: 3}
   - {fileID: 21300000, guid: 26349d13dffec714eaaf7161b427b7d2, type: 3}
+  - {fileID: 21300000, guid: f1dcd463d8b24644aaf343ee4732d613, type: 3}
   - {fileID: 21300000, guid: 4b012e7378d3b0243aa6933915aeb5b2, type: 3}
-  - {fileID: 21300000, guid: 306edfe3c6a5bf4488c9a455de2df6cc, type: 3}
-  - {fileID: 21300000, guid: 478bfa45df628be4fa5358c507505e24, type: 3}
-  - {fileID: 21300000, guid: 7cef98f66d3478647bdd7b1dbb81797d, type: 3}
+  - {fileID: 21300000, guid: 63a05678cb2c7b9499dc67187ab82e64, type: 3}
   - {fileID: 21300000, guid: 696aa3f9a38da8c469abaf2634d206a1, type: 3}
   - {fileID: 21300000, guid: 9cea662b43079d543b0ba8ba23813a9f, type: 3}
-  - {fileID: 21300000, guid: 2fc50a5ce7afe1f43b25c7a969fb3072, type: 3}
+  - {fileID: 21300000, guid: 57267f4c9d00b074f85d349b865320c6, type: 3}
+  - {fileID: 21300000, guid: e00b369c324f66148b8726f899e5c0aa, type: 3}
   - {fileID: 21300000, guid: bc275d2d6b9b3014f85d064d1d453b9a, type: 3}
-  - {fileID: 21300000, guid: fc67306e54634ab4188f9429c8a94ff1, type: 3}
-  - {fileID: 21300000, guid: d07b3dbe3ecbda84fb6839ee513e05b8, type: 3}
   - {fileID: 21300000, guid: e87025ce0c806194eb4edb454d064911, type: 3}
-  - {fileID: 21300000, guid: ad26cdce60c349e4c893e59086201bb4, type: 3}
   m_PackedSpriteNamesToIndex:
-  - LivingOverlayWallLeft
-  - KitchenOverlayWallLeft
+  - WallWindowRightOverlay
+  - WallDoorFrameRightOverlay
   - Cloud3
+  - FloorOverlay
   - Cloud4
-  - LivingRoomOverlayFloor
-  - BedRoomOverlayWallLeft
-  - BedRoomOverlayFloor
+  - WallOverlay
   - Cloud2
   - Cloud1
-  - LivingOverlayWallRight
+  - WallDoorFrameLeftOverlay
+  - WallWindowLeftOverlay
   - CloudBackground
-  - BedRoomOverlayWallRight
-  - KitchenOverlayFloor
   - BaseDoorOverlay
-  - KitchenOverlayWallRight
   m_RenderDataMap: {}
   m_Tag: OverlaysAtlas
   m_IsVariant: 0

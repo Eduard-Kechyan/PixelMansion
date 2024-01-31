@@ -321,7 +321,7 @@ namespace Merge
             ageMenu.style.opacity = 1f;
 
             ageTitleLabel.text = LOCALE.Get("age_menu_title");
-            ageLabel.text = LOCALE.Get("age_menu_label", 12); // FIX - Change 12 to the propper age
+            ageLabel.text = LOCALE.Get("age_menu_label", 12); // TODO - Change 12 to the proper age
 
             ageAcceptButton.text = LOCALE.Get("age_accept");
             ageAcceptButton.SetEnabled(false);

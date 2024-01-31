@@ -40,11 +40,11 @@ namespace Merge
         public Sprite[] optionSprites = new Sprite[3];
 
         // Sprites
-        private readonly List<SpriteRenderer> chunks = new ();
-        private readonly List<Sprite> oldChunkSprites = new ();
+        private readonly List<SpriteRenderer> chunks = new();
+        private readonly List<Sprite> oldChunkSprites = new();
 
         // Overlay
-        private SpriteRenderer overlay;
+        private readonly List<SpriteRenderer> overlays = new();
         private bool alphaUp = true;
         private float alphaDelayTemp = 0f;
 
@@ -70,14 +70,12 @@ namespace Merge
                 GetChunks();
             }
 
-            SetPositionZ();
-
             enabled = false;
         }
 
         void Update()
         {
-            HandleOverlay();
+            HandleOverlays();
         }
 
 #if UNITY_EDITOR
@@ -91,43 +89,51 @@ namespace Merge
         {
             if (transform.childCount > 0)
             {
-                overlay = transform.GetChild(0).GetComponent<SpriteRenderer>();
-
-                List<SpriteRenderer> tempOldChunks = new ();
+                List<SpriteRenderer> tempOldChunks = new();
 
                 // Start at 1 since 0 is the overlay
-                for (int i = 1; i < transform.childCount; i++)
+                for (int i = 0; i < transform.childCount; i++)
                 {
-                    for (int j = 0; j < transform.GetChild(i).childCount; j++)
+                    Transform wallItem = transform.GetChild(i);
+
+                    for (int j = 0; j < wallItem.childCount; j++)
                     {
-                        SpriteRenderer newChild = transform.GetChild(i).GetChild(j).GetComponent<SpriteRenderer>();
+                        SpriteRenderer newChild = wallItem.GetChild(j).GetComponent<SpriteRenderer>();
 
-                        // Set side's shadow color if the wall is on the right
-                        if (side == Side.Right)
+                        if (j >= (wallItem.childCount == 2 ? 1 : 2)) // Placeholder
                         {
-                            newChild.color = shadowColor;
+                            // Set side's shadow color if the wall is on the right
+                            if (side == Side.Right)
+                            {
+                                newChild.color = shadowColor;
+                            }
+
+                            // Set the sorting order to the parent
+                            /*  if (i == 0)
+                              {
+                                  //selectable.order = newChild.sortingOrder;
+                              }*/
+
+                            // Check if we shouldn't flip the sprites
+                            if (unFlip)
+                            {
+                                newChild.transform.localScale = new Vector3(1, newChild.transform.localScale.y, newChild.transform.localScale.z);
+                            }
+
+                            chunks.Add(newChild);
+
+                            if (isOld)
+                            {
+                                tempOldChunks.Add(newChild);
+                            }
                         }
-
-                        // Set the sorting order to the parent
-                        if (i == 0)
+                        else // Overlay
                         {
-                            //selectable.order = newChild.sortingOrder;
-                        }
-
-                        // Check if we shouldn't flip the sprites
-                        if (unFlip)
-                        {
-                            newChild.transform.localScale = new Vector3(1, newChild.transform.localScale.y, newChild.transform.localScale.z);
-                        }
-
-                        chunks.Add(newChild);
-
-                        if (isOld)
-                        {
-                            tempOldChunks.Add(newChild);
+                            overlays.Add(newChild);
                         }
                     }
                 }
+
 
                 chunks.Sort((a, b) => a.transform.position.x.CompareTo(b.transform.position.x));
 
@@ -143,15 +149,6 @@ namespace Merge
 
                 chunksSet = true;
             }
-        }
-
-        void SetPositionZ()
-        {
-            int parentLayerOrder = SortingLayer.GetLayerValueFromName(transform.parent.gameObject.GetComponent<RoomHandler>().roomSortingLayer);
-
-            int z = parentLayerOrder + (isRight ? 1 : 0); // 0 or 1 is for this gameObjects' order in it's parent
-
-            transform.position = new Vector3(transform.position.x, transform.position.y, z);
         }
 
         //// SELECT ////
@@ -171,7 +168,7 @@ namespace Merge
             enabled = false;
 
             // Reset flashing
-            overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, 0);
+            ResetOverlays();
         }
 
         //// SPRITES ////
@@ -268,7 +265,7 @@ namespace Merge
                 }
 
                 // Reset overlay flashing
-                ResetOverlay();
+                ResetOverlays();
 
                 isOld = false;
             }
@@ -326,12 +323,12 @@ namespace Merge
         }
 
         //// OVERLAY ////
-        void HandleOverlay()
+        void HandleOverlays()
         {
             // Flash if selected and isn't changing the tiles
             if (isSelected && !isChanging)
             {
-                float alphaAmount = overlay.color.a;
+                float alphaAmount = overlays[0].color.a;
                 float newAlphaAmount = 0f;
 
                 if (alphaAmount == maxAlpha)
@@ -370,13 +367,23 @@ namespace Merge
                     );
                 }
 
-                overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, newAlphaAmount);
+                Color newOverlayColor = new Color(1, 1, 1, newAlphaAmount);
+
+                for (int i = 0; i < overlays.Count; i++)
+                {
+                    overlays[i].color = newOverlayColor;
+                }
             }
         }
 
-        void ResetOverlay()
+        void ResetOverlays()
         {
-            overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, 0);
+            Color newOverlayColor = new Color(1, 1, 1, 0);
+
+            for (int i = 0; i < overlays.Count; i++)
+            {
+                overlays[i].color = newOverlayColor;
+            }
         }
     }
 }

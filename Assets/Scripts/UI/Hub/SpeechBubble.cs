@@ -289,26 +289,28 @@ namespace Merge
 
                 HideSpeechBubble(() =>
                 {
-                    if (newContent.Contains("(-)"))
+                    /*if (newContent.Contains("(-)"))
                     {
                         OpenMulti(newContent, newPos, newCharSpeech);
                     }
                     else
                     {
                         OpenSingle(newContent, newPos, newCharSpeech);
-                    }
+                    }*/
+                    OpenSingle(newContent, newPos, newCharSpeech);
                 });
             }
             else
             {
-                if (newContent.Contains("(-)"))
-                {
-                    OpenMulti(newContent, newPos, newCharSpeech);
-                }
-                else
-                {
-                    OpenSingle(newContent, newPos, newCharSpeech);
-                }
+                /* if (newContent.Contains("(-)"))
+                 {
+                     OpenMulti(newContent, newPos, newCharSpeech);
+                 }
+                 else
+                 {
+                     OpenSingle(newContent, newPos, newCharSpeech);
+                 }*/
+                OpenSingle(newContent, newPos, newCharSpeech);
             }
         }
 
@@ -330,7 +332,7 @@ namespace Merge
         // Open the bubble multiple times until the character finishes talking
         void OpenMulti(string newContent, Vector2 newPos, CharSpeech newCharSpeech)
         {
-            // FIX - Properly handle multiline speech
+            // TODO - Properly handle multiline speech
             charSpeech = newCharSpeech;
 
             SetPos(newPos);

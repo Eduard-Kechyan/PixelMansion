@@ -33,8 +33,8 @@ namespace Merge
         private readonly List<List<SpriteRenderer>> tiles = new();
         private readonly List<List<Sprite>> oldTilesSprites = new();
 
-        // Overlay
-        private SpriteRenderer overlay;
+        // Overlays
+        private readonly List<SpriteRenderer> overlays = new();
         private bool alphaUp = true;
         private float alphaDelayTemp = 0f;
 
@@ -53,28 +53,27 @@ namespace Merge
                 GetTiles();
             }
 
-            SetPositionZ();
-
             enabled = false;
         }
 
         void Update()
         {
-            HandleOverlay();
+            HandleOverlays();
         }
 
         void GetTiles()
         {
             if (transform.childCount > 0)
             {
-                overlay = transform.GetChild(0).GetComponent<SpriteRenderer>();
-
                 List<Transform> preTiles = new();
 
-                // Start at 1 since 0 is the overlay
-                for (int i = 1; i < transform.childCount; i++)
+                for (int i = 0; i < transform.childCount; i++)
                 {
-                    preTiles.Add(transform.GetChild(i));
+                    Transform tile = transform.GetChild(i);
+
+                    preTiles.Add(tile);
+
+                    overlays.Add(tile.GetChild(0).GetComponent<SpriteRenderer>());
                 }
 
                 //tiles.Sort((a, b) => a.transform.position.y.CompareTo(b.transform.position.y));
@@ -82,27 +81,23 @@ namespace Merge
 
                 int count = 0;
 
-                for (int i = 0; i < transform.childCount - 1; i++)
+                for (int i = 0; i < preTiles.Count; i++)
                 {
                     // First entry
                     if (i == 0)
                     {
                         SpriteRenderer newSpriteRenderer = preTiles[i].GetComponent<SpriteRenderer>();
 
-                        List<SpriteRenderer> tempTiles = new(){
-                        newSpriteRenderer
-                    };
+                        List<SpriteRenderer> tempTile = new() { newSpriteRenderer };
 
                         // Set the sorting order to the parent
                         //selectable.order = tempTiles[0].sortingOrder;
 
-                        tiles.Add(tempTiles);
+                        tiles.Add(tempTile);
 
                         if (isOld)
                         {
-                            List<Sprite> tempTileSprites = new(){
-                            newSpriteRenderer.sprite
-                        };
+                            List<Sprite> tempTileSprites = new() { newSpriteRenderer.sprite };
 
                             oldTilesSprites.Add(tempTileSprites);
                         }
@@ -124,17 +119,13 @@ namespace Merge
                         {
                             SpriteRenderer newSpriteRenderer = preTiles[i].GetComponent<SpriteRenderer>();
 
-                            List<SpriteRenderer> tempTiles = new(){
-                        newSpriteRenderer
-                    };
+                            List<SpriteRenderer> tempTiles = new() { newSpriteRenderer };
 
                             tiles.Add(tempTiles);
 
                             if (isOld)
                             {
-                                List<Sprite> tempTileSprites = new(){
-                                newSpriteRenderer.sprite
-                            };
+                                List<Sprite> tempTileSprites = new() { newSpriteRenderer.sprite };
 
                                 oldTilesSprites.Add(tempTileSprites);
                             }
@@ -146,15 +137,6 @@ namespace Merge
             }
 
             tilesSet = true;
-        }
-
-        void SetPositionZ()
-        {
-            int parentLayerOrder = SortingLayer.GetLayerValueFromName(transform.parent.gameObject.GetComponent<RoomHandler>().roomSortingLayer);
-
-            int z = parentLayerOrder + 2; // 2 is for this gameObjects' order in it's parent
-
-            transform.position = new Vector3(transform.position.x, transform.position.y, z);
         }
 
         //// SELECT ////
@@ -174,7 +156,7 @@ namespace Merge
             enabled = false;
 
             // Reset overlay flashing
-            ResetOverlay();
+            ResetOverlays();
         }
 
         //// SPRITES ////
@@ -285,7 +267,7 @@ namespace Merge
                 }
 
                 // Reset overlay flashing
-                ResetOverlay();
+                ResetOverlays();
 
                 isOld = false;
             }
@@ -320,12 +302,12 @@ namespace Merge
         }
 
         //// OVERLAY ////
-        void HandleOverlay()
+        void HandleOverlays()
         {
             // Flash if selected and isn't changing the tiles
             if (isSelected && !isChanging)
             {
-                float alphaAmount = overlay.color.a;
+                float alphaAmount = overlays[0].color.a;
                 float newAlphaAmount = 0f;
 
                 if (alphaAmount == maxAlpha)
@@ -364,13 +346,23 @@ namespace Merge
                     );
                 }
 
-                overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, newAlphaAmount);
+                Color newOverlayColor = new Color(1, 1, 1, newAlphaAmount);
+
+                for (int i = 0; i < overlays.Count; i++)
+                {
+                    overlays[i].color = newOverlayColor;
+                }
             }
         }
 
-        void ResetOverlay()
+        void ResetOverlays()
         {
-            overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, 0);
+            Color newOverlayColor = new Color(1, 1, 1, 0);
+
+            for (int i = 0; i < overlays.Count; i++)
+            {
+                overlays[i].color = newOverlayColor;
+            }
         }
     }
 }

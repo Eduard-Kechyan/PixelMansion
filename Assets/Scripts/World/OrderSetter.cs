@@ -5,158 +5,191 @@ using UnityEngine;
 namespace Merge
 {
     public class OrderSetter : MonoBehaviour
-{
-    public Type type = Type.Single;
-    [SortingLayer]
-    public string sortingLayer;
-    public bool set = false;
-
-    [HideInInspector]
-    public bool isNavArea;
-
-    [Condition("isNavArea", true)]
-    public bool show = false;
-
-    public enum Type
     {
-        Single,
-        Self,
-        NavArea,
-        Room
-    }
+        public Type type = Type.Single;
+        [SortingLayer]
+        public string sortingLayer;
+        public bool set = false;
 
-    private List<string> roomParts = new List<string>();
-    
+        [HideInInspector]
+        public bool isNavArea;
+
+        [Condition("isNavArea", true)]
+        public bool show = false;
+
+        public enum Type
+        {
+            Single,
+            Self,
+            NavArea,
+            Room
+        }
+
 #if UNITY_EDITOR
-    void OnValidate()
-    {
-        if (set)
+        void OnValidate()
         {
-            set = false;
+            if (set)
+            {
+                set = false;
+            }
+
+            isNavArea = type == Type.NavArea;
+
+            ToggleNavArea();
+
+            SetSpriteOrders();
         }
-
-        isNavArea = type == Type.NavArea;
-
-        if (type == Type.Room)
-        {
-            roomParts.Add("WallLeft");
-            roomParts.Add("WallRight");
-            roomParts.Add("Floor");
-        }
-
-        ToggleNavArea();
-
-      //  SetSpriteOrders();
-    }
 #endif
 
-    void ToggleNavArea()
-    {
-        if (type == Type.NavArea)
+        void ToggleNavArea()
         {
-            Transform walkable = transform.GetChild(0);
-            Transform notWalkable = transform.GetChild(1);
-
-            for (int i = 0; i < walkable.childCount; i++)
+            if (type == Type.NavArea)
             {
-                walkable.GetChild(i).GetComponent<SpriteRenderer>().sortingOrder = 0;
-                walkable.GetChild(i).GetComponent<SpriteRenderer>().sortingLayerName = show ? sortingLayer : "Default";
-            }
+                Transform walkable = transform.GetChild(0);
+                Transform notWalkable = transform.GetChild(1);
+                SpriteRenderer walkableRenderer = walkable.GetComponent<SpriteRenderer>();
+                SpriteRenderer notWalkableRenderer = notWalkable.GetComponent<SpriteRenderer>();
 
-            for (int i = 0; i < notWalkable.childCount; i++)
-            {
-                notWalkable.GetChild(i).GetComponent<SpriteRenderer>().sortingOrder = 1;
-                walkable.GetChild(i).GetComponent<SpriteRenderer>().sortingLayerName = show ? sortingLayer : "Default";
+                for (int i = 0; i < walkable.childCount; i++)
+                {
+                    walkableRenderer.sortingOrder = 0;
+                    walkableRenderer.sortingLayerName = show ? sortingLayer : "Default";
+                }
+
+                for (int i = 0; i < notWalkable.childCount; i++)
+                {
+                    notWalkableRenderer.sortingOrder = 1;
+                    notWalkableRenderer.sortingLayerName = show ? sortingLayer : "Default";
+                }
             }
         }
-    }
 
-    public void SetSpriteOrders()
-    {
-        int order = (int)transform.localPosition.z;
-
-        switch (type)
+        public void SetSpriteOrders()
         {
-            case Type.Room:
-                for (int i = 0; i < transform.childCount; i++)
-                {
-                    if (roomParts.Contains(transform.GetChild(i).name))
+            switch (type)
+            {
+                case Type.Room:
+                    // Set room sprite orders
+                    for (int i = 0; i < transform.childCount; i++)
                     {
-                        Transform firstChild = transform.GetChild(i);
+                        // Set position z
+                        int positionZ = SortingLayer.GetLayerValueFromName(sortingLayer);
 
-                        for (int j = 0; j < firstChild.childCount; j++)
+                        transform.position = new Vector3(transform.position.x, transform.position.y, positionZ);
+
+                        // Set sorting order
+                        Transform roomPart = transform.GetChild(i);
+
+                        if (roomPart.name == "Floor")
                         {
-                            Transform secondChild = firstChild.GetChild(j);
+                            // Set position z
+                            roomPart.transform.position = new Vector3(roomPart.transform.position.x, roomPart.transform.position.y, positionZ + 0.3f);
 
-                            if (secondChild.name == "Overlay")
-                            {
-                                secondChild.GetComponent<SpriteRenderer>().sortingOrder = order + 2;
-                                secondChild.GetComponent<SpriteRenderer>().sortingLayerName = sortingLayer;
-                            }
-                            else if (secondChild.name == "LockedOverlay")
-                            {
-                                secondChild.GetComponent<SpriteRenderer>().sortingLayerName = sortingLayer;
-                            }
-                            else
-                            {
-                                secondChild.GetComponent<SpriteRenderer>().sortingOrder = order;
-                                secondChild.GetComponent<SpriteRenderer>().sortingLayerName = sortingLayer;
+                            // Set sorting order
+                            Transform floorTiles = roomPart;
 
-                                if (secondChild.childCount > 0)
+                            for (int j = 0; j < floorTiles.childCount; j++)
+                            {
+                                Transform floorTileTransform = floorTiles.GetChild(j);
+                                SpriteRenderer floorTileSingle = floorTileTransform.GetComponent<SpriteRenderer>();
+                                SpriteRenderer floorOverlay = floorTileTransform.GetChild(0).GetComponent<SpriteRenderer>();
+
+                                floorTileSingle.sortingOrder = 0;
+                                floorTileSingle.sortingLayerName = sortingLayer;
+
+                                floorOverlay.sortingOrder = 1;
+                                floorOverlay.sortingLayerName = sortingLayer;
+                            }
+                        }
+                        else if (roomPart.name.Contains("Wall"))
+                        {
+                            // Set position z
+                            roomPart.transform.position = new Vector3(
+                                roomPart.transform.position.x,
+                                roomPart.transform.position.y,
+                                positionZ + (roomPart.name.Contains("Right") ? 0.2f : 0.1f)
+                            );
+
+                            // Set sorting order
+                            Transform wallChunks = roomPart;
+
+                            for (int j = 0; j < wallChunks.childCount; j++)
+                            {
+                                Transform wallChunkTransform = wallChunks.GetChild(j);
+                                SpriteRenderer wallChunkSingle = wallChunkTransform.GetComponent<SpriteRenderer>();
+
+                                wallChunkSingle.sortingOrder = 0;
+                                wallChunkSingle.sortingLayerName = sortingLayer;
+
+                                for (int k = 0; k < wallChunkTransform.childCount; k++)
                                 {
-                                    // Main walls
-                                    for (int k = 0; k < secondChild.childCount; k++)
+                                    if (k >= (wallChunkTransform.childCount == 2 ? 1 : 2)) // Placeholder
                                     {
-                                        secondChild.GetChild(k).GetComponent<SpriteRenderer>().sortingOrder = order + 1;
-                                        secondChild.GetChild(k).GetComponent<SpriteRenderer>().sortingLayerName = sortingLayer;
+                                        SpriteRenderer wallPlaceholder = wallChunkTransform.GetChild(k).GetComponent<SpriteRenderer>();
+                                        wallPlaceholder.sortingOrder = 1;
+                                        wallPlaceholder.sortingLayerName = sortingLayer;
+                                    }
+                                    else // Overlay
+                                    {
+                                        SpriteRenderer wallOverlay = wallChunkTransform.GetChild(k).GetComponent<SpriteRenderer>();
+                                        wallOverlay.sortingOrder = 2;
+                                        wallOverlay.sortingLayerName = sortingLayer;
                                     }
                                 }
                             }
                         }
-                    }
-                    else if (transform.GetChild(i).name == "Furniture")
-                    {
-                        for (int j = 0; j < transform.GetChild(i).childCount; j++)
+                        else if (roomPart.name == "Furniture")
                         {
-                            transform.GetChild(i).GetChild(j).GetComponent<SpriteRenderer>().sortingLayerName = sortingLayer;
+                            // Set position z
+                            roomPart.transform.position = new Vector3(roomPart.transform.position.x, roomPart.transform.position.y, positionZ + 0.4f);
 
-                            if (transform.GetChild(i).GetChild(j).childCount > 0)
+                            // Set sorting order
+                            for (int j = 0; j < roomPart.childCount; j++)
                             {
-                                transform.GetChild(i).GetChild(j).GetChild(0).GetComponent<SpriteRenderer>().sortingLayerName = sortingLayer;
+                                SpriteRenderer furniturePart = roomPart.GetChild(j).GetComponent<SpriteRenderer>();
 
-                                transform.GetChild(i).GetChild(j).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder =
-                                transform.GetChild(i).GetChild(j).GetComponent<SpriteRenderer>().sortingOrder + 1;
+                                furniturePart.sortingOrder = 3;
+                                furniturePart.sortingLayerName = sortingLayer;
                             }
                         }
+                        /* else
+                         {
+                             // TODO - Handle items here
+                             Debug.Log("Room part Items in't implemented yet!");
+                         }*/
                     }
-                }
 
-                break;
+                    break;
 
-            case Type.Single:
-                for (int i = 0; i < transform.childCount; i++)
-                {
-                    if (transform.GetChild(i).name.Contains("End") || transform.GetChild(i).name.Contains("WindowFrame"))
+                case Type.Single:
+                    for (int i = 0; i < transform.childCount; i++)
                     {
-                        // Wall ends
-                        transform.GetChild(i).GetComponent<SpriteRenderer>().sortingOrder = order + 1;
-                        transform.GetChild(i).GetComponent<SpriteRenderer>().sortingLayerName = sortingLayer;
+                        Transform singleChild = transform.GetChild(i);
+                        SpriteRenderer singleChildRenderer = singleChild.GetComponent<SpriteRenderer>();
+
+                        if (singleChild.name.Contains("End") || singleChild.name.Contains("WindowFrame"))
+                        {
+                            // Wall ends
+                            singleChildRenderer.sortingOrder = 1;
+                            singleChildRenderer.sortingLayerName = sortingLayer;
+                        }
+                        else
+                        {
+                            singleChildRenderer.sortingOrder = 0;
+                            singleChildRenderer.sortingLayerName = sortingLayer;
+                        }
                     }
-                    else
-                    {
-                        transform.GetChild(i).GetComponent<SpriteRenderer>().sortingOrder = order;
-                        transform.GetChild(i).GetComponent<SpriteRenderer>().sortingLayerName = sortingLayer;
-                    }
-                }
 
-                break;
+                    break;
 
-            case Type.Self:
-                GetComponent<SpriteRenderer>().sortingOrder = order;
-                GetComponent<SpriteRenderer>().sortingLayerName = sortingLayer;
+                case Type.Self:
+                    SpriteRenderer self = GetComponent<SpriteRenderer>();
 
-                break;
+                    self.sortingOrder = 0;
+                    self.sortingLayerName = sortingLayer;
+
+                    break;
+            }
         }
     }
-}
 }
