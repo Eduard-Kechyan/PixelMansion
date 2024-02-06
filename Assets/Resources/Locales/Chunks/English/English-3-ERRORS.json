@@ -1,5 +1,6 @@
 {
     "________ ERRORS ________": "________________",
+    "error": "Error",
     "error_type_Code": "Code Error",
     "error_type_Gameplay": "Gameplay Error",
     "error_type_Locale": "Language Error",

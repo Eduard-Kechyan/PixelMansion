@@ -41,7 +41,7 @@
     "shop_menu_buy_button_loading": "Loading",
     "________ NOTE_MENU ________": "________________",
     "note_menu_purchase_failed_title": "Purchase Failed",
-    "note_menu_purchase_failed_text": "Failed to purchase the selected product.",
+    "note_menu_purchase_failed_text": "Failed to purchase the selected product. Try again latter!",
     "note_menu_not_enough_gold_title": "Not Enough Gold",
     "note_menu_not_enough_gold_text": "You don't have enough Gold. Buy some from the Store.",
     "note_menu_not_enough_gems_title": "Not Enough Gems",

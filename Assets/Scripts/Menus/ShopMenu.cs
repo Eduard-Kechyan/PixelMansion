@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.Purchasing;
+using System.Linq;
 
 namespace Merge
 {
@@ -16,6 +18,11 @@ namespace Merge
         public ShopData shopData;
         public Sprite smallGoldSprite;
         public Sprite smallGemSprite;
+
+        [Header("Spinner")]
+        public float spinnerSpeed = 0.05f;
+        [SerializeField]
+        private Sprite[] spinnerSprites;
 
         private string scrollLocation;
 
@@ -34,6 +41,8 @@ namespace Merge
         // UI
         private VisualElement root;
         private VisualElement shopMenu;
+        private VisualElement purchaseOverlay;
+        private VisualElement spinner;
         private ScrollView scrollContainer;
         private Label dailySubtitle;
         private Label itemsSubtitle;
@@ -67,6 +76,9 @@ namespace Merge
 
             shopMenu = root.Q<VisualElement>("ShopMenu");
 
+            purchaseOverlay = shopMenu.Q<VisualElement>("PurchaseOverlay");
+            spinner = purchaseOverlay.Q<VisualElement>("Spinner");
+
             scrollContainer = shopMenu.Q<ScrollView>("ScrollContainer");
 
             dailySubtitle = shopMenu.Q<VisualElement>("DailySubtitle").Q<Label>("Subtitle");
@@ -94,6 +106,10 @@ namespace Merge
             shopMenu.style.display = DisplayStyle.None;
             shopMenu.style.opacity = 0;
 
+            // Make sure the overlay is hidden
+            purchaseOverlay.style.opacity = 0;
+            purchaseOverlay.style.visibility = Visibility.Hidden;
+
             // Subtitles
             dailySubtitle.text = LOCALE.Get("shop_menu_subtitle_daily");
             itemsSubtitle.text = LOCALE.Get("shop_menu_subtitle_items");
@@ -101,8 +117,8 @@ namespace Merge
             goldSubtitle.text = LOCALE.Get("shop_menu_subtitle_gold");
 
             InitializeShopItems(Types.ShopItemType.Item);
-            InitializeShopItems(Types.ShopItemType.Gold);
-            InitializeShopItems(Types.ShopItemType.Gems);
+            InitializeShopCurrency(Types.ShopItemType.Gold);
+            InitializeShopCurrency(Types.ShopItemType.Gems);
 
             StartCoroutine(WaitForDailyContent());
         }
@@ -137,247 +153,334 @@ namespace Merge
         void InitializeShopItems(Types.ShopItemType shopItemType)
         {
             Types.ShopItemsContent[] shopItems = new Types.ShopItemsContent[0];
-            Types.ShopValuesContent[] shopValues = new Types.ShopValuesContent[0];
 
-            switch (shopItemType)
+            if (shopItemType == Types.ShopItemType.Daily)
             {
-                case Types.ShopItemType.Daily:
-                    shopItems = dailyData.dailyContent;
+                shopItems = dailyData.dailyContent;
 
-                    dailyBoxes.Clear();
-                    break;
-                case Types.ShopItemType.Item:
-                    shopItems = shopData.itemsContent;
-
-                    itemsBoxes.Clear();
-                    break;
-                case Types.ShopItemType.Gold:
-                    shopValues = shopData.goldContent;
-
-                    goldBoxes.Clear();
-                    break;
-                case Types.ShopItemType.Gems:
-                    shopValues = shopData.gemsContent;
-
-                    gemsBoxes.Clear();
-                    break;
-            }
-
-            if (shopItemType == Types.ShopItemType.Daily || shopItemType == Types.ShopItemType.Item)
-            {
-                for (int i = 0; i < shopItems.Length; i++)
-                {
-                    // Initialize
-                    string nameOrder = i.ToString();
-                    var newShopItemBox = shopItemBoxPrefab.CloneTree();
-
-                    // Shop box
-                    VisualElement shopBox = newShopItemBox.Q<VisualElement>("ShopItemBox");
-                    shopBox.name = shopItemType.ToString() + "ShopBox" + i;
-                    shopBox.AddToClassList("shop_item_box_" + shopItemType.ToString().ToLower());
-
-                    // Top label // FIX - Add a check for the items left in the shop
-                    newShopItemBox.Q<Label>("TopLabel").text = dailyData.GetLeftCount(nameOrder, shopItems[i].total, shopItemType) + "/" + shopItems[i].total;
-
-                    // Popular
-                    newShopItemBox.Q<VisualElement>("Popular").style.display = DisplayStyle.None;
-
-                    // Image
-                    newShopItemBox.Q<VisualElement>("Image").style.backgroundImage = new StyleBackground(shopItems[i].sprite);
-
-                    // Bonus
-                    newShopItemBox.Q<VisualElement>("Bonus").style.display = DisplayStyle.None;
-
-                    // Buy button
-                    Button buyButton = newShopItemBox.Q<Button>("BuyButton");
-                    VisualElement buyButtonValue = buyButton.Q<VisualElement>("Value");
-                    Label buyButtonLabel = buyButton.Q<Label>("Label");
-
-                    // Check if this is the daily data
-                    // Also check for button value and label
-                    if (shopItemType == Types.ShopItemType.Daily && shopItems[i].price == 0)
-                    {
-                        buyButtonValue.style.display = DisplayStyle.None;
-
-                        buyButtonLabel.style.width = Length.Percent(100);
-
-                        buyButtonLabel.text = LOCALE.Get("shop_menu_free");
-                    }
-                    else
-                    {
-                        buyButtonValue.style.backgroundImage = new StyleBackground(
-                            shopItems[i].priceType == Types.ShopValuesType.Gold
-                                ? smallGoldSprite
-                                : smallGemSprite
-                        );
-
-                        buyButtonLabel.text = shopItems[i].price.ToString();
-                    }
-
-                    // Check if this is the daily data
-                    // Also check if we already got the free daily item
-                    if (shopItemType == Types.ShopItemType.Daily && (i == 0 && dailyData.dailyItem1 || i == 1 && dailyData.dailyItem2))
-                    {
-                        buyButton.SetEnabled(false);
-                        buyButtonLabel.text = LOCALE.Get("shop_menu_free_gotten");
-                        buyButtonLabel.AddToClassList("shop_box_buy_button_label_full");
-                    }
-                    else
-                    {
-                        buyButton.clicked += () => BuyItem(nameOrder, shopItemType);
-                    }
-
-                    // Info button
-                    if (shopItems[i].type == Types.Type.Coll)
-                    {
-                        newShopItemBox.Q<Button>("InfoButton").style.display = DisplayStyle.None;
-                    }
-                    else
-                    {
-                        newShopItemBox.Q<Button>("InfoButton").clicked += () => ShowInfo(nameOrder);
-                    }
-
-                    // Add to container
-                    if (shopItemType == Types.ShopItemType.Daily)
-                    {
-                        dailyBoxes.Add(newShopItemBox);
-                    }
-                    else
-                    {
-                        itemsBoxes.Add(newShopItemBox);
-                    }
-                }
+                dailyBoxes.Clear();
             }
             else
             {
-                for (int i = 0; i < shopValues.Length; i++)
+                shopItems = shopData.itemsContent;
+
+                itemsBoxes.Clear();
+            }
+
+            for (int i = 0; i < shopItems.Length; i++)
+            {
+                // Initialize
+                string nameOrder = i.ToString();
+                var newShopItemBox = shopItemBoxPrefab.CloneTree();
+
+                // Shop box
+                VisualElement shopBox = newShopItemBox.Q<VisualElement>("ShopItemBox");
+                shopBox.name = shopItemType.ToString() + "ShopBox" + i;
+                shopBox.AddToClassList("shop_item_box_" + shopItemType.ToString().ToLower());
+
+                // Top label // FIX - Add a check for the items left in the shop
+                newShopItemBox.Q<Label>("TopLabel").text = dailyData.GetLeftCount(nameOrder, shopItems[i].total, shopItemType) + "/" + shopItems[i].total;
+
+                // Popular
+                newShopItemBox.Q<VisualElement>("Popular").style.display = DisplayStyle.None;
+
+                // Image
+                newShopItemBox.Q<VisualElement>("Image").style.backgroundImage = new StyleBackground(shopItems[i].sprite);
+
+                // Bonus
+                newShopItemBox.Q<VisualElement>("Bonus").style.display = DisplayStyle.None;
+
+                // Buy button
+                Button buyButton = newShopItemBox.Q<Button>("BuyButton");
+                VisualElement buyButtonValue = buyButton.Q<VisualElement>("Value");
+                Label buyButtonLabel = buyButton.Q<Label>("Label");
+
+                // Check if this is the daily data
+                // Also check for button value and label
+                if (shopItemType == Types.ShopItemType.Daily && shopItems[i].price == 0)
                 {
-                    // Initialize
-                    string nameOrder = i.ToString();
-                    var newShopItemBox = shopItemBoxPrefab.CloneTree();
+                    buyButtonValue.style.display = DisplayStyle.None;
 
-                    // Shop box
-                    VisualElement shopBox = newShopItemBox.Q<VisualElement>("ShopItemBox");
-                    shopBox.name = shopItemType.ToString() + "ShopBox" + i;
-                    shopBox.AddToClassList("shop_item_box_" + shopItemType.ToString().ToLower());
+                    buyButtonLabel.style.width = Length.Percent(100);
 
-                    // Top label 
-                    Label topLabel = newShopItemBox.Q<Label>("TopLabel");
-                    topLabel.text = shopValues[i].amount.ToString("N0");
+                    buyButtonLabel.text = LOCALE.Get("shop_menu_free");
+                }
+                else
+                {
+                    buyButtonValue.style.backgroundImage = new StyleBackground(
+                        shopItems[i].priceType == Types.ShopValuesType.Gold
+                            ? smallGoldSprite
+                            : smallGemSprite
+                    );
 
-                    // Popular
-                    VisualElement popular = newShopItemBox.Q<VisualElement>("Popular");
-                    Label popularLabel = popular.Q<Label>("PopularLabel");
+                    buyButtonLabel.text = shopItems[i].price.ToString();
+                }
 
-                    if (shopValues[i].isPopular)
+                // Check if this is the daily data
+                // Also check if we already got the free daily item
+                if (shopItemType == Types.ShopItemType.Daily && (i == 0 && dailyData.dailyItem1 || i == 1 && dailyData.dailyItem2))
+                {
+                    buyButton.SetEnabled(false);
+                    buyButtonLabel.text = LOCALE.Get("shop_menu_free_gotten");
+                    buyButtonLabel.AddToClassList("shop_box_buy_button_label_full");
+                }
+                else
+                {
+                    buyButton.clicked += () => BuyItem(nameOrder, shopItemType);
+                }
+
+                // Info button
+                if (shopItems[i].type == Types.Type.Coll)
+                {
+                    newShopItemBox.Q<Button>("InfoButton").style.display = DisplayStyle.None;
+                }
+                else
+                {
+                    newShopItemBox.Q<Button>("InfoButton").clicked += () => ShowInfo(nameOrder);
+                }
+
+                // Add to container
+                if (shopItemType == Types.ShopItemType.Daily)
+                {
+                    dailyBoxes.Add(newShopItemBox);
+                }
+                else
+                {
+                    itemsBoxes.Add(newShopItemBox);
+                }
+            }
+        }
+
+        void InitializeShopCurrency(Types.ShopItemType shopItemType)
+        {
+            Types.ShopValuesContent[] shopValues;
+            string idCheckValue;
+
+            if (shopItemType == Types.ShopItemType.Gold)
+            {
+                goldBoxes.Clear();
+
+                shopValues = shopData.goldContent;
+
+                idCheckValue = "gold_";
+            }
+            else
+            {
+                gemsBoxes.Clear();
+
+                shopValues = shopData.gemsContent;
+
+                idCheckValue = "gems_";
+            }
+
+            ICollection<ProductCatalogItem> products = paymentsManager.catalog.allProducts;
+
+            int count = 0;
+
+            foreach (var product in products)
+            {
+                if (product.id.StartsWith(idCheckValue))
+                {
+                    Types.ShopValuesContent shopValue = GetShopItem(shopValues, product.id);
+
+                    if (shopValue == null)
                     {
-                        popularLabel.text = LOCALE.Get("shop_menu_popular");
+                        Debug.LogWarning("Shop item " + product.id + " not found in shopValues");
+                    }
+                    else
+                    {
+                        ProductCatalogPayout payout = product.Payouts.First();
+                        ProductCatalogPayout payoutBonus = GetProductBonus(product.Payouts);
 
-                        topLabel.style.unityTextAlign = TextAnchor.MiddleLeft;
+                        // Initialize
+                        var newShopItemBox = shopItemBoxPrefab.CloneTree();
 
-                        switch (Settings.Instance.currentLocale)
+                        // Shop box
+                        VisualElement shopBox = newShopItemBox.Q<VisualElement>("ShopItemBox");
+                        shopBox.name = shopItemType.ToString() + "ShopBox" + count;
+                        shopBox.AddToClassList("shop_item_box_" + shopItemType.ToString().ToLower());
+
+                        // Top label 
+                        Label topLabel = newShopItemBox.Q<Label>("TopLabel");
+                        topLabel.text = payout.quantity.ToString("N0");
+
+                        // Popular
+                        VisualElement popular = newShopItemBox.Q<VisualElement>("Popular");
+                        Label popularLabel = popular.Q<Label>("PopularLabel");
+
+                        if (shopValue.isPopular)
                         {
-                            case Types.Locale.Armenian:
-                                popularLabel.style.fontSize = 3;
-                                break;
-                            case Types.Locale.Japanese:
-                                popularLabel.style.fontSize = 3;
-                                break;
-                            case Types.Locale.Korean:
-                                popularLabel.style.fontSize = 3;
-                                break;
-                            case Types.Locale.Chinese:
-                                popularLabel.style.fontSize = 3;
-                                break;
-                            default:
-                                popularLabel.style.fontSize = 3;
+                            popularLabel.text = LOCALE.Get("shop_menu_popular");
 
-                                if (Settings.Instance.currentLocale != Types.Locale.German)
-                                {
-                                    popularLabel.style.fontSize = 5;
-                                }
-                                break;
-                        }
+                            topLabel.style.unityTextAlign = TextAnchor.MiddleLeft;
 
-                        if (shopValues[i].amount > 999)
-                        {
-                            topLabel.style.paddingLeft = 4f;
-
-                            if (shopItemType == Types.ShopItemType.Gold)
+                            switch (Settings.Instance.currentLocale)
                             {
-                                if (shopValues[i].amount > 9999)
+                                case Types.Locale.Armenian:
+                                    popularLabel.style.fontSize = 3;
+                                    break;
+                                case Types.Locale.Japanese:
+                                    popularLabel.style.fontSize = 3;
+                                    break;
+                                case Types.Locale.Korean:
+                                    popularLabel.style.fontSize = 3;
+                                    break;
+                                case Types.Locale.Chinese:
+                                    popularLabel.style.fontSize = 3;
+                                    break;
+                                default:
+                                    popularLabel.style.fontSize = 3;
+
+                                    if (Settings.Instance.currentLocale != Types.Locale.German)
+                                    {
+                                        popularLabel.style.fontSize = 5;
+                                    }
+                                    break;
+                            }
+
+                            if (payout.quantity > 999)
+                            {
+                                topLabel.style.paddingLeft = 4f;
+
+                                if (shopItemType == Types.ShopItemType.Gold)
                                 {
-                                    topLabel.style.paddingTop = 1f;
-                                    topLabel.style.fontSize = 6f;
+                                    if (payout.quantity > 9999)
+                                    {
+                                        topLabel.style.paddingTop = 1f;
+                                        topLabel.style.fontSize = 6f;
+                                    }
                                 }
+                            }
+                            else
+                            {
+                                topLabel.style.paddingLeft = 8f;
                             }
                         }
                         else
                         {
-                            topLabel.style.paddingLeft = 8f;
+                            popular.style.display = DisplayStyle.None;
                         }
-                    }
-                    else
-                    {
-                        popular.style.display = DisplayStyle.None;
-                    }
 
-                    // Image
-                    newShopItemBox.Q<VisualElement>("Image").style.backgroundImage = new StyleBackground(shopValues[i].sprite);
+                        // Image
+                        newShopItemBox.Q<VisualElement>("Image").style.backgroundImage = new StyleBackground(shopValue.sprite);
 
-                    // Bonus
-                    if (shopItemType == Types.ShopItemType.Gems && shopValues[i].hasBonus)
-                    {
-                        newShopItemBox.Q<VisualElement>("Bonus").Q<Label>("BonusLabel").text = "+" + shopValues[i].bonusAmount.ToString();
-                    }
-                    else
-                    {
-                        newShopItemBox.Q<VisualElement>("Bonus").style.display = DisplayStyle.None;
-                    }
-
-                    // Buy button
-                    Button buyButton = newShopItemBox.Q<Button>("BuyButton");
-                    Label buyButtonLabel = buyButton.Q<Label>("Label");
-                    buyButton.Q<VisualElement>("Value").style.display = DisplayStyle.None;
-
-                    buyButtonLabel.text = GetPrice(shopValues[i].id);
-                    //buyButtonLabel.text = LOCALE.Get("shop_menu_buy_button_loading");
-                    buyButtonLabel.AddToClassList("shop_box_buy_button_label_full");
-
-                    buyButton.clicked += () =>
-                    {
-                        if (shopItemType == Types.ShopItemType.Gems)
+                        // Bonus
+                        if (shopItemType == Types.ShopItemType.Gems && payoutBonus != null)
                         {
-                            BuyGems(nameOrder);
+                            newShopItemBox.Q<VisualElement>("Bonus").Q<Label>("BonusLabel").text = "+" + payoutBonus.quantity;
                         }
                         else
                         {
-                            BuyGold(nameOrder);
+                            newShopItemBox.Q<VisualElement>("Bonus").style.display = DisplayStyle.None;
                         }
-                    };
 
-                    // Info button
-                    newShopItemBox.Q<Button>("InfoButton").style.display = DisplayStyle.None;
+                        // Buy button
+                        Button buyButton = newShopItemBox.Q<Button>("BuyButton");
+                        Label buyButtonLabel = buyButton.Q<Label>("Label");
+                        buyButton.Q<VisualElement>("Value").style.display = DisplayStyle.None;
 
-                    // Add to container
-                    if (shopItemType == Types.ShopItemType.Gold)
-                    {
-                        goldBoxes.Add(newShopItemBox);
-                    }
-                    else
-                    {
-                        gemsBoxes.Add(newShopItemBox);
+                        if (paymentsManager.loaded)
+                        {
+                            string price = paymentsManager.GetPrice(product.id);
+
+                            if (price == "")
+                            {
+                                buyButton.SetEnabled(false);
+
+                                buyButtonLabel.text = LOCALE.Get("error");
+                            }
+                            else
+                            {
+                                buyButton.SetEnabled(true);
+
+                                buyButtonLabel.text = paymentsManager.GetPrice(product.id);
+                            }
+                        }
+                        else
+                        {
+                            buyButton.SetEnabled(false);
+
+                            buyButtonLabel.text = LOCALE.Get("shop_menu_buy_button_loading");
+                        }
+
+                        buyButtonLabel.AddToClassList("shop_box_buy_button_label_full");
+
+                        string shopItemId = product.id;
+
+                        buyButton.clicked += () =>
+                        {
+                            StartCoroutine(PrePurchase(() =>
+                            {
+                                if (shopItemType == Types.ShopItemType.Gems)
+                                {
+                                    if (payoutBonus == null)
+                                    {
+                                        BuyGems(shopItemId, (int)payout.quantity);
+                                    }
+                                    else
+                                    {
+                                        BuyGems(shopItemId, (int)payout.quantity, true, (int)payoutBonus.quantity);
+                                    }
+                                }
+                                else
+                                {
+                                    BuyGold(shopItemId, (int)payout.quantity);
+                                }
+                            }));
+                        };
+
+                        // TODO - Notify the developer when a player makes a purchase
+
+                        // Info button
+                        newShopItemBox.Q<Button>("InfoButton").style.display = DisplayStyle.None;
+
+                        // Add to container
+                        if (shopItemType == Types.ShopItemType.Gold)
+                        {
+                            goldBoxes.Add(newShopItemBox);
+                        }
+                        else
+                        {
+                            gemsBoxes.Add(newShopItemBox);
+                        }
+
+                        count++;
                     }
                 }
             }
         }
 
-        string GetPrice(string id)
+        Types.ShopValuesContent GetShopItem(Types.ShopValuesContent[] shopValues, string productId)
         {
-            // FIX - Add a real price here
-            // NOTE -  The initial price is in dollars
+            for (int i = 0; i < shopValues.Length; i++)
+            {
+                if (shopValues[i].id == productId)
+                {
+                    return shopValues[i];
+                }
+            }
 
-            return "$" + 4;
+            return null;
+        }
+
+        ProductCatalogPayout GetProductBonus(IList<ProductCatalogPayout> payouts)
+        {
+            int payoutCount = 0;
+
+            if (payouts.Count > 1)
+            {
+                foreach (var payoutItem in payouts)
+                {
+                    if (payoutCount == 1)
+                    {
+                        return payoutItem;
+                    }
+
+                    payoutCount++;
+                }
+            }
+
+            return null;
         }
 
         public void Open(string newLocation = "")
@@ -500,66 +603,117 @@ namespace Merge
             menuUI.CloseMenu(shopMenu.name);
         }
 
-        void BuyGems(string nameOrder)
+        void BuyGems(string productId, int amount, bool hasBonus = false, int bonusAmount = 0)
         {
-            int order = int.Parse(nameOrder);
-
-            Types.ShopValuesContent shopGem = shopData.gemsContent[order];
-
-            paymentsManager.Purchase(shopGem.id, () =>
+            paymentsManager.Purchase(productId, () =>
             {
-                if (sceneLoader.scene == Types.Scene.Gameplay)
+                StartCoroutine(PostPurchase(() =>
                 {
-                    valuePop.PopValue(shopGem.amount, Types.CollGroup.Gems, uiButtons.gameplayShopButtonPos);
 
-                    if (shopGem.hasBonus)
+                    if (sceneLoader.scene == Types.Scene.Gameplay)
                     {
-                        valuePop.PopValue(shopData.gemsContent[order].bonusAmount, Types.CollGroup.Energy, uiButtons.gameplayShopButtonPos);
-                    }
-                }
-                else
-                {
-                    valuePop.PopValue(shopGem.amount, Types.CollGroup.Gems, uiButtons.hubShopButtonPos);
+                        valuePop.PopValue(amount, Types.CollGroup.Gems, uiButtons.gameplayShopButtonPos);
 
-                    if (shopGem.hasBonus)
+                        if (hasBonus)
+                        {
+                            valuePop.PopValue(bonusAmount, Types.CollGroup.Energy, uiButtons.gameplayShopButtonPos);
+                        }
+                    }
+                    else
                     {
-                        valuePop.PopValue(shopData.gemsContent[order].bonusAmount, Types.CollGroup.Energy, uiButtons.hubShopButtonPos);
-                    }
-                }
+                        valuePop.PopValue(amount, Types.CollGroup.Gems, uiButtons.hubShopButtonPos);
 
-                menuUI.CloseMenu(shopMenu.name);
-            }, () =>
+                        if (hasBonus)
+                        {
+                            valuePop.PopValue(bonusAmount, Types.CollGroup.Energy, uiButtons.hubShopButtonPos);
+                        }
+                    }
+
+                    menuUI.CloseMenu(shopMenu.name);
+                }));
+            }, (string reason) =>
             {
-                string[] notes = new string[] { "note_menu_purchase_failed_text" };
+                StartCoroutine(PostPurchase(() =>
+                {
+                    string[] notes = new string[] { reason };
 
-                noteMenu.Open("note_menu_purchase_failed", notes);
+                    noteMenu.Open("note_menu_purchase_failed", notes);
+                }));
             });
         }
 
-        void BuyGold(string nameOrder)
+        void BuyGold(string productId, int amount)
         {
-            int order = int.Parse(nameOrder);
-
-            Types.ShopValuesContent shopGold = shopData.goldContent[order];
-
-            paymentsManager.Purchase(shopGold.id, () =>
+            paymentsManager.Purchase(productId, () =>
             {
-                if (sceneLoader.scene == Types.Scene.Gameplay)
+                StartCoroutine(PostPurchase(() =>
                 {
-                    valuePop.PopValue(shopGold.amount, Types.CollGroup.Gold, uiButtons.gameplayShopButtonPos);
+                    if (sceneLoader.scene == Types.Scene.Gameplay)
+                    {
+                        valuePop.PopValue(amount, Types.CollGroup.Gold, uiButtons.gameplayShopButtonPos);
+                    }
+                    else
+                    {
+                        valuePop.PopValue(amount, Types.CollGroup.Gold, uiButtons.hubShopButtonPos);
+                    }
+
+                    menuUI.CloseMenu(shopMenu.name);
+                }));
+            }, (string reason) =>
+            {
+                StartCoroutine(PostPurchase(() =>
+                {
+                    string[] notes = new string[] { reason };
+
+                    noteMenu.Open("note_menu_purchase_failed", notes);
+                }));
+            });
+        }
+
+        IEnumerator PrePurchase(Action callback)
+        {
+            purchaseOverlay.style.opacity = 1;
+            purchaseOverlay.style.visibility = Visibility.Visible;
+
+            StartCoroutine(SpinTheSpinner());
+
+            yield return new WaitForSeconds(0.3f);
+
+            callback();
+        }
+
+        IEnumerator PostPurchase(Action callback)
+        {
+            purchaseOverlay.style.opacity = 0;
+            purchaseOverlay.style.visibility = Visibility.Hidden;
+
+            yield return new WaitForSeconds(0.3f);
+
+            StopCoroutine(SpinTheSpinner());
+
+            callback();
+        }
+
+        IEnumerator SpinTheSpinner()
+        {
+            WaitForSeconds wait = new(spinnerSpeed);
+            int count = 0;
+
+            while (true)
+            {
+                spinner.style.backgroundImage = new StyleBackground(spinnerSprites[count]);
+
+                if (count == spinnerSprites.Length - 1)
+                {
+                    count = 0;
                 }
                 else
                 {
-                    valuePop.PopValue(shopGold.amount, Types.CollGroup.Gold, uiButtons.hubShopButtonPos);
+                    count++;
                 }
 
-                menuUI.CloseMenu(shopMenu.name);
-            }, () =>
-            {
-                string[] notes = new string[] { "note_menu_purchase_failed_text" };
-
-                noteMenu.Open("note_menu_purchase_failed", notes);
-            });
+                yield return wait;
+            }
         }
 
         public void FinalizePurchase()

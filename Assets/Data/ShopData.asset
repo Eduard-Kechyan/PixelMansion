@@ -63,88 +63,40 @@ MonoBehaviour:
     priceType: 1
     sprite: {fileID: 21300000, guid: d25fb806c5d4bd440a7840db6bf08834, type: 3}
   gemsContent:
-  - amount: 100
-    bonusAmount: 0
-    price: 1.99
-    type: 0
+  - id: gems_01_100
     sprite: {fileID: 21300000, guid: fdd2a8c6ee7260e4898a4be1ea7fc7d6, type: 3}
-    hasBonus: 0
     isPopular: 0
-  - amount: 250
-    bonusAmount: 0
-    price: 4.99
-    type: 0
+  - id: gems_02_250
     sprite: {fileID: 21300000, guid: 83fafa4f4a63b8c4d98e98f1dc12de09, type: 3}
-    hasBonus: 0
     isPopular: 0
-  - amount: 550
-    bonusAmount: 0
-    price: 9.99
-    type: 0
+  - id: gems_03_550
     sprite: {fileID: 21300000, guid: 0c0ba202be70f664388d58c36c1ce203, type: 3}
-    hasBonus: 0
     isPopular: 0
-  - amount: 1250
-    bonusAmount: 100
-    price: 19.99
-    type: 0
+  - id: gems_04_1250
     sprite: {fileID: 21300000, guid: 04bc709ab7c398248b5ef7c35c2d4f18, type: 3}
-    hasBonus: 1
     isPopular: 1
-  - amount: 3250
-    bonusAmount: 200
-    price: 49.99
-    type: 0
+  - id: gems_05_3250
     sprite: {fileID: 21300000, guid: eaead43574bfbfb4fb4df1d0316bc47f, type: 3}
-    hasBonus: 1
     isPopular: 0
-  - amount: 7250
-    bonusAmount: 300
-    price: 99.99
-    type: 0
+  - id: gems_06_7250
     sprite: {fileID: 21300000, guid: 0bf65eef74a87964baaaab1781465cc5, type: 3}
-    hasBonus: 1
     isPopular: 0
   goldContent:
-  - amount: 2500
-    bonusAmount: 0
-    price: 1.99
-    type: 1
+  - id: gold_01_2500
     sprite: {fileID: 21300000, guid: b540f6d3047659742828aa6c5eb006a0, type: 3}
-    hasBonus: 0
     isPopular: 0
-  - amount: 6500
-    bonusAmount: 0
-    price: 4.99
-    type: 1
+  - id: gold_02_6500
     sprite: {fileID: 21300000, guid: fec2ad5fa004de8468772cb975b92452, type: 3}
-    hasBonus: 0
     isPopular: 1
-  - amount: 14000
-    bonusAmount: 0
-    price: 9.99
-    type: 1
+  - id: gold_03_14000
     sprite: {fileID: 21300000, guid: e90aab9e7382a9044b5bdc25d2aceedb, type: 3}
-    hasBonus: 0
     isPopular: 0
-  - amount: 32000
-    bonusAmount: 0
-    price: 19.99
-    type: 1
+  - id: gold__04_32000
     sprite: {fileID: 21300000, guid: b79aa6e2d9e63cc49a7daada34c1b324, type: 3}
-    hasBonus: 0
     isPopular: 0
-  - amount: 75000
-    bonusAmount: 0
-    price: 49.99
-    type: 1
+  - id: gold_05_75000
     sprite: {fileID: 21300000, guid: 1713f8395ae13904ca4b5e4454279d6b, type: 3}
-    hasBonus: 0
     isPopular: 0
-  - amount: 170000
-    bonusAmount: 0
-    price: 99.99
-    type: 1
+  - id: gold_06_170000
     sprite: {fileID: 21300000, guid: d63b9f3c6654d1d4baff5244c0512043, type: 3}
-    hasBonus: 0
     isPopular: 0

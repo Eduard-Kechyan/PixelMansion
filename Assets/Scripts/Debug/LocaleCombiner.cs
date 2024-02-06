@@ -14,11 +14,6 @@ namespace Merge
 
         private Object[] chunks;
 
-        void Awake()
-        {
-            Combine();
-        }
-
 #if UNITY_EDITOR
         void OnValidate()
         {

@@ -1,7 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Services.Core;
+using Unity.Services.Core.Environments;
 using UnityEngine;
+using System.Globalization;
 using UnityEngine.Purchasing;
 using UnityEngine.Purchasing.Extension;
 
@@ -10,89 +13,128 @@ namespace Merge
     public class PaymentsManager : MonoBehaviour, IDetailedStoreListener
     {
         // Variables
-        public ShopData shopData;
+        public bool canPurchase = true;
+
+        [ReadOnly]
+        public bool loaded = false;
+        public bool unityServicesLoaded = false;
+
+        public ProductCatalog catalog;
 
         private IStoreController controller;
-        //private IExtensionProvider extension;
+        private IExtensionProvider provider;
 
         private Action callback;
-        private Action failCallback;
+        private Action<string> failCallback;
 
-        // References
-        //private ShopMenu shopMenu;
-        private InitUnity initUnity;
-
-        void Start()
+        async void Awake()
         {
-            // Cache
-            //shopMenu = GameRefs.Instance.shopMenu;
-            initUnity = GetComponent<InitUnity>();
+            // Load IAP Catalog
+            ResourceRequest operation = Resources.LoadAsync<TextAsset>("IAPProductCatalog");
+            operation.completed += HandleIAPCatalog;
+
+            // Initialize Unity Services
+            InitializationOptions options = new InitializationOptions();
+
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            options.SetEnvironmentName("development");
+#else
+            options.SetEnvironmentName("production");
+#endif
+
+            await UnityServices.InitializeAsync(options);
+
+            unityServicesLoaded = true;
         }
 
         //// Initialization ////
 
-      /*  public PaymentsManager()
+        void HandleIAPCatalog(AsyncOperation operation)
         {
-            var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
+            // Handle the resource request
+            ResourceRequest request = operation as ResourceRequest;
 
-              for (int i = 0; i < shopData.goldContent.Length; i++)
-              {
-                  builder.AddProduct(shopData.goldContent[i].id, ProductType.Consumable);
-              }
+            catalog = JsonUtility.FromJson<ProductCatalog>((request.asset as TextAsset).text);
 
-              for (int i = 0; i < shopData.gemsContent.Length; i++)
-              {
-                  builder.AddProduct(shopData.goldContent[i].id, ProductType.Consumable);
-              }
+            StartCoroutine(WaitForUnityServices());
+        }
 
-            StartCoroutine(WaitForUnityServices(builder));
-        }*/
-
-        IEnumerator WaitForUnityServices(ConfigurationBuilder builder)
+        IEnumerator WaitForUnityServices()
         {
-            while (!initUnity.initialized)
+            while (!unityServicesLoaded)
             {
                 yield return null;
             }
 
-            Debug.Log("A");
-
-            UnityPurchasing.Initialize(this, builder);
+            BuildConfig();
         }
 
-        public void OnInitialized(IStoreController controller, IExtensionProvider extension)
+        void BuildConfig()
         {
-            this.controller = controller;
-            Debug.Log("B");
-            //this.extension = extension;
+            if (canPurchase)
+            {
+                // Set the config builder
+#if UNITY_ANDROID
+                ConfigurationBuilder builder = ConfigurationBuilder.Instance(
+                StandardPurchasingModule.Instance(AppStore.GooglePlay)
+                );
+#elif UNITY_IOS
+ConfigurationBuilder builder = ConfigurationBuilder.Instance(
+StandardPurchasingModule.Instance(AppStore.AppleAppStore)
+);
+#endif
 
-            /*    for (int i = 0; i < controller.products.all.Length; i++)
+                // Add the catalog items to the config builder
+                foreach (ProductCatalogItem item in catalog.allProducts)
                 {
-                    shopMenu.SetPrice(controller.products.all[i]);
-                }*/
+                    builder.AddProduct(item.id, item.type);
+                }
+
+                UnityPurchasing.Initialize(this, builder);
+            }
         }
 
-        public void OnInitializeFailed(InitializationFailureReason error)
+        public void OnInitialized(IStoreController newController, IExtensionProvider newProvider)
         {
-            Debug.LogError(error);
+            controller = newController;
+            provider = newProvider;
+
+            loaded = true;
         }
 
         public void OnInitializeFailed(InitializationFailureReason error, string message)
         {
-            Debug.LogError(error);
-            Debug.LogError(message);
+            // TODO - Add proper error handling
+            Debug.Log(error);
+            Debug.Log(message);
+        }
+
+        public void OnInitializeFailed(InitializationFailureReason error)
+        {
+            // TODO - Add proper error handling
+            Debug.Log(error);
         }
 
         //// Purchase ////
 
-        public void Purchase(string id, Action newCallback = null, Action newFailCallback = null)
+        public string GetPrice(string id)
         {
-            Debug.Log(id);
-            Debug.Log(controller);
-            controller.InitiatePurchase(id);
+            for (int i = 0; i < controller.products.all.Length; i++)
+            {
+                if (controller.products.all[i].definition.id == id)
+                {
+                    return RegionInfo.CurrentRegion.CurrencySymbol + controller.products.all[i].metadata.localizedPriceString;
+                }
+            }
+
+            return "";
+        }
+
+        public void Purchase(string productId, Action newCallback = null, Action<string> newFailCallback = null)
+        {
+            controller.InitiatePurchase(productId);
 
             callback = newCallback;
-
             failCallback = newFailCallback;
         }
 
@@ -108,19 +150,20 @@ namespace Merge
 
         public void OnPurchaseFailed(Product product, PurchaseFailureReason reason)
         {
-            Debug.LogError(reason);
-
-            failCallback?.Invoke();
-
-            callback = null;
-            failCallback = null;
+            HandlePurchaseFailed(product, reason);
         }
 
         public void OnPurchaseFailed(Product product, PurchaseFailureDescription description)
         {
-            Debug.LogError(description.message);
+            HandlePurchaseFailed(product, description.reason);
+        }
 
-            failCallback?.Invoke();
+        void HandlePurchaseFailed(Product product, PurchaseFailureReason reason)
+        {
+            Debug.Log(product.definition.id);
+            Debug.Log(reason);
+
+            failCallback?.Invoke(reason.ToString());
 
             callback = null;
             failCallback = null;

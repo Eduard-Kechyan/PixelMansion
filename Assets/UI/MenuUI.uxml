@@ -188,6 +188,9 @@
                 </ui:VisualElement>
                 <ui:VisualElement name="Close" class="button_active_extra menu_close_button" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&apos;);" />
             </ui:VisualElement>
+            <ui:VisualElement name="PurchaseOverlay" style="position: absolute; left: 0; right: 0; top: 0; bottom: 0; transition-duration: 0.3s; background-color: rgba(0, 0, 0, 0.39); opacity: 0; visibility: hidden;">
+                <ui:VisualElement name="Spinner" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/Loading/Spinner.png?fileID=-506458403&amp;guid=6d6177bc530c98e4894d8b9e6e631322&amp;type=3#Spinner_0&apos;); width: 20px; height: 20px; position: absolute; left: 50%; top: 50%; translate: -50% -50%;" />
+            </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="LevelMenu" class="menu level_menu" style="display: none; opacity: 0;">
             <ui:VisualElement name="Background" class="background" />

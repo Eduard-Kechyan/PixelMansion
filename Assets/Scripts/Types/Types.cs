@@ -657,15 +657,8 @@ namespace Merge
         [Serializable]
         public class ShopValuesContent
         {
-            public string name;
             public string id;
-            public string desc;
-            public float price;
-            public int amount;
-            public int bonusAmount;
-            public ShopValuesType type;
             public Sprite sprite;
-            public bool hasBonus;
             public bool isPopular;
         }
 

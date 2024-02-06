@@ -638,7 +638,7 @@
 
 .shop_menu .shop_item_box {
     width: 45px;
-    height: 71px;
+    height: 73px;
     margin-bottom: 10px;
 }
 
@@ -723,7 +723,7 @@
     width: 37px;
     height: 12px;
     position: absolute;
-    bottom: 19px;
+    bottom: 21px;
     left: 4px;
 }
 
@@ -790,6 +790,10 @@
 
 .shop_menu .shop_item_box .shop_box_buy_button .shop_box_buy_button_label_full {
     width: 100%;
+}
+
+.shop_menu .shop_item_box .shop_box_buy_button:disabled {
+    -unity-background-image-tint-color: rgb(250, 126, 30);
 }
 
 .shop_menu .shop_item_box .shop_box_info_button {
