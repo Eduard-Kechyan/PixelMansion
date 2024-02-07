@@ -238,7 +238,8 @@ namespace Merge
                     break;
 
                 default:
-                    ErrorManager.Instance.Throw(Types.ErrorType.Code, "Wrong type: " + type);
+                    // ERROR
+                    ErrorManager.Instance.Throw(Types.ErrorType.Code, "ItemHandler.cs -> FindItem()", "Wrong type: " + type);
                     break;
             }
 
@@ -353,7 +354,8 @@ namespace Merge
                     break;
 
                 default:
-                    ErrorManager.Instance.Throw(Types.ErrorType.Code, "Wrong type: " + boardItem.type);
+                    // ERROR
+                    ErrorManager.Instance.Throw(Types.ErrorType.Code, "ItemHandler.cs -> GetNextItem()", "Wrong type: " + boardItem.type);
                     break;
             }
 

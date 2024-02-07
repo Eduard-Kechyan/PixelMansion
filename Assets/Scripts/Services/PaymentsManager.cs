@@ -27,6 +27,9 @@ namespace Merge
         private Action callback;
         private Action<string> failCallback;
 
+        // References
+        private ErrorManager errorManager;
+
         async void Awake()
         {
             // Load IAP Catalog
@@ -45,6 +48,12 @@ namespace Merge
             await UnityServices.InitializeAsync(options);
 
             unityServicesLoaded = true;
+        }
+
+        void Start()
+        {
+            // Cache
+            errorManager = ErrorManager.Instance;
         }
 
         //// Initialization ////
@@ -102,17 +111,32 @@ StandardPurchasingModule.Instance(AppStore.AppleAppStore)
             loaded = true;
         }
 
-        public void OnInitializeFailed(InitializationFailureReason error, string message)
+        public void OnInitializeFailed(InitializationFailureReason error, string message) // A
         {
-            // TODO - Add proper error handling
-            Debug.Log(error);
-            Debug.Log(message);
+            if (error == InitializationFailureReason.PurchasingUnavailable)
+            {
+                // TODO - Disable IAP in the app
+                Debug.LogWarning("IAP is disabled in app!");
+            }
+            else
+            {
+                // ERROR
+                errorManager.Throw(Types.ErrorType.Unity, "PaymentsManager.cs -> OnInitializeFailed() // A", "Reason: " + error.ToString() + ", Message: " + message);
+            }
         }
 
-        public void OnInitializeFailed(InitializationFailureReason error)
+        public void OnInitializeFailed(InitializationFailureReason error) // B
         {
-            // TODO - Add proper error handling
-            Debug.Log(error);
+            if (error == InitializationFailureReason.PurchasingUnavailable)
+            {
+                // TODO - Disable IAP in the app
+                Debug.LogWarning("IAP is disabled in app!");
+            }
+            else
+            {
+                // ERROR
+                errorManager.Throw(Types.ErrorType.Unity, "PaymentsManager.cs -> OnInitializeFailed() // B", "Reason: " + error.ToString());
+            }
         }
 
         //// Purchase ////
@@ -132,10 +156,10 @@ StandardPurchasingModule.Instance(AppStore.AppleAppStore)
 
         public void Purchase(string productId, Action newCallback = null, Action<string> newFailCallback = null)
         {
-            controller.InitiatePurchase(productId);
-
             callback = newCallback;
             failCallback = newFailCallback;
+
+            controller.InitiatePurchase(productId);
         }
 
         public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs purchaseEvent)
@@ -155,13 +179,24 @@ StandardPurchasingModule.Instance(AppStore.AppleAppStore)
 
         public void OnPurchaseFailed(Product product, PurchaseFailureDescription description)
         {
-            HandlePurchaseFailed(product, description.reason);
+            HandlePurchaseFailed(product, description.reason, description.message);
         }
 
-        void HandlePurchaseFailed(Product product, PurchaseFailureReason reason)
+        void HandlePurchaseFailed(Product product, PurchaseFailureReason reason, string message = "")
         {
-            Debug.Log(product.definition.id);
-            Debug.Log(reason);
+            if (reason != PurchaseFailureReason.UserCancelled && reason != PurchaseFailureReason.PaymentDeclined)
+            {
+                if (message == "")
+                {
+                    // ERROR
+                    errorManager.Throw(Types.ErrorType.Code, "PaymentsManager.cs -> HandlePurchaseFailed()", "Reason: " + reason.ToString() + ", Product Id: " + product.definition.id);
+                }
+                else
+                {
+                    // ERROR
+                    errorManager.Throw(Types.ErrorType.Code, "PaymentsManager.cs -> HandlePurchaseFailed()", "Reason: " + reason.ToString() + ", Message: " + message + ", Product Id: " + product.definition.id);
+                }
+            }
 
             failCallback?.Invoke(reason.ToString());
 

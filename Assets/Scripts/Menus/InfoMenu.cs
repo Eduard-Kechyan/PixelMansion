@@ -87,13 +87,8 @@ namespace Merge
                 {
                     itemData.text = LOCALE.Get("info_box_null");
 
-                    ErrorManager.Instance.ThrowFull(
-                        Types.ErrorType.Code,
-                        "InfoMenu.cs -> Open()",
-                        "InfoBox is null!",
-                        "0",
-                        true
-                    );
+                    // ERROR
+                    ErrorManager.Instance.Throw(Types.ErrorType.Code, "InfoMenu.cs -> Open()", "InfoBox is null!");
                 }
 
                 // Content

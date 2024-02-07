@@ -609,6 +609,7 @@ namespace Merge
         {
             Code,
             Gameplay,
+            Unity,
             Locale,
             Network
         };

@@ -26,6 +26,8 @@ namespace Merge
 
         private string scrollLocation;
 
+        private bool purchasing = false;
+
         // References
         private GameData gameData;
         private DailyData dailyData;
@@ -609,7 +611,6 @@ namespace Merge
             {
                 StartCoroutine(PostPurchase(() =>
                 {
-
                     if (sceneLoader.scene == Types.Scene.Gameplay)
                     {
                         valuePop.PopValue(amount, Types.CollGroup.Gems, uiButtons.gameplayShopButtonPos);
@@ -675,6 +676,8 @@ namespace Merge
             purchaseOverlay.style.opacity = 1;
             purchaseOverlay.style.visibility = Visibility.Visible;
 
+            purchasing = true;
+
             StartCoroutine(SpinTheSpinner());
 
             yield return new WaitForSeconds(0.3f);
@@ -689,6 +692,8 @@ namespace Merge
 
             yield return new WaitForSeconds(0.3f);
 
+            purchasing = false;
+
             StopCoroutine(SpinTheSpinner());
 
             callback();
@@ -699,7 +704,7 @@ namespace Merge
             WaitForSeconds wait = new(spinnerSpeed);
             int count = 0;
 
-            while (true)
+            while (purchasing)
             {
                 spinner.style.backgroundImage = new StyleBackground(spinnerSprites[count]);
 

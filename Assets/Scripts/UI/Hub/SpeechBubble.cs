@@ -350,7 +350,8 @@ namespace Merge
             }
             else
             {
-                ErrorManager.Instance.ThrowFull(Types.ErrorType.Code, "SpeechBubble.cs -> SetOpenData()", "speechChunks length is 0", "?", false);
+                // ERROR
+                ErrorManager.Instance.Throw(Types.ErrorType.Code, "SpeechBubble.cs -> SetOpenData()", "speechChunks length is 0");
 
                 charSpeech?.Closed();
             }

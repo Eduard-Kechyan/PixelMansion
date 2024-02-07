@@ -30,6 +30,7 @@ namespace Merge
 
         // References
         private Services services;
+        private ErrorManager errorManager;
 
         void Awake()
         {
@@ -51,6 +52,7 @@ namespace Merge
         {
             // Cache
             services = Services.Instance;
+            errorManager = ErrorManager.Instance;
 
             // Initialize Google ads
             if (enableAds)
@@ -81,9 +83,12 @@ namespace Merge
             }
             else
             {
-                if(adType==Types.AdType.Energy){
+                if (adType == Types.AdType.Energy)
+                {
                     rewardCallback?.Invoke(energyRewardAmount);
-                }else{
+                }
+                else
+                {
                     rewardCallback?.Invoke(0);
                 }
 
@@ -106,7 +111,7 @@ namespace Merge
             RewardedAd.Load(adUnitId, adRequest, (RewardedAd ad, LoadAdError error) =>
             {
                 // Failed
-                if (error != null || ad == null)
+                if (error != null)
                 {
                     if (failedCount < maxFailedCount)
                     {
@@ -118,6 +123,29 @@ namespace Merge
                     {
                         failedCount = 0;
                     }
+
+                    // ERROR
+                    errorManager.Throw(Types.ErrorType.Code, "AdsManager.cs -> LoadAd()", error.ToString());
+
+                    return;
+                }
+
+                // Failed
+                if (ad == null)
+                {
+                    if (failedCount < maxFailedCount)
+                    {
+                        LoadAd();
+
+                        failedCount++;
+                    }
+                    else
+                    {
+                        failedCount = 0;
+                    }
+
+                    // ERROR
+                    errorManager.Throw(Types.ErrorType.Code, "AdsManager.cs -> LoadAd()", "Ad was null!");
 
                     return;
                 }

@@ -648,7 +648,8 @@ namespace Merge
                     }
                     break;
                 default:
-                    ErrorManager.Instance.Throw(Types.ErrorType.Code, "Wrong type: " + type);
+                    // ERROR
+                    ErrorManager.Instance.Throw(Types.ErrorType.Code, "GameData.cs -> GetSprite()", "Wrong type: " + type);
                     break;
             }
 

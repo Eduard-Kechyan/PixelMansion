@@ -7,273 +7,280 @@ using UnityEngine.Networking;
 namespace Merge
 {
     public class ApiCalls : MonoBehaviour
-{
-    public bool logConnection = false;
-    public bool useDevUrl = false;
-
-    private string URL = ""; // FIX - Add real api address
-    //private string URL = "https://game-dev-backup.onrender.com/api"; // FIX - Add real api address
-
-    public bool isConnected = false;
-    public bool canCheckForUnsent = false;
-
-    // Enums
-    public enum UnsentType
     {
-        NewUser,
-        Error
-    };
+        public bool logConnection = false;
+        public bool useDevUrl = false;
 
-    public class UnsentData
-    {
-        public UnsentType unsentType;
-        public string jsonData;
-        public int priority;
-    }
+        private string URL = ""; // FIX - Add real api address
+                                 //private string URL = "https://game-dev-backup.onrender.com/api"; // FIX - Add real api address
 
-    public class UnsentDataJson
-    {
-        public string unsentType;
-        public string jsonData;
-        public int priority;
-    }
+        public bool isConnected = false;
+        public bool canCheckForUnsent = false;
 
-    public List<UnsentData> unsentData = new List<UnsentData>(0);
-
-    private bool sendingUnsentData = false;
-
-    private List<UnityWebRequest> requests = new List<UnityWebRequest>();
-
-    private bool waitingForUnsentData = true;
-
-    // References
-    private DataManager dataManager;
-
-    // Instance
-    public static ApiCalls Instance;
-
-    void Awake()
-    {
-        /*#if UNITY_EDITOR
-        #endif*/
-        // FIX - Use the #if above here
-        if (Application.isEditor || Debug.isDebugBuild)
+        // Enums
+        public enum UnsentType
         {
-            if (useDevUrl)
+            NewUser,
+            Error
+        };
+
+        public class UnsentData
+        {
+            public UnsentType unsentType;
+            public string jsonData;
+            public int priority;
+        }
+
+        public class UnsentDataJson
+        {
+            public string unsentType;
+            public string jsonData;
+            public int priority;
+        }
+
+        public List<UnsentData> unsentData = new List<UnsentData>(0);
+
+        private bool sendingUnsentData = false;
+
+        private List<UnityWebRequest> requests = new List<UnityWebRequest>();
+
+        private bool waitingForUnsentData = true;
+
+        // References
+        private DataManager dataManager;
+
+        // Instance
+        public static ApiCalls Instance;
+
+        void Awake()
+        {
+            /*#if UNITY_EDITOR
+            #endif*/
+            // FIX - Use the #if above here
+            if (Application.isEditor || Debug.isDebugBuild)
             {
-                URL = "http://192.168.18.164:7007/api"; // Dev server
+                if (useDevUrl)
+                {
+                    URL = "http://192.168.18.164:7007/api"; // Dev server
+                }
             }
-        }
 
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-
-        // StartCoroutine(CheckConnection());
-    }
-
-    void Start()
-    {
-        dataManager = DataManager.Instance;
-    }
-
-    IEnumerator GetData(string path = "")
-    {
-        using (UnityWebRequest request = UnityWebRequest.Get(URL + path))
-        {
-            yield return request.SendWebRequest();
-            if (request.result == UnityWebRequest.Result.ConnectionError)
+            if (Instance != null && Instance != this)
             {
-                Debug.Log(request.error);
+                Destroy(gameObject);
             }
             else
             {
-                Debug.Log(request.downloadHandler.data);
-                Debug.Log(request.downloadHandler.text);
+                Instance = this;
+                DontDestroyOnLoad(gameObject);
             }
-        }
-    }
 
-    IEnumerator CheckConnection()
-    {
-        while (true)
+            // StartCoroutine(CheckConnection());
+        }
+
+        void Start()
         {
-            using (UnityWebRequest request = UnityWebRequest.Get(URL + "/system"))
+            dataManager = DataManager.Instance;
+        }
+
+        IEnumerator GetData(string path = "")
+        {
+            using (UnityWebRequest request = UnityWebRequest.Get(URL + path))
             {
                 yield return request.SendWebRequest();
-
-                switch (request.result)
+                if (request.result == UnityWebRequest.Result.ConnectionError)
                 {
-                    case UnityWebRequest.Result.Success:
-                        {
-                            isConnected = true;
-
-                            if (!sendingUnsentData && canCheckForUnsent)
-                            {
-                                CheckForUnsentData();
-                            }
-
-                            if (logConnection)
-                            {
-                                Debug.Log("Success");
-                            }
-                        }
-                        break;
-                    default:
-                        {
-                            isConnected = false;
-
-                            //ErrorManager.Instance.ThrowFull(Types.ErrorType.Network, "ApiCalls.cs -> CheckConnection()", request.result.ToString(), request.responseCode.ToString(), true);
-
-                            if (logConnection)
-                            {
-                                Debug.Log(request.result + ": " + request.error);
-                            }
-                        }
-                        break;
+                    Debug.Log(request.error);
+                }
+                else
+                {
+                    Debug.Log(request.downloadHandler.data);
+                    Debug.Log(request.downloadHandler.text);
                 }
             }
         }
-    }
 
-    public void CheckIfUserExists()
-    {
-
-    }
-
-    public IEnumerator CreateUser(string jsonData, Action callback = null)
-    {
-        Debug.Log(URL);
-        using (UnityWebRequest request = UnityWebRequest.Post(URL + "/users", jsonData, "application/json"))
+        IEnumerator CheckConnection()
         {
-            yield return request.SendWebRequest();
-
-            requests.Add(request);
-
-            if (request.result == UnityWebRequest.Result.Success)
+            while (true)
             {
-                requests.RemoveAt(requests.Count - 1);
-
-                if (callback != null)
+                using (UnityWebRequest request = UnityWebRequest.Get(URL + "/system"))
                 {
-                    callback();
-                }
+                    yield return request.SendWebRequest();
 
-                PlayerPrefs.DeleteKey("tempAge");
-                PlayerPrefs.Save();
-            }
-            else
-            {
-                SetUnsentData(UnsentType.NewUser, jsonData);
-
-                if (callback != null)
-                {
-                    callback();
-                }
-
-                if (isConnected)
-                {
-                }
-                ErrorManager.Instance.ThrowFull(Types.ErrorType.Network, "ApiCalls.cs -> CreateUser()", request.result.ToString(), request.responseCode.ToString(), true);
-            }
-        }
-    }
-
-    public IEnumerator SendError(string jsonData)
-    {
-        using (UnityWebRequest request = UnityWebRequest.Post(URL + "/system/error", jsonData, "application/json"))
-        {
-            yield return request.SendWebRequest();
-
-            requests.Add(request);
-
-            if (request.result == UnityWebRequest.Result.Success)
-            {
-                requests.RemoveAt(requests.Count - 1);
-            }
-            else
-            {
-                ErrorManager.Instance.ThrowFull(Types.ErrorType.Network, "ApiCalls.cs -> SendError()", request.result.ToString(), request.responseCode.ToString(), true);
-            }
-        }
-    }
-
-    void SetUnsentData(UnsentType newUnsentType, string newJsonData)
-    {
-        PlayerPrefs.SetInt("hasUnsentData", 1);
-        PlayerPrefs.Save();
-
-        unsentData.Add(new UnsentData
-        {
-            unsentType = newUnsentType,
-            jsonData = newJsonData,
-            priority = (int)newUnsentType
-        });
-
-        dataManager.SaveUnsentData();
-    }
-
-    void CheckForUnsentData()
-    {
-        if (PlayerPrefs.HasKey("hasUnsentData") || unsentData.Count > 0)
-        {
-            sendingUnsentData = true;
-
-            if (unsentData.Count > 0)
-            {
-                // Send unsent data
-                for (int i = 0; i < unsentData.Count; i++)
-                {
-                    switch (unsentData[i].unsentType)
+                    switch (request.result)
                     {
-                        case UnsentType.NewUser:
-                            StartCoroutine(CreateUser(unsentData[i].jsonData, null));
-                            break;
+                        case UnityWebRequest.Result.Success:
+                            {
+                                isConnected = true;
 
-                        default: // Error
-                            StartCoroutine(SendError(unsentData[i].jsonData));
+                                if (!sendingUnsentData && canCheckForUnsent)
+                                {
+                                    CheckForUnsentData();
+                                }
+
+                                if (logConnection)
+                                {
+                                    Debug.Log("Success");
+                                }
+                            }
+                            break;
+                        default:
+                            {
+                                isConnected = false;
+
+                                // ERROR
+                                ErrorManager.Instance.Throw(Types.ErrorType.Network, "ApiCalls.cs -> CheckConnection()",request.result.ToString(), request.responseCode.ToString());
+
+                                if (logConnection)
+                                {
+                                    Debug.Log(request.result + ": " + request.error);
+                                }
+                            }
                             break;
                     }
                 }
-
-                StartCoroutine(CheckDoneRequests());
             }
         }
-    }
 
-    IEnumerator CheckDoneRequests()
-    {
-        while (waitingForUnsentData)
+        public void CheckIfUserExists()
         {
-            bool done = true;
 
-            foreach (UnityWebRequest request in requests)
+        }
+
+        public IEnumerator CreateUser(string jsonData, Action callback = null)
+        {
+            Debug.Log(URL);
+            using (UnityWebRequest request = UnityWebRequest.Post(URL + "/users", jsonData, "application/json"))
             {
-                if (!request.isDone) done = false;
+                yield return request.SendWebRequest();
+
+                requests.Add(request);
+
+                if (request.result == UnityWebRequest.Result.Success)
+                {
+                    requests.RemoveAt(requests.Count - 1);
+
+                    if (callback != null)
+                    {
+                        callback();
+                    }
+
+                    PlayerPrefs.DeleteKey("tempAge");
+                    PlayerPrefs.Save();
+                }
+                else
+                {
+                    SetUnsentData(UnsentType.NewUser, jsonData);
+
+                    if (callback != null)
+                    {
+                        callback();
+                    }
+
+                    if (isConnected)
+                    {
+                    }
+                    // ERROR
+                    ErrorManager.Instance.Throw(Types.ErrorType.Network, "ApiCalls.cs -> CreateUser()", request.result.ToString(), request.responseCode.ToString());
+                }
             }
+        }
 
-            if (done)
+        public IEnumerator SendError(string jsonData)
+        {
+            yield return null;
+
+            // TODO - Implement this
+
+            /*   using (UnityWebRequest request = UnityWebRequest.Post(URL + "/system/error", jsonData, "application/json"))
+               {
+                   yield return request.SendWebRequest();
+
+                   requests.Add(request);
+
+                   if (request.result == UnityWebRequest.Result.Success)
+                   {
+                       requests.RemoveAt(requests.Count - 1);
+                   }
+                   else
+                   {
+                    // ERROR
+                    ErrorManager.Instance.Throw(Types.ErrorType.Network, "ApiCalls.cs -> SendError()", request.result.ToString(), request.responseCode.ToString());
+                   }
+               }*/
+        }
+
+        void SetUnsentData(UnsentType newUnsentType, string newJsonData)
+        {
+            PlayerPrefs.SetInt("hasUnsentData", 1);
+            PlayerPrefs.Save();
+
+            unsentData.Add(new UnsentData
             {
-                waitingForUnsentData = false;
+                unsentType = newUnsentType,
+                jsonData = newJsonData,
+                priority = (int)newUnsentType
+            });
 
-                sendingUnsentData = false;
+            dataManager.SaveUnsentData();
+        }
 
-                unsentData = new List<UnsentData>();
-                requests = new List<UnityWebRequest>();
+        void CheckForUnsentData()
+        {
+            if (PlayerPrefs.HasKey("hasUnsentData") || unsentData.Count > 0)
+            {
+                sendingUnsentData = true;
 
-                dataManager.SaveUnsentData();
+                if (unsentData.Count > 0)
+                {
+                    // Send unsent data
+                    for (int i = 0; i < unsentData.Count; i++)
+                    {
+                        switch (unsentData[i].unsentType)
+                        {
+                            case UnsentType.NewUser:
+                                StartCoroutine(CreateUser(unsentData[i].jsonData, null));
+                                break;
+
+                            default: // Error
+                                StartCoroutine(SendError(unsentData[i].jsonData));
+                                break;
+                        }
+                    }
+
+                    StartCoroutine(CheckDoneRequests());
+                }
             }
-            else
+        }
+
+        IEnumerator CheckDoneRequests()
+        {
+            while (waitingForUnsentData)
             {
-                yield return null;
+                bool done = true;
+
+                foreach (UnityWebRequest request in requests)
+                {
+                    if (!request.isDone) done = false;
+                }
+
+                if (done)
+                {
+                    waitingForUnsentData = false;
+
+                    sendingUnsentData = false;
+
+                    unsentData = new List<UnsentData>();
+                    requests = new List<UnityWebRequest>();
+
+                    dataManager.SaveUnsentData();
+                }
+                else
+                {
+                    yield return null;
+                }
             }
         }
     }
-}
 }

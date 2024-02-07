@@ -264,7 +264,8 @@ namespace Merge
                     nextSpriteName = chestGroup + "Chest" + (level + 1);
                     break;
                 default:
-                    ErrorManager.Instance.Throw(Types.ErrorType.Code, "Wrong type: " + type);
+                    // ERROR
+                    ErrorManager.Instance.Throw(Types.ErrorType.Code, "Item.cs -> SetItemInitial()", "Wrong type: " + type);
                     break;
             }
 

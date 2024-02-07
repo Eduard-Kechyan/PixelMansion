@@ -407,10 +407,8 @@ namespace Merge
                             }
                             break;
                         default:
-                            ErrorManager.Instance.Throw(
-                                Types.ErrorType.Code,
-                                "Wrong type: " + otherItem.type
-                            );
+                            // ERROR
+                            ErrorManager.Instance.Throw(Types.ErrorType.Code, "BoardInteractions.cs -> CheckItemDropAction()", "Wrong type: " + otherItem.type);
                             break;
                     }
 

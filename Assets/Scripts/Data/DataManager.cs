@@ -488,7 +488,8 @@ namespace Merge
                     }
                     break;
                 default:
-                    ErrorManager.Instance.Throw(Types.ErrorType.Code, "Wrong type: " + type);
+                    // ERROR
+                    ErrorManager.Instance.Throw(Types.ErrorType.Code, "DataManager.cs -> UnlockItem()", "Wrong type: " + type);
                     break;
             }
 

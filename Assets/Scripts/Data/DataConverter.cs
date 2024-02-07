@@ -964,11 +964,8 @@ namespace Merge
                             itemsData.type + "_" + itemsData.chestGroup
                         );
                     default:
-                        ErrorManager.Instance.Throw(
-                            Types.ErrorType.Code,
-                            "Wrong type: " + itemsData.type
-                        );
-
+                        // ERROR
+                        ErrorManager.Instance.Throw(Types.ErrorType.Code, "DataConverter.cs -> GetItemName()",  "Wrong type: " + itemsData.type);
                         return "";
                 }
             }
@@ -995,8 +992,8 @@ namespace Merge
                 return LOCALE.Get("Chest_" + itemsData.chestGroup);
             }
 
-            // No valid name was found
-            ErrorManager.Instance.Throw(Types.ErrorType.Locale, "error_loc_name");
+            // ERROR - No valid name was found
+            ErrorManager.Instance.Throw(Types.ErrorType.Locale, "DataConverter.cs -> GetItemName()", "error_loc_name" );
 
             return LOCALE.Get("Item_error_name");
         }
