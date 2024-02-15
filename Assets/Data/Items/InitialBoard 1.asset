@@ -22,7 +22,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -40,7 +40,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -58,7 +58,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -76,7 +76,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -94,7 +94,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -112,7 +112,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -130,7 +130,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -148,7 +148,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -166,7 +166,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -184,7 +184,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -202,7 +202,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -220,7 +220,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -238,7 +238,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -256,7 +256,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -274,7 +274,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -292,7 +292,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -310,7 +310,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -328,7 +328,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -346,7 +346,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -364,7 +364,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -382,7 +382,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -400,7 +400,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -418,7 +418,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -436,7 +436,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -454,7 +454,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -472,7 +472,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -490,7 +490,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -508,7 +508,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -526,7 +526,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -544,7 +544,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -562,7 +562,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -580,7 +580,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -598,7 +598,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -616,7 +616,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -634,7 +634,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -652,7 +652,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -670,7 +670,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -688,7 +688,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -706,7 +706,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -724,7 +724,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -742,7 +742,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -760,7 +760,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -778,7 +778,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -796,7 +796,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -814,7 +814,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -832,7 +832,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -850,7 +850,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -868,7 +868,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -886,7 +886,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -904,7 +904,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -922,7 +922,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -940,7 +940,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -958,7 +958,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -976,7 +976,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -994,7 +994,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -1012,7 +1012,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -1030,7 +1030,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -1048,7 +1048,7 @@ MonoBehaviour:
     chestGroup: 1
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -1066,7 +1066,7 @@ MonoBehaviour:
     chestGroup: 2
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -1084,7 +1084,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -1102,7 +1102,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -1120,7 +1120,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0
@@ -1138,7 +1138,7 @@ MonoBehaviour:
     chestGroup: 0
     hasTimer: 0
     id: 
-    generatesAt: 0
+    generatesAtLevel: 0
     crate: 0
     order: 0
     chestItems: 0

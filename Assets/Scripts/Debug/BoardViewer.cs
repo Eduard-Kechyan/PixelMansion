@@ -171,7 +171,7 @@ namespace Merge
                         chestItems = boardArray[count].chestItems,
                         chestItemsSet = boardArray[count].chestItemsSet,
                         chestOpen = boardArray[count].chestOpen,
-                        generatesAt = boardArray[count].generatesAt,
+                        generatesAtLevel = boardArray[count].generatesAtLevel,
                         id = boardArray[count].id,
                         gemPopped = boardArray[count].gemPopped,
                         isCompleted = boardArray[count].isCompleted,

@@ -31,7 +31,7 @@ MonoBehaviour:
       group: 0
       type: 0
       chestGroup: 0
-      generatesAt: 0
+      generatesAtLevel: 0
       genGroup: 0
       collGroup: 0
       parents: []
@@ -55,7 +55,7 @@ MonoBehaviour:
       group: 0
       type: 0
       chestGroup: 0
-      generatesAt: 0
+      generatesAtLevel: 0
       genGroup: 0
       collGroup: 0
       parents: []
@@ -79,7 +79,7 @@ MonoBehaviour:
       group: 0
       type: 0
       chestGroup: 0
-      generatesAt: 0
+      generatesAtLevel: 0
       genGroup: 0
       collGroup: 0
       parents: []
@@ -103,7 +103,7 @@ MonoBehaviour:
       group: 0
       type: 0
       chestGroup: 0
-      generatesAt: 0
+      generatesAtLevel: 0
       genGroup: 0
       collGroup: 0
       parents: []
@@ -127,7 +127,7 @@ MonoBehaviour:
       group: 0
       type: 0
       chestGroup: 0
-      generatesAt: 0
+      generatesAtLevel: 0
       genGroup: 0
       collGroup: 0
       parents: []
@@ -151,7 +151,7 @@ MonoBehaviour:
       group: 0
       type: 0
       chestGroup: 0
-      generatesAt: 0
+      generatesAtLevel: 0
       genGroup: 0
       collGroup: 0
       parents: []
@@ -175,7 +175,7 @@ MonoBehaviour:
       group: 0
       type: 0
       chestGroup: 0
-      generatesAt: 0
+      generatesAtLevel: 0
       genGroup: 0
       collGroup: 0
       parents: []
@@ -199,7 +199,7 @@ MonoBehaviour:
       group: 0
       type: 0
       chestGroup: 0
-      generatesAt: 0
+      generatesAtLevel: 0
       genGroup: 0
       collGroup: 0
       parents: []
@@ -223,7 +223,7 @@ MonoBehaviour:
       group: 0
       type: 0
       chestGroup: 0
-      generatesAt: 0
+      generatesAtLevel: 0
       genGroup: 0
       collGroup: 0
       parents: []
@@ -244,7 +244,7 @@ MonoBehaviour:
     chestGroup: 0
     genGroup: 0
     hasTimer: 0
-    generatesAt: 0
+    generatesAtLevel: 0
     creates: []
     coolDown:
       maxCounts: 
@@ -268,7 +268,7 @@ MonoBehaviour:
       group: 0
       type: 0
       chestGroup: 0
-      generatesAt: 0
+      generatesAtLevel: 0
       genGroup: 0
       collGroup: 0
       parents: []
@@ -292,7 +292,7 @@ MonoBehaviour:
       group: 0
       type: 0
       chestGroup: 0
-      generatesAt: 0
+      generatesAtLevel: 0
       genGroup: 0
       collGroup: 0
       parents: []
@@ -316,7 +316,7 @@ MonoBehaviour:
       group: 0
       type: 0
       chestGroup: 0
-      generatesAt: 0
+      generatesAtLevel: 0
       genGroup: 0
       collGroup: 0
       parents: []
@@ -337,7 +337,7 @@ MonoBehaviour:
     chestGroup: 0
     genGroup: 0
     hasTimer: 0
-    generatesAt: 0
+    generatesAtLevel: 0
     creates: []
     coolDown:
       maxCounts: 

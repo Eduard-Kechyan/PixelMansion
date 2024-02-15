@@ -17,7 +17,7 @@ MonoBehaviour:
     genGroup: 0
     hasLevel: 1
     customName: 0
-    generatesAt: 5
+    generatesAtLevel: 5
     coolDown:
       maxCounts: 3200000018000000
       seconds: 120
@@ -34,7 +34,7 @@ MonoBehaviour:
       group: 0
       genGroup: 0
       collGroup: 0
-      maxLevel: 0
+      maxLevel: 3
       canIncreaseMaxLevel: 1
       chance: 97
     - name: Gloves
@@ -54,7 +54,7 @@ MonoBehaviour:
       group: 0
       type: 0
       chestGroup: 0
-      generatesAt: 0
+      generatesAtLevel: 0
       genGroup: 0
       collGroup: 0
       parents: []
@@ -78,7 +78,7 @@ MonoBehaviour:
       group: 0
       type: 0
       chestGroup: 0
-      generatesAt: 0
+      generatesAtLevel: 0
       genGroup: 0
       collGroup: 0
       parents: []
@@ -102,7 +102,7 @@ MonoBehaviour:
       group: 0
       type: 0
       chestGroup: 0
-      generatesAt: 0
+      generatesAtLevel: 0
       genGroup: 0
       collGroup: 0
       parents: []
@@ -126,7 +126,7 @@ MonoBehaviour:
       group: 0
       type: 0
       chestGroup: 0
-      generatesAt: 0
+      generatesAtLevel: 0
       genGroup: 0
       collGroup: 0
       parents: []
@@ -150,7 +150,7 @@ MonoBehaviour:
       group: 0
       type: 0
       chestGroup: 0
-      generatesAt: 0
+      generatesAtLevel: 0
       genGroup: 0
       collGroup: 0
       parents: []
@@ -174,7 +174,7 @@ MonoBehaviour:
       group: 0
       type: 0
       chestGroup: 0
-      generatesAt: 0
+      generatesAtLevel: 0
       genGroup: 0
       collGroup: 0
       parents: []

@@ -30,6 +30,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4494591135200674788}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -37,7 +38,6 @@ Transform:
   m_Children:
   - {fileID: 7898305139951607427}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4650456462307360588
 SpriteRenderer:
@@ -119,12 +119,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 14
+  altMoveSpeed: 14
   scaleSpeed: 8
+  altScaleSpeed: 8
   experienceThreshold: 4
+  crateSoundTimeout: 1
+  timeManager: {fileID: 0}
+  boardSet: 0
   minBubbleLevel: 4
   bubbleChance: 30
   bubbleCount: 1000
-  popBubbles: 0
+  bubblePopTimeout: 60
   boardTiles: {fileID: 0}
 --- !u!114 &6103699518242801327
 MonoBehaviour:
@@ -144,12 +149,15 @@ MonoBehaviour:
   touchThreshold: 20
   radius: 0.5
   radiusAlt: 4
+  crateBreakSpeed: 0.05
   isDragging: 0
   isSelected: 0
   currentItem: {fileID: 0}
+  clockManager: {fileID: 0}
+  timeManager: {fileID: 0}
+  pointerHandler: {fileID: 0}
   tempTile: {fileID: 0}
   canUndo: 0
-  boardTiles: {fileID: 4861144735682741828}
 --- !u!114 &7639113953969003286
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,6 +185,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 14
   scaleSpeed: 8
+  clockManager: {fileID: 0}
+  timeManager: {fileID: 0}
   randomGoldCurves:
   - serializedVersion: 2
     m_Curve:
@@ -247,7 +257,39 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  generationCurves: []
+  generationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.63144666
+      value: 0.19834894
+      inSlope: 0.8523112
+      outSlope: 0.8523112
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.09238349
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2.8789597
+      outSlope: 2.8789597
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.023868382
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   gemChance: 8
 --- !u!114 &3064645934079383963
 MonoBehaviour:
@@ -263,6 +305,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   indicateDelay: 2
   indicateSpeed: 0.5
+  pointerHandler: {fileID: 0}
 --- !u!1 &4861144735682741828
 GameObject:
   m_ObjectHideFlags: 0
@@ -286,11 +329,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4861144735682741828}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5574820058536146693}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

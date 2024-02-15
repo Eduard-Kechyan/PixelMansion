@@ -34,7 +34,7 @@ namespace Merge
         public bool hasLevel;
 
         public int level = 1;
-        public int generatesAt = 0;
+        public int generatesAtLevel = 0;
 
         public Types.Type type = Types.Type.Item;
         public ItemTypes.Group group;
@@ -105,7 +105,7 @@ namespace Merge
             completionChild = transform.GetChild(6).gameObject; // Completion
             itemChild = transform.GetChild(7).gameObject; // Item
 
-            if (type == Types.Type.Gen && level >= generatesAt)
+            if (type == Types.Type.Gen && level >= generatesAtLevel)
             {
                 readyChild.SetActive(true);
 
@@ -307,7 +307,7 @@ namespace Merge
 
             if (state == Types.State.Default)
             {
-                if (type == Types.Type.Gen && level >= generatesAt)
+                if (type == Types.Type.Gen && level >= generatesAtLevel)
                 {
                     if (timerOn)
                     {
@@ -349,7 +349,7 @@ namespace Merge
         {
             timerOn = enable;
 
-            if (type == Types.Type.Gen && level >= generatesAt)
+            if (type == Types.Type.Gen && level >= generatesAtLevel)
             {
                 if (timerOn)
                 {
@@ -491,7 +491,7 @@ namespace Merge
                 completionChild.SetActive(false);
             }
 
-            if (type == Types.Type.Gen && level >= generatesAt && isReadyPlaying)
+            if (type == Types.Type.Gen && level >= generatesAtLevel && isReadyPlaying)
             {
                 StopAnimateReady();
             }
@@ -511,7 +511,7 @@ namespace Merge
                 completionChild.SetActive(true);
             }
 
-            if (type == Types.Type.Gen && level >= generatesAt && !timerOn && !isReadyPlaying)
+            if (type == Types.Type.Gen && level >= generatesAtLevel && !timerOn && !isReadyPlaying)
             {
                 AnimateReady();
             }

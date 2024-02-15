@@ -531,7 +531,7 @@ namespace Merge
             return found;
         }
 
-        public int GetGroupCount(ItemTypes.Group group)
+        public int GetGroupItemsCount(ItemTypes.Group group)
         {
             int count = 0;
 

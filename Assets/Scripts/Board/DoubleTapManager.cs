@@ -14,8 +14,7 @@ namespace Merge
 
         [Tooltip("Will automatically adjust")]
         public AnimationCurve[] randomGoldCurves;
-        [Tooltip("Will automatically adjust")]
-        public AnimationCurve[] generationCurves;
+        public AnimationCurve generationCurve;
 
         [Tooltip("Lower values, higher chance. Default is 8")]
         public int gemChance = 8;
@@ -73,7 +72,7 @@ namespace Merge
 
         void DoubleTappedGenerator()
         {
-            if (interactions.currentItem.creates.Length > 0 && interactions.currentItem.level >= interactions.currentItem.generatesAt && !interactions.currentItem.timerOn)
+            if (interactions.currentItem.creates.Length > 0 && interactions.currentItem.level >= interactions.currentItem.generatesAtLevel && !interactions.currentItem.timerOn)
             {
                 // Check if we have enough energy to generate an item
                 if (gameData.energy >= 1)
@@ -184,6 +183,8 @@ namespace Merge
             int maxLevel = 0;
             bool canIncreaseMaxLevel = false;
 
+            int selectedItem = 0;
+
             // Randomly select a group of items to choose from
             for (int i = 0; i < creates.Length; i++)
             {
@@ -199,21 +200,33 @@ namespace Merge
                 }
             }
 
-            int selectedItem;
-
-            // Randomly create an item from the selected group
-            generationCurves[interactions.currentItem.level - interactions.currentItem.generatesAt].keys[^1].value = dataManager.GetGroupCount(selectedGroup);
-
-            selectedItem = Mathf.FloorToInt(Glob.CalcCurvedChances(generationCurves[interactions.currentItem.level - interactions.currentItem.generatesAt]));
-
+            // If "canIncreaseMaxLevel" is false, generate only the first item in the group
+            // Else generate according to the generators level
             if (canIncreaseMaxLevel)
             {
-                maxLevel += interactions.currentItem.level;
-            }
+                int generateAtLevel = interactions.currentItem.level - interactions.currentItem.generatesAtLevel;
 
-            if (selectedItem > maxLevel)
-            {
-                selectedItem = maxLevel;
+                int groupItemsCount = dataManager.GetGroupItemsCount(selectedGroup);
+
+                int currentItemsCount = maxLevel + generateAtLevel;
+
+                if (currentItemsCount > groupItemsCount)
+                {
+                    currentItemsCount = groupItemsCount;
+                }
+
+                if (currentItemsCount < 1)
+                {
+                    currentItemsCount = 1;
+                }
+
+                // Randomly select an item from the selected group
+                selectedItem = Mathf.FloorToInt(Glob.CalcCurvedChances(generationCurve) * currentItemsCount);
+
+                if (selectedItem < 0)
+                {
+                    selectedItem = 0;
+                }
             }
 
             // Create item from selected group

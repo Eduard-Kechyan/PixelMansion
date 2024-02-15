@@ -166,7 +166,9 @@ namespace Merge
             [HideInInspector]
             public bool hasTimer;
             [HideInInspector]
-            public int generatesAt;
+            public int generatesAtLevel;
+            [HideInInspector]
+            public int generatesMaxCount;
             [HideInInspector]
             public Creates[] creates;
             [HideInInspector]
@@ -181,7 +183,7 @@ namespace Merge
             public ItemTypes.GenGroup genGroup;
             public bool hasLevel;
             public bool customName;
-            public int generatesAt;
+            public int generatesAtLevel;
 
             public CoolDown coolDown;
             public ParentData[] parents;
@@ -245,7 +247,7 @@ namespace Merge
             public ChestGroup chestGroup;
 
             [HideInInspector]
-            public int generatesAt;
+            public int generatesAtLevel;
 
             [HideInInspector]
             public ItemTypes.GenGroup genGroup;
@@ -315,7 +317,7 @@ namespace Merge
             public string id;
 
             [HideInInspector]
-            public int generatesAt;
+            public int generatesAtLevel;
 
             [HideInInspector]
             public int crate;
@@ -353,7 +355,7 @@ namespace Merge
             public string chestGroup;
             public bool hasTimer;
             public string id;
-            public int generatesAt;
+            public int generatesAtLevel;
             public int crate;
             public string state;
             public int chestItems;

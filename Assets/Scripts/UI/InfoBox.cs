@@ -618,7 +618,7 @@ namespace Merge
                             }
                             else
                             {
-                                if (newItem.level >= newItem.generatesAt)
+                                if (newItem.level >= newItem.generatesAtLevel)
                                 {
                                     textToSet = LOCALE.Get("info_box_gen", newItem.nextName);
                                 }
