@@ -14,7 +14,7 @@ namespace Merge
         private Scale fullScale = new(new Vector2(1f, 1f));
         private Scale tapScale = new(new Vector2(0.8f, 0.8f));
 
-        private Action buttonCallback = null;
+        public Action buttonCallback = null;
         private Action mergeCallback = null;
 
         private Types.Button currentButton;
@@ -145,6 +145,8 @@ namespace Merge
             {
                 callback?.Invoke();
             }
+
+            buttonCallback = null;
         }
 
         public void ButtonPressFinish()

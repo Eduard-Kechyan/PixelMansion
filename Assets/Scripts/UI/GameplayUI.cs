@@ -88,7 +88,7 @@ namespace Merge
             // UI taps
             homeButton.clicked += () =>
             {
-                if (pointerHandler != null)
+                if (pointerHandler != null && pointerHandler.buttonCallback != null)
                 {
                     pointerHandler.ButtonPress(Types.Button.Home);
                 }
@@ -103,7 +103,7 @@ namespace Merge
             shopButton.clicked += () => shopMenu.Open();
             taskButton.clicked += () =>
             {
-                if (pointerHandler != null)
+                if (pointerHandler != null && pointerHandler.buttonCallback != null)
                 {
                     pointerHandler.ButtonPress(Types.Button.Task, false, () =>
                     {
@@ -172,10 +172,10 @@ namespace Merge
         
         public void DisableButtons()
         {
-            homeButton.SetEnabled(false);
+          /*  homeButton.SetEnabled(false);
             inventoryButton.SetEnabled(false);
             shopButton.SetEnabled(false);
-            taskButton.SetEnabled(false);
+            taskButton.SetEnabled(false);*/
         }
 
         public void EnableButtons()
@@ -188,7 +188,7 @@ namespace Merge
 
         public void ToggleButton(string name, bool enabled = false)
         {
-            switch (name)
+          /*  switch (name)
             {
                 case "home":
                     homeButton.SetEnabled(enabled);
@@ -202,12 +202,12 @@ namespace Merge
                 case "task":
                     taskButton.SetEnabled(enabled);
                     break;
-            }
+            }*/
         }
 
         void HideButtons()
         {
-            if (!PlayerPrefs.HasKey("gameplayHomeButtonShowing"))
+          /*  if (!PlayerPrefs.HasKey("gameplayHomeButtonShowing"))
             {
                 homeButton.style.display = DisplayStyle.None;
             }
@@ -225,7 +225,7 @@ namespace Merge
             if (!PlayerPrefs.HasKey("gameplayTaskButtonShowing"))
             {
                 taskButton.style.display = DisplayStyle.None;
-            }
+            }*/
         }
 
         public void ShowButtons()
@@ -261,7 +261,7 @@ namespace Merge
 
         public void HideButton(Types.Button button, bool alt = false)
         {
-            switch (button)
+       /*     switch (button)
             {
                 case Types.Button.Home:
                     if (alt)
@@ -307,7 +307,7 @@ namespace Merge
                         PlayerPrefs.DeleteKey("hubTaskButtonShowing");
                     }
                     break;
-            }
+            }*/
         }
 
         //// Indicators ////

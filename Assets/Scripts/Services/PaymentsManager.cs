@@ -166,6 +166,8 @@ StandardPurchasingModule.Instance(AppStore.AppleAppStore)
         {
             callback?.Invoke();
 
+            Debug.Log("Successfully purchased!");
+
             callback = null;
             failCallback = null;
 

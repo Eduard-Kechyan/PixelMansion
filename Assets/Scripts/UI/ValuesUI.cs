@@ -389,7 +389,7 @@ namespace Merge
 
         public void DisableButtons()
         {
-            if (!enabledSet)
+          /*  if (!enabledSet)
             {
                 levelEnabled = levelButton.enabledSelf;
                 energyEnabled = energyButton.enabledSelf;
@@ -413,12 +413,12 @@ namespace Merge
                 gemsPlus.style.opacity = 0f;
 
                 enabledSet = true;
-            }
+            }*/
         }
 
         public void DisableButtonsAlt()
         {
-            levelButton.SetEnabled(false);
+           /* levelButton.SetEnabled(false);
             energyButton.SetEnabled(false);
             goldButton.SetEnabled(false);
             gemsButton.SetEnabled(false);
@@ -428,7 +428,7 @@ namespace Merge
             goldPlus.style.visibility = Visibility.Hidden;
             goldPlus.style.opacity = 0f;
             gemsPlus.style.visibility = Visibility.Hidden;
-            gemsPlus.style.opacity = 0f;
+            gemsPlus.style.opacity = 0f;*/
         }
 
         public void EnableButtons()
@@ -489,7 +489,7 @@ namespace Merge
 
         public void HideButtons()
         {
-            if (!PlayerPrefs.HasKey("valuesLevelButtonShowing"))
+            /*if (!PlayerPrefs.HasKey("valuesLevelButtonShowing"))
             {
                 levelButton.style.display = DisplayStyle.None;
             }
@@ -507,7 +507,7 @@ namespace Merge
             if (!PlayerPrefs.HasKey("valuesGemsButtonShowing"))
             {
                 gemsButton.style.display = DisplayStyle.None;
-            }
+            }*/
         }
 
         public void ShowButtons()
