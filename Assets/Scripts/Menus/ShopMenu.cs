@@ -417,21 +417,19 @@ namespace Merge
                                 {
                                     if (payoutBonus == null)
                                     {
-                                        BuyGems(shopItemId, (int)payout.quantity);
+                                        BuyGems(shopItemId);
                                     }
                                     else
                                     {
-                                        BuyGems(shopItemId, (int)payout.quantity, true, (int)payoutBonus.quantity);
+                                        BuyGems(shopItemId);
                                     }
                                 }
                                 else
                                 {
-                                    BuyGold(shopItemId, (int)payout.quantity);
+                                    BuyGold(shopItemId);
                                 }
                             }));
                         };
-
-                        // TODO - Notify the developer when a player makes a purchase
 
                         // Info button
                         newShopItemBox.Q<Button>("InfoButton").style.display = DisplayStyle.None;
@@ -605,31 +603,12 @@ namespace Merge
             menuUI.CloseMenu(shopMenu.name);
         }
 
-        void BuyGems(string productId, int amount, bool hasBonus = false, int bonusAmount = 0)
+        void BuyGems(string productId)
         {
             paymentsManager.Purchase(productId, () =>
             {
                 StartCoroutine(PostPurchase(() =>
                 {
-                    if (sceneLoader.scene == Types.Scene.Gameplay)
-                    {
-                        valuePop.PopValue(amount, Types.CollGroup.Gems, uiButtons.gameplayShopButtonPos);
-
-                        if (hasBonus)
-                        {
-                            valuePop.PopValue(bonusAmount, Types.CollGroup.Energy, uiButtons.gameplayShopButtonPos);
-                        }
-                    }
-                    else
-                    {
-                        valuePop.PopValue(amount, Types.CollGroup.Gems, uiButtons.hubShopButtonPos);
-
-                        if (hasBonus)
-                        {
-                            valuePop.PopValue(bonusAmount, Types.CollGroup.Energy, uiButtons.hubShopButtonPos);
-                        }
-                    }
-
                     menuUI.CloseMenu(shopMenu.name);
                 }));
             }, (string reason) =>
@@ -643,23 +622,11 @@ namespace Merge
             });
         }
 
-        void BuyGold(string productId, int amount)
+        void BuyGold(string productId)
         {
             paymentsManager.Purchase(productId, () =>
             {
-                StartCoroutine(PostPurchase(() =>
-                {
-                    if (sceneLoader.scene == Types.Scene.Gameplay)
-                    {
-                        valuePop.PopValue(amount, Types.CollGroup.Gold, uiButtons.gameplayShopButtonPos);
-                    }
-                    else
-                    {
-                        valuePop.PopValue(amount, Types.CollGroup.Gold, uiButtons.hubShopButtonPos);
-                    }
-
-                    menuUI.CloseMenu(shopMenu.name);
-                }));
+                menuUI.CloseMenu(shopMenu.name);
             }, (string reason) =>
             {
                 StartCoroutine(PostPurchase(() =>

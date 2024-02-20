@@ -23,7 +23,7 @@ namespace Merge
         private bool goldPlusEnabled = false;
         private bool gemsPlusEnabled = false;
 
-        private bool enabledSet = false;
+        //private bool enabledSet = false;
 
         private bool levelBlipping = false;
 
@@ -456,7 +456,7 @@ namespace Merge
                 gemsPlus.style.opacity = 1f;
             }
 
-            enabledSet = false;
+           // enabledSet = false;
         }
 
         public void EnableButtonsAlt()
@@ -484,7 +484,7 @@ namespace Merge
                 gemsPlus.style.opacity = 1f;
             }
 
-            enabledSet = false;
+          //  enabledSet = false;
         }
 
         public void HideButtons()

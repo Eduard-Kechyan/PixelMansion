@@ -16,8 +16,10 @@ MonoBehaviour:
 
     App Version= "0.0.-1";
 
-    BuildNumber
-    = 0;'
+    BuildNumber =
+    0;'
   isAlpha: 1
-  appVersion: 0.0.0.a.dev
-  buildNumber: 4
+  appVersion: 0.0.2.6.a
+  buildNumber: 6
+  packageName: com.SoloNodeGames.PixelMansion
+  isDebugAlt: 1

@@ -104,7 +104,7 @@ namespace Merge
                 }
             };
 
-            if (Application.isEditor || Debug.isDebugBuild)
+            if (Application.isEditor || Debug.isDebugBuild || GameData.Instance.buildData.isDebugAlt)
             {
                 Button debugButton = topBox.Q<Button>("DebugButton");
 

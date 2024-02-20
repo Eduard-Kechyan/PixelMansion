@@ -37,14 +37,15 @@ namespace Merge
 
         void Awake()
         {
-            if (!Debug.isDebugBuild && !Application.isEditor)
+           /* if (!Debug.isDebugBuild && !Application.isEditor)
             {
                 Destroy(gameObject);
             }
             else
             {
                 Instance = this;
-            }
+            }*/
+            Instance = this;
         }
 
         void Start()
@@ -85,6 +86,15 @@ namespace Merge
             // Init
             debugMenu.style.display = DisplayStyle.None;
             debugMenu.style.opacity = 0;
+
+            if (logs.shakingEnabled)
+            {
+                logsShakingButton.text = "Shaking: On";
+            }
+            else
+            {
+                logsShakingButton.text = "Shaking: Off";
+            }
 
             // Loading scene
             if (loadingManager != null)

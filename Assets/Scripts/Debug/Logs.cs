@@ -14,7 +14,7 @@ namespace Merge
     {
         // Variables
         public bool logsEnabled = true;
-        public bool shakingEnabled = false;
+        public bool shakingEnabled = true;
         public int titleHight = 20;
         public Color defaultLogColor;
 
@@ -57,7 +57,7 @@ namespace Merge
 
         void Awake()
         {
-            if ((Instance != null && Instance != this) || (!Debug.isDebugBuild && !Application.isEditor))
+            if (Instance != null && Instance != this)
             {
                 Destroy(this);
             }
@@ -65,6 +65,14 @@ namespace Merge
             {
                 Instance = this;
             }
+          /*  if ((Instance != null && Instance != this) || (!Debug.isDebugBuild && !Application.isEditor))
+            {
+                Destroy(this);
+            }
+            else
+            {
+                Instance = this;
+            }*/
         }
 
         void OnDisable()
@@ -77,7 +85,8 @@ namespace Merge
             Application.logMessageReceivedThreaded += HandleNewLog;
         }
 
-        public void Init(UIDocument debugUI){
+        public void Init(UIDocument debugUI)
+        {
             // UI
             root = debugUI.rootVisualElement;
             logsContainer = root.Q<VisualElement>("LogsContainer");
@@ -129,7 +138,7 @@ namespace Merge
         public void Toggle()
         {
             logsOpen = !logsOpen;
-            
+
             if (logsOpen)
             {
                 Glob.StopTimeout(clearTimeout);

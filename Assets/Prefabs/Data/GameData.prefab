@@ -26,13 +26,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6831382092569983105}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7628476360138686812
 MonoBehaviour:
@@ -47,13 +47,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   valuesData: {fileID: 11400000, guid: e82c58a155150ca47be106027d9ca637, type: 2}
-  energyTimer: {fileID: 0}
+  buildData: {fileID: 11400000, guid: 7b4d7aa6d0263a645a84313243ba6733, type: 2}
   countFPS: 30
   numberIncreaseDuration: 1
+  playerName: 
   experience: 0
   energy: 100
   gold: 100
   gems: 100
+  energyTemp: 100
   level: 0
   levelTen: 0
   canLevelUp: 0
@@ -66,14 +68,17 @@ MonoBehaviour:
   finishedTasks: []
   areasData: []
   unlockedData: []
+  unlockedRoomsData: []
   itemsData: []
   collectablesData: []
   generatorsData: []
   chestsData: []
+  coolDowns: []
   timers: []
   userId: 
   greeted: 0
   resourcesLoaded: 0
+  notifications: []
 --- !u!114 &2518802072706261672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109,6 +114,7 @@ MonoBehaviour:
   hubPlayButtonPos: {x: 0, y: 0}
   hubTaskButtonPos: {x: 0, y: 0}
   gameplayButtonsSet: 0
+  gameplayHomeButtonPos: {x: 0, y: 0}
   gameplayShopButtonPos: {x: 0, y: 0}
   gameplayTaskButtonPos: {x: 0, y: 0}
   gameplayBonusButtonPos: {x: 0, y: 0}

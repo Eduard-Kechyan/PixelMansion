@@ -97,7 +97,7 @@ namespace Merge
 
         public void FindUsed(string objectName)
         {
-            Debug.LogWarning("FIND was used for " + objectName + ", which was NULL! That's a performance hit and needs to be FIXED!");
+            Debug.LogWarning("FIND was used for " + objectName + ". FIND's a performance hit and needs to be FIXED!");
         }
     }
 }

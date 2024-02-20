@@ -7,6 +7,8 @@ using UnityEngine;
 using System.Globalization;
 using UnityEngine.Purchasing;
 using UnityEngine.Purchasing.Extension;
+using Unity.VisualScripting;
+using System.Linq;
 
 namespace Merge
 {
@@ -23,12 +25,14 @@ namespace Merge
 
         private IStoreController controller;
         private IExtensionProvider provider;
+        private IGooglePlayStoreExtensions googleExtensions;
 
         private Action callback;
         private Action<string> failCallback;
 
         // References
         private ErrorManager errorManager;
+        private ValuePop valuePop;
 
         async void Awake()
         {
@@ -48,12 +52,17 @@ namespace Merge
             await UnityServices.InitializeAsync(options);
 
             unityServicesLoaded = true;
+
+            Debug.Log("PaymentsManager Awake");
         }
 
         void Start()
         {
             // Cache
             errorManager = ErrorManager.Instance;
+            valuePop=GameRefs.Instance.valuePop;
+
+            Debug.Log("PaymentsManager Start");
         }
 
         //// Initialization ////
@@ -88,9 +97,9 @@ namespace Merge
                 StandardPurchasingModule.Instance(AppStore.GooglePlay)
                 );
 #elif UNITY_IOS
-ConfigurationBuilder builder = ConfigurationBuilder.Instance(
-StandardPurchasingModule.Instance(AppStore.AppleAppStore)
-);
+                ConfigurationBuilder builder = ConfigurationBuilder.Instance(
+                StandardPurchasingModule.Instance(AppStore.AppleAppStore)
+                );
 #endif
 
                 // Add the catalog items to the config builder
@@ -98,6 +107,8 @@ StandardPurchasingModule.Instance(AppStore.AppleAppStore)
                 {
                     builder.AddProduct(item.id, item.type);
                 }
+
+                Debug.Log("PaymentsManager BuildConfig");
 
                 UnityPurchasing.Initialize(this, builder);
             }
@@ -108,7 +119,11 @@ StandardPurchasingModule.Instance(AppStore.AppleAppStore)
             controller = newController;
             provider = newProvider;
 
+            googleExtensions = provider.GetExtension<IGooglePlayStoreExtensions>();
+
             loaded = true;
+
+            Debug.Log("PaymentsManager Initialized Success");
         }
 
         public void OnInitializeFailed(InitializationFailureReason error, string message) // A
@@ -123,6 +138,8 @@ StandardPurchasingModule.Instance(AppStore.AppleAppStore)
                 // ERROR
                 errorManager.Throw(Types.ErrorType.Unity, "PaymentsManager.cs -> OnInitializeFailed() // A", "Reason: " + error.ToString() + ", Message: " + message);
             }
+
+            Debug.Log("PaymentsManager Initialized Failed");
         }
 
         public void OnInitializeFailed(InitializationFailureReason error) // B
@@ -137,6 +154,8 @@ StandardPurchasingModule.Instance(AppStore.AppleAppStore)
                 // ERROR
                 errorManager.Throw(Types.ErrorType.Unity, "PaymentsManager.cs -> OnInitializeFailed() // B", "Reason: " + error.ToString());
             }
+            
+            Debug.Log("PaymentsManager Initialized Failed");
         }
 
         //// Purchase ////
@@ -159,33 +178,85 @@ StandardPurchasingModule.Instance(AppStore.AppleAppStore)
             callback = newCallback;
             failCallback = newFailCallback;
 
+            Debug.Log("PaymentsManager Purchasing");
+
             controller.InitiatePurchase(productId);
         }
 
         public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs purchaseEvent)
         {
-            callback?.Invoke();
+            if (googleExtensions.IsPurchasedProductDeferred(purchaseEvent.purchasedProduct))
+            {
+                return PurchaseProcessingResult.Pending;
+            }
 
-            Debug.Log("Successfully purchased!");
+            Debug.Log("PaymentsManager Purchased");
+
+            callback?.Invoke();
 
             callback = null;
             failCallback = null;
 
+            foreach (var productItem in catalog.allProducts)
+            {
+                if (productItem.id == purchaseEvent.purchasedProduct.definition.id)
+                {
+                    for (int i = 0; i < productItem.Payouts.Count; i++)
+                    {
+                        HandlePayout(productItem.Payouts[i]);
+                    }
+
+                    break;
+                }
+            }
+
+            // TODO - Send purchase data to the servers
+
             return PurchaseProcessingResult.Complete;
         }
 
-        public void OnPurchaseFailed(Product product, PurchaseFailureReason reason)
+        void HandlePayout(ProductCatalogPayout payout)
+        {
+            Debug.Log("PaymentsManager Paying Out");
+
+            if (payout.type == ProductCatalogPayout.ProductCatalogPayoutType.Currency || payout.type == ProductCatalogPayout.ProductCatalogPayoutType.Resource)
+            {
+                switch (payout.subtype)
+                {
+                    case "Gold":
+                        valuePop.PopValue((int)payout.quantity, Types.CollGroup.Gold, false, true);
+                        break;
+                    case "Gems":
+                        valuePop.PopValue((int)payout.quantity, Types.CollGroup.Gems, false, true);
+                        break;
+                    case "Energy":
+                        valuePop.PopValue((int)payout.quantity, Types.CollGroup.Energy, false, true);
+                        break;
+                    default:
+                        errorManager.Throw(Types.ErrorType.Code, "PaymentsManager.cs -> HandlePayout()", "Payout Subtype " + payout.subtype + " has not been implemented yet!");
+                        break;
+                }
+            }
+            else
+            {
+                errorManager.Throw(Types.ErrorType.Code, "PaymentsManager.cs -> HandlePayout()", "Payout Type " + payout.type + " has not been implemented yet!");
+            }
+        }
+
+        public void OnPurchaseFailed(UnityEngine.Purchasing.Product product, PurchaseFailureReason reason)
         {
             HandlePurchaseFailed(product, reason);
         }
 
-        public void OnPurchaseFailed(Product product, PurchaseFailureDescription description)
+        public void OnPurchaseFailed(UnityEngine.Purchasing.Product product, PurchaseFailureDescription description)
         {
             HandlePurchaseFailed(product, description.reason, description.message);
         }
 
-        void HandlePurchaseFailed(Product product, PurchaseFailureReason reason, string message = "")
+        void HandlePurchaseFailed(UnityEngine.Purchasing.Product product, PurchaseFailureReason reason, string message = "")
         {
+            Debug.Log("PaymentsManager Purchase Failed");
+
             if (reason != PurchaseFailureReason.UserCancelled && reason != PurchaseFailureReason.PaymentDeclined)
             {
                 if (message == "")

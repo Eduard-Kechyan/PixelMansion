@@ -11,6 +11,7 @@ namespace Merge
     {
         // Variables
         public ValuesData valuesData;
+        public BuildData buildData;
         public float countFPS = 10f;
         public float numberIncreaseDuration = 1f;
 
