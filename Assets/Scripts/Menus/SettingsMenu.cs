@@ -17,9 +17,12 @@ namespace Merge
         private MenuUI menuUI;
         private LocaleMenu localeMenu;
         private ConfirmMenu confirmMenu;
+        private NoteMenu noteMenu;
         private RateMenu rateMenu;
         private I18n LOCALE;
         private Settings settings;
+        private Services services;
+        private SignIn signIn;
         //  private Notifics notifics;
         private ResetHandler resetHandler;
 
@@ -49,7 +52,7 @@ namespace Merge
 
         private Button instagramFollowButton;
         private Button facebookFollowButton;
-        //private Button youtubeFollowButton;
+        private Button youtubeFollowButton;
 
         private Label signInLabel;
         private Label followLabel;
@@ -65,9 +68,12 @@ namespace Merge
             menuUI = GetComponent<MenuUI>();
             localeMenu = GetComponent<LocaleMenu>();
             confirmMenu = GetComponent<ConfirmMenu>();
+            noteMenu = GetComponent<NoteMenu>();
             rateMenu = GetComponent<RateMenu>();
             LOCALE = I18n.Instance;
             settings = Settings.Instance;
+            services = Services.Instance;
+            signIn = services.GetComponent<SignIn>();
             //  notifics = Services.Instance.GetComponent<Notifics>();
             resetHandler = GetComponent<ResetHandler>();
 
@@ -99,7 +105,7 @@ namespace Merge
 
             instagramFollowButton = settingsMenu.Q<Button>("InstagramFollowButton");
             facebookFollowButton = settingsMenu.Q<Button>("FacebookFollowButton");
-            //youtubeFollowButton = settingsMenu.Q<Button>("YoutubeFollowButton");
+            youtubeFollowButton = settingsMenu.Q<Button>("YoutubeFollowButton");
 
             signInLabel = settingsMenu.Q<Label>("SignInLabel");
             followLabel = settingsMenu.Q<Label>("FollowLabel");
@@ -119,18 +125,17 @@ namespace Merge
             privacyButton.clicked += () => Application.OpenURL(GameData.WEB_ADDRESS + "/privacy");
             termsButton.clicked += () => Application.OpenURL(GameData.WEB_ADDRESS + "/terms");
             languageButton.clicked += () => localeMenu.Open();
-            resetButton.clicked += () => confirmMenu.Open("reset", resetHandler.RestartAndResetApp);
+            resetButton.clicked += () => confirmMenu.Open("reset", resetHandler.ResetAndRestartApp);
             exitButton.clicked += () => confirmMenu.Open("exit", Application.Quit);
             rateButton.clicked += () => rateMenu.Open(true);
 
-            // TODO - Add all button clicks to ////
-            googleSignInButton.clicked += () => Debug.Log("Google Sing In Button Clicked!"); ////
-            facebookSignInButton.clicked += () => Debug.Log("Facebook Sing In Button Clicked!"); ////
-            appleSignInButton.clicked += () => Debug.Log("Apple Sing In Button Clicked!"); ////
+            googleSignInButton.clicked += () => HandleSignIn(SignIn.SignInType.Google);
+            facebookSignInButton.clicked += () => HandleSignIn(SignIn.SignInType.Facebook);
+            appleSignInButton.clicked += () => HandleSignIn(SignIn.SignInType.Apple);
 
             instagramFollowButton.clicked += () => OpenSocialMediaLink(Types.SocialMediaType.Instagram);
             facebookFollowButton.clicked += () => OpenSocialMediaLink(Types.SocialMediaType.Facebook);
-            // youtubeFollowButton.clicked += () => OpenSocialMediaLink(SocialMediaType.Youtube);
+            youtubeFollowButton.clicked += () => OpenSocialMediaLink(Types.SocialMediaType.Youtube);
 
             idCopyButton.clicked += () => CopyIdToClipboard();
 
@@ -148,7 +153,7 @@ namespace Merge
             settingsMenu.style.display = DisplayStyle.None;
             settingsMenu.style.opacity = 0;
 
-            if (!Debug.isDebugBuild || !Application.isEditor)
+            if (!Debug.isDebugBuild || !Application.isEditor) // TODO - Remove this  after adding at least one other language
             {
                 languageButton.style.display = DisplayStyle.None;
             }
@@ -165,14 +170,14 @@ namespace Merge
                 rateButton.style.display = DisplayStyle.None;
             }
 
-            idLabel.text = "User ID: " + GameData.Instance.userId;
+            idLabel.text = LOCALE.Get("settings_menu_user_id") + GameData.Instance.userId;
 
-            versionLabel.text = "v." + Application.version;
+            versionLabel.text = LOCALE.Get("settings_menu_version") + Application.version;
 
 #if UNITY_ANDROID
             appleSignInButton.style.display = DisplayStyle.None;
 #elif UNITY_IOS
-        googleSignInButton.style.display = DisplayStyle.None;
+            googleSignInButton.style.display = DisplayStyle.None;
 #endif
 
             SetUiText();
@@ -235,21 +240,21 @@ namespace Merge
         {
             // Google sign in
             googleSignInCheck.style.display = DisplayStyle.None;
-            if (settings.googleSignedIn)
+            if (services.googleSignIn)
             {
                 googleSignInCheck.style.display = DisplayStyle.Flex;
             }
 
             // Facebook sign in
             facebookSignInCheck.style.display = DisplayStyle.None;
-            if (settings.facebookSignedIn)
+            if (services.facebookSignIn)
             {
                 facebookSignInCheck.style.display = DisplayStyle.Flex;
             }
 
-            // Facebook sign in
+            // Apple sign in
             appleSignInCheck.style.display = DisplayStyle.None;
-            if (settings.appleSignedIn)
+            if (services.appleSignIn)
             {
                 appleSignInCheck.style.display = DisplayStyle.Flex;
             }
@@ -278,6 +283,28 @@ namespace Merge
             copyCheck.style.opacity = 0;
         }
 
+        void HandleSignIn(SignIn.SignInType type)
+        {
+            signIn.LogIn(type, (bool firstSingIn) =>
+            {
+                if (firstSingIn)
+                {
+                    googleSignInCheck.style.display = DisplayStyle.Flex;
+                }
+                else
+                {
+                    string[] notes = new string[] { "note_menu_log_in_already_" + type };
+
+                    noteMenu.Open("note_menu_log_in_already_title", notes);
+                }
+            }, (string preFix) =>
+            {
+                string[] notes = new string[] { "note_menu_log_in_failed_" + type, "note_menu_log_in_failed_" + preFix };
+
+                noteMenu.Open("note_menu_log_in_failed_title", notes);
+            });
+        }
+
         public void OpenSocialMediaLink(Types.SocialMediaType type)
         {
             switch (type)
@@ -301,7 +328,7 @@ namespace Merge
                 PlayerPrefs.SetInt("followResult", 1);
             }
 
-            // FIX - Send statistic to the server (type)
+            // TODO - Send statistic to the server (type)
 
             externalAppOpened = false;
 
@@ -317,15 +344,15 @@ namespace Merge
                 switch (type)
                 {
                     case Types.SocialMediaType.Instagram:
-                        Application.OpenURL("https://instagram.com/" + "nasa");
+                        Application.OpenURL("https://instagram.com/" + GameData.STUDIO_NAME);
 
                         break;
                     case Types.SocialMediaType.Facebook:
-                        Application.OpenURL("https://facebook.com/" + "nasa");
+                        Application.OpenURL("https://facebook.com/" + GameData.STUDIO_NAME);
 
                         break;
                     case Types.SocialMediaType.Youtube:
-                        Application.OpenURL("https://youtube.com/@" + "nasa");
+                        Application.OpenURL("https://youtube.com/@" + GameData.STUDIO_NAME);
 
                         break;
                 }

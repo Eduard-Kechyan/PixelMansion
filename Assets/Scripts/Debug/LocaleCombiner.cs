@@ -26,7 +26,7 @@ namespace Merge
         }
 #endif
 
-        public void Combine(bool isBuilding = false, bool isPlaying = false)
+        public void Combine(bool isBuilding = false, bool isPlaying = false, bool logAlt = false)
         {
             string[] locales = System.Enum.GetNames(typeof(Types.Locale));
 
@@ -64,7 +64,7 @@ namespace Merge
                 }
             }
 
-            if (log)
+            if (log || logAlt)
             {
                 if (isBuilding)
                 {
@@ -82,7 +82,7 @@ namespace Merge
 
             if (count > 0)
             {
-                if (log)
+                if (log || logAlt)
                 {
                     Debug.Log("Combined successful!");
                 }

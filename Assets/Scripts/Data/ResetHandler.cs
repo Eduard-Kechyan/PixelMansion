@@ -21,8 +21,9 @@ namespace Merge
         }
 #endif
 
-        public void RestartAndResetApp()
+        public void ResetAndRestartApp()
         {
+            // TODO - Reseting and restarting doesn't work properly
             RestartApp(true);
         }
 

@@ -132,7 +132,7 @@ namespace Merge
 
             ageScrollView.verticalScroller.valueChanged += newValue => AgeScrollerHandle(newValue);
 
-            if (Application.isEditor || Debug.isDebugBuild || GameData.Instance.buildData.isDebugAlt)
+            if (Application.isEditor || Debug.isDebugBuild)
             {
                 Button debugButton = root.Q<Button>("DebugButton");
 

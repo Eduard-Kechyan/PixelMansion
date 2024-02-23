@@ -11,6 +11,7 @@ namespace Merge
         // Variables
         public Sprite starEmptySprite;
         public Sprite starFullSprite;
+        public int[] characterHights;
 
         [HideInInspector]
         public bool shouldShow = true;
@@ -84,6 +85,14 @@ namespace Merge
             Init();
         }
 
+        void OnValidate()
+        {
+            if (characterHights.Length < 5)
+            {
+                Debug.LogWarning("Character Hights Length needs to be 5!");
+            }
+        }
+
         void Init()
         {
             // Make sure the menu is closed
@@ -122,24 +131,7 @@ namespace Merge
 
             starsLabel.text = starCount + "/" + 5;
 
-            switch (order)
-            {
-                case 0:
-                    character.style.top = -26;
-                    break;
-                case 1:
-                    character.style.top = -30;
-                    break;
-                case 2:
-                    character.style.top = -34;
-                    break;
-                case 3:
-                    character.style.top = -37;
-                    break;
-                case 4:
-                    character.style.top = -41;
-                    break;
-            }
+            character.style.top = characterHights[order];
 
             for (int i = 0; i < starsBox.childCount; i++)
             {
@@ -156,17 +148,17 @@ namespace Merge
         {
             PlayerPrefs.SetInt("rateResult", 1); // Note the 1
 
-            // FIX - Send statistic to the server (starCount)
+            // TODO - Send statistic to the server (starCount)
 
-            // FIX - Open the game's app store page
-            // FIX - Optionally reward the player
+            // TODO - Open the game's app store page
+            // TODO - Optionally reward the player
 
             CloseMenu();
         }
 
         void HandleNoButton()
         {
-            // FIX - Send statistic to the server
+            // TODO - Send statistic to the server
 
             CloseMenu();
         }
@@ -175,9 +167,9 @@ namespace Merge
         {
             PlayerPrefs.SetInt("rateResult", 0); // Note the 0
 
-            // FIX - Send statistic to the server
+            // TODO - Send statistic to the server
 
-            // FIX - Open the feedback menu
+            // TODO - Open the feedback menu
 
             CloseMenu();
         }

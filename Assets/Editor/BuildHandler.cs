@@ -10,6 +10,8 @@ namespace Merge
 {
     public class BuildHandler : IPreprocessBuildWithReport, IPostprocessBuildWithReport
     {
+        // NOTE - Use "throw new BuildFailedException("Error!");" for ending the build sooner
+
         // Variables
         public int callbackOrder => 0;
 
@@ -19,6 +21,8 @@ namespace Merge
 
         public void OnPreprocessBuild(BuildReport report)
         {
+            CombineLocale();
+
             SetupKeystore();
 
             HandlePreBuild();
@@ -27,6 +31,16 @@ namespace Merge
         public void OnPostprocessBuild(BuildReport report)
         {
             HandlePostBuild();
+        }
+
+        void CombineLocale()
+        {
+            LocaleCombiner localeCombiner = GameObject.Find("DebugManager").GetComponent<LocaleCombiner>();
+
+            if (localeCombiner != null)
+            {
+                localeCombiner.Combine(true, false, true);
+            }
         }
 
         void SetupKeystore()
@@ -49,6 +63,8 @@ namespace Merge
         {
             if (EditorUserBuildSettings.buildAppBundle)
             {
+                Debug.Log("Building release app");
+
                 EditorUserBuildSettings.development = false;
 
                 // Get Data
@@ -101,15 +117,13 @@ namespace Merge
             }
             else
             {
+                Debug.Log("Building debug app");
+
                 EditorUserBuildSettings.development = true;
 
                 if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.Android)
                 {
-                    PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Android, buildData.packageName + "Debug");
-
                     PlayerSettings.SetScriptingBackend(BuildTargetGroup.Android, ScriptingImplementation.Mono2x); // Faster build time
-
-                    PlayerSettings.SetIl2CppCodeGeneration(NamedBuildTarget.Android, Il2CppCodeGeneration.OptimizeSize); // Faster build time
                 }
             }
         }

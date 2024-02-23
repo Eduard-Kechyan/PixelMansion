@@ -61,7 +61,6 @@ SpriteAtlas:
     - 0c0ba202be70f664388d58c36c1ce203: 21300000
     - b79aa6e2d9e63cc49a7daada34c1b324: 21300000
     - aeeaeaf298625af46ac01379474a0ece: 21300000
-    - 3e54ba231e3fcdc4793a0225f304a4e1: 21300000
     - 9e7c70b32b740ac4eb78b2cfd3943bd2: 21300000
     - 2db6b6d38ff2c28438e277731cda8f06: 21300000
     - b540f6d3047659742828aa6c5eb006a0: 21300000
@@ -80,6 +79,7 @@ SpriteAtlas:
     - 010266370f308ac469d2802810b2ee0f: 21300000
     - c2d14d57d3b1655499c3441f6745b3fb: 21300000
     - 1a32eb77663b79848963b98d6c197aff: 21300000
+    - 5bb5cf872cd08cc41b888a18e52c9e2d: 21300000
     - e05b780883c7329459ca413a68fdf80f: 21300000
     - 9d4ebe18b62f6c144bfa099cef112dc6: 21300000
     - 77474028355160f41a137258b8978732: 21300000
@@ -123,7 +123,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 0c0ba202be70f664388d58c36c1ce203, type: 3}
   - {fileID: 21300000, guid: b79aa6e2d9e63cc49a7daada34c1b324, type: 3}
   - {fileID: 21300000, guid: aeeaeaf298625af46ac01379474a0ece, type: 3}
-  - {fileID: 21300000, guid: 3e54ba231e3fcdc4793a0225f304a4e1, type: 3}
   - {fileID: 21300000, guid: 9e7c70b32b740ac4eb78b2cfd3943bd2, type: 3}
   - {fileID: 21300000, guid: 2db6b6d38ff2c28438e277731cda8f06, type: 3}
   - {fileID: 21300000, guid: b540f6d3047659742828aa6c5eb006a0, type: 3}
@@ -142,6 +141,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 010266370f308ac469d2802810b2ee0f, type: 3}
   - {fileID: 21300000, guid: c2d14d57d3b1655499c3441f6745b3fb, type: 3}
   - {fileID: 21300000, guid: 1a32eb77663b79848963b98d6c197aff, type: 3}
+  - {fileID: 21300000, guid: 5bb5cf872cd08cc41b888a18e52c9e2d, type: 3}
   - {fileID: 21300000, guid: e05b780883c7329459ca413a68fdf80f, type: 3}
   - {fileID: 21300000, guid: 9d4ebe18b62f6c144bfa099cef112dc6, type: 3}
   - {fileID: 21300000, guid: 77474028355160f41a137258b8978732, type: 3}
@@ -184,7 +184,6 @@ SpriteAtlas:
   - Gems3
   - ShopBoxGold4
   - StarFull
-  - Tony
   - ShopBox
   - LikeTitle
   - ShopBoxGold1
@@ -203,6 +202,7 @@ SpriteAtlas:
   - Restore
   - Pupular
   - OptionsSound
+  - Character
   - LevelRewards
   - OptionsMusic
   - ToggleBoxChecked

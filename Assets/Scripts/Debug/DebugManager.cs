@@ -37,15 +37,14 @@ namespace Merge
 
         void Awake()
         {
-           /* if (!Debug.isDebugBuild && !Application.isEditor)
+            if (!Debug.isDebugBuild && !Application.isEditor)
             {
                 Destroy(gameObject);
             }
             else
             {
                 Instance = this;
-            }*/
-            Instance = this;
+            }
         }
 
         void Start()

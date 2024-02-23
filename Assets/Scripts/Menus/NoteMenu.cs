@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,11 @@ namespace Merge
 {
     public class NoteMenu : MonoBehaviour
     {
+        // Variables
+        public Action callback;
+
+        private bool menuOpen = false;
+
         // References
         private MenuUI menuUI;
         private I18n LOCALE;
@@ -28,6 +34,8 @@ namespace Merge
             noteMenu = root.Q<VisualElement>("NoteMenu");
             menuContent = noteMenu.Q<VisualElement>("Content");
 
+            root.RegisterCallback<GeometryChangedEvent>(HandleCallback);
+
             Init();
         }
 
@@ -38,8 +46,10 @@ namespace Merge
             noteMenu.style.opacity = 0;
         }
 
-        public void Open(string newTitle, string[] notes)
+        public void Open(string newTitle, string[] notes, Action newCallback = null)
         {
+            callback = newCallback;
+
             // Clear children if there are any
             if (menuContent.childCount > 0)
             {
@@ -52,7 +62,7 @@ namespace Merge
             // Create the notes
             for (int i = 0; i < notes.Length; i++)
             {
-                Label newLabel = new () { name = "NoteLabel" + i };
+                Label newLabel = new() { name = "NoteLabel" + i };
 
                 newLabel.style.width = Length.Percent(100);
                 newLabel.style.fontSize = 8f;
@@ -76,6 +86,20 @@ namespace Merge
 
             // Open menu
             menuUI.OpenMenu(noteMenu, title);
+
+            menuOpen = true;
+        }
+
+        void HandleCallback(GeometryChangedEvent evt)
+        {
+            root.UnregisterCallback<GeometryChangedEvent>(HandleCallback);
+
+            if (menuOpen &&callback!=null&& noteMenu.resolvedStyle.display == DisplayStyle.None)
+            {
+                menuOpen = false;
+
+                callback();
+            }
         }
     }
 }

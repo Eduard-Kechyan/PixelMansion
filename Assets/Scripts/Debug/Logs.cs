@@ -57,7 +57,7 @@ namespace Merge
 
         void Awake()
         {
-            if (Instance != null && Instance != this)
+            if ((Instance != null && Instance != this) || (!Debug.isDebugBuild && !Application.isEditor))
             {
                 Destroy(this);
             }
@@ -65,14 +65,6 @@ namespace Merge
             {
                 Instance = this;
             }
-          /*  if ((Instance != null && Instance != this) || (!Debug.isDebugBuild && !Application.isEditor))
-            {
-                Destroy(this);
-            }
-            else
-            {
-                Instance = this;
-            }*/
         }
 
         void OnDisable()

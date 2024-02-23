@@ -1,14 +1,14 @@
 using System;
 using System.Collections;
+using System.Globalization;
 using System.Collections.Generic;
 using Unity.Services.Core;
 using Unity.Services.Core.Environments;
 using UnityEngine;
-using System.Globalization;
 using UnityEngine.Purchasing;
 using UnityEngine.Purchasing.Extension;
-using Unity.VisualScripting;
-using System.Linq;
+using UnityEngine.SceneManagement;
+using UnityEngine.Purchasing.Security;
 
 namespace Merge
 {
@@ -16,53 +16,75 @@ namespace Merge
     {
         // Variables
         public bool canPurchase = true;
-
-        [ReadOnly]
-        public bool loaded = false;
-        public bool unityServicesLoaded = false;
-
         public ProductCatalog catalog;
 
         private IStoreController controller;
         private IExtensionProvider provider;
         private IGooglePlayStoreExtensions googleExtensions;
 
-        private Action callback;
+        private Action<bool> callback;
         private Action<string> failCallback;
 
         // References
         private ErrorManager errorManager;
         private ValuePop valuePop;
+        private Services services;
+        private GameData gameData;
+
+        // Instance
+        public static PaymentsManager Instance;
 
         async void Awake()
         {
-            // Load IAP Catalog
-            ResourceRequest operation = Resources.LoadAsync<TextAsset>("IAPProductCatalog");
-            operation.completed += HandleIAPCatalog;
+            if (Instance == null)
+            {
+                Instance = this;
 
-            // Initialize Unity Services
-            InitializationOptions options = new InitializationOptions();
+                // Cache
+                services = GetComponent<Services>();
+
+                // Load IAP Catalog
+                ResourceRequest operation = Resources.LoadAsync<TextAsset>("IAPProductCatalog");
+                operation.completed += HandleIAPCatalog;
+
+                // Initialize Unity Services
+                InitializationOptions options = new InitializationOptions();
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
-            options.SetEnvironmentName("development");
+                options.SetEnvironmentName("development");
 #else
-            options.SetEnvironmentName("production");
+                options.SetEnvironmentName("production");
 #endif
 
-            await UnityServices.InitializeAsync(options);
+                await UnityServices.InitializeAsync(options);
 
-            unityServicesLoaded = true;
-
-            Debug.Log("PaymentsManager Awake");
+                services.unityServicesAvailable = true;
+            }
         }
 
         void Start()
         {
+            Init();
+        }
+
+        void OnEnable()
+        {
+            // Subscribe to scene load
+            SceneManager.sceneLoaded += Init;
+        }
+
+        void OnDisable()
+        {
+            // Unsubscribe from scene load
+            SceneManager.sceneLoaded -= Init;
+        }
+
+        void Init(Scene scene = default, LoadSceneMode mode = LoadSceneMode.Single)
+        {
             // Cache
             errorManager = ErrorManager.Instance;
-            valuePop=GameRefs.Instance.valuePop;
-
-            Debug.Log("PaymentsManager Start");
+            valuePop = GameRefs.Instance.valuePop;
+            gameData = GameData.Instance;
         }
 
         //// Initialization ////
@@ -79,7 +101,7 @@ namespace Merge
 
         IEnumerator WaitForUnityServices()
         {
-            while (!unityServicesLoaded)
+            while (!services.unityServicesAvailable)
             {
                 yield return null;
             }
@@ -108,8 +130,6 @@ namespace Merge
                     builder.AddProduct(item.id, item.type);
                 }
 
-                Debug.Log("PaymentsManager BuildConfig");
-
                 UnityPurchasing.Initialize(this, builder);
             }
         }
@@ -121,9 +141,7 @@ namespace Merge
 
             googleExtensions = provider.GetExtension<IGooglePlayStoreExtensions>();
 
-            loaded = true;
-
-            Debug.Log("PaymentsManager Initialized Success");
+            services.iapAvailable = true;
         }
 
         public void OnInitializeFailed(InitializationFailureReason error, string message) // A
@@ -138,8 +156,6 @@ namespace Merge
                 // ERROR
                 errorManager.Throw(Types.ErrorType.Unity, "PaymentsManager.cs -> OnInitializeFailed() // A", "Reason: " + error.ToString() + ", Message: " + message);
             }
-
-            Debug.Log("PaymentsManager Initialized Failed");
         }
 
         public void OnInitializeFailed(InitializationFailureReason error) // B
@@ -154,8 +170,6 @@ namespace Merge
                 // ERROR
                 errorManager.Throw(Types.ErrorType.Unity, "PaymentsManager.cs -> OnInitializeFailed() // B", "Reason: " + error.ToString());
             }
-            
-            Debug.Log("PaymentsManager Initialized Failed");
         }
 
         //// Purchase ////
@@ -173,40 +187,100 @@ namespace Merge
             return "";
         }
 
-        public void Purchase(string productId, Action newCallback = null, Action<string> newFailCallback = null)
+        public void Purchase(string productId, Action<bool> newCallback = null, Action<string> newFailCallback = null)
         {
             callback = newCallback;
             failCallback = newFailCallback;
-
-            Debug.Log("PaymentsManager Purchasing");
 
             controller.InitiatePurchase(productId);
         }
 
         public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs purchaseEvent)
         {
-            if (googleExtensions.IsPurchasedProductDeferred(purchaseEvent.purchasedProduct))
+            bool isPurchaseValid = true;
+
+#if UNITY_ANDROID || UNITY_IOS 
+            var validator = new CrossPlatformValidator(GooglePlayTangle.Data(), AppleTangle.Data(), Application.identifier);
+
+            try
             {
-                return PurchaseProcessingResult.Pending;
-            }
+                var result = validator.Validate(purchaseEvent.purchasedProduct.receipt);
 
-            Debug.Log("PaymentsManager Purchased");
+                Debug.Log(purchaseEvent.purchasedProduct.receipt);
 
-            callback?.Invoke();
+                int count = 0;
 
-            callback = null;
-            failCallback = null;
+                bool foundReceipt = false;
 
-            foreach (var productItem in catalog.allProducts)
-            {
-                if (productItem.id == purchaseEvent.purchasedProduct.definition.id)
+                // TODO - Add server-side valdiation here
+
+                foreach (IPurchaseReceipt receipt in result)
                 {
-                    for (int i = 0; i < productItem.Payouts.Count; i++)
+                    /*  Debug.Log(receipt.productID);
+
+                      GooglePlayReceipt googleReceipt = receipt as GooglePlayReceipt;
+
+                      if(googleReceipt!=null){
+                          Debug.Log(googleReceipt.purchaseState);
+                      }*/
+
+                    if (count == 0)
                     {
-                        HandlePayout(productItem.Payouts[i]);
+                        for (int i = 0; i < controller.products.all.Length; i++)
+                        {
+                            if (controller.products.all[i].definition.id == receipt.productID)
+                            {
+                                foundReceipt = true;
+                                break;
+                            }
+                        }
                     }
 
                     break;
+                }
+
+                if (!foundReceipt)
+                {
+                    // ERROR
+                    throw new Exception("Receipt product id not found in the controller!");
+                }
+            }
+            catch
+            {
+                isPurchaseValid = false;
+
+                // ERROR
+                errorManager.Throw(Types.ErrorType.Code, "PaymentsManager.cs -> Purchase()", "Failed to validate product with receipt: " + purchaseEvent.purchasedProduct.receipt);
+            }
+#endif
+            if (isPurchaseValid)
+            {
+                if (googleExtensions.IsPurchasedProductDeferred(purchaseEvent.purchasedProduct))
+                {
+                    return PurchaseProcessingResult.Pending;
+                }
+
+                callback?.Invoke(true);
+
+                callback = null;
+                failCallback = null;
+
+                if (valuePop == null)
+                {
+                    valuePop = GameRefs.Instance.valuePop;
+                }
+
+                foreach (var productItem in catalog.allProducts)
+                {
+                    if (productItem.id == purchaseEvent.purchasedProduct.definition.id)
+                    {
+                        for (int i = 0; i < productItem.Payouts.Count; i++)
+                        {
+                            HandlePayout(productItem.Payouts[i]);
+                        }
+
+                        break;
+                    }
                 }
             }
 
@@ -217,20 +291,39 @@ namespace Merge
 
         void HandlePayout(ProductCatalogPayout payout)
         {
-            Debug.Log("PaymentsManager Paying Out");
-
             if (payout.type == ProductCatalogPayout.ProductCatalogPayoutType.Currency || payout.type == ProductCatalogPayout.ProductCatalogPayoutType.Resource)
             {
                 switch (payout.subtype)
                 {
                     case "Gold":
-                        valuePop.PopValue((int)payout.quantity, Types.CollGroup.Gold, false, true);
+                        if (valuePop != null)
+                        {
+                            valuePop.PopValue((int)payout.quantity, Types.CollGroup.Gold, false, true);
+                        }
+                        else
+                        {
+                            gameData.UpdateValue((int)payout.quantity, Types.CollGroup.Gold, false);
+                        }
                         break;
                     case "Gems":
-                        valuePop.PopValue((int)payout.quantity, Types.CollGroup.Gems, false, true);
+                        if (valuePop != null)
+                        {
+                            valuePop.PopValue((int)payout.quantity, Types.CollGroup.Gems, false, true);
+                        }
+                        else
+                        {
+                            gameData.UpdateValue((int)payout.quantity, Types.CollGroup.Gems, false);
+                        }
                         break;
                     case "Energy":
-                        valuePop.PopValue((int)payout.quantity, Types.CollGroup.Energy, false, true);
+                        if (valuePop != null)
+                        {
+                            valuePop.PopValue((int)payout.quantity, Types.CollGroup.Energy, false, true);
+                        }
+                        else
+                        {
+                            gameData.UpdateValue((int)payout.quantity, Types.CollGroup.Energy, false);
+                        }
                         break;
                     default:
                         errorManager.Throw(Types.ErrorType.Code, "PaymentsManager.cs -> HandlePayout()", "Payout Subtype " + payout.subtype + " has not been implemented yet!");
@@ -243,35 +336,46 @@ namespace Merge
             }
         }
 
-        public void OnPurchaseFailed(UnityEngine.Purchasing.Product product, PurchaseFailureReason reason)
+        public void OnPurchaseFailed(Product product, PurchaseFailureReason reason)
         {
             HandlePurchaseFailed(product, reason);
         }
 
-        public void OnPurchaseFailed(UnityEngine.Purchasing.Product product, PurchaseFailureDescription description)
+        public void OnPurchaseFailed(Product product, PurchaseFailureDescription description)
         {
             HandlePurchaseFailed(product, description.reason, description.message);
         }
 
-        void HandlePurchaseFailed(UnityEngine.Purchasing.Product product, PurchaseFailureReason reason, string message = "")
+        void HandlePurchaseFailed(Product product, PurchaseFailureReason reason, string message = "")
         {
-            Debug.Log("PaymentsManager Purchase Failed");
-
-            if (reason != PurchaseFailureReason.UserCancelled && reason != PurchaseFailureReason.PaymentDeclined)
+            if (reason != PurchaseFailureReason.UserCancelled)
             {
-                if (message == "")
+                if (reason == PurchaseFailureReason.PaymentDeclined)
                 {
-                    // ERROR
-                    errorManager.Throw(Types.ErrorType.Code, "PaymentsManager.cs -> HandlePurchaseFailed()", "Reason: " + reason.ToString() + ", Product Id: " + product.definition.id);
+                    failCallback?.Invoke("declined");
+                }
+                else if(reason == PurchaseFailureReason.PurchasingUnavailable)
+                {
+                    failCallback?.Invoke("unavailable");
                 }
                 else
                 {
-                    // ERROR
-                    errorManager.Throw(Types.ErrorType.Code, "PaymentsManager.cs -> HandlePurchaseFailed()", "Reason: " + reason.ToString() + ", Message: " + message + ", Product Id: " + product.definition.id);
+                    if (message == "")
+                    {
+                        // ERROR
+                        errorManager.Throw(Types.ErrorType.Code, "PaymentsManager.cs -> HandlePurchaseFailed()", "Reason: " + reason.ToString() + ", Product Id: " + product.definition.id);
+                    }
+                    else
+                    {
+                        // ERROR
+                        errorManager.Throw(Types.ErrorType.Code, "PaymentsManager.cs -> HandlePurchaseFailed()", "Reason: " + reason.ToString() + ", Message: " + message + ", Product Id: " + product.definition.id);
+                    }
                 }
-            }
 
-            failCallback?.Invoke(reason.ToString());
+                failCallback?.Invoke("other");
+            }else{
+                callback?.Invoke(false);
+            }
 
             callback = null;
             failCallback = null;

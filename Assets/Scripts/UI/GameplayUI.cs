@@ -119,7 +119,7 @@ namespace Merge
             // Calculate the button position on the screen and the world space
             singlePixelWidth = Camera.main.pixelWidth / GameData.GAME_PIXEL_WIDTH;
 
-            if (Application.isEditor || Debug.isDebugBuild || GameData.Instance.buildData.isDebugAlt)
+            if (Application.isEditor || Debug.isDebugBuild)
             {
                 Button debugButton = root.Q<Button>("DebugButton");
 

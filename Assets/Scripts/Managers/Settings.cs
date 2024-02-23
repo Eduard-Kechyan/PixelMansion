@@ -13,10 +13,6 @@ namespace Merge
         public bool vibrationOn = true;
         public bool notificationsOn = true;
 
-        public bool googleSignedIn = false;
-        public bool facebookSignedIn = false;
-        public bool appleSignedIn = false;
-
         public Types.Locale currentLocale;
 
         // References

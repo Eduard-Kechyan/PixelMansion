@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1499400838582952208}
   - component: {fileID: 387303008456136004}
   - component: {fileID: 7478335895050211340}
+  - component: {fileID: 5000603804634430240}
   m_Layer: 0
   m_Name: Services
   m_TagString: Untagged
@@ -48,7 +49,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   networkAvailable: 0
+  unityServicesAvailable: 0
+  iapAvailable: 0
   adsAvailable: 0
+  googleSignIn: 0
+  facebookSignIn: 0
+  appleSignIn: 0
 --- !u!114 &1499400838582952208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76,6 +82,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18377d77fa2a702418dfc5ea8f318a84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canPurchase: 1
+  catalog:
+    appleSKU: 
+    appleTeamID: 
+    enableCodelessAutoInitialization: 1
+    enableUnityGamingServicesAutoInitialization: 0
+    products: []
 --- !u!114 &7478335895050211340
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -90,3 +103,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   accentColor: {r: 0.30588236, g: 0.5529412, b: 0.5764706, a: 1}
   log: 0
+--- !u!114 &5000603804634430240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2958170130881514855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ee6c4f8619e6244fbe63ab98a31aa03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

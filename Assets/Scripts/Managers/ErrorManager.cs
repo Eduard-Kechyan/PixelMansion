@@ -55,22 +55,9 @@ namespace Merge
             apiCalls = ApiCalls.Instance;
         }
 
-        public void Throw(Types.ErrorType type, string errorSource, string errorMessage, string errorCode="", bool showToPlayer = false, bool sendError = true, bool logError=true)
+        public void Throw(Types.ErrorType type, string errorSource, string errorMessage, string errorCode = "", bool sendError = true, bool logError = true, bool showToPlayer = false)
         {
-            // Log the warning
-            if(logError)
-            {
-                if(errorCode=="")
-                {
-                    Debug.LogWarning(type + " Error, Message:" + errorMessage + ", At: " + errorSource);
-                }
-                else
-                {
-                    Debug.LogWarning(type + " Error, Code: " + errorCode + ", Message:" + errorMessage + ", At: " + errorSource);
-                }
-            }
-
-            // Create  and send the error to the backend
+            // Create and send the error to the backend
             if (sendError)
             {
                 ErrorData newErrorData = new ErrorData
@@ -84,6 +71,19 @@ namespace Merge
                 };
 
                 apiCalls.SendError(JsonConvert.SerializeObject(newErrorData));
+            }
+
+            // Log the warning
+            if (logError)
+            {
+                if (errorCode == "")
+                {
+                    Debug.LogWarning(type + " Error, Message: " + errorMessage + ", At: " + errorSource);
+                }
+                else
+                {
+                    Debug.LogWarning(type + " Error, Code: " + errorCode + ", Message: " + errorMessage + ", At: " + errorSource);
+                }
             }
 
             // Notify the player

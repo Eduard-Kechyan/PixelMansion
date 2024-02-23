@@ -192,6 +192,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1537458401331318770, guid: f4034c2be9714cc41b0cf4ef9809c444, type: 3}
+      propertyPath: combine
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3856526671071279619, guid: f4034c2be9714cc41b0cf4ef9809c444, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -589,6 +593,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 387303008456136004, guid: dcade7c572afad84bbcc90dfe1bb5ff8, type: 3}
+      propertyPath: services
+      value: 
+      objectReference: {fileID: 1408074108}
     - target: {fileID: 2958170130881514855, guid: dcade7c572afad84bbcc90dfe1bb5ff8, type: 3}
       propertyPath: m_Name
       value: Services
@@ -705,6 +713,7 @@ MonoBehaviour:
   crateBreakSprites: []
   lockOpenSprites: []
   bubblePopSprites: []
+  ready: 0
 --- !u!4 &993497632
 Transform:
   m_ObjectHideFlags: 0
@@ -871,6 +880,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9191de2ed2b660e45ac702f5b04303ad, type: 3}
+--- !u!114 &1408074108 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3013487443836980529, guid: dcade7c572afad84bbcc90dfe1bb5ff8, type: 3}
+  m_PrefabInstance: {fileID: 953184938}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39b836932b7fe2740923d3312c11d81c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1419910202 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1798228451276164874, guid: d1ee4451982ab4743b3b309d3ca9f109, type: 3}

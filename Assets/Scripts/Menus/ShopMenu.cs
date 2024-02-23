@@ -37,6 +37,7 @@ namespace Merge
         private NoteMenu noteMenu;
         private InfoMenu infoMenu;
         private ValuePop valuePop;
+        private Services services;
         private PaymentsManager paymentsManager;
         private UIButtons uiButtons;
 
@@ -70,7 +71,8 @@ namespace Merge
             noteMenu = GetComponent<NoteMenu>();
             infoMenu = GetComponent<InfoMenu>();
             valuePop = GetComponent<ValuePop>();
-            paymentsManager = Services.Instance.GetComponent<PaymentsManager>();
+            services = Services.Instance;
+            paymentsManager = services.GetComponent<PaymentsManager>();
             uiButtons = gameData.GetComponent<UIButtons>();
 
             // UI
@@ -94,7 +96,7 @@ namespace Merge
             goldBoxes = shopMenu.Q<VisualElement>("GoldBoxes");
 
 #if UNITY_IOS
-            CheckRestore();
+            SetRestore();
 #endif
 
             shopItemBoxPrefab = Resources.Load<VisualTreeAsset>("Uxml/ShopItemBox");
@@ -125,7 +127,7 @@ namespace Merge
             StartCoroutine(WaitForDailyContent());
         }
 
-        void CheckRestore()
+        void SetRestore()
         {
             restoreGems = shopMenu.Q<Button>("RestoreGems");
             restoreGold = shopMenu.Q<Button>("RestoreGold");
@@ -381,7 +383,7 @@ namespace Merge
                         Label buyButtonLabel = buyButton.Q<Label>("Label");
                         buyButton.Q<VisualElement>("Value").style.display = DisplayStyle.None;
 
-                        if (paymentsManager.loaded)
+                        if (services.iapAvailable)
                         {
                             string price = paymentsManager.GetPrice(product.id);
 
@@ -413,21 +415,7 @@ namespace Merge
                         {
                             StartCoroutine(PrePurchase(() =>
                             {
-                                if (shopItemType == Types.ShopItemType.Gems)
-                                {
-                                    if (payoutBonus == null)
-                                    {
-                                        BuyGems(shopItemId);
-                                    }
-                                    else
-                                    {
-                                        BuyGems(shopItemId);
-                                    }
-                                }
-                                else
-                                {
-                                    BuyGold(shopItemId);
-                                }
+                                BuyCurrency(shopItemId);
                             }));
                         };
 
@@ -603,37 +591,29 @@ namespace Merge
             menuUI.CloseMenu(shopMenu.name);
         }
 
-        void BuyGems(string productId)
+        void BuyCurrency(string productId)
         {
-            paymentsManager.Purchase(productId, () =>
+            paymentsManager.Purchase(productId, (bool thankPlayer) =>
             {
                 StartCoroutine(PostPurchase(() =>
                 {
-                    menuUI.CloseMenu(shopMenu.name);
+                    if (thankPlayer)
+                    {
+                        Glob.SetTimeout(() =>
+                        {
+                            string[] notes = new string[] { "note_menu_purchase_thank_text_a", "note_menu_purchase_thank_text_b" };
+
+                            noteMenu.Open("note_menu_purchase_thank_title", notes);
+                        }, 0.3f);
+                    }
                 }));
-            }, (string reason) =>
+            }, (string preFix) =>
             {
                 StartCoroutine(PostPurchase(() =>
                 {
-                    string[] notes = new string[] { reason };
+                    string[] notes = new string[] { "note_menu_purchase_failed_" + preFix };
 
-                    noteMenu.Open("note_menu_purchase_failed", notes);
-                }));
-            });
-        }
-
-        void BuyGold(string productId)
-        {
-            paymentsManager.Purchase(productId, () =>
-            {
-                menuUI.CloseMenu(shopMenu.name);
-            }, (string reason) =>
-            {
-                StartCoroutine(PostPurchase(() =>
-                {
-                    string[] notes = new string[] { reason };
-
-                    noteMenu.Open("note_menu_purchase_failed", notes);
+                    noteMenu.Open("note_menu_purchase_failed_title", notes);
                 }));
             });
         }

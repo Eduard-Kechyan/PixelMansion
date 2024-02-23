@@ -283,6 +283,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   starEmptySprite: {fileID: 21300000, guid: d4a36d8a01e7d5742855408d095c829b, type: 3}
   starFullSprite: {fileID: 21300000, guid: aeeaeaf298625af46ac01379474a0ece, type: 3}
+  characterHights: e5ffffffe0ffffffdbffffffd6ffffffd1ffffff
   shouldShow: 1
 --- !u!114 &5298958223823578319
 MonoBehaviour:
