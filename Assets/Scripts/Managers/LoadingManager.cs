@@ -2,8 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
-using System.Threading.Tasks;
 
 namespace Merge
 {
@@ -11,6 +9,7 @@ namespace Merge
     {
         // Variables
         public bool stayOnScene = false;
+        public bool acceptTermsAuto = false;
         public bool logPhases = false;
         public float fillSpeed = 30f;
         public TutorialData tutorialData;
@@ -35,26 +34,21 @@ namespace Merge
 
         // References
         private DataManager dataManager;
+        private GameData gameData;
         private UserDataHandler userDataHandler;
         private NotificsManager notificsManager;
         private SoundManager soundManager;
         private AuthManager authManager;
 
-        // UI
-        // private VisualElement fill;
-
         void Start()
         {
             // Cache
             dataManager = DataManager.Instance;
+            gameData = GameData.Instance;
             userDataHandler = GetComponent<UserDataHandler>();
             notificsManager = Services.Instance.GetComponent<NotificsManager>();
             soundManager = SoundManager.Instance;
             authManager = Services.Instance.GetComponent<AuthManager>();
-
-            // UI
-            /* VisualElement root = uiDocument.GetComponent<UIDocument>().rootVisualElement;
-             fill = root.Q<VisualElement>("Fill");*/
 
             // Get Ready
             singlePhasePercent = 100f / (maxPhase + 1);
@@ -67,6 +61,11 @@ namespace Merge
 
             initial = !PlayerPrefs.HasKey("InitialLoaded"); // Note the "!"
 
+            if (gameData.buildData.isBundling)
+            {
+                acceptTermsAuto = false;
+            }
+
             StartLoading();
         }
 
@@ -75,8 +74,6 @@ namespace Merge
             if (loading && fillCount < 100f)
             {
                 fillCount = Mathf.MoveTowards(fillCount, 100, fillSpeed * Time.deltaTime);
-
-                // fill.style.width = new Length(fillCount, LengthUnit.Pixel);
 
                 // Check and get game data
                 // This phase is being checked every time
@@ -96,7 +93,7 @@ namespace Merge
                 if (fillCount >= singlePhasePercent * 2 && phase == 2)
                 {
                     loading = false;
-                    if (PlayerPrefs.HasKey("termsAccepted"))
+                    if (PlayerPrefs.HasKey("termsAccepted") || acceptTermsAuto)
                     {
                         ContinueLoading();
                     }
@@ -265,7 +262,8 @@ namespace Merge
             ContinueLoading();
         }
 
-        void HandleConflict(bool forceLinking){
+        void HandleConflict(bool forceLinking)
+        {
             authManager.ResolveLinkingConflict(forceLinking);
 
             ContinueLoading();

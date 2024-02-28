@@ -61,14 +61,16 @@ namespace Merge
 
         void HandlePreBuild()
         {
+            // Get Data
+            buildData = AssetDatabase.LoadAssetAtPath<BuildData>("Assets/Resources/BuildData.asset");
+
             if (EditorUserBuildSettings.buildAppBundle)
             {
                 Debug.Log("Building release app");
 
                 EditorUserBuildSettings.development = false;
 
-                // Get Data
-                buildData = AssetDatabase.LoadAssetAtPath<BuildData>("Assets/Resources/BuildData.asset");
+                buildData.isBundling = true;
 
                 tempBuildNumber = GetNextBuild(buildData);
                 tempAppVersion = GetNextVersion(buildData, tempBuildNumber);
@@ -121,11 +123,16 @@ namespace Merge
 
                 EditorUserBuildSettings.development = true;
 
+                buildData.isBundling = false;
+
                 if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.Android)
                 {
                     PlayerSettings.SetScriptingBackend(BuildTargetGroup.Android, ScriptingImplementation.Mono2x); // Faster build time
                 }
             }
+            
+            // Save Data
+            EditorUtility.SetDirty(buildData);
         }
 
         void HandlePostBuild()
@@ -138,6 +145,8 @@ namespace Merge
                 {
                     buildData.appVersion = tempAppVersion;
                     buildData.buildNumber = tempBuildNumber;
+
+                    buildData.isBundling = false;
 
                     /*Debug.Log(buildData.appVersion);
                     Debug.Log(buildData.buildNumber);*/

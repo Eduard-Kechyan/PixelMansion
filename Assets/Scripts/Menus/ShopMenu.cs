@@ -19,14 +19,9 @@ namespace Merge
         public Sprite smallGoldSprite;
         public Sprite smallGemSprite;
 
-        [Header("Spinner")]
-        public float spinnerSpeed = 0.05f;
-        [SerializeField]
-        private Sprite[] spinnerSprites;
-
         private string scrollLocation;
 
-        private bool purchasing = false;
+       // private bool purchasing = false;
 
         // References
         private GameData gameData;
@@ -44,8 +39,6 @@ namespace Merge
         // UI
         private VisualElement root;
         private VisualElement shopMenu;
-        private VisualElement purchaseOverlay;
-        private VisualElement spinner;
         private ScrollView scrollContainer;
         private Label dailySubtitle;
         private Label itemsSubtitle;
@@ -80,9 +73,6 @@ namespace Merge
 
             shopMenu = root.Q<VisualElement>("ShopMenu");
 
-            purchaseOverlay = shopMenu.Q<VisualElement>("PurchaseOverlay");
-            spinner = purchaseOverlay.Q<VisualElement>("Spinner");
-
             scrollContainer = shopMenu.Q<ScrollView>("ScrollContainer");
 
             dailySubtitle = shopMenu.Q<VisualElement>("DailySubtitle").Q<Label>("Subtitle");
@@ -109,10 +99,6 @@ namespace Merge
             // Make sure the menu is closed
             shopMenu.style.display = DisplayStyle.None;
             shopMenu.style.opacity = 0;
-
-            // Make sure the overlay is hidden
-            purchaseOverlay.style.opacity = 0;
-            purchaseOverlay.style.visibility = Visibility.Hidden;
 
             // Subtitles
             dailySubtitle.text = LOCALE.Get("shop_menu_subtitle_daily");
@@ -612,12 +598,9 @@ namespace Merge
 
         IEnumerator PrePurchase(Action callback)
         {
-            purchaseOverlay.style.opacity = 1;
-            purchaseOverlay.style.visibility = Visibility.Visible;
+            menuUI.ShowMenuOverlay(shopMenu);
 
-            purchasing = true;
-
-            StartCoroutine(SpinTheSpinner());
+           // purchasing = true;
 
             yield return new WaitForSeconds(0.3f);
 
@@ -626,43 +609,13 @@ namespace Merge
 
         IEnumerator PostPurchase(Action callback)
         {
-            purchaseOverlay.style.opacity = 0;
-            purchaseOverlay.style.visibility = Visibility.Hidden;
+            menuUI.HideMenuOverlay();
 
             yield return new WaitForSeconds(0.3f);
 
-            purchasing = false;
-
-            StopCoroutine(SpinTheSpinner());
+          //  purchasing = false;
 
             callback();
-        }
-
-        IEnumerator SpinTheSpinner()
-        {
-            WaitForSeconds wait = new(spinnerSpeed);
-            int count = 0;
-
-            while (purchasing)
-            {
-                spinner.style.backgroundImage = new StyleBackground(spinnerSprites[count]);
-
-                if (count == spinnerSprites.Length - 1)
-                {
-                    count = 0;
-                }
-                else
-                {
-                    count++;
-                }
-
-                yield return wait;
-            }
-        }
-
-        public void FinalizePurchase()
-        {
-
         }
 
         void Restore(string type)

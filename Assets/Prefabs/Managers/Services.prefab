@@ -69,8 +69,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enableAds: 1
-  logData: 0
+  logData: 1
+  failImmediately: 0
   energyRewardAmount: 20
+  energyRewardAmountInner: 20
 --- !u!114 &387303008456136004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,4 +118,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ee6c4f8619e6244fbe63ab98a31aa03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  logData: 1
+  logData: 0
+  hasLinkingConflict: 0

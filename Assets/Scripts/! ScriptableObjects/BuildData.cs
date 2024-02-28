@@ -22,6 +22,7 @@ namespace Merge
 
         public bool isAlpha = false;
         public bool isPublishableRelease = false;
+        public bool isBundling = false;
         [Space(10)]
         public string appVersion = "0.0.-1";
         public int buildNumber = 0;

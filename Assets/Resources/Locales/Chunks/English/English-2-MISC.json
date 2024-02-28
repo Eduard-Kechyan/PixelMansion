@@ -11,5 +11,10 @@
     "notification_chest_title": "{0} is open",
     "notification_chest_text": "{0} is open, come see what items it holds!",
     "notification_energy_title": "Energy full",
-    "notification_energy_text": "Fantastic, you now have enough energy to play around!"
+    "notification_energy_text": "Fantastic, you now have enough energy to play around!",
+    "________ SOCIAL ________": "________________",
+    "social_Google":"Google",
+    "social_Apple": "Apple",
+    "social_Facebook":"Facebook",
+    "social_Instagram": "Instagram"
 }

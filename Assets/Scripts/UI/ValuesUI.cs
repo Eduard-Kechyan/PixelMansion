@@ -14,10 +14,10 @@ namespace Merge
         public bool loaded = false;
 
         // Variables
-        private bool levelEnabled = false;
+      /*  private bool levelEnabled = false;
         private bool energyEnabled = false;
         private bool goldEnabled = false;
-        private bool gemsEnabled = false;
+        private bool gemsEnabled = false;*/
 
         private bool energyPlusEnabled = false;
         private bool goldPlusEnabled = false;
@@ -433,7 +433,7 @@ namespace Merge
 
         public void EnableButtons()
         {
-            levelButton.SetEnabled(levelEnabled);
+           /* levelButton.SetEnabled(levelEnabled);
             energyButton.SetEnabled(energyEnabled);
             goldButton.SetEnabled(goldEnabled);
             gemsButton.SetEnabled(gemsEnabled);
@@ -454,7 +454,7 @@ namespace Merge
             {
                 gemsPlus.style.visibility = Visibility.Visible;
                 gemsPlus.style.opacity = 1f;
-            }
+            }*/
 
            // enabledSet = false;
         }

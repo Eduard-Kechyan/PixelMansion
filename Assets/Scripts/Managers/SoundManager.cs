@@ -119,7 +119,7 @@ namespace Merge
             {
                 if (i.type == musicType)
                 {
-                    if (settings.soundOn)
+                    if (settings.musicOn)
                     {
                         sourceMusic.volume = i.volume;
                     }

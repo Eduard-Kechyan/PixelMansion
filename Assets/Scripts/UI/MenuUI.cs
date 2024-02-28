@@ -14,10 +14,17 @@ namespace Merge
         public float menuDecreaseOffset = 0.8f;
         public bool menuOpen = false;
 
+        [Header("Spinner")]
+        public float spinnerSpeed = 0.05f;
+        public Sprite[] spinnerSprites;
+        private bool isMenuOverlayOpen = false;
+
         private List<MenuItem> menus = new();
         private bool valuesShown;
         private bool closeAllMenus = false;
         private bool closingAllMenus = false;
+        [SerializeField]
+        private bool isClosing = false;
 
         private class MenuItem
         {
@@ -30,9 +37,12 @@ namespace Merge
 
         // UI
         private VisualElement root;
-        private VisualElement menuLocaleWrapper;
+        private VisualElement localeWrapper;
         private VisualElement currentMenu;
         private Label title;
+        private VisualElement menuOverlay;
+        private VisualElement menuOverlaySpinner;
+        private Button menuOverlayDebugCloseButton;
 
         void Start()
         {
@@ -41,10 +51,28 @@ namespace Merge
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
-            menuLocaleWrapper = root.Q<VisualElement>("LocaleWrapper");
+            localeWrapper = root.Q<VisualElement>("LocaleWrapper");
+
+            menuOverlay = root.Q<VisualElement>("MenuOverlay");
+            menuOverlaySpinner = menuOverlay.Q<VisualElement>("Spinner");
+            menuOverlayDebugCloseButton = menuOverlay.Q<Button>("DebugCloseButton");
+
+            // Button taps
+            menuOverlayDebugCloseButton.clicked += () => HideMenuOverlay();
 
             // Init
-            menuLocaleWrapper.style.display = DisplayStyle.None;
+            localeWrapper.style.display = DisplayStyle.None;
+
+            if (Debug.isDebugBuild)
+            {
+                menuOverlayDebugCloseButton.style.display = DisplayStyle.Flex;
+            }
+            else
+            {
+                menuOverlayDebugCloseButton.style.display = DisplayStyle.None;
+            }
+
+            HideMenuOverlay();
         }
 
         // Update the currently opened menu's title
@@ -57,34 +85,35 @@ namespace Merge
         }
 
         // Get ready to open the given menu
-        public void OpenMenu(VisualElement newMenu, string newTitle, bool showValues = false, bool closeAll = false, bool ignoreClose = false)
+        public void OpenMenu(VisualElement menuElement, string newTitle, bool showValues = false, bool closeAll = false, bool ignoreClose = false)
         {
-            // Add the menu to the menu list
-            menus.Add(new MenuItem { menuItem = newMenu, showValues = showValues });
-
-            // Set the current menu
-            currentMenu = newMenu;
-
-            closeAllMenus = closeAll;
-
-            currentMenu.SetEnabled(true);
-
-            if (showValues)
+            if (!isClosing)
             {
-                ShowValues();
+                // Add the menu to the menu list
+                menus.Add(new MenuItem { menuItem = menuElement, showValues = showValues });
+
+                // Set the current menu
+                currentMenu = menuElement;
+
+                closeAllMenus = closeAll;
+
+                currentMenu.SetEnabled(true);
+
+                if (showValues)
+                {
+                    ShowValues();
+                }
+
+                CheckMenuOpened();
+
+                ShowMenu(newTitle, ignoreClose);
             }
-
-            CheckMenuOpened();
-
-            ShowMenu(newTitle, ignoreClose);
         }
 
         void ShowMenu(string newTitle, bool ignoreClose)
         {
-            VisualElement newMenu = new();
-
             // Show the menu locale container
-            menuLocaleWrapper.style.display = DisplayStyle.Flex;
+            localeWrapper.style.display = DisplayStyle.Flex;
 
             // Show the menu
             currentMenu.style.display = DisplayStyle.Flex;
@@ -136,6 +165,8 @@ namespace Merge
 
         public void CloseMenu(string menuName, Action callback = null)
         {
+            isClosing = true;
+
             // Disable the menu to make it unclickable
             currentMenu.SetEnabled(false);
 
@@ -181,6 +212,16 @@ namespace Merge
             CheckMenuClosed();
         }
 
+        IEnumerator StopAction()
+        {
+            yield return new WaitForSeconds(transitionDuration);
+
+            if (isClosing)
+            {
+                isClosing = false;
+            }
+        }
+
         void CheckMenuOpened()
         {
             // Check if there are more than 1 menu's open
@@ -216,14 +257,18 @@ namespace Merge
                 {
                     ShowValues();
                 }
+
+                StartCoroutine(StopAction());
             }
             else
             {
                 // Set open menu indicator to close
                 menuOpen = false;
 
+                isClosing = false;
+
                 // Hide the menu locale container
-                menuLocaleWrapper.style.display = DisplayStyle.None;
+                localeWrapper.style.display = DisplayStyle.None;
 
                 // Enable the board
                 if (boardInteractions != null)
@@ -284,6 +329,79 @@ namespace Merge
             valuesUI.SetSortingOrder(10);
 
             valuesUI.EnableButtons();
+        }
+
+        //// Overlay menuOverlaySpinner ////
+
+        public void ShowMenuOverlay(VisualElement menuElement, Action callback = null, bool delayCallback = false)
+        {
+            // TODO - Set overlay position (optional) using "menuElement"
+
+            menuOverlay.style.opacity = 1;
+            menuOverlay.style.display = DisplayStyle.Flex;
+
+            isMenuOverlayOpen = true;
+
+            StartCoroutine(SpinTheSpinner());
+
+            if (delayCallback)
+            {
+                Glob.SetTimeout(() =>
+                {
+                    callback?.Invoke();
+                }, 0.3f);
+            }
+            else
+            {
+                callback?.Invoke();
+            }
+        }
+
+        public void HideMenuOverlay(Action callback = null, bool delayCallback = false)
+        {
+            // TODO - Reset overlay position (optional)
+
+            menuOverlay.style.opacity = 0;
+            menuOverlay.style.display = DisplayStyle.None;
+
+            isMenuOverlayOpen = false;
+
+            StopCoroutine(SpinTheSpinner());
+
+            if (delayCallback)
+            {
+                Glob.SetTimeout(() =>
+                {
+                    callback?.Invoke();
+                }, 0.3f);
+            }
+            else
+            {
+                callback?.Invoke();
+            }
+        }
+
+        IEnumerator SpinTheSpinner()
+        {
+            WaitForSeconds wait = new(spinnerSpeed);
+
+            int count = 0;
+
+            while (isMenuOverlayOpen)
+            {
+                menuOverlaySpinner.style.backgroundImage = new StyleBackground(spinnerSprites[count]);
+
+                if (count == spinnerSprites.Length - 1)
+                {
+                    count = 0;
+                }
+                else
+                {
+                    count++;
+                }
+
+                yield return wait;
+            }
         }
     }
 }

@@ -118,6 +118,8 @@ namespace Merge
                 // Init
                 loadingContainer.style.display = DisplayStyle.Flex;
             }
+
+            CheckLogsShaking();
         }
 
         public void OpenMenu()
@@ -151,17 +153,19 @@ namespace Merge
                 logsShakingButton.text = "Shaking: Off";
             }
 
-            PlayerPrefs.SetInt("logsShaking", logs.shakingEnabled ? 1 : 0);
+            PlayerPrefs.SetInt("shakingEnabled", logs.shakingEnabled ? 1 : 0);
             PlayerPrefs.Save();
         }
 
-        public void CheckLogsShaking()
+        void CheckLogsShaking()
         {
-            if (PlayerPrefs.HasKey("logsShaking"))
+            if (PlayerPrefs.HasKey("shakingEnabled"))
             {
-                logs.shakingEnabled = PlayerPrefs.GetInt("logsShaking") == 1 ? false : true; // In reverse
+                logs.shakingEnabled = PlayerPrefs.GetInt("shakingEnabled") == 1 ? true : false;
 
                 ToggleLogsShaking(false);
+            }else{
+                logs.shakingEnabled=true;
             }
         }
 

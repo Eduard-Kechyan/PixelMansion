@@ -166,12 +166,6 @@ namespace Merge
                 PlayerInfo playerInfo = await AuthenticationService.Instance.GetPlayerInfoAsync();
 
                 authPlayerId = playerInfo.Id;
-
-                if (logData)
-                {
-                    Debug.Log("Auth Player Id: " + authPlayerId);
-                    Debug.Log("Google Play Games Id: " + playerInfo.GetGooglePlayGamesId());
-                }
             }
             catch (AuthenticationException ex)
             {
@@ -383,7 +377,6 @@ namespace Merge
                     if (logData)
                     {
                         Debug.Log("Google Play Sign In Auto Success!");
-                        Debug.Log("Google Player Id: " + googlePlayerId);
                     }
 
                     PlayGamesPlatform.Instance.RequestServerSideAccess(true, (code) =>
@@ -415,12 +408,15 @@ namespace Merge
                 }
                 else
                 {
-                    // ERROR
-                    errorManager.Throw(
-                        Types.ErrorType.Code,
-                        "AuthManager.cs -> LogInToGoogleAuto()",
-                        "Google logging in failed! Status: " + status
-                    );
+                    if(status != SignInStatus.Canceled || !Application.isEditor)
+                    {
+                        // ERROR
+                        errorManager.Throw(
+                            Types.ErrorType.Code,
+                            "AuthManager.cs -> LogInToGoogleAuto()",
+                            "Google logging in failed! Status: " + status
+                        );
+                    }
 
                     if (logData)
                     {
@@ -477,12 +473,15 @@ namespace Merge
                 }
                 else
                 {
-                    // ERROR
-                    errorManager.Throw(
-                        Types.ErrorType.Code,
-                        "AuthManager.cs -> LogInToGoogleManual()",
-                        "Google logging in failed! Status: " + status
-                    );
+                    if (status != SignInStatus.Canceled || !Application.isEditor)
+                    {
+                        // ERROR
+                        errorManager.Throw(
+                            Types.ErrorType.Code,
+                            "AuthManager.cs -> LogInToGoogleManual()",
+                            "Google logging in failed! Status: " + status
+                        );
+                    }
 
                     if (trulyManually)
                     {

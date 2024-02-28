@@ -184,60 +184,63 @@ namespace Merge
         {
             bool isPurchaseValid = true;
 
-#if UNITY_ANDROID || UNITY_IOS 
-            var validator = new CrossPlatformValidator(GooglePlayTangle.Data(), AppleTangle.Data(), Application.identifier);
-
-            try
+            // Validate
+            if (!Application.isEditor)
             {
-                var result = validator.Validate(purchaseEvent.purchasedProduct.receipt);
+                var validator = new CrossPlatformValidator(GooglePlayTangle.Data(), AppleTangle.Data(), Application.identifier);
 
-                Debug.Log(purchaseEvent.purchasedProduct.receipt);
-
-                int count = 0;
-
-                bool foundReceipt = false;
-
-                // TODO - Add server-side valdiation here
-
-                foreach (IPurchaseReceipt receipt in result)
+                try
                 {
-                    /*  Debug.Log(receipt.productID);
+                    var result = validator.Validate(purchaseEvent.purchasedProduct.receipt);
 
-                      GooglePlayReceipt googleReceipt = receipt as GooglePlayReceipt;
+                   // Debug.Log(purchaseEvent.purchasedProduct.receipt);
 
-                      if(googleReceipt!=null){
-                          Debug.Log(googleReceipt.purchaseState);
-                      }*/
+                    int count = 0;
 
-                    if (count == 0)
+                    bool foundReceipt = false;
+
+                    // TODO - Add server-side valdiation here
+
+                    foreach (IPurchaseReceipt receipt in result)
                     {
-                        for (int i = 0; i < controller.products.all.Length; i++)
+                        /*  Debug.Log(receipt.productID);
+
+                          GooglePlayReceipt googleReceipt = receipt as GooglePlayReceipt;
+
+                          if(googleReceipt!=null){
+                              Debug.Log(googleReceipt.purchaseState);
+                          }*/
+
+                        if (count == 0)
                         {
-                            if (controller.products.all[i].definition.id == receipt.productID)
+                            for (int i = 0; i < controller.products.all.Length; i++)
                             {
-                                foundReceipt = true;
-                                break;
+                                if (controller.products.all[i].definition.id == receipt.productID)
+                                {
+                                    foundReceipt = true;
+                                    break;
+                                }
                             }
                         }
+
+                        break;
                     }
 
-                    break;
+                    if (!foundReceipt)
+                    {
+                        // ERROR
+                        throw new Exception("Receipt product id not found in the controller!");
+                    }
                 }
-
-                if (!foundReceipt)
+                catch
                 {
+                    isPurchaseValid = false;
+
                     // ERROR
-                    throw new Exception("Receipt product id not found in the controller!");
+                    errorManager.Throw(Types.ErrorType.Code, "PaymentsManager.cs -> Purchase()", "Failed to validate product with receipt: " + purchaseEvent.purchasedProduct.receipt);
                 }
             }
-            catch
-            {
-                isPurchaseValid = false;
 
-                // ERROR
-                errorManager.Throw(Types.ErrorType.Code, "PaymentsManager.cs -> Purchase()", "Failed to validate product with receipt: " + purchaseEvent.purchasedProduct.receipt);
-            }
-#endif
             if (isPurchaseValid)
             {
                 if (googleExtensions.IsPurchasedProductDeferred(purchaseEvent.purchasedProduct))
@@ -339,7 +342,7 @@ namespace Merge
                 {
                     failCallback?.Invoke("declined");
                 }
-                else if(reason == PurchaseFailureReason.PurchasingUnavailable)
+                else if (reason == PurchaseFailureReason.PurchasingUnavailable)
                 {
                     failCallback?.Invoke("unavailable");
                 }
@@ -358,7 +361,9 @@ namespace Merge
                 }
 
                 failCallback?.Invoke("other");
-            }else{
+            }
+            else
+            {
                 callback?.Invoke(false);
             }
 

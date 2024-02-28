@@ -36,10 +36,10 @@
     left: 0;
     right: auto;
     top: auto;
-    width: 165px;
+    width: 164px;
     height: 4px;
     display: flex;
-    bottom: -2px;
+    bottom: -3px;
 }
 
 .menu .container .shadow_dot {
@@ -79,7 +79,7 @@
     width: 174px;
     height: 22px;
     position: absolute;
-    top: -16px;
+    top: -17px;
     left: -5px;
 }
 
@@ -113,6 +113,32 @@
     translate: -50% 0;
     transition-duration: 0.3s;
     height: 16px;
+}
+
+.menu_overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.39);
+    transition-duration: 0.3s;
+    display: none;
+    opacity: 0;
+}
+
+.menu_overlay .spinner {
+    width: 20px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: 20px;
+    translate: -50% -50%;
+    background-image: url('project://database/Assets/Sprites/Scenes/Loading/Spinner.png?fileID=-506458403&guid=6d6177bc530c98e4894d8b9e6e631322&type=3#Spinner_0');
+}
+
+.menu_overlay .close {
+    width: 20px;
 }
 
 .settings_menu .label {
@@ -351,22 +377,7 @@
     color: rgb(113, 160, 246);
 }
 
-.energy_menu .item_name {
-    position: relative;
-    color: rgb(58, 58, 58);
-    font-size: 6px;
-    padding-left: 0;
-    padding-right: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    -unity-text-align: middle-center;
-    margin-left: 0;
-    margin-right: 0;
-    margin-top: 0;
-    margin-bottom: 5px;
-}
-
-.energy_menu .item_data {
+.energy_menu .energy_label {
     position: relative;
     width: auto;
     font-size: 6px;
@@ -1706,7 +1717,7 @@
 }
 
 .small_menu .title {
-    background-image: url('project://database/Assets/Sprites/Menus/LikeMenu/LikeTitle.png?fileID=2800000&guid=2db6b6d38ff2c28438e277731cda8f06&type=3#LikeTitle');
+    background-image: url('project://database/Assets/Sprites/Menus/RateMenu/LikeTitle.png?fileID=2800000&guid=2db6b6d38ff2c28438e277731cda8f06&type=3#LikeTitle');
     width: 126px;
     height: 22px;
     position: absolute;
@@ -1753,7 +1764,7 @@
 }
 
 .small_menu .star_item {
-    background-image: url('project://database/Assets/Sprites/Menus/LikeMenu/StarEmpty.png?fileID=2800000&guid=d4a36d8a01e7d5742855408d095c829b&type=3#StarEmpty');
+    background-image: url('project://database/Assets/Sprites/Menus/RateMenu/StarEmpty.png?fileID=2800000&guid=d4a36d8a01e7d5742855408d095c829b&type=3#StarEmpty');
     width: 16px;
     height: 20px;
     margin-left: 1px;
@@ -1784,7 +1795,7 @@
 }
 
 .small_menu .like_button {
-    background-image: url('project://database/Assets/Sprites/Menus/LikeMenu/SmallButton.png?fileID=2800000&guid=5e9285690bdecc44991f6dfcbfbb849b&type=3#SmallButton');
+    background-image: url('project://database/Assets/Sprites/Menus/RateMenu/SmallButton.png?fileID=2800000&guid=5e9285690bdecc44991f6dfcbfbb849b&type=3#SmallButton');
     width: 60px;
     height: 18px;
     margin-bottom: 2px;

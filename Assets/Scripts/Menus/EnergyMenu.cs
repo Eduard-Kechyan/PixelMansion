@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,8 @@ namespace Merge
         // Variables
         public int energyBuyAmount = 50;
         public int gemsCost = 5;
+
+        private bool waitingForAd = false;
 
         // References
         private GameData gameData;
@@ -68,7 +71,6 @@ namespace Merge
             energyMenu.style.display = DisplayStyle.None;
             energyMenu.style.opacity = 0;
 
-            energyLabelA.text = LOCALE.Get("energy_menu_label_a");
             energyLabelB.text = LOCALE.Get("energy_menu_label_b");
 
             if (gameData.energy == 0)
@@ -82,8 +84,22 @@ namespace Merge
 
             energyBuyLabel.text = "+" + energyBuyAmount;
 
-            watchButton.text = LOCALE.Get("energy_menu_watch_ad");
             buyButton.text = gemsCost.ToString();
+
+            if (adsManager.enableAds)
+            {
+                watchButton.style.display = DisplayStyle.Flex;
+
+                watchButton.text = LOCALE.Get("energy_menu_watch_ad");
+
+                energyLabelA.text = LOCALE.Get("energy_menu_label_a");
+            }
+            else
+            {
+                watchButton.style.display = DisplayStyle.None;
+
+                energyLabelA.text = LOCALE.Get("energy_menu_label_a_alt");
+            }
         }
 
         public void Open()
@@ -91,7 +107,7 @@ namespace Merge
             // Title
             string title = LOCALE.Get("energy_menu_title");
 
-            energyWatchLabel.text = "+" + adsManager.energyRewardAmount;
+            energyWatchLabel.text = "+" + adsManager.energyRewardAmountInner;
 
             // Open menu
             menuUI.OpenMenu(energyMenu, title, true);
@@ -100,13 +116,31 @@ namespace Merge
         // Add energy after successfully watching an ad
         void WatchAdHandle()
         {
-            adsManager.WatchAd(Types.AdType.Energy, (int newEnergyAmount) =>
+            if (!waitingForAd)
             {
-                valuePop.PopValue(newEnergyAmount, Types.CollGroup.Energy, watchButton.worldBound.center, false, true);
-            }, () =>
-            {
-                noteMenu.Open("note_menu_energy_ad_error_title", new List<string>() { "note_menu_energy_ad_error_1", "note_menu_energy_ad_error_2" });
-            });
+                waitingForAd = true;
+
+                menuUI.ShowMenuOverlay(energyMenu, () =>
+                {
+                    adsManager.WatchAd(Types.AdType.Energy, (int newEnergyAmount) =>
+                    {
+                        menuUI.HideMenuOverlay(() =>
+                        {
+                            waitingForAd = false;
+
+                            valuePop.PopValue(newEnergyAmount, Types.CollGroup.Energy, watchButton.worldBound.center, false, true);
+                        });
+                    }, () =>
+                    {
+                        menuUI.HideMenuOverlay(() =>
+                        {
+                            waitingForAd = false;
+
+                            noteMenu.Open("note_menu_energy_ad_error_title", new List<string>() { "note_menu_energy_ad_error_1", "note_menu_energy_ad_error_2" });
+                        }, true);
+                    });
+                }, true);
+            }
         }
 
         // Add energy after buying it

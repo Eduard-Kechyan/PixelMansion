@@ -130,7 +130,12 @@ namespace Merge
             };
 #endif
 
-            signOutButton.clicked += () => authManager.SignOut();
+            signOutButton.clicked += () =>
+            {
+                authManager.SignOut();
+
+                SetUISignInText();
+            };
 
             instagramFollowButton.clicked += () => OpenSocialMediaLink(Types.SocialMediaType.Instagram);
             facebookFollowButton.clicked += () => OpenSocialMediaLink(Types.SocialMediaType.Facebook);
@@ -177,44 +182,7 @@ namespace Merge
 
             SetUIOptionsButtons();
 
-            // Set sign in button text
-#if UNITY_ANDROID
-            if (services.googleSignIn)
-            {
-                signInLabel.text = LOCALE.Get("settings_menu_signed_in_label");
-
-                signInButton.style.display = DisplayStyle.None;
-
-                signOutButton.style.display = DisplayStyle.Flex;
-            }
-            else
-            {
-                signInLabel.text = LOCALE.Get("settings_menu_sign_in_label");
-
-                signInButton.style.display = DisplayStyle.Flex;
-                signInButton.text = LOCALE.Get("settings_menu_sing_in_to_Google");
-
-                signOutButton.style.display = DisplayStyle.None;
-            }
-#elif UNITY_IOS
-            if (services.appleSignIn)
-            {
-                signInLabel.text = LOCALE.Get("settings_menu_signed_in_label");
-
-                signInButton.style.display = DisplayStyle.None;
-
-                signOutButton.style.display = DisplayStyle.Flex;
-            }
-            else
-            {
-                signInLabel.text = LOCALE.Get("settings_menu_sign_in_label");
-
-                signInButton.style.display = DisplayStyle.Flex;
-                signInButton.text = LOCALE.Get("settings_menu_sing_in_to_Apple");
-
-                signOutButton.style.display = DisplayStyle.None;
-            }
-#endif
+            SetUISignInText();
 
             // Open menu
             menuUI.OpenMenu(settingsMenu, title);
@@ -265,6 +233,53 @@ namespace Merge
             }
         }
 
+        public void SetUISignInText()
+        {
+            string socialName = "Dummy";
+
+#if UNITY_ANDROID
+            socialName = LOCALE.Get("social_Google");
+
+            if (services.googleSignIn)
+            {
+                signInLabel.text = LOCALE.Get("settings_menu_signed_in_label_to", socialName);
+
+                signInButton.style.display = DisplayStyle.None;
+
+                signOutButton.style.display = DisplayStyle.Flex;
+            }
+            else
+            {
+                signInLabel.text = LOCALE.Get("settings_menu_sign_in_label");
+
+                signInButton.style.display = DisplayStyle.Flex;
+                signInButton.text = LOCALE.Get("settings_menu_sing_in_to", socialName);
+
+                signOutButton.style.display = DisplayStyle.None;
+            }
+#elif UNITY_IOS
+            socialName = LOCALE.Get("social_Apple");
+
+            if (services.appleSignIn)
+            {
+                signInLabel.text = LOCALE.Get("settings_menu_signed_in_label_to", socialName);
+
+                signInButton.style.display = DisplayStyle.None;
+
+                signOutButton.style.display = DisplayStyle.Flex;
+            }
+            else
+            {
+                signInLabel.text = LOCALE.Get("settings_menu_sign_in_label");
+
+                signInButton.style.display = DisplayStyle.Flex;
+                signInButton.text = LOCALE.Get("settings_menu_sing_in_to", socialName);
+
+                signOutButton.style.display = DisplayStyle.None;
+            }
+#endif
+        }
+
         public void SetLocale(Types.Locale newLocale)
         {
             settings.SetLocale(newLocale, false);
@@ -293,6 +308,8 @@ namespace Merge
             authManager.SignIn(() =>
             {
                 noteMenu.Open("note_menu_log_signed_in_title", new List<string>() { "note_menu_log_signed_in_" + type });
+
+                SetUISignInText();
             }, (bool canceled, string preFix) =>
             {
                 if (!canceled)
