@@ -52,9 +52,10 @@ MonoBehaviour:
   unityServicesAvailable: 0
   iapAvailable: 0
   adsAvailable: 0
+  anonymousSignIn: 0
   googleSignIn: 0
-  facebookSignIn: 0
   appleSignIn: 0
+  networkCheckDelay: 3
 --- !u!114 &1499400838582952208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115,3 +116,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ee6c4f8619e6244fbe63ab98a31aa03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  logData: 1

@@ -46,7 +46,7 @@ namespace Merge
             noteMenu.style.opacity = 0;
         }
 
-        public void Open(string newTitle, string[] notes, Action newCallback = null)
+        public void Open(string newTitle, List<string> notes, Action newCallback = null)
         {
             callback = newCallback;
 
@@ -60,7 +60,7 @@ namespace Merge
             string title = LOCALE.Get(newTitle);
 
             // Create the notes
-            for (int i = 0; i < notes.Length; i++)
+            for (int i = 0; i < notes.Count; i++)
             {
                 Label newLabel = new() { name = "NoteLabel" + i };
 

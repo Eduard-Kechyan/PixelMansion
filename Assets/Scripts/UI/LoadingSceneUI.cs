@@ -32,6 +32,7 @@ namespace Merge
         private Sprite[] backgroundSprites;
         private Action termsCallback;
         private Action<int> ageCallback;
+        private Action<bool> conflictCallback;
         private Action updateCallback;
         private bool isAgeScrolling;
         private int currentAge = 0;
@@ -66,6 +67,14 @@ namespace Merge
         private Label ageLabel;
         private Button ageAcceptButton;
         private ScrollView ageScrollView;
+
+        // Conflict
+        private VisualElement conflictMenu;
+        private Label conflictTitleLabel;
+        private Label conflictLabelA;
+        private Label conflictLabelB;
+        private Button conflictNewButton;
+        private Button conflictPreviousButton;
 
         // Update
         private VisualElement updateMenu;
@@ -108,6 +117,13 @@ namespace Merge
             ageAcceptButton = ageMenu.Q<Button>("AcceptButton");
             ageScrollView = ageMenu.Q<ScrollView>("AgeScrollView");
 
+            conflictMenu = root.Q<VisualElement>("ConflictMenu");
+            conflictTitleLabel = conflictMenu.Q<Label>("TitleLabel");
+            conflictLabelA = conflictMenu.Q<Label>("ConflictLabelA");
+            conflictLabelB = conflictMenu.Q<Label>("ConflictLabelB");
+            conflictNewButton = conflictMenu.Q<Button>("NewButton");
+            conflictPreviousButton = conflictMenu.Q<Button>("PreviousButton");
+
             updateMenu = root.Q<VisualElement>("UpdateMenu");
             updateTitleLabel = updateMenu.Q<Label>("TitleLabel");
             updateLabel = updateMenu.Q<Label>("UpdateLabel");
@@ -126,6 +142,13 @@ namespace Merge
             };
 
             ageAcceptButton.clicked += () => SetAge();
+
+            conflictNewButton.clicked += () => {
+                ResolveConflict(true);
+            };
+            conflictPreviousButton.clicked += () =>{
+                 ResolveConflict(false);
+            };
 
             updateButton.clicked += () => UpdateGame();
             updateExitButton.clicked += () => Application.Quit();
@@ -159,6 +182,8 @@ namespace Merge
             HideTermsMenu();
 
             HideAgeMenu();
+
+            HideConflictMenu();
         }
 
         // Dynamically set the game's title
@@ -425,6 +450,50 @@ namespace Merge
             {
                 ageAcceptButton.SetEnabled(false);
             }
+        }
+
+        //// CONFLICT ////
+
+        // Show the conflict menu 
+        public void CheckConflict(Action<bool> callback = null)
+        {
+            conflictCallback = callback;
+
+            // Show the overlay
+            overlayBackground.style.display = DisplayStyle.Flex;
+            overlayBackground.style.opacity = 1;
+
+            // Show the menu
+            conflictMenu.style.display = DisplayStyle.Flex;
+            conflictMenu.style.opacity = 1f;
+
+            conflictTitleLabel.text = LOCALE.Get("conflict_menu_title");
+            conflictLabelA.text = LOCALE.Get("conflict_menu_label_a");
+            conflictLabelB.text = LOCALE.Get("conflict_menu_label_b");
+
+            conflictNewButton.text = LOCALE.Get("conflict_create_new");
+            conflictPreviousButton.text = LOCALE.Get("conflict_use_previous");
+        }
+
+        // Handle the player resolving the conflict
+        void ResolveConflict(bool forceLinking){
+            HideConflictMenu();
+
+            if (conflictCallback != null)
+            {
+                conflictCallback(forceLinking);
+            }
+        }
+
+        void HideConflictMenu()
+        {
+            // Hide the overlay
+            overlayBackground.style.display = DisplayStyle.None;
+            overlayBackground.style.opacity = 0;
+
+            // Hide the menu
+            conflictMenu.style.display = DisplayStyle.None;
+            conflictMenu.style.opacity = 0;
         }
 
         //// UPDATE ////

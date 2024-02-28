@@ -550,9 +550,7 @@ namespace Merge
                     }
                     else
                     {
-                        string[] notes = new string[] { "note_menu_not_enough_gold_text" };
-
-                        noteMenu.Open("note_menu_not_enough_gold_title", notes);
+                        noteMenu.Open("note_menu_not_enough_gold_title", new List<string>() { "note_menu_not_enough_gold_text" });
                     }
                 }
                 else
@@ -563,9 +561,7 @@ namespace Merge
                     }
                     else
                     {
-                        string[] notes = new string[] { "note_menu_not_enough_gems_text" };
-
-                        noteMenu.Open("note_menu_not_enough_gems_title", notes);
+                        noteMenu.Open("note_menu_not_enough_gems_title", new List<string>() { "note_menu_not_enough_gems_text" });
                     }
                 }
             }
@@ -601,9 +597,7 @@ namespace Merge
                     {
                         Glob.SetTimeout(() =>
                         {
-                            string[] notes = new string[] { "note_menu_purchase_thank_text_a", "note_menu_purchase_thank_text_b" };
-
-                            noteMenu.Open("note_menu_purchase_thank_title", notes);
+                            noteMenu.Open("note_menu_purchase_thank_title", new List<string>() { "note_menu_purchase_thank_text_a", "note_menu_purchase_thank_text_b" });
                         }, 0.3f);
                     }
                 }));
@@ -611,9 +605,7 @@ namespace Merge
             {
                 StartCoroutine(PostPurchase(() =>
                 {
-                    string[] notes = new string[] { "note_menu_purchase_failed_" + preFix };
-
-                    noteMenu.Open("note_menu_purchase_failed_title", notes);
+                    noteMenu.Open("note_menu_purchase_failed_title", new List<string>() { "note_menu_purchase_failed_" + preFix });
                 }));
             });
         }

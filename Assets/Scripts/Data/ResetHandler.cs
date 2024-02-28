@@ -65,6 +65,8 @@ namespace Merge
 
         public void ResetData()
         {
+            // TODO - Also reset Cloud Save data
+
             string folderPath = Application.persistentDataPath + "/QuickSave";
 
             if (Directory.Exists(folderPath))

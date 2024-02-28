@@ -28,6 +28,7 @@ namespace Merge
         private float fillCount = 0;
         private Action callback;
         private Action<int> callbackAge;
+        private Action<bool> callbackConflict;
         private float singlePhasePercent = 10f;
         private int tempAge = 0;
         private bool initial = true;
@@ -37,6 +38,7 @@ namespace Merge
         private UserDataHandler userDataHandler;
         private NotificsManager notificsManager;
         private SoundManager soundManager;
+        private AuthManager authManager;
 
         // UI
         // private VisualElement fill;
@@ -48,6 +50,7 @@ namespace Merge
             userDataHandler = GetComponent<UserDataHandler>();
             notificsManager = Services.Instance.GetComponent<NotificsManager>();
             soundManager = SoundManager.Instance;
+            authManager = Services.Instance.GetComponent<AuthManager>();
 
             // UI
             /* VisualElement root = uiDocument.GetComponent<UIDocument>().rootVisualElement;
@@ -58,6 +61,7 @@ namespace Merge
 
             callback += ContinueLoading;
             callbackAge += HandleAge;
+            callbackConflict += HandleConflict;
 
             tempAge = PlayerPrefs.GetInt("tempAge");
 
@@ -179,6 +183,25 @@ namespace Merge
                     }
                 }
 
+                // Resolve account linking conflict
+                if (fillCount >= singlePhasePercent * 6 && phase == 6)
+                {
+                    loading = false;
+                    if (authManager.hasLinkingConflict)
+                    {
+                        loadingSceneUI.CheckConflict(callbackConflict);
+                    }
+                    else
+                    {
+                        ContinueLoading();
+                    }
+
+                    if (logPhases)
+                    {
+                        Debug.Log("Phase 6");
+                    }
+                }
+
                 // Load next scene
                 if (fillCount >= 100f)
                 {
@@ -228,7 +251,7 @@ namespace Merge
                     }
                 }
             }
-            
+
             // Hub scene
             sceneLoader.Load(Types.Scene.Hub);
         }
@@ -238,6 +261,12 @@ namespace Merge
             tempAge = newValue;
 
             PlayerPrefs.SetInt("tempAge", newValue);
+
+            ContinueLoading();
+        }
+
+        void HandleConflict(bool forceLinking){
+            authManager.ResolveLinkingConflict(forceLinking);
 
             ContinueLoading();
         }

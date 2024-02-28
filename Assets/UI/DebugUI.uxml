@@ -16,6 +16,7 @@
                         <ui:Button text="Ads Inspector" display-tooltip-when-elided="true" name="AdButton" class="button_active debug_menu_button" />
                         <ui:Button text="Show Logs" display-tooltip-when-elided="true" name="LogsButton" class="button_active debug_menu_button" />
                         <ui:Button text="Shaking: Off" display-tooltip-when-elided="true" name="LogsShakingButton" class="button_active debug_menu_button" />
+                        <ui:Button text="Sign Out" display-tooltip-when-elided="true" name="SignOutButton" class="button_active debug_menu_button" />
                     </ui:VisualElement>
                 </ui:ScrollView>
             </ui:VisualElement>

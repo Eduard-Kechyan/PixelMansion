@@ -105,9 +105,7 @@ namespace Merge
                 valuePop.PopValue(newEnergyAmount, Types.CollGroup.Energy, watchButton.worldBound.center, false, true);
             }, () =>
             {
-                string[] notes = new string[] { "note_menu_energy_ad_error_1", "note_menu_energy_ad_error_2" };
-
-                noteMenu.Open("note_menu_energy_ad_error_title", notes);
+                noteMenu.Open("note_menu_energy_ad_error_title", new List<string>() { "note_menu_energy_ad_error_1", "note_menu_energy_ad_error_2" });
             });
         }
 

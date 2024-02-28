@@ -2,8 +2,6 @@ using System;
 using System.Collections;
 using System.Globalization;
 using System.Collections.Generic;
-using Unity.Services.Core;
-using Unity.Services.Core.Environments;
 using UnityEngine;
 using UnityEngine.Purchasing;
 using UnityEngine.Purchasing.Extension;
@@ -34,7 +32,7 @@ namespace Merge
         // Instance
         public static PaymentsManager Instance;
 
-        async void Awake()
+        void Awake()
         {
             if (Instance == null)
             {
@@ -46,19 +44,6 @@ namespace Merge
                 // Load IAP Catalog
                 ResourceRequest operation = Resources.LoadAsync<TextAsset>("IAPProductCatalog");
                 operation.completed += HandleIAPCatalog;
-
-                // Initialize Unity Services
-                InitializationOptions options = new InitializationOptions();
-
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
-                options.SetEnvironmentName("development");
-#else
-                options.SetEnvironmentName("production");
-#endif
-
-                await UnityServices.InitializeAsync(options);
-
-                services.unityServicesAvailable = true;
             }
         }
 

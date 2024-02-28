@@ -43,7 +43,7 @@ namespace Merge
 
 #if UNITY_ANDROID
             adUnitId = "ca-app-pub-5910627528492422/2571416965";
-#elif Unity_IPHONE
+#elif UNITY_IOS
             adUnitId = "ca-app-pub-3940256099942544/1712485313";
 #endif
         }

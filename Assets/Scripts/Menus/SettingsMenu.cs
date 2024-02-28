@@ -22,7 +22,7 @@ namespace Merge
         private I18n LOCALE;
         private Settings settings;
         private Services services;
-        private SignIn signIn;
+        private AuthManager authManager;
         //  private Notifics notifics;
         private ResetHandler resetHandler;
 
@@ -43,12 +43,8 @@ namespace Merge
         private Button exitButton;
         private Button rateButton;
 
-        private Button googleSignInButton;
-        private VisualElement googleSignInCheck;
-        private Button facebookSignInButton;
-        private VisualElement facebookSignInCheck;
-        private Button appleSignInButton;
-        private VisualElement appleSignInCheck;
+        private Button signInButton;
+        private Button signOutButton;
 
         private Button instagramFollowButton;
         private Button facebookFollowButton;
@@ -73,7 +69,7 @@ namespace Merge
             LOCALE = I18n.Instance;
             settings = Settings.Instance;
             services = Services.Instance;
-            signIn = services.GetComponent<SignIn>();
+            authManager = services.GetComponent<AuthManager>();
             //  notifics = Services.Instance.GetComponent<Notifics>();
             resetHandler = GetComponent<ResetHandler>();
 
@@ -95,13 +91,8 @@ namespace Merge
             exitButton = settingsMenu.Q<Button>("ExitButton");
             rateButton = settingsMenu.Q<Button>("RateButton");
 
-            googleSignInButton = settingsMenu.Q<Button>("GoogleSignInButton");
-            facebookSignInButton = settingsMenu.Q<Button>("FacebookSignInButton");
-            appleSignInButton = settingsMenu.Q<Button>("AppleSignInButton");
-
-            googleSignInCheck = googleSignInButton.Q<VisualElement>("SignedInCheck");
-            facebookSignInCheck = facebookSignInButton.Q<VisualElement>("SignedInCheck");
-            appleSignInCheck = appleSignInButton.Q<VisualElement>("SignedInCheck");
+            signInButton = settingsMenu.Q<Button>("SignInButton");
+            signOutButton = settingsMenu.Q<Button>("SignOutButton");
 
             instagramFollowButton = settingsMenu.Q<Button>("InstagramFollowButton");
             facebookFollowButton = settingsMenu.Q<Button>("FacebookFollowButton");
@@ -129,9 +120,17 @@ namespace Merge
             exitButton.clicked += () => confirmMenu.Open("exit", Application.Quit);
             rateButton.clicked += () => rateMenu.Open(true);
 
-            googleSignInButton.clicked += () => HandleSignIn(SignIn.SignInType.Google);
-            facebookSignInButton.clicked += () => HandleSignIn(SignIn.SignInType.Facebook);
-            appleSignInButton.clicked += () => HandleSignIn(SignIn.SignInType.Apple);
+#if UNITY_ANDROID
+            signInButton.clicked += () => HandleSignIn(AuthManager.AuthType.Google);
+#elif UNITY_IOS
+            signInButton.clicked += () => HandleSignIn(AuthManager.AuthType.Apple);
+#elif UNITY_EDITOR
+            signInButton.clicked += () => {
+                Debug.Log("Signed in to dummy!");
+            };
+#endif
+
+            signOutButton.clicked += () => authManager.SignOut();
 
             instagramFollowButton.clicked += () => OpenSocialMediaLink(Types.SocialMediaType.Instagram);
             facebookFollowButton.clicked += () => OpenSocialMediaLink(Types.SocialMediaType.Facebook);
@@ -174,17 +173,48 @@ namespace Merge
 
             versionLabel.text = LOCALE.Get("settings_menu_version") + Application.version;
 
-#if UNITY_ANDROID
-            appleSignInButton.style.display = DisplayStyle.None;
-#elif UNITY_IOS
-            googleSignInButton.style.display = DisplayStyle.None;
-#endif
-
             SetUiText();
 
             SetUIOptionsButtons();
 
-            SetUISignInButtons();
+            // Set sign in button text
+#if UNITY_ANDROID
+            if (services.googleSignIn)
+            {
+                signInLabel.text = LOCALE.Get("settings_menu_signed_in_label");
+
+                signInButton.style.display = DisplayStyle.None;
+
+                signOutButton.style.display = DisplayStyle.Flex;
+            }
+            else
+            {
+                signInLabel.text = LOCALE.Get("settings_menu_sign_in_label");
+
+                signInButton.style.display = DisplayStyle.Flex;
+                signInButton.text = LOCALE.Get("settings_menu_sing_in_to_Google");
+
+                signOutButton.style.display = DisplayStyle.None;
+            }
+#elif UNITY_IOS
+            if (services.appleSignIn)
+            {
+                signInLabel.text = LOCALE.Get("settings_menu_signed_in_label");
+
+                signInButton.style.display = DisplayStyle.None;
+
+                signOutButton.style.display = DisplayStyle.Flex;
+            }
+            else
+            {
+                signInLabel.text = LOCALE.Get("settings_menu_sign_in_label");
+
+                signInButton.style.display = DisplayStyle.Flex;
+                signInButton.text = LOCALE.Get("settings_menu_sing_in_to_Apple");
+
+                signOutButton.style.display = DisplayStyle.None;
+            }
+#endif
 
             // Open menu
             menuUI.OpenMenu(settingsMenu, title);
@@ -201,7 +231,6 @@ namespace Merge
             exitButton.text = LOCALE.Get("settings_menu_exit_label");
 
             // Labels
-            signInLabel.text = LOCALE.Get("settings_menu_sign_in_label");
             followLabel.text = LOCALE.Get("settings_menu_follow_label");
         }
 
@@ -236,30 +265,6 @@ namespace Merge
             }
         }
 
-        public void SetUISignInButtons()
-        {
-            // Google sign in
-            googleSignInCheck.style.display = DisplayStyle.None;
-            if (services.googleSignIn)
-            {
-                googleSignInCheck.style.display = DisplayStyle.Flex;
-            }
-
-            // Facebook sign in
-            facebookSignInCheck.style.display = DisplayStyle.None;
-            if (services.facebookSignIn)
-            {
-                facebookSignInCheck.style.display = DisplayStyle.Flex;
-            }
-
-            // Apple sign in
-            appleSignInCheck.style.display = DisplayStyle.None;
-            if (services.appleSignIn)
-            {
-                appleSignInCheck.style.display = DisplayStyle.Flex;
-            }
-        }
-
         public void SetLocale(Types.Locale newLocale)
         {
             settings.SetLocale(newLocale, false);
@@ -283,25 +288,24 @@ namespace Merge
             copyCheck.style.opacity = 0;
         }
 
-        void HandleSignIn(SignIn.SignInType type)
+        void HandleSignIn(AuthManager.AuthType type)
         {
-            signIn.LogIn(type, (bool firstSingIn) =>
+            authManager.SignIn(() =>
             {
-                if (firstSingIn)
-                {
-                    googleSignInCheck.style.display = DisplayStyle.Flex;
-                }
-                else
-                {
-                    string[] notes = new string[] { "note_menu_log_in_already_" + type };
-
-                    noteMenu.Open("note_menu_log_in_already_title", notes);
-                }
-            }, (string preFix) =>
+                noteMenu.Open("note_menu_log_signed_in_title", new List<string>() { "note_menu_log_signed_in_" + type });
+            }, (bool canceled, string preFix) =>
             {
-                string[] notes = new string[] { "note_menu_log_in_failed_" + type, "note_menu_log_in_failed_" + preFix };
+                if (!canceled)
+                {
+                    List<string> notes = new List<string>() { "note_menu_log_in_failed_" + type };
 
-                noteMenu.Open("note_menu_log_in_failed_title", notes);
+                    if (preFix != "")
+                    {
+                        notes.Add("note_menu_log_in_failed_" + preFix);
+                    }
+
+                    noteMenu.Open("note_menu_log_in_failed_title", notes);
+                }
             });
         }
 

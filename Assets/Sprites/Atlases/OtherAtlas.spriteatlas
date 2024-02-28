@@ -52,6 +52,7 @@ SpriteAtlas:
     cachedData: {fileID: 0}
     packedSpriteRenderDataKeys:
     - 94e16764ab1f59a44b298ae083439d1d: 21300000
+    - 7db223a6c6ade6d469cc345b51da6248: 21300000
     - c0063ad6fa3f5a047a887fd1ebe700bc: 21300000
     - a321d0e6c5ec8a741aaa95aac3f573f4: 21300000
     - d4ae7f67a5c1fc341b442b8e74c35233: 21300000
@@ -60,9 +61,11 @@ SpriteAtlas:
     - 01264efc88e295248892a3a172f61e18: 21300000
     - a32c2e0d365cbbb41ac6c1e09741e80f: 21300000
     - 51bfc01e86e2dbf41bc97f24dfa52372: 21300000
+    - e04199ae90f1a0b48b22d7bca767a10a: 5654123910387600328
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: 94e16764ab1f59a44b298ae083439d1d, type: 3}
+  - {fileID: 21300000, guid: 7db223a6c6ade6d469cc345b51da6248, type: 3}
   - {fileID: 21300000, guid: c0063ad6fa3f5a047a887fd1ebe700bc, type: 3}
   - {fileID: 21300000, guid: a321d0e6c5ec8a741aaa95aac3f573f4, type: 3}
   - {fileID: 21300000, guid: d4ae7f67a5c1fc341b442b8e74c35233, type: 3}
@@ -71,8 +74,10 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 01264efc88e295248892a3a172f61e18, type: 3}
   - {fileID: 21300000, guid: a32c2e0d365cbbb41ac6c1e09741e80f, type: 3}
   - {fileID: 21300000, guid: 51bfc01e86e2dbf41bc97f24dfa52372, type: 3}
+  - {fileID: 5654123910387600328, guid: e04199ae90f1a0b48b22d7bca767a10a, type: 3}
   m_PackedSpriteNamesToIndex:
   - FeatureGraphic1024x500
+  - 120x120
   - EnergyIcon
   - Logo
   - OpenIcon
@@ -81,6 +86,7 @@ SpriteAtlas:
   - AdaptiveBackground432x432
   - ReadyIcon
   - Legacy192x192
+  - 120x120
   m_RenderDataMap: {}
   m_Tag: OtherAtlas
   m_IsVariant: 0

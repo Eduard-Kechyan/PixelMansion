@@ -89,9 +89,7 @@ namespace Merge
             // Notify the player
             if (showToPlayer && noteMenu != null)
             {
-                string[] notes = new string[] { errorMessage };
-
-                noteMenu.Open("error_type_" + type.ToString(), notes);
+                noteMenu.Open("error_type_" + type.ToString(), new List<string>() { errorMessage });
             }
         }
 
