@@ -18,6 +18,7 @@ namespace Merge
         private GameData gameData;
         private SettingsMenu settingsMenu;
         private I18n LOCALE;
+        private CloudSave cloudSave;
 
         // UI
         private VisualElement root;
@@ -46,6 +47,7 @@ namespace Merge
             gameData = GameData.Instance;
             settingsMenu = GetComponent<SettingsMenu>();
             LOCALE = I18n.Instance;
+            cloudSave = Services.Instance.GetComponent<CloudSave>();
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
@@ -99,6 +101,8 @@ namespace Merge
 
             PlayerPrefs.SetInt("followResult", 1); // Note the 1
 
+            cloudSave.SaveDataAsync("followResult", 1);
+
             // FIX - Send statistic to the server (type)
 
             // FIX - Open the game's social media page
@@ -110,6 +114,8 @@ namespace Merge
         void HandleNoButton()
         {
             PlayerPrefs.SetInt("followResult", 0); // Note the 0
+
+            cloudSave.SaveDataAsync("followResult", 0);
 
             // FIX - Send statistic to the server
 

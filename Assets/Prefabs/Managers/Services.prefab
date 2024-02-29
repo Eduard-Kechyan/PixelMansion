@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 3013487443836980529}
   - component: {fileID: 1499400838582952208}
   - component: {fileID: 387303008456136004}
-  - component: {fileID: 7478335895050211340}
   - component: {fileID: 5000603804634430240}
+  - component: {fileID: 8343167684083180862}
+  - component: {fileID: 7478335895050211340}
   m_Layer: 0
   m_Name: Services
   m_TagString: Untagged
@@ -52,6 +53,8 @@ MonoBehaviour:
   unityServicesAvailable: 0
   iapAvailable: 0
   adsAvailable: 0
+  authAvailable: 0
+  cloudSaveAvailable: 0
   anonymousSignIn: 0
   googleSignIn: 0
   appleSignIn: 0
@@ -68,7 +71,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f441502bee477d498a0dbef1fba5493, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enableAds: 1
+  enableAds: 0
   logData: 1
   failImmediately: 0
   energyRewardAmount: 20
@@ -92,20 +95,6 @@ MonoBehaviour:
     enableCodelessAutoInitialization: 1
     enableUnityGamingServicesAutoInitialization: 0
     products: []
---- !u!114 &7478335895050211340
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2958170130881514855}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef06890224ad431448d19f4f9fe7169b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  accentColor: {r: 0.30588236, g: 0.5529412, b: 0.5764706, a: 1}
-  log: 0
 --- !u!114 &5000603804634430240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,3 +109,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   logData: 0
   hasLinkingConflict: 0
+  playerId: 
+--- !u!114 &8343167684083180862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2958170130881514855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c82fc5821f5ef84091d35857cbfc699, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cloudSaveEnabled: 1
+  checkSendDataRegularly: 0
+  unsentDataCheckInterval: 30
+  tooLongDelay: 2
+  logData: 1
+--- !u!114 &7478335895050211340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2958170130881514855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef06890224ad431448d19f4f9fe7169b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  accentColor: {r: 0.30588236, g: 0.5529412, b: 0.5764706, a: 1}
+  log: 0

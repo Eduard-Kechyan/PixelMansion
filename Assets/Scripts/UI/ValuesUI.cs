@@ -246,15 +246,13 @@ namespace Merge
         {
             yield return new WaitForSeconds(0.3f);
 
-            List<TimeValue> durationsZero = new();
-            durationsZero.Add(new TimeValue(0f, TimeUnit.Second));
+            List<TimeValue> durationsZero = new(){ new TimeValue(0f, TimeUnit.Second) };
 
             levelFill.style.transitionDuration = new StyleList<TimeValue>(durationsZero);
 
             levelFill.style.width = Length.Percent(0);
 
-            List<TimeValue> durationsFull = new();
-            durationsFull.Add(new TimeValue(0.3f, TimeUnit.Second));
+            List<TimeValue> durationsFull = new(){ new TimeValue(0.3f, TimeUnit.Second) };
 
             levelFill.style.transitionDuration = new StyleList<TimeValue>(durationsFull);
 
@@ -262,7 +260,7 @@ namespace Merge
 
             callback?.Invoke();
 
-            DataManager.Instance.writer.Write("experience", gameData.experience).Commit();
+            DataManager.Instance.SaveValue("experience", gameData.experience);
 
             levelFill.style.width = CalcLevelFill();
         }

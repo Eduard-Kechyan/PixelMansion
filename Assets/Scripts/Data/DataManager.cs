@@ -33,10 +33,12 @@ namespace Merge
 
         private bool isEditor = false;
 
+        private string[] saveDataKeys;
+
         // Quick Save
         private QuickSaveSettings saveSettings;
-        public QuickSaveWriter writer;
-        public QuickSaveReader reader;
+        private QuickSaveWriter writer;
+        private QuickSaveReader reader;
 
         [HideInInspector]
         public string boardJsonData;
@@ -51,14 +53,14 @@ namespace Merge
         [HideInInspector]
         public string unlockedJsonData;
         public string unlockedRoomsJsonData;
-        private string unsentJsonData;
 
         // References
-        private ApiCalls apiCalls;
         private GameData gameData;
         private DataConverter dataConverter;
         private RateMenu rateMenu;
         private FollowMenu followMenu;
+        private CloudSave cloudSave;
+        private ErrorManager errorManager;
 
         // Instance
         public static DataManager Instance;
@@ -74,6 +76,15 @@ namespace Merge
             {
                 Instance = this;
                 DontDestroyOnLoad(gameObject);
+
+#if UNITY_EDITOR
+                SetSaveDataKeys();
+#endif
+
+                // Set up Quick Save
+                // Compression mode will be based on the game debug mode
+                saveSettings = new QuickSaveSettings() { CompressionMode = Debug.isDebugBuild ? CompressionMode.None : CompressionMode.Gzip };
+                writer = QuickSaveWriter.Create("Root", saveSettings);
             }
         }
 
@@ -81,15 +92,11 @@ namespace Merge
         {
             // Cache
             gameData = GameData.Instance;
-            apiCalls = ApiCalls.Instance;
             dataConverter = GetComponent<DataConverter>();
             rateMenu = GameRefs.Instance.rateMenu;
             followMenu = GameRefs.Instance.followMenu;
-
-            // Set up Quick Save
-            // Compression mode will be based on the game debug mode
-            saveSettings = new QuickSaveSettings() { CompressionMode = Debug.isDebugBuild ? CompressionMode.None : CompressionMode.Gzip };
-            writer = QuickSaveWriter.Create("Root", saveSettings);
+            cloudSave = Services.Instance.GetComponent<CloudSave>();
+            errorManager = ErrorManager.Instance;
 
 #if UNITY_EDITOR
             isEditor = true;
@@ -101,11 +108,6 @@ namespace Merge
             {
                 StartCoroutine(WaitForLoadedResources());
             }
-
-            if (PlayerPrefs.HasKey("userId"))
-            {
-                GameData.Instance.userId = PlayerPrefs.GetString("userId");
-            }
 #endif
         }
 
@@ -116,7 +118,7 @@ namespace Merge
 
         public IEnumerator WaitForLoadedResources(Action callback = null)
         {
-            while (!gameData.resourcesLoaded)
+            while (!gameData.resourcesLoaded || !loaded)
             {
                 yield return null;
             }
@@ -127,7 +129,7 @@ namespace Merge
         // Check if we need to save initial data to disk
         void CheckInitialData(Action callback)
         {
-            if ((ignoreInitialCheck && isEditor) || (!PlayerPrefs.HasKey("Loaded") && !writer.Exists("rootSet")))
+            if ((ignoreInitialCheck && isEditor) || (!PlayerPrefs.HasKey("dataLoaded") && !writer.Exists("rootSet")))
             {
                 boardJsonData = dataConverter.ConvertBoardToJson(initialItems.content, true);
                 bonusData = dataConverter.ConvertBonusToJson(gameData.bonusData);
@@ -136,33 +138,41 @@ namespace Merge
                 timersJsonData = dataConverter.ConvertTimersToJson(gameData.timers);
                 coolDownsJsonData = dataConverter.ConvertCoolDownsToJson(gameData.coolDowns);
                 notificationsJsonData = dataConverter.ConvertNotificationsToJson(gameData.notifications);
-                unsentJsonData = dataConverter.ConvertUnsentToJson(apiCalls.unsentData);
                 finishedTasksJsonData = JsonConvert.SerializeObject(gameData.finishedTasks);
 
-                writer
-                    .Write("rootSet", true)
+                Dictionary<string, object> playerData = new()
+                {
+                    //////// Main ////////
+                    {"rootSet", true},
                     //////// Values ////////
-                    .Write("experience", gameData.experience)
-                    .Write("level", gameData.level)
-                    .Write("energy", gameData.energy)
-                    .Write("gold", gameData.gold)
-                    .Write("gems", gameData.gems)
+                    {"experience", gameData.experience},
+                    {"level", gameData.level},
+                    {"energy", gameData.energy},
+                    {"gold", gameData.gold},
+                    {"gems", gameData.gems},
                     //////// Data ////////
-                    .Write("boardData", boardJsonData)
-                    .Write("bonusData", bonusData)
-                    .Write("inventoryData", inventoryData)
-                    .Write("tasksData", tasksJsonData)
-                    .Write("finishedTasks", finishedTasksJsonData)
-                    .Write("unlockedData", dataConverter.GetInitialUnlocked())
-                    .Write("unlockedRoomsData", worldDataManager != null ? worldDataManager.GetInitialUnlockedRooms() : "[]")
-                    .Write("timers", timersJsonData)
-                    .Write("coolDowns", coolDownsJsonData)
-                    .Write("notificationsData", notificationsJsonData)
-                    // Other
-                    .Write("inventorySpace", gameData.inventorySpace)
-                    .Write("inventorySlotPrice", gameData.inventorySlotPrice)
-                    .Write("unsentData", unsentJsonData)
-                    .Commit();
+                    {"boardData", boardJsonData},
+                    {"bonusData", bonusData},
+                    {"inventoryData", inventoryData},
+                    {"tasksData", tasksJsonData},
+                    {"finishedTasks", finishedTasksJsonData},
+                    {"unlockedData", dataConverter.GetInitialUnlocked()},
+                    {"unlockedRoomsData", worldDataManager != null ? worldDataManager.GetInitialUnlockedRooms() : "[]"},
+                    {"timers", timersJsonData},
+                    {"coolDowns", coolDownsJsonData},
+                    {"notificationsData", notificationsJsonData},
+                    {"inventorySpace", gameData.inventorySpace},
+                    {"inventorySlotPrice", gameData.inventorySlotPrice}
+                };
+
+                foreach (var dataItem in playerData)
+                {
+                    writer.Write(dataItem.Key, dataItem.Value);
+                }
+
+                writer.Commit();
+
+                cloudSave.SaveDataAsync(playerData);
 
                 GetData(true, callback);
             }
@@ -202,7 +212,6 @@ namespace Merge
                 newNotificationsData = notificationsJsonData;
                 newUnlockedData = unlockedJsonData;
                 newUnlockedRoomsData = unlockedRoomsJsonData;
-                newUnsentData = unsentJsonData;
             }
             else
             {
@@ -263,13 +272,13 @@ namespace Merge
             gameData.inventoryData = dataConverter.ConvertInventoryFromJson(newInventoryData);
             gameData.tasksData = dataConverter.ConvertTaskGroupsFromJson(newTasksData);
 
-            apiCalls.unsentData = dataConverter.ConvertUnsentFromJson(newUnsentData);
-
-            apiCalls.canCheckForUnsent = true;
+            cloudSave.unsentData = JsonConvert.DeserializeObject<Dictionary<string, object>>(newUnsentData);
 
             if (PlayerPrefs.HasKey("playerName"))
             {
                 gameData.playerName = PlayerPrefs.GetString("playerName");
+
+                cloudSave.SaveDataAsync("playerName", gameData.playerName);
             }
 
             // Finish Task
@@ -290,14 +299,121 @@ namespace Merge
 
             if (initialLoad)
             {
-                PlayerPrefs.SetInt("Loaded", 1);
+                PlayerPrefs.SetInt("dataLoaded", 1);
                 PlayerPrefs.Save();
+
+                cloudSave.SaveDataAsync("dataLoaded", 1);
             }
 
             callback?.Invoke();
         }
 
+#if UNITY_EDITOR
+        // TODO - Add all PlayerPrefs
+        void SetSaveDataKeys()
+        {
+            saveDataKeys = new[]{
+                //////// Main ////////
+                "dataLoaded", // Prefs
+                "rootSet",
+                //////// Values ////////
+                "experience",
+                "level",
+                "energy",
+                "gold",
+                "gems",
+                //////// Data ////////
+                "boardData",
+                "bonusData",
+                "inventoryData",
+                "tasksData",
+                "finishedTasks",
+                "unlockedData",
+                "unlockedRoomsData",
+                "timers",
+                "coolDowns",
+                "notificationsData",
+                "inventorySpace",
+                "inventorySlotPrice",
+                //////// World ////////
+                "areaSet", // Prefs, Data
+                "areas",
+                "doorSet", // Prefs, Data
+                "unlockedDoors",
+                //////// Player Prefs ////////
+                "playerName",
+                "tutorialFinished",
+                "tutorialStep",
+                "initialTaskDataSet",
+                "progressStep",
+                "locale",
+                "sound",
+                "music",
+                "vibration",
+                "notifications",
+                "followResult",
+                "rateResult",
+                "canLevelUp"
+            };
+        }
+
+        void CheckSaveDataKey(string key)
+        {
+            bool found = false;
+
+            for (int i = 0; i < saveDataKeys.Length; i++)
+            {
+                if (saveDataKeys[i] == key)
+                {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found)
+            {
+                // ERROR
+                errorManager.Throw(
+                    Types.ErrorType.Code,
+                    "DataManager.cs -> CheckSaveDataKey()",
+                    "Save data key doesn't exist: " + key
+                );
+            }
+        }
+#endif
+
         //// SAVE ////
+
+        public void SaveValue<T>(string key, T value, bool saveToCloud = true)
+        {
+            SaveValue(new Dictionary<string, object> { { key, value } }, saveToCloud);
+        }
+
+        public void SaveValue(Dictionary<string, object> values, bool saveToCloud = true)
+        {
+            foreach (var valueItem in values)
+            {
+#if UNITY_EDITOR
+                if (saveToCloud)
+                {
+                    CheckSaveDataKey(valueItem.Key);
+                }
+#endif
+
+                // TODO - Convert object to type
+                Debug.Log("////////////////////");
+                Debug.Log(valueItem.Value);
+                Debug.Log(valueItem.Value.GetType());
+                Debug.Log(Convert.ChangeType(valueItem.Value, valueItem.Value.GetType()));
+
+                writer.Write(valueItem.Key, (Type)valueItem.Value).Commit();
+            }
+
+            if (saveToCloud)
+            {
+                cloudSave.SaveDataAsync(values);
+            }
+        }
 
         public void SaveBoard(bool fireEvent = true, bool fireEventForUndo = true)
         {
@@ -306,6 +422,8 @@ namespace Merge
             );
 
             writer.Write("boardData", newBoardData).Commit();
+
+            cloudSave.SaveDataAsync("boardData", newBoardData);
 
             if (fireEvent && BoardSaveEventAction != null)
             {
@@ -323,6 +441,8 @@ namespace Merge
             string newTimers = dataConverter.ConvertTimersToJson(gameData.timers);
 
             writer.Write("timers", newTimers).Commit();
+
+            cloudSave.SaveDataAsync("timers", newTimers);
         }
 
         public void SaveCoolDowns()
@@ -330,6 +450,8 @@ namespace Merge
             string newCoolDowns = dataConverter.ConvertCoolDownsToJson(gameData.coolDowns);
 
             writer.Write("coolDowns", newCoolDowns).Commit();
+
+            cloudSave.SaveDataAsync("coolDowns", newCoolDowns);
         }
 
         public void SaveNotifications()
@@ -337,6 +459,8 @@ namespace Merge
             string newNotifications = dataConverter.ConvertNotificationsToJson(gameData.notifications);
 
             writer.Write("notificationsData", newNotifications).Commit();
+
+            cloudSave.SaveDataAsync("notificationsData", newNotifications);
         }
 
         public void SaveBonus()
@@ -344,6 +468,8 @@ namespace Merge
             string newBonusData = dataConverter.ConvertBonusToJson(gameData.bonusData);
 
             writer.Write("bonusData", newBonusData).Commit();
+
+            cloudSave.SaveDataAsync("bonusData", newBonusData);
         }
 
         public void SaveTasks()
@@ -351,6 +477,8 @@ namespace Merge
             string newTasksData = dataConverter.ConvertTaskGroupsToJson(gameData.tasksData);
 
             writer.Write("tasksData", newTasksData).Commit();
+
+            cloudSave.SaveDataAsync("tasksData", newTasksData);
         }
 
         public void SaveFinishedTasks()
@@ -358,11 +486,13 @@ namespace Merge
             string newFinishedTasksData = JsonConvert.SerializeObject(gameData.finishedTasks);
 
             writer.Write("finishedTasks", newFinishedTasksData).Commit();
+
+            cloudSave.SaveDataAsync("finishedTasks", newFinishedTasksData);
         }
 
         public void SaveUnsentData()
         {
-            string newUnsentData = dataConverter.ConvertUnsentToJson(apiCalls.unsentData);
+            string newUnsentData = JsonConvert.SerializeObject(cloudSave.unsentData);
 
             writer.Write("unsentData", newUnsentData).Commit();
         }
@@ -371,8 +501,15 @@ namespace Merge
         {
             if (saveSpace)
             {
-                writer.Write("inventorySpace", gameData.inventorySpace).Commit();
-                writer.Write("inventorySlotPrice", gameData.inventorySlotPrice).Commit();
+                writer
+                .Write("inventorySpace", gameData.inventorySpace)
+                .Write("inventorySlotPrice", gameData.inventorySlotPrice)
+                .Commit();
+
+                cloudSave.SaveDataAsync(new(){
+                    { "inventorySpace", gameData.inventorySpace },
+                    { "inventorySlotPrice", gameData.inventorySlotPrice }
+                });
             }
             else
             {
@@ -380,7 +517,189 @@ namespace Merge
                 string newInventorySpace = dataConverter.ConvertInventoryToJson(gameData.inventoryData);
 
                 writer.Write("inventoryData", newInventorySpace).Commit();
+
+                cloudSave.SaveDataAsync("inventoryData", newInventorySpace);
             }
+        }
+
+        //// LOAD ////
+
+        public T LoadValue<T>(string key)
+        {
+            T newAreasData = default;
+
+            reader.Read<T>(key, r => newAreasData = r);
+
+            return newAreasData;
+        }
+
+        //// SET ////
+
+        public void SetValue(string key, object value)
+        {
+#if UNITY_EDITOR
+            CheckSaveDataKey(key);
+#endif
+
+            switch (key)
+            {
+                //////// Main ////////
+                case "dataLoaded":
+                    PlayerPrefs.SetInt("dataLoaded", 1);
+                    break;
+                case "rootSet":
+                    writer.Write(key, true).Commit();
+                    break;
+                //////// Values ////////
+                case "experience":
+                    gameData.experience = (int)value;
+                    writer.Write(key, (int)value).Commit();
+                    break;
+                case "level":
+                    gameData.level = (int)value;
+                    writer.Write(key, (int)value).Commit();
+                    break;
+                case "energy":
+                    gameData.energy = (int)value;
+                    writer.Write(key, (int)value).Commit();
+                    break;
+                case "gold":
+                    gameData.gold = (int)value;
+                    writer.Write(key, (int)value).Commit();
+                    break;
+                case "gems":
+                    gameData.gems = (int)value;
+                    writer.Write(key, (int)value).Commit();
+                    break;
+                //////// Data ////////
+                case "boardData":
+                    gameData.boardData = dataConverter.ConvertArrayToBoard(dataConverter.ConvertBoardFromJson((string)value));
+                    writer.Write(key, (string)value).Commit();
+                    break;
+                case "bonusData":
+                    gameData.bonusData = dataConverter.ConvertBonusFromJson((string)value);
+                    writer.Write(key, (string)value).Commit();
+                    break;
+                case "inventoryData":
+                    gameData.inventoryData = dataConverter.ConvertInventoryFromJson((string)value);
+                    writer.Write(key, (string)value).Commit();
+                    break;
+                case "finishedTasks":
+                    gameData.finishedTasks = JsonConvert.DeserializeObject<List<Types.FinishedTask>>((string)value);
+                    writer.Write(key, (string)value).Commit();
+                    break;
+                case "tasksData":
+                    gameData.tasksData = dataConverter.ConvertTaskGroupsFromJson((string)value);
+                    writer.Write(key, (string)value).Commit();
+                    break;
+                case "unlockedData":
+                    string[] unlockedDataTemp = JsonConvert.DeserializeObject<string[]>((string)value);
+
+                    gameData.unlockedData.CopyTo(unlockedDataTemp, 0);
+                    gameData.unlockedData = unlockedDataTemp;
+
+                    writer.Write(key, (string)value).Commit();
+                    break;
+                case "unlockedRoomsData":
+                    string[] unlockedRoomsDataTemp = JsonConvert.DeserializeObject<string[]>((string)value);
+
+                    gameData.unlockedRoomsData.CopyTo(unlockedRoomsDataTemp, 0);
+                    gameData.unlockedRoomsData = unlockedRoomsDataTemp;
+
+                    writer.Write(key, (string)value).Commit();
+                    break;
+                case "timers":
+                    gameData.timers = dataConverter.ConvertTimersFromJson((string)value);
+                    writer.Write(key, (string)value).Commit();
+                    break;
+                case "coolDowns":
+                    gameData.coolDowns = dataConverter.ConvertCoolDownsFromJson((string)value);
+                    writer.Write(key, (string)value).Commit();
+                    break;
+                case "notificationsData":
+                    gameData.notifications = dataConverter.ConvertNotificationsFromJson((string)value);
+                    writer.Write(key, (string)value).Commit();
+                    break;
+                case "inventorySpace":
+                    gameData.inventorySpace = (int)value;
+                    writer.Write(key, (int)value).Commit();
+                    break;
+                case "inventorySlotPrice":
+                    gameData.inventorySlotPrice = (int)value;
+                    writer.Write(key, (int)value).Commit();
+                    break;
+                //////// World ////////
+                case "areaSet":
+                    writer.Write(key, true).Commit();
+                    PlayerPrefs.SetInt("areaSet", 1);
+                    break;
+                case "areas":
+                    gameData.areasData = dataConverter.ConvertJsonToArea((string)value);
+                    writer.Write(key, (string)value).Commit();
+                    break;
+                case "doorSet":
+                    writer.Write(key, true).Commit();
+                    PlayerPrefs.SetInt("doorSet", 1);
+                    break;
+                case "unlockedDoors":
+                    writer.Write(key, (string)value).Commit();
+                    break;
+                //////// Player Prefs ////////
+                case "playerName":
+                    PlayerPrefs.SetString("playerName", (string)value);
+                    break;
+                case "tutorialFinished":
+                    PlayerPrefs.SetInt("tutorialFinished", 1);
+                    break;
+                case "tutorialStep":
+                    PlayerPrefs.SetString("tutorialStep", (string)value);
+                    break;
+                case "initialTaskDataSet":
+                    PlayerPrefs.SetInt("initialTaskDataSet", 1);
+                    break;
+                case "progressStep":
+                    PlayerPrefs.SetString("progressStep", (string)value);
+                    break;
+                case "sound":
+                    PlayerPrefs.SetInt("sound", (int)value);
+                    break;
+                case "locale":
+                    PlayerPrefs.SetString("locale", (string)value);
+                    break;
+                case "music":
+                    PlayerPrefs.SetInt("music", (int)value);
+                    break;
+                case "vibration":
+                    PlayerPrefs.SetInt("vibration", (int)value);
+                    break;
+                case "notifications":
+                    PlayerPrefs.SetInt("notifications", (int)value);
+                    break;
+                case "followResult":
+                    PlayerPrefs.SetInt("followResult", 1);
+                    break;
+                case "rateResult":
+                    PlayerPrefs.SetInt("rateResult", 1);
+                    break;
+                case "canLevelUp":
+                    PlayerPrefs.SetInt("canLevelUp", (int)value);
+                    break;
+                default:
+                    // ERROR
+                    errorManager.Throw(
+                        Types.ErrorType.Code,
+                        "DataManager.cs -> SetValue()",
+                        "Wrong key given: " + key
+                    );
+                    break;
+            }
+        }
+
+        public void FinishSettingValues()
+        {
+            writer.Commit();
+
+            PlayerPrefs.Save();
         }
 
         //// OTHER ////

@@ -43,6 +43,7 @@ namespace Merge
         private InputMenu inputMenu;
         private PointerHandler pointerHandler;
         private InfoBox infoBox;
+        private CloudSave cloudSave;
 
         // UI
         private VisualElement root;
@@ -105,6 +106,7 @@ namespace Merge
             uiButtons = GameData.Instance.GetComponent<UIButtons>();
             pointerHandler = GetComponent<PointerHandler>();
             infoBox = GameRefs.Instance.infoBox;
+            cloudSave=Services.Instance.GetComponent<CloudSave>();
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
@@ -113,6 +115,8 @@ namespace Merge
             {
                 convoBackground = hubGameUIDoc.GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("ConvoBackground");
             }
+            
+            cloudSave.SaveDataAsync("tutorialStep", PlayerPrefs.GetString("tutorialStep"));
 
             StartCoroutine(WaitForLoading());
         }
@@ -491,6 +495,8 @@ namespace Merge
             PlayerPrefs.DeleteKey("tutorialStep");
 
             PlayerPrefs.Save();
+
+            cloudSave.SaveDataAsync("tutorialFinished", 1);
 
             StartCoroutine(WaitForGameReferences());
         }

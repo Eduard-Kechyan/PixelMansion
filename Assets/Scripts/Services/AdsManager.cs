@@ -122,17 +122,13 @@ namespace Merge
                 rewardedAd = null;
             }
 
-            Debug.Log("Ad 4");
-
             AdRequest adRequest = new();
 
             RewardedAd.Load(adUnitId, adRequest, (RewardedAd ad, LoadAdError error) =>
             {
-                Debug.Log("Ad 5");
                 // Failed
                 CheckForError(ad, error, () =>
                 {
-                    Debug.Log("Ad 6");
                     rewardedAd = ad;
 
                     SetRewardData(rewardedAd.GetRewardItem());
@@ -141,7 +137,6 @@ namespace Merge
 
                     if (showAfterLoading)
                     {
-                        Debug.Log("Ad 7");
                         ShowAd();
                     }
                 });
@@ -151,20 +146,16 @@ namespace Merge
         // Show the ad to the player
         void ShowAd()
         {
-            Debug.Log("Ad 0");
             if (rewardedAd != null && rewardedAd.CanShowAd())
             {
-                Debug.Log("Ad 1");
                 rewardedAd.Show((Reward reward) =>
                 {
-                    Debug.Log("Ad 2");
                     rewardReady = true;
                     rewardToGive = reward;
                 });
             }
             else
             {
-                Debug.Log("Ad 3");
                 HandleFail();
             }
         }
@@ -246,7 +237,6 @@ namespace Merge
 
             if (error != null)
             {
-                Debug.Log("Ad 8");
                 hasError = true;
 
                 // ERROR
@@ -259,7 +249,6 @@ namespace Merge
 
             if (ad == null)
             {
-                Debug.Log("Ad 9");
                 hasError = true;
 
                 // ERROR
@@ -272,7 +261,6 @@ namespace Merge
 
             if (hasError)
             {
-                Debug.Log("Ad 11");
                 if (failedCount < maxFailedCount)
                 {
                     failedCount++;
@@ -288,7 +276,6 @@ namespace Merge
             }
             else
             {
-                Debug.Log("Ad 12");
                 errorCallback?.Invoke();
             }
         }

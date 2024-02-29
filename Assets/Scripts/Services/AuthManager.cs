@@ -32,7 +32,7 @@ namespace Merge
         private string googlePlayToken;
 
         private string googlePlayerId;
-        private string authPlayerId;
+        public string playerId;
 
         // Apple
         private string appleSignature;
@@ -54,13 +54,13 @@ namespace Merge
         private Services services;
         private ErrorManager errorManager;
 
-        //// Init ////
-
         void Start()
         {
             // Cache
             services = Services.Instance;
             errorManager = ErrorManager.Instance;
+
+            SetPlayerIdTemp();
 
             StartCoroutine(WaitForUnityServices());
 
@@ -131,6 +131,22 @@ namespace Merge
             };
         }
 
+        void SetPlayerIdTemp()
+        {
+            if (PlayerPrefs.HasKey("playerId"))
+            {
+                playerId = PlayerPrefs.GetString("playerId");
+            }
+            else
+            {
+                byte[] guidByteArray = Guid.NewGuid().ToByteArray();
+
+                string base64 = Convert.ToBase64String(guidByteArray);
+
+                playerId = "ER_" + base64.Substring(0, base64.Length - 2);
+            }
+        }
+
         async Task SignInAnonymOrCachedAsync()
         {
             bool tokenExists = AuthenticationService.Instance.SessionTokenExists;
@@ -163,15 +179,20 @@ namespace Merge
                     services.SetSignInData(AuthType.Anonym);
                 }
 
+                services.authAvailable = true;
+
                 PlayerInfo playerInfo = await AuthenticationService.Instance.GetPlayerInfoAsync();
 
-                authPlayerId = playerInfo.Id;
+                playerId = playerInfo.Id;
+
+                PlayerPrefs.SetString("playerId", playerId);
             }
             catch (AuthenticationException ex)
             {
                 currentAuthType = AuthType.Unknown;
 
                 // Compare to AuthenticationErrorCodes
+                // ERROR
                 errorManager.Throw(
                     Types.ErrorType.Code,
                     "AuthManager.cs -> SignInAnonymOrCachedAsync()",
@@ -183,6 +204,7 @@ namespace Merge
                 currentAuthType = AuthType.Unknown;
 
                 // Compare to CommonErrorCodes
+                // ERROR
                 errorManager.Throw(
                     Types.ErrorType.Code,
                     "AuthManager.cs -> SignInAnonymOrCachedAsync()",
@@ -256,6 +278,7 @@ namespace Merge
             }
             catch (AuthenticationException ex)
             {
+                // ERROR
                 errorManager.Throw(
                         Types.ErrorType.Code,
                         "AuthManager.cs -> LinkToAccount()",
@@ -269,6 +292,7 @@ namespace Merge
             }
             catch (RequestFailedException ex)
             {
+                // ERROR
                 errorManager.Throw(
                     Types.ErrorType.Code,
                     "AuthManager.cs -> LinkToAccount()",
@@ -408,7 +432,7 @@ namespace Merge
                 }
                 else
                 {
-                    if(status != SignInStatus.Canceled || !Application.isEditor)
+                    if (status != SignInStatus.Canceled || !Application.isEditor)
                     {
                         // ERROR
                         errorManager.Throw(

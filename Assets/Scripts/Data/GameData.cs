@@ -106,8 +106,6 @@ namespace Merge
 
         [Header("Other")]
         [ReadOnly]
-        public string userId = "DUMMY_ID";
-        [ReadOnly]
         public bool greeted = false;
 
         [HideInInspector]
@@ -132,6 +130,7 @@ namespace Merge
         private GameplayUI gameplayUI;
         private DataManager dataManager;
         private SoundManager soundManager;
+        private CloudSave cloudSave;
 
         // Instance
         public static GameData Instance;
@@ -154,6 +153,7 @@ namespace Merge
             // Cache
             dataManager = DataManager.Instance;
             soundManager = SoundManager.Instance;
+            cloudSave = Services.Instance.GetComponent<CloudSave>();
 
             canLevelUp = PlayerPrefs.GetInt("canLevelUp") == 1;
 
@@ -177,6 +177,7 @@ namespace Merge
         // Load sprites from resources
         public void LoadSprites()
         {
+            // TODO - Improve resource loading (make it awaitable)
             itemsSprites = Resources.LoadAll<Sprite>("Sprites/Items");
             generatorsSprites = Resources.LoadAll<Sprite>("Sprites/Generators");
             collectablesSprites = Resources.LoadAll<Sprite>("Sprites/Collectables");
@@ -277,7 +278,7 @@ namespace Merge
 
             valuesUI.UpdateValues();
 
-            dataManager.writer.Write("experience", experience).Commit();
+            dataManager.SaveValue("experience", experience);
         }
 
         public void UpdateLevel(Action callback = null)
@@ -288,7 +289,8 @@ namespace Merge
 
             SetTenthLevel();
 
-            dataManager.writer.Write("level", level).Write("experience", experience).Commit();
+            dataManager.SaveValue("level", level);
+            dataManager.SaveValue("experience", experience);
 
             CalcMaxExperience();
 
@@ -363,7 +365,7 @@ namespace Merge
                 EnergyUpdatedEventAction?.Invoke(true);
             }
 
-            dataManager.writer.Write(type.ToString().ToLower(), tempAmount).Commit();
+            dataManager.SaveValue(type.ToString().ToLower(), tempAmount);
 
             if (updateUI)
             {
@@ -602,6 +604,8 @@ namespace Merge
 
             PlayerPrefs.SetInt("canLevelUp", canLevelUp ? 1 : 0);
             PlayerPrefs.Save();
+
+            cloudSave.SaveDataAsync("canLevelUp", canLevelUp ? 1 : 0);
         }
 
         // Get Sprite from sprite name

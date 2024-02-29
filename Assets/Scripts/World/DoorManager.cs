@@ -35,7 +35,7 @@ namespace Merge
                 yield return null;
             }
 
-            if (worldDataManager.CheckDoors())
+            if (PlayerPrefs.HasKey("doorSet"))
             {
                 unlockedDoors = worldDataManager.LoadDoors();
 

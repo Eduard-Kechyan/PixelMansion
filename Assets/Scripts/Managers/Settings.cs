@@ -20,6 +20,7 @@ namespace Merge
         private I18n LOCALE;
         private SettingsMenu settingsMenu;
         private NotificsManager notificsManager;
+        private CloudSave cloudSave;
 
         // Instance
         public static Settings Instance;
@@ -42,6 +43,7 @@ namespace Merge
             soundManager = SoundManager.Instance;
             LOCALE = I18n.Instance;
             notificsManager = Services.Instance.GetComponent<NotificsManager>();
+            cloudSave = Services.Instance.GetComponent<CloudSave>();
 
             GetSound();
             GetMusic();
@@ -64,6 +66,8 @@ namespace Merge
             PlayerPrefs.SetInt("sound", soundOn ? 1 : 0);
             PlayerPrefs.Save();
 
+            cloudSave.SaveDataAsync("sound", soundOn ? 1 : 0);
+
             settingsMenu.SetUIOptionsButtons();
         }
 
@@ -81,6 +85,8 @@ namespace Merge
             PlayerPrefs.SetInt("music", musicOn ? 1 : 0);
             PlayerPrefs.Save();
 
+            cloudSave.SaveDataAsync("music", musicOn ? 1 : 0);
+
             settingsMenu.SetUIOptionsButtons();
         }
 
@@ -90,6 +96,8 @@ namespace Merge
 
             PlayerPrefs.SetInt("vibration", vibrationOn ? 1 : 0);
             PlayerPrefs.Save();
+
+            cloudSave.SaveDataAsync("vibration", vibrationOn ? 1 : 0);
 
             settingsMenu.SetUIOptionsButtons();
         }
@@ -106,6 +114,8 @@ namespace Merge
                     {
                         PlayerPrefs.SetInt("notifications", 1);
                         PlayerPrefs.Save();
+
+                        cloudSave.SaveDataAsync("notifications", 1);
 
                         settingsMenu.SetUIOptionsButtons();
                         notificsManager.EnableNotifications();
@@ -124,6 +134,8 @@ namespace Merge
                 PlayerPrefs.SetInt("notifications", 0);
                 PlayerPrefs.Save();
 
+                cloudSave.SaveDataAsync("notifications", 0);
+
                 settingsMenu.SetUIOptionsButtons();
             }
         }
@@ -134,6 +146,8 @@ namespace Merge
 
             PlayerPrefs.SetInt("notifications", enable ? 1 : 0);
             PlayerPrefs.Save();
+
+            cloudSave.SaveDataAsync("notifications", enable ? 1 : 0);
         }
 
         public void SetLocale(Types.Locale newLocale, bool initial = false)
@@ -161,11 +175,15 @@ namespace Merge
 
                         I18n.SetLocale(locale);
                         PlayerPrefs.SetString("locale", locale.ToString());
+
+            cloudSave.SaveDataAsync("locale", locale.ToString());
                     }
                     else
                     {
                         I18n.SetLocale(Types.Locale.English);
                         PlayerPrefs.SetString("locale", "English");
+
+            cloudSave.SaveDataAsync("locale", "English");
                     }
 
                     PlayerPrefs.Save();
@@ -176,6 +194,8 @@ namespace Merge
                 PlayerPrefs.SetString("locale", newLocale.ToString());
 
                 PlayerPrefs.Save();
+
+                cloudSave.SaveDataAsync("locale", newLocale.ToString());
             }
         }
 

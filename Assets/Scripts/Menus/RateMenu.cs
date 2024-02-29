@@ -23,6 +23,7 @@ namespace Merge
         private MenuUI menuUI;
         private GameData gameData;
         private I18n LOCALE;
+        private CloudSave cloudSave;
 
         // UI
         private VisualElement root;
@@ -52,6 +53,7 @@ namespace Merge
             menuUI = GetComponent<MenuUI>();
             gameData = GameData.Instance;
             LOCALE = I18n.Instance;
+            cloudSave = Services.Instance.GetComponent<CloudSave>();
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
@@ -148,6 +150,8 @@ namespace Merge
         {
             PlayerPrefs.SetInt("rateResult", 1); // Note the 1
 
+            cloudSave.SaveDataAsync("rateResult", 1);
+
             // TODO - Send statistic to the server (starCount)
 
             // TODO - Open the game's app store page
@@ -166,6 +170,8 @@ namespace Merge
         void HandleNeverButton()
         {
             PlayerPrefs.SetInt("rateResult", 0); // Note the 0
+
+            cloudSave.SaveDataAsync("rateResult", 0);
 
             // TODO - Send statistic to the server
 

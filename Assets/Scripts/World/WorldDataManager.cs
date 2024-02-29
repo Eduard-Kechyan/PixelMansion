@@ -32,11 +32,6 @@ namespace Merge
         private DataConverter dataConverter;
         private GameData gameData;
 
-        // Quick Save
-        private QuickSaveSettings saveSettings;
-        public QuickSaveWriter writer;
-        public QuickSaveReader reader;
-
         void Start()
         {
             // Cache
@@ -84,15 +79,8 @@ namespace Merge
                 worldRoot = GameObject.Find("World").transform.Find("Root");
             }
 
-            // Set up the writer
-            saveSettings = new QuickSaveSettings() { CompressionMode = Debug.isDebugBuild ? CompressionMode.None : CompressionMode.Gzip };
-            writer = QuickSaveWriter.Create("Areas", saveSettings);
-
-            if (PlayerPrefs.HasKey("areaSet") && writer.Exists("areaSet"))
+            if (PlayerPrefs.HasKey("areaSet"))
             {
-                // Set up the reader
-                reader = QuickSaveReader.Create("Areas", saveSettings);
-
                 initial = false;
             }
 
@@ -199,21 +187,21 @@ namespace Merge
 
         void SaveData()
         {
+            string areasJson = dataConverter.ConvertAreaToJson(gameData.areasData);
+
             if (initial)
             {
-                writer
-                .Write("areaSet", true)
-                .Write("areas", dataConverter.ConvertAreaToJson(gameData.areasData))
-                .Commit();
+                dataManager.SaveValue(new(){
+                    {"areaSet", true},
+                    {"areas", areasJson}
+                });
 
                 PlayerPrefs.SetInt("areaSet", 1);
                 PlayerPrefs.Save();
             }
             else
             {
-                writer
-                .Write("areas", dataConverter.ConvertAreaToJson(gameData.areasData))
-                .Commit();
+                dataManager.SaveValue("areas", areasJson);
             }
 
             StartCoroutine(BakeNavMeshAfterPhysicsUpdate());
@@ -223,9 +211,7 @@ namespace Merge
         {
             if (gameData.areasData.Count == 0)
             {
-                string newAreasData = "";
-
-                reader.Read<string>("areas", r => newAreasData = r);
+                string newAreasData = dataManager.LoadValue<string>("areas");
 
                 gameData.areasData = dataConverter.ConvertJsonToArea(newAreasData);
 
@@ -504,24 +490,20 @@ namespace Merge
         // Doors
         public void SaveDoors(List<string> unlockedDoors)
         {
-            writer
-            .Write("doorSet", JsonConvert.SerializeObject(unlockedDoors))
-            .Write("unlockedDoors", JsonConvert.SerializeObject(unlockedDoors))
-            .Commit();
+            dataManager.SaveValue(new(){
+                {"doorSet", true},
+                {"unlockedDoors", JsonConvert.SerializeObject(unlockedDoors)}
+            });
+
+            PlayerPrefs.SetInt("doorSet", 1);
+            PlayerPrefs.Save();
         }
 
         public List<string> LoadDoors()
         {
-            string newUnlockedDoors = "";
-
-            reader.Read<string>("unlockedDoors", r => newUnlockedDoors = r);
+            string newUnlockedDoors = dataManager.LoadValue<string>("unlockedDoors");
 
             return JsonConvert.DeserializeObject<List<string>>(newUnlockedDoors);
-        }
-
-        public bool CheckDoors()
-        {
-            return writer.Exists("doorSet");
         }
 
         // Find selectable items collider center position

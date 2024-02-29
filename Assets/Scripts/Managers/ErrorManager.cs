@@ -10,10 +10,7 @@ namespace Merge
     {
         // References
         private NoteMenu noteMenu;
-
-        // Instances
-        private I18n LOCALE;
-        private ApiCalls apiCalls;
+        private AuthManager authManager;
 
         // Instance
         public static ErrorManager Instance;
@@ -21,7 +18,7 @@ namespace Merge
         [Serializable]
         public class ErrorData
         {
-            public string userId;
+            public string playerId;
             public string source;
             public string message;
             public string code;
@@ -49,10 +46,7 @@ namespace Merge
             {
                 noteMenu = GameRefs.Instance.noteMenu;
             }
-
-            // Cache instances
-            LOCALE = I18n.Instance;
-            apiCalls = ApiCalls.Instance;
+            authManager=Services.Instance.GetComponent<AuthManager>();
         }
 
         public void Throw(Types.ErrorType type, string errorSource, string errorMessage, string errorCode = "", bool sendError = true, bool logError = true, bool showToPlayer = false)
@@ -62,7 +56,7 @@ namespace Merge
             {
                 ErrorData newErrorData = new ErrorData
                 {
-                    userId = GameData.Instance.userId,
+                    playerId = authManager.playerId,
                     source = errorSource,
                     message = errorMessage,
                     code = errorCode,
@@ -70,7 +64,7 @@ namespace Merge
                     created = DateTime.UtcNow.ToString()
                 };
 
-                apiCalls.SendError(JsonConvert.SerializeObject(newErrorData));
+                // TODO - Send JsonConvert.SerializeObject(newErrorData) to the server
             }
 
             // Log the warning

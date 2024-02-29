@@ -27,6 +27,7 @@ namespace Merge
         private ValuesUI valuesUI;
         private CharMain charMain;
         private CameraMotion cameraMotion;
+        private CloudSave cloudSave;
 
         void Start()
         {
@@ -37,6 +38,7 @@ namespace Merge
             valuesUI = GameRefs.Instance.valuesUI;
             charMain = CharMain.Instance;
             cameraMotion = Camera.main.GetComponent<CameraMotion>();
+            cloudSave = Services.Instance.GetComponent<CloudSave>();
 
             Glob.SetTimeout(() =>
             {
@@ -56,6 +58,8 @@ namespace Merge
             if (last)
             {
                 PlayerPrefs.SetInt("initialTaskDataSet", 1);
+
+                cloudSave.SaveDataAsync("initialTaskDataSet", 1);
             }
             else if (!initialSet)
             {
@@ -348,9 +352,9 @@ namespace Merge
 
         void CheckForProgressSteps()
         {
-            if (PlayerPrefs.HasKey("ProgressStep"))
+            if (PlayerPrefs.HasKey("progressStep"))
             {
-                Types.ProgressStep oldProgressStep = JsonConvert.DeserializeObject<Types.ProgressStep>(PlayerPrefs.GetString("ProgressStep"));
+                Types.ProgressStep oldProgressStep = JsonConvert.DeserializeObject<Types.ProgressStep>(PlayerPrefs.GetString("progressStep"));
 
                 switch (Glob.ParseEnum<Types.StepType>(oldProgressStep.stepType))
                 {
@@ -378,9 +382,13 @@ namespace Merge
                 id = stepId,
             };
 
-            PlayerPrefs.SetString("ProgressStep", JsonConvert.SerializeObject(newProgressStep));
+            string progressStepString=JsonConvert.SerializeObject(newProgressStep);
+
+            PlayerPrefs.SetString("progressStep", progressStepString);
 
             PlayerPrefs.Save();
+            
+            cloudSave.SaveDataAsync("progressStep", progressStepString);
         }
     }
 }

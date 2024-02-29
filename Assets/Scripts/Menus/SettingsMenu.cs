@@ -174,11 +174,11 @@ namespace Merge
                 rateButton.style.display = DisplayStyle.None;
             }
 
-            idLabel.text = LOCALE.Get("settings_menu_user_id") + GameData.Instance.userId;
+            idLabel.text = LOCALE.Get("settings_menu_user_id") + authManager.playerId;
 
             versionLabel.text = LOCALE.Get("settings_menu_version") + Application.version;
 
-            SetUiText();
+            SetUIText();
 
             SetUIOptionsButtons();
 
@@ -188,7 +188,7 @@ namespace Merge
             menuUI.OpenMenu(settingsMenu, title);
         }
 
-        void SetUiText()
+        void SetUIText()
         {
             // Buttons
             supportButton.text = LOCALE.Get("settings_menu_support_label");
@@ -287,7 +287,7 @@ namespace Merge
 
         void CopyIdToClipboard()
         {
-            GUIUtility.systemCopyBuffer = GameData.Instance.userId;
+            GUIUtility.systemCopyBuffer = authManager.playerId;
 
             copyCheck.style.display = DisplayStyle.Flex;
             copyCheck.style.opacity = 1;

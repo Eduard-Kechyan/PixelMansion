@@ -14,6 +14,8 @@ namespace Merge
         public bool unityServicesAvailable = false;
         public bool iapAvailable = false;
         public bool adsAvailable = false;
+        public bool authAvailable = false;
+        public bool cloudSaveAvailable = false;
 
         [Header("Sign Ins")]
         public bool anonymousSignIn = false;

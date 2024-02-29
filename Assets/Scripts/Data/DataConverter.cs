@@ -473,53 +473,6 @@ namespace Merge
             return JsonConvert.SerializeObject(itemsJson);
         }
 
-        //// UNSENT ////
-
-        public List<ApiCalls.UnsentData> ConvertUnsentFromJson(string unsentDataString)
-        {
-            ApiCalls.UnsentDataJson[] unsentJson = JsonConvert.DeserializeObject<ApiCalls.UnsentDataJson[]>(
-                unsentDataString
-            );
-
-            List<ApiCalls.UnsentData> unsentData = new List<ApiCalls.UnsentData>();
-
-            for (int i = 0; i < unsentJson.Length; i++)
-            {
-                ApiCalls.UnsentType newUnsentType = Glob.ParseEnum<ApiCalls.UnsentType>(unsentJson[i].unsentType);
-
-                ApiCalls.UnsentData newUnsentData = new ApiCalls.UnsentData
-                {
-                    unsentType = newUnsentType,
-                    jsonData = unsentJson[i].jsonData,
-                    priority = unsentJson[i].priority
-                };
-
-                unsentData.Add(newUnsentData);
-            }
-
-            return unsentData;
-
-        }
-
-        public string ConvertUnsentToJson(List<ApiCalls.UnsentData> unsentData)
-        {
-            ApiCalls.UnsentDataJson[] unsentJson = new ApiCalls.UnsentDataJson[unsentData.Count];
-
-            for (int i = 0; i < unsentData.Count; i++)
-            {
-                ApiCalls.UnsentDataJson newUnsentJson = new ApiCalls.UnsentDataJson
-                {
-                    unsentType = unsentData[i].unsentType.ToString(),
-                    jsonData = unsentData[i].jsonData,
-                    priority = unsentData[i].priority,
-                };
-
-                unsentJson[i] = newUnsentJson;
-            }
-
-            return JsonConvert.SerializeObject(unsentJson);
-        }
-
         //// TIMERS ////
 
         public List<Types.Timer> ConvertTimersFromJson(string timersString)
