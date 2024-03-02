@@ -30,6 +30,7 @@ namespace Merge
         private I18n LOCALE;
         private GameData gameData;
         private ItemHandler itemHandler;
+        private AddressableManager addressableManager;
 
         // UI
         private VisualElement root;
@@ -40,7 +41,7 @@ namespace Merge
         private VisualTreeAsset taskPrefab;
         private VisualTreeAsset taskNeedPrefab;
 
-        void Start()
+        async void Start()
         {
             // Cache
             menuUI = GetComponent<MenuUI>();
@@ -48,6 +49,7 @@ namespace Merge
             itemHandler = DataManager.Instance.GetComponent<ItemHandler>();
             LOCALE = I18n.Instance;
             gameData = GameData.Instance;
+            addressableManager = DataManager.Instance.GetComponent<AddressableManager>();
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
@@ -56,9 +58,9 @@ namespace Merge
 
             taskScrollView = root.Q<ScrollView>("TaskScrollView");
 
-            taskGroupPrefab = Resources.Load<VisualTreeAsset>("Uxml/TaskGroup");
-            taskPrefab = Resources.Load<VisualTreeAsset>("Uxml/Task");
-            taskNeedPrefab = Resources.Load<VisualTreeAsset>("Uxml/TaskNeed");
+            taskGroupPrefab = await addressableManager.LoadAssetAsync<VisualTreeAsset>("Assets/Addressables/Uxml/TaskGroup.uxml");
+            taskPrefab = await addressableManager.LoadAssetAsync<VisualTreeAsset>("Assets/Addressables/Uxml/Task.uxml");
+            taskNeedPrefab = await addressableManager.LoadAssetAsync<VisualTreeAsset>("Assets/Addressables/Uxml/TaskNeed.uxml");
 
             Init();
         }
@@ -299,8 +301,10 @@ namespace Merge
             }
         }
 
-        IEnumerator WaitForTaskChangingToFinish(){
-            while(Glob.selectableIsChanging){
+        IEnumerator WaitForTaskChangingToFinish()
+        {
+            while (Glob.selectableIsChanging)
+            {
                 yield return null;
             }
 

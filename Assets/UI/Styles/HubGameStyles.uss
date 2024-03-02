@@ -393,7 +393,7 @@
     left: -96px;
     transition-duration: 0.3s;
     transition-delay: 0.2s;
-    background-image: resource('Sprites/Avatars/AvatarJulia1');
+    background-image: url('project://database/Assets/Addressables/Sprites/Avatars/AvatarJulia1.png?fileID=2800000&guid=f76882f6db9fdb44281d8f06927bfb23&type=3#AvatarJulia1');
 }
 
 .convo_label {

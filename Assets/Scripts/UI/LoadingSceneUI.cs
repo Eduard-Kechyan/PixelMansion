@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -39,6 +38,8 @@ namespace Merge
 
         // References
         private I18n LOCALE;
+        private DataManager dataManager;
+        private Services services;
 
         // UI
         private VisualElement root;
@@ -87,6 +88,8 @@ namespace Merge
         {
             // Cache
             LOCALE = I18n.Instance;
+            dataManager=DataManager.Instance;
+            services = Services.Instance;
 
             // Load the sprites
             // backgroundSprites = Resources.LoadAll<Sprite>("Scenes/Loading/Scene");
@@ -143,11 +146,13 @@ namespace Merge
 
             ageAcceptButton.clicked += () => SetAge();
 
-            conflictNewButton.clicked += () => {
+            conflictNewButton.clicked += () =>
+            {
                 ResolveConflict(true);
             };
-            conflictPreviousButton.clicked += () =>{
-                 ResolveConflict(false);
+            conflictPreviousButton.clicked += () =>
+            {
+                ResolveConflict(false);
             };
 
             updateButton.clicked += () => UpdateGame();
@@ -209,7 +214,7 @@ namespace Merge
         }
 
         //// Animations ////
-        
+
         // Animate the spinner
         IEnumerator SpinTheSpinner()
         {
@@ -310,6 +315,10 @@ namespace Merge
 
             PlayerPrefs.SetInt("termsAccepted", 1);
             PlayerPrefs.Save();
+
+            services.termsAccepted = true;
+
+            dataManager.SaveValue("termsAccepted", true, false);
 
             if (termsCallback != null)
             {
@@ -476,7 +485,8 @@ namespace Merge
         }
 
         // Handle the player resolving the conflict
-        void ResolveConflict(bool forceLinking){
+        void ResolveConflict(bool forceLinking)
+        {
             HideConflictMenu();
 
             if (conflictCallback != null)

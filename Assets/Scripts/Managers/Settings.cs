@@ -176,14 +176,14 @@ namespace Merge
                         I18n.SetLocale(locale);
                         PlayerPrefs.SetString("locale", locale.ToString());
 
-            cloudSave.SaveDataAsync("locale", locale.ToString());
+                        cloudSave.SaveDataAsync("locale", locale.ToString());
                     }
                     else
                     {
                         I18n.SetLocale(Types.Locale.English);
                         PlayerPrefs.SetString("locale", "English");
 
-            cloudSave.SaveDataAsync("locale", "English");
+                        cloudSave.SaveDataAsync("locale", "English");
                     }
 
                     PlayerPrefs.Save();

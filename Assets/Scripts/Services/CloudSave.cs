@@ -3,10 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Services.CloudSave;
-using Unity.Services.CloudSave.Models;
 
-/*
-    TODO - Handle this data
+// TODO - Handle this data
+/*    
     UserData newUserData = new()
     {
         playerId = playerId,
@@ -41,17 +40,19 @@ namespace Merge
     {
         // Variables
         public bool cloudSaveEnabled = true;
-        public bool checkSendDataRegularly = false;
         [Tooltip("In minutes")]
         [Condition("checkSendDataRegularly", true)]
         public float unsentDataCheckInterval = 30f;
         public float tooLongDelay = 2f;
+        public bool throwCalledBeforeServicesError = false;
         public bool logData = false;
 
         [HideInInspector]
         public Dictionary<string, object> unsentData = new();
 
         private bool initializationTookTooLong = false;
+
+        private bool checkSendDataRegularly = false;
 
         // References
         private Services services;
@@ -64,10 +65,6 @@ namespace Merge
             services = Services.Instance;
             errorManager = ErrorManager.Instance;
             dataManager = DataManager.Instance;
-
-            Debug.Log("AA");
-            Debug.Log(services);
-            Debug.Log(services.cloudSaveAvailable);
 
             if (!Debug.isDebugBuild)
             {
@@ -96,7 +93,7 @@ namespace Merge
 
         IEnumerator WaitForGameData()
         {
-            while (!dataManager.loaded)
+            while (!services.cloudSaveAvailable || !dataManager.loaded || dataManager.reader == null)
             {
                 yield return null;
             }
@@ -106,7 +103,7 @@ namespace Merge
                 Glob.SetInterval(() =>
                 {
                     CheckUnsavedData();
-                }, unsentDataCheckInterval / 60);
+                }, unsentDataCheckInterval + 60);
             }
             else
             {
@@ -138,18 +135,18 @@ namespace Merge
 
                 if (services.cloudSaveAvailable)
                 {
-                    if (logData)
-                    {
-                        Debug.Log(callback);
-                    }
-
                     LoadAllDataAsync((Dictionary<string, Unity.Services.CloudSave.Models.Item> data) =>
                     {
                         bool tutorialFinished = false;
 
                         foreach (var dataItem in data)
                         {
-                            dataManager.SetValue(dataItem.Key, dataItem.Value.Key);
+                            Debug.Log(dataItem.Key);
+                            Debug.Log(dataItem.Value);
+                            Debug.Log(dataItem.Value.Key);
+                            Debug.Log(dataItem.Value.Value);
+
+                            dataManager.SetValue(dataItem.Key, dataItem.Value.Value);
 
                             if (dataItem.Key == "tutorialFinished")
                             {
@@ -166,22 +163,12 @@ namespace Merge
 
                         PlayerPrefs.SetInt("accountDataSet", 1);
 
-                        if (logData)
-                        {
-                            Debug.Log("A");
-                        }
-
                         callback();
                     }, () =>
                     {
                         // TODO - Inform player that getting cloud data failed
 
                         PlayerPrefs.SetInt("accountDataSet", 1);
-
-                        if (logData)
-                        {
-                            Debug.Log("B");
-                        }
 
                         callback();
                     });
@@ -209,7 +196,11 @@ namespace Merge
 
         public async void SaveDataAsync(Dictionary<string, object> newData, Action callback = null, Action failCallback = null)
         {
-            Debug.Log("BB");
+            if (services == null)
+            {
+                services = Services.Instance;
+            }
+
             if (cloudSaveEnabled)
             {
                 if (services.cloudSaveAvailable)
@@ -264,12 +255,14 @@ namespace Merge
                 }
                 else
                 {
-                    // ERROR
-                    errorManager.Throw(
-                        Types.ErrorType.Code,
-                        "CloudSave.cs -> SaveDataAsync()",
-                        "Called before \"services.cloudSaveAvailable\""
-                    );
+                    if (throwCalledBeforeServicesError)
+                    {
+                        // ERROR
+                        errorManager.ThrowWarning(
+                            Types.ErrorType.Code,
+                            "Called before \"services.cloudSaveAvailable\""
+                        );
+                    }
 
                     SetUnsavedData(newData);
 
@@ -308,47 +301,78 @@ namespace Merge
             PlayerPrefs.Save();
 
             // Save to disk
-            dataManager.SaveValue("unsentData", unsentData, false);
+            dataManager.SaveUnsentData(unsentData);
         }
 
         void RemoveFromUnsavedData(Dictionary<string, object> savedData)
         {
-            foreach (var dataItem in savedData)
+            if (unsentData != null && unsentData.Count > 0)
             {
-                foreach (var unsentDataItem in unsentData)
-                {
-                    if (unsentDataItem.Key == dataItem.Key)
-                    {
-                        unsentData.Remove(dataItem.Key);
+                List<string> foundKeys = new();
 
-                        break;
+                foreach (var dataItem in savedData)
+                {
+                    foreach (var unsentDataItem in unsentData)
+                    {
+                        if (unsentDataItem.Key == dataItem.Key)
+                        {
+                            foundKeys.Add(unsentDataItem.Key);
+
+                            break;
+                        }
                     }
                 }
-            }
 
-            if (unsentData.Count == 0)
-            {
-                PlayerPrefs.DeleteKey("hasUnsentData");
-                PlayerPrefs.Save();
-            }
+                for (int i = 0; i < foundKeys.Count; i++)
+                {
+                    unsentData.Remove(foundKeys[i]);
+                }
 
-            // Save to disk
-            dataManager.SaveValue("unsentData", unsentData, false);
+                if (unsentData.Count == 0)
+                {
+                    PlayerPrefs.DeleteKey("hasUnsentData");
+                    PlayerPrefs.Save();
+                }
+
+                // Save to disk
+                dataManager.SaveUnsentData(unsentData);
+            }
         }
 
         void CheckUnsavedData()
         {
-            // Load from disk
-            unsentData = dataManager.LoadValue<Dictionary<string, object>>("unsentData");
-
-            if (unsentData.Count > 0 && PlayerPrefs.HasKey("hasUnsentData"))
+            if (PlayerPrefs.HasKey("hasUnsentData"))
             {
-                SaveDataAsync(unsentData);
+                bool isReady = false;
 
-                unsentData.Clear();
+                // Load from disk    
+                Dictionary<string, object> tempUnsentData = dataManager.LoadUnsentData();
 
-                PlayerPrefs.DeleteKey("hasUnsentData");
-                PlayerPrefs.Save();
+                if (tempUnsentData != null && tempUnsentData.Count > 0)
+                {
+                    SetUnsavedData(tempUnsentData);
+
+                    isReady = true;
+                }
+
+                if (unsentData != null && unsentData.Count > 0)
+                {
+                    isReady = true;
+                }
+
+                if (isReady)
+                {
+                    SaveDataAsync(unsentData, () =>
+                    {
+                        unsentData.Clear();
+
+                        // Save to disk
+                        dataManager.SaveUnsentData(unsentData);
+
+                        PlayerPrefs.DeleteKey("hasUnsentData");
+                        PlayerPrefs.Save();
+                    });
+                }
             }
         }
 
@@ -416,12 +440,14 @@ namespace Merge
                 }
                 else
                 {
-                    // ERROR
-                    errorManager.Throw(
-                        Types.ErrorType.Code,
-                        "CloudSave.cs -> LoadDataAsync()",
-                        "Called before \"services.cloudSaveAvailable\""
-                    );
+                    if (throwCalledBeforeServicesError)
+                    {
+                        // ERROR
+                        errorManager.ThrowWarning(
+                            Types.ErrorType.Code,
+                            "Called before \"services.cloudSaveAvailable\""
+                        );
+                    }
 
                     failCallback?.Invoke();
                 }
@@ -445,11 +471,11 @@ namespace Merge
                         else
                         {
                             // ERROR
-                            errorManager.Throw(
-                                Types.ErrorType.Code,
-                                "CloudSave.cs -> LoadAllDataAsync()",
-                                "Result is empty"
-                            );
+                            /* errorManager.Throw(
+                                 Types.ErrorType.Code,
+                                 "CloudSave.cs -> LoadAllDataAsync()",
+                                 "Result is empty"
+                             );*/
 
                             failCallback?.Invoke();
                         }
@@ -490,12 +516,14 @@ namespace Merge
                 }
                 else
                 {
-                    // ERROR
-                    errorManager.Throw(
-                        Types.ErrorType.Code,
-                        "CloudSave.cs -> LoadAllDataAsync()",
-                        "Called before \"services.cloudSaveAvailable\""
-                    );
+                    if (throwCalledBeforeServicesError)
+                    {
+                        // ERROR
+                        errorManager.ThrowWarning(
+                            Types.ErrorType.Code,
+                            "Called before \"services.cloudSaveAvailable\""
+                        );
+                    }
 
                     failCallback?.Invoke();
                 }
@@ -564,12 +592,14 @@ namespace Merge
                 }
                 else
                 {
-                    // ERROR
-                    errorManager.Throw(
-                        Types.ErrorType.Code,
-                        "CloudSave.cs -> GetAllKeysAsync()",
-                        "Called before \"services.cloudSaveAvailable\""
-                    );
+                    if (throwCalledBeforeServicesError)
+                    {
+                        // ERROR
+                        errorManager.ThrowWarning(
+                            Types.ErrorType.Code,
+                            "Called before \"services.cloudSaveAvailable\""
+                        );
+                    }
 
                     failCallback?.Invoke();
                 }
@@ -628,12 +658,14 @@ namespace Merge
                 }
                 else
                 {
-                    // ERROR
-                    errorManager.Throw(
-                        Types.ErrorType.Code,
-                        "CloudSave.cs -> DeleteDataAsync()",
-                        "Called before \"services.cloudSaveAvailable\""
-                    );
+                    if (throwCalledBeforeServicesError)
+                    {
+                        // ERROR
+                        errorManager.ThrowWarning(
+                            Types.ErrorType.Code,
+                            "Called before \"services.cloudSaveAvailable\""
+                        );
+                    }
 
                     failCallback?.Invoke();
                 }
@@ -690,12 +722,14 @@ namespace Merge
                 }
                 else
                 {
-                    // ERROR
-                    errorManager.Throw(
-                        Types.ErrorType.Code,
-                        "CloudSave.cs -> DeleteAllDataAsync()",
-                        "Called before \"services.cloudSaveAvailable\""
-                    );
+                    if (throwCalledBeforeServicesError)
+                    {
+                        // ERROR
+                        errorManager.ThrowWarning(
+                            Types.ErrorType.Code,
+                            "Called before \"services.cloudSaveAvailable\""
+                        );
+                    }
 
                     failCallback?.Invoke();
                 }

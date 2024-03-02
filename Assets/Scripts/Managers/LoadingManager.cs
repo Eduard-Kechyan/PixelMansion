@@ -17,7 +17,7 @@ namespace Merge
         public GameObject uiDocument;
         public LoadingSceneUI loadingSceneUI;
         public int phase = 1;
-        public float maxPhase = 8;
+        public float maxPhase = 7;
 
         [SerializeField]
         private bool loading = false;
@@ -37,6 +37,7 @@ namespace Merge
         private GameData gameData;
         private NotificsManager notificsManager;
         private SoundManager soundManager;
+        private Services services;
         private AuthManager authManager;
         private CloudSave cloudSave;
 
@@ -47,8 +48,9 @@ namespace Merge
             gameData = GameData.Instance;
             notificsManager = Services.Instance.GetComponent<NotificsManager>();
             soundManager = SoundManager.Instance;
-            authManager = Services.Instance.GetComponent<AuthManager>();
-            cloudSave = Services.Instance.GetComponent<CloudSave>();
+            services = Services.Instance;
+            authManager = services.GetComponent<AuthManager>();
+            cloudSave = services.GetComponent<CloudSave>();
 
             // Get Ready
             singlePhasePercent = 100f / (maxPhase + 1);
@@ -80,11 +82,12 @@ namespace Merge
                 if (fillCount >= singlePhasePercent * 1 && phase == 1)
                 {
                     loading = false;
+
                     cloudSave.CheckUserData(callback);
 
                     if (logPhases)
                     {
-                        Debug.Log("Phase" + phase);
+                        Debug.Log("Phase 1");
                     }
                 }
 
@@ -93,11 +96,12 @@ namespace Merge
                 if (fillCount >= singlePhasePercent * 2 && phase == 2)
                 {
                     loading = false;
-                    dataManager.CheckForLoadedResources(callback);
+
+                    dataManager.CheckForLoadedSprites(callback);
 
                     if (logPhases)
                     {
-                        Debug.Log("Phase"+ phase);
+                        Debug.Log("Phase 2");
                     }
                 }
 
@@ -106,18 +110,33 @@ namespace Merge
                 if (fillCount >= singlePhasePercent * 3 && phase == 3)
                 {
                     loading = false;
-                    if (PlayerPrefs.HasKey("termsAccepted") || acceptTermsAuto)
+
+                    if (PlayerPrefs.HasKey("termsAccepted"))
                     {
                         ContinueLoading();
                     }
                     else
                     {
-                        loadingSceneUI.CheckTerms(callback);
+                        if (acceptTermsAuto)
+                        {
+                            PlayerPrefs.SetInt("termsAccepted", 1);
+                            PlayerPrefs.Save();
+
+                            services.termsAccepted = true;
+
+                            dataManager.SaveValue("termsAccepted", true, false);
+
+                            ContinueLoading();
+                        }
+                        else
+                        {
+                            loadingSceneUI.CheckTerms(callback);
+                        }
                     }
 
                     if (logPhases)
                     {
-                        Debug.Log("Phase" + phase);
+                        Debug.Log("Phase 3");
                     }
                 }
 
@@ -126,6 +145,7 @@ namespace Merge
                 if (fillCount >= singlePhasePercent * 4 && phase == 4)
                 {
                     loading = false;
+
                     ContinueLoading();
                     /* loading = false;
                      if (PlayerPrefs.HasKey("ageAccepted"))
@@ -139,31 +159,41 @@ namespace Merge
 
                     if (logPhases)
                     {
-                        Debug.Log("Phase" + phase);
+                        Debug.Log("Phase 4");
                     }
                 }
 
                 // Check for updates
                 // This phase is being checked every time
-                /*  if (fillCount >= singlePhasePercent * 5 && phase == 5)
-                 {
-                     if (!initial)
-                     {
-                         loading = false;
-                         ContinueLoading();
-                         // FIX - Fix this function
-                         // loadingSceneUI.CheckForUpdates(callback);
+                if (fillCount >= singlePhasePercent * 5 && phase == 5)
+                {
+                    loading = false;
 
-                         if (logPhases)
-                         {
-                        Debug.Log("Phase"+ phase);
-                         }
-                     }
-                 }*/
+                    if (initial)
+                    {
+                        ContinueLoading();
+
+                        if (logPhases)
+                        {
+                            Debug.Log("Phase 5");
+                        }
+                    }
+                    else
+                    {
+                        ContinueLoading();
+                        // FIX - Fix this function
+                        // loadingSceneUI.CheckForUpdates(callback);
+
+                        if (logPhases)
+                        {
+                            Debug.Log("Phase 5");
+                        }
+                    }
+                }
 
                 // Get notification permission
                 // This phase is being checked once
-                if (fillCount >= singlePhasePercent * 6 && phase == 56)
+                if (fillCount >= singlePhasePercent * 6 && phase == 6)
                 {
                     loading = false;
 
@@ -176,7 +206,7 @@ namespace Merge
 
                     if (logPhases)
                     {
-                        Debug.Log("Phase" + phase);
+                        Debug.Log("Phase 6");
                     }
                 }
 
@@ -184,6 +214,7 @@ namespace Merge
                 if (fillCount >= singlePhasePercent * 7 && phase == 7)
                 {
                     loading = false;
+
                     if (authManager.hasLinkingConflict)
                     {
                         loadingSceneUI.CheckConflict(callbackConflict);
@@ -195,7 +226,7 @@ namespace Merge
 
                     if (logPhases)
                     {
-                        Debug.Log("Phase" + phase);
+                        Debug.Log("Phase 7");
                     }
                 }
 
@@ -271,8 +302,9 @@ namespace Merge
 
         void ContinueLoading()
         {
-            loading = true;
             phase++;
+
+            loading = true;
         }
     }
 }

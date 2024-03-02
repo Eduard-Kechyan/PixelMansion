@@ -261,6 +261,10 @@ namespace Merge
 
         void DeleteData()
         {
+            Debug.LogWarning("Deleting data from the Game Data Explorer doesn't delete it from the cloud. Run the game and use the ResetHandler to fully delete all data!");
+
+            BuildData buildData = AssetDatabase.LoadAssetAtPath<BuildData>("Assets/Resources/BuildData.asset");
+
             string folderPath = Application.persistentDataPath + "/QuickSave";
 
             if (Directory.Exists(folderPath))
@@ -268,7 +272,21 @@ namespace Merge
                 Directory.Delete(folderPath, true);
             }
 
+            string sessionToken = PlayerPrefs.GetString(buildData.tokenKeyName, "");
+            string playerId = PlayerPrefs.GetString(buildData.playerIdName, "");
+
             PlayerPrefs.DeleteAll();
+
+            if (sessionToken != "")
+            {
+                PlayerPrefs.SetString(buildData.tokenKeyName, sessionToken);
+            }
+
+            if (playerId != "")
+            {
+                PlayerPrefs.SetString(buildData.playerIdName, playerId);
+            }
+
             PlayerPrefs.Save();
 
             SetDataPre();

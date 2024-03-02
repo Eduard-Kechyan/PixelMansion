@@ -195,8 +195,9 @@ namespace Merge
                 // ERROR
                 errorManager.Throw(
                     Types.ErrorType.Code,
-                    "AuthManager.cs -> SignInAnonymOrCachedAsync()",
-                    "Anonym or Cached signing in failed with Auth error! Message: " + ex.Message + ", Code: " + ex.ErrorCode
+                    GetType().Name,
+                    ex.Message,
+                    ex.ErrorCode.ToString()
                 );
             }
             catch (RequestFailedException ex)
@@ -204,12 +205,20 @@ namespace Merge
                 currentAuthType = AuthType.Unknown;
 
                 // Compare to CommonErrorCodes
-                // ERROR
-                errorManager.Throw(
-                    Types.ErrorType.Code,
-                    "AuthManager.cs -> SignInAnonymOrCachedAsync()",
-                    "Anonym or Cached signing in failed Common error! Message: " + ex.Message + ", Code: " + ex.ErrorCode
-                );
+                if (ex.ErrorCode != CommonErrorCodes.TransportError)
+                {
+                    // ERROR
+                    errorManager.Throw(
+                        Types.ErrorType.Code,
+                        "AuthManager.cs -> SignInAnonymOrCachedAsync()",
+                        ex.Message,
+                        ex.ErrorCode.ToString()
+                    );
+                }
+                else
+                {
+                    Debug.LogWarning("No internet for authentication!");
+                }
             }
         }
 

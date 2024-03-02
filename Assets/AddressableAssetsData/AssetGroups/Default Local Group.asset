@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Default Local Group
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 79473346699d1934582f31ec36d000f9
+  m_SerializeEntries:
+  - m_GUID: 5809a5fc20fd0f947b3ac306d594892c
+    m_Address: Assets/Addressables/Chests
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - chests
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5c489caad74f0a34a8f859f050687c90
+    m_Address: Assets/Addressables/Collectables
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - collectables
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fef1c6079a87dc74cb01d44b5a2384b4
+    m_Address: Assets/Addressables/Generators
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - generators
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 433368bbc9dcfb5418b15c5449f0a69f
+    m_Address: Assets/Addressables/Items
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - items
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3d547c0f9596ab845923aa2f21a3b652
+    m_Address: Assets/Addressables/Tasks
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - tasks
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 99964fbb1e6a2b246805006932d65bb7
+    m_Address: Assets/Addressables/Avatars
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - avatars
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3385958f69a231a44b0adc5f7b955438
+    m_Address: Assets/Addressables/Uxml
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 9533a024c77f98944905221bc855309e, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: ef0702d0c50d1a04893172d02746ea0b, type: 2}
+    - {fileID: 11400000, guid: 6e04839849145a945844ef7eaa5a13e2, type: 2}

@@ -27,12 +27,16 @@ namespace Merge
         public string appVersion = "0.0.-1";
         public int buildNumber = 0;
         [Space(10)]
-        public string packageName = "com.SoloNodeGames.PixelMansion";      
+        public string packageName = "com.SoloNodeGames.PixelMansion";
+        [Space(10)]
+        public string tokenKeyName = "9ba73c98-ccb2-498a-931b-f5c1ee75b123.default.unity.services.authentication.session_token";
+        public string playerIdName = "9ba73c98-ccb2-498a-931b-f5c1ee75b123.default.unity.services.authentication.player_id";
 
-        void OnValidate(){
-            if(isPublishableRelease)
+        void OnValidate()
+        {
+            if (isPublishableRelease)
             {
-                isAlpha = false; 
+                isAlpha = false;
             }
         }
     }

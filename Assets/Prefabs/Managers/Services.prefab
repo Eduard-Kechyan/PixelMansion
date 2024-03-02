@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 5000603804634430240}
   - component: {fileID: 8343167684083180862}
   - component: {fileID: 7478335895050211340}
+  - component: {fileID: 8335891544141296900}
   m_Layer: 0
   m_Name: Services
   m_TagString: Untagged
@@ -58,6 +59,7 @@ MonoBehaviour:
   anonymousSignIn: 0
   googleSignIn: 0
   appleSignIn: 0
+  termsAccepted: 0
   networkCheckDelay: 3
 --- !u!114 &1499400838582952208
 MonoBehaviour:
@@ -123,9 +125,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cloudSaveEnabled: 1
-  checkSendDataRegularly: 0
   unsentDataCheckInterval: 30
   tooLongDelay: 2
+  throwCalledBeforeServicesError: 0
   logData: 1
 --- !u!114 &7478335895050211340
 MonoBehaviour:
@@ -141,3 +143,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   accentColor: {r: 0.30588236, g: 0.5529412, b: 0.5764706, a: 1}
   log: 0
+--- !u!114 &8335891544141296900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2958170130881514855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 656cade054fc22647b874535646fece0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resetData: 0

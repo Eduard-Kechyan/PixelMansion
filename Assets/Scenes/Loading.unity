@@ -597,6 +597,14 @@ PrefabInstance:
       propertyPath: services
       value: 
       objectReference: {fileID: 1408074108}
+    - target: {fileID: 1499400838582952208, guid: dcade7c572afad84bbcc90dfe1bb5ff8, type: 3}
+      propertyPath: logData
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1499400838582952208, guid: dcade7c572afad84bbcc90dfe1bb5ff8, type: 3}
+      propertyPath: enableAds
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2958170130881514855, guid: dcade7c572afad84bbcc90dfe1bb5ff8, type: 3}
       propertyPath: m_Name
       value: Services
@@ -643,6 +651,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6414289269152044519, guid: dcade7c572afad84bbcc90dfe1bb5ff8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8335891544141296900, guid: dcade7c572afad84bbcc90dfe1bb5ff8, type: 3}
+      propertyPath: resetData
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8343167684083180862, guid: dcade7c572afad84bbcc90dfe1bb5ff8, type: 3}
+      propertyPath: throwCalledBeforeServicesError
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1219,8 +1235,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6666298423405771595, guid: a255d925b90a92e418c669c0cfae21e9, type: 3}
+      propertyPath: maxPhase
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6666298423405771595, guid: a255d925b90a92e418c669c0cfae21e9, type: 3}
       propertyPath: logPhases
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6666298423405771595, guid: a255d925b90a92e418c669c0cfae21e9, type: 3}
       propertyPath: skipSplash

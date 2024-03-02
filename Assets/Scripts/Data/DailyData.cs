@@ -29,6 +29,16 @@ namespace Merge
             // Cache
             dataConverter = GetComponent<DataConverter>();
 
+            StartCoroutine(WaitForData());
+        }
+
+        IEnumerator WaitForData()
+        {
+            while (!DataManager.Instance.loaded)
+            {
+                yield return null;
+            }
+
             CheckDailyItems();
         }
 

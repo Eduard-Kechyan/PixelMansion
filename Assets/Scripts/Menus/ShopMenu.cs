@@ -21,7 +21,7 @@ namespace Merge
 
         private string scrollLocation;
 
-       // private bool purchasing = false;
+        // private bool purchasing = false;
 
         // References
         private GameData gameData;
@@ -35,6 +35,7 @@ namespace Merge
         private Services services;
         private PaymentsManager paymentsManager;
         private UIButtons uiButtons;
+        private AddressableManager addressableManager;
 
         // UI
         private VisualElement root;
@@ -53,7 +54,7 @@ namespace Merge
 
         private VisualTreeAsset shopItemBoxPrefab;
 
-        void Start()
+        async void Start()
         {
             // Cache
             gameData = GameData.Instance;
@@ -67,6 +68,7 @@ namespace Merge
             services = Services.Instance;
             paymentsManager = services.GetComponent<PaymentsManager>();
             uiButtons = gameData.GetComponent<UIButtons>();
+            addressableManager = DataManager.Instance.GetComponent<AddressableManager>();
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
@@ -89,7 +91,7 @@ namespace Merge
             SetRestore();
 #endif
 
-            shopItemBoxPrefab = Resources.Load<VisualTreeAsset>("Uxml/ShopItemBox");
+            shopItemBoxPrefab = await addressableManager.LoadAssetAsync<VisualTreeAsset>("Assets/Addressables/Uxml/ShopItemBox.uxml");
 
             Init();
         }
@@ -600,7 +602,7 @@ namespace Merge
         {
             menuUI.ShowMenuOverlay(shopMenu);
 
-           // purchasing = true;
+            // purchasing = true;
 
             yield return new WaitForSeconds(0.3f);
 
@@ -613,7 +615,7 @@ namespace Merge
 
             yield return new WaitForSeconds(0.3f);
 
-          //  purchasing = false;
+            //  purchasing = false;
 
             callback();
         }

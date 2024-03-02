@@ -49,23 +49,6 @@ namespace Merge
 
         void Start()
         {
-            Init();
-        }
-
-        void OnEnable()
-        {
-            // Subscribe to scene load
-            SceneManager.sceneLoaded += Init;
-        }
-
-        void OnDisable()
-        {
-            // Unsubscribe from scene load
-            SceneManager.sceneLoaded -= Init;
-        }
-
-        void Init(Scene scene = default, LoadSceneMode mode = LoadSceneMode.Single)
-        {
             // Cache
             errorManager = ErrorManager.Instance;
             valuePop = GameRefs.Instance.valuePop;

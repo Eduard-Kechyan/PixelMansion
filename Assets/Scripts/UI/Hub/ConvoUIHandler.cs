@@ -47,6 +47,7 @@ namespace Merge
         private ValuesUI valuesUI;
         private I18n LOCALE;
         private CharMain charMain;
+        private AddressableManager addressableManager;
 
         // UI
         private VisualElement root;
@@ -75,6 +76,7 @@ namespace Merge
             valuesUI = GameRefs.Instance.valuesUI;
             LOCALE = I18n.Instance;
             charMain = CharMain.Instance;
+            addressableManager = DataManager.Instance.GetComponent<AddressableManager>();
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
@@ -112,14 +114,14 @@ namespace Merge
             Init();
         }
 
-        void Init()
+        async void Init()
         {
             skipLabel.text = LOCALE.Get("convo_skip_button");
             nextLabel.text = LOCALE.Get("convo_next_button");
 
             nextButton.style.opacity = 0;
 
-            avatarsSprites = Resources.LoadAll<Sprite>("Sprites/Avatars");
+            avatarsSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("avatars");
 
             loaded = true;
         }
@@ -257,7 +259,7 @@ namespace Merge
 
                 convoBoxUnderlay.style.height = 0;
                 convoBoxUnderlay.style.transitionDelay = halfDelay;
-                
+
                 skipButton.style.opacity = 0;
                 skipButton.style.transitionDelay = halfDelay;
 

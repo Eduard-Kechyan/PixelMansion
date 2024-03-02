@@ -22,6 +22,9 @@ namespace Merge
         public bool googleSignIn = false;
         public bool appleSignIn = false;
 
+        [Header("Other")]
+        public bool termsAccepted = false;
+
         [Header("Options")]
         public float networkCheckDelay = 3f;
 

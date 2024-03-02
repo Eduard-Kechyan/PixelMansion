@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 // TODO - Kaleidoscope
 
@@ -109,16 +110,16 @@ namespace Merge
         public bool greeted = false;
 
         [HideInInspector]
-        public bool resourcesLoaded = false;
+        public bool spritesLoaded = false;
 
         // Notifications
         public List<Types.Notification> notifications = new();
 
         // Sprites
-        private Sprite[] itemsSprites;
-        private Sprite[] generatorsSprites;
-        private Sprite[] collectablesSprites;
-        private Sprite[] chestsSprites;
+        private Sprite[] itemSprites;
+        private Sprite[] generatorSprites;
+        private Sprite[] collectableSprites;
+        private Sprite[] chestSprites;
         private Sprite[] taskSprites;
 
         // Events
@@ -131,6 +132,7 @@ namespace Merge
         private DataManager dataManager;
         private SoundManager soundManager;
         private CloudSave cloudSave;
+        private AddressableManager addressableManager;
 
         // Instance
         public static GameData Instance;
@@ -154,6 +156,7 @@ namespace Merge
             dataManager = DataManager.Instance;
             soundManager = SoundManager.Instance;
             cloudSave = Services.Instance.GetComponent<CloudSave>();
+            addressableManager = dataManager.GetComponent<AddressableManager>();
 
             canLevelUp = PlayerPrefs.GetInt("canLevelUp") == 1;
 
@@ -174,17 +177,15 @@ namespace Merge
             }
         }
 
-        // Load sprites from resources
-        public void LoadSprites()
+        public async void LoadSprites()
         {
-            // TODO - Improve resource loading (make it awaitable)
-            itemsSprites = Resources.LoadAll<Sprite>("Sprites/Items");
-            generatorsSprites = Resources.LoadAll<Sprite>("Sprites/Generators");
-            collectablesSprites = Resources.LoadAll<Sprite>("Sprites/Collectables");
-            chestsSprites = Resources.LoadAll<Sprite>("Sprites/Chests");
-            taskSprites = Resources.LoadAll<Sprite>("Sprites/Tasks");
+            itemSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("items");
+            generatorSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("generators");
+            collectableSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("collectables");
+            chestSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("chests");
+            taskSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("tasks");
 
-            resourcesLoaded = true;
+            spritesLoaded = true;
         }
 
         //////// SET ////////
@@ -616,7 +617,7 @@ namespace Merge
                 case Types.Type.Item:
                     if (type == Types.Type.Item)
                     {
-                        foreach (Sprite sprite in itemsSprites)
+                        foreach (Sprite sprite in itemSprites)
                         {
                             if (sprite.name == name)
                             {
@@ -626,7 +627,7 @@ namespace Merge
                     }
                     break;
                 case Types.Type.Gen:
-                    foreach (Sprite sprite in generatorsSprites)
+                    foreach (Sprite sprite in generatorSprites)
                     {
                         if (sprite.name == name)
                         {
@@ -635,7 +636,7 @@ namespace Merge
                     }
                     break;
                 case Types.Type.Coll:
-                    foreach (Sprite sprite in collectablesSprites)
+                    foreach (Sprite sprite in collectableSprites)
                     {
                         if (sprite.name == name)
                         {
@@ -644,7 +645,7 @@ namespace Merge
                     }
                     break;
                 case Types.Type.Chest:
-                    foreach (Sprite sprite in chestsSprites)
+                    foreach (Sprite sprite in chestSprites)
                     {
                         if (sprite.name == name)
                         {
