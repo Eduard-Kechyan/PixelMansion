@@ -10,9 +10,15 @@ namespace Merge
     public class ErrorManager : MonoBehaviour
     {
         // Variables
-        public bool throwTestException = false;
+        public bool diagnosticsEnabled = true;
 
-        private bool readyToThrowTestException = false;
+#if UNITY_EDITOR
+        [Space(10)]
+        public bool throwTestException = false;
+        public bool throwTestWarning = false;
+
+        private bool readyToThrowTestErrors = false;
+#endif
 
         // References
         private AuthManager authManager;
@@ -31,6 +37,15 @@ namespace Merge
             {
                 Instance = this;
                 DontDestroyOnLoad(gameObject);
+
+                if (Debug.isDebugBuild)
+                {
+                    CrashReportHandler.enableCaptureExceptions = diagnosticsEnabled;
+                }
+                else
+                {
+                    CrashReportHandler.enableCaptureExceptions = true;
+                }
             }
         }
 
@@ -54,32 +69,43 @@ namespace Merge
                 yield return null;
             }
 
-            readyToThrowTestException = true;
+            readyToThrowTestErrors = true;
 
             CrashReportHandler.SetUserMetadata("playerId", authManager.playerId);
         }
 
+#if UNITY_EDITOR
         void OnValidate()
         {
             if (throwTestException)
             {
                 throwTestException = false;
 
-                if (readyToThrowTestException)
+                if (readyToThrowTestErrors)
                 {
-                    Debug.LogException(new Exception(Types.ErrorType.Code + " Error, Code: n/a, Message: This is a test exception!, At: " + GetType().Name + " -> Start()"));
+                    Debug.LogException(new Exception(Types.ErrorType.Code + " Error, Code: n/a, Message: This is a test exception!, At: " + GetType().Name + " -> OnValidate()"));
                 }
                 else
                 {
                     Debug.LogWarning("\"readyToThrowTestException\" is false!");
                 }
             }
+
+            if (throwTestWarning)
+            {
+                throwTestWarning = false;
+
+                Debug.LogWarning(Types.ErrorType.Code + " Error, Code: n/a, Message: This is a test warning!, At: " + GetType().Name + " -> OnValidate()");
+            }
         }
+#endif
 
         public void Throw(Types.ErrorType type, string className, string errorMessage, string errorCode = "n/a", bool showToPlayer = false, [CallerMemberName] string functionName = "")
         {
             // Throw and log the exception
-            Debug.LogException(new Exception(type + " Error, Code: " + errorCode + ", Message: " + errorMessage + ", At: " + "CLASS_NAME" + " -> " + functionName));
+            string exceptionString = type + " Error, Code: " + errorCode + ", Message: " + errorMessage + ", At: " + className + ".cs" + " -> " + functionName + "()";
+
+            Debug.LogException(new Exception(exceptionString));
 
             // Notify the player
             if (showToPlayer && noteMenu != null)
@@ -88,14 +114,21 @@ namespace Merge
             }
         }
 
-        public void ThrowWarning(Types.ErrorType type,  string errorMessage, string errorCode = "", [CallerMemberName] string functionName = "")
+        public void ThrowWarning(Types.ErrorType type, string className, string errorMessage, string errorCode = "", [CallerMemberName] string functionName = "")
         {
-            Debug.LogWarning(type + " Warning, Code: " + errorCode + ", Message: " + errorMessage + ", At: " + "CLASS_NAME" + " -> " + functionName);
+            Debug.LogWarning(type + " Warning, Code: " + errorCode + ", Message: " + errorMessage + ", At: " + className + ".cs" + " -> " + functionName + "()");
         }
 
-        public void FindUsed(string objectName,  [CallerMemberName] string functionName = "")
+        public void FindUsed(string objectName, string className, [CallerMemberName] string functionName = "")
         {
-            Debug.LogWarning("FIND was used for " + objectName + ", At:" + "CLASS_NAME" + " -> " + functionName + " . FIND's a performance hit and needs to be FIXED!");
+            Debug.LogWarning("FIND was used for " + objectName + ", At:" + className + ".cs" + " -> " + functionName + "(). FIND's a performance hit and needs to be FIXED!");
+        }
+
+        public void ToggleDiagnostic()
+        {
+            diagnosticsEnabled = !diagnosticsEnabled;
+
+            CrashReportHandler.enableCaptureExceptions = diagnosticsEnabled;
         }
     }
 }

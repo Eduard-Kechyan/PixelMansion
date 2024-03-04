@@ -122,7 +122,11 @@ namespace Merge
             else
             {
                 // ERROR
-                errorManager.Throw(Types.ErrorType.Unity, "PaymentsManager.cs -> OnInitializeFailed() // A", "Reason: " + error.ToString() + ", Message: " + message);
+                errorManager.Throw(
+                    Types.ErrorType.Code,
+                    GetType().Name,
+                    message + ", Reason: " + error.ToString()
+                );
             }
         }
 
@@ -136,7 +140,11 @@ namespace Merge
             else
             {
                 // ERROR
-                errorManager.Throw(Types.ErrorType.Unity, "PaymentsManager.cs -> OnInitializeFailed() // B", "Reason: " + error.ToString());
+                errorManager.Throw(
+                    Types.ErrorType.Code,
+                    GetType().Name,
+                     error.ToString()
+                );
             }
         }
 
@@ -176,7 +184,7 @@ namespace Merge
                 {
                     var result = validator.Validate(purchaseEvent.purchasedProduct.receipt);
 
-                   // Debug.Log(purchaseEvent.purchasedProduct.receipt);
+                    // Debug.Log(purchaseEvent.purchasedProduct.receipt);
 
                     int count = 0;
 
@@ -220,7 +228,11 @@ namespace Merge
                     isPurchaseValid = false;
 
                     // ERROR
-                    errorManager.Throw(Types.ErrorType.Code, "PaymentsManager.cs -> Purchase()", "Failed to validate product with receipt: " + purchaseEvent.purchasedProduct.receipt);
+                    errorManager.Throw(
+                        Types.ErrorType.Code,
+                        GetType().Name,
+                         "Failed to validate product with receipt: " + purchaseEvent.purchasedProduct.receipt
+                    );
                 }
             }
 
@@ -297,13 +309,23 @@ namespace Merge
                         }
                         break;
                     default:
-                        errorManager.Throw(Types.ErrorType.Code, "PaymentsManager.cs -> HandlePayout()", "Payout Subtype " + payout.subtype + " has not been implemented yet!");
+                        // ERROR
+                        errorManager.Throw(
+                            Types.ErrorType.Code,
+                            GetType().Name,
+                             "Payout Subtype " + payout.subtype + " has not been implemented yet!"
+                        );
                         break;
                 }
             }
             else
             {
-                errorManager.Throw(Types.ErrorType.Code, "PaymentsManager.cs -> HandlePayout()", "Payout Type " + payout.type + " has not been implemented yet!");
+                // ERROR
+                errorManager.Throw(
+                    Types.ErrorType.Code,
+                    GetType().Name,
+                     "Payout Type " + payout.type + " has not been implemented yet!"
+                );
             }
         }
 
@@ -334,12 +356,20 @@ namespace Merge
                     if (message == "")
                     {
                         // ERROR
-                        errorManager.Throw(Types.ErrorType.Code, "PaymentsManager.cs -> HandlePurchaseFailed()", "Reason: " + reason.ToString() + ", Product Id: " + product.definition.id);
+                        errorManager.Throw(
+                            Types.ErrorType.Code,
+                            GetType().Name,
+                             "Reason: " + reason.ToString() + ", Product Id: " + product.definition.id
+                        );
                     }
                     else
                     {
                         // ERROR
-                        errorManager.Throw(Types.ErrorType.Code, "PaymentsManager.cs -> HandlePurchaseFailed()", "Reason: " + reason.ToString() + ", Message: " + message + ", Product Id: " + product.definition.id);
+                        errorManager.Throw(
+                            Types.ErrorType.Code,
+                            GetType().Name,
+                             "Message: " + message + ", Reason: " + reason.ToString() + ", Product Id: " + product.definition.id
+                        );
                     }
                 }
 

@@ -18,3 +18,5 @@ MonoBehaviour:
   appVersion: 0.0.2.6.a
   buildNumber: 6
   packageName: com.SoloNodeGames.PixelMansion
+  tokenKeyName: 9ba73c98-ccb2-498a-931b-f5c1ee75b123.default.unity.services.authentication.session_token
+  playerIdName: 9ba73c98-ccb2-498a-931b-f5c1ee75b123.default.unity.services.authentication.player_id

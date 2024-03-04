@@ -77,22 +77,40 @@ namespace Merge
                 yield return null;
             }
 
-            Init();
+            if (Application.isEditor)
+            {
+                if (Application.internetReachability != NetworkReachability.NotReachable)
+                {
+                    Init();
+                }
+            }
+            else
+            {
+                Init();
+            }
         }
 
         async void Init()
         {
             SetupEvents();
 
-            await SignInAnonymOrCachedAsync();
+            if (AuthenticationService.Instance.SessionTokenExists || Application.isEditor)
+            {
+                await SignInAnonymOrCachedAsync();
+            }
 
 #if UNITY_ANDROID || UNITY_EDITOR
             PlayGamesPlatform.Activate();
 
-            if (currentAuthType == AuthType.Anonym || AuthenticationService.Instance.IsExpired)
+            if (!Application.isEditor)
             {
                 SignInToGoogleAuto();
             }
+
+            /* if (currentAuthType == AuthType.Anonym || AuthenticationService.Instance.IsExpired)
+             {
+                 SignInToGoogleAuto();
+             }*/
 #elif UNITY_IOS || UNITY_EDITOR
             if (currentAuthType == AuthType.Anonym || !AuthenticationService.Instance.IsExpired)
             {
@@ -113,11 +131,13 @@ namespace Merge
 
             /*   AuthenticationService.Instance.SignInFailed += (err) =>
                {
-                   errorManager.Throw(
-                       Types.ErrorType.Code,
-                       "AuthManager.cs -> SetupEvents()",
-                       "Message: " + err.Message + ", Code: " + err.ErrorCode
-                   );
+                // ERROR
+                    errorManager.Throw(
+                        Types.ErrorType.Code,
+                        GetType().Name,
+                        ex.Message,
+                        ex.ErrorCode.ToString()
+                    );
                };*/
 
             AuthenticationService.Instance.SignedOut += () =>
@@ -145,6 +165,15 @@ namespace Merge
 
                 playerId = "ER_" + base64.Substring(0, base64.Length - 2);
             }
+        }
+
+        async void SetPlayerData()
+        {
+            PlayerInfo playerInfo = await AuthenticationService.Instance.GetPlayerInfoAsync();
+
+            playerId = playerInfo.Id;
+
+            PlayerPrefs.SetString("playerId", playerId);
         }
 
         async Task SignInAnonymOrCachedAsync()
@@ -181,11 +210,9 @@ namespace Merge
 
                 services.authAvailable = true;
 
-                PlayerInfo playerInfo = await AuthenticationService.Instance.GetPlayerInfoAsync();
+                SetPlayerData();
 
-                playerId = playerInfo.Id;
-
-                PlayerPrefs.SetString("playerId", playerId);
+                await HandleDSANotifications();
             }
             catch (AuthenticationException ex)
             {
@@ -210,14 +237,19 @@ namespace Merge
                     // ERROR
                     errorManager.Throw(
                         Types.ErrorType.Code,
-                        "AuthManager.cs -> SignInAnonymOrCachedAsync()",
+                        GetType().Name,
                         ex.Message,
                         ex.ErrorCode.ToString()
                     );
                 }
                 else
                 {
-                    Debug.LogWarning("No internet for authentication!");
+                    // WARNING
+                    errorManager.ThrowWarning(
+                        Types.ErrorType.Code,
+                        GetType().Name,
+                        "No internet for authentication!"
+                    );
                 }
             }
         }
@@ -249,11 +281,13 @@ namespace Merge
 
                 services.SetSignInData(type);
 
+                SetPlayerData();
+
                 await HandleDSANotifications();
 
                 if (logData)
                 {
-                    Debug.Log(type + " sign in Success");
+                    Debug.Log(type + " linking Success");
                 }
 
                 if (isManual)
@@ -269,7 +303,10 @@ namespace Merge
 
                 List<Identity> playerIdentities = playerInfo.Identities;
 
-                Debug.Log(playerIdentities.Count);
+                if (logData)
+                {
+                    Debug.Log(playerIdentities.Count);
+                }
 
                 for (int i = 0; i < playerIdentities.Count; i++)
                 {
@@ -282,6 +319,8 @@ namespace Merge
 
                 if (logData)
                 {
+                    Debug.Log(playerInfo.GetGooglePlayGamesId());
+
                     Debug.Log(type + " user already linked with another account!");
                 }
             }
@@ -289,10 +328,11 @@ namespace Merge
             {
                 // ERROR
                 errorManager.Throw(
-                        Types.ErrorType.Code,
-                        "AuthManager.cs -> LinkToAccount()",
-                        type + " linking failed with Auth error! Message: " + ex.Message + ", Code: " + ex.ErrorCode
-                    );
+                    Types.ErrorType.Code,
+                    GetType().Name,
+                    ex.Message,
+                    ex.ErrorCode.ToString()
+                );
 
                 if (isManual)
                 {
@@ -304,8 +344,72 @@ namespace Merge
                 // ERROR
                 errorManager.Throw(
                     Types.ErrorType.Code,
-                    "AuthManager.cs -> LinkToAccount()",
-                    type + " linking failed with Common error! Message: " + ex.Message + ", Code: " + ex.ErrorCode
+                    GetType().Name,
+                    ex.Message,
+                    ex.ErrorCode.ToString()
+                );
+
+                if (isManual)
+                {
+                    failCallback?.Invoke(false, "unknown");
+                }
+            }
+        }
+
+        async void SignInToAccount(AuthType type, bool isManual = false)
+        {
+            currentAuthType = type;
+
+            try
+            {
+                if (type == AuthType.Google)
+                {
+                    await AuthenticationService.Instance.SignInWithGooglePlayGamesAsync(googlePlayToken);
+                }
+                else
+                {
+                    await AuthenticationService.Instance.SignInWithAppleGameCenterAsync(appleSignature, appleTeamPlayerId, applePublicKeyUrl, appleSalt, appleTimeStamp);
+                }
+
+                services.SetSignInData(type);
+
+                SetPlayerData();
+
+                await HandleDSANotifications();
+
+                if (logData)
+                {
+                    Debug.Log(type + " sign in Success");
+                }
+
+                if (isManual)
+                {
+                    callback?.Invoke();
+                }
+            }
+            catch (AuthenticationException ex)
+            {
+                // ERROR
+                errorManager.Throw(
+                    Types.ErrorType.Code,
+                    GetType().Name,
+                    ex.Message,
+                    ex.ErrorCode.ToString()
+                );
+
+                if (isManual)
+                {
+                    failCallback?.Invoke(false, "unknown");
+                }
+            }
+            catch (RequestFailedException ex)
+            {
+                // ERROR
+                errorManager.Throw(
+                    Types.ErrorType.Code,
+                    GetType().Name,
+                    ex.Message,
+                    ex.ErrorCode.ToString()
                 );
 
                 if (isManual)
@@ -339,6 +443,7 @@ namespace Merge
         // As of February 17, 2024, application need to comply with the DSA (Digital Service Act) Notifications
         async Task HandleDSANotifications()
         {
+            // TODO - Implement this function properly
             string lastNotificationDate = AuthenticationService.Instance.LastNotificationDate;
             /*string storedNotificationDate = PlayerPrefs.GetString("storedNotificationDate");
 
@@ -401,7 +506,7 @@ namespace Merge
 
         void SignInToGoogleAuto(bool forceLinking = false)
         {
-            PlayGamesPlatform.Instance.Authenticate((status) =>
+            PlayGamesPlatform.Instance.Authenticate(async (status) =>
             {
                 if (status == SignInStatus.Success)
                 {
@@ -418,7 +523,7 @@ namespace Merge
                         {
                             errorManager.Throw(
                                 Types.ErrorType.Code,
-                                "AuthManager.cs -> LogInToGoogleAuto()",
+                                GetType().Name,
                                 "Token is empty!"
                             );
                         }
@@ -436,6 +541,10 @@ namespace Merge
                             {
                                 LinkToAccount(AuthType.Google, false, forceLinking);
                             }
+                            else
+                            {
+                                SignInToAccount(AuthType.Google, false);
+                            }
                         }
                     });
                 }
@@ -446,7 +555,7 @@ namespace Merge
                         // ERROR
                         errorManager.Throw(
                             Types.ErrorType.Code,
-                            "AuthManager.cs -> LogInToGoogleAuto()",
+                            GetType().Name,
                             "Google logging in failed! Status: " + status
                         );
                     }
@@ -456,79 +565,98 @@ namespace Merge
                         Debug.LogWarning("Attempting to sing in manually.");
                     }
 
-                    SignInToGoogleManual(false);
+                    if (Application.isEditor)
+                    {
+                        if (currentAuthType != AuthType.Anonym)
+                        {
+                            await SignInAnonymOrCachedAsync();
+                        }
+                    }
+                    else
+                    {
+                        SignInToGoogleManual(false, forceLinking);
+                    }
                 }
             });
         }
 
-        void SignInToGoogleManual(bool trulyManually = true)
+        void SignInToGoogleManual(bool trulyManually = true, bool forceLinking = false)
         {
-            PlayGamesPlatform.Instance.ManuallyAuthenticate((status) =>
-            {
-                if (status == SignInStatus.Success)
-                {
-                    if (logData)
-                    {
-                        Debug.Log("Google Play Sign In Manual Success!");
-                    }
+            PlayGamesPlatform.Instance.ManuallyAuthenticate(async (status) =>
+             {
+                 if (status == SignInStatus.Success)
+                 {
+                     if (logData)
+                     {
+                         Debug.Log("Google Play Sign In Manual Success!");
+                     }
 
-                    PlayGamesPlatform.Instance.RequestServerSideAccess(true, (code) =>
-                    {
-                        if (code == "" || code == null)
-                        {
-                            errorManager.Throw(
-                                Types.ErrorType.Code,
-                                "AuthManager.cs -> LogInToGoogleManual()",
-                                "Token is empty!"
-                            );
+                     PlayGamesPlatform.Instance.RequestServerSideAccess(true, (code) =>
+                     {
+                         if (code == "" || code == null)
+                         {
+                             errorManager.Throw(
+                                 Types.ErrorType.Code,
+                                 GetType().Name,
+                                 "Token is empty!"
+                             );
 
-                            if (trulyManually)
-                            {
-                                failCallback?.Invoke(false, "token");
-                            }
-                        }
-                        else
-                        {
-                            googlePlayToken = code;
+                             if (trulyManually)
+                             {
+                                 failCallback?.Invoke(false, "token");
+                             }
+                         }
+                         else
+                         {
+                             googlePlayToken = code;
 
-                            if (logData)
-                            {
-                                Debug.Log("Google Play Servers Side Access Success!");
-                                Debug.Log("Auth Code: " + code);
-                            }
+                             if (logData)
+                             {
+                                 Debug.Log("Google Play Servers Side Access Success!");
+                                 Debug.Log("Auth Code: " + code);
+                             }
 
-                            if (currentAuthType == AuthType.Anonym)
-                            {
-                                LinkToAccount(AuthType.Google);
-                            }
-                        }
-                    });
-                }
-                else
-                {
-                    if (status != SignInStatus.Canceled || !Application.isEditor)
-                    {
-                        // ERROR
-                        errorManager.Throw(
-                            Types.ErrorType.Code,
-                            "AuthManager.cs -> LogInToGoogleManual()",
-                            "Google logging in failed! Status: " + status
-                        );
-                    }
+                             if (currentAuthType == AuthType.Anonym)
+                             {
+                                 LinkToAccount(AuthType.Google, false, forceLinking);
+                             }
+                             else
+                             {
+                                 SignInToAccount(AuthType.Google, false);
+                             }
+                         }
+                     });
+                 }
+                 else
+                 {
+                     if (status != SignInStatus.Canceled || !Application.isEditor)
+                     {
+                         // ERROR
+                         errorManager.Throw(
+                             Types.ErrorType.Code,
+                             GetType().Name,
+                             "Google logging in failed! Status: " + status
+                         );
+                     }
 
-                    if (trulyManually)
-                    {
-                        if (status == SignInStatus.InternalError)
-                        {
-                            failCallback?.Invoke(false, "login");
-                        }
-                        else
-                        {
-                            failCallback?.Invoke(true, "");
-                        }
-                    }
-                }
-            });
+                     if (trulyManually)
+                     {
+                         if (status == SignInStatus.InternalError)
+                         {
+                             failCallback?.Invoke(false, "login");
+                         }
+                         else
+                         {
+                             failCallback?.Invoke(true, "");
+                         }
+                     }
+
+                     if (currentAuthType != AuthType.Anonym)
+                     {
+                         await SignInAnonymOrCachedAsync();
+                     }
+                 }
+             });
         }
 #elif UNITY_IOS || UNITY_EDITOR
         public async void SignIn(Action newCallback = null, Action<bool, string> newFailCallback = null)

@@ -4,25 +4,28 @@
     <ui:VisualElement name="LocaleWrapper" class="locale_wrapper locale_en" style="display: none;" />
     <ui:VisualElement name="PointerBackground" style="flex-grow: 1; position: absolute; left: 0; top: 0; right: 0; bottom: 0; display: none;" />
     <ui:VisualElement name="TopBox" class="top_box">
-        <ui:Button display-tooltip-when-elided="true" name="SettingsButton" class="button_standard button_standard_small" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Main/SettingsButton.png?fileID=2800000&amp;guid=ba1e299eb262acc479335a62d081f530&amp;type=3#SettingsButton&apos;);">
+        <ui:Button display-tooltip-when-elided="true" name="SettingsButton" class="button_standard button_standard_small" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/Main/SettingsButton.png?fileID=2800000&amp;guid=ba1e299eb262acc479335a62d081f530&amp;type=3#SettingsButton&quot;);">
             <ui:VisualElement name="Border" class="border" />
-            <ui:VisualElement name="NoteDot" class="note_dot_small" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/NoteDotSmall.png?fileID=2800000&amp;guid=87f87a41fbc83544584f9c639283f5d9&amp;type=3#NoteDotSmall&apos;);" />
+            <ui:VisualElement name="NoteDot" class="note_dot_small" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/NoteDotSmall.png?fileID=2800000&amp;guid=87f87a41fbc83544584f9c639283f5d9&amp;type=3#NoteDotSmall&quot;);" />
         </ui:Button>
-        <ui:Button display-tooltip-when-elided="true" name="ShopButton" class="button_standard button_standard_small" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Main/ShopButtonAlt.png?fileID=2800000&amp;guid=562670c80cd973b46babb76197cc6ab5&amp;type=3#ShopButtonAlt&apos;);">
+        <ui:Button display-tooltip-when-elided="true" name="ShopButton" class="button_standard button_standard_small" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/Main/ShopButtonAlt.png?fileID=2800000&amp;guid=562670c80cd973b46babb76197cc6ab5&amp;type=3#ShopButtonAlt&quot;);">
             <ui:VisualElement name="Border" class="border" />
             <ui:VisualElement name="NoteDot" class="note_dot_small" />
         </ui:Button>
-        <ui:Button display-tooltip-when-elided="true" name="DebugButton" class="button_standard button_standard_small" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Main/DebugButton.png?fileID=2800000&amp;guid=15ad31ceda532ec4892dda5273f74f24&amp;type=3#DebugButton&apos;); display: none;">
+        <ui:Button display-tooltip-when-elided="true" name="DebugButton" class="button_standard button_standard_small" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/Main/DebugButton.png?fileID=2800000&amp;guid=15ad31ceda532ec4892dda5273f74f24&amp;type=3#DebugButton&quot;); display: none;">
+            <ui:VisualElement name="Border" class="border" />
+        </ui:Button>
+        <ui:Button display-tooltip-when-elided="true" name="FeedbackButton" class="button_standard button_standard_small" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/Main/FeedbackButton.png?fileID=2800000&amp;guid=b0eafa75ef252924aac61ed8fa849ed2&amp;type=3#FeedbackButton&quot;); display: none; height: 24px;">
             <ui:VisualElement name="Border" class="border" />
         </ui:Button>
     </ui:VisualElement>
     <ui:VisualElement name="BottomBox" class="bottom_box">
         <ui:VisualElement name="Options" class="options">
-            <ui:Button display-tooltip-when-elided="true" name="PlayButton" class="button_standard play_button" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Main/PlayButton.png?fileID=2800000&amp;guid=9e796003c4fa07e42a3d824c4763e7e5&amp;type=3#PlayButton&apos;);">
+            <ui:Button display-tooltip-when-elided="true" name="PlayButton" class="button_standard play_button" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/Main/PlayButton.png?fileID=2800000&amp;guid=9e796003c4fa07e42a3d824c4763e7e5&amp;type=3#PlayButton&quot;);">
                 <ui:VisualElement name="Border" class="border" />
                 <ui:VisualElement name="NoteDot" class="note_dot" style="left: auto; right: -2px;" />
             </ui:Button>
-            <ui:Button display-tooltip-when-elided="true" name="TaskButton" class="button_standard" style="background-image: url(&apos;project://database/Assets/Sprites/Buttons/Main/TaskButton.png?fileID=2800000&amp;guid=95d01244dc81dc249b49f4a4c989915b&amp;type=3#TaskButton&apos;);">
+            <ui:Button display-tooltip-when-elided="true" name="TaskButton" class="button_standard" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/Main/TaskButton.png?fileID=2800000&amp;guid=95d01244dc81dc249b49f4a4c989915b&amp;type=3#TaskButton&quot;);">
                 <ui:VisualElement name="Border" class="border" />
                 <ui:VisualElement name="NoteDot" class="note_dot" style="opacity: 0; visibility: hidden;">
                     <ui:Label tabindex="-1" display-tooltip-when-elided="true" name="Value" class="value" />

@@ -25,6 +25,7 @@ namespace Merge
         private AuthManager authManager;
         //  private Notifics notifics;
         private ResetHandler resetHandler;
+        private FeedbackManager feedbackManager;
 
         // UI
         private VisualElement root;
@@ -35,6 +36,7 @@ namespace Merge
         private Button vibrationButton;
         private Button notificationsButton;
 
+        private Button feedbackButton;
         private Button supportButton;
         private Button privacyButton;
         private Button termsButton;
@@ -72,6 +74,7 @@ namespace Merge
             authManager = services.GetComponent<AuthManager>();
             //  notifics = Services.Instance.GetComponent<Notifics>();
             resetHandler = GetComponent<ResetHandler>();
+            feedbackManager = FeedbackManager.Instance;
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
@@ -83,6 +86,7 @@ namespace Merge
             vibrationButton = settingsMenu.Q<Button>("VibrationButton");
             notificationsButton = settingsMenu.Q<Button>("NotificationsButton");
 
+            feedbackButton = settingsMenu.Q<Button>("FeedbackButton");
             supportButton = settingsMenu.Q<Button>("SupportButton");
             privacyButton = settingsMenu.Q<Button>("PrivacyButton");
             termsButton = settingsMenu.Q<Button>("TermsButton");
@@ -112,6 +116,7 @@ namespace Merge
             vibrationButton.clicked += () => settings.ToggleVibration();
             notificationsButton.clicked += () => settings.ToggleNotifications();
 
+            feedbackButton.clicked += () => feedbackManager.Open();
             supportButton.clicked += () => Application.OpenURL(GameData.WEB_ADDRESS + "/support");
             privacyButton.clicked += () => Application.OpenURL(GameData.WEB_ADDRESS + "/privacy");
             termsButton.clicked += () => Application.OpenURL(GameData.WEB_ADDRESS + "/terms");

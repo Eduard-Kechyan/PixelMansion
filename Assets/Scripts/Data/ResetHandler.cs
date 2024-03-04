@@ -109,6 +109,7 @@ namespace Merge
         {
             bool cloudDataHandled = false;
             bool cloudDeletionFailed = false;
+            bool networkAvailable = true;
 
             // Reset Cloud Save data
             if (cloudSave == null)
@@ -122,16 +123,25 @@ namespace Merge
             }
             else
             {
-                cloudSave.DeleteAllDataAsync(() =>
+                if (Application.internetReachability == NetworkReachability.NotReachable)
                 {
+                    // TODO - Notify that reseting the game failed
+                    networkAvailable = false;
                     cloudDataHandled = true;
-                }, () =>
+                }
+                else
                 {
-                    Debug.LogWarning("Data deletion from the CloudSave failed. Try again later!");
+                    cloudSave.DeleteAllDataAsync(() =>
+                    {
+                        cloudDataHandled = true;
+                    }, () =>
+                    {
+                        Debug.LogWarning("Data deletion from the CloudSave failed. Try again later!");
 
-                    cloudDataHandled = true;
-                    cloudDeletionFailed = true;
-                });
+                        cloudDataHandled = true;
+                        cloudDeletionFailed = true;
+                    });
+                }
             }
 
             while (!cloudDataHandled)
@@ -139,7 +149,7 @@ namespace Merge
                 yield return null;
             }
 
-            if (cloudDeletionFailed)
+            if (cloudDeletionFailed && !networkAvailable)
             {
                 // TODO - Notify that reseting the game failed
             }

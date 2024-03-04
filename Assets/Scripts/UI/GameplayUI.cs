@@ -122,10 +122,13 @@ namespace Merge
             if (Application.isEditor || Debug.isDebugBuild)
             {
                 Button debugButton = root.Q<Button>("DebugButton");
+                Button feedbackButton = root.Q<Button>("FeedbackButton");
 
                 debugButton.style.display = DisplayStyle.Flex;
+                feedbackButton.style.display = DisplayStyle.Flex;
 
                 debugButton.clicked += () => DebugManager.Instance.OpenMenu();
+                feedbackButton.clicked += () => FeedbackManager.Instance.Open();
             }
 
             root.RegisterCallback<GeometryChangedEvent>(evt => SetUIButtons(evt, true));
@@ -169,13 +172,13 @@ namespace Merge
 
             HideButtons();
         }
-        
+
         public void DisableButtons()
         {
-          /*  homeButton.SetEnabled(false);
-            inventoryButton.SetEnabled(false);
-            shopButton.SetEnabled(false);
-            taskButton.SetEnabled(false);*/
+            /*  homeButton.SetEnabled(false);
+              inventoryButton.SetEnabled(false);
+              shopButton.SetEnabled(false);
+              taskButton.SetEnabled(false);*/
         }
 
         public void EnableButtons()
@@ -188,44 +191,44 @@ namespace Merge
 
         public void ToggleButton(string name, bool enabled = false)
         {
-          /*  switch (name)
-            {
-                case "home":
-                    homeButton.SetEnabled(enabled);
-                    break;
-                case "inventory":
-                    inventoryButton.SetEnabled(enabled);
-                    break;
-                case "shop":
-                    shopButton.SetEnabled(enabled);
-                    break;
-                case "task":
-                    taskButton.SetEnabled(enabled);
-                    break;
-            }*/
+            /*  switch (name)
+              {
+                  case "home":
+                      homeButton.SetEnabled(enabled);
+                      break;
+                  case "inventory":
+                      inventoryButton.SetEnabled(enabled);
+                      break;
+                  case "shop":
+                      shopButton.SetEnabled(enabled);
+                      break;
+                  case "task":
+                      taskButton.SetEnabled(enabled);
+                      break;
+              }*/
         }
 
         void HideButtons()
         {
-          /*  if (!PlayerPrefs.HasKey("gameplayHomeButtonShowing"))
-            {
-                homeButton.style.display = DisplayStyle.None;
-            }
+            /*  if (!PlayerPrefs.HasKey("gameplayHomeButtonShowing"))
+              {
+                  homeButton.style.display = DisplayStyle.None;
+              }
 
-            if (!PlayerPrefs.HasKey("gameplayInventoryButtonShowing"))
-            {
-                inventoryButton.style.display = DisplayStyle.None;
-            }
+              if (!PlayerPrefs.HasKey("gameplayInventoryButtonShowing"))
+              {
+                  inventoryButton.style.display = DisplayStyle.None;
+              }
 
-            if (!PlayerPrefs.HasKey("gameplayShopButtonShowing"))
-            {
-                shopButton.style.display = DisplayStyle.None;
-            }
+              if (!PlayerPrefs.HasKey("gameplayShopButtonShowing"))
+              {
+                  shopButton.style.display = DisplayStyle.None;
+              }
 
-            if (!PlayerPrefs.HasKey("gameplayTaskButtonShowing"))
-            {
-                taskButton.style.display = DisplayStyle.None;
-            }*/
+              if (!PlayerPrefs.HasKey("gameplayTaskButtonShowing"))
+              {
+                  taskButton.style.display = DisplayStyle.None;
+              }*/
         }
 
         public void ShowButtons()
@@ -261,53 +264,53 @@ namespace Merge
 
         public void HideButton(Types.Button button, bool alt = false)
         {
-       /*     switch (button)
-            {
-                case Types.Button.Home:
-                    if (alt)
-                    {
-                        homeButton.SetEnabled(false);
-                    }
-                    else
-                    {
-                        homeButton.style.display = DisplayStyle.None;
-                        PlayerPrefs.DeleteKey("gameplayHomeButtonShowing");
-                    }
-                    break;
-                case Types.Button.Inventory:
-                    if (alt)
-                    {
-                        inventoryButton.SetEnabled(false);
-                    }
-                    else
-                    {
-                        inventoryButton.style.display = DisplayStyle.None;
-                        PlayerPrefs.DeleteKey("gameplayInventoryButtonShowing");
-                    }
-                    break;
-                case Types.Button.Shop:
-                    if (alt)
-                    {
-                        shopButton.SetEnabled(false);
-                    }
-                    else
-                    {
-                        shopButton.style.display = DisplayStyle.None;
-                        PlayerPrefs.DeleteKey("hubShopButtonShowing");
-                    }
-                    break;
-                case Types.Button.Task:
-                    if (alt)
-                    {
-                        taskButton.SetEnabled(false);
-                    }
-                    else
-                    {
-                        taskButton.style.display = DisplayStyle.None;
-                        PlayerPrefs.DeleteKey("hubTaskButtonShowing");
-                    }
-                    break;
-            }*/
+            /*     switch (button)
+                 {
+                     case Types.Button.Home:
+                         if (alt)
+                         {
+                             homeButton.SetEnabled(false);
+                         }
+                         else
+                         {
+                             homeButton.style.display = DisplayStyle.None;
+                             PlayerPrefs.DeleteKey("gameplayHomeButtonShowing");
+                         }
+                         break;
+                     case Types.Button.Inventory:
+                         if (alt)
+                         {
+                             inventoryButton.SetEnabled(false);
+                         }
+                         else
+                         {
+                             inventoryButton.style.display = DisplayStyle.None;
+                             PlayerPrefs.DeleteKey("gameplayInventoryButtonShowing");
+                         }
+                         break;
+                     case Types.Button.Shop:
+                         if (alt)
+                         {
+                             shopButton.SetEnabled(false);
+                         }
+                         else
+                         {
+                             shopButton.style.display = DisplayStyle.None;
+                             PlayerPrefs.DeleteKey("hubShopButtonShowing");
+                         }
+                         break;
+                     case Types.Button.Task:
+                         if (alt)
+                         {
+                             taskButton.SetEnabled(false);
+                         }
+                         else
+                         {
+                             taskButton.style.display = DisplayStyle.None;
+                             PlayerPrefs.DeleteKey("hubTaskButtonShowing");
+                         }
+                         break;
+                 }*/
         }
 
         //// Indicators ////

@@ -14,10 +14,10 @@ namespace Merge
         public float transitionDuration = 0.1f;
 
         // References
-        private UIDocument logsUI;
+        private UIDocument debugUI;
         private Logs logs;
         private ValuesUI valuesUI;
-        private AuthManager authManager;
+        private ErrorManager errorManager;
 
         // UI
         private VisualElement root;
@@ -27,9 +27,9 @@ namespace Merge
 
         private VisualElement otherContainer;
         private Button adButton;
+        private Button diagnosticsButton;
         private Button logsButton;
         private Button logsShakingButton;
-        private Button signOutButton;
 
         private VisualElement loadingContainer;
         private Button skipButton;
@@ -52,22 +52,22 @@ namespace Merge
         void Start()
         {
             // Cache
-            logsUI = GetComponent<UIDocument>();
+            debugUI = GetComponent<UIDocument>();
             logs = Logs.Instance;
             valuesUI = GameRefs.Instance.valuesUI;
-            authManager = Services.Instance.GetComponent<AuthManager>();
+            errorManager = ErrorManager.Instance;
 
             // UI
-            root = logsUI.rootVisualElement;
+            root = debugUI.rootVisualElement;
 
             debugMenu = root.Q<VisualElement>("DebugMenu");
             menuBackground = debugMenu.Q<VisualElement>("Background");
 
             otherContainer = debugMenu.Q<VisualElement>("OtherContainer");
             adButton = otherContainer.Q<Button>("AdButton");
+            diagnosticsButton = otherContainer.Q<Button>("DiagnosticsButton");
             logsButton = otherContainer.Q<Button>("LogsButton");
             logsShakingButton = otherContainer.Q<Button>("LogsShakingButton");
-            signOutButton = otherContainer.Q<Button>("SignOutButton");
 
             // Button taps
             menuBackground.AddManipulator(new Clickable(evt =>
@@ -83,22 +83,25 @@ namespace Merge
                     Debug.LogError(error.GetCause());
                 }
             });
+            diagnosticsButton.clicked += () => ToggleDiagnostic();
             logsButton.clicked += () => logs.Toggle();
             logsShakingButton.clicked += () => ToggleLogsShaking();
-            signOutButton.clicked += () => authManager.SignOut();
 
             // Init
+            Init();
+        }
+
+        void Init()
+        {
+            // Hide menu
             debugMenu.style.display = DisplayStyle.None;
             debugMenu.style.opacity = 0;
 
-            if (logs.shakingEnabled)
-            {
-                logsShakingButton.text = "Shaking: On";
-            }
-            else
-            {
-                logsShakingButton.text = "Shaking: Off";
-            }
+            // Diagnostics
+            CheckDiagnostic();
+
+            // Log shaking
+            CheckLogsShaking();
 
             // Loading scene
             if (loadingManager != null)
@@ -118,28 +121,49 @@ namespace Merge
                 // Init
                 loadingContainer.style.display = DisplayStyle.Flex;
             }
-
-            CheckLogsShaking();
         }
 
-        public void OpenMenu()
+        //// DIAGNOSTICS ////
+
+        void ToggleDiagnostic(bool toggle = true)
         {
-            // Show the menu
-            debugMenu.style.display = DisplayStyle.Flex;
-            debugMenu.style.opacity = 1;
-
-            ShowValues();
-
-            // Disable the board
-            if (boardInteractions != null)
+            if (toggle)
             {
-                boardInteractions.DisableInteractions();
+                errorManager.ToggleDiagnostic();
             }
+
+            if (errorManager.diagnosticsEnabled)
+            {
+                diagnosticsButton.text = "Diagnostics: On";
+            }
+            else
+            {
+                diagnosticsButton.text = "Diagnostics: Off";
+            }
+
+            PlayerPrefs.SetInt("diagnosticsEnabled", errorManager.diagnosticsEnabled ? 1 : 0);
+            PlayerPrefs.Save();
         }
 
-        void ToggleLogsShaking(bool toggle=true)
+        void CheckDiagnostic()
         {
-            if(toggle)
+            if (PlayerPrefs.HasKey("diagnosticsEnabled"))
+            {
+                errorManager.diagnosticsEnabled = PlayerPrefs.GetInt("diagnosticsEnabled") == 1 ? true : false;
+            }
+            else
+            {
+                errorManager.diagnosticsEnabled = true;
+            }
+
+            ToggleDiagnostic(false);
+        }
+
+        //// SHAKING ////
+
+        void ToggleLogsShaking(bool toggle = true)
+        {
+            if (toggle)
             {
                 logs.shakingEnabled = !logs.shakingEnabled;
             }
@@ -162,10 +186,29 @@ namespace Merge
             if (PlayerPrefs.HasKey("shakingEnabled"))
             {
                 logs.shakingEnabled = PlayerPrefs.GetInt("shakingEnabled") == 1 ? true : false;
+            }
+            else
+            {
+                logs.shakingEnabled = true;
+            }
 
-                ToggleLogsShaking(false);
-            }else{
-                logs.shakingEnabled=true;
+            ToggleLogsShaking(false);
+        }
+
+        //// MENU ////
+
+        public void OpenMenu()
+        {
+            // Show the menu
+            debugMenu.style.display = DisplayStyle.Flex;
+            debugMenu.style.opacity = 1;
+
+            ShowValues();
+
+            // Disable the board
+            if (boardInteractions != null)
+            {
+                boardInteractions.DisableInteractions();
             }
         }
 

@@ -88,7 +88,7 @@ namespace Merge
         {
             // Cache
             LOCALE = I18n.Instance;
-            dataManager=DataManager.Instance;
+            dataManager = DataManager.Instance;
             services = Services.Instance;
 
             // Load the sprites
@@ -163,10 +163,13 @@ namespace Merge
             if (Application.isEditor || Debug.isDebugBuild)
             {
                 Button debugButton = root.Q<Button>("DebugButton");
+                Button feedbackButton = root.Q<Button>("FeedbackButton");
 
                 debugButton.style.display = DisplayStyle.Flex;
+                feedbackButton.style.display = DisplayStyle.Flex;
 
                 debugButton.clicked += () => DebugManager.Instance.OpenMenu();
+                feedbackButton.clicked += () => FeedbackManager.Instance.Open();
             }
 
             Init();

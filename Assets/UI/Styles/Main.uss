@@ -10,7 +10,7 @@
 }
 
 .locale_hy {
-    -unity-font-definition: url('project://database/Assets/Fonts/NicoloArmenian%20SDF.asset?fileID=11400000&guid=ba690eaaac98ff449ac853ac7a052574&type=2#NicoloArmenian SDF');
+    -unity-font-definition: url("project://database/Assets/Fonts/NicoloArmenian%20SDF.asset?fileID=11400000&guid=ba690eaaac98ff449ac853ac7a052574&type=2#NicoloArmenian SDF");
     font-size: 8px;
 }
 
@@ -19,7 +19,7 @@
 }
 
 .locale_jp {
-    -unity-font-definition: url('project://database/Assets/Fonts/NotoJapanese%20SDF.asset?fileID=11400000&guid=4886decfe93756a4f893a0442c159960&type=2#NotoJapanese SDF');
+    -unity-font-definition: url("project://database/Assets/Fonts/NotoJapanese%20SDF.asset?fileID=11400000&guid=4886decfe93756a4f893a0442c159960&type=2#NotoJapanese SDF");
     font-size: 8px;
 }
 
@@ -28,7 +28,7 @@
 }
 
 .locale_kr {
-    -unity-font-definition: url('project://database/Assets/Fonts/NotoKorean%20SDF.asset?fileID=11400000&guid=fe1d837d128d95540b9f921dc6562a90&type=2#NotoKorean SDF');
+    -unity-font-definition: url("project://database/Assets/Fonts/NotoKorean%20SDF.asset?fileID=11400000&guid=fe1d837d128d95540b9f921dc6562a90&type=2#NotoKorean SDF");
     font-size: 8px;
 }
 
@@ -37,7 +37,7 @@
 }
 
 .locale_cn {
-    -unity-font-definition: url('project://database/Assets/Fonts/NotoChinese%20SDF.asset?fileID=11400000&guid=3cabbe9fdb449134dac86eb357685940&type=2#NotoChinese SDF');
+    -unity-font-definition: url("project://database/Assets/Fonts/NotoChinese%20SDF.asset?fileID=11400000&guid=3cabbe9fdb449134dac86eb357685940&type=2#NotoChinese SDF");
     font-size: 8px;
 }
 
@@ -47,7 +47,7 @@
 
 .locale_en {
     font-size: 10px;
-    -unity-font-definition: url('project://database/Assets/Fonts/Roboto%20SDF.asset?fileID=11400000&guid=1c5dedeb0ccefb74ebe6e5ff0a6f7e56&type=2#Roboto SDF');
+    -unity-font-definition: url("project://database/Assets/Fonts/Roboto%20SDF.asset?fileID=11400000&guid=1c5dedeb0ccefb74ebe6e5ff0a6f7e56&type=2#Roboto SDF");
 }
 
 .locale_en .menu_title_value {
@@ -89,7 +89,7 @@
     height: 32px;
     left: -2px;
     top: -2px;
-    background-image: url('project://database/Assets/Sprites/Buttons/Main/ButtonBorder.png?fileID=2800000&guid=c062e3307eec0304f9afcd865b49cf91&type=3#ButtonBorder');
+    background-image: url("project://database/Assets/Sprites/Buttons/Main/ButtonBorder.png?fileID=2800000&guid=c062e3307eec0304f9afcd865b49cf91&type=3#ButtonBorder");
 }
 
 .button_standard:active {
@@ -107,7 +107,7 @@
 .button_standard_small .border {
     width: 24px;
     height: 24px;
-    background-image: url('project://database/Assets/Sprites/Buttons/Main/ButtonBorderSmall.png?fileID=2800000&guid=ecb8d5f89de5227409fc70789cfbc449&type=3#ButtonBorderSmall');
+    background-image: url("project://database/Assets/Sprites/Buttons/Main/ButtonBorderSmall.png?fileID=2800000&guid=ecb8d5f89de5227409fc70789cfbc449&type=3#ButtonBorderSmall");
     left: -2px;
     top: -2px;
 }
@@ -231,7 +231,7 @@
 .note_dot {
     width: 8px;
     height: 8px;
-    background-image: url('project://database/Assets/Sprites/Buttons/NoteDot.png?fileID=2800000&guid=b85a4c5d66f980a4fbf423fe6413e48b&type=3#NoteDot');
+    background-image: url("project://database/Assets/Sprites/Buttons/NoteDot.png?fileID=2800000&guid=b85a4c5d66f980a4fbf423fe6413e48b&type=3#NoteDot");
     position: absolute;
     left: -2px;
     top: -2px;
@@ -243,7 +243,7 @@
 .note_dot_small {
     width: 6px;
     height: 6px;
-    background-image: url('project://database/Assets/Sprites/Buttons/NoteDotSmall.png?fileID=2800000&guid=87f87a41fbc83544584f9c639283f5d9&type=3#NoteDotSmall');
+    background-image: url("project://database/Assets/Sprites/Buttons/NoteDotSmall.png?fileID=2800000&guid=87f87a41fbc83544584f9c639283f5d9&type=3#NoteDotSmall");
     position: absolute;
     left: -1px;
     top: -1px;
@@ -277,7 +277,7 @@
     left: 0;
     top: 50%;
     right: 0;
-    background-image: url('project://database/Assets/Sprites/Scenes/Gameplay/Background.png?fileID=2800000&guid=67e0e2f1b7ca3854b95261c156f6d02b&type=3#Background');
+    background-image: url("project://database/Assets/Sprites/Scenes/Gameplay/Background.png?fileID=2800000&guid=67e0e2f1b7ca3854b95261c156f6d02b&type=3#Background");
     height: 500px;
     width: 180px;
     translate: 0 -50%;
@@ -290,7 +290,7 @@
     width: 64px;
     height: 64px;
     translate: -50% -50%;
-    background-image: url('project://database/Assets/Sprites/Splash/Logo.png?fileID=2800000&guid=a321d0e6c5ec8a741aaa95aac3f573f4&type=3#Logo');
+    background-image: url("project://database/Assets/Sprites/Splash/Logo.png?fileID=2800000&guid=a321d0e6c5ec8a741aaa95aac3f573f4&type=3#Logo");
     transition-duration: 0.5s;
     transition-timing-function: ease-in-out;
 }
@@ -301,4 +301,60 @@
     height: 20px;
     right: 22px;
     bottom: 20px;
+    background-image: url("project://database/Assets/Sprites/Buttons/Main/DebugButton.png?fileID=2800000&guid=15ad31ceda532ec4892dda5273f74f24&type=3#DebugButton");
+}
+
+.feedback_debug_button {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    bottom: 20px;
+    left: 22px;
+    background-image: url("project://database/Assets/Sprites/Buttons/Main/FeedbackButton.png?fileID=2800000&guid=b0eafa75ef252924aac61ed8fa849ed2&type=3#FeedbackButton");
+}
+
+.unity-base-dropdown__container-outer {
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    overflow: hidden;
+    margin-top: 2px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.unity-base-dropdown__container-inner {
+    background-color: rgb(170, 157, 123);
+}
+
+.unity-base-dropdown__item {
+    padding-left: 0;
+}
+
+.unity-base-dropdown__container-inner .unity-base-dropdown__item:hover {
+    background-color: rgb(130, 118, 85);
+}
+
+.unity-base-dropdown__checkmark {
+    margin-left: 0;
+    margin-right: 0;
+    height: 24px;
+    width: 24px;
+    background-image: url("project://database/Assets/Sprites/Menus/FeedbackEnumCheckmark.png?fileID=2800000&guid=ebe6d399175946a42b67d090d5721aed&type=3#FeedbackEnumCheckmark");
+}
+
+.unity-base-dropdown__label {
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    font-size: 10px;
+    -unity-font-definition: url("project://database/Assets/Fonts/Roboto%20SDF.asset?fileID=11400000&guid=1c5dedeb0ccefb74ebe6e5ff0a6f7e56&type=2#Roboto SDF");
 }

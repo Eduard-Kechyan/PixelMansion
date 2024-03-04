@@ -74,7 +74,10 @@ namespace Merge
             // Check world root
             if (worldRoot == null)
             {
-                ErrorManager.Instance.FindUsed("the World Root");
+                ErrorManager.Instance.FindUsed(
+                    "the World Root",
+                    GetType().Name
+                );
 
                 worldRoot = GameObject.Find("World").transform.Find("Root");
             }

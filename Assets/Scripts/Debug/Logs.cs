@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -15,6 +16,7 @@ namespace Merge
         // Variables
         public bool logsEnabled = true;
         public bool shakingEnabled = true;
+        public bool showStack = false;
         public int titleHight = 20;
         public Color defaultLogColor;
 
@@ -38,10 +40,14 @@ namespace Merge
         public class LogData
         {
             public string message;
+            public List<string> stackTrace;
             public Color color;
         }
 
         private readonly List<LogData> logsData = new();
+
+        // References
+        private UIDocument debugUI;
 
         // UI
         private VisualElement root;
@@ -50,6 +56,7 @@ namespace Merge
         private Label logsTitleLabel;
         private ScrollView logsScrollView;
         private Button clearButton;
+        private Button stackButton;
         private Button closeButton;
 
         // Instance
@@ -67,18 +74,11 @@ namespace Merge
             }
         }
 
-        void OnDisable()
+        void Start()
         {
-            Application.logMessageReceivedThreaded -= HandleNewLog;
-        }
+            // Cache
+            debugUI = GetComponent<UIDocument>();
 
-        void OnEnable()
-        {
-            Application.logMessageReceivedThreaded += HandleNewLog;
-        }
-
-        public void Init(UIDocument debugUI)
-        {
             // UI
             root = debugUI.rootVisualElement;
             logsContainer = root.Q<VisualElement>("LogsContainer");
@@ -88,12 +88,29 @@ namespace Merge
             logsScrollView = logsContainer.Q<ScrollView>("LogsScrollView");
 
             clearButton = logsContainer.Q<Button>("ClearButton");
+            stackButton = logsContainer.Q<Button>("StackButton");
             closeButton = logsContainer.Q<Button>("CloseButton");
 
             clearButton.clicked += () => ClearData();
+            stackButton.clicked += () => ToggleStack();
             closeButton.clicked += () => Toggle();
 
-            // Initialize
+            // Init
+            Init();
+        }
+
+        void OnEnable()
+        {
+            Application.logMessageReceivedThreaded += HandleNewLog;
+        }
+
+        void OnDisable()
+        {
+            Application.logMessageReceivedThreaded -= HandleNewLog;
+        }
+
+        void Init()
+        {
             logsContainer.style.display = DisplayStyle.None;
             logsContainer.style.opacity = 0;
 
@@ -101,6 +118,8 @@ namespace Merge
             logsScrollView.style.top = titleHight;
 
             logsScrollView.Clear();
+
+            ToggleStack(false);
 
             root.RegisterCallback<GeometryChangedEvent>(CalcTopOffset);
         }
@@ -188,9 +207,33 @@ namespace Merge
 
         void HandleNewLog(string newMessage, string newStackTrace, LogType newType)
         {
+            List<string> stackList = new();
+
+            if (newStackTrace != null && newStackTrace != "")
+            {
+                Regex regexPattern = new Regex("\\(at(.*Assets/Scripts.*)\\)");
+
+                int count = 0;
+
+                foreach (Match matchItem in regexPattern.Matches(newStackTrace))
+                {
+                    string countString = count.ToString();
+
+                    if (count < 10)
+                    {
+                        countString = "0" + count;
+                    }
+
+                    stackList.Add(matchItem.ToString().Replace("(at", "[" + countString + "] ").Replace(")", ""));
+
+                    count++;
+                }
+            }
+
             LogData newLogData = new()
             {
                 message = newMessage,
+                stackTrace = stackList,
                 color = GetColorFromType(newType)
             };
 
@@ -204,13 +247,62 @@ namespace Merge
 
         void AddNewLogToUI(LogData newLogData)
         {
-            Label newLogLabel = new() { text = newLogData.message };
+            Label newLogMessageLabel = new() { text = newLogData.message };
 
-            newLogLabel.AddToClassList("log");
+            newLogMessageLabel.AddToClassList("log");
 
-            newLogLabel.style.color = newLogData.color;
+            newLogMessageLabel.style.color = newLogData.color;
 
-            logsScrollView.Add(newLogLabel);
+            logsScrollView.Add(newLogMessageLabel);
+
+            if (newLogData.stackTrace.Count > 0)
+            {
+                for (int i = 0; i < newLogData.stackTrace.Count; i++)
+                {
+                    Label newLogStackTraceLabel = new() { text = newLogData.stackTrace[i] };
+
+                    newLogStackTraceLabel.AddToClassList("log");
+                    newLogStackTraceLabel.AddToClassList("stack");
+
+                    if (showStack)
+                    {
+                        newLogStackTraceLabel.AddToClassList("show_stack");
+                    }
+
+                    newLogStackTraceLabel.style.color = newLogData.color;
+
+                    logsScrollView.Add(newLogStackTraceLabel);
+                }
+            }
+        }
+
+        void ToggleStack(bool toggle = true)
+        {
+            if (toggle)
+            {
+                showStack = !showStack;
+
+                for (int i = 0; i < logsScrollView.childCount; i++)
+                {
+                    if (showStack)
+                    {
+                        logsScrollView.ElementAt(i).AddToClassList("show_stack");
+                    }
+                    else
+                    {
+                        logsScrollView.ElementAt(i).RemoveFromClassList("show_stack");
+                    }
+                }
+            }
+
+            if (showStack)
+            {
+                stackButton.text = "Hide Stack";
+            }
+            else
+            {
+                stackButton.text = "Show Stack";
+            }
         }
 
         Color GetColorFromType(LogType newType)

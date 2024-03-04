@@ -40,9 +40,10 @@ namespace Merge
         {
 #if UNITY_EDITOR
 #else
-    if(!enableAds){
-        enableAds = true;
-    }
+            if (!enableAds)
+            {
+                enableAds = true;
+            }
 #endif
 
 #if UNITY_ANDROID
@@ -216,7 +217,7 @@ namespace Merge
                 // ERROR
                 errorManager.Throw(
                     Types.ErrorType.Code,
-                    "AdsManager.cs -> HandleAdEvent()",
+                    GetType().Name,
                     "Rewarded ad failed to open full screen content with error: " + error
                 );
 
@@ -242,7 +243,7 @@ namespace Merge
                 // ERROR
                 errorManager.Throw(
                     Types.ErrorType.Code,
-                    "AdsManager.cs -> LoadAd() -> CheckForError()",
+                    GetType().Name,
                     error.ToString()
                 );
             }
@@ -254,7 +255,7 @@ namespace Merge
                 // ERROR
                 errorManager.Throw(
                     Types.ErrorType.Code,
-                    "AdsManager.cs -> LoadAd() -> CheckForError()",
+                    GetType().Name,
                     "Ad was null!"
                 );
             }

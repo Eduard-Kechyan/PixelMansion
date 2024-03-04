@@ -15,7 +15,6 @@ namespace Merge
         public HubGameUI hubGameUI;
         public MenuUI menuUI;
         public ValuesUI valuesUI;
-        public UIDocument debugUI;
 
         // UI documents
         [HideInInspector]
@@ -156,11 +155,6 @@ namespace Merge
                 taskMenu = menuUI.GetComponent<TaskMenu>();
 
                 valuePop = menuUI.GetComponent<ValuePop>();
-            }
-
-            if (debugUI != null && Logs.Instance != null)
-            {
-                Logs.Instance.Init(debugUI);
             }
 
             initialized = true;

@@ -77,18 +77,28 @@
     padding-top: 0;
     padding-bottom: 0;
     width: 100%;
-    font-size: 8px;
+    font-size: 6px;
     white-space: normal;
     -unity-text-align: middle-left;
     color: rgb(179, 199, 212);
 }
 
+.logs_container .logs_scroll_view .stack {
+    height: 0px;
+    opacity: 0.5;
+    overflow: hidden;
+}
+
+.logs_container .logs_scroll_view .show_stack {
+    height: auto;
+}
+
 .logs_container .options {
     width: 100%;
-    height: 30px;
+    height: 26px;
     background-color: rgb(50, 65, 75);
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
     padding-top: 5px;
     padding-bottom: 5px;
     position: absolute;
@@ -96,10 +106,11 @@
     right: 0;
     bottom: 0;
     justify-content: space-between;
+    flex-direction: row;
 }
 
 .logs_container .options .button {
-    height: 20px;
+    height: 16px;
     margin-left: 0;
     margin-right: 0;
     margin-top: 0;

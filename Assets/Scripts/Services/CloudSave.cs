@@ -218,7 +218,7 @@ namespace Merge
                         // ERROR
                         errorManager.Throw(
                             Types.ErrorType.Code,
-                            "CloudSave.cs -> SaveDataAsync()",
+                            GetType().Name,
                             "CloudSaveValidationException: " + exception
                         );
 
@@ -231,7 +231,7 @@ namespace Merge
                         // ERROR
                         errorManager.Throw(
                             Types.ErrorType.Code,
-                            "CloudSave.cs -> SaveDataAsync()",
+                            GetType().Name,
                             "CloudSaveRateLimitedException: " + exception
                         );
 
@@ -244,7 +244,7 @@ namespace Merge
                         // ERROR
                         errorManager.Throw(
                             Types.ErrorType.Code,
-                            "CloudSave.cs -> SaveDataAsync()",
+                            GetType().Name,
                             "CloudSaveException: " + exception
                         );
 
@@ -257,9 +257,10 @@ namespace Merge
                 {
                     if (throwCalledBeforeServicesError)
                     {
-                        // ERROR
+                        // WARNING
                         errorManager.ThrowWarning(
                             Types.ErrorType.Code,
+                            GetType().Name,
                             "Called before \"services.cloudSaveAvailable\""
                         );
                     }
@@ -397,8 +398,8 @@ namespace Merge
                             // ERROR
                             errorManager.Throw(
                                 Types.ErrorType.Code,
-                                "CloudSave.cs -> LoadDataAsync()",
-                                "Wrong key given: " + key
+                                GetType().Name,
+                                    "Wrong key given: " + key
                             );
 
                             failCallback?.Invoke();
@@ -409,7 +410,7 @@ namespace Merge
                         // ERROR
                         errorManager.Throw(
                             Types.ErrorType.Code,
-                            "CloudSave.cs -> LoadDataAsync()",
+                            GetType().Name,
                             "CloudSaveValidationException: " + exception
                         );
 
@@ -420,7 +421,7 @@ namespace Merge
                         // ERROR
                         errorManager.Throw(
                             Types.ErrorType.Code,
-                            "CloudSave.cs -> LoadDataAsync()",
+                            GetType().Name,
                             "CloudSaveRateLimitedException: " + exception
                         );
 
@@ -431,7 +432,7 @@ namespace Merge
                         // ERROR
                         errorManager.Throw(
                             Types.ErrorType.Code,
-                            "CloudSave.cs -> LoadDataAsync()",
+                            GetType().Name,
                             "CloudSaveException: " + exception
                         );
 
@@ -442,9 +443,10 @@ namespace Merge
                 {
                     if (throwCalledBeforeServicesError)
                     {
-                        // ERROR
+                        // WARNING
                         errorManager.ThrowWarning(
                             Types.ErrorType.Code,
+                            GetType().Name,
                             "Called before \"services.cloudSaveAvailable\""
                         );
                     }
@@ -471,11 +473,11 @@ namespace Merge
                         else
                         {
                             // ERROR
-                            /* errorManager.Throw(
-                                 Types.ErrorType.Code,
-                                 "CloudSave.cs -> LoadAllDataAsync()",
+                            errorManager.ThrowWarning(
+                                Types.ErrorType.Code,
+                                GetType().Name,
                                  "Result is empty"
-                             );*/
+                            );
 
                             failCallback?.Invoke();
                         }
@@ -485,7 +487,7 @@ namespace Merge
                         // ERROR
                         errorManager.Throw(
                             Types.ErrorType.Code,
-                            "CloudSave.cs -> LoadAllDataAsync()",
+                            GetType().Name,
                             "CloudSaveValidationException: " + exception
                         );
 
@@ -496,7 +498,7 @@ namespace Merge
                         // ERROR
                         errorManager.Throw(
                             Types.ErrorType.Code,
-                            "CloudSave.cs -> LoadAllDataAsync()",
+                            GetType().Name,
                             "CloudSaveRateLimitedException: " + exception
                         );
 
@@ -507,7 +509,7 @@ namespace Merge
                         // ERROR
                         errorManager.Throw(
                             Types.ErrorType.Code,
-                            "CloudSave.cs -> LoadAllDataAsync()",
+                            GetType().Name,
                             "CloudSaveException: " + exception
                         );
 
@@ -518,9 +520,10 @@ namespace Merge
                 {
                     if (throwCalledBeforeServicesError)
                     {
-                        // ERROR
+                        // WARNING
                         errorManager.ThrowWarning(
                             Types.ErrorType.Code,
+                            GetType().Name,
                             "Called before \"services.cloudSaveAvailable\""
                         );
                     }
@@ -549,7 +552,7 @@ namespace Merge
                             // ERROR
                             errorManager.Throw(
                                 Types.ErrorType.Code,
-                                "CloudSave.cs -> LoadAllDataAsync()",
+                                GetType().Name,
                                 "Result is empty"
                             );
 
@@ -561,7 +564,7 @@ namespace Merge
                         // ERROR
                         errorManager.Throw(
                             Types.ErrorType.Code,
-                            "CloudSave.cs -> GetAllKeysAsync()",
+                            GetType().Name,
                             "CloudSaveValidationException: " + exception
                         );
 
@@ -572,7 +575,7 @@ namespace Merge
                         // ERROR
                         errorManager.Throw(
                             Types.ErrorType.Code,
-                            "CloudSave.cs -> GetAllKeysAsync()",
+                            GetType().Name,
                             "CloudSaveRateLimitedException: " + exception
                         );
 
@@ -583,7 +586,7 @@ namespace Merge
                         // ERROR
                         errorManager.Throw(
                             Types.ErrorType.Code,
-                            "CloudSave.cs -> GetAllKeysAsync()",
+                            GetType().Name,
                             "CloudSaveException: " + exception
                         );
 
@@ -594,9 +597,10 @@ namespace Merge
                 {
                     if (throwCalledBeforeServicesError)
                     {
-                        // ERROR
+                        // WARNING
                         errorManager.ThrowWarning(
                             Types.ErrorType.Code,
+                            GetType().Name,
                             "Called before \"services.cloudSaveAvailable\""
                         );
                     }
@@ -627,7 +631,7 @@ namespace Merge
                         // ERROR
                         errorManager.Throw(
                             Types.ErrorType.Code,
-                            "CloudSave.cs -> DeleteDataAsync()",
+                            GetType().Name,
                             "CloudSaveValidationException: " + exception
                         );
 
@@ -638,7 +642,7 @@ namespace Merge
                         // ERROR
                         errorManager.Throw(
                             Types.ErrorType.Code,
-                            "CloudSave.cs -> DeleteDataAsync()",
+                            GetType().Name,
                             "CloudSaveRateLimitedException: " + exception
                         );
 
@@ -649,7 +653,7 @@ namespace Merge
                         // ERROR
                         errorManager.Throw(
                             Types.ErrorType.Code,
-                            "CloudSave.cs -> DeleteDataAsync()",
+                            GetType().Name,
                             "CloudSaveException: " + exception
                         );
 
@@ -660,9 +664,10 @@ namespace Merge
                 {
                     if (throwCalledBeforeServicesError)
                     {
-                        // ERROR
+                        // WARNING
                         errorManager.ThrowWarning(
                             Types.ErrorType.Code,
+                            GetType().Name,
                             "Called before \"services.cloudSaveAvailable\""
                         );
                     }
@@ -691,7 +696,7 @@ namespace Merge
                         // ERROR
                         errorManager.Throw(
                             Types.ErrorType.Code,
-                            "CloudSave.cs -> DeleteAllDataAsync()",
+                            GetType().Name,
                             "CloudSaveValidationException: " + exception
                         );
 
@@ -702,7 +707,7 @@ namespace Merge
                         // ERROR
                         errorManager.Throw(
                             Types.ErrorType.Code,
-                            "CloudSave.cs -> DeleteAllDataAsync()",
+                            GetType().Name,
                             "CloudSaveRateLimitedException: " + exception
                         );
 
@@ -713,7 +718,7 @@ namespace Merge
                         // ERROR
                         errorManager.Throw(
                             Types.ErrorType.Code,
-                            "CloudSave.cs -> DeleteAllDataAsync()",
+                            GetType().Name,
                             "CloudSaveException: " + exception
                         );
 
@@ -724,9 +729,10 @@ namespace Merge
                 {
                     if (throwCalledBeforeServicesError)
                     {
-                        // ERROR
+                        // WARNING
                         errorManager.ThrowWarning(
                             Types.ErrorType.Code,
+                            GetType().Name,
                             "Called before \"services.cloudSaveAvailable\""
                         );
                     }

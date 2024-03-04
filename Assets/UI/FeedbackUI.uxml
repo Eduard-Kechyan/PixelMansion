@@ -1,0 +1,36 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Styles/Main.uss?fileID=7433441132597879392&amp;guid=b6d7ed9290f88c745af1e68e28dec072&amp;type=3#Main" />
+    <Style src="project://database/Assets/UI/Styles/FeedbackStyles.uss?fileID=7433441132597879392&amp;guid=6e3793b3a090e064fbe1fa50d37f0081&amp;type=3#FeedbackStyles" />
+    <ui:VisualElement name="FeedbackContainer" class="feedback_container" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0.5); display: none; opacity: 0;">
+        <ui:ScrollView name="FeedbackScrollView" class="feedback_scrollview scroller">
+            <ui:VisualElement name="ContentBox" class="feedback_content_box" style="margin-top: 12px;">
+                <ui:Label tabindex="-1" text="Your feedback lights our way in the world of innovation." parse-escape-sequences="true" display-tooltip-when-elided="true" name="LabelA" class="feedback_label" />
+                <ui:Label tabindex="-1" text="Join us in shaping our journey by sharing your thoughts." parse-escape-sequences="true" display-tooltip-when-elided="true" name="LabelB" class="feedback_label" style="margin-bottom: 0;" />
+                <ui:VisualElement name="TopBorder" class="feedback_content_box_border" style="flex-grow: 1;" />
+                <ui:VisualElement name="BottomBorder" class="feedback_content_box_border" style="flex-grow: 1; top: auto; bottom: -2px; rotate: 180deg;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="ContentBox" class="feedback_content_box">
+                <ui:Label tabindex="-1" text="Title:" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ReportTitleLabel" enable-rich-text="false" class="feedback_label" style="margin-bottom: 0; -unity-font-style: bold;" />
+                <ui:TextField picking-mode="Ignore" name="ReportTitleTextField" multiline="true" class="feedback_text_field" />
+                <ui:Label tabindex="-1" text="Category:" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ReportCategoryLabel" class="feedback_label" style="margin-bottom: 0; -unity-font-style: bold;" />
+                <ui:EnumField type="Merge.FeedbackManager+ReportCategory, Assembly-CSharp" name="ReportCategoryEnumField" class="feedback_enum_field" />
+                <ui:Label tabindex="-1" text="Bug Type:" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ReportBugTypeLabel" class="feedback_label" style="margin-bottom: 0; -unity-font-style: bold; display: none;" />
+                <ui:EnumField type="Merge.FeedbackManager+ReportBugType, Assembly-CSharp" name="ReportBugTypeEnumField" class="feedback_enum_field" style="display: none;" />
+                <ui:Label tabindex="-1" text="Bug Frequency:" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ReportBugFrequencyLabel" class="feedback_label" style="margin-bottom: 0; -unity-font-style: bold; display: none;" />
+                <ui:EnumField type="Merge.FeedbackManager+ReportBugFrequency, Assembly-CSharp" name="ReportBugFrequencyEnumField" class="feedback_enum_field" style="display: none;" />
+                <ui:Label tabindex="-1" text="Desription:" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ReportDescriptionLabel" class="feedback_label" style="margin-bottom: 0; -unity-font-style: bold;" />
+                <ui:TextField picking-mode="Ignore" label="Text Field" name="ReportDescriptionTextField" multiline="true" class="feedback_text_field feedback_text_field_desc" style="margin-bottom: 0;" />
+                <ui:VisualElement name="TopBorder" class="feedback_content_box_border" style="flex-grow: 1;" />
+                <ui:VisualElement name="BottomBorder" class="feedback_content_box_border" style="flex-grow: 1; top: auto; bottom: -2px; rotate: 180deg;" />
+            </ui:VisualElement>
+        </ui:ScrollView>
+        <ui:Label tabindex="-1" text="Feedback" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Title" class="feedback_title" />
+        <ui:VisualElement name="ButtonContainer" class="button_container">
+            <ui:Button text="Cancel" parse-escape-sequences="true" display-tooltip-when-elided="true" name="CancelButton" class="button button_active feedback_button" style="-unity-background-image-tint-color: rgb(236, 115, 127);" />
+            <ui:Button text="Send" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SendButton" class="button button_active feedback_button" style="-unity-background-image-tint-color: rgb(113, 160, 246);" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="ThanksContainer" class="feedback_thanks_container" style="display: none; opacity: 0;">
+        <ui:Label tabindex="-1" text="We appreciate your feedback, as your suggestions shape our path." parse-escape-sequences="true" display-tooltip-when-elided="true" name="ThanksLabel" class="feedback_thanks_label" />
+    </ui:VisualElement>
+</ui:UXML>

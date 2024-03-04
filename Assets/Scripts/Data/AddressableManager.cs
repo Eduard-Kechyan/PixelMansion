@@ -57,7 +57,7 @@ namespace Merge
                 // ERROR
                 errorManager.Throw(
                     Types.ErrorType.Code,
-                    "AddressableManager.cs -> LoadAssetAsync()",
+                    GetType().Name,
                     newData.loadHandle.OperationException.Message
                 );
 
@@ -100,7 +100,7 @@ namespace Merge
                 // ERROR
                 errorManager.Throw(
                     Types.ErrorType.Code,
-                    "AddressableManager.cs -> LoadAssetAllAsync()",
+                    GetType().Name,
                     newData.loadHandle.OperationException.Message
                 );
 

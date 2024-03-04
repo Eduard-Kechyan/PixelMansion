@@ -72,6 +72,7 @@ SpriteAtlas:
     - 5d7270e370b37254492ceab9d063b3c2: 230354395
     - 5d7270e370b37254492ceab9d063b3c2: 1558493709
     - 95d01244dc81dc249b49f4a4c989915b: 21300000
+    - b0eafa75ef252924aac61ed8fa849ed2: 21300000
     - 8a734ca7811da104aad964373af27bcd: 21300000
     - 562670c80cd973b46babb76197cc6ab5: 21300000
     - e6292ec8b0b2a5743a0f00750e1f4db0: 21300000
@@ -111,6 +112,7 @@ SpriteAtlas:
   - {fileID: 230354395, guid: 5d7270e370b37254492ceab9d063b3c2, type: 3}
   - {fileID: 1558493709, guid: 5d7270e370b37254492ceab9d063b3c2, type: 3}
   - {fileID: 21300000, guid: 95d01244dc81dc249b49f4a4c989915b, type: 3}
+  - {fileID: 21300000, guid: b0eafa75ef252924aac61ed8fa849ed2, type: 3}
   - {fileID: 21300000, guid: 8a734ca7811da104aad964373af27bcd, type: 3}
   - {fileID: 21300000, guid: 562670c80cd973b46babb76197cc6ab5, type: 3}
   - {fileID: 21300000, guid: e6292ec8b0b2a5743a0f00750e1f4db0, type: 3}
@@ -149,6 +151,7 @@ SpriteAtlas:
   - BonusIndicator_0
   - BonusIndicator_1
   - TaskButton
+  - FeedbackButton
   - ButtonEdgeAlt
   - ShopButtonAlt
   - LongButton

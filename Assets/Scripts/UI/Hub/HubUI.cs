@@ -81,7 +81,7 @@ namespace Merge
             {
                 if (pointerHandler != null && pointerHandler.buttonCallback != null)
                 {
-                    pointerHandler.ButtonPress(Types.Button.Task,false, () =>
+                    pointerHandler.ButtonPress(Types.Button.Task, false, () =>
                     {
                         taskMenu.Open();
                     });
@@ -92,7 +92,7 @@ namespace Merge
                 }
             };
             playButton.clicked += () =>
-            {                
+            {
                 if (pointerHandler != null && pointerHandler.buttonCallback != null)
                 {
                     pointerHandler.ButtonPress(Types.Button.Play);
@@ -106,11 +106,14 @@ namespace Merge
 
             if (Application.isEditor || Debug.isDebugBuild)
             {
-                Button debugButton = topBox.Q<Button>("DebugButton");
+                Button debugButton = root.Q<Button>("DebugButton");
+                Button feedbackButton = root.Q<Button>("FeedbackButton");
 
                 debugButton.style.display = DisplayStyle.Flex;
+                feedbackButton.style.display = DisplayStyle.Flex;
 
                 debugButton.clicked += () => DebugManager.Instance.OpenMenu();
+                feedbackButton.clicked += () => FeedbackManager.Instance.Open();
             }
 
             root.RegisterCallback<GeometryChangedEvent>(Init);
@@ -171,10 +174,10 @@ namespace Merge
 
         public void DisableButtons()
         {
-           /* playButton.SetEnabled(false);
-            settingsButton.SetEnabled(false);
-            shopButton.SetEnabled(false);
-            taskButton.SetEnabled(false);*/
+            /* playButton.SetEnabled(false);
+             settingsButton.SetEnabled(false);
+             shopButton.SetEnabled(false);
+             taskButton.SetEnabled(false);*/
         }
 
         public void EnableButtons()
@@ -187,44 +190,44 @@ namespace Merge
 
         public void ToggleButton(string name, bool enabled = false)
         {
-          /*  switch (name)
-            {
-                case "play":
-                    playButton.SetEnabled(enabled);
-                    break;
-                case "settings":
-                    settingsButton.SetEnabled(enabled);
-                    break;
-                case "shop":
-                    shopButton.SetEnabled(enabled);
-                    break;
-                case "task":
-                    taskButton.SetEnabled(enabled);
-                    break;
-            }*/
+            /*  switch (name)
+              {
+                  case "play":
+                      playButton.SetEnabled(enabled);
+                      break;
+                  case "settings":
+                      settingsButton.SetEnabled(enabled);
+                      break;
+                  case "shop":
+                      shopButton.SetEnabled(enabled);
+                      break;
+                  case "task":
+                      taskButton.SetEnabled(enabled);
+                      break;
+              }*/
         }
 
         void HideButtons()
         {
-         /*   if (!PlayerPrefs.HasKey("hubPlayButtonShowing"))
-            {
-                playButton.style.display = DisplayStyle.None;
-            }
+            /*   if (!PlayerPrefs.HasKey("hubPlayButtonShowing"))
+               {
+                   playButton.style.display = DisplayStyle.None;
+               }
 
-            if (!PlayerPrefs.HasKey("hubSettingsButtonShowing"))
-            {
-                settingsButton.style.display = DisplayStyle.None;
-            }
+               if (!PlayerPrefs.HasKey("hubSettingsButtonShowing"))
+               {
+                   settingsButton.style.display = DisplayStyle.None;
+               }
 
-            if (!PlayerPrefs.HasKey("hubShopButtonShowing"))
-            {
-                shopButton.style.display = DisplayStyle.None;
-            }
+               if (!PlayerPrefs.HasKey("hubShopButtonShowing"))
+               {
+                   shopButton.style.display = DisplayStyle.None;
+               }
 
-            if (!PlayerPrefs.HasKey("hubTaskButtonShowing"))
-            {
-                taskButton.style.display = DisplayStyle.None;
-            }*/
+               if (!PlayerPrefs.HasKey("hubTaskButtonShowing"))
+               {
+                   taskButton.style.display = DisplayStyle.None;
+               }*/
         }
 
         public void ShowButtons()
@@ -269,53 +272,53 @@ namespace Merge
 
         public void HideButton(Types.Button button, bool alt = false)
         {
-           /* switch (button)
-            {
-                case Types.Button.Play:
-                    if (alt)
-                    {
-                        playButton.SetEnabled(false);
-                    }
-                    else
-                    {
-                        playButton.style.display = DisplayStyle.None;
-                        PlayerPrefs.DeleteKey("hubPlayButtonShowing");
-                    }
-                    break;
-                case Types.Button.Settings:
-                    if (alt)
-                    {
-                        settingsButton.SetEnabled(false);
-                    }
-                    else
-                    {
-                        settingsButton.style.display = DisplayStyle.None;
-                        PlayerPrefs.DeleteKey("hubSettingsButtonShowing");
-                    }
-                    break;
-                case Types.Button.Shop:
-                    if (alt)
-                    {
-                        shopButton.SetEnabled(false);
-                    }
-                    else
-                    {
-                        shopButton.style.display = DisplayStyle.None;
-                        PlayerPrefs.DeleteKey("hubShopButtonShowing");
-                    }
-                    break;
-                case Types.Button.Task:
-                    if (alt)
-                    {
-                        taskButton.SetEnabled(false);
-                    }
-                    else
-                    {
-                        taskButton.style.display = DisplayStyle.None;
-                        PlayerPrefs.DeleteKey("hubTaskButtonShowing");
-                    }
-                    break;
-            }*/
+            /* switch (button)
+             {
+                 case Types.Button.Play:
+                     if (alt)
+                     {
+                         playButton.SetEnabled(false);
+                     }
+                     else
+                     {
+                         playButton.style.display = DisplayStyle.None;
+                         PlayerPrefs.DeleteKey("hubPlayButtonShowing");
+                     }
+                     break;
+                 case Types.Button.Settings:
+                     if (alt)
+                     {
+                         settingsButton.SetEnabled(false);
+                     }
+                     else
+                     {
+                         settingsButton.style.display = DisplayStyle.None;
+                         PlayerPrefs.DeleteKey("hubSettingsButtonShowing");
+                     }
+                     break;
+                 case Types.Button.Shop:
+                     if (alt)
+                     {
+                         shopButton.SetEnabled(false);
+                     }
+                     else
+                     {
+                         shopButton.style.display = DisplayStyle.None;
+                         PlayerPrefs.DeleteKey("hubShopButtonShowing");
+                     }
+                     break;
+                 case Types.Button.Task:
+                     if (alt)
+                     {
+                         taskButton.SetEnabled(false);
+                     }
+                     else
+                     {
+                         taskButton.style.display = DisplayStyle.None;
+                         PlayerPrefs.DeleteKey("hubTaskButtonShowing");
+                     }
+                     break;
+             }*/
         }
 
 

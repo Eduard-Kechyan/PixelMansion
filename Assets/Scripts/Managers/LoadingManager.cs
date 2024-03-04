@@ -16,11 +16,9 @@ namespace Merge
         public SceneLoader sceneLoader;
         public GameObject uiDocument;
         public LoadingSceneUI loadingSceneUI;
+        public float maxPhase = 8;
+        [ReadOnly]
         public int phase = 1;
-        public float maxPhase = 7;
-
-        [SerializeField]
-        private bool loading = false;
 
         [ReadOnly]
         [SerializeField]
@@ -32,6 +30,10 @@ namespace Merge
         private int tempAge = 0;
         private bool initial = true;
 
+        [ReadOnly]
+        [SerializeField]
+        private bool loading = false;
+
         // References
         private DataManager dataManager;
         private GameData gameData;
@@ -40,6 +42,8 @@ namespace Merge
         private Services services;
         private AuthManager authManager;
         private CloudSave cloudSave;
+        private FeedbackManager feedbackManager;
+        private Logs logs;
 
         void Start()
         {
@@ -51,9 +55,11 @@ namespace Merge
             services = Services.Instance;
             authManager = services.GetComponent<AuthManager>();
             cloudSave = services.GetComponent<CloudSave>();
+            feedbackManager = FeedbackManager.Instance;
+            logs = Logs.Instance;
 
             // Get Ready
-            singlePhasePercent = 100f / (maxPhase + 1);
+            singlePhasePercent = 100f / maxPhase;
 
             callback += ContinueLoading;
             callbackAge += HandleAge;
@@ -73,7 +79,7 @@ namespace Merge
 
         void Update()
         {
-            if (loading && fillCount < 100f)
+            if (loading && fillCount < 100f && !feedbackManager.feedbackOpen && (logs != null && !logs.logsOpen))
             {
                 fillCount = Mathf.MoveTowards(fillCount, 100, fillSpeed * Time.deltaTime);
 

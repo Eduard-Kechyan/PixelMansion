@@ -32,6 +32,7 @@ namespace Merge
         public string tokenKeyName = "9ba73c98-ccb2-498a-931b-f5c1ee75b123.default.unity.services.authentication.session_token";
         public string playerIdName = "9ba73c98-ccb2-498a-931b-f5c1ee75b123.default.unity.services.authentication.player_id";
 
+#if UNITY_EDITOR
         void OnValidate()
         {
             if (isPublishableRelease)
@@ -39,5 +40,6 @@ namespace Merge
                 isAlpha = false;
             }
         }
+#endif
     }
 }

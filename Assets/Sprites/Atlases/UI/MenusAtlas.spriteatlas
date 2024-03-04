@@ -89,6 +89,7 @@ SpriteAtlas:
     - bcb0fd39ffe5ba346baa56b17b36b787: 21300000
     - 5e9285690bdecc44991f6dfcbfbb849b: 21300000
     - 4b05ed79491568e4e94a99abc97210a1: 21300000
+    - ebe6d399175946a42b67d090d5721aed: 21300000
     - eb1c85b9de5054449be5c84428fbae75: 21300000
     - 830ffbc9a26c02c4cb218a8e5568ad67: 21300000
     - 593d112a5d1d21646a4ffa4d3122444a: 21300000
@@ -98,6 +99,7 @@ SpriteAtlas:
     - 04bc709ab7c398248b5ef7c35c2d4f18: 21300000
     - 690484caf0e2d9a47a94aa94dbb74e83: 21300000
     - eb38771be3415ce42b81eab553b8157f: 21300000
+    - eb1f624b665ca944e9c7eeee1b92657b: 21300000
     - d63b9f3c6654d1d4baff5244c0512043: 21300000
     - 0f22e27c776418b4aa4e48f989e5e78b: 21300000
     - f8151e7c91cd3e341a010482e952df1e: 21300000
@@ -109,6 +111,7 @@ SpriteAtlas:
     - 985158be3a613a545a112be3f553ccfc: 21300000
     - 83fafa4f4a63b8c4d98e98f1dc12de09: 21300000
     - fec2ad5fa004de8468772cb975b92452: 21300000
+    - bc94527f2e48e1e41a5fbbea3d1b8773: 21300000
     - 0bf65eef74a87964baaaab1781465cc5: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
@@ -151,6 +154,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: bcb0fd39ffe5ba346baa56b17b36b787, type: 3}
   - {fileID: 21300000, guid: 5e9285690bdecc44991f6dfcbfbb849b, type: 3}
   - {fileID: 21300000, guid: 4b05ed79491568e4e94a99abc97210a1, type: 3}
+  - {fileID: 21300000, guid: ebe6d399175946a42b67d090d5721aed, type: 3}
   - {fileID: 21300000, guid: eb1c85b9de5054449be5c84428fbae75, type: 3}
   - {fileID: 21300000, guid: 830ffbc9a26c02c4cb218a8e5568ad67, type: 3}
   - {fileID: 21300000, guid: 593d112a5d1d21646a4ffa4d3122444a, type: 3}
@@ -160,6 +164,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 04bc709ab7c398248b5ef7c35c2d4f18, type: 3}
   - {fileID: 21300000, guid: 690484caf0e2d9a47a94aa94dbb74e83, type: 3}
   - {fileID: 21300000, guid: eb38771be3415ce42b81eab553b8157f, type: 3}
+  - {fileID: 21300000, guid: eb1f624b665ca944e9c7eeee1b92657b, type: 3}
   - {fileID: 21300000, guid: d63b9f3c6654d1d4baff5244c0512043, type: 3}
   - {fileID: 21300000, guid: 0f22e27c776418b4aa4e48f989e5e78b, type: 3}
   - {fileID: 21300000, guid: f8151e7c91cd3e341a010482e952df1e, type: 3}
@@ -171,6 +176,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 985158be3a613a545a112be3f553ccfc, type: 3}
   - {fileID: 21300000, guid: 83fafa4f4a63b8c4d98e98f1dc12de09, type: 3}
   - {fileID: 21300000, guid: fec2ad5fa004de8468772cb975b92452, type: 3}
+  - {fileID: 21300000, guid: bc94527f2e48e1e41a5fbbea3d1b8773, type: 3}
   - {fileID: 21300000, guid: 0bf65eef74a87964baaaab1781465cc5, type: 3}
   m_PackedSpriteNamesToIndex:
   - InventoryItem
@@ -212,6 +218,7 @@ SpriteAtlas:
   - FacebookIcon
   - SmallButton
   - AppleSignInIcon
+  - FeedbackEnumCheckmark
   - InstagramIcon
   - MenuTitle
   - GoogleSignInIcon
@@ -221,6 +228,7 @@ SpriteAtlas:
   - Gems4
   - EnumArrow
   - OptionsNotifications
+  - FeedbackContainerBorder
   - ShopBoxGold6
   - Frog
   - MenuSubtitle
@@ -232,6 +240,7 @@ SpriteAtlas:
   - ShopBoxGems
   - Gems2
   - ShopBoxGold2
+  - FeedbackEnumArrow
   - Gems6
   m_RenderDataMap: {}
   m_Tag: MenusAtlas

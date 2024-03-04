@@ -1,26 +1,31 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
+using UnityEditor.AddressableAssets.Settings;
+using UnityEditor.AddressableAssets;
 
 namespace Merge
 {
+    [InitializeOnLoad]
     public class BuildHandler : IPreprocessBuildWithReport, IPostprocessBuildWithReport
     {
-        // NOTE - Use "throw new BuildFailedException("Error!");" for ending the build sooner
+        // NOTE - Use "throw new BuildFailedException("Error!");" to end the build sooner
 
         // Variables
         public int callbackOrder => 0;
 
-        private BuildData buildData = null;
+        public BuildData buildData = null;
         private string tempAppVersion = "";
         private int tempBuildNumber = 0;
 
         public void OnPreprocessBuild(BuildReport report)
         {
+            buildData = AssetDatabase.LoadAssetAtPath<BuildData>("Assets/Resources/BuildData.asset");
+
             CombineLocale();
 
             SetupKeystore();
@@ -61,9 +66,6 @@ namespace Merge
 
         void HandlePreBuild()
         {
-            // Get Data
-            buildData = AssetDatabase.LoadAssetAtPath<BuildData>("Assets/Resources/BuildData.asset");
-
             if (EditorUserBuildSettings.buildAppBundle)
             {
                 Debug.Log("Building release app");
@@ -130,7 +132,7 @@ namespace Merge
                     PlayerSettings.SetScriptingBackend(BuildTargetGroup.Android, ScriptingImplementation.Mono2x); // Faster build time
                 }
             }
-            
+
             // Save Data
             EditorUtility.SetDirty(buildData);
         }

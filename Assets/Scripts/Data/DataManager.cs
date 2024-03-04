@@ -78,7 +78,7 @@ namespace Merge
                 Instance = this;
                 DontDestroyOnLoad(gameObject);
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR|| DEVELOPMENT_BUILD
                 SetSaveDataKeys();
 #endif
 
@@ -372,9 +372,10 @@ namespace Merge
 
             if (!found)
             {
-                // ERROR
+                // WARNING
                 errorManager.ThrowWarning(
                     Types.ErrorType.Code,
+                    GetType().Name,
                     "Save data key doesn't exist: " + key
                 );
             }
@@ -539,7 +540,7 @@ namespace Merge
                 // ERROR
                 errorManager.Throw(
                     Types.ErrorType.Code,
-                    "DataManager.cs -> LoadValue()",
+                    GetType().Name,
                     "Reader is null for key: " + key
                 );
             }
@@ -560,7 +561,7 @@ namespace Merge
                 // ERROR
                 errorManager.Throw(
                     Types.ErrorType.Code,
-                    "DataManager.cs -> LoadValue()",
+                    GetType().Name,
                     "Reader is null for key: unsentData"
                 );
             }
@@ -730,7 +731,7 @@ namespace Merge
                     // ERROR
                     errorManager.Throw(
                         Types.ErrorType.Code,
-                        "DataManager.cs -> SetValue()",
+                        GetType().Name,
                         "Wrong key given: " + key
                     );
                     break;
