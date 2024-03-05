@@ -69,7 +69,9 @@ namespace Merge
                 yield return null;
             }
 
+#if UNITY_EDITOR
             readyToThrowTestErrors = true;
+#endif
 
             CrashReportHandler.SetUserMetadata("playerId", authManager.playerId);
         }
@@ -126,9 +128,12 @@ namespace Merge
 
         public void ToggleDiagnostic()
         {
-            diagnosticsEnabled = !diagnosticsEnabled;
+            if (Debug.isDebugBuild || Application.isEditor)
+            {
+                diagnosticsEnabled = !diagnosticsEnabled;
 
-            CrashReportHandler.enableCaptureExceptions = diagnosticsEnabled;
+                CrashReportHandler.enableCaptureExceptions = diagnosticsEnabled;
+            }
         }
     }
 }

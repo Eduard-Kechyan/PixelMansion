@@ -41,10 +41,14 @@ namespace Merge
         {
             if (!Debug.isDebugBuild && !Application.isEditor)
             {
+                Debug.unityLogger.logEnabled = false;
+
                 Destroy(gameObject);
             }
             else
             {
+                Debug.unityLogger.logEnabled = true;
+
                 Instance = this;
             }
         }

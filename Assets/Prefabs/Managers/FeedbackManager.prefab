@@ -61,6 +61,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c7241d4e64a41c409ea66b83dda1711, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  closeThanksDelay: 5
+  postCloseDelay: 2
+  loadingOverlayCloseDelay: 8
+  titleHeight: 30
+  spinnerSpeed: 0.07
+  spinnerSprites:
+  - {fileID: -506458403, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
+  - {fileID: 1921920836, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
+  - {fileID: 1255185831, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
+  - {fileID: -648292492, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
+  - {fileID: 1148935277, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
+  - {fileID: 991938947, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
+  - {fileID: -845074983, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
+  - {fileID: 1050164883, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
+  - {fileID: -1684836421, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
+  - {fileID: 776455363, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
+  - {fileID: 553923557, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
+  - {fileID: 1509843095, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
+  - {fileID: 553923557, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
+  - {fileID: 776455363, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
+  - {fileID: -1684836421, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
+  - {fileID: 1050164883, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
+  - {fileID: -845074983, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
+  - {fileID: 991938947, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
+  - {fileID: 1148935277, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
+  - {fileID: -648292492, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
+  - {fileID: 1255185831, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
+  - {fileID: 1921920836, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
   feedbackOpen: 0
   thanksOpen: 0
+  failureOpen: 0

@@ -79,7 +79,7 @@ namespace Merge
 
         void Update()
         {
-            if (loading && fillCount < 100f && !feedbackManager.feedbackOpen && (logs != null && !logs.logsOpen))
+            if (loading && fillCount < 100f && !feedbackManager.feedbackOpen && !feedbackManager.thanksOpen && !feedbackManager.failureOpen && (logs != null && !logs.logsOpen))
             {
                 fillCount = Mathf.MoveTowards(fillCount, 100, fillSpeed * Time.deltaTime);
 

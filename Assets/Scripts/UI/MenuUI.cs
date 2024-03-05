@@ -15,7 +15,7 @@ namespace Merge
         public bool menuOpen = false;
 
         [Header("Spinner")]
-        public float spinnerSpeed = 0.05f;
+        public float spinnerSpeed = 0.07f;
         public Sprite[] spinnerSprites;
         private bool isMenuOverlayOpen = false;
 

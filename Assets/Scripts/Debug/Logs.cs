@@ -19,6 +19,10 @@ namespace Merge
         public bool showStack = false;
         public int titleHight = 20;
         public Color defaultLogColor;
+        [Tooltip("Use the black list to ignore some logs.")]
+        public bool useBlackList = true;
+        [Condition("useBlackList", true)]
+        public string[] blackList;
 
         // Debug
         [Header("Debug")]
@@ -143,6 +147,11 @@ namespace Merge
 
                 Toggle();
             }
+
+            if (useBlackList && blackList.Length == 0)
+            {
+                Debug.LogWarning("The logs black list is enabled, but there are no entries in the list!");
+            }
         }
 #endif
 
@@ -207,41 +216,59 @@ namespace Merge
 
         void HandleNewLog(string newMessage, string newStackTrace, LogType newType)
         {
-            List<string> stackList = new();
+            bool ignore = false;
 
-            if (newStackTrace != null && newStackTrace != "")
+            if (useBlackList && blackList.Length > 0)
             {
-                Regex regexPattern = new Regex("\\(at(.*Assets/Scripts.*)\\)");
-
-                int count = 0;
-
-                foreach (Match matchItem in regexPattern.Matches(newStackTrace))
+                for (int i = 0; i < blackList.Length; i++)
                 {
-                    string countString = count.ToString();
-
-                    if (count < 10)
+                    if (newMessage.Contains(blackList[i]))
                     {
-                        countString = "0" + count;
+                        ignore = true;
+
+                        break;
                     }
-
-                    stackList.Add(matchItem.ToString().Replace("(at", "[" + countString + "] ").Replace(")", ""));
-
-                    count++;
                 }
             }
 
-            LogData newLogData = new()
+            if (!ignore)
             {
-                message = newMessage,
-                stackTrace = stackList,
-                color = GetColorFromType(newType)
-            };
+                List<string> stackList = new();
 
-            logsData.Add(newLogData);
+                if (newStackTrace != null && newStackTrace != "")
+                {
+                    Regex regexPattern = new Regex("\\(at(.*Assets/Scripts.*)\\)");
 
-            if (logsOpen)
-            {
-                AddNewLogToUI(newLogData);
+                    int count = 0;
+
+                    foreach (Match matchItem in regexPattern.Matches(newStackTrace))
+                    {
+                        string countString = count.ToString();
+
+                        if (count < 10)
+                        {
+                            countString = "0" + count;
+                        }
+
+                        stackList.Add(matchItem.ToString().Replace("(at", "[" + countString + "] ").Replace(")", ""));
+
+                        count++;
+                    }
+                }
+
+                LogData newLogData = new()
+                {
+                    message = newMessage,
+                    stackTrace = stackList,
+                    color = GetColorFromType(newType)
+                };
+
+                logsData.Add(newLogData);
+
+                if (logsOpen)
+                {
+                    AddNewLogToUI(newLogData);
+                }
             }
         }
 
@@ -273,6 +300,22 @@ namespace Merge
 
                     logsScrollView.Add(newLogStackTraceLabel);
                 }
+            }
+            else
+            {
+                Label newLogStackTraceLabel = new() { text = "No stack trace for this log." };
+
+                newLogStackTraceLabel.AddToClassList("log");
+                newLogStackTraceLabel.AddToClassList("stack");
+
+                if (showStack)
+                {
+                    newLogStackTraceLabel.AddToClassList("show_stack");
+                }
+
+                newLogStackTraceLabel.style.color = newLogData.color;
+
+                logsScrollView.Add(newLogStackTraceLabel);
             }
         }
 

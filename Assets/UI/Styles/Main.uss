@@ -102,6 +102,7 @@
     margin-left: auto;
     margin-right: 4px;
     margin-bottom: 6px;
+    -unity-background-image-tint-color: rgb(255, 255, 255);
 }
 
 .button_standard_small .border {
@@ -127,10 +128,13 @@
     margin-right: 0;
     margin-top: 0;
     margin-bottom: 0;
+    -unity-background-image-tint-color: rgb(255, 255, 255);
 }
 
 .button_active:active {
     scale: 0.9 0.9;
+    background-color: rgba(0, 0, 0, 0);
+    -unity-background-image-tint-color: rgb(255, 255, 255);
 }
 
 .button_active_extra:active {
@@ -302,6 +306,7 @@
     right: 22px;
     bottom: 20px;
     background-image: url("project://database/Assets/Sprites/Buttons/Main/DebugButton.png?fileID=2800000&guid=15ad31ceda532ec4892dda5273f74f24&type=3#DebugButton");
+    -unity-background-image-tint-color: rgb(255, 255, 255);
 }
 
 .feedback_debug_button {
@@ -311,6 +316,7 @@
     bottom: 20px;
     left: 22px;
     background-image: url("project://database/Assets/Sprites/Buttons/Main/FeedbackButton.png?fileID=2800000&guid=b0eafa75ef252924aac61ed8fa849ed2&type=3#FeedbackButton");
+    -unity-background-image-tint-color: rgb(255, 255, 255);
 }
 
 .unity-base-dropdown__container-outer {
@@ -327,7 +333,7 @@
 }
 
 .unity-base-dropdown__container-inner {
-    background-color: rgb(170, 157, 123);
+    background-color: rgb(255, 255, 255);
 }
 
 .unity-base-dropdown__item {
@@ -335,7 +341,7 @@
 }
 
 .unity-base-dropdown__container-inner .unity-base-dropdown__item:hover {
-    background-color: rgb(130, 118, 85);
+    background-color: rgb(255, 255, 255);
 }
 
 .unity-base-dropdown__checkmark {

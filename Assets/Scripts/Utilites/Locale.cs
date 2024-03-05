@@ -94,7 +94,7 @@ namespace Merge
             else if (isLoggingMissing)
             {
                 // ERROR
-                ErrorManager.Instance.Throw(Types.ErrorType.Locale, "Locale.cs -> Get()", "Missing translation for: " + key);
+                ErrorManager.Instance.ThrowWarning(Types.ErrorType.Locale, GetType().Name, "Missing translation for: " + key);
             }
 
             return translation;
@@ -126,7 +126,7 @@ namespace Merge
             else if (isLoggingMissing)
             {
                 // ERROR
-                ErrorManager.Instance.Throw(Types.ErrorType.Locale, "Locale.cs -> GetNestedLength()", "Missing translation for: " + key);
+                ErrorManager.Instance.ThrowWarning(Types.ErrorType.Locale, GetType().Name, "Missing translation for: " + key);
             }
 
             return count;
@@ -181,7 +181,7 @@ namespace Merge
             else if (isLoggingMissing)
             {
                 // ERROR
-                ErrorManager.Instance.Throw(Types.ErrorType.Locale, "Locale.cs -> FindSingularOrPlural()", "Missing singPlurKey:" + singPlurKey + " for:" + key);
+                ErrorManager.Instance.ThrowWarning(Types.ErrorType.Locale, GetType().Name, "Missing singPlurKey:" + singPlurKey + " for:" + key);
             }
             return translation;
         }

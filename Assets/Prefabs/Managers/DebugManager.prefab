@@ -97,6 +97,9 @@ MonoBehaviour:
   showStack: 0
   titleHight: 20
   defaultLogColor: {r: 0.7019608, g: 0.78039217, b: 0.83137256, a: 1}
+  useBlackList: 1
+  blackList:
+  - Placeholder .ctor
   debug: 0
   toggle: 0
   logsOpen: 0

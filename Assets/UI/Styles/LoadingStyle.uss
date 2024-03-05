@@ -271,6 +271,8 @@
     background-image: url("project://database/Assets/Sprites/Buttons/Main/DebugButton.png?fileID=2800000&guid=15ad31ceda532ec4892dda5273f74f24&type=3#DebugButton");
     width: 20px;
     height: 20px;
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    background-color: rgba(0, 0, 0, 0);
 }
 
 .loading_feedback_button {
@@ -280,6 +282,8 @@
     background-image: url("project://database/Assets/Sprites/Buttons/Main/FeedbackButton.png?fileID=2800000&guid=b0eafa75ef252924aac61ed8fa849ed2&type=3#FeedbackButton");
     width: 20px;
     height: 24px;
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    background-color: rgba(0, 0, 0, 0);
 }
 
 .spinner {
