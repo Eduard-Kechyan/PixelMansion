@@ -155,19 +155,19 @@ namespace Merge
 
             bool setButtons = true;
 
-            if (initial && uiButtons.gameplayButtonsSet)
+            if (initial && uiButtons.gamePlayButtonsSet)
             {
                 setButtons = false;
             }
 
             if (setButtons)
             {
-                uiButtons.gameplayButtonsSet = true;
+                uiButtons.gamePlayButtonsSet = true;
 
-                uiButtons.gameplayHomeButtonPos = CalcButtonPosition(homeButton);
-                uiButtons.gameplayShopButtonPos = CalcButtonPosition(shopButton);
-                uiButtons.gameplayTaskButtonPos = CalcButtonPosition(taskButton);
-                uiButtons.gameplayBonusButtonPos = CalcButtonPosition(bonusButton);
+                uiButtons.gamePlayHomeButtonPos = CalcButtonPosition(homeButton);
+                uiButtons.gamePlayShopButtonPos = CalcButtonPosition(shopButton);
+                uiButtons.gamePlayTaskButtonPos = CalcButtonPosition(taskButton);
+                uiButtons.gamePlayBonusButtonPos = CalcButtonPosition(bonusButton);
             }
 
             HideButtons();
@@ -210,22 +210,22 @@ namespace Merge
 
         void HideButtons()
         {
-            /*  if (!PlayerPrefs.HasKey("gameplayHomeButtonShowing"))
+            /*  if (!PlayerPrefs.HasKey("gamePlayHomeButtonShowing"))
               {
                   homeButton.style.display = DisplayStyle.None;
               }
 
-              if (!PlayerPrefs.HasKey("gameplayInventoryButtonShowing"))
+              if (!PlayerPrefs.HasKey("gamePlayInventoryButtonShowing"))
               {
                   inventoryButton.style.display = DisplayStyle.None;
               }
 
-              if (!PlayerPrefs.HasKey("gameplayShopButtonShowing"))
+              if (!PlayerPrefs.HasKey("gamePlayShopButtonShowing"))
               {
                   shopButton.style.display = DisplayStyle.None;
               }
 
-              if (!PlayerPrefs.HasKey("gameplayTaskButtonShowing"))
+              if (!PlayerPrefs.HasKey("gamePlayTaskButtonShowing"))
               {
                   taskButton.style.display = DisplayStyle.None;
               }*/
@@ -245,19 +245,19 @@ namespace Merge
             {
                 case Types.Button.Home:
                     homeButton.style.display = DisplayStyle.Flex;
-                    PlayerPrefs.SetInt("gameplayHomeButtonShowing", 1);
+                    PlayerPrefs.SetInt("gamePlayHomeButtonShowing", 1);
                     break;
                 case Types.Button.Settings:
                     inventoryButton.style.display = DisplayStyle.Flex;
-                    PlayerPrefs.SetInt("gameplayInventoryButtonShowing", 1);
+                    PlayerPrefs.SetInt("gamePlayInventoryButtonShowing", 1);
                     break;
                 case Types.Button.Shop:
                     shopButton.style.display = DisplayStyle.Flex;
-                    PlayerPrefs.SetInt("gameplayShopButtonShowing", 1);
+                    PlayerPrefs.SetInt("gamePlayShopButtonShowing", 1);
                     break;
                 case Types.Button.Task:
                     taskButton.style.display = DisplayStyle.Flex;
-                    PlayerPrefs.SetInt("gameplayTaskButtonShowing", 1);
+                    PlayerPrefs.SetInt("gamePlayTaskButtonShowing", 1);
                     break;
             }
         }
@@ -274,7 +274,7 @@ namespace Merge
                          else
                          {
                              homeButton.style.display = DisplayStyle.None;
-                             PlayerPrefs.DeleteKey("gameplayHomeButtonShowing");
+                             PlayerPrefs.DeleteKey("gamePlayHomeButtonShowing");
                          }
                          break;
                      case Types.Button.Inventory:
@@ -285,7 +285,7 @@ namespace Merge
                          else
                          {
                              inventoryButton.style.display = DisplayStyle.None;
-                             PlayerPrefs.DeleteKey("gameplayInventoryButtonShowing");
+                             PlayerPrefs.DeleteKey("gamePlayInventoryButtonShowing");
                          }
                          break;
                      case Types.Button.Shop:

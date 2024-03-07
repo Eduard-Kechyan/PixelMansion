@@ -34,7 +34,7 @@ namespace Merge
 
             transition = root.Q<VisualElement>("Transition");
 
-            if (SceneManager.GetActiveScene().name == "Loading")
+            if (SceneManager.GetActiveScene().name == Types.Scene.Loading.ToString())
             {
                 transition.style.display = DisplayStyle.Flex;
                 /*  transition.style.opacity = 0;
@@ -112,7 +112,7 @@ namespace Merge
                         }
                         break;
 
-                    case Types.Scene.Gameplay:
+                    case Types.Scene.GamePlay:
                         readyToOpen = true;
                         break;
 

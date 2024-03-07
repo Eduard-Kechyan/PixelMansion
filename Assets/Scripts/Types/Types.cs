@@ -610,7 +610,7 @@ namespace Merge
         public enum ErrorType
         {
             Code,
-            Gameplay,
+            GamePlay,
             Unity,
             Locale,
             Network
@@ -697,7 +697,7 @@ namespace Merge
         {
             Loading,
             Hub,
-            Gameplay,
+            GamePlay,
             Magical,
         };
 
@@ -724,7 +724,7 @@ namespace Merge
         {
             Loading,
             Hub,
-            Gameplay,
+            GamePlay,
             None
         };
 

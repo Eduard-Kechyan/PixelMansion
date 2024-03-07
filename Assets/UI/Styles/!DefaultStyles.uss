@@ -1,0 +1,45 @@
+.unity-base-dropdown__container-outer {
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    overflow: hidden;
+    margin-top: 2px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.unity-base-dropdown__container-inner {
+    background-color: rgb(255, 255, 255);
+}
+
+.unity-base-dropdown__item {
+    padding-left: 0;
+}
+
+.unity-base-dropdown__container-inner .unity-base-dropdown__item:hover {
+    background-color: rgb(255, 255, 255);
+}
+
+.unity-base-dropdown__checkmark {
+    margin-left: 0;
+    margin-right: 0;
+    height: 24px;
+    width: 24px;
+    background-image: url("project://database/Assets/Sprites/Menus/FeedbackEnumCheckmark.png?fileID=2800000&guid=ebe6d399175946a42b67d090d5721aed&type=3#FeedbackEnumCheckmark");
+}
+
+.unity-base-dropdown__label {
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    font-size: 10px;
+    -unity-font-definition: url("project://database/Assets/Fonts/Files/Roboto.ttf?fileID=12800000&guid=0435ef74bc89d2044a778758a25a13b0&type=3#Roboto");
+}

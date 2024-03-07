@@ -100,7 +100,7 @@ namespace Merge
                 else
                 {
                     soundManager.PlaySound(Types.SoundType.Transition);
-                    sceneLoader.Load(Types.Scene.Gameplay);
+                    sceneLoader.Load(Types.Scene.GamePlay);
                 }
             };
 

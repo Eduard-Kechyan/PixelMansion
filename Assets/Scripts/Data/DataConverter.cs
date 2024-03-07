@@ -670,7 +670,7 @@ namespace Merge
 
         //// OTHER ////
 
-        // Convert scriptable object data to gameplay data
+        // Convert scriptable object data to game play data
         public Types.Item[] ConvertItems(Types.Item[] itemsContent)
         {
             Types.Item[] convertedItems = new Types.Item[itemsContent.Length];

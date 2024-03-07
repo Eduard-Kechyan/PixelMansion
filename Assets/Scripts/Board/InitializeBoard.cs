@@ -18,7 +18,7 @@ namespace Merge
         private DataManager dataManager;
         private GameData gameData;
         private ItemHandler itemHandler;
-        private GameplayUI gameplayUI;
+        private GameplayUI gamePlayUI;
 
         private GameObject board;
         private float singlePixelWidth;
@@ -30,6 +30,7 @@ namespace Merge
         private VisualElement root;
 
         private bool set;
+        private bool readyToInitialize;
 
         void Start()
         {
@@ -41,11 +42,16 @@ namespace Merge
             dataManager = DataManager.Instance;
             gameData = GameData.Instance;
             itemHandler = dataManager.GetComponent<ItemHandler>();
-            gameplayUI = GameRefs.Instance.gameplayUI;
-            safeAreaHandler = gameplayUI.GetComponent<SafeAreaHandler>();
+            gamePlayUI = GameRefs.Instance.gamePlayUI;
+            safeAreaHandler = gamePlayUI.GetComponent<SafeAreaHandler>();
 
             // UI
-            root = gameplayUI.GetComponent<UIDocument>().rootVisualElement;
+            root = gamePlayUI.GetComponent<UIDocument>().rootVisualElement;
+
+            root.RegisterCallback<GeometryChangedEvent>((evt) =>
+            {
+                readyToInitialize = true;
+            });
 
             // Set the gameObject
             board = gameObject;
@@ -58,22 +64,20 @@ namespace Merge
 
         void Update()
         {
-            if (dataManager.loaded && !set)
+            if (dataManager.loaded && !set && readyToInitialize)
             {
                 set = true;
 
                 // Calculate board scale
-                root.RegisterCallback<GeometryChangedEvent>(SetBoard);
+                SetBoard();
 
                 // Stop running the update function
                 enabled = false;
             }
         }
 
-        void SetBoard(GeometryChangedEvent evt)
+        void SetBoard()
         {
-            root.UnregisterCallback<GeometryChangedEvent>(SetBoard);
-
             // Ready the board
 
             // Get board sprite width
@@ -167,7 +171,6 @@ namespace Merge
                     if (boardItem != null && boardItem.sprite != null)
                     {
                         Item newItem = itemHandler.CreateItem(newTile, tileSize, boardItem);
-
                         if (newItem)
                         {
                             dataManager.UnlockItem(

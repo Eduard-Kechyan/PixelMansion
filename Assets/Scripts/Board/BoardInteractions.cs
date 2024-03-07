@@ -78,7 +78,7 @@ namespace Merge
             LOCALE = I18n.Instance; 
 
             // Cache root and dragOverlay
-            root = GameRefs.Instance.gameplayUIDoc.rootVisualElement;
+            root = GameRefs.Instance.gamePlayUIDoc.rootVisualElement;
             dragOverlay = root.Q<VisualElement>("DragOverlay");
 
             // Drag overlay shouldn't be pickable

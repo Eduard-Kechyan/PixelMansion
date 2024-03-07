@@ -39,7 +39,7 @@
     top: -1px;
     width: 34px;
     height: 34px;
-    background-image: url('project://database/Assets/Sprites/Scenes/Hub/SelectorOptionOverlay.png?fileID=2800000&guid=3f4d0d13a592dad438f05c6957d17c85&type=3#SelectorOptionOverlay');
+    background-image: url("project://database/Assets/Sprites/Scenes/Hub/SelectorOptionOverlay.png?fileID=2800000&guid=3f4d0d13a592dad438f05c6957d17c85&type=3#SelectorOptionOverlay");
 }
 
 .selector_option_selected {
@@ -47,7 +47,7 @@
 }
 
 .selector_option_selected > .selector_option_overlay {
-    background-image: url('project://database/Assets/Sprites/Scenes/Hub/SelectorOptionSelected.png?fileID=2800000&guid=dd9361345201533459c0194d3102bdb0&type=3#SelectorOptionSelected');
+    background-image: url("project://database/Assets/Sprites/Scenes/Hub/SelectorOptionSelected.png?fileID=2800000&guid=dd9361345201533459c0194d3102bdb0&type=3#SelectorOptionSelected");
 }
 
 .deny_button {
@@ -207,14 +207,14 @@
     right: 0;
     left: 0;
     position: absolute;
-    background-image: url('project://database/Assets/Sprites/Scenes/BackgroundShadow.png?fileID=2800000&guid=5af0a1ef3db269a48ac96828aad562c5&type=3#BackgroundShadow');
+    background-image: url("project://database/Assets/Sprites/Scenes/BackgroundShadow.png?fileID=2800000&guid=5af0a1ef3db269a48ac96828aad562c5&type=3#BackgroundShadow");
 }
 
 .convo_background_shine {
     position: absolute;
     left: 0;
     top: 0;
-    background-image: url('project://database/Assets/Sprites/Conversation/ConvoBackgroundShineA.png?fileID=-1797161231&guid=fd0f0afa5983bec4587b659d4b3f524d&type=3#ConvoBackgroundShineA_2');
+    background-image: url("project://database/Assets/Sprites/Conversation/ConvoBackgroundShineA.png?fileID=-1797161231&guid=fd0f0afa5983bec4587b659d4b3f524d&type=3#ConvoBackgroundShineA_2");
     width: 6px;
     height: 6px;
 }
@@ -275,7 +275,7 @@
     -unity-text-align: middle-right;
     font-size: 8px;
     color: rgb(255, 255, 255);
-    -unity-font-definition: url('project://database/Assets/Fonts/Roboto%20SDF.asset?fileID=11400000&guid=1c5dedeb0ccefb74ebe6e5ff0a6f7e56&type=2#Roboto SDF');
+    -unity-font-definition: url("project://database/Assets/Fonts/Roboto%20SDF.asset?fileID=11400000&guid=1c5dedeb0ccefb74ebe6e5ff0a6f7e56&type=2#Roboto SDF");
     transition-duration: 0.3s;
     margin-right: 4px;
     padding-left: 0;
@@ -289,7 +289,7 @@
 }
 
 .convo_button_icon {
-    background-image: url('project://database/Assets/Sprites/Conversation/SkipButton.png?fileID=2800000&guid=0536b98ce4b8f2c4b9b1f1fa5287e241&type=3#SkipButton');
+    background-image: url("project://database/Assets/Sprites/Conversation/SkipButton.png?fileID=2800000&guid=0536b98ce4b8f2c4b9b1f1fa5287e241&type=3#SkipButton");
     width: 16px;
     height: 16px;
 }
@@ -313,7 +313,7 @@
     left: 0;
     top: 7px;
     bottom: 39px;
-    background-image: url('project://database/Assets/Sprites/Conversation/ConvoBoxMidArea.png?fileID=2800000&guid=9c0d759946bc8cc4a8ac459a3bf0c11b&type=3#ConvoBoxMidArea');
+    background-image: url("project://database/Assets/Sprites/Conversation/ConvoBoxMidArea.png?fileID=2800000&guid=9c0d759946bc8cc4a8ac459a3bf0c11b&type=3#ConvoBoxMidArea");
     right: 0;
 }
 
@@ -324,7 +324,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: url('project://database/Assets/Sprites/Conversation/ConvoBoxBottomEdge.png?fileID=2800000&guid=78eafdea84aa4c1488ee95182fd2d88b&type=3#ConvoBoxBottomEdge');
+    background-image: url("project://database/Assets/Sprites/Conversation/ConvoBoxBottomEdge.png?fileID=2800000&guid=78eafdea84aa4c1488ee95182fd2d88b&type=3#ConvoBoxBottomEdge");
 }
 
 .convo_box .top_border {
@@ -334,11 +334,11 @@
     left: 0;
     right: 0;
     top: 0;
-    background-image: url('project://database/Assets/Sprites/Conversation/ConvoBoxTopEdge.png?fileID=2800000&guid=d05e03d905b376a43b0f54b6bccacb1f&type=3#ConvoBoxTopEdge');
+    background-image: url("project://database/Assets/Sprites/Conversation/ConvoBoxTopEdge.png?fileID=2800000&guid=d05e03d905b376a43b0f54b6bccacb1f&type=3#ConvoBoxTopEdge");
 }
 
 .convo_box .name_plate {
-    background-image: url('project://database/Assets/Sprites/Conversation/NamePlate.png?fileID=2800000&guid=e5ede6a28f16ac742a8e8d2e5184713a&type=3#NamePlate');
+    background-image: url("project://database/Assets/Sprites/Conversation/NamePlate.png?fileID=2800000&guid=e5ede6a28f16ac742a8e8d2e5184713a&type=3#NamePlate");
     height: 12px;
     -unity-background-image-tint-color: rgb(0, 136, 255);
     margin-left: 0;
@@ -378,7 +378,7 @@
     white-space: nowrap;
     font-size: 8px;
     color: rgb(255, 255, 255);
-    -unity-font-definition: url('project://database/Assets/Fonts/Roboto%20SDF.asset?fileID=11400000&guid=1c5dedeb0ccefb74ebe6e5ff0a6f7e56&type=2#Roboto SDF');
+    -unity-font-definition: url("project://database/Assets/Fonts/Roboto%20SDF.asset?fileID=11400000&guid=1c5dedeb0ccefb74ebe6e5ff0a6f7e56&type=2#Roboto SDF");
     padding-left: 0;
     padding-right: 0;
     padding-top: 0;
@@ -393,7 +393,7 @@
     left: -96px;
     transition-duration: 0.3s;
     transition-delay: 0.2s;
-    background-image: url('project://database/Assets/Addressables/Sprites/Avatars/AvatarJulia1.png?fileID=2800000&guid=f76882f6db9fdb44281d8f06927bfb23&type=3#AvatarJulia1');
+    background-image: url("project://database/Assets/Addressables/Sprites/Avatars/AvatarJulia1.png?fileID=2800000&guid=f76882f6db9fdb44281d8f06927bfb23&type=3#AvatarJulia1");
 }
 
 .convo_label {

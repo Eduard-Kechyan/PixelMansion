@@ -24,7 +24,7 @@ namespace Merge
         private PopupManager popupManager;
         private SelectionManager selectionManager;
         private ValuePop valuePop;
-        private GameplayUI gameplayUI;
+        private GameplayUI gamePlayUI;
         private SoundManager soundManager;
         private UIButtons uiButtons;
 
@@ -52,7 +52,7 @@ namespace Merge
             dataManager = DataManager.Instance;
             popupManager = PopupManager.Instance;
             valuePop = GameRefs.Instance.valuePop;
-            gameplayUI = GameRefs.Instance.gameplayUI;
+            gamePlayUI = GameRefs.Instance.gamePlayUI;
             soundManager = SoundManager.Instance;
             uiButtons = gameData.GetComponent<UIButtons>();
 
@@ -244,11 +244,11 @@ namespace Merge
                 valuePop.PopInventoryItem(
                     gameData.inventoryData[order].sprite,
                     initialPosition,
-                    uiButtons.gameplayBonusButtonPos,
+                    uiButtons.gamePlayBonusButtonPos,
                     () =>
                     {
                         Debug.Log(inventoryItem.id);
-                        boardManager.CreateItemOnEmptyTile(null, emptyBoard[0], uiButtons.gameplayBonusButtonPos, false, false, inventoryItem, (Vector2 position) =>
+                        boardManager.CreateItemOnEmptyTile(null, emptyBoard[0], uiButtons.gamePlayBonusButtonPos, false, false, inventoryItem, (Vector2 position) =>
                         {
                             if (inventoryItem.timerOn && inventoryItem.type == Types.Type.Gen)
                             {
@@ -378,7 +378,7 @@ namespace Merge
 
                         soundManager.PlaySound(Types.SoundType.OpenCrate); // FIX SOUND - Set proper sound
 
-                        gameplayUI.BlipInventoryIndicator();
+                        gamePlayUI.BlipInventoryIndicator();
 
                         // Remove and unselect the item
                         item.ScaleToSize(Vector2.zero, scaleSpeed, true);

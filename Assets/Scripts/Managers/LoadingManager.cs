@@ -273,10 +273,10 @@ namespace Merge
                 {
                     if (tutorialData.steps[i].id == tutorialStep)
                     {
-                        if (tutorialData.steps[i].scene == Types.Scene.Gameplay)
+                        if (tutorialData.steps[i].scene == Types.Scene.GamePlay)
                         {
-                            // Gameplay scene
-                            sceneLoader.Load(Types.Scene.Gameplay);
+                            // GamePlay scene
+                            sceneLoader.Load(Types.Scene.GamePlay);
 
                             return;
                         }

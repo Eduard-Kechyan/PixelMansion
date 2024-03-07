@@ -91,9 +91,9 @@ namespace Merge
 
                 if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.Android)
                 {
-                    PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Android, buildData.packageName);
+                    PlayerSettings.SetApplicationIdentifier(NamedBuildTarget.Android, buildData.packageName);
 
-                    PlayerSettings.SetScriptingBackend(BuildTargetGroup.Android, ScriptingImplementation.IL2CPP); // Needed for publishing on Google Play Console
+                    PlayerSettings.SetScriptingBackend(NamedBuildTarget.Android, ScriptingImplementation.IL2CPP); // Needed for publishing on Google Play Console
                     AndroidArchitecture aac = AndroidArchitecture.ARM64 | AndroidArchitecture.ARMv7;
                     PlayerSettings.Android.targetArchitectures = aac;
 
@@ -103,7 +103,7 @@ namespace Merge
                     }
                     else
                     {
-                        PlayerSettings.SetIl2CppCodeGeneration(NamedBuildTarget.Android, Il2CppCodeGeneration.OptimizeSpeed); // Faster gameplay
+                        PlayerSettings.SetIl2CppCodeGeneration(NamedBuildTarget.Android, Il2CppCodeGeneration.OptimizeSpeed); // Faster game play
                     }
 
                     PlayerSettings.Android.bundleVersionCode = tempBuildNumber;
@@ -129,7 +129,7 @@ namespace Merge
 
                 if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.Android)
                 {
-                    PlayerSettings.SetScriptingBackend(BuildTargetGroup.Android, ScriptingImplementation.Mono2x); // Faster build time
+                    PlayerSettings.SetScriptingBackend(NamedBuildTarget.Android, ScriptingImplementation.Mono2x); // Faster build time
                 }
             }
 

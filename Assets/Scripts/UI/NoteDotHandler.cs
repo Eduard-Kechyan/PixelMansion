@@ -16,12 +16,12 @@ namespace Merge
 
         // References
         private HubUI hubUI;
-        private GameplayUI gameplayUI;
+        private GameplayUI gamePlayUI;
 
         void Start()
         {
             hubUI = GetComponent<HubUI>();
-            gameplayUI = GetComponent<GameplayUI>();
+            gamePlayUI = GetComponent<GameplayUI>();
 
             if (hubUI == null)
             {
@@ -48,10 +48,10 @@ namespace Merge
                     buttonNoteDot = hubUI.playButtonNoteDot;
                     break;
                 case "home":
-                    buttonNoteDot = gameplayUI.homeButtonNoteDot;
+                    buttonNoteDot = gamePlayUI.homeButtonNoteDot;
                     break;
                 case "inventory":
-                    buttonNoteDot = gameplayUI.inventoryButtonNoteDot;
+                    buttonNoteDot = gamePlayUI.inventoryButtonNoteDot;
                     break;
                 case "shop":
                     if (isHub)
@@ -60,7 +60,7 @@ namespace Merge
                     }
                     else
                     {
-                        buttonNoteDot = gameplayUI.shopButtonNoteDot;
+                        buttonNoteDot = gamePlayUI.shopButtonNoteDot;
                     }
                     break;
                 case "task":
@@ -75,11 +75,11 @@ namespace Merge
                     }
                     else
                     {
-                        buttonNoteDot = gameplayUI.taskButtonNoteDot;
+                        buttonNoteDot = gamePlayUI.taskButtonNoteDot;
 
                         if (amount > 0)
                         {
-                            gameplayUI.taskButtonNoteDotLabel.text = amount.ToString();
+                            gamePlayUI.taskButtonNoteDotLabel.text = amount.ToString();
                         }
                     }
 

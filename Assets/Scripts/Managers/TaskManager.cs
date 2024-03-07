@@ -29,7 +29,7 @@ namespace Merge
         private CameraPinch cameraPinch;
         private NoteDotHandler noteDotHandler;
         private HubUI hubUI;
-        private GameplayUI gameplayUI;
+        private GameplayUI gamePlayUI;
         private UIButtons uiButtons;
 
         void Start()
@@ -42,7 +42,7 @@ namespace Merge
             cameraPinch = Camera.main.GetComponent<CameraPinch>();
             noteDotHandler = GameRefs.Instance.noteDotHandler;
             hubUI = GameRefs.Instance.hubUI;
-            gameplayUI = GameRefs.Instance.gameplayUI;
+            gamePlayUI = GameRefs.Instance.gamePlayUI;
             uiButtons = gameData.GetComponent<UIButtons>();
 
             // The world data manager is only attached in the hub scene
@@ -457,8 +457,8 @@ namespace Merge
                 }
                 else
                 {
-                    initialPosition = uiButtons.gameplayTaskButtonPos;
-                    buttonPosition = uiButtons.gameplayBonusButtonPos;
+                    initialPosition = uiButtons.gamePlayTaskButtonPos;
+                    buttonPosition = uiButtons.gamePlayBonusButtonPos;
                 }
 
                 valuePop.PopBonus(newItem, initialPosition, buttonPosition);
@@ -554,7 +554,7 @@ namespace Merge
             dataManager.SaveInventory();
             dataManager.SaveTasks();
 
-            // Set board items to completed in the gameplay scene
+            // Set board items to completed in the game play scene
             if (completedAtLeastOnItem && boardManager != null)
             {
                 if (Application.isEditor)
@@ -637,7 +637,7 @@ namespace Merge
             return amount;
         }
 
-        // After tapping the complete button on the task in the gameplay scene, 
+        // After tapping the complete button on the task in the game play scene, 
         // send the data to the hub scene and try to complete the scene here
         public void CheckIfThereIsATaskToComplete(Action callback = null)
         {

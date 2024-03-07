@@ -14,7 +14,7 @@ namespace Merge
 
         private SpriteRenderer mainSpriteRenderer;
         private SpriteRenderer shadowSpriteRenderer;
-        
+
         [HideInInspector]
         public string currentRoomName = "";
 
@@ -37,23 +37,18 @@ namespace Merge
 
         public void CheckArea()
         {
-            Collider2D[] hits = new Collider2D[2];
+            Collider2D hit = Physics2D.OverlapCircle(transform.position, radius, LayerMask.GetMask("Room"));
 
-            int numColliders = Physics2D.OverlapCircleNonAlloc(transform.position, radius, hits, LayerMask.GetMask("Room"));
-
-            for (int i = 0; i < numColliders; i++)
+            if (hit.transform.name != currentRoomName)
             {
-                if (hits[i].transform.name != currentRoomName)
+                OrderSetter roomOrderSetter = hit.transform.GetComponent<OrderSetter>();
+
+                if (roomOrderSetter != null)
                 {
-                    OrderSetter roomOrderSetter = hits[i].transform.GetComponent<OrderSetter>();
+                    mainSpriteRenderer.sortingLayerName = roomOrderSetter.sortingLayer;
+                    shadowSpriteRenderer.sortingLayerName = roomOrderSetter.sortingLayer;
 
-                    if (roomOrderSetter != null)
-                    {
-                        mainSpriteRenderer.sortingLayerName = roomOrderSetter.sortingLayer;
-                        shadowSpriteRenderer.sortingLayerName = roomOrderSetter.sortingLayer;
-
-                        currentRoomName = hits[i].transform.name;
-                    }
+                    currentRoomName = hit.transform.name;
                 }
             }
         }

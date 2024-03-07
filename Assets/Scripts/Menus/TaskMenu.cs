@@ -206,12 +206,12 @@ namespace Merge
                                     {
                                         pointerHandler.ButtonPress(Types.Button.TaskMenu, true, () =>
                                         {
-                                            sceneLoader.Load(Types.Scene.Gameplay);
+                                            sceneLoader.Load(Types.Scene.GamePlay);
                                         });
                                     }
                                     else
                                     {
-                                        sceneLoader.Load(Types.Scene.Gameplay);
+                                        sceneLoader.Load(Types.Scene.GamePlay);
                                     }
                                 };
                             }
@@ -279,7 +279,7 @@ namespace Merge
         }
 
         // Check if we are on the hub scene and complete the task,
-        // but if we are on the gameplay scene,
+        // but if we are on the game play scene,
         // then save the task group id and task id to a static variable
         // so it can be used in the hub scene
         void HandleCompletedTap(string groupId, string taskId)

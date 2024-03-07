@@ -120,9 +120,9 @@ namespace Merge
 
                     break;
 
-                case Types.Scene.Gameplay:
+                case Types.Scene.GamePlay:
                     // Play background music
-                    soundManager.PlayMusic(Types.MusicType.Gameplay);
+                    soundManager.PlayMusic(Types.MusicType.GamePlay);
 
                     soundManager.FadeInMusic(fadeDuration);
 

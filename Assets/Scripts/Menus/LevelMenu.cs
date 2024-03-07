@@ -10,7 +10,7 @@ namespace Merge
     public class LevelMenu : MonoBehaviour
     {
         // Variables
-        public bool gameplayScene = false;
+        public bool gamePlayScene = false;
         public float levelButtonOffset = 9f;
         public HubUI hubUI;
         public LevelData levelData;
@@ -28,8 +28,8 @@ namespace Merge
 
         private bool isButtonSlashing = false;
 
-       private Scale nullScale = new(new Vector2(0f, 0f));
-       private Scale fullScale = new(new Vector2(1f, 1f));
+        private Scale nullScale = new(new Vector2(0f, 0f));
+        private Scale fullScale = new(new Vector2(1f, 1f));
 
         private Coroutine levelFillTimeout;
 
@@ -90,7 +90,7 @@ namespace Merge
             levelUpButton = levelMenu.Q<Button>("LevelUpButton");
             levelUpButtonSlash = levelUpButton.Q<VisualElement>("ButtonSlash");
             levelUpLabel = levelUpButton.Q<Label>("LevelUpLabel");
-            levelUpDummyButton= levelMenu.Q<Button>("LevelUpDummyButton");
+            levelUpDummyButton = levelMenu.Q<Button>("LevelUpDummyButton");
 
             levelRewards = levelMenu.Q<VisualElement>("LevelRewards");
             levelRewardsLabel = levelRewards.Q<Label>("Label");
@@ -245,7 +245,9 @@ namespace Merge
                     yield return new WaitForSeconds(1f);
 
                     slash = false;
-                }else{
+                }
+                else
+                {
                     levelUpButtonSlash.RemoveFromClassList("button_slash_slashing");
 
                     yield return new WaitForSeconds(0.5f);
@@ -358,9 +360,9 @@ namespace Merge
                 levelRewardButton0.style.scale = new StyleScale(nullScale);
             }
 
-            if (gameplayScene)
+            if (gamePlayScene)
             {
-                buttonPosition = uiButtons.gameplayBonusButtonPos;
+                buttonPosition = uiButtons.gamePlayBonusButtonPos;
             }
             else
             {

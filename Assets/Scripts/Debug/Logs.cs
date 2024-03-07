@@ -48,7 +48,7 @@ namespace Merge
             public Color color;
         }
 
-        private readonly List<LogData> logsData = new();
+        private readonly List<LogData> logsData = new ();
 
         // References
         private UIDocument debugUI;

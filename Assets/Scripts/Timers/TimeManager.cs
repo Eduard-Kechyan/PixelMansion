@@ -37,7 +37,7 @@ namespace Merge
         {
             string sceneName = SceneManager.GetActiveScene().name;
 
-            if (sceneName == "Gameplay")
+            if (sceneName == Types.Scene.GamePlay.ToString())
             {
                 clockManager = GameRefs.Instance.clockManager;
                 infoBox = GameRefs.Instance.infoBox;

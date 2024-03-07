@@ -36,9 +36,9 @@ namespace Merge
             LOCALE = I18n.Instance;
             menuUI = GetComponent<MenuUI>();
 
-            if (SceneManager.GetActiveScene().name == "Gameplay")
+            if (SceneManager.GetActiveScene().name == Types.Scene.GamePlay.ToString())
             {
-                infoBox = GameRefs.Instance.gameplayUI.GetComponent<InfoBox>();
+                infoBox = GameRefs.Instance.gamePlayUI.GetComponent<InfoBox>();
             }
 
             // UI
@@ -282,7 +282,7 @@ namespace Merge
         void GetChestItems(Item item)
         {
             List<Sprite> itemSprites = new();
-            
+
             containItems.style.display = DisplayStyle.Flex;
 
             if (item.chestGroup == Types.ChestGroup.Item)

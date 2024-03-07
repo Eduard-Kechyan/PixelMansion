@@ -128,7 +128,7 @@ namespace Merge
 
         // References
         private ValuesUI valuesUI;
-        private GameplayUI gameplayUI;
+        private GameplayUI gamePlayUI;
         private DataManager dataManager;
         private SoundManager soundManager;
         private CloudSave cloudSave;
@@ -171,9 +171,9 @@ namespace Merge
         {
             valuesUI = GameRefs.Instance.valuesUI;
 
-            if (scene == Types.Scene.Gameplay)
+            if (scene == Types.Scene.GamePlay)
             {
-                gameplayUI = GameRefs.Instance.gameplayUI;
+                gamePlayUI = GameRefs.Instance.gamePlayUI;
             }
         }
 
@@ -581,7 +581,7 @@ namespace Merge
 
         public void CheckBonus()
         {
-            gameplayUI.CheckBonusButton();
+            gamePlayUI.CheckBonusButton();
         }
 
         public Types.Bonus GetAndRemoveLatestBonus()
@@ -592,7 +592,7 @@ namespace Merge
 
             bonusData.RemoveAt(latestIndex);
 
-            gameplayUI.CheckBonusButton();
+            gamePlayUI.CheckBonusButton();
 
             return newBonus;
         }

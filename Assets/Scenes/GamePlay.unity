@@ -13,7 +13,7 @@ OcclusionCullingSettings:
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 9
+  serializedVersion: 10
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
@@ -44,7 +44,6 @@ RenderSettings:
 LightmapSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 12
-  m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -67,9 +66,6 @@ LightmapSettings:
     m_LightmapParameters: {fileID: 0}
     m_LightmapsBakeMode: 1
     m_TextureCompression: 1
-    m_FinalGather: 0
-    m_FinalGatherFiltering: 1
-    m_FinalGatherRayCount: 256
     m_ReflectionCompression: 2
     m_MixedBakeMode: 2
     m_BakeBackend: 1
@@ -351,7 +347,7 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1537458401331318770, guid: f4034c2be9714cc41b0cf4ef9809c444, type: 3}
-      propertyPath: foundLocales.Array.data[0]
+      propertyPath: 'foundLocales.Array.data[0]'
       value: English
       objectReference: {fileID: 0}
     - target: {fileID: 3856526671071279619, guid: f4034c2be9714cc41b0cf4ef9809c444, type: 3}
@@ -502,17 +498,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: af9e0bfb46c520a4fac5c30843ed2d4e, type: 3}
---- !u!114 &946986279 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 352704914890339314, guid: f4034c2be9714cc41b0cf4ef9809c444, type: 3}
-  m_PrefabInstance: {fileID: 656374330}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1566288106
 GameObject:
   m_ObjectHideFlags: 0
@@ -676,13 +661,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4655c44ee47889444a90787bd9a64528, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameplayUI: {fileID: 3894635478175162773}
+  gamePlayUI: {fileID: 3894635478175162773}
   hubUI: {fileID: 0}
   hubGameUI: {fileID: 0}
   menuUI: {fileID: 2529494230138778357}
   valuesUI: {fileID: 7866921526989002608}
-  debugUI: {fileID: 946986279}
-  gameplayUIDoc: {fileID: 0}
+  gamePlayUIDoc: {fileID: 0}
   hubUIDoc: {fileID: 0}
   hubGameUIDoc: {fileID: 0}
   menuUIDoc: {fileID: 0}
@@ -808,6 +792,10 @@ PrefabInstance:
       propertyPath: boardInteractions
       value: 
       objectReference: {fileID: 639326501}
+    - target: {fileID: 6551264188553690675, guid: 1bd750316f540934998c943551a39ba8, type: 3}
+      propertyPath: m_PanelSettings
+      value: 
+      objectReference: {fileID: 11400000, guid: d000dfb085c4f164b96f3449146dd665, type: 2}
     - target: {fileID: 8398883806428278736, guid: 1bd750316f540934998c943551a39ba8, type: 3}
       propertyPath: m_Name
       value: TutorialManager
@@ -1108,6 +1096,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2295170619679281268, guid: 02afc034eec9a314b97f987fe6c69102, type: 3}
+      propertyPath: m_PanelSettings
+      value: 
+      objectReference: {fileID: 11400000, guid: d000dfb085c4f164b96f3449146dd665, type: 2}
     - target: {fileID: 3654883059792793667, guid: 02afc034eec9a314b97f987fe6c69102, type: 3}
       propertyPath: m_RootOrder
       value: 9
@@ -1262,6 +1254,8 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1467,6 +1461,10 @@ PrefabInstance:
       propertyPath: boardManager
       value: 
       objectReference: {fileID: 639326507}
+    - target: {fileID: 6890635896343097084, guid: 6a4bd6a5611eb914ea950405a066bcd8, type: 3}
+      propertyPath: m_PanelSettings
+      value: 
+      objectReference: {fileID: 11400000, guid: d000dfb085c4f164b96f3449146dd665, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1867,9 +1865,9 @@ MonoBehaviour:
   m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_PanelSettings: {fileID: 11400000, guid: 2e83536c46c9fb3449baddd42f9cfe72, type: 2}
+  m_PanelSettings: {fileID: 11400000, guid: d000dfb085c4f164b96f3449146dd665, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: 0395e84a347519e4289fa86753abb620, type: 3}
+  sourceAsset: {fileID: 9197481963319205126, guid: e737efcdab498634cb8643a4c3820b24, type: 3}
   m_SortingOrder: 7
 --- !u!1001 &7866921526989002607
 PrefabInstance:
@@ -1931,6 +1929,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8566869256388255783, guid: e40cfcf418a8eb04ca91a1f444eb3a9f, type: 3}
+      propertyPath: m_PanelSettings
+      value: 
+      objectReference: {fileID: 11400000, guid: d000dfb085c4f164b96f3449146dd665, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3510,6 +3512,10 @@ PrefabInstance:
       propertyPath: sceneLoader
       value: 
       objectReference: {fileID: 2129448916}
+    - target: {fileID: 6505914479141634174, guid: f41ec8453e812e6448d9ee71148978c0, type: 3}
+      propertyPath: m_PanelSettings
+      value: 
+      objectReference: {fileID: 11400000, guid: d000dfb085c4f164b96f3449146dd665, type: 2}
     - target: {fileID: 6959001973875461028, guid: f41ec8453e812e6448d9ee71148978c0, type: 3}
       propertyPath: m_Name
       value: PopupUI

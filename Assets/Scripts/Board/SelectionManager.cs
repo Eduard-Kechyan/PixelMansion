@@ -15,7 +15,7 @@ namespace Merge
         private DoubleTapManager doubleTapManager;
 
         // Instances
-        private GameplayUI gameplayUI;
+        private GameplayUI gamePlayUI;
         private InfoBox infoBox;
 
         void Start()
@@ -25,8 +25,8 @@ namespace Merge
             doubleTapManager = GetComponent<DoubleTapManager>();
 
             // Cache instances
-            gameplayUI = GameRefs.Instance.gameplayUI;
-            infoBox = gameplayUI.GetComponent<InfoBox>();
+            gamePlayUI = GameRefs.Instance.gamePlayUI;
+            infoBox = gamePlayUI.GetComponent<InfoBox>();
         }
 
         public void SelectItem(Vector3 worldPos)

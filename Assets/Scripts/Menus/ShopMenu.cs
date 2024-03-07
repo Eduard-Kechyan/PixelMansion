@@ -11,8 +11,8 @@ namespace Merge
     public class ShopMenu : MonoBehaviour
     {
         // Variables
-        public bool gameplayScene = false;
-        public GameplayUI gameplayUI;
+        public bool gamePlayScene = false;
+        public GameplayUI gamePlayUI;
         public BoardManager boardManager;
         public SceneLoader sceneLoader;
         public ShopData shopData;
@@ -559,7 +559,7 @@ namespace Merge
                 HandleDailyItem(order);
             }
 
-            if (sceneLoader.scene == Types.Scene.Gameplay)
+            if (sceneLoader.scene == Types.Scene.GamePlay)
             {
                 StartCoroutine(AddItemToBoardOrBonusButton(order, shopItemType));
             }
@@ -683,11 +683,11 @@ namespace Merge
             {
                 emptyBoard.Sort((p1, p2) => p1.distance.CompareTo(p2.distance));
 
-                boardManager.CreateItemOnEmptyTile(boardItem, emptyBoard[0], uiButtons.gameplayShopButtonPos);
+                boardManager.CreateItemOnEmptyTile(boardItem, emptyBoard[0], uiButtons.gamePlayShopButtonPos);
             }
             else
             {
-                valuePop.PopBonus(newItem, uiButtons.gameplayShopButtonPos, uiButtons.gameplayBonusButtonPos);
+                valuePop.PopBonus(newItem, uiButtons.gamePlayShopButtonPos, uiButtons.gamePlayBonusButtonPos);
             }
         }
 

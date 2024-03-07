@@ -64,7 +64,7 @@ public class UserReportExample : MonoBehaviour
         // Set up an EventSystem in the scene, if one doesn't exist already, for UI-triggered events
         if (Application.isPlaying)
         {
-            EventSystem sceneEventSystem = FindObjectOfType<EventSystem>();
+            EventSystem sceneEventSystem = FindFirstObjectByType<EventSystem>();
             if (sceneEventSystem == null)
             {
                 GameObject eventSystem = new GameObject("EventSystem");
