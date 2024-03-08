@@ -9,6 +9,8 @@ namespace Merge
     public class LoadingSceneUI : MonoBehaviour
     {
         // Variables
+        public FeedbackManager feedbackManager;
+
         [Header("Background")]
         public float backgroundDelay = 15f;
         public float skyUpDelay = 0.1f;
@@ -163,13 +165,19 @@ namespace Merge
             if (Application.isEditor || Debug.isDebugBuild)
             {
                 Button debugButton = root.Q<Button>("DebugButton");
-                Button feedbackButton = root.Q<Button>("FeedbackButton");
 
                 debugButton.style.display = DisplayStyle.Flex;
-                feedbackButton.style.display = DisplayStyle.Flex;
 
                 debugButton.clicked += () => DebugManager.Instance.OpenMenu();
-                feedbackButton.clicked += () => FeedbackManager.Instance.Open();
+
+                if (feedbackManager != null)
+                {
+                    Button feedbackButton = root.Q<Button>("FeedbackButton");
+
+                    feedbackButton.style.display = DisplayStyle.Flex;
+
+                    feedbackButton.clicked += () => feedbackManager.Open();
+                }
             }
 
             Init();

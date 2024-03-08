@@ -5,6 +5,7 @@ using Unity.Services.UserReporting;
 using Unity.Services.UserReporting.Client;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.SceneManagement;
 
 namespace Merge
 {
@@ -90,19 +91,11 @@ namespace Merge
         private VisualElement failureContainer;
         private Label failureLabel;
 
-        // Instance
-        public static FeedbackManager Instance;
-
         void Awake()
         {
-            if (Instance != null && Instance != this)
+            if (Glob.ParseEnum<Types.Scene>(SceneManager.GetActiveScene().name) != Types.Scene.Hub && !Debug.isDebugBuild && !Application.isEditor)
             {
-                Destroy(this);
-            }
-            else
-            {
-                Instance = this;
-                DontDestroyOnLoad(Instance);
+                Destroy(gameObject);
             }
         }
 

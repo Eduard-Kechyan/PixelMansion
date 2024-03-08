@@ -57,6 +57,6 @@
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
-    <ui:Button name="DebugButton" class="button_standard debug_button" style="right: 25px; bottom: 4px;" />
-    <ui:Button name="FeedbackButton" class="button_standard feedback_debug_button" style="right: 25px; bottom: 0; height: 24px;" />
+    <ui:Button name="DebugButton" class="button_standard debug_button" style="right: 25px; bottom: 4px; display: none;" />
+    <ui:Button name="FeedbackButton" class="button_standard feedback_debug_button" style="right: auto; bottom: 0; height: 24px; display: none; left: 25px;" />
 </ui:UXML>

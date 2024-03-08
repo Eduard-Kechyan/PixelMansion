@@ -684,12 +684,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4655c44ee47889444a90787bd9a64528, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameplayUI: {fileID: 0}
+  gamePlayUI: {fileID: 0}
   hubUI: {fileID: 0}
   hubGameUI: {fileID: 0}
   menuUI: {fileID: 0}
   valuesUI: {fileID: 0}
-  gameplayUIDoc: {fileID: 0}
+  gamePlayUIDoc: {fileID: 0}
   hubUIDoc: {fileID: 0}
   hubGameUIDoc: {fileID: 0}
   menuUIDoc: {fileID: 0}

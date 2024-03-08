@@ -1,6 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Styles/!MainStyles.uss?fileID=7433441132597879392&amp;guid=d72cb646ff9afd2458a02dbd4dc56421&amp;type=3#!MainStyles" />
     <Style src="project://database/Assets/UI/Styles/MenuStyles.uss?fileID=7433441132597879392&amp;guid=663206ebf1059204eb4ee1eb82dfb026&amp;type=3#MenuStyles" />
-    <Style src="project://database/Assets/UI/Styles/Main.uss?fileID=7433441132597879392&amp;guid=b6d7ed9290f88c745af1e68e28dec072&amp;type=3#Main" />
     <ui:VisualElement name="LocaleWrapper" class="locale_en" style="left: 0; top: 0; right: 0; bottom: 0; position: absolute; display: none; opacity: 1;">
         <ui:VisualElement name="SettingsMenu" class="menu" style="display: none; opacity: 0;">
             <ui:VisualElement name="Background" class="background" />

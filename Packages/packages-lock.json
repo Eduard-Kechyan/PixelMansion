@@ -1,18 +1,11 @@
 {
   "dependencies": {
-    "com.consulo.ide": {
-      "version": "https://github.com/consulo/UnityEditorConsuloPlugin.git#2.6.0",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "b25393f154e74a09bc78068fb0a7636976f37a49"
-    },
     "com.h8man.2d.navmeshplus": {
       "version": "https://github.com/h8man/NavMeshPlus.git",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "4f4966ff65ec4ca4dbe76fdbefcef9e89d009375"
+      "hash": "f8a1aedbf0bc7c4aebe0f52300b002912690ce1a"
     },
     "com.unity.2d.animation": {
       "version": "10.1.0",
@@ -140,13 +133,6 @@
       },
       "url": "https://packages.unity.com"
     },
-    "com.unity.collab-proxy": {
-      "version": "2.2.0",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {},
-      "url": "https://packages.unity.com"
-    },
     "com.unity.collections": {
       "version": "1.2.4",
       "depth": 2,
@@ -185,15 +171,6 @@
         "com.unity.2d.tilemap.extras": "4.0.2",
         "com.unity.2d.aseprite": "1.1.1"
       }
-    },
-    "com.unity.ide.rider": {
-      "version": "3.0.27",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.ext.nunit": "1.0.6"
-      },
-      "url": "https://packages.unity.com"
     },
     "com.unity.ide.visualstudio": {
       "version": "2.0.22",
@@ -342,26 +319,6 @@
         "com.unity.modules.ui": "1.0.0",
         "com.unity.modules.imgui": "1.0.0"
       }
-    },
-    "com.unity.visualscripting": {
-      "version": "1.9.1",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.ugui": "1.0.0",
-        "com.unity.modules.jsonserialize": "1.0.0"
-      },
-      "url": "https://packages.unity.com"
-    },
-    "com.unity.xr.legacyinputhelpers": {
-      "version": "2.1.10",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.modules.vr": "1.0.0",
-        "com.unity.modules.xr": "1.0.0"
-      },
-      "url": "https://packages.unity.com"
     },
     "com.unity.modules.accessibility": {
       "version": "1.0.0",

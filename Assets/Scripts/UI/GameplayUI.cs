@@ -10,6 +10,7 @@ namespace Merge
         // Variables
         public SceneLoader sceneLoader;
         public PointerHandler pointerHandler;
+        public FeedbackManager feedbackManager;
 
         [HideInInspector]
         public bool loaded = false;
@@ -122,13 +123,19 @@ namespace Merge
             if (Application.isEditor || Debug.isDebugBuild)
             {
                 Button debugButton = root.Q<Button>("DebugButton");
-                Button feedbackButton = root.Q<Button>("FeedbackButton");
 
                 debugButton.style.display = DisplayStyle.Flex;
-                feedbackButton.style.display = DisplayStyle.Flex;
 
                 debugButton.clicked += () => DebugManager.Instance.OpenMenu();
-                feedbackButton.clicked += () => FeedbackManager.Instance.Open();
+
+                if (feedbackManager != null)
+                {
+                    Button feedbackButton = root.Q<Button>("FeedbackButton");
+
+                    feedbackButton.style.display = DisplayStyle.Flex;
+
+                    feedbackButton.clicked += () => feedbackManager.Open();
+                }
             }
 
             root.RegisterCallback<GeometryChangedEvent>(evt => SetUIButtons(evt, true));
