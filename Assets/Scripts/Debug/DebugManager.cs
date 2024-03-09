@@ -6,7 +6,7 @@ using GoogleMobileAds.Api;
 
 namespace Merge
 {
-#if DEVELOPER_BUILD || UNITY_EDITOR
+#if DEVELOPMENT_BUILD || UNITY_EDITOR
     public class DebugManager : MonoBehaviour
     {
         // Variables

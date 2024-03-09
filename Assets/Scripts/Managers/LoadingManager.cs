@@ -11,13 +11,14 @@ namespace Merge
         public bool stayOnScene = false;
         public bool acceptTermsAuto = false;
         public bool logPhases = false;
+        public bool logSystemAndDeviceInfo = false;
         public float fillSpeed = 30f;
         public TutorialData tutorialData;
         public SceneLoader sceneLoader;
         public GameObject uiDocument;
         public LoadingSceneUI loadingSceneUI;
 
-#if DEVELOPER_BUILD || UNITY_EDITOR
+#if DEVELOPMENT_BUILD || UNITY_EDITOR
         public FeedbackManager feedbackManager;
         public Logs logs;
 #endif
@@ -89,6 +90,11 @@ namespace Merge
                 acceptTermsAuto = false;
             }
 
+            if (logSystemAndDeviceInfo)
+            {
+                Testing();
+            }
+
             StartLoading();
         }
 
@@ -104,7 +110,11 @@ namespace Merge
                 {
                     loading = false;
 
-                    cloudSave.CheckUserData(callback);
+                    cloudSave.CheckUserData(() =>
+                    {
+                        cloudSave.checkedForUserData = true;
+                        callback();
+                    });
 
                     if (logPhases)
                     {
@@ -307,15 +317,13 @@ namespace Merge
 
         bool CheckForLoading()
         {
-#if DEVELOPER_BUILD || UNITY_EDITOR
+#if DEVELOPMENT_BUILD || UNITY_EDITOR
             if (
                 // Feedback manager
-                feedbackManager != null &&
-                feedbackManager.feedbackOpen &&
+                !feedbackManager.feedbackOpen &&
                 !feedbackManager.thanksOpen &&
                 !feedbackManager.failureOpen &&
                 // Logs
-                logs != null &&
                 !logs.logsOpen
                 // Other
                 )
@@ -325,6 +333,48 @@ namespace Merge
 #endif
 
             return false;
+        }
+
+        void Testing()
+        {
+            Debug.Log("//// APPLICATION ////");
+            Debug.Log("Installer Name: " + Application.installerName);
+            Debug.Log("Install Mode: " + Application.installMode);
+            Debug.Log("System Language: " + Application.systemLanguage);
+            Debug.Log("Platform: " + Application.platform);
+            Debug.Log("Genuine Check Available: " + Application.genuineCheckAvailable);
+            if (Application.genuineCheckAvailable)
+            {
+                Debug.Log("Genuine: " + Application.genuine);
+            }
+            Debug.Log("Build GUID: " + Application.buildGUID);
+            Debug.Log("Cloud Project Id: " + Application.cloudProjectId);
+            Debug.Log("Product Name: " + Application.productName);
+            Debug.Log("Identifier: " + Application.identifier);
+            Debug.Log("Version: " + Application.version);
+            Debug.Log("Unity Version: " + Application.unityVersion);
+
+            Debug.Log("//// SYSTEM INFO ////");
+            Debug.Log("Unique Identifier: " + SystemInfo.deviceUniqueIdentifier);
+            Debug.Log("Model: " + SystemInfo.deviceModel);
+            Debug.Log("Name: " + SystemInfo.deviceName);
+            Debug.Log("Type: " + SystemInfo.deviceType);
+            Debug.Log("OS: " + SystemInfo.operatingSystem);
+            Debug.Log("OS Family: " + SystemInfo.operatingSystemFamily);
+            Debug.Log("Memory Size: " + SystemInfo.systemMemorySize);
+
+            Debug.Log("//// GRAPHICS DEVICE ////");
+            Debug.Log("ID: " + SystemInfo.graphicsDeviceID);
+            Debug.Log("Name: " + SystemInfo.graphicsDeviceName);
+            Debug.Log("Vendor: " + SystemInfo.graphicsDeviceVendor);
+            Debug.Log("Vendor ID: " + SystemInfo.graphicsDeviceVendorID);
+            Debug.Log("Version: " + SystemInfo.graphicsDeviceVersion);
+            Debug.Log("Memory Size: " + SystemInfo.graphicsMemorySize);
+
+            Debug.Log("//// PROCESSOR ////");
+            Debug.Log("Core Count: " + SystemInfo.processorCount);
+            Debug.Log("Frequency: " + SystemInfo.processorFrequency);
+            Debug.Log("Type: " + SystemInfo.processorType);
         }
 
         void HandleAge(int newValue)

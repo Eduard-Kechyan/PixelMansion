@@ -165,7 +165,21 @@ namespace Merge
         //// OTHER ////
         public static T ParseEnum<T>(string value)
         {
-            return (T)Enum.Parse(typeof(T), value, true);
+            try
+            {
+                return (T)Enum.Parse(typeof(T), value, true);
+            }
+            catch
+            {
+                // ERROR
+                ErrorManager.Instance.Throw(
+                    Types.ErrorType.Code,
+                    "Glob",
+                    "Couldn't parse enum: " + typeof(T) + ". Value: " + value
+                );
+
+                return default;
+            }
         }
 
         public static Color FromHEX(string hex)

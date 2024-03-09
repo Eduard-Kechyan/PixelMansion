@@ -1216,6 +1216,10 @@ PrefabInstance:
       propertyPath: sceneLoader
       value: 
       objectReference: {fileID: 2129448916}
+    - target: {fileID: 4479317755097273465, guid: 02afc034eec9a314b97f987fe6c69102, type: 3}
+      propertyPath: boardManager
+      value: 
+      objectReference: {fileID: 639326507}
     - target: {fileID: 7504682329703976227, guid: 02afc034eec9a314b97f987fe6c69102, type: 3}
       propertyPath: m_Name
       value: TransitionUI

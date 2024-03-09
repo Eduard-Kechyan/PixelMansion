@@ -92,10 +92,12 @@ namespace Merge
 
         async void Init()
         {
+            Debug.Log("AUTH-0");
             SetupEvents();
 
             if (AuthenticationService.Instance.SessionTokenExists || Application.isEditor)
             {
+                Debug.Log("AUTH-1");
                 await SignInAnonymOrCachedAsync();
             }
 
@@ -104,6 +106,7 @@ namespace Merge
 
             if (!Application.isEditor)
             {
+                Debug.Log("AUTH-2");
                 SignInToGoogleAuto();
             }
 
@@ -182,10 +185,12 @@ namespace Merge
 
             if (tokenExists)
             {
+                Debug.Log("AUTH-3");
                 currentAuthType = services.GetSignInData();
             }
             else
             {
+                Debug.Log("AUTH-4");
                 currentAuthType = AuthType.Anonym;
             }
 
@@ -539,11 +544,17 @@ namespace Merge
 
                             if (currentAuthType == AuthType.Anonym)
                             {
+                                Debug.Log("AUTH-5");
                                 LinkToAccount(AuthType.Google, false, forceLinking);
+                            }
+                            else if (currentAuthType == AuthType.Unknown)
+                            {
+                                Debug.Log("AUTH-6");
+                                SignInToAccount(AuthType.Google, false);
                             }
                             else
                             {
-                                SignInToAccount(AuthType.Google, false);
+                                Debug.Log("AUTH-67");
                             }
                         }
                     });

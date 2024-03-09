@@ -11,11 +11,14 @@ namespace Merge
     {
         // Variables
         public TransitionData transitionData;
+        public BoardManager boardManager;
         public WorldDataManager worldDataManager;
         public SceneLoader sceneLoader;
         public float duration = 0.5f;
         public Color[] backgroundColors = new Color[0];
         public Sprite[] iconSprites = new Sprite[0];
+
+        private bool ignoreDuration = false;
 
         // References
         private DataManager dataManager;
@@ -37,13 +40,12 @@ namespace Merge
             if (SceneManager.GetActiveScene().name == Types.Scene.Loading.ToString())
             {
                 transition.style.display = DisplayStyle.Flex;
-                /*  transition.style.opacity = 0;
-                  transition.style.visibility = Visibility.Hidden;*/
                 transition.style.bottom = 500;
             }
             else
             {
                 StartCoroutine(Close());
+                StartCoroutine(IgnoreCloseDurationCheck());
             }
         }
 
@@ -60,8 +62,6 @@ namespace Merge
 
             // Do the rest afterwards
 
-            /*transition.style.opacity = 1;
-            transition.style.visibility = Visibility.Visible;*/
             transition.style.bottom = 0;
 
             if (callback != null)
@@ -80,8 +80,6 @@ namespace Merge
                 transition.style.backgroundColor = backgroundColors[transitionData.backgroundColor];
             }
 
-            /*  transition.style.opacity = 1;
-              transition.style.visibility = Visibility.Visible;*/
             transition.style.bottom = 0;
             transition.style.display = DisplayStyle.Flex;
 
@@ -90,11 +88,21 @@ namespace Merge
                 yield return null;
             }
 
+            if (!ignoreDuration)
+            {
+                yield return new WaitForSeconds(duration);
+            }
+
+            transition.style.bottom = 500;
+        }
+
+        IEnumerator IgnoreCloseDurationCheck()
+        {
+            ignoreDuration = true;
+
             yield return new WaitForSeconds(duration);
 
-            /* transition.style.opacity = 0;
-             transition.style.visibility = Visibility.Hidden;*/
-            transition.style.bottom = 500;
+            ignoreDuration = false;
         }
 
         bool CheckLoaded()
@@ -111,12 +119,13 @@ namespace Merge
                             readyToOpen = true;
                         }
                         break;
-
                     case Types.Scene.GamePlay:
-                        readyToOpen = true;
+                        if (boardManager.boardSet)
+                        {
+                            readyToOpen = true;
+                        }
                         break;
-
-                    default:
+                    default: // Types.Scene.Loading
                         readyToOpen = true;
                         break;
                 }

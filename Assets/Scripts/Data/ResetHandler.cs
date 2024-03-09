@@ -13,11 +13,13 @@ namespace Merge
 
         // References
         private CloudSave cloudSave;
+        private GameData gameData;
 
         void Start()
         {
             // Cache
             cloudSave = Services.Instance.GetComponent<CloudSave>();
+            gameData = GameData.Instance;
         }
 
 #if UNITY_EDITOR
@@ -149,28 +151,34 @@ namespace Merge
                 yield return null;
             }
 
+            if (gameData == null)
+            {
+                gameData = GameObject.Find("GameData").GetComponent<GameData>();
+            }
+
             if (cloudDeletionFailed && !networkAvailable)
             {
                 // TODO - Notify that reseting the game failed
+                Debug.LogWarning("Resetting failed!");
             }
             else
             {
                 // Reset Player Prefs
                 if (Application.isEditor)
                 {
-                    string sessionToken = PlayerPrefs.GetString(GameData.Instance.buildData.tokenKeyName, "");
-                    string playerId = PlayerPrefs.GetString(GameData.Instance.buildData.playerIdName, "");
+                    string sessionToken = PlayerPrefs.GetString(gameData.buildData.tokenKeyName, "");
+                    string playerId = PlayerPrefs.GetString(gameData.buildData.playerIdName, "");
 
                     PlayerPrefs.DeleteAll();
 
                     if (sessionToken != "")
                     {
-                        PlayerPrefs.SetString(GameData.Instance.buildData.tokenKeyName, sessionToken);
+                        PlayerPrefs.SetString(gameData.buildData.tokenKeyName, sessionToken);
                     }
 
                     if (playerId != "")
                     {
-                        PlayerPrefs.SetString(GameData.Instance.buildData.playerIdName, playerId);
+                        PlayerPrefs.SetString(gameData.buildData.playerIdName, playerId);
                     }
                 }
                 else

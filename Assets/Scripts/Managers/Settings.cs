@@ -19,6 +19,7 @@ namespace Merge
         private SoundManager soundManager;
         private I18n LOCALE;
         private SettingsMenu settingsMenu;
+        private Services services;
         private NotificsManager notificsManager;
         private CloudSave cloudSave;
 
@@ -42,13 +43,25 @@ namespace Merge
         {
             soundManager = SoundManager.Instance;
             LOCALE = I18n.Instance;
-            notificsManager = Services.Instance.GetComponent<NotificsManager>();
-            cloudSave = Services.Instance.GetComponent<CloudSave>();
+            services = Services.Instance;
+            notificsManager = services.GetComponent<NotificsManager>();
+            cloudSave = services.GetComponent<CloudSave>();
 
             GetSound();
             GetMusic();
             GetVibration();
             GetNotifications();
+
+            StartCoroutine(WaitForCloudSave());
+        }
+
+        IEnumerator WaitForCloudSave()
+        {
+            while (!services.cloudSaveAvailable)
+            {
+                yield return null;
+            }
+
             SetLocale(Types.Locale.English, true);
         }
 

@@ -3,36 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Services.CloudSave;
-
-// TODO - Handle this data
-/*    
-    UserData newUserData = new()
-    {
-        playerId = playerId,
-        email = dummyEmail, // FIX - Email should be empty and should only be filled if the player signs ins using social media
-        location = "USA",
-        language = "en-US",
-        age = tempAge
-    };
-
-    // deviceId = SystemInfo.deviceUniqueIdentifier,
-    // deviceModel = SystemInfo.deviceModel,
-    // deviceOs = SystemInfo.operatingSystem,
-    // deviceLanguage = Application.systemLanguage.ToString(),
-    // devicePlatform = Application.platform.ToString(),
-    // deviceName = SystemInfo.deviceName,
-    // deviceType = SystemInfo.deviceType.ToString(),
-    // deviceOsFamily = SystemInfo.operatingSystemFamily.ToString(),
-
-    /* Debug.Log(newUserData.deviceId);
-     Debug.Log(newUserData.deviceModel);
-     Debug.Log(newUserData.deviceOs);
-     Debug.Log(newUserData.deviceLanguage);
-
-     Debug.Log(Application.absoluteURL);
-     Debug.Log(Application.installerName);
-     Debug.Log(Application.installMode);
-*/
+using Newtonsoft.Json;
 
 namespace Merge
 {
@@ -41,10 +12,11 @@ namespace Merge
         // Variables
         public bool cloudSaveEnabled = true;
         [Tooltip("In minutes")]
-        [Condition("checkSendDataRegularly", true)]
+        [Condition("checkUnsentDataRegularly", true)]
         public float unsentDataCheckInterval = 30f;
-        public float tooLongDelay = 2f;
+        public float tooLongDelay = 5f;
         public bool throwCalledBeforeServicesError = false;
+        public bool checkUnsentDataRegularly = false;
         public bool logData = false;
 
         [HideInInspector]
@@ -52,7 +24,8 @@ namespace Merge
 
         private bool initializationTookTooLong = false;
 
-        private bool checkSendDataRegularly = false;
+        [HideInInspector]
+        public bool checkedForUserData = false;
 
         // References
         private Services services;
@@ -93,17 +66,17 @@ namespace Merge
 
         IEnumerator WaitForGameData()
         {
-            while (!services.cloudSaveAvailable || !dataManager.loaded || dataManager.reader == null)
+            while (!services.cloudSaveAvailable || !checkedForUserData || !dataManager.loaded || dataManager.reader == null)
             {
                 yield return null;
             }
 
-            if (checkSendDataRegularly)
+            if (checkUnsentDataRegularly)
             {
                 Glob.SetInterval(() =>
                 {
                     CheckUnsavedData();
-                }, unsentDataCheckInterval + 60);
+                }, unsentDataCheckInterval * 60);
             }
             else
             {
@@ -141,12 +114,7 @@ namespace Merge
 
                         foreach (var dataItem in data)
                         {
-                            Debug.Log(dataItem.Key);
-                            Debug.Log(dataItem.Value);
-                            Debug.Log(dataItem.Value.Key);
-                            Debug.Log(dataItem.Value.Value);
-
-                            dataManager.SetValue(dataItem.Key, dataItem.Value.Value);
+                            dataManager.SetValue(dataItem.Key, dataItem.Value.Value.GetAsString());
 
                             if (dataItem.Key == "tutorialFinished")
                             {
@@ -274,6 +242,11 @@ namespace Merge
 
         void SetUnsavedData(Dictionary<string, object> unsavedData)
         {
+            if (dataManager.loaded && (unsentData == null || unsentData.Count == 0))
+            {
+                unsentData = dataManager.LoadUnsentData();
+            }
+
             foreach (var dataItem in unsavedData)
             {
                 bool found = false;
@@ -346,8 +319,13 @@ namespace Merge
             {
                 bool isReady = false;
 
-                // Load from disk    
-                Dictionary<string, object> tempUnsentData = dataManager.LoadUnsentData();
+                Dictionary<string, object> tempUnsentData = null;
+
+                // Load from disk
+                if (dataManager.loaded)
+                {
+                    tempUnsentData = dataManager.LoadUnsentData();
+                }
 
                 if (tempUnsentData != null && tempUnsentData.Count > 0)
                 {

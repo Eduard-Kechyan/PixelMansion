@@ -11,7 +11,7 @@ using UnityEngine.InputSystem;
 
 namespace Merge
 {
-#if DEVELOPER_BUILD || UNITY_EDITOR
+#if DEVELOPMENT_BUILD || UNITY_EDITOR
     public class Logs : MonoBehaviour
     {
         // Variables
@@ -21,7 +21,7 @@ namespace Merge
         public int logsTopHight = 24;
         public int defaultFontSize = 6;
         public Color defaultLogColor;
-        [Tooltip("Use the black list to ignore some logs.")]
+        [Tooltip("Use the black list to exclude some logs.")]
         public bool useBlackList = true;
         [Condition("useBlackList", true)]
         public string[] blackList;
@@ -44,18 +44,9 @@ namespace Merge
 
         private Coroutine clearTimeout;
 
-        [Serializable]
-        public class LogData
-        {
-            public string message;
-            public List<string> stackTrace;
-            public Color color;
-        }
-
-        private readonly List<LogData> logsData = new();
-
         // References
         private UIDocument debugUI;
+        private GameData gameData;
 
         // UI
         private VisualElement root;
@@ -92,6 +83,7 @@ namespace Merge
         {
             // Cache
             debugUI = GetComponent<UIDocument>();
+            gameData = GameData.Instance;
 
             // UI
             root = debugUI.rootVisualElement;
@@ -205,12 +197,14 @@ namespace Merge
                 logsContainer.style.display = DisplayStyle.Flex;
                 logsContainer.style.opacity = 1;
 
-                for (int i = 0; i < logsData.Count; i++)
+                for (int i = 0; i < gameData.logsData.Count; i++)
                 {
-                    AddNewLogToUI(logsData[i]);
+                    AddNewLogToUI(gameData.logsData[i]);
                 }
 
                 ScrollToBottom();
+
+                SetButtons();
             }
             else
             {
@@ -233,7 +227,9 @@ namespace Merge
         {
             logsScrollView.Clear();
 
-            logsData.Clear();
+            gameData.logsData.Clear();
+
+            SetButtons();
         }
 
         void HandleNewLog(string newMessage, string newStackTrace, LogType newType)
@@ -278,14 +274,19 @@ namespace Merge
                     }
                 }
 
-                LogData newLogData = new()
+                Types.LogData newLogData = new()
                 {
                     message = newMessage,
                     stackTrace = stackList,
                     color = GetColorFromType(newType)
                 };
 
-                logsData.Add(newLogData);
+                if (gameData == null)
+                {
+                    gameData = GameData.Instance;
+                }
+
+                gameData.logsData.Add(newLogData);
 
                 if (logsOpen)
                 {
@@ -294,9 +295,9 @@ namespace Merge
             }
         }
 
-        void AddNewLogToUI(LogData newLogData)
+        void AddNewLogToUI(Types.LogData newLogData)
         {
-            Label newLogMessageLabel = new() { text = newLogData.message };
+            Label newLogMessageLabel = new() { text = "• " + newLogData.message };
 
             newLogMessageLabel.AddToClassList("log");
 
@@ -325,24 +326,6 @@ namespace Merge
 
                     logsScrollView.Add(newLogStackTraceLabel);
                 }
-            }
-            else
-            {
-                Label newLogStackTraceLabel = new() { text = "No stack trace for this log." };
-
-                newLogStackTraceLabel.AddToClassList("log");
-                newLogStackTraceLabel.AddToClassList("stack");
-
-                newLogStackTraceLabel.style.fontSize = fontSize;
-
-                if (showStack)
-                {
-                    newLogStackTraceLabel.AddToClassList("show_stack");
-                }
-
-                newLogStackTraceLabel.style.color = newLogData.color;
-
-                logsScrollView.Add(newLogStackTraceLabel);
             }
         }
 
@@ -398,6 +381,45 @@ namespace Merge
 
             // Show the current font size
             fontSizeLabel.text = fontSize.ToString();
+
+            SetButtons();
+        }
+
+        void SetButtons()
+        {
+            // Has logs data
+            if (gameData.logsData.Count > 0)
+            {
+                clearButton.SetEnabled(true);
+
+                // Font size
+                smallerButton.SetEnabled(fontSize > 3);
+                biggerButton.SetEnabled(fontSize < 12);
+
+                // Has stack
+                bool hasStack = false;
+
+                for (int i = 0; i < gameData.logsData.Count; i++)
+                {
+                    if (gameData.logsData[i].stackTrace.Count > 0)
+                    {
+                        hasStack = true;
+
+                        break;
+                    }
+                }
+
+                stackButton.SetEnabled(hasStack);
+            }
+            else
+            {
+                clearButton.SetEnabled(false);
+
+                smallerButton.SetEnabled(false);
+                biggerButton.SetEnabled(false);
+
+                stackButton.SetEnabled(false);
+            }
         }
 
         Color GetColorFromType(LogType newType)

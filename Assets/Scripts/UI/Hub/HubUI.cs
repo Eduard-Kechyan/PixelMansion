@@ -11,7 +11,7 @@ namespace Merge
         public SceneLoader sceneLoader;
         public PointerHandler pointerHandler;
 
-#if DEVELOPER_BUILD || UNITY_EDITOR
+#if DEVELOPMENT_BUILD || UNITY_EDITOR
         public FeedbackManager feedbackManager;
 #endif
 
@@ -109,7 +109,7 @@ namespace Merge
                 }
             };
 
-#if DEVELOPER_BUILD || UNITY_EDITOR
+#if DEVELOPMENT_BUILD || UNITY_EDITOR
             if (Application.isEditor || Debug.isDebugBuild)
             {
                 Button debugButton = root.Q<Button>("DebugButton");

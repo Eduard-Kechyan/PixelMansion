@@ -479,24 +479,32 @@ namespace Merge
         {
             List<Types.Timer> timers = new();
 
-            Types.TimerJson[] timerJson = JsonConvert.DeserializeObject<Types.TimerJson[]>(
-                timersString
-            );
-
-            for (int i = 0; i < timerJson.Length; i++)
+            if (timersString.Contains("[") || timersString == "")
             {
-                timers.Add(
-                    new Types.Timer
-                    {
-                        startTime = System.DateTime.Parse(timerJson[i].startTime),
-                        seconds = timerJson[i].seconds,
-                        running = timerJson[i].running,
-                        timerType = Glob.ParseEnum<Types.TimerType>(timerJson[i].timerType),
-                        id = timerJson[i].id,
-                        notificationId = timerJson[i].notificationId,
-                        notificationType = Glob.ParseEnum<Types.NotificationType>(timerJson[i].notificationType),
-                    }
+                Types.TimerJson[] timerJson = JsonConvert.DeserializeObject<Types.TimerJson[]>(
+                    timersString
                 );
+
+                for (int i = 0; i < timerJson.Length; i++)
+                {
+                    timers.Add(
+                        new Types.Timer
+                        {
+                            startTime = System.DateTime.Parse(timerJson[i].startTime),
+                            seconds = timerJson[i].seconds,
+                            running = timerJson[i].running,
+                            timerType = Glob.ParseEnum<Types.TimerType>(timerJson[i].timerType),
+                            id = timerJson[i].id,
+                            notificationId = timerJson[i].notificationId,
+                            notificationType = Glob.ParseEnum<Types.NotificationType>(timerJson[i].notificationType),
+                        }
+                    );
+                }
+            }
+            else
+            {
+                Debug.LogError("timersString is wrong!!!");
+                Debug.LogError(timersString);
             }
 
             return timers;
@@ -918,7 +926,7 @@ namespace Merge
                         );
                     default:
                         // ERROR
-                        ErrorManager.Instance.Throw(Types.ErrorType.Code, "DataConverter.cs -> GetItemName()",  "Wrong type: " + itemsData.type);
+                        ErrorManager.Instance.Throw(Types.ErrorType.Code, "DataConverter.cs -> GetItemName()", "Wrong type: " + itemsData.type);
                         return "";
                 }
             }
@@ -946,7 +954,7 @@ namespace Merge
             }
 
             // ERROR - No valid name was found
-            ErrorManager.Instance.Throw(Types.ErrorType.Locale, "DataConverter.cs -> GetItemName()", "error_loc_name" );
+            ErrorManager.Instance.Throw(Types.ErrorType.Locale, "DataConverter.cs -> GetItemName()", "error_loc_name");
 
             return LOCALE.Get("Item_error_name");
         }

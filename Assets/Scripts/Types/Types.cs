@@ -767,5 +767,17 @@ namespace Merge
             Energy,
             Bubble
         }
+
+#if DEVELOPMENT_BUILD || UNITY_EDITOR
+        //// DEBUG ////
+
+        [Serializable]
+        public class LogData
+        {
+            public string message;
+            public List<string> stackTrace;
+            public Color color;
+        }
+#endif
     }
 }

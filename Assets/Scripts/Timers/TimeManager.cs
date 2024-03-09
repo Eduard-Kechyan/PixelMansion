@@ -514,6 +514,7 @@ namespace Merge
         public int RemoveEnergyTimer(bool save = true)
         {
             int seconds = 0;
+            bool removed = false;
 
             for (int i = gameData.timers.Count - 1; i >= 0; i--)
             {
@@ -525,11 +526,13 @@ namespace Merge
 
                     gameData.timers.Remove(gameData.timers[i]);
 
+                    removed = true;
+
                     break;
                 }
             }
 
-            if (save)
+            if (save && removed)
             {
                 dataManager.SaveTimers();
             }

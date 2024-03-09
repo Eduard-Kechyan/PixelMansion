@@ -199,7 +199,6 @@ namespace Merge
             string newNotificationsData = "";
             string newUnlockedData = "";
             string newUnlockedRoomsData = "";
-            string newUnsentData = "";
 
             if (initialLoad)
             {
@@ -235,7 +234,6 @@ namespace Merge
                 reader.Read<string>("notificationsData", r => newNotificationsData = r);
                 reader.Read<string>("unlockedData", r => newUnlockedData = r);
                 reader.Read<string>("unlockedRoomsData", r => newUnlockedRoomsData = r);
-                reader.Read<string>("unsentData", r => newUnsentData = r);
 
                 // Other
                 gameData.inventorySpace = reader.Read<int>("inventorySpace");
@@ -579,162 +577,174 @@ namespace Merge
 
             string valueString = value.ToString();
 
-            switch (key)
+            if (valueString != "Unity.Services.CloudSave.Internal.Http.JsonObject")
             {
-                //////// Main ////////
-                case "dataLoaded":
-                    PlayerPrefs.SetInt("dataLoaded", 1);
-                    break;
-                case "rootSet":
-                    writer.Write(key, true).Commit();
-                    break;
-                //////// Values ////////
-                case "experience":
-                    gameData.experience = int.Parse(valueString);
-                    writer.Write(key, int.Parse(valueString)).Commit();
-                    break;
-                case "level":
-                    gameData.level = int.Parse(valueString);
-                    writer.Write(key, int.Parse(valueString)).Commit();
-                    break;
-                case "energy":
-                    gameData.energy = int.Parse(valueString);
-                    writer.Write(key, int.Parse(valueString)).Commit();
-                    break;
-                case "gold":
-                    gameData.gold = int.Parse(valueString);
-                    writer.Write(key, int.Parse(valueString)).Commit();
-                    break;
-                case "gems":
-                    gameData.gems = int.Parse(valueString);
-                    writer.Write(key, int.Parse(valueString)).Commit();
-                    break;
-                //////// Data ////////
-                case "boardData":
-                    gameData.boardData = dataConverter.ConvertArrayToBoard(dataConverter.ConvertBoardFromJson(valueString));
-                    writer.Write(key, valueString).Commit();
-                    break;
-                case "bonusData":
-                    gameData.bonusData = dataConverter.ConvertBonusFromJson(valueString);
-                    writer.Write(key, valueString).Commit();
-                    break;
-                case "inventoryData":
-                    gameData.inventoryData = dataConverter.ConvertInventoryFromJson(valueString);
-                    writer.Write(key, valueString).Commit();
-                    break;
-                case "finishedTasks":
-                    gameData.finishedTasks = JsonConvert.DeserializeObject<List<Types.FinishedTask>>(valueString);
-                    writer.Write(key, valueString).Commit();
-                    break;
-                case "tasksData":
-                    gameData.tasksData = dataConverter.ConvertTaskGroupsFromJson(valueString);
-                    writer.Write(key, valueString).Commit();
-                    break;
-                case "unlockedData":
-                    string[] unlockedDataTemp = JsonConvert.DeserializeObject<string[]>(valueString);
+                switch (key)
+                {
+                    //////// Main ////////
+                    case "dataLoaded":
+                        PlayerPrefs.SetInt("dataLoaded", 1);
+                        break;
+                    case "rootSet":
+                        writer.Write(key, true).Commit();
+                        break;
+                    //////// Values ////////
+                    case "experience":
+                        gameData.experience = int.Parse(valueString);
+                        writer.Write(key, int.Parse(valueString)).Commit();
+                        break;
+                    case "level":
+                        gameData.level = int.Parse(valueString);
+                        writer.Write(key, int.Parse(valueString)).Commit();
+                        break;
+                    case "energy":
+                        gameData.energy = int.Parse(valueString);
+                        writer.Write(key, int.Parse(valueString)).Commit();
+                        break;
+                    case "gold":
+                        gameData.gold = int.Parse(valueString);
+                        writer.Write(key, int.Parse(valueString)).Commit();
+                        break;
+                    case "gems":
+                        gameData.gems = int.Parse(valueString);
+                        writer.Write(key, int.Parse(valueString)).Commit();
+                        break;
+                    //////// Data ////////
+                    case "boardData":
+                        gameData.boardData = dataConverter.ConvertArrayToBoard(dataConverter.ConvertBoardFromJson(valueString));
+                        writer.Write(key, valueString).Commit();
+                        break;
+                    case "bonusData":
+                        gameData.bonusData = dataConverter.ConvertBonusFromJson(valueString);
+                        writer.Write(key, valueString).Commit();
+                        break;
+                    case "inventoryData":
+                        gameData.inventoryData = dataConverter.ConvertInventoryFromJson(valueString);
+                        writer.Write(key, valueString).Commit();
+                        break;
+                    case "finishedTasks":
+                        gameData.finishedTasks = JsonConvert.DeserializeObject<List<Types.FinishedTask>>(valueString);
+                        writer.Write(key, valueString).Commit();
+                        break;
+                    case "tasksData":
+                        gameData.tasksData = dataConverter.ConvertTaskGroupsFromJson(valueString);
+                        writer.Write(key, valueString).Commit();
+                        break;
+                    case "unlockedData":
+                        string[] unlockedDataTemp = JsonConvert.DeserializeObject<string[]>(valueString);
 
-                    gameData.unlockedData.CopyTo(unlockedDataTemp, 0);
-                    gameData.unlockedData = unlockedDataTemp;
+                        gameData.unlockedData.CopyTo(unlockedDataTemp, 0);
+                        gameData.unlockedData = unlockedDataTemp;
 
-                    writer.Write(key, valueString).Commit();
-                    break;
-                case "unlockedRoomsData":
-                    string[] unlockedRoomsDataTemp = JsonConvert.DeserializeObject<string[]>(valueString);
+                        writer.Write(key, valueString).Commit();
+                        break;
+                    case "unlockedRoomsData":
+                        string[] unlockedRoomsDataTemp = JsonConvert.DeserializeObject<string[]>(valueString);
 
-                    gameData.unlockedRoomsData.CopyTo(unlockedRoomsDataTemp, 0);
-                    gameData.unlockedRoomsData = unlockedRoomsDataTemp;
+                        gameData.unlockedRoomsData.CopyTo(unlockedRoomsDataTemp, 0);
+                        gameData.unlockedRoomsData = unlockedRoomsDataTemp;
 
-                    writer.Write(key, valueString).Commit();
-                    break;
-                case "timers":
-                    gameData.timers = dataConverter.ConvertTimersFromJson(valueString);
-                    writer.Write(key, valueString).Commit();
-                    break;
-                case "coolDowns":
-                    gameData.coolDowns = dataConverter.ConvertCoolDownsFromJson(valueString);
-                    writer.Write(key, valueString).Commit();
-                    break;
-                case "notificationsData":
-                    gameData.notifications = dataConverter.ConvertNotificationsFromJson(valueString);
-                    writer.Write(key, valueString).Commit();
-                    break;
-                case "inventorySpace":
-                    gameData.inventorySpace = int.Parse(valueString);
-                    writer.Write(key, int.Parse(valueString)).Commit();
-                    break;
-                case "inventorySlotPrice":
-                    gameData.inventorySlotPrice = int.Parse(valueString);
-                    writer.Write(key, int.Parse(valueString)).Commit();
-                    break;
-                //////// World ////////
-                case "areaSet":
-                    writer.Write(key, true).Commit();
-                    PlayerPrefs.SetInt("areaSet", 1);
-                    break;
-                case "areas":
-                    gameData.areasData = dataConverter.ConvertJsonToArea(valueString);
-                    writer.Write(key, valueString).Commit();
-                    break;
-                case "doorSet":
-                    writer.Write(key, true).Commit();
-                    PlayerPrefs.SetInt("doorSet", 1);
-                    break;
-                case "unlockedDoors":
-                    writer.Write(key, valueString).Commit();
-                    break;
-                //////// Player Prefs ////////
-                case "playerName":
-                    PlayerPrefs.SetString("playerName", valueString);
-                    break;
-                case "tutorialFinished":
-                    PlayerPrefs.SetInt("tutorialFinished", 1);
-                    break;
-                case "tutorialStep":
-                    PlayerPrefs.SetString("tutorialStep", valueString);
-                    break;
-                case "initialTaskDataSet":
-                    PlayerPrefs.SetInt("initialTaskDataSet", 1);
-                    break;
-                case "progressStep":
-                    PlayerPrefs.SetString("progressStep", valueString);
-                    break;
-                case "sound":
-                    PlayerPrefs.SetInt("sound", int.Parse(valueString));
-                    break;
-                case "locale":
-                    PlayerPrefs.SetString("locale", valueString);
-                    break;
-                case "music":
-                    PlayerPrefs.SetInt("music", int.Parse(valueString));
-                    break;
-                case "vibration":
-                    PlayerPrefs.SetInt("vibration", int.Parse(valueString));
-                    break;
-                case "notifications":
-                    PlayerPrefs.SetInt("notifications", int.Parse(valueString));
-                    break;
-                case "followResult":
-                    PlayerPrefs.SetInt("followResult", 1);
-                    break;
-                case "rateResult":
-                    PlayerPrefs.SetInt("rateResult", 1);
-                    break;
-                case "canLevelUp":
-                    PlayerPrefs.SetInt("canLevelUp", int.Parse(valueString));
-                    break;
-                case "termsAccepted":
-                    services.termsAccepted = true;
+                        writer.Write(key, valueString).Commit();
+                        break;
+                    case "timers":
+                        gameData.timers = dataConverter.ConvertTimersFromJson(valueString);
+                        writer.Write(key, valueString).Commit();
+                        break;
+                    case "coolDowns":
+                        gameData.coolDowns = dataConverter.ConvertCoolDownsFromJson(valueString);
+                        writer.Write(key, valueString).Commit();
+                        break;
+                    case "notificationsData":
+                        gameData.notifications = dataConverter.ConvertNotificationsFromJson(valueString);
+                        writer.Write(key, valueString).Commit();
+                        break;
+                    case "inventorySpace":
+                        gameData.inventorySpace = int.Parse(valueString);
+                        writer.Write(key, int.Parse(valueString)).Commit();
+                        break;
+                    case "inventorySlotPrice":
+                        gameData.inventorySlotPrice = int.Parse(valueString);
+                        writer.Write(key, int.Parse(valueString)).Commit();
+                        break;
+                    //////// World ////////
+                    case "areaSet":
+                        writer.Write(key, true).Commit();
+                        PlayerPrefs.SetInt("areaSet", 1);
+                        break;
+                    case "areas":
+                        gameData.areasData = dataConverter.ConvertJsonToArea(valueString);
+                        writer.Write(key, valueString).Commit();
+                        break;
+                    case "doorSet":
+                        writer.Write(key, true).Commit();
+                        PlayerPrefs.SetInt("doorSet", 1);
+                        break;
+                    case "unlockedDoors":
+                        writer.Write(key, valueString).Commit();
+                        break;
+                    //////// Player Prefs ////////
+                    case "playerName":
+                        PlayerPrefs.SetString("playerName", valueString);
+                        break;
+                    case "tutorialFinished":
+                        PlayerPrefs.SetInt("tutorialFinished", 1);
+                        break;
+                    case "tutorialStep":
+                        PlayerPrefs.SetString("tutorialStep", valueString);
+                        break;
+                    case "initialTaskDataSet":
+                        PlayerPrefs.SetInt("initialTaskDataSet", 1);
+                        break;
+                    case "progressStep":
+                        PlayerPrefs.SetString("progressStep", valueString);
+                        break;
+                    case "sound":
+                        PlayerPrefs.SetInt("sound", int.Parse(valueString));
+                        break;
+                    case "locale":
+                        PlayerPrefs.SetString("locale", valueString);
+                        break;
+                    case "music":
+                        PlayerPrefs.SetInt("music", int.Parse(valueString));
+                        break;
+                    case "vibration":
+                        PlayerPrefs.SetInt("vibration", int.Parse(valueString));
+                        break;
+                    case "notifications":
+                        PlayerPrefs.SetInt("notifications", int.Parse(valueString));
+                        break;
+                    case "followResult":
+                        PlayerPrefs.SetInt("followResult", 1);
+                        break;
+                    case "rateResult":
+                        PlayerPrefs.SetInt("rateResult", 1);
+                        break;
+                    case "canLevelUp":
+                        PlayerPrefs.SetInt("canLevelUp", int.Parse(valueString));
+                        break;
+                    case "termsAccepted":
+                        services.termsAccepted = true;
 
-                    PlayerPrefs.SetInt("termsAccepted", 1);
-                    break;
-                default:
-                    // ERROR
-                    errorManager.Throw(
-                        Types.ErrorType.Code,
-                        GetType().Name,
-                        "Wrong key given: " + key
-                    );
-                    break;
+                        PlayerPrefs.SetInt("termsAccepted", 1);
+                        break;
+                    default:
+                        // ERROR
+                        errorManager.Throw(
+                            Types.ErrorType.Code,
+                            GetType().Name,
+                            "Wrong key given: " + key
+                        );
+                        break;
+                }
+            }
+            else
+            {
+                // ERROR
+                errorManager.Throw(
+                    Types.ErrorType.Code,
+                    GetType().Name,
+                    "Wrong value given for key: " + key + ". Value: " + valueString
+                );
             }
         }
 

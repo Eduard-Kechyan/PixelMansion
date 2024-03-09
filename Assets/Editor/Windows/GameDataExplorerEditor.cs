@@ -220,6 +220,10 @@ namespace Merge
                     {
                         valueLabel.text = "[Full Array]";
                     }
+                    else if (stringValue.StartsWith("{") && stringValue.Length > 2)
+                    {
+                        valueLabel.text = "{Full Object}";
+                    }
                     else
                     {
                         valueLabel.text = stringValue;

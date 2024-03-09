@@ -122,6 +122,11 @@ namespace Merge
         private Sprite[] chestSprites;
         private Sprite[] taskSprites;
 
+        // Debug
+#if DEVELOPMENT_BUILD || UNITY_EDITOR
+        public List<Types.LogData> logsData = new();
+#endif
+
         // Events
         public delegate void EnergyUpdatedEvent(bool addTimer);
         public static event EnergyUpdatedEvent EnergyUpdatedEventAction;
