@@ -16,7 +16,12 @@ namespace Merge
         public SceneLoader sceneLoader;
         public GameObject uiDocument;
         public LoadingSceneUI loadingSceneUI;
+
+#if DEVELOPER_BUILD || UNITY_EDITOR
         public FeedbackManager feedbackManager;
+        public Logs logs;
+#endif
+
         public float maxPhase = 8;
         [ReadOnly]
         public int phase = 1;
@@ -43,7 +48,19 @@ namespace Merge
         private Services services;
         private AuthManager authManager;
         private CloudSave cloudSave;
-        private Logs logs;
+
+        void Awake()
+        {
+            // Toggle debug logs
+            if (!Debug.isDebugBuild && !Application.isEditor)
+            {
+                Debug.unityLogger.logEnabled = false;
+            }
+            else
+            {
+                Debug.unityLogger.logEnabled = true;
+            }
+        }
 
         void Start()
         {
@@ -55,7 +72,6 @@ namespace Merge
             services = Services.Instance;
             authManager = services.GetComponent<AuthManager>();
             cloudSave = services.GetComponent<CloudSave>();
-            logs = Logs.Instance;
 
             // Get Ready
             singlePhasePercent = 100f / maxPhase;
@@ -78,8 +94,7 @@ namespace Merge
 
         void Update()
         {
-            // TODO - Make a bette check
-            if (loading && fillCount < 100f && (feedbackManager != null && feedbackManager.feedbackOpen && !feedbackManager.thanksOpen && !feedbackManager.failureOpen) && (logs != null && !logs.logsOpen))
+            if (loading && fillCount < 100f && CheckForLoading())
             {
                 fillCount = Mathf.MoveTowards(fillCount, 100, fillSpeed * Time.deltaTime);
 
@@ -288,6 +303,28 @@ namespace Merge
 
             // Hub scene
             sceneLoader.Load(Types.Scene.Hub);
+        }
+
+        bool CheckForLoading()
+        {
+#if DEVELOPER_BUILD || UNITY_EDITOR
+            if (
+                // Feedback manager
+                feedbackManager != null &&
+                feedbackManager.feedbackOpen &&
+                !feedbackManager.thanksOpen &&
+                !feedbackManager.failureOpen &&
+                // Logs
+                logs != null &&
+                !logs.logsOpen
+                // Other
+                )
+            {
+                return true;
+            }
+#endif
+
+            return false;
         }
 
         void HandleAge(int newValue)

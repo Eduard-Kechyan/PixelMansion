@@ -11,13 +11,15 @@ using UnityEngine.InputSystem;
 
 namespace Merge
 {
+#if DEVELOPER_BUILD || UNITY_EDITOR
     public class Logs : MonoBehaviour
     {
         // Variables
         public bool logsEnabled = true;
         public bool shakingEnabled = true;
         public bool showStack = false;
-        public int titleHight = 20;
+        public int logsTopHight = 24;
+        public int defaultFontSize = 6;
         public Color defaultLogColor;
         [Tooltip("Use the black list to ignore some logs.")]
         public bool useBlackList = true;
@@ -38,6 +40,8 @@ namespace Merge
         private const float TOGGLE_THRESHOLD_SECONDS = 2f;
         private const float SHAKE_ACCELERATION = 5f;
 
+        private int fontSize = 0;
+
         private Coroutine clearTimeout;
 
         [Serializable]
@@ -48,7 +52,7 @@ namespace Merge
             public Color color;
         }
 
-        private readonly List<LogData> logsData = new ();
+        private readonly List<LogData> logsData = new();
 
         // References
         private UIDocument debugUI;
@@ -56,19 +60,25 @@ namespace Merge
         // UI
         private VisualElement root;
         private VisualElement logsContainer;
+
+        private VisualElement logsTopSafeArea;
         private VisualElement logsTop;
-        private Label logsTitleLabel;
-        private ScrollView logsScrollView;
-        private Button clearButton;
-        private Button stackButton;
         private Button closeButton;
+
+        private ScrollView logsScrollView;
+
+        private Button clearButton;
+        private Button smallerButton;
+        private Label fontSizeLabel;
+        private Button biggerButton;
+        private Button stackButton;
 
         // Instance
         public static Logs Instance;
 
         void Awake()
         {
-            if ((Instance != null && Instance != this) || (!Debug.isDebugBuild && !Application.isEditor))
+            if (Instance != null && Instance != this)
             {
                 Destroy(this);
             }
@@ -87,17 +97,25 @@ namespace Merge
             root = debugUI.rootVisualElement;
             logsContainer = root.Q<VisualElement>("LogsContainer");
 
+            logsTopSafeArea = logsContainer.Q<VisualElement>("LogsTopSafeArea");
             logsTop = logsContainer.Q<VisualElement>("LogsTop");
-            logsTitleLabel = logsContainer.Q<Label>("Title");
+            closeButton = logsTop.Q<Button>("CloseButton");
+
             logsScrollView = logsContainer.Q<ScrollView>("LogsScrollView");
 
             clearButton = logsContainer.Q<Button>("ClearButton");
+            smallerButton = logsContainer.Q<Button>("SmallerButton");
+            fontSizeLabel = logsContainer.Q<Label>("FontSizeLabel");
+            biggerButton = logsContainer.Q<Button>("BiggerButton");
             stackButton = logsContainer.Q<Button>("StackButton");
-            closeButton = logsContainer.Q<Button>("CloseButton");
+
+            // Button taps
+            closeButton.clicked += () => Toggle();
 
             clearButton.clicked += () => ClearData();
+            smallerButton.clicked += () => SetFontSize(false);
+            biggerButton.clicked += () => SetFontSize();
             stackButton.clicked += () => ToggleStack();
-            closeButton.clicked += () => Toggle();
 
             // Init
             Init();
@@ -118,10 +136,14 @@ namespace Merge
             logsContainer.style.display = DisplayStyle.None;
             logsContainer.style.opacity = 0;
 
-            logsTitleLabel.style.height = titleHight;
-            logsScrollView.style.top = titleHight;
+            logsTopSafeArea.style.height = 0;
+            logsScrollView.style.top = logsTopHight;
 
             logsScrollView.Clear();
+
+            fontSize = defaultFontSize;
+
+            fontSizeLabel.text = fontSize.ToString();
 
             ToggleStack(false);
 
@@ -155,6 +177,23 @@ namespace Merge
         }
 #endif
 
+        void CalcTopOffset(GeometryChangedEvent evt)
+        {
+            root.UnregisterCallback<GeometryChangedEvent>(CalcTopOffset);
+
+            int topOffset = Mathf.RoundToInt((Screen.height - Screen.safeArea.height) / (Camera.main.pixelWidth / GameData.GAME_PIXEL_WIDTH));
+
+            if (topOffset > 0)
+            {
+                logsTopSafeArea.style.display = DisplayStyle.Flex;
+                logsTopSafeArea.style.height = topOffset;
+
+                logsTop.style.top = topOffset;
+
+                logsScrollView.style.top = logsTopHight + topOffset;
+            }
+        }
+
         public void Toggle()
         {
             logsOpen = !logsOpen;
@@ -182,23 +221,6 @@ namespace Merge
                 {
                     logsScrollView.Clear();
                 }, 0.3f);
-            }
-        }
-
-        void CalcTopOffset(GeometryChangedEvent evt)
-        {
-            root.UnregisterCallback<GeometryChangedEvent>(CalcTopOffset);
-
-            int topOffset = Mathf.RoundToInt((Screen.height - Screen.safeArea.height) / (Camera.main.pixelWidth / GameData.GAME_PIXEL_WIDTH));
-
-            if (topOffset > 0)
-            {
-                logsTop.style.display = DisplayStyle.Flex;
-                logsTop.style.height = topOffset;
-
-                logsTitleLabel.style.top = topOffset;
-
-                logsScrollView.style.top = titleHight + topOffset;
             }
         }
 
@@ -279,6 +301,7 @@ namespace Merge
             newLogMessageLabel.AddToClassList("log");
 
             newLogMessageLabel.style.color = newLogData.color;
+            newLogMessageLabel.style.fontSize = fontSize;
 
             logsScrollView.Add(newLogMessageLabel);
 
@@ -290,6 +313,8 @@ namespace Merge
 
                     newLogStackTraceLabel.AddToClassList("log");
                     newLogStackTraceLabel.AddToClassList("stack");
+
+                    newLogStackTraceLabel.style.fontSize = fontSize;
 
                     if (showStack)
                     {
@@ -307,6 +332,8 @@ namespace Merge
 
                 newLogStackTraceLabel.AddToClassList("log");
                 newLogStackTraceLabel.AddToClassList("stack");
+
+                newLogStackTraceLabel.style.fontSize = fontSize;
 
                 if (showStack)
                 {
@@ -327,13 +354,16 @@ namespace Merge
 
                 for (int i = 0; i < logsScrollView.childCount; i++)
                 {
-                    if (showStack)
+                    if (logsScrollView.ElementAt(i).ClassListContains("stack"))
                     {
-                        logsScrollView.ElementAt(i).AddToClassList("show_stack");
-                    }
-                    else
-                    {
-                        logsScrollView.ElementAt(i).RemoveFromClassList("show_stack");
+                        if (showStack)
+                        {
+                            logsScrollView.ElementAt(i).AddToClassList("show_stack");
+                        }
+                        else
+                        {
+                            logsScrollView.ElementAt(i).RemoveFromClassList("show_stack");
+                        }
                     }
                 }
             }
@@ -346,6 +376,28 @@ namespace Merge
             {
                 stackButton.text = "Show Stack";
             }
+        }
+
+        void SetFontSize(bool increase = true)
+        {
+            // Update font size
+            if (increase)
+            {
+                fontSize++;
+            }
+            else
+            {
+                fontSize--;
+            }
+
+            // Update the font size of the logs
+            for (int i = 0; i < logsScrollView.childCount; i++)
+            {
+                logsScrollView.ElementAt(i).style.fontSize = fontSize;
+            }
+
+            // Show the current font size
+            fontSizeLabel.text = fontSize.ToString();
         }
 
         Color GetColorFromType(LogType newType)
@@ -376,4 +428,5 @@ namespace Merge
             return acceleration.sqrMagnitude > SHAKE_ACCELERATION;
         }
     }
+#endif
 }

@@ -76,28 +76,30 @@ namespace Merge
         {
             for (int i = 0; i < wrappers.Count; i++)
             {
-                wrappers[i].RemoveFromClassList("locale_hy");
-                wrappers[i].RemoveFromClassList("locale_jp");
-                wrappers[i].RemoveFromClassList("locale_kr");
-                wrappers[i].RemoveFromClassList("locale_cn");
-                wrappers[i].RemoveFromClassList("locale_en");
+                VisualElement wrapper = wrappers[i];
+
+                wrapper.RemoveFromClassList("locale_hy");
+                wrapper.RemoveFromClassList("locale_jp");
+                wrapper.RemoveFromClassList("locale_kr");
+                wrapper.RemoveFromClassList("locale_cn");
+                wrapper.RemoveFromClassList("locale_en");
 
                 switch (newLocale)
                 {
                     case Types.Locale.Armenian:
-                        wrappers[i].AddToClassList("locale_hy");
+                        wrapper.AddToClassList("locale_hy");
                         break;
                     case Types.Locale.Japanese:
-                        wrappers[i].AddToClassList("locale_jp");
+                        wrapper.AddToClassList("locale_jp");
                         break;
                     case Types.Locale.Korean:
-                        wrappers[i].AddToClassList("locale_kr");
+                        wrapper.AddToClassList("locale_kr");
                         break;
                     case Types.Locale.Chinese:
-                        wrappers[i].AddToClassList("locale_cn");
+                        wrapper.AddToClassList("locale_cn");
                         break;
-                    default:
-                        wrappers[i].AddToClassList("locale_en");
+                    default: // Types.Locale.English:
+                        wrapper.AddToClassList("locale_en");
                         break;
                 }
             }

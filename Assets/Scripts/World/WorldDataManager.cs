@@ -39,7 +39,7 @@ namespace Merge
             dataConverter = dataManager.GetComponent<DataConverter>();
             gameData = GameData.Instance;
 
-            Init();
+            StartCoroutine(WaitForData());
         }
 
 #if UNITY_EDITOR
@@ -67,6 +67,16 @@ namespace Merge
             }
         }
 #endif
+
+        IEnumerator WaitForData()
+        {
+            while (!dataManager.loaded)
+            {
+                yield return null;
+            }
+
+            Init();
+        }
 
         void Init()
         {

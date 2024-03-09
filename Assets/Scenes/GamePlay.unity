@@ -1047,6 +1047,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2abfb41a50d203e4eae7f012f423da01, type: 3}
+--- !u!114 &1900486871 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4292337721027959629, guid: 2abfb41a50d203e4eae7f012f423da01, type: 3}
+  m_PrefabInstance: {fileID: 1900486870}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c7241d4e64a41c409ea66b83dda1711, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!20 &1972373687 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 554370427392037314, guid: e1c8ec3ef43242d44bb7abb8be31fbcb, type: 3}
@@ -1717,6 +1728,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneLoader: {fileID: 2129448916}
   pointerHandler: {fileID: 1663649671}
+  feedbackManager: {fileID: 1900486871}
   loaded: 0
   inventoryIndicatorSprites:
   - {fileID: -2105459946, guid: 4d91f211f5df6004391e14554e998da1, type: 3}

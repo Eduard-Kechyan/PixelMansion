@@ -173,6 +173,10 @@
     -unity-text-align: upper-left;
 }
 
+.feedback_text_field .unity-base-text-field__input--placeholder {
+    color: rgba(255, 255, 255, 0.49);
+}
+
 .feedback_text_field_desc {
     min-height: 50px;
 }

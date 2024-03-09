@@ -9,7 +9,9 @@ namespace Merge
     public class LoadingSceneUI : MonoBehaviour
     {
         // Variables
+#if DEVELOPER_BUILD || UNITY_EDITOR
         public FeedbackManager feedbackManager;
+#endif
 
         [Header("Background")]
         public float backgroundDelay = 15f;
@@ -162,6 +164,7 @@ namespace Merge
 
             ageScrollView.verticalScroller.valueChanged += newValue => AgeScrollerHandle(newValue);
 
+#if DEVELOPER_BUILD || UNITY_EDITOR
             if (Application.isEditor || Debug.isDebugBuild)
             {
                 Button debugButton = root.Q<Button>("DebugButton");
@@ -179,6 +182,7 @@ namespace Merge
                     feedbackButton.clicked += () => feedbackManager.Open();
                 }
             }
+#endif
 
             Init();
 

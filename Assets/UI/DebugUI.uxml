@@ -29,15 +29,20 @@
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="LogsContainer" class="logs_container" style="display: none; opacity: 0;">
-        <ui:VisualElement name="LogsTop" class="logs_top" style="display: none;" />
-        <ui:Label tabindex="-1" text="Logs" display-tooltip-when-elided="true" name="Title" class="title" />
+        <ui:VisualElement name="LogsTopSafeArea" class="logs_top_safe_area"/>
+        <ui:VisualElement name="LogsTop" class="logs_top">
+            <ui:Label text="Logs" class="title" />
+            <ui:Button display-tooltip-when-elided="true" name="CloseButton" class="button button_active close_button" style="font-size: 8px;" />
+        </ui:VisualElement>
         <ui:ScrollView name="LogsScrollView" class="scroller logs_scroll_view">
             <ui:Label tabindex="-1" text="Some text explaining an error" display-tooltip-when-elided="true" class="log" />
         </ui:ScrollView>
         <ui:VisualElement name="Options" class="options">
-            <ui:Button text="Clear" display-tooltip-when-elided="true" name="ClearButton" class="button" style="font-size: 8px;" />
+            <ui:Button text="Clear" display-tooltip-when-elided="true" name="ClearButton" class="button" style="font-size: 8px; background-color: rgb(250, 126, 30);" />
+            <ui:Button text="&lt;" display-tooltip-when-elided="true" name="SmallerButton" class="button" style="font-size: 8px; background-color: rgb(85, 203, 152);" />
+            <ui:Label tabindex="-1" text="12" display-tooltip-when-elided="true" name="FontSizeLabel" class="font_size_label" />
+            <ui:Button text="&gt;" display-tooltip-when-elided="true" name="BiggerButton" class="button" style="font-size: 8px; background-color: rgb(85, 203, 152);" />
             <ui:Button text="Show Stack" display-tooltip-when-elided="true" name="StackButton" class="button" style="font-size: 6px;" />
-            <ui:Button text="Close" display-tooltip-when-elided="true" name="CloseButton" class="button button_alt" style="font-size: 8px;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

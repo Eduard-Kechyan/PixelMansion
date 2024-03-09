@@ -10,7 +10,11 @@ namespace Merge
         // Variables
         public SceneLoader sceneLoader;
         public PointerHandler pointerHandler;
+
+#if DEVELOPER_BUILD || UNITY_EDITOR
         public FeedbackManager feedbackManager;
+#endif
+
         public float extraTopPadding = 15;
         public float visibilityBottomOffset = 50f;
 
@@ -105,6 +109,7 @@ namespace Merge
                 }
             };
 
+#if DEVELOPER_BUILD || UNITY_EDITOR
             if (Application.isEditor || Debug.isDebugBuild)
             {
                 Button debugButton = root.Q<Button>("DebugButton");
@@ -122,6 +127,7 @@ namespace Merge
                     feedbackButton.clicked += () => feedbackManager.Open();
                 }
             }
+#endif
 
             root.RegisterCallback<GeometryChangedEvent>(Init);
         }

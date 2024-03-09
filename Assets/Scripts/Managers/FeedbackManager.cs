@@ -188,9 +188,8 @@ namespace Merge
 
             failureLabel.text = LOCALE.Get("feedback_label_failure");
 
-            // TODO - Enable this lines after updating the engine to 2023 or higher
-            // reportTitleTextField.textEdition.placeholder = LOCALE.Get("feedback_report_title_placeholder");
-            // reportDescriptionLabel.textEdition.placeholder = LOCALE.Get("feedback_report_description_placeholder_Suggestion");
+            reportTitleTextField.textEdition.placeholder = LOCALE.Get("feedback_report_title_placeholder");
+            reportDescriptionTextField.textEdition.placeholder = LOCALE.Get("feedback_report_description_placeholder_Suggestion");
 
             reportTitleTextField.multiline = true;
             reportDescriptionTextField.multiline = true;
@@ -320,8 +319,7 @@ namespace Merge
 
         void HandleReportCategoryChanged(ChangeEvent<string> evt)
         {
-            // TODO - Enable this lines after updating the engine to 2023 or higher
-            // reportDescriptionLabel.textEdition.placeholder = LOCALE.Get("feedback_report_description_placeholder_" + evt.newValue);
+            reportDescriptionTextField.textEdition.placeholder = LOCALE.Get("feedback_report_description_placeholder_" + evt.newValue);
 
             if (Glob.ParseEnum<ReportCategory>(evt.newValue) == ReportCategory.Bug)
             {

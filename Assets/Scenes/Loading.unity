@@ -283,6 +283,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1118b8703618df4b8c0491d9a93687b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  feedbackManager: {fileID: 7840203634613691723}
   backgroundDelay: 15
   skyUpDelay: 0.5
   skyDownDelay: 1
@@ -1262,6 +1263,10 @@ PrefabInstance:
       propertyPath: acceptTermsAuto
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6666298423405771595, guid: a255d925b90a92e418c669c0cfae21e9, type: 3}
+      propertyPath: feedbackManager
+      value: 
+      objectReference: {fileID: 7840203634613691723}
     m_RemovedComponents:
     - {fileID: 17699005712081010, guid: a255d925b90a92e418c669c0cfae21e9, type: 3}
     m_RemovedGameObjects: []
@@ -1386,6 +1391,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2abfb41a50d203e4eae7f012f423da01, type: 3}
+--- !u!114 &7840203634613691723 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4292337721027959629, guid: 2abfb41a50d203e4eae7f012f423da01, type: 3}
+  m_PrefabInstance: {fileID: 7840203634613691722}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c7241d4e64a41c409ea66b83dda1711, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8378035496004552137
 PrefabInstance:
   m_ObjectHideFlags: 0

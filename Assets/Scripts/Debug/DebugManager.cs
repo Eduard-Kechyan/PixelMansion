@@ -6,6 +6,7 @@ using GoogleMobileAds.Api;
 
 namespace Merge
 {
+#if DEVELOPER_BUILD || UNITY_EDITOR
     public class DebugManager : MonoBehaviour
     {
         // Variables
@@ -39,18 +40,7 @@ namespace Merge
 
         void Awake()
         {
-            if (!Debug.isDebugBuild && !Application.isEditor)
-            {
-                Debug.unityLogger.logEnabled = false;
-
-                Destroy(gameObject);
-            }
-            else
-            {
-                Debug.unityLogger.logEnabled = true;
-
-                Instance = this;
-            }
+            Instance = this;
         }
 
         void Start()
@@ -259,4 +249,5 @@ namespace Merge
             }
         }
     }
+#endif
 }

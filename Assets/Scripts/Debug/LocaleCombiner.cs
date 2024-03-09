@@ -7,6 +7,7 @@ using System.IO;
 
 namespace Merge
 {
+#if DEVELOPER_BUILD || UNITY_EDITOR
     public class LocaleCombiner : MonoBehaviour
     {
         public bool combine = false;
@@ -113,4 +114,5 @@ namespace Merge
             }
         }
     }
+#endif
 }

@@ -16,7 +16,7 @@
             </ui:VisualElement>
             <ui:VisualElement name="ContentBox" class="feedback_content_box" style="background-color: rgb(85, 203, 152);">
                 <ui:Label tabindex="-1" text="Title:" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ReportTitleLabel" enable-rich-text="false" class="feedback_label" style="margin-bottom: 0; -unity-font-style: bold;" />
-                <ui:TextField picking-mode="Ignore" name="ReportTitleTextField" multiline="true" hide-mobile-input="true" class="feedback_text_field" />
+                <ui:TextField picking-mode="Ignore" name="ReportTitleTextField" multiline="true" hide-mobile-input="true" placeholder-text="A short summery..." class="feedback_text_field" />
                 <ui:Label tabindex="-1" text="Category:" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ReportCategoryLabel" class="feedback_label" style="margin-bottom: 0; -unity-font-style: bold;" />
                 <ui:EnumField type="Merge.FeedbackManager+ReportCategory, Assembly-CSharp" name="ReportCategoryEnumField" class="feedback_enum_field" />
                 <ui:Label tabindex="-1" text="Bug Type:" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ReportBugTypeLabel" class="feedback_label" style="margin-bottom: 0; -unity-font-style: bold; display: none;" />
@@ -24,7 +24,7 @@
                 <ui:Label tabindex="-1" text="Bug Frequency:" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ReportBugFrequencyLabel" class="feedback_label" style="margin-bottom: 0; -unity-font-style: bold; display: none;" />
                 <ui:EnumField type="Merge.FeedbackManager+ReportBugFrequency, Assembly-CSharp" name="ReportBugFrequencyEnumField" class="feedback_enum_field" style="display: none;" />
                 <ui:Label tabindex="-1" text="Desription:" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ReportDescriptionLabel" class="feedback_label" style="margin-bottom: 0; -unity-font-style: bold;" />
-                <ui:TextField picking-mode="Ignore" label="Text Field" name="ReportDescriptionTextField" multiline="true" hide-mobile-input="true" class="feedback_text_field feedback_text_field_desc" style="margin-bottom: 0;" />
+                <ui:TextField picking-mode="Ignore" label="Text Field" name="ReportDescriptionTextField" multiline="true" hide-mobile-input="true" placeholder-text="Please share your thoughts..." class="feedback_text_field feedback_text_field_desc" style="margin-bottom: 0;" />
                 <ui:VisualElement name="TopBorder" class="feedback_content_box_border" style="flex-grow: 1; -unity-background-image-tint-color: rgb(85, 203, 152);" />
                 <ui:VisualElement name="BottomBorder" class="feedback_content_box_border" style="flex-grow: 1; top: auto; bottom: -2px; rotate: 180deg; -unity-background-image-tint-color: rgb(85, 203, 152);" />
             </ui:VisualElement>

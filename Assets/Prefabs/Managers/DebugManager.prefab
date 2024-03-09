@@ -95,7 +95,8 @@ MonoBehaviour:
   logsEnabled: 1
   shakingEnabled: 1
   showStack: 0
-  titleHight: 20
+  logsTopHight: 24
+  defaultFontSize: 6
   defaultLogColor: {r: 0.7019608, g: 0.78039217, b: 0.83137256, a: 1}
   useBlackList: 1
   blackList:

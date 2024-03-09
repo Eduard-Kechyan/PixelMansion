@@ -10,7 +10,10 @@ namespace Merge
         // Variables
         public SceneLoader sceneLoader;
         public PointerHandler pointerHandler;
+
+#if DEVELOPER_BUILD || UNITY_EDITOR
         public FeedbackManager feedbackManager;
+#endif
 
         [HideInInspector]
         public bool loaded = false;
@@ -120,6 +123,7 @@ namespace Merge
             // Calculate the button position on the screen and the world space
             singlePixelWidth = Camera.main.pixelWidth / GameData.GAME_PIXEL_WIDTH;
 
+#if DEVELOPER_BUILD || UNITY_EDITOR
             if (Application.isEditor || Debug.isDebugBuild)
             {
                 Button debugButton = root.Q<Button>("DebugButton");
@@ -137,6 +141,7 @@ namespace Merge
                     feedbackButton.clicked += () => feedbackManager.Open();
                 }
             }
+#endif
 
             root.RegisterCallback<GeometryChangedEvent>(evt => SetUIButtons(evt, true));
 

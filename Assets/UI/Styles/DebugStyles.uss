@@ -8,35 +8,53 @@
     transition-duration: 0.3s;
 }
 
-.logs_container .logs_top {
+.logs_container .logs_top_safe_area {
     position: absolute;
     left: 0;
     top: 0;
     right: 0;
     height: 0;
+    background-color: rgb(65, 81, 92);
+    display: none;
+}
+
+.logs_container .logs_top {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: 24px;
     width: 100%;
-    background-color: rgb(70, 87, 99);
+    background-color: rgb(50, 65, 75);
 }
 
 .logs_container .title {
-    width: 100%;
-    height: 20px;
     margin-left: 0;
     margin-right: 0;
     margin-top: 0;
     margin-bottom: 0;
-    padding-left: 0;
-    padding-right: 0;
+    padding-left: 5px;
+    padding-right: 5px;
     padding-top: 0;
     padding-bottom: 0;
-    -unity-text-align: middle-center;
+    -unity-text-align: middle-left;
     color: rgb(255, 255, 255);
-    -unity-font: url('project://database/Assets/Fonts/Files/Roboto.ttf?fileID=12800000&guid=0435ef74bc89d2044a778758a25a13b0&type=3#Roboto');
-    background-color: rgb(50, 65, 75);
-    top: 0;
-    right: 0;
-    left: 0;
+    -unity-font: url("project://database/Assets/Fonts/Files/Roboto.ttf?fileID=12800000&guid=0435ef74bc89d2044a778758a25a13b0&type=3#Roboto");
     position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    font-size: 12px;
+}
+
+.logs_container .close_button {
+    -unity-font: url("project://database/Assets/Fonts/Files/Roboto.ttf?fileID=12800000&guid=0435ef74bc89d2044a778758a25a13b0&type=3#Roboto");
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 16px;
+    height: 16px;
+    background-image: url("project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=2800000&guid=de292eed4f8226d44902262e6258cb7b&type=3#MenuCloseButton");
 }
 
 .logs_container .logs_scroll_view {
@@ -47,8 +65,8 @@
     bottom: 30px;
     padding-left: 5px;
     padding-right: 5px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: 8px;
+    padding-bottom: 8px;
 }
 
 .logs_container .logs_scroll_view .unity-scroller {
@@ -84,7 +102,7 @@
 }
 
 .logs_container .logs_scroll_view .stack {
-    height: 0px;
+    height: 0;
     opacity: 0.5;
     overflow: hidden;
 }
@@ -146,6 +164,20 @@
     background-color: rgb(202, 91, 102);
 }
 
+.logs_container .options .font_size_label {
+    font-size: 10px;
+    color: rgb(255, 255, 255);
+    margin-top: 0;
+    margin-right: 2px;
+    margin-bottom: 0;
+    margin-left: 2px;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    -unity-text-align: middle-center;
+}
+
 .debug_menu_container {
     flex-wrap: wrap;
     flex-direction: row;
@@ -180,7 +212,7 @@
     border-top-width: 0;
     border-bottom-width: 0;
     background-color: rgba(188, 188, 188, 0);
-    background-image: url('project://database/Assets/Sprites/Buttons/LongButtonExtra.png?fileID=21300000&guid=5807375128b344f44a31b9300397a38e&type=3#LongButtonExtra');
+    background-image: url("project://database/Assets/Sprites/Buttons/LongButtonExtra.png?fileID=21300000&guid=5807375128b344f44a31b9300397a38e&type=3#LongButtonExtra");
     width: 68px;
     height: 20px;
     font-size: 6px;
