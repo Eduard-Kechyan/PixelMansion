@@ -19,6 +19,7 @@ namespace Merge
     {
         // Variables
         public bool logData = false;
+        public bool logDataAlt = false;
 
         [HideInInspector]
         public bool hasLinkingConflict = false;
@@ -54,6 +55,19 @@ namespace Merge
         private Services services;
         private ErrorManager errorManager;
 
+        void Awake()
+        {
+            if (!Debug.isDebugBuild || Application.isEditor)
+            {
+                logData = false;
+            }
+
+            if (Debug.isDebugBuild && !Application.isEditor)
+            {
+                logDataAlt = true;
+            }
+        }
+
         void Start()
         {
             // Cache
@@ -63,11 +77,6 @@ namespace Merge
             SetPlayerIdTemp();
 
             StartCoroutine(WaitForUnityServices());
-
-            if (!Debug.isDebugBuild || Application.isEditor)
-            {
-                logData = false;
-            }
         }
 
         IEnumerator WaitForUnityServices()
@@ -92,12 +101,18 @@ namespace Merge
 
         async void Init()
         {
-            Debug.Log("AUTH-0");
+            if (logDataAlt)
+            {
+                Debug.Log("AUTH-0");
+            }
             SetupEvents();
 
             if (AuthenticationService.Instance.SessionTokenExists || Application.isEditor)
             {
-                Debug.Log("AUTH-1");
+                if (logDataAlt)
+                {
+                    Debug.Log("AUTH-1");
+                }
                 await SignInAnonymOrCachedAsync();
             }
 
@@ -106,7 +121,10 @@ namespace Merge
 
             if (!Application.isEditor)
             {
-                Debug.Log("AUTH-2");
+                if (logDataAlt)
+                {
+                    Debug.Log("AUTH-2");
+                }
                 SignInToGoogleAuto();
             }
 
@@ -185,12 +203,18 @@ namespace Merge
 
             if (tokenExists)
             {
-                Debug.Log("AUTH-3");
+                if (logDataAlt)
+                {
+                    Debug.Log("AUTH-3");
+                }
                 currentAuthType = services.GetSignInData();
             }
             else
             {
-                Debug.Log("AUTH-4");
+                if (logDataAlt)
+                {
+                    Debug.Log("AUTH-4");
+                }
                 currentAuthType = AuthType.Anonym;
             }
 
@@ -544,17 +568,26 @@ namespace Merge
 
                             if (currentAuthType == AuthType.Anonym)
                             {
-                                Debug.Log("AUTH-5");
+                                if (logDataAlt)
+                                {
+                                    Debug.Log("AUTH-5");
+                                }
                                 LinkToAccount(AuthType.Google, false, forceLinking);
                             }
                             else if (currentAuthType == AuthType.Unknown)
                             {
-                                Debug.Log("AUTH-6");
+                                if (logDataAlt)
+                                {
+                                    Debug.Log("AUTH-6");
+                                }
                                 SignInToAccount(AuthType.Google, false);
                             }
                             else
                             {
-                                Debug.Log("AUTH-67");
+                                if (logDataAlt)
+                                {
+                                    Debug.Log("AUTH-67");
+                                }
                             }
                         }
                     });

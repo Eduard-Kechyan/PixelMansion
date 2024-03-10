@@ -44,6 +44,8 @@ namespace Merge
 
         private Coroutine clearTimeout;
 
+        public List<Types.LogData> tempLogsData = new();
+
         // References
         private UIDocument debugUI;
         private GameData gameData;
@@ -136,6 +138,14 @@ namespace Merge
             fontSize = defaultFontSize;
 
             fontSizeLabel.text = fontSize.ToString();
+
+            if (tempLogsData.Count > 0)
+            {
+                for (int i = 0; i < tempLogsData.Count; i++)
+                {
+                    gameData.logsData.Add(tempLogsData[i]);
+                }
+            }
 
             ToggleStack(false);
 
@@ -284,9 +294,13 @@ namespace Merge
                 if (gameData == null)
                 {
                     gameData = GameData.Instance;
-                }
 
-                gameData.logsData.Add(newLogData);
+                    tempLogsData.Add(newLogData);
+                }
+                else
+                {
+                    gameData.logsData.Add(newLogData);
+                }
 
                 if (logsOpen)
                 {

@@ -55,7 +55,9 @@
                 <ui:VisualElement name="Title" class="menu_title" style="background-image: url(&quot;project://database/Assets/Sprites/Menus/MenuTitle.png?fileID=2800000&amp;guid=830ffbc9a26c02c4cb218a8e5568ad67&amp;type=3#MenuTitle&quot;);">
                     <ui:Label text="Title" display-tooltip-when-elided="true" name="Value" class="menu_title_value" />
                 </ui:VisualElement>
-                <ui:VisualElement name="Close" class="button_active_extra menu_close_button" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&quot;);" />
+                <ui:VisualElement name="Close" picking-mode="Ignore" class="button_active_extra menu_close_button" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&quot;);">
+                    <ui:VisualElement name="Border" picking-mode="Ignore" class="border" />
+                </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="LocaleMenu" class="menu locale_menu">
@@ -67,7 +69,9 @@
                 <ui:VisualElement name="Title" class="menu_title" style="background-image: url(&quot;project://database/Assets/Sprites/Menus/MenuTitle.png?fileID=2800000&amp;guid=830ffbc9a26c02c4cb218a8e5568ad67&amp;type=3#MenuTitle&quot;);">
                     <ui:Label text="Title" display-tooltip-when-elided="true" name="Value" class="menu_title_value" />
                 </ui:VisualElement>
-                <ui:VisualElement name="Close" class="button_active_extra menu_close_button" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&quot;);" />
+                <ui:VisualElement name="Close" picking-mode="Ignore" class="button_active_extra menu_close_button" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&quot;);">
+                    <ui:VisualElement name="Border" picking-mode="Ignore" class="border" />
+                </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="EnergyMenu" class="menu energy_menu" style="display: none; opacity: 0;">
@@ -96,7 +100,9 @@
                 <ui:VisualElement name="Title" class="menu_title" style="background-image: url(&quot;project://database/Assets/Sprites/Menus/MenuTitle.png?fileID=2800000&amp;guid=830ffbc9a26c02c4cb218a8e5568ad67&amp;type=3#MenuTitle&quot;);">
                     <ui:Label text="Title" display-tooltip-when-elided="true" name="Value" class="menu_title_value" />
                 </ui:VisualElement>
-                <ui:VisualElement name="Close" class="button_active_extra menu_close_button" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&quot;);" />
+                <ui:VisualElement name="Close" picking-mode="Ignore" class="button_active_extra menu_close_button" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&quot;);">
+                    <ui:VisualElement name="Border" picking-mode="Ignore" class="border" />
+                </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="SupportMenu" class="menu energy_menu" style="opacity: 0; display: none;">
@@ -108,7 +114,9 @@
                 <ui:VisualElement name="Title" class="menu_title" style="background-image: url(&quot;project://database/Assets/Sprites/Menus/MenuTitle.png?fileID=2800000&amp;guid=830ffbc9a26c02c4cb218a8e5568ad67&amp;type=3#MenuTitle&quot;);">
                     <ui:Label text="Title" display-tooltip-when-elided="true" name="Value" class="menu_title_value" />
                 </ui:VisualElement>
-                <ui:VisualElement name="Close" class="button_active_extra menu_close_button" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&quot;);" />
+                <ui:VisualElement name="Close" picking-mode="Ignore" class="button_active_extra menu_close_button" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&quot;);">
+                    <ui:VisualElement name="Border" picking-mode="Ignore" class="border" />
+                </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="InventoryMenu" class="menu inventory_menu" style="display: none; opacity: 0;">
@@ -140,7 +148,9 @@
                 <ui:VisualElement name="Title" class="menu_title" style="background-image: url(&quot;project://database/Assets/Sprites/Menus/MenuTitle.png?fileID=2800000&amp;guid=830ffbc9a26c02c4cb218a8e5568ad67&amp;type=3#MenuTitle&quot;);">
                     <ui:Label text="Title" display-tooltip-when-elided="true" name="Value" class="menu_title_value" />
                 </ui:VisualElement>
-                <ui:VisualElement name="Close" class="button_active_extra menu_close_button" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&quot;);" />
+                <ui:VisualElement name="Close" picking-mode="Ignore" class="button_active_extra menu_close_button" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&quot;);">
+                    <ui:VisualElement name="Border" picking-mode="Ignore" class="border" />
+                </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="ShopMenu" class="menu shop_menu" style="display: none; opacity: 0;">
@@ -179,7 +189,9 @@
                 <ui:VisualElement name="Title" class="menu_title" style="background-image: url(&quot;project://database/Assets/Sprites/Menus/MenuTitle.png?fileID=2800000&amp;guid=830ffbc9a26c02c4cb218a8e5568ad67&amp;type=3#MenuTitle&quot;);">
                     <ui:Label text="Title" display-tooltip-when-elided="true" name="Value" class="menu_title_value" />
                 </ui:VisualElement>
-                <ui:VisualElement name="Close" class="button_active_extra menu_close_button" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&quot;);" />
+                <ui:VisualElement name="Close" picking-mode="Ignore" class="button_active_extra menu_close_button" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&quot;);">
+                    <ui:VisualElement name="Border" picking-mode="Ignore" class="border" />
+                </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="LevelMenu" class="menu level_menu" style="display: none; opacity: 0;">
@@ -226,7 +238,9 @@
                 <ui:VisualElement name="Title" class="menu_title" style="background-image: url(&quot;project://database/Assets/Sprites/Menus/MenuTitle.png?fileID=2800000&amp;guid=830ffbc9a26c02c4cb218a8e5568ad67&amp;type=3#MenuTitle&quot;);">
                     <ui:Label text="Title" display-tooltip-when-elided="true" name="Value" class="menu_title_value" />
                 </ui:VisualElement>
-                <ui:VisualElement name="Close" class="button_active_extra menu_close_button" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&quot;);" />
+                <ui:VisualElement name="Close" picking-mode="Ignore" class="button_active_extra menu_close_button" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&quot;);">
+                    <ui:VisualElement name="Border" picking-mode="Ignore" class="border" />
+                </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="TaskMenu" class="menu task_menu" style="display: none; opacity: 0;">
@@ -240,7 +254,9 @@
                 <ui:VisualElement name="Title" class="menu_title" style="background-image: url(&quot;project://database/Assets/Sprites/Menus/MenuTitle.png?fileID=2800000&amp;guid=830ffbc9a26c02c4cb218a8e5568ad67&amp;type=3#MenuTitle&quot;);">
                     <ui:Label text="Title" display-tooltip-when-elided="true" name="Value" class="menu_title_value" />
                 </ui:VisualElement>
-                <ui:VisualElement name="Close" class="button_active_extra menu_close_button" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&quot;);" />
+                <ui:VisualElement name="Close" picking-mode="Ignore" class="button_active_extra menu_close_button" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&quot;);">
+                    <ui:VisualElement name="Border" picking-mode="Ignore" class="border" />
+                </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="InputMenu" class="menu input_menu" style="display: none; opacity: 0;">
@@ -277,7 +293,9 @@
                 <ui:VisualElement name="Title" class="menu_title" style="background-image: url(&quot;project://database/Assets/Sprites/Menus/MenuTitle.png?fileID=2800000&amp;guid=830ffbc9a26c02c4cb218a8e5568ad67&amp;type=3#MenuTitle&quot;);">
                     <ui:Label text="Title" display-tooltip-when-elided="true" name="Value" class="menu_title_value" />
                 </ui:VisualElement>
-                <ui:VisualElement name="Close" class="button_active_extra menu_close_button" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&quot;);" />
+                <ui:VisualElement name="Close" picking-mode="Ignore" class="button_active_extra menu_close_button" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&quot;);">
+                    <ui:VisualElement name="Border" picking-mode="Ignore" class="border" />
+                </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="RateMenu" class="menu confirm_menu" style="display: none; opacity: 0;">
@@ -337,7 +355,9 @@
                 <ui:VisualElement name="Title" class="menu_title" style="background-image: url(&quot;project://database/Assets/Sprites/Menus/MenuTitle.png?fileID=2800000&amp;guid=830ffbc9a26c02c4cb218a8e5568ad67&amp;type=3#MenuTitle&quot;);">
                     <ui:Label text="Title" display-tooltip-when-elided="true" name="Value" class="menu_title_value" />
                 </ui:VisualElement>
-                <ui:VisualElement name="Close" class="button_active_extra menu_close_button" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&quot;);" />
+                <ui:VisualElement name="Close" picking-mode="Ignore" class="button_active_extra menu_close_button" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&quot;);">
+                    <ui:VisualElement name="Border" picking-mode="Ignore" class="border" />
+                </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="ConfirmMenu" class="menu confirm_menu" style="display: none; opacity: 0;">
@@ -355,12 +375,16 @@
                 <ui:VisualElement name="Title" class="menu_title" style="background-image: url(&quot;project://database/Assets/Sprites/Menus/MenuTitle.png?fileID=2800000&amp;guid=830ffbc9a26c02c4cb218a8e5568ad67&amp;type=3#MenuTitle&quot;);">
                     <ui:Label text="Title" display-tooltip-when-elided="true" name="Value" class="menu_title_value" />
                 </ui:VisualElement>
-                <ui:VisualElement name="Close" class="button_active_extra menu_close_button" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&quot;);" />
+                <ui:VisualElement name="Close" picking-mode="Ignore" class="button_active_extra menu_close_button" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&quot;);">
+                    <ui:VisualElement name="Border" picking-mode="Ignore" class="border" />
+                </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="MenuOverlay" class="menu_overlay">
+        <ui:VisualElement name="MenuOverlay" class="menu_overlay" style="display: none; opacity: 0;">
             <ui:VisualElement name="Spinner" class="spinner" />
-            <ui:Button name="DebugCloseButton" class="close" />
+            <ui:Button name="DebugCloseButton" class="close button button_active" style="display: none; opacity: 0;">
+                <ui:VisualElement name="Border" class="border" />
+            </ui:Button>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

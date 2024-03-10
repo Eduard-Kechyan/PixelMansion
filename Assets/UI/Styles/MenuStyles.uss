@@ -102,6 +102,7 @@
     margin-top: 0;
     margin-bottom: 0;
     height: 19px;
+    font-size: 12px;
 }
 
 .menu_close_button {
@@ -113,6 +114,15 @@
     translate: -50% 0;
     transition-duration: 0.3s;
     height: 16px;
+}
+
+.menu_close_button .border {
+    position: absolute;
+    background-image: url("project://database/Assets/Sprites/Buttons/Menu/MenuCloseButtonBorder.png?fileID=2800000&guid=5bd5ca7e63db671418d83f61bbba219e&type=3#MenuCloseButtonBorder");
+    top: -2px;
+    left: -2px;
+    width: 20px;
+    height: 20px;
 }
 
 .menu_overlay {
@@ -134,11 +144,26 @@
     top: 50%;
     height: 20px;
     translate: -50% -50%;
-    background-image: url('project://database/Assets/Sprites/Scenes/Loading/Spinner.png?fileID=-506458403&guid=6d6177bc530c98e4894d8b9e6e631322&type=3#Spinner_0');
+    background-image: url("project://database/Assets/Sprites/Scenes/Loading/Spinner.png?fileID=-506458403&guid=6d6177bc530c98e4894d8b9e6e631322&type=3#Spinner_0");
 }
 
 .menu_overlay .close {
+    width: 16px;
+    background-image: url("project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=2800000&guid=de292eed4f8226d44902262e6258cb7b&type=3#MenuCloseButton");
+    height: 16px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    overflow: visible;
+}
+
+.menu_overlay .close .border {
+    position: absolute;
+    background-image: url("project://database/Assets/Sprites/Buttons/Menu/MenuCloseButtonBorder.png?fileID=2800000&guid=5bd5ca7e63db671418d83f61bbba219e&type=3#MenuCloseButtonBorder");
+    top: -2px;
+    left: -2px;
     width: 20px;
+    height: 20px;
 }
 
 .settings_menu .label {
@@ -213,7 +238,7 @@
     border-top-width: 0;
     border-bottom-width: 0;
     background-color: rgba(188, 188, 188, 0);
-    background-image: url('project://database/Assets/Sprites/Buttons/LongButtonExtra.png?fileID=21300000&guid=5807375128b344f44a31b9300397a38e&type=3#LongButtonExtra');
+    background-image: url("project://database/Assets/Sprites/Buttons/LongButtonExtra.png?fileID=21300000&guid=5807375128b344f44a31b9300397a38e&type=3#LongButtonExtra");
     width: 68px;
     height: 20px;
     font-size: 6px;
@@ -548,7 +573,7 @@
     margin-left: 2px;
     margin-right: 2px;
     margin-bottom: 4px;
-    background-image: url('project://database/Assets/Sprites/Menus/InventoryMenu/InventoryItem.png?fileID=2800000&guid=06667950052f6b14086f30495a5b11f8&type=3#InventoryItem');
+    background-image: url("project://database/Assets/Sprites/Menus/InventoryMenu/InventoryItem.png?fileID=2800000&guid=06667950052f6b14086f30495a5b11f8&type=3#InventoryItem");
 }
 
 .inventory_slots .slot_item {
@@ -582,7 +607,7 @@
     top: 0;
     bottom: 0;
     right: 0;
-    background-image: url('project://database/Assets/Sprites/Items/Completion.png?fileID=2800000&guid=47c024a3d93ed024682db3aea79ab753&type=3#Completion');
+    background-image: url("project://database/Assets/Sprites/Items/Completion.png?fileID=2800000&guid=47c024a3d93ed024682db3aea79ab753&type=3#Completion");
 }
 
 .slot_item_hidden {
@@ -628,7 +653,7 @@
 }
 
 .shop_menu .sub_title {
-    background-image: url('project://database/Assets/Sprites/Menus/MenuSubtitle.png?fileID=21300000&guid=f8151e7c91cd3e341a010482e952df1e&type=3#MenuSubtitle');
+    background-image: url("project://database/Assets/Sprites/Menus/MenuSubtitle.png?fileID=21300000&guid=f8151e7c91cd3e341a010482e952df1e&type=3#MenuSubtitle");
     width: 149px;
     height: 15px;
     margin-left: auto;
@@ -654,19 +679,19 @@
 }
 
 .shop_menu .shop_item_box_daily {
-    background-image: url('project://database/Assets/Sprites/Menus/ShopMenu/ShopBox.png?fileID=2800000&guid=9e7c70b32b740ac4eb78b2cfd3943bd2&type=3#ShopBox');
+    background-image: url("project://database/Assets/Sprites/Menus/ShopMenu/ShopBox.png?fileID=2800000&guid=9e7c70b32b740ac4eb78b2cfd3943bd2&type=3#ShopBox");
 }
 
 .shop_menu .shop_item_box_item {
-    background-image: url('project://database/Assets/Sprites/Menus/ShopMenu/ShopBox.png?fileID=2800000&guid=9e7c70b32b740ac4eb78b2cfd3943bd2&type=3#ShopBox');
+    background-image: url("project://database/Assets/Sprites/Menus/ShopMenu/ShopBox.png?fileID=2800000&guid=9e7c70b32b740ac4eb78b2cfd3943bd2&type=3#ShopBox");
 }
 
 .shop_menu .shop_item_box_gold {
-    background-image: url('project://database/Assets/Sprites/Menus/ShopMenu/ShopBoxGold.png?fileID=2800000&guid=c8bc6674a420b9247b84a1b9e7ebbcb0&type=3#ShopBoxGold');
+    background-image: url("project://database/Assets/Sprites/Menus/ShopMenu/ShopBoxGold.png?fileID=2800000&guid=c8bc6674a420b9247b84a1b9e7ebbcb0&type=3#ShopBoxGold");
 }
 
 .shop_menu .shop_item_box_gems {
-    background-image: url('project://database/Assets/Sprites/Menus/ShopMenu/ShopBoxGems.png?fileID=2800000&guid=985158be3a613a545a112be3f553ccfc&type=3#ShopBoxGems');
+    background-image: url("project://database/Assets/Sprites/Menus/ShopMenu/ShopBoxGems.png?fileID=2800000&guid=985158be3a613a545a112be3f553ccfc&type=3#ShopBoxGems");
 }
 
 .shop_menu .shop_item_box .shop_box_top_label {
@@ -689,7 +714,7 @@
 
 .shop_menu .shop_item_box .shop_box_popular {
     flex-grow: 1;
-    background-image: url('project://database/Assets/Sprites/Menus/ShopMenu/Pupular.png?fileID=2800000&guid=c2d14d57d3b1655499c3441f6745b3fb&type=3#Pupular');
+    background-image: url("project://database/Assets/Sprites/Menus/ShopMenu/Pupular.png?fileID=2800000&guid=c2d14d57d3b1655499c3441f6745b3fb&type=3#Pupular");
     width: 30px;
     height: 30px;
     position: absolute;
@@ -730,7 +755,7 @@
 }
 
 .shop_menu .shop_item_box .shop_box_bonus {
-    background-image: url('project://database/Assets/Sprites/Menus/ShopMenu/EnergyBonus.png?fileID=2800000&guid=e84b1151ce36e9b4892a7e645a454983&type=3#EnergyBonus');
+    background-image: url("project://database/Assets/Sprites/Menus/ShopMenu/EnergyBonus.png?fileID=2800000&guid=e84b1151ce36e9b4892a7e645a454983&type=3#EnergyBonus");
     width: 37px;
     height: 12px;
     position: absolute;
@@ -775,13 +800,13 @@
     padding-bottom: 2px;
     flex-direction: row;
     transition-duration: 0.1s;
-    background-image: url('project://database/Assets/Sprites/Buttons/Menu/MenuShopBuyButton.png?fileID=2800000&guid=7f72d8d22e16fd541997c69f9c4f9f34&type=3#MenuShopBuyButton');
+    background-image: url("project://database/Assets/Sprites/Buttons/Menu/MenuShopBuyButton.png?fileID=2800000&guid=7f72d8d22e16fd541997c69f9c4f9f34&type=3#MenuShopBuyButton");
     -unity-background-image-tint-color: rgb(85, 203, 152);
 }
 
 .shop_menu .shop_item_box .shop_box_buy_button .shop_box_buy_button_value {
     background-color: rgba(0, 0, 0, 0);
-    background-image: url('project://database/Assets/Sprites/Values/SmallGold.png?fileID=2800000&guid=9927c70a39873234ead5f8d41fb591bf&type=3#SmallGold');
+    background-image: url("project://database/Assets/Sprites/Values/SmallGold.png?fileID=2800000&guid=9927c70a39873234ead5f8d41fb591bf&type=3#SmallGold");
     width: 12px;
     height: 12px;
 }
@@ -821,7 +846,7 @@
     padding-right: 0;
     padding-top: 0;
     padding-bottom: 0;
-    background-image: url('project://database/Assets/Sprites/Buttons/Menu/ShopBoxInfoButton.png?fileID=2800000&guid=5b1619c1a050de54a94113d994ffd7cf&type=3#ShopBoxInfoButton');
+    background-image: url("project://database/Assets/Sprites/Buttons/Menu/ShopBoxInfoButton.png?fileID=2800000&guid=5b1619c1a050de54a94113d994ffd7cf&type=3#ShopBoxInfoButton");
     background-color: rgba(188, 188, 188, 0);
     border-left-width: 0;
     border-right-width: 0;
@@ -854,7 +879,7 @@
 }
 
 .shop_menu .restore_button .img {
-    background-image: url('project://database/Assets/Sprites/Menus/ShopMenu/Restore.png?fileID=21300000&guid=010266370f308ac469d2802810b2ee0f&type=3#Restore');
+    background-image: url("project://database/Assets/Sprites/Menus/ShopMenu/Restore.png?fileID=21300000&guid=010266370f308ac469d2802810b2ee0f&type=3#Restore");
     width: 13px;
     height: 13px;
     margin-right: 2px;
@@ -951,7 +976,7 @@
     padding-top: 0;
     padding-bottom: 0;
     transition-duration: 0.3s;
-    background-image: url('project://database/Assets/Sprites/Values/Experience.png?fileID=2800000&guid=e35c219a6b21fcc4e8f87256aab8e82b&type=3#Experience');
+    background-image: url("project://database/Assets/Sprites/Values/Experience.png?fileID=2800000&guid=e35c219a6b21fcc4e8f87256aab8e82b&type=3#Experience");
 }
 
 .level_menu .level_rewards {
@@ -1014,7 +1039,7 @@
     position: absolute;
     top: -2px;
     right: -2px;
-    background-image: url('project://database/Assets/Sprites/Buttons/Menu/ShopBoxInfoButton.png?fileID=2800000&guid=5b1619c1a050de54a94113d994ffd7cf&type=3#ShopBoxInfoButton');
+    background-image: url("project://database/Assets/Sprites/Buttons/Menu/ShopBoxInfoButton.png?fileID=2800000&guid=5b1619c1a050de54a94113d994ffd7cf&type=3#ShopBoxInfoButton");
     transition-duration: 0.3s;
 }
 
@@ -1225,7 +1250,7 @@
 }
 
 .task_item .task_button {
-    background-image: url('project://database/Assets/Sprites/Buttons/LongButton.png?fileID=2800000&guid=e6292ec8b0b2a5743a0f00750e1f4db0&type=3#LongButton');
+    background-image: url("project://database/Assets/Sprites/Buttons/LongButton.png?fileID=2800000&guid=e6292ec8b0b2a5743a0f00750e1f4db0&type=3#LongButton");
     width: 42px;
     height: 18px;
     -unity-background-image-tint-color: rgb(85, 203, 152);
@@ -1271,7 +1296,7 @@
     top: 0;
     bottom: 0;
     right: 0;
-    background-image: url('project://database/Assets/Sprites/Items/Completion.png?fileID=2800000&guid=47c024a3d93ed024682db3aea79ab753&type=3#Completion');
+    background-image: url("project://database/Assets/Sprites/Items/Completion.png?fileID=2800000&guid=47c024a3d93ed024682db3aea79ab753&type=3#Completion");
 }
 
 .task_need .count {
@@ -1294,7 +1319,7 @@
 }
 
 .task_need .info_button {
-    background-image: url('project://database/Assets/Sprites/Buttons/Menu/ShopBoxInfoButton.png?fileID=2800000&guid=5b1619c1a050de54a94113d994ffd7cf&type=3#ShopBoxInfoButton');
+    background-image: url("project://database/Assets/Sprites/Buttons/Menu/ShopBoxInfoButton.png?fileID=2800000&guid=5b1619c1a050de54a94113d994ffd7cf&type=3#ShopBoxInfoButton");
     width: 12px;
     height: 12px;
     position: absolute;
@@ -1364,7 +1389,7 @@
 }
 
 .input_menu .input_button {
-    background-image: url('project://database/Assets/Sprites/Buttons/LongButtonExtra.png?fileID=2800000&guid=5807375128b344f44a31b9300397a38e&type=3#LongButtonExtra');
+    background-image: url("project://database/Assets/Sprites/Buttons/LongButtonExtra.png?fileID=2800000&guid=5807375128b344f44a31b9300397a38e&type=3#LongButtonExtra");
     width: 68px;
     height: 20px;
     margin-right: auto;
@@ -1551,7 +1576,7 @@
 .info_menu .info_parent .parent {
     width: 24px;
     height: 24px;
-    background-image: url('project://database/Assets/Sprites/Menus/InfoMenu/InfoParentItem.png?fileID=2800000&guid=49c117f476be9d14f9f248b548270113&type=3#InfoParentItem');
+    background-image: url("project://database/Assets/Sprites/Menus/InfoMenu/InfoParentItem.png?fileID=2800000&guid=49c117f476be9d14f9f248b548270113&type=3#InfoParentItem");
     margin-left: 2px;
     margin-right: 2px;
 }
@@ -1631,7 +1656,7 @@
     border-right-width: 0;
     border-top-width: 0;
     border-bottom-width: 0;
-    background-image: url('project://database/Assets/Sprites/Menus/Inputs/SliderTracker.png?fileID=2800000&guid=e6f5f019834978e4fb189de1bc260265&type=3#SliderTracker');
+    background-image: url("project://database/Assets/Sprites/Menus/Inputs/SliderTracker.png?fileID=2800000&guid=e6f5f019834978e4fb189de1bc260265&type=3#SliderTracker");
 }
 
 .menu_slider .unity-base-slider__dragger {
@@ -1643,7 +1668,7 @@
     border-right-width: 0;
     border-top-width: 0;
     border-bottom-width: 0;
-    background-image: url('project://database/Assets/Sprites/Menus/Inputs/SliderDragger.png?fileID=2800000&guid=b899298494829bd478c103b453048064&type=3#SliderDragger');
+    background-image: url("project://database/Assets/Sprites/Menus/Inputs/SliderDragger.png?fileID=2800000&guid=b899298494829bd478c103b453048064&type=3#SliderDragger");
     background-color: rgba(0, 0, 0, 0);
     transition-duration: 0.1s;
     -unity-background-image-tint-color: rgb(85, 203, 152);
@@ -1685,11 +1710,11 @@
     border-bottom-width: 0;
     background-color: rgba(0, 0, 0, 0);
     -unity-background-image-tint-color: rgb(255, 255, 255);
-    background-image: url('project://database/Assets/Sprites/Menus/Inputs/ToggleBox.png?fileID=2800000&guid=f65685853112ac843863b9445e6d9c9e&type=3#ToggleBox');
+    background-image: url("project://database/Assets/Sprites/Menus/Inputs/ToggleBox.png?fileID=2800000&guid=f65685853112ac843863b9445e6d9c9e&type=3#ToggleBox");
 }
 
 .menu_toggle .unity-toggle__input:checked .unity-toggle__checkmark {
-    background-image: url('project://database/Assets/Sprites/Menus/Inputs/ToggleBoxChecked.png?fileID=2800000&guid=77474028355160f41a137258b8978732&type=3#ToggleBoxChecked');
+    background-image: url("project://database/Assets/Sprites/Menus/Inputs/ToggleBoxChecked.png?fileID=2800000&guid=77474028355160f41a137258b8978732&type=3#ToggleBoxChecked");
 }
 
 .small_menu {
@@ -1697,7 +1722,7 @@
     left: 50%;
     top: 50%;
     translate: -50% -50%;
-    background-image: url('project://database/Assets/Sprites/Menus/SmallMenu.png?fileID=2800000&guid=108a1bc1916e1f84bad692ca76116993&type=3#SmallMenu');
+    background-image: url("project://database/Assets/Sprites/Menus/SmallMenu.png?fileID=2800000&guid=108a1bc1916e1f84bad692ca76116993&type=3#SmallMenu");
     width: 110px;
     min-height: 50px;
     padding-left: 4px;
@@ -1707,7 +1732,7 @@
 }
 
 .small_menu .bottom_border {
-    background-image: url('project://database/Assets/Sprites/Menus/SmallMenuBottomBorder.png?fileID=2800000&guid=24ba9de03ef515241af648c2aeae4ce0&type=3#SmallMenuBottomBorder');
+    background-image: url("project://database/Assets/Sprites/Menus/SmallMenuBottomBorder.png?fileID=2800000&guid=24ba9de03ef515241af648c2aeae4ce0&type=3#SmallMenuBottomBorder");
     width: 110px;
     height: 6px;
     position: absolute;
@@ -1717,7 +1742,7 @@
 }
 
 .small_menu .title {
-    background-image: url('project://database/Assets/Sprites/Menus/RateMenu/LikeTitle.png?fileID=2800000&guid=2db6b6d38ff2c28438e277731cda8f06&type=3#LikeTitle');
+    background-image: url("project://database/Assets/Sprites/Menus/RateMenu/LikeTitle.png?fileID=2800000&guid=2db6b6d38ff2c28438e277731cda8f06&type=3#LikeTitle");
     width: 126px;
     height: 22px;
     position: absolute;
@@ -1764,7 +1789,7 @@
 }
 
 .small_menu .star_item {
-    background-image: url('project://database/Assets/Sprites/Menus/RateMenu/StarEmpty.png?fileID=2800000&guid=d4a36d8a01e7d5742855408d095c829b&type=3#StarEmpty');
+    background-image: url("project://database/Assets/Sprites/Menus/RateMenu/StarEmpty.png?fileID=2800000&guid=d4a36d8a01e7d5742855408d095c829b&type=3#StarEmpty");
     width: 16px;
     height: 20px;
     margin-left: 1px;
@@ -1795,7 +1820,7 @@
 }
 
 .small_menu .like_button {
-    background-image: url('project://database/Assets/Sprites/Menus/RateMenu/SmallButton.png?fileID=2800000&guid=5e9285690bdecc44991f6dfcbfbb849b&type=3#SmallButton');
+    background-image: url("project://database/Assets/Sprites/Menus/RateMenu/SmallButton.png?fileID=2800000&guid=5e9285690bdecc44991f6dfcbfbb849b&type=3#SmallButton");
     width: 60px;
     height: 18px;
     margin-bottom: 2px;

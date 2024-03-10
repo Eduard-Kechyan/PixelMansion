@@ -12,6 +12,10 @@
 /Backend/node-modules/
 /.utmp/
 
+# Tests
+/[Aa]ssets/[Aa]ddressables/[Ss]prites/[Tt]esting
+/[Aa]ssets/[Aa]ddressables/[Ss]prites/[Tt]esting.meta
+
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 /[Mm]emoryCaptures/

@@ -49,6 +49,7 @@ namespace Merge
         private Services services;
         private AuthManager authManager;
         private CloudSave cloudSave;
+        private AnalyticsManager analyticsManager;
 
         void Awake()
         {
@@ -73,6 +74,8 @@ namespace Merge
             services = Services.Instance;
             authManager = services.GetComponent<AuthManager>();
             cloudSave = services.GetComponent<CloudSave>();
+           // analyticsManager = services.GetComponent<AnalyticsManager>();
+            analyticsManager = AnalyticsManager.Instance;
 
             // Get Ready
             singlePhasePercent = 100f / maxPhase;
@@ -144,12 +147,16 @@ namespace Merge
 
                     if (PlayerPrefs.HasKey("termsAccepted"))
                     {
+                        analyticsManager.StartDataCollection();
+
                         ContinueLoading();
                     }
                     else
                     {
                         if (acceptTermsAuto)
                         {
+                            analyticsManager.StartDataCollection();
+
                             PlayerPrefs.SetInt("termsAccepted", 1);
                             PlayerPrefs.Save();
 
@@ -161,7 +168,12 @@ namespace Merge
                         }
                         else
                         {
-                            loadingSceneUI.CheckTerms(callback);
+                            loadingSceneUI.CheckTerms(() =>
+                            {
+                                analyticsManager.StartDataCollection();
+
+                                callback();
+                            });
                         }
                     }
 

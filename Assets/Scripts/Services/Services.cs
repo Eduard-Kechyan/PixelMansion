@@ -16,6 +16,7 @@ namespace Merge
         public bool adsAvailable = false;
         public bool authAvailable = false;
         public bool cloudSaveAvailable = false;
+        public bool analyticsAvailable = false;
 
         [Header("Sign Ins")]
         public bool anonymousSignIn = false;

@@ -600,7 +600,7 @@ namespace Merge
 
         IEnumerator PrePurchase(Action callback)
         {
-            menuUI.ShowMenuOverlay(shopMenu);
+            menuUI.ShowMenuOverlay();
 
             // purchasing = true;
 

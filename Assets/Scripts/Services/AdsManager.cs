@@ -34,6 +34,7 @@ namespace Merge
 
         // References
         private Services services;
+        private AnalyticsManager analyticsManager;
         private ErrorManager errorManager;
 
         void Awake()
@@ -57,6 +58,8 @@ namespace Merge
         {
             // Cache
             services = Services.Instance;
+            //analyticsManager = services.GetComponent<AnalyticsManager>();
+            analyticsManager = AnalyticsManager.Instance;
             errorManager = ErrorManager.Instance;
 
             energyRewardAmountInner = energyRewardAmount;
@@ -170,6 +173,16 @@ namespace Merge
                 {
                     Debug.Log(String.Format("Rewarded ad paid {0} {1}.", adValue.Value, adValue.CurrencyCode));
                 }
+
+                // TODO - Convert adValue.Value to USD, if it isn't
+                Debug.Log("//// Ad Value ////");
+                Debug.Log(adValue.Value);
+                Debug.Log(adValue.CurrencyCode);
+                Debug.Log(adValue.Precision);
+
+                Reward reward = ad.GetRewardItem();
+
+                // analyticsManager.FireAdImpressionEvent(reward.Type, true, adValue.Value);
             };
 
             // Raised when an impression is recorded for an ad.
@@ -179,6 +192,10 @@ namespace Merge
                 {
                     Debug.Log("Rewarded ad recorded an impression.");
                 }
+
+                Reward reward = ad.GetRewardItem();
+
+                analyticsManager.FireAdImpressionEvent(reward.Type, false);
             };
 
             // Raised when a click is recorded for an ad.
@@ -188,6 +205,10 @@ namespace Merge
                 {
                     Debug.Log("Rewarded ad was clicked.");
                 }
+
+                Reward reward = ad.GetRewardItem();
+
+                // analyticsManager.FireAdImpressionEvent(reward.Type, true);
             };
 
             // Raised when an ad opened full screen content.

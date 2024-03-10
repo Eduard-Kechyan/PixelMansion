@@ -129,10 +129,12 @@ namespace Merge
             if (errorManager.diagnosticsEnabled)
             {
                 diagnosticsButton.text = "Diagnostics: On";
+                diagnosticsButton.RemoveFromClassList("debug_menu_button_red");
             }
             else
             {
                 diagnosticsButton.text = "Diagnostics: Off";
+                diagnosticsButton.AddToClassList("debug_menu_button_red");
             }
 
             PlayerPrefs.SetInt("diagnosticsEnabled", errorManager.diagnosticsEnabled ? 1 : 0);
@@ -147,7 +149,7 @@ namespace Merge
             }
             else
             {
-                errorManager.diagnosticsEnabled = true;
+                errorManager.diagnosticsEnabled = false;
             }
 
             ToggleDiagnostic(false);
@@ -165,10 +167,12 @@ namespace Merge
             if (logs.shakingEnabled)
             {
                 logsShakingButton.text = "Shaking: On";
+                logsShakingButton.RemoveFromClassList("debug_menu_button_red");
             }
             else
             {
                 logsShakingButton.text = "Shaking: Off";
+                logsShakingButton.AddToClassList("debug_menu_button_red");
             }
 
             PlayerPrefs.SetInt("shakingEnabled", logs.shakingEnabled ? 1 : 0);

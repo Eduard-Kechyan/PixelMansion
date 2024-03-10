@@ -10,7 +10,7 @@ namespace Merge
     public class ErrorManager : MonoBehaviour
     {
         // Variables
-        public bool diagnosticsEnabled = true;
+        public bool diagnosticsEnabled = false;
 
 #if UNITY_EDITOR
         [Space(10)]
@@ -38,14 +38,9 @@ namespace Merge
                 Instance = this;
                 DontDestroyOnLoad(gameObject);
 
-                if (Debug.isDebugBuild)
-                {
-                    CrashReportHandler.enableCaptureExceptions = diagnosticsEnabled;
-                }
-                else
-                {
-                    CrashReportHandler.enableCaptureExceptions = true;
-                }
+                diagnosticsEnabled = false;
+
+                CrashReportHandler.enableCaptureExceptions = false;
             }
         }
 

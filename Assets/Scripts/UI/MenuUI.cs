@@ -42,7 +42,10 @@ namespace Merge
         private Label title;
         private VisualElement menuOverlay;
         private VisualElement menuOverlaySpinner;
+
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
         private Button menuOverlayDebugCloseButton;
+#endif
 
         void Start()
         {
@@ -55,22 +58,18 @@ namespace Merge
 
             menuOverlay = root.Q<VisualElement>("MenuOverlay");
             menuOverlaySpinner = menuOverlay.Q<VisualElement>("Spinner");
+
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             menuOverlayDebugCloseButton = menuOverlay.Q<Button>("DebugCloseButton");
 
             // Button taps
             menuOverlayDebugCloseButton.clicked += () => HideMenuOverlay();
 
+            menuOverlayDebugCloseButton.style.display = DisplayStyle.Flex;
+#endif
+
             // Init
             localeWrapper.style.display = DisplayStyle.None;
-
-            if (Debug.isDebugBuild)
-            {
-                menuOverlayDebugCloseButton.style.display = DisplayStyle.Flex;
-            }
-            else
-            {
-                menuOverlayDebugCloseButton.style.display = DisplayStyle.None;
-            }
 
             HideMenuOverlay();
         }
@@ -140,12 +139,14 @@ namespace Merge
                 }
 
                 // Disable the close button
-                VisualElement closeIcon = currentMenu.Q<VisualElement>("Close");
+                /* VisualElement closeButton = currentMenu.Q<VisualElement>("Close");
+                 VisualElement closeButtonBorder = closeButton.Q<VisualElement>("Border");
 
-                if (closeIcon != null)
-                {
-                    closeIcon.pickingMode = PickingMode.Ignore;
-                }
+                 if (closeButton != null)
+                 {
+                     closeButton.pickingMode = PickingMode.Ignore;
+                     closeButtonBorder.pickingMode = PickingMode.Ignore;
+                 }*/
             }
 
             // Set the menu's title
@@ -333,10 +334,8 @@ namespace Merge
 
         //// Overlay menuOverlaySpinner ////
 
-        public void ShowMenuOverlay(VisualElement menuElement, Action callback = null, bool delayCallback = false)
+        public void ShowMenuOverlay(Action callback = null, bool delayCallback = false)
         {
-            // TODO - Set overlay position (optional) using "menuElement"
-
             menuOverlay.style.opacity = 1;
             menuOverlay.style.display = DisplayStyle.Flex;
 
@@ -359,8 +358,6 @@ namespace Merge
 
         public void HideMenuOverlay(Action callback = null, bool delayCallback = false)
         {
-            // TODO - Reset overlay position (optional)
-
             menuOverlay.style.opacity = 0;
             menuOverlay.style.display = DisplayStyle.None;
 

@@ -22,6 +22,7 @@ namespace Merge
         private ShopMenu shopMenu;
         private ValuePop valuePop;
         private AdsManager adsManager;
+        private AnalyticsManager analyticsManager;
         private NoteMenu noteMenu;
 
         // UI
@@ -43,6 +44,8 @@ namespace Merge
             shopMenu = GetComponent<ShopMenu>();
             valuePop = GetComponent<ValuePop>();
             adsManager = Services.Instance.GetComponent<AdsManager>();
+            // analyticsManager = Services.Instance.GetComponent<AnalyticsManager>();
+            analyticsManager = AnalyticsManager.Instance;
             noteMenu = GetComponent<NoteMenu>();
 
             // UI
@@ -120,13 +123,15 @@ namespace Merge
             {
                 waitingForAd = true;
 
-                menuUI.ShowMenuOverlay(energyMenu, () =>
+                menuUI.ShowMenuOverlay(() =>
                 {
                     adsManager.WatchAd(Types.AdType.Energy, (int newEnergyAmount) =>
                     {
                         menuUI.HideMenuOverlay(() =>
                         {
                             waitingForAd = false;
+
+                            analyticsManager.FireEnergyBoughtEvent(gameData.level, gameData.energy, gameData.gems, true);
 
                             valuePop.PopValue(newEnergyAmount, Types.CollGroup.Energy, watchButton.worldBound.center, false, true);
                         });
@@ -149,6 +154,8 @@ namespace Merge
             // Check if we have enough energy
             if (gameData.gems >= gemsCost)
             {
+                analyticsManager.FireEnergyBoughtEvent(gameData.level, gameData.energy, gameData.gems, false);
+
                 gameData.UpdateValue(-gemsCost, Types.CollGroup.Gems, false, true); // Note the -
 
                 valuePop.PopValue(energyBuyAmount, Types.CollGroup.Energy, buyButton.worldBound.center, false, true);

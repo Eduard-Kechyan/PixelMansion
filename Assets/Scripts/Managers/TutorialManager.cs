@@ -26,6 +26,8 @@ namespace Merge
 
         private bool handlingLast = false;
 
+        private bool tutorialStarted = false;
+
         [Serializable]
         public class ShineSprites
         {
@@ -44,6 +46,7 @@ namespace Merge
         private PointerHandler pointerHandler;
         private InfoBox infoBox;
         private CloudSave cloudSave;
+        private AnalyticsManager analyticsManager;
 
         // UI
         private VisualElement root;
@@ -86,6 +89,8 @@ namespace Merge
                     }
                     else
                     {
+                        tutorialStarted = true;
+
                         PlayerPrefs.SetString("tutorialStep", "First");
 
                         PlayerPrefs.Save();
@@ -107,6 +112,8 @@ namespace Merge
             pointerHandler = GetComponent<PointerHandler>();
             infoBox = GameRefs.Instance.infoBox;
             cloudSave = Services.Instance.GetComponent<CloudSave>();
+            //analyticsManager = Services.Instance.GetComponent<AnalyticsManager>();
+            analyticsManager = AnalyticsManager.Instance;
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
@@ -114,6 +121,13 @@ namespace Merge
             if (hubGameUIDoc != null)
             {
                 convoBackground = hubGameUIDoc.GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("ConvoBackground");
+            }
+
+            if (tutorialStarted)
+            {
+                analyticsManager.FireTutorialEvent("", true);
+
+                tutorialStarted = false;
             }
 
             cloudSave.SaveDataAsync("tutorialStep", PlayerPrefs.GetString("tutorialStep"));
@@ -307,6 +321,8 @@ namespace Merge
 
                         PlayerPrefs.Save();
 
+                        analyticsManager.FireTutorialEvent(tutorialStep);
+
                         if (handleNextStep)
                         {
                             HandleStep();
@@ -497,6 +513,8 @@ namespace Merge
             PlayerPrefs.Save();
 
             cloudSave.SaveDataAsync("tutorialFinished", 1);
+
+            analyticsManager.FireTutorialEvent("", false, true);
 
             StartCoroutine(WaitForGameReferences());
         }

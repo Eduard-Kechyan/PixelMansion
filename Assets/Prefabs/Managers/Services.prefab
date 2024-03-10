@@ -56,6 +56,7 @@ MonoBehaviour:
   adsAvailable: 0
   authAvailable: 0
   cloudSaveAvailable: 0
+  analyticsAvailable: 0
   anonymousSignIn: 0
   googleSignIn: 0
   appleSignIn: 0
@@ -110,6 +111,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   logData: 0
+  logDataAlt: 0
   hasLinkingConflict: 0
   playerId: 
 --- !u!114 &8343167684083180862
@@ -128,7 +130,9 @@ MonoBehaviour:
   unsentDataCheckInterval: 30
   tooLongDelay: 2
   throwCalledBeforeServicesError: 0
+  checkUnsentDataRegularly: 0
   logData: 1
+  checkedForUserData: 0
 --- !u!114 &7478335895050211340
 MonoBehaviour:
   m_ObjectHideFlags: 0
