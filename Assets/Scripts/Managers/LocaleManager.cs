@@ -7,7 +7,7 @@ namespace Merge
 {
     public class LocaleManager : MonoBehaviour
     {
-        // Varaibles
+        // Variables
         public Font hyFont;
         public Font jpFont;
         public Font krFont;

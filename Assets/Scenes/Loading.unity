@@ -196,6 +196,38 @@ PrefabInstance:
       propertyPath: combine
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2090259560186866042, guid: f4034c2be9714cc41b0cf4ef9809c444, type: 3}
+      propertyPath: log
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2090259560186866042, guid: f4034c2be9714cc41b0cf4ef9809c444, type: 3}
+      propertyPath: set
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2090259560186866042, guid: f4034c2be9714cc41b0cf4ef9809c444, type: 3}
+      propertyPath: localesToCreate.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2090259560186866042, guid: f4034c2be9714cc41b0cf4ef9809c444, type: 3}
+      propertyPath: 'localesToCreate.Array.data[0]'
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2090259560186866042, guid: f4034c2be9714cc41b0cf4ef9809c444, type: 3}
+      propertyPath: 'localesToCreate.Array.data[1]'
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2090259560186866042, guid: f4034c2be9714cc41b0cf4ef9809c444, type: 3}
+      propertyPath: 'localesToCreate.Array.data[2]'
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2090259560186866042, guid: f4034c2be9714cc41b0cf4ef9809c444, type: 3}
+      propertyPath: 'localesToCreate.Array.data[3]'
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2090259560186866042, guid: f4034c2be9714cc41b0cf4ef9809c444, type: 3}
+      propertyPath: 'localesToCreate.Array.data[4]'
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3856526671071279619, guid: f4034c2be9714cc41b0cf4ef9809c444, type: 3}
       propertyPath: m_RootOrder
       value: 4

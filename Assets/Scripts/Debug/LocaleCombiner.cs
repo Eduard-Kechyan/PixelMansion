@@ -1,15 +1,15 @@
 using System.Collections;
+using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-
-using System.IO;
 
 namespace Merge
 {
 #if DEVELOPMENT_BUILD || UNITY_EDITOR
     public class LocaleCombiner : MonoBehaviour
     {
+        // Variables
         public bool combine = false;
         public bool log = false;
 

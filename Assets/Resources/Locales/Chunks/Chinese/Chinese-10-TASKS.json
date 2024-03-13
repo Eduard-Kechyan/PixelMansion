@@ -1,0 +1,23 @@
+{
+    "________ TASK GROUPS ________": " 任务组 ",
+    "task_group_LivingRoom": "宏伟的客厅",
+    "task_group_LivingRoom_desc": "在我们探索之前，让我们先把它清理干净！",
+    "task_group_BedRoom": "微小的卧室",
+    "task_group_BedRoom_desc": "让我们把这个房间变成一个梦想的地方！",
+    "task_group_KitchenRoom": "我们的小厨房",
+    "task_group_KitchenRoom_desc": "让我们把这个房间变成最美味食物的制作地！",
+    "________ TASKS ________": " 任务 ",
+    "task_button_play": "开始",
+    "task_button_complete": "完成",
+    "task_button_finish": "结束",
+    "task_empty": "没有找到任务！",
+    "________ LIVING ROOM TASKS ________": "________ 客厅任务 ",
+    "task_LivingRoom_ChangeFloor": "修复地板",
+    "task_LivingRoom_ChangeWallLeft": "修复墙壁（1）",
+    "task_LivingRoom_ChangeWallRight": "修复墙壁（2）",
+    "task_LivingRoom_Last": "完成房间！",
+    "________ BED ROOM TASKS ________": "________ 卧室任务 ",
+    "task_BedRoom_ChangeFloor": "修复地板",
+    "________ KITCHEN ROOM TASKS ________": "________ 厨房任务 ________",
+    "task_KitchenRoom_ChangeFloor": "修复地板"
+}

@@ -58,11 +58,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b21752ef7c1bb7f42bbd9ca4bae96acc
-    m_Address: Assets/Addressables/Sprites/Testing
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 9533a024c77f98944905221bc855309e, type: 2}
   m_SchemaSet:
