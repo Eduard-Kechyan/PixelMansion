@@ -102,12 +102,6 @@ namespace Merge
             shopMenu.style.display = DisplayStyle.None;
             shopMenu.style.opacity = 0;
 
-            // Subtitles
-            dailySubtitle.text = LOCALE.Get("shop_menu_subtitle_daily");
-            itemsSubtitle.text = LOCALE.Get("shop_menu_subtitle_items");
-            gemsSubtitle.text = LOCALE.Get("shop_menu_subtitle_gems");
-            goldSubtitle.text = LOCALE.Get("shop_menu_subtitle_gold");
-
             InitializeShopItems(Types.ShopItemType.Item);
             InitializeShopCurrency(Types.ShopItemType.Gold);
             InitializeShopCurrency(Types.ShopItemType.Gems);
@@ -461,8 +455,27 @@ namespace Merge
 
         public void Open(string newLocation = "")
         {
+            if (menuUI.IsMenuOpen(shopMenu.name))
+            {
+                // Check if we need to scroll to a specific location
+                if (newLocation != "")
+                {
+                    scrollLocation = newLocation;
+
+                    shopMenu.RegisterCallback<GeometryChangedEvent>(ScrollCallback);
+                }
+
+                return;
+            }
+
             // Title
             string title = LOCALE.Get("shop_menu_title");
+
+            // Subtitles
+            dailySubtitle.text = LOCALE.Get("shop_menu_subtitle_daily");
+            itemsSubtitle.text = LOCALE.Get("shop_menu_subtitle_items");
+            gemsSubtitle.text = LOCALE.Get("shop_menu_subtitle_gems");
+            goldSubtitle.text = LOCALE.Get("shop_menu_subtitle_gold");
 
             // Open menu
             menuUI.OpenMenu(shopMenu, title, true);

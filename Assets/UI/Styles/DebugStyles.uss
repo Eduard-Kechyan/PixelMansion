@@ -39,7 +39,7 @@
     padding-bottom: 0;
     -unity-text-align: middle-left;
     color: rgb(255, 255, 255);
-    -unity-font: url("project://database/Assets/Fonts/Files/Roboto.ttf?fileID=12800000&guid=0435ef74bc89d2044a778758a25a13b0&type=3#Roboto");
+    -unity-font-definition: url("project://database/Assets/Fonts/Roboto%20SDF.asset?fileID=11400000&guid=1c5dedeb0ccefb74ebe6e5ff0a6f7e56&type=2#Roboto SDF");
     position: absolute;
     top: 0;
     left: 0;
@@ -48,7 +48,7 @@
 }
 
 .logs_container .close_button {
-    -unity-font: url("project://database/Assets/Fonts/Files/Roboto.ttf?fileID=12800000&guid=0435ef74bc89d2044a778758a25a13b0&type=3#Roboto");
+    -unity-font-definition: url("project://database/Assets/Fonts/Roboto%20SDF.asset?fileID=11400000&guid=1c5dedeb0ccefb74ebe6e5ff0a6f7e56&type=2#Roboto SDF");
     position: absolute;
     top: 4px;
     right: 4px;

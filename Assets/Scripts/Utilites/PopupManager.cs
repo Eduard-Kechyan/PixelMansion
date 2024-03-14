@@ -47,7 +47,7 @@ namespace Merge
             root = popupUI.rootVisualElement;
         }
 
-        public void Pop(string newText, Vector2 position, Types.SoundType soundType=Types.SoundType.None, bool convertPosToUI = false, bool fromSelector = false)
+        public void Pop(string newText, Vector2 position, Types.SoundType soundType = Types.SoundType.None, bool convertPosToUI = false, bool fromSelector = false)
         {
             isSelectorPopup = fromSelector;
 

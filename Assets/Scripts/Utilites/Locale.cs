@@ -32,7 +32,7 @@ namespace Merge
             config = JSON.Parse(configText.text);
         }
 
-        public static Types.Locale GetLocale()
+        public Types.Locale GetLocale()
         {
             return currentLocale;
         }

@@ -14,6 +14,8 @@ namespace Merge
         public LoadingManager loadingManager;
         public float transitionDuration = 0.1f;
 
+        private bool valuesShown;
+
         // References
         private UIDocument debugUI;
         private Logs logs;
@@ -221,7 +223,10 @@ namespace Merge
                 boardInteractions.EnableInteractions();
             }
 
-            HideValues();
+            if (valuesShown)
+            {
+                HideValues();
+            }
 
             StartCoroutine(HideMenuAfter());
         }
@@ -237,6 +242,9 @@ namespace Merge
         {
             if (valuesUI != null)
             {
+                // Show the values over the menu and disable the buttons
+                valuesShown = true;
+
                 valuesUI.SetSortingOrder(12);
 
                 valuesUI.DisableButtons();
@@ -247,6 +255,9 @@ namespace Merge
         {
             if (valuesUI != null)
             {
+                // Reset values order in hierarchy and enable the buttons
+                valuesShown = false;
+
                 valuesUI.SetSortingOrder(10);
 
                 valuesUI.EnableButtons();

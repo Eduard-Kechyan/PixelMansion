@@ -135,6 +135,10 @@ PrefabInstance:
       propertyPath: transitionUI
       value: 
       objectReference: {fileID: 1157297608025217543}
+    - target: {fileID: 1798228451276164874, guid: d1ee4451982ab4743b3b309d3ca9f109, type: 3}
+      propertyPath: localeManager
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8137272343139019045, guid: d1ee4451982ab4743b3b309d3ca9f109, type: 3}
       propertyPath: m_RootOrder
       value: 12
@@ -3642,6 +3646,10 @@ PrefabInstance:
       propertyPath: sceneLoader
       value: 
       objectReference: {fileID: 2129448916}
+    - target: {fileID: 5149703782136879602, guid: f41ec8453e812e6448d9ee71148978c0, type: 3}
+      propertyPath: localeManager
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6505914479141634174, guid: f41ec8453e812e6448d9ee71148978c0, type: 3}
       propertyPath: m_PanelSettings
       value: 

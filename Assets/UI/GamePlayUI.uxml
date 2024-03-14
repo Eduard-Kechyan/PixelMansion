@@ -3,7 +3,7 @@
     <Style src="project://database/Assets/UI/Styles/GamePlayStyles.uss?fileID=7433441132597879392&amp;guid=ec0150edc540bd047ae83ec388af573c&amp;type=3#GamePlayStyles" />
     <ui:VisualElement name="TopBgShadow" class="background_shadow" />
     <ui:VisualElement name="BottomBgShadow" class="background_shadow" style="top: auto; bottom: -60px; height: 100px; rotate: 180deg;" />
-    <ui:VisualElement name="LocaleWrapper" class="locale_wrapper locale_en" style="flex-grow: 1;">
+    <ui:VisualElement name="LocaleWrapper" class="locale_wrapper" style="flex-grow: 1;">
         <ui:VisualElement name="DragOverlay" class="drag_overlay" />
         <ui:VisualElement name="BottomBox" class="bottom_box">
             <ui:VisualElement name="InfoBox" class="info_box">

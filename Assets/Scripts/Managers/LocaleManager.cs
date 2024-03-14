@@ -2,18 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.TextCore.Text;
 
 namespace Merge
 {
     public class LocaleManager : MonoBehaviour
     {
         // Variables
-        public Font hyFont;
-        public Font jpFont;
-        public Font krFont;
-        public Font cnFont;
-        public Font enFont;
-        public Font titleFont;
+        public FontAsset hyFont;
+        public FontAsset jpFont;
+        public FontAsset krFont;
+        public FontAsset cnFont;
+        public FontAsset enFont;
+        public FontAsset titleFont;
 
         // References
         private GameRefs gameRefs;
@@ -26,6 +27,8 @@ namespace Merge
         public void Init(Types.Scene scene)
         {
             gameRefs = GameRefs.Instance;
+
+            Reset();
 
             // Get menu locale wrapper if it's null
             if (menuLocaleWrapper == null)
@@ -43,7 +46,7 @@ namespace Merge
                 wrappers.Add(hubLocaleWrapper);
             }
             // Get game play locale wrapper
-            else
+            else if (scene == Types.Scene.GamePlay)
             {
                 gamePlayLocaleWrapper = gameRefs.gamePlayUI.GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("LocaleWrapper");
 
@@ -53,56 +56,28 @@ namespace Merge
             SetLocaleWrappers(Settings.Instance.currentLocale);
         }
 
-        public void UpdateUILocale(Types.Locale newLocale, bool useTimeout = false)
-        {
-            if (useTimeout)
-            {
-                StartCoroutine(SetTimeOut(newLocale));
-            }
-            else
-            {
-                SetLocaleWrappers(newLocale);
-            }
-        }
-
-        IEnumerator SetTimeOut(Types.Locale newLocale)
-        {
-            yield return new WaitForSeconds(0.1f);
-
-            SetLocaleWrappers(newLocale);
-        }
-
         void SetLocaleWrappers(Types.Locale newLocale)
         {
             for (int i = 0; i < wrappers.Count; i++)
             {
                 VisualElement wrapper = wrappers[i];
 
-                wrapper.RemoveFromClassList("locale_hy");
-                wrapper.RemoveFromClassList("locale_jp");
-                wrapper.RemoveFromClassList("locale_kr");
-                wrapper.RemoveFromClassList("locale_cn");
-                wrapper.RemoveFromClassList("locale_en");
+                wrapper.RemoveFromClassList("locale_" + Types.Locale.Armenian);
+                wrapper.RemoveFromClassList("locale_" + Types.Locale.Japanese);
+                wrapper.RemoveFromClassList("locale_" + Types.Locale.Korean);
+                wrapper.RemoveFromClassList("locale_" + Types.Locale.Chinese);
 
-                switch (newLocale)
-                {
-                    case Types.Locale.Armenian:
-                        wrapper.AddToClassList("locale_hy");
-                        break;
-                    case Types.Locale.Japanese:
-                        wrapper.AddToClassList("locale_jp");
-                        break;
-                    case Types.Locale.Korean:
-                        wrapper.AddToClassList("locale_kr");
-                        break;
-                    case Types.Locale.Chinese:
-                        wrapper.AddToClassList("locale_cn");
-                        break;
-                    default: // Types.Locale.English:
-                        wrapper.AddToClassList("locale_en");
-                        break;
-                }
+                wrapper.AddToClassList("locale_" + newLocale);
             }
+        }
+
+        void Reset()
+        {
+            wrappers.Clear();
+
+            menuLocaleWrapper = null;
+            hubLocaleWrapper = null;
+            gamePlayLocaleWrapper = null;
         }
     }
 }

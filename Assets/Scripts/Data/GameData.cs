@@ -33,8 +33,6 @@ namespace Merge
 
         public const string WEB_ADDRESS = "https://solonodegames.com"; // FIX - Replace WEBSITE with proper website name
         public const string STUDIO_NAME = "solonodegames";
-        public const string GAME_TITLE = "Pixel Mansion";
-        public const string GAME_SUBTITLE = "Merge Mystery";
 
         [HideInInspector]
         public string playerName;

@@ -53,17 +53,11 @@ SpriteAtlas:
     cachedData: {fileID: 0}
     packedSpriteRenderDataKeys:
     - a203e081d869a9b458e5d52451dc404e: 21300000
-    - 8d3c0e13abeda294daf3dafdd4914243: 21300000
-    - 5cc777d5624f2a74b9c845b2ff6a4267: 21300000
-    - 5c1d5dd59e64e744ca01efb228801bb0: 21300000
     - 51a17fd56a7e00541ae25eaaae9f0320: 21300000
     - 0ba53977c232d9e4b866c1efe7c21045: 21300000
     - 20feb4a762c72b3438394c05558c7909: 21300000
-    - b4b5f8086a07abf49bc1dc2b8cf57e98: 21300000
     - aecefaf87cdaa094fb9f95ad7c7f400c: 21300000
     - a68217ba1bc6f9a4dbb85ace70b9ca17: 21300000
-    - da9216fa9b665944c9866f384cd15f39: 21300000
-    - cf15db4c14889544f93c0531e528d239: 21300000
     - 6d6177bc530c98e4894d8b9e6e631322: 553923557
     - 6d6177bc530c98e4894d8b9e6e631322: 1509843095
     - 6d6177bc530c98e4894d8b9e6e631322: 776455363
@@ -77,22 +71,15 @@ SpriteAtlas:
     - 6d6177bc530c98e4894d8b9e6e631322: 991938947
     - 6d6177bc530c98e4894d8b9e6e631322: 1148935277
     - 12bad7cc644735748b7eb480727b50a4: 21300000
-    - 1ebc37de54c49164095e17c603278279: 21300000
     - 5af0a1ef3db269a48ac96828aad562c5: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: a203e081d869a9b458e5d52451dc404e, type: 3}
-  - {fileID: 21300000, guid: 8d3c0e13abeda294daf3dafdd4914243, type: 3}
-  - {fileID: 21300000, guid: 5cc777d5624f2a74b9c845b2ff6a4267, type: 3}
-  - {fileID: 21300000, guid: 5c1d5dd59e64e744ca01efb228801bb0, type: 3}
   - {fileID: 21300000, guid: 51a17fd56a7e00541ae25eaaae9f0320, type: 3}
   - {fileID: 21300000, guid: 0ba53977c232d9e4b866c1efe7c21045, type: 3}
   - {fileID: 21300000, guid: 20feb4a762c72b3438394c05558c7909, type: 3}
-  - {fileID: 21300000, guid: b4b5f8086a07abf49bc1dc2b8cf57e98, type: 3}
   - {fileID: 21300000, guid: aecefaf87cdaa094fb9f95ad7c7f400c, type: 3}
   - {fileID: 21300000, guid: a68217ba1bc6f9a4dbb85ace70b9ca17, type: 3}
-  - {fileID: 21300000, guid: da9216fa9b665944c9866f384cd15f39, type: 3}
-  - {fileID: 21300000, guid: cf15db4c14889544f93c0531e528d239, type: 3}
   - {fileID: 553923557, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
   - {fileID: 1509843095, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
   - {fileID: 776455363, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
@@ -106,21 +93,14 @@ SpriteAtlas:
   - {fileID: 991938947, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
   - {fileID: 1148935277, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
   - {fileID: 21300000, guid: 12bad7cc644735748b7eb480727b50a4, type: 3}
-  - {fileID: 21300000, guid: 1ebc37de54c49164095e17c603278279, type: 3}
   - {fileID: 21300000, guid: 5af0a1ef3db269a48ac96828aad562c5, type: 3}
   m_PackedSpriteNamesToIndex:
   - TransitionOverlay
-  - LoaderBackground
-  - SkyUp
-  - ScenePlaceholder
   - BorderBottom
   - AgeArrow
   - Title
-  - Title
   - SliderDragger
   - LoadingBackground
-  - SkyDown
-  - LoaderFrame
   - Spinner_10
   - Spinner_11
   - Spinner_9
@@ -134,7 +114,6 @@ SpriteAtlas:
   - Spinner_5
   - Spinner_4
   - BorderTop
-  - Fill
   - BackgroundShadow
   m_RenderDataMap: {}
   m_Tag: LoadingSceneAtlas

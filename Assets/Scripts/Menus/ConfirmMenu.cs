@@ -56,6 +56,11 @@ namespace Merge
 
         public void Open(string preFix, Action newCallback, Action newCallbackAlt = null, bool alt = false, bool closeAll = false)
         {
+            if (menuUI.IsMenuOpen(confirmMenu.name))
+            {
+                return;
+            }
+
             callback = newCallback;
 
             if (!denyTapped)

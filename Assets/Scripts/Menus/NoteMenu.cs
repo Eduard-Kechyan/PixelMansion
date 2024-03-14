@@ -48,6 +48,11 @@ namespace Merge
 
         public void Open(string newTitle, List<string> notes, Action newCallback = null)
         {
+            if (menuUI.IsMenuOpen(noteMenu.name))
+            {
+                return;
+            }
+
             callback = newCallback;
 
             // Clear children if there are any
@@ -94,7 +99,7 @@ namespace Merge
         {
             root.UnregisterCallback<GeometryChangedEvent>(HandleCallback);
 
-            if (menuOpen &&callback!=null&& noteMenu.resolvedStyle.display == DisplayStyle.None)
+            if (menuOpen && callback != null && noteMenu.resolvedStyle.display == DisplayStyle.None)
             {
                 menuOpen = false;
 

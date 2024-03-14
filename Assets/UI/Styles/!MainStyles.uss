@@ -5,52 +5,55 @@
     bottom: 0;
     left: 0;
     position: absolute;
-    -unity-font-definition: url("project://database/Assets/Fonts/Files/Roboto.ttf?fileID=12800000&guid=0435ef74bc89d2044a778758a25a13b0&type=3#Roboto");
+    -unity-font-definition: url("project://database/Assets/Fonts/Roboto%20SDF.asset?fileID=11400000&guid=1c5dedeb0ccefb74ebe6e5ff0a6f7e56&type=2#Roboto SDF");
 }
 
-.locale_hy {
+.locale_wrapper .menu_title_value {
+    font-size: 12px;
+}
+
+.locale_Armenian {
     -unity-font-definition: url("project://database/Assets/Fonts/NicoloArmenian%20SDF.asset?fileID=11400000&guid=ba690eaaac98ff449ac853ac7a052574&type=2#NicoloArmenian SDF");
     font-size: 8px;
 }
 
-.locale_hy .menu_title_value {
+.locale_Armenian .menu_title_value {
     font-size: 10px;
 }
 
-.locale_jp {
+.locale_Japanese {
     -unity-font-definition: url("project://database/Assets/Fonts/NotoJapanese%20SDF.asset?fileID=11400000&guid=4886decfe93756a4f893a0442c159960&type=2#NotoJapanese SDF");
     font-size: 8px;
 }
 
-.locale_jp .menu_title_value {
+.locale_Japanese .menu_title_value {
     font-size: 10px;
 }
 
-.locale_kr {
+.locale_Korean {
     -unity-font-definition: url("project://database/Assets/Fonts/NotoKorean%20SDF.asset?fileID=11400000&guid=fe1d837d128d95540b9f921dc6562a90&type=2#NotoKorean SDF");
     font-size: 8px;
 }
 
-.locale_kr .menu_title_value {
+.locale_Korean .menu_title_value {
     font-size: 10px;
 }
 
-.locale_cn {
+.locale_Chinese {
     -unity-font-definition: url("project://database/Assets/Fonts/NotoChinese%20SDF.asset?fileID=11400000&guid=3cabbe9fdb449134dac86eb357685940&type=2#NotoChinese SDF");
     font-size: 8px;
 }
 
-.locale_cn .menu_title_value {
+.locale_Chinese .menu_title_value {
     font-size: 10px;
 }
 
-.locale_en {
-    font-size: 10px;
-    -unity-font-definition: url("project://database/Assets/Fonts/Roboto%20SDF.asset?fileID=11400000&guid=1c5dedeb0ccefb74ebe6e5ff0a6f7e56&type=2#Roboto SDF");
+.locale_German {
+    font-size: 8px;
 }
 
-.locale_en .menu_title_value {
-    font-size: 12px;
+.locale_German .menu_title_value {
+    font-size: 10px;
 }
 
 .button_standard {
@@ -218,29 +221,6 @@
 
 .note_dot_bloop {
     scale: 1.5 1.5;
-}
-
-.splash_container {
-    position: absolute;
-    left: 0;
-    top: 50%;
-    right: 0;
-    background-image: url("project://database/Assets/Sprites/Scenes/GamePlay/Background.png?fileID=2800000&guid=67e0e2f1b7ca3854b95261c156f6d02b&type=3#Background");
-    height: 500px;
-    width: 180px;
-    translate: 0 -50%;
-}
-
-.splash_logo {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 64px;
-    height: 64px;
-    translate: -50% -50%;
-    background-image: url("project://database/Assets/Sprites/Splash/Logo.png?fileID=2800000&guid=a321d0e6c5ec8a741aaa95aac3f573f4&type=3#Logo");
-    transition-duration: 0.5s;
-    transition-timing-function: ease-in-out;
 }
 
 .debug_button {

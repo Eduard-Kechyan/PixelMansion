@@ -74,6 +74,11 @@ namespace Merge
 
         public void Open(Action<Vector2> callback = null)
         {
+            if (menuUI.IsMenuOpen(taskMenu.name))
+            {
+                return;
+            }
+
             // Set the title
             string title = LOCALE.Get("task_menu_title");
 

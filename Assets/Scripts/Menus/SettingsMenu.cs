@@ -160,15 +160,15 @@ namespace Merge
             // Make sure the menu is closed
             settingsMenu.style.display = DisplayStyle.None;
             settingsMenu.style.opacity = 0;
-
-            if (!Debug.isDebugBuild || !Application.isEditor) // TODO - Remove this  after adding at least one other language
-            {
-                languageButton.style.display = DisplayStyle.None;
-            }
         }
 
         public void Open()
         {
+            if (menuUI.IsMenuOpen(settingsMenu.name))
+            {
+                return;
+            }
+
             // Set the title
             string title = LOCALE.Get("settings_menu_title");
 
@@ -195,12 +195,17 @@ namespace Merge
         void SetUIText()
         {
             // Buttons
+            feedbackButton.text = LOCALE.Get("settings_menu_feedback_label");
             supportButton.text = LOCALE.Get("settings_menu_support_label");
             privacyButton.text = LOCALE.Get("settings_menu_privacy_label");
             termsButton.text = LOCALE.Get("settings_menu_terms_label");
             languageButton.text = LOCALE.Get("settings_menu_language_label");
             resetButton.text = LOCALE.Get("settings_menu_reset_label");
             exitButton.text = LOCALE.Get("settings_menu_exit_label");
+            rateButton.text = LOCALE.Get("settings_menu_rate_label");
+
+            signInButton.text = LOCALE.Get("settings_menu_sign_in_button");
+            signOutButton.text = LOCALE.Get("settings_menu_sign_out_button");
 
             // Labels
             followLabel.text = LOCALE.Get("settings_menu_follow_label");

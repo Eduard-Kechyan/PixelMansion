@@ -83,6 +83,31 @@ namespace Merge
             }
         }
 
+        public bool IsMenuOpen(string menuName)
+        {
+            if (currentMenu != null && currentMenu.name == menuName)
+            {
+                return true;
+            }
+
+            bool found = false;
+
+            if (menus.Count > 0)
+            {
+                for (int i = 0; i < menus.Count; i++)
+                {
+                    if (menus[i].menuItem.name == menuName)
+                    {
+                        found = true;
+
+                        break;
+                    }
+                }
+            }
+
+            return found;
+        }
+
         // Get ready to open the given menu
         public void OpenMenu(VisualElement menuElement, string newTitle, bool showValues = false, bool closeAll = false, bool ignoreClose = false)
         {

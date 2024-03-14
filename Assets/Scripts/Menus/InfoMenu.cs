@@ -70,6 +70,11 @@ namespace Merge
 
         public void Open(Item item)
         {
+            if (menuUI.IsMenuOpen(infoMenu.name))
+            {
+                return;
+            }
+
             if (infoMenu != null)
             {
                 ClearData();

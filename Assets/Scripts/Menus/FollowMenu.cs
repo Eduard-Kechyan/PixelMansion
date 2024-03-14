@@ -79,7 +79,7 @@ namespace Merge
 
             noButton.text = LOCALE.Get("follow_menu_no_button");
 
-            followLabel0.text = LOCALE.Get("follow_menu_rate_label_0", GameData.GAME_TITLE);
+            followLabel0.text = LOCALE.Get("follow_menu_rate_label_0", LOCALE.Get("game_title"));
             followLabel1.text = LOCALE.Get("follow_menu_rate_label_1");
         }
 

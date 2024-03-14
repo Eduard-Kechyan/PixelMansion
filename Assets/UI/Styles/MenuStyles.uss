@@ -391,6 +391,7 @@
     border-bottom-width: 0;
     background-color: rgba(0, 0, 0, 0);
     display: flex;
+    font-size: 10px;
 }
 
 .local_button:disabled {
@@ -1622,6 +1623,7 @@
 .confirm_menu .content .button {
     width: 42px;
     height: 18px;
+    font-size: 8px;
     color: rgb(255, 255, 255);
 }
 

@@ -57,6 +57,11 @@ namespace Merge
 
         public void Open(string inputId, Action<string> newCallback)
         {
+            if (menuUI.IsMenuOpen(inputMenu.name))
+            {
+                return;
+            }
+
             callback = newCallback;
 
             string title = "";

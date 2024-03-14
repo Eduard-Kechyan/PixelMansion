@@ -2,5 +2,7 @@
     "________ MAIN ________": "________________",
     "localeName": "English",
     "altName": "English",
-    "code": "en-US"
+    "code": "en-US",
+    "game_title": "Pixel Mansion",
+    "game_subtitle": "Merge Mystery"
 }

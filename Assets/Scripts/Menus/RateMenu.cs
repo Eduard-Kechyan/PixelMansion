@@ -105,7 +105,7 @@ namespace Merge
             noButton.text = LOCALE.Get("rate_menu_no_button");
             neverButton.text = LOCALE.Get("rate_menu_never_button");
 
-            rateLabel0.text = LOCALE.Get("rate_menu_rate_label_0", GameData.GAME_TITLE);
+            rateLabel0.text = LOCALE.Get("rate_menu_rate_label_0", LOCALE.Get("game_title"));
             rateLabel1.text = LOCALE.Get("rate_menu_rate_label_1");
 
             character.style.top = -15;
@@ -113,6 +113,11 @@ namespace Merge
 
         public void Open(bool ignoreCheck = false)
         {
+            if (menuUI.IsMenuOpen(rateMenu.name))
+            {
+                return;
+            }
+
             if (ignoreCheck || gameData.level >= 3)
             {
                 // Set the title

@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/Styles/!MainStyles.uss?fileID=7433441132597879392&amp;guid=d72cb646ff9afd2458a02dbd4dc56421&amp;type=3#!MainStyles" />
     <Style src="project://database/Assets/UI/Styles/MenuStyles.uss?fileID=7433441132597879392&amp;guid=663206ebf1059204eb4ee1eb82dfb026&amp;type=3#MenuStyles" />
-    <ui:VisualElement name="LocaleWrapper" class="locale_en" style="left: 0; top: 0; right: 0; bottom: 0; position: absolute; display: none; opacity: 1;">
+    <ui:VisualElement name="LocaleWrapper" style="left: 0; top: 0; right: 0; bottom: 0; position: absolute; display: none; opacity: 1;">
         <ui:VisualElement name="SettingsMenu" class="menu" style="display: none; opacity: 0;">
             <ui:VisualElement name="Background" class="background" />
             <ui:VisualElement name="Container" class="container">
@@ -220,7 +220,7 @@
                         </ui:VisualElement>
                     </ui:VisualElement>
                     <ui:Button display-tooltip-when-elided="true" name="LevelUpButton" class="button_active" style="width: auto; height: 18px; margin-left: auto; margin-right: auto; margin-top: 0; margin-bottom: 0; padding-left: 4px; padding-right: 4px; padding-top: 0; padding-bottom: 0; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; background-color: rgb(85, 203, 152); color: rgb(255, 255, 255); font-size: 8px; transition-duration: 0.1s; min-width: 46px; overflow: visible;">
-                        <ui:Label tabindex="-1" text="Level Up" display-tooltip-when-elided="true" name="LevelUpLabel" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; height: 18px;" />
+                        <ui:Label tabindex="-1" text="Level  Up asdawe" display-tooltip-when-elided="true" name="LevelUpLabel" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; height: 18px;" />
                         <ui:VisualElement name="SlashBox" style="left: 0; top: 0; right: 0; position: absolute; bottom: 0; overflow: hidden;">
                             <ui:VisualElement name="ButtonSlash" class="button_slash" style="width: 16px; height: 18px; background-image: url(&quot;project://database/Assets/Sprites/Buttons/ButtonSlash.png?fileID=2800000&amp;guid=db93ba826a02b8b4586a074cbc017fcd&amp;type=3#ButtonSlash&quot;);" />
                         </ui:VisualElement>

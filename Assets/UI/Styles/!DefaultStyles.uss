@@ -41,5 +41,5 @@
     margin-bottom: 0;
     margin-left: 0;
     font-size: 10px;
-    -unity-font-definition: url("project://database/Assets/Fonts/Files/Roboto.ttf?fileID=12800000&guid=0435ef74bc89d2044a778758a25a13b0&type=3#Roboto");
+    -unity-font-definition: url("project://database/Assets/Fonts/Roboto%20SDF.asset?fileID=11400000&guid=1c5dedeb0ccefb74ebe6e5ff0a6f7e56&type=2#Roboto SDF");
 }

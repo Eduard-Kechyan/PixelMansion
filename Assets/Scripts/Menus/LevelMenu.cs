@@ -55,6 +55,7 @@ namespace Merge
         private VisualElement levelUpButtonSlash;
         private Label levelUpLabel;
         private Button levelUpDummyButton;
+        private Label levelUpDummyLabel;
 
         private Label levelFillLabel;
         private VisualElement levelRewards;
@@ -91,6 +92,7 @@ namespace Merge
             levelUpButtonSlash = levelUpButton.Q<VisualElement>("ButtonSlash");
             levelUpLabel = levelUpButton.Q<Label>("LevelUpLabel");
             levelUpDummyButton = levelMenu.Q<Button>("LevelUpDummyButton");
+            levelUpDummyLabel = levelUpDummyButton.Q<Label>("LevelUpLabel");
 
             levelRewards = levelMenu.Q<VisualElement>("LevelRewards");
             levelRewardsLabel = levelRewards.Q<Label>("Label");
@@ -137,6 +139,11 @@ namespace Merge
 
         public void Open()
         {
+            if (menuUI.IsMenuOpen(levelMenu.name))
+            {
+                return;
+            }
+
             if (!isRewarding)
             {
                 // Set the title
@@ -147,6 +154,7 @@ namespace Merge
                 levelRewardsLabel.text = LOCALE.Get("level_menu_rewards_label");
 
                 levelUpLabel.text = LOCALE.Get("level_menu_level_up_button");
+                levelUpDummyLabel.text = LOCALE.Get("level_menu_level_up_button");
 
                 UpdateLevelMenu(true);
 
@@ -162,7 +170,7 @@ namespace Merge
                 HandleRewards();
 
                 // Open menu
-                menuUI.OpenMenu(levelMenu, title);
+                menuUI.OpenMenu(levelMenu, title, true);
             }
         }
 

@@ -71,7 +71,7 @@ namespace Merge
 
             foreach (char c in snippet)
             {
-                if (!foundCharacters.Contains(c))
+                if (!foundCharacters.Contains(c) && !newCharacters.Contains(c))
                 {
                     newCharacters += c;
                 }

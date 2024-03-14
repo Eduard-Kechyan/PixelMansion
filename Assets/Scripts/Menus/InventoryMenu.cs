@@ -89,16 +89,15 @@ namespace Merge
             // Make sure the menu is closed
             inventoryMenu.style.display = DisplayStyle.None;
             inventoryMenu.style.opacity = 0;
-
-            // Description
-            descriptionLabel.text = LOCALE.Get("menu_inventory_description");
-
-            // Pause
-            pauseLabel.text = LOCALE.Get("menu_inventory_pause");
         }
 
         public void Open()
         {
+            if (menuUI.IsMenuOpen(inventoryMenu.name))
+            {
+                return;
+            }
+
             ClearData();
 
             SetUI();
@@ -111,6 +110,12 @@ namespace Merge
 
         void SetUI()
         {
+            // Description
+            descriptionLabel.text = LOCALE.Get("menu_inventory_description");
+
+            // Pause
+            pauseLabel.text = LOCALE.Get("menu_inventory_pause");
+
             // Amount
             amountLabel.text = gameData.inventoryData.Count + "/" + gameData.inventorySpace;
 

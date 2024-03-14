@@ -209,10 +209,13 @@ namespace Merge
         // Dynamically set the game's title
         void SetTitle()
         {
-            string[] gameTitleChunks = GameData.GAME_TITLE.Split(" "[0]);
+            string currentLocaleString = LOCALE.GetLocale().ToString();
+
+            string[] gameTitleChunks = LOCALE.Get("game_title").Split(" "[0]);
 
             mainTitle.Clear();
 
+            // Set the title
             for (int i = 0; i < gameTitleChunks.Length; i++)
             {
                 // Create title chunk with name and title
@@ -220,12 +223,15 @@ namespace Merge
 
                 // Set the styles
                 titleChunk.AddToClassList("chunk");
+                titleChunk.AddToClassList("chunk_" + currentLocaleString);
 
                 // Add to the title container
                 mainTitle.Add(titleChunk);
             }
 
-            subtitle.text = GameData.GAME_SUBTITLE;
+            // Set the subtitle
+            subtitle.text = LOCALE.Get("game_subtitle");
+            subtitle.AddToClassList("subtitle_" + currentLocaleString);
         }
 
         //// Animations ////

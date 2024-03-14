@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5592389593482467306}
   - component: {fileID: 3287225785201382731}
-  - component: {fileID: 1299563994973655937}
+  - component: {fileID: 959052840030180248}
   m_Layer: 0
   m_Name: Settings
   m_TagString: Untagged
@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7392285170386635990}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3287225785201382731
 MonoBehaviour:
@@ -49,11 +49,8 @@ MonoBehaviour:
   musicOn: 1
   vibrationOn: 1
   notificationsOn: 1
-  googleSignedIn: 0
-  facebookSignedIn: 0
-  appleSignedIn: 0
   currentLocale: 0
---- !u!114 &1299563994973655937
+--- !u!114 &959052840030180248
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -65,9 +62,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baa8dd430e2421349b55ce51aedde0cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hyFont: {fileID: 12800000, guid: 862d51021fa09154dafa7534ec0ff638, type: 3}
-  jpFont: {fileID: 12800000, guid: a9bd224ce7c9a5b44b592bcb48ca9cb9, type: 3}
-  krFont: {fileID: 12800000, guid: 97fe985f9fe456140a5eb7e6620d28a5, type: 3}
-  cnFont: {fileID: 12800000, guid: b662814ecbbd4a04e8e263f3f68ebfc6, type: 3}
-  enFont: {fileID: 12800000, guid: 0435ef74bc89d2044a778758a25a13b0, type: 3}
-  titleFont: {fileID: 12800000, guid: 73c6b2ef5b4ed2442836c772323f47ab, type: 3}
+  hyFont: {fileID: 11400000, guid: ba690eaaac98ff449ac853ac7a052574, type: 2}
+  jpFont: {fileID: 11400000, guid: 4886decfe93756a4f893a0442c159960, type: 2}
+  krFont: {fileID: 11400000, guid: fe1d837d128d95540b9f921dc6562a90, type: 2}
+  cnFont: {fileID: 11400000, guid: 3cabbe9fdb449134dac86eb357685940, type: 2}
+  enFont: {fileID: 11400000, guid: 1c5dedeb0ccefb74ebe6e5ff0a6f7e56, type: 2}
+  titleFont: {fileID: 11400000, guid: 3c03944c7f3e946479e761eb649b302c, type: 2}

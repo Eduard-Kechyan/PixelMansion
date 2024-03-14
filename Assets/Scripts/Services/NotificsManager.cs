@@ -67,11 +67,13 @@ namespace Merge
 
                 AndroidNotificationCenter.RegisterNotificationChannelGroup(channelGroup);
 
+                string gameTitle = LOCALE.Get("game_title");
+
                 AndroidNotificationChannel channel = new()
                 {
                     Id = CHANNEL_ID,
-                    Name = GameData.GAME_TITLE + CHANNEL_NAME,
-                    Description = GameData.GAME_TITLE + CHANNEL_DESC,
+                    Name = gameTitle + CHANNEL_NAME,
+                    Description = gameTitle + CHANNEL_DESC,
                     Importance = Importance.High,
                     Group = CHANNEL_GROUP_ID,
                     CanShowBadge = true,

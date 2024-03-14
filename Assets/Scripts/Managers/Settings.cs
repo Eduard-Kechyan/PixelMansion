@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 namespace Merge
 {
     public class Settings : MonoBehaviour
@@ -17,7 +16,6 @@ namespace Merge
 
         // References
         private SoundManager soundManager;
-        private I18n LOCALE;
         private SettingsMenu settingsMenu;
         private Services services;
         private NotificsManager notificsManager;
@@ -41,8 +39,8 @@ namespace Merge
 
         void Start()
         {
+            // Cache
             soundManager = SoundManager.Instance;
-            LOCALE = I18n.Instance;
             services = Services.Instance;
             notificsManager = services.GetComponent<NotificsManager>();
             cloudSave = services.GetComponent<CloudSave>();
@@ -51,6 +49,8 @@ namespace Merge
             GetMusic();
             GetVibration();
             GetNotifications();
+
+            SetLocalePre();
 
             StartCoroutine(WaitForCloudSave());
         }
@@ -163,6 +163,18 @@ namespace Merge
             cloudSave.SaveDataAsync("notifications", enable ? 1 : 0);
         }
 
+        public void SetLocalePre()
+        {
+            if (PlayerPrefs.HasKey("locale"))
+            {
+                Types.Locale locale = Glob.ParseEnum<Types.Locale>(PlayerPrefs.GetString("locale"));
+
+                currentLocale = locale;
+
+                I18n.SetLocale(locale);
+            }
+        }
+
         public void SetLocale(Types.Locale newLocale, bool initial = false)
         {
             if (initial)
@@ -170,6 +182,8 @@ namespace Merge
                 if (PlayerPrefs.HasKey("locale"))
                 {
                     Types.Locale locale = Glob.ParseEnum<Types.Locale>(PlayerPrefs.GetString("locale"));
+
+                    currentLocale = locale;
 
                     I18n.SetLocale(locale);
                 }
@@ -186,7 +200,10 @@ namespace Merge
                     {
                         Types.Locale locale = Glob.ParseEnum<Types.Locale>(Application.systemLanguage.ToString());
 
+                        currentLocale = locale;
+
                         I18n.SetLocale(locale);
+
                         PlayerPrefs.SetString("locale", locale.ToString());
 
                         cloudSave.SaveDataAsync("locale", locale.ToString());
@@ -194,6 +211,7 @@ namespace Merge
                     else
                     {
                         I18n.SetLocale(Types.Locale.English);
+
                         PlayerPrefs.SetString("locale", "English");
 
                         cloudSave.SaveDataAsync("locale", "English");

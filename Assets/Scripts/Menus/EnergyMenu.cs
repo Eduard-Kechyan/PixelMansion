@@ -73,7 +73,28 @@ namespace Merge
             // Make sure the menu is closed
             energyMenu.style.display = DisplayStyle.None;
             energyMenu.style.opacity = 0;
+        }
 
+        public void Open()
+        {
+            if (menuUI.IsMenuOpen(energyMenu.name))
+            {
+                return;
+            }
+
+            // Title
+            string title = LOCALE.Get("energy_menu_title");
+
+            SetUI();
+
+            energyWatchLabel.text = "+" + adsManager.energyRewardAmountInner;
+
+            // Open menu
+            menuUI.OpenMenu(energyMenu, title, true);
+        }
+
+        void SetUI()
+        {
             energyLabelB.text = LOCALE.Get("energy_menu_label_b");
 
             if (gameData.energy == 0)
@@ -103,17 +124,6 @@ namespace Merge
 
                 energyLabelA.text = LOCALE.Get("energy_menu_label_a_alt");
             }
-        }
-
-        public void Open()
-        {
-            // Title
-            string title = LOCALE.Get("energy_menu_title");
-
-            energyWatchLabel.text = "+" + adsManager.energyRewardAmountInner;
-
-            // Open menu
-            menuUI.OpenMenu(energyMenu, title, true);
         }
 
         // Add energy after successfully watching an ad

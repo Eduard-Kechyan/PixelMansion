@@ -12,6 +12,7 @@ namespace Merge
         public Sprite localeButtonSprite;
         public Color localeButtonColor;
         public Color localeButtonColorSelected;
+        public Types.Locale[] localeToInclude;
 
         // References
         private MenuUI menuUI;
@@ -50,12 +51,17 @@ namespace Merge
 
         public void Open()
         {
+            if (menuUI.IsMenuOpen(localeMenu.name))
+            {
+                return;
+            }
+
             // Set the title
             string title = LOCALE.Get("locale_menu_title");
 
             content.Clear();
 
-            Types.Locale currentLocale = I18n.GetLocale();
+            Types.Locale currentLocale = LOCALE.GetLocale();
 
             foreach (Types.Locale locale in System.Enum.GetValues(typeof(Types.Locale)))
             {
@@ -72,59 +78,59 @@ namespace Merge
                     localeButton.style.unityBackgroundImageTintColor = localeButtonColor;
                 }
 
+                // Handle style classes
                 localeButton.AddToClassList("local_button");
                 localeButton.AddToClassList("button_active");
                 localeButton.RemoveFromClassList("local_button_disabled");
 
-
-                localeButton.clicked += () => SetLocale(locale);
-
                 switch (locale)
                 {
                     case Types.Locale.English:
-                        localeButton.AddToClassList("locale_en");
                         localeButton.text = "English";
                         break;
                     case Types.Locale.Armenian:
-                        localeButton.AddToClassList("locale_hy");
                         localeButton.text = "Հայերեն";
                         break;
                     case Types.Locale.Japanese:
-                        localeButton.AddToClassList("locale_jp");
                         localeButton.text = "日本語";
                         break;
                     case Types.Locale.Korean:
-                        localeButton.AddToClassList("locale_kr");
                         localeButton.text = "한국어";
                         break;
                     case Types.Locale.Chinese:
-                        localeButton.AddToClassList("locale_cn");
                         localeButton.text = "中文";
                         break;
                     case Types.Locale.Russian:
-                        localeButton.AddToClassList("locale_en");
                         localeButton.text = "Русский";
                         break;
                     case Types.Locale.French:
-                        localeButton.AddToClassList("locale_en");
                         localeButton.text = "Français";
                         break;
                     case Types.Locale.German:
-                        localeButton.AddToClassList("locale_en");
                         localeButton.text = "Deutsch";
                         break;
                     case Types.Locale.Spanish:
-                        localeButton.AddToClassList("locale_en");
                         localeButton.text = "Español";
                         break;
                     case Types.Locale.Italian:
-                        localeButton.AddToClassList("locale_en");
                         localeButton.text = "Italiano";
                         break;
                 }
 
                 // TODO - Remove this line after adding all the necessary languages
-                if (locale != Types.Locale.English)
+                bool include = false;
+
+                foreach (var loc in localeToInclude)
+                {
+                    if (locale == loc)
+                    {
+                        include = true;
+
+                        break;
+                    }
+                }
+
+                if (!include)
                 {
                     localeButton.SetEnabled(false);
                 }
@@ -135,6 +141,9 @@ namespace Merge
                     localeButton.SetEnabled(false);
                     localeButton.AddToClassList("local_button_selected");
                 }
+
+                // Tap
+                localeButton.clicked += () => SetLocale(locale);
 
                 content.Add(localeButton);
             }

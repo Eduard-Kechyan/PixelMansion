@@ -14,16 +14,16 @@ namespace Merge
         public bool loaded = false;
 
         // Variables
-        /*  private bool levelEnabled = false;
-          private bool energyEnabled = false;
-          private bool goldEnabled = false;
-          private bool gemsEnabled = false;*/
+        private bool levelEnabled = false;
+        private bool energyEnabled = false;
+        private bool goldEnabled = false;
+        private bool gemsEnabled = false;
 
         private bool energyPlusEnabled = false;
         private bool goldPlusEnabled = false;
         private bool gemsPlusEnabled = false;
 
-        //private bool enabledSet = false;
+        private bool enabledSet = false;
 
         private bool levelBlipping = false;
 
@@ -139,9 +139,9 @@ namespace Merge
             //gemsButton.SetEnabled(false);
 
             // FIX - Add a check for the plusses
-            //energyPlus.style.display = DisplayStyle.None;
-            //goldPlus.style.display = DisplayStyle.None;
-            //gemsPlus.style.display = DisplayStyle.None;
+            energyPlus.style.display = DisplayStyle.None;
+            goldPlus.style.display = DisplayStyle.None;
+            gemsPlus.style.display = DisplayStyle.None;
 
             UpdateValues();
         }
@@ -387,31 +387,31 @@ namespace Merge
 
         public void DisableButtons()
         {
-            /*  if (!enabledSet)
-              {
-                  levelEnabled = levelButton.enabledSelf;
-                  energyEnabled = energyButton.enabledSelf;
-                  goldEnabled = goldButton.enabledSelf;
-                  gemsEnabled = gemsButton.enabledSelf;
+            if (!enabledSet)
+            {
+                levelEnabled = levelButton.enabledSelf;
+                energyEnabled = energyButton.enabledSelf;
+                goldEnabled = goldButton.enabledSelf;
+                gemsEnabled = gemsButton.enabledSelf;
 
-                  levelButton.SetEnabled(false);
-                  energyButton.SetEnabled(false);
-                  goldButton.SetEnabled(false);
-                  gemsButton.SetEnabled(false);
+                levelButton.SetEnabled(false);
+                energyButton.SetEnabled(false);
+                goldButton.SetEnabled(false);
+                gemsButton.SetEnabled(false);
 
-                  energyPlusEnabled = energyPlus.resolvedStyle.visibility == Visibility.Visible;
-                  goldPlusEnabled = goldPlus.resolvedStyle.visibility == Visibility.Visible;
-                  gemsPlusEnabled = gemsPlus.resolvedStyle.visibility == Visibility.Visible;
+                energyPlusEnabled = energyPlus.resolvedStyle.visibility == Visibility.Visible;
+                goldPlusEnabled = goldPlus.resolvedStyle.visibility == Visibility.Visible;
+                gemsPlusEnabled = gemsPlus.resolvedStyle.visibility == Visibility.Visible;
 
-                  energyPlus.style.visibility = Visibility.Hidden;
-                  energyPlus.style.opacity = 0f;
-                  goldPlus.style.visibility = Visibility.Hidden;
-                  goldPlus.style.opacity = 0f;
-                  gemsPlus.style.visibility = Visibility.Hidden;
-                  gemsPlus.style.opacity = 0f;
+                energyPlus.style.visibility = Visibility.Hidden;
+                energyPlus.style.opacity = 0f;
+                goldPlus.style.visibility = Visibility.Hidden;
+                goldPlus.style.opacity = 0f;
+                gemsPlus.style.visibility = Visibility.Hidden;
+                gemsPlus.style.opacity = 0f;
 
-                  enabledSet = true;
-              }*/
+                enabledSet = true;
+            }
         }
 
         public void DisableButtonsAlt()
@@ -431,30 +431,30 @@ namespace Merge
 
         public void EnableButtons()
         {
-            /* levelButton.SetEnabled(levelEnabled);
-             energyButton.SetEnabled(energyEnabled);
-             goldButton.SetEnabled(goldEnabled);
-             gemsButton.SetEnabled(gemsEnabled);
+            levelButton.SetEnabled(levelEnabled);
+            energyButton.SetEnabled(energyEnabled);
+            goldButton.SetEnabled(goldEnabled);
+            gemsButton.SetEnabled(gemsEnabled);
 
-             if (energyPlusEnabled)
-             {
-                 energyPlus.style.visibility = Visibility.Visible;
-                 energyPlus.style.opacity = 1f;
-             }
+            if (energyPlusEnabled)
+            {
+                energyPlus.style.visibility = Visibility.Visible;
+                energyPlus.style.opacity = 1f;
+            }
 
-             if (goldPlusEnabled)
-             {
-                 goldPlus.style.visibility = Visibility.Visible;
-                 goldPlus.style.opacity = 1f;
-             }
+            if (goldPlusEnabled)
+            {
+                goldPlus.style.visibility = Visibility.Visible;
+                goldPlus.style.opacity = 1f;
+            }
 
-             if (gemsPlusEnabled)
-             {
-                 gemsPlus.style.visibility = Visibility.Visible;
-                 gemsPlus.style.opacity = 1f;
-             }*/
+            if (gemsPlusEnabled)
+            {
+                gemsPlus.style.visibility = Visibility.Visible;
+                gemsPlus.style.opacity = 1f;
+            }
 
-            // enabledSet = false;
+            enabledSet = false;
         }
 
         public void EnableButtonsAlt()
