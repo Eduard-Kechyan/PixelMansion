@@ -745,7 +745,7 @@ namespace Merge
         {
             English, // English (en-US)
             French, // Français (fr-FR)
-            Spanish, // Española (es-ES)
+            Spanish, // Español (es-ES)
             German, // Deutsch (de-DE)
             Italian, // Italiano (it-IT)
             Russian, // Русский (ru-RU)

@@ -57,13 +57,13 @@
     padding-top: 0;
     padding-bottom: 0;
     -unity-text-align: middle-center;
-    color: rgb(8, 79, 156);
+    color: rgb(255, 255, 255);
     font-size: 40px;
     -unity-font: initial;
     display: flex;
     -unity-font-definition: url("project://database/Assets/Fonts/Venice%20SDF.asset?fileID=11400000&guid=3c03944c7f3e946479e761eb649b302c&type=2#Venice SDF");
     -unity-font-style: normal;
-    text-shadow: 1px 1px 0 rgb(255, 255, 255);
+    text-shadow: 1px 1px 0 rgb(6, 52, 101);
 }
 
 .main_title .chunk_Japanese {
@@ -105,7 +105,7 @@
     padding-right: 0;
     padding-bottom: 0;
     padding-left: 0;
-    text-shadow: 1px 1px 0 rgb(8, 79, 156);
+    text-shadow: 1px 1px 0 rgb(7, 52, 102);
 }
 
 .subtitle_Japanese {
@@ -168,8 +168,16 @@
     right: 0;
     width: 100%;
     -unity-text-align: upper-center;
-    color: rgb(48, 48, 48);
+    color: rgb(255, 255, 255);
     font-size: 6px;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 3px;
+    margin-left: 0;
 }
 
 .overlay_background {
@@ -340,7 +348,7 @@
     height: 20px;
     position: absolute;
     left: 50%;
-    bottom: 16px;
+    bottom: 24px;
     scale: 1 1;
     translate: -50% 0;
 }

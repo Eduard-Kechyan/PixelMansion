@@ -296,6 +296,7 @@ GameObject:
   - component: {fileID: 57463802}
   - component: {fileID: 57463801}
   - component: {fileID: 57463800}
+  - component: {fileID: 57463803}
   m_Layer: 0
   m_Name: LoadingUI
   m_TagString: Untagged
@@ -316,10 +317,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   feedbackManager: {fileID: 7840203634613691723}
-  backgroundDelay: 15
-  skyUpDelay: 0.5
-  skyDownDelay: 1
-  localeManager: {fileID: 677788980}
+  localeManager: {fileID: 0}
   ageHeight: 34
   spinnerSpeed: 0.07
   spinnerSprites:
@@ -376,6 +374,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &57463803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 57463799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 480eb18e4a0ef9346a8025f8e9f69cc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loadingScene: 0
+  frogEyesSprites:
+  - {fileID: -1470164587077779034, guid: c16e9fe75f0ee914a875bfdff384f182, type: 3}
+  - {fileID: 8759971484453159778, guid: 010aed0605717b54799cbe1a28e0c745, type: 3}
+  - {fileID: 5100197023544997505, guid: ecbfb9d1c2b03d04c993139fb0306417, type: 3}
+  floatingStoneSprites:
+  - {fileID: 5654559856237836872, guid: f6edbe81e0ad86346a071bbbfea34177, type: 3}
+  - {fileID: -3959744526885644284, guid: c1eda69fc9d9e6f4c89085bb75230675, type: 3}
+  - {fileID: -2595461527511124238, guid: 6740ebd6433078f4896e9209a7ba179a, type: 3}
+  frogEyesDelay: 0.2
+  floatingStoneDelay: 0.2
 --- !u!114 &107262876 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4479317755097273465, guid: 02afc034eec9a314b97f987fe6c69102, type: 3}
@@ -605,17 +626,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 69ab62d1bcf3a2046be9055d75c664b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &677788980 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1299563994973655937, guid: e3e84f06b92d7d749b24e22ce70ece44, type: 3}
-  m_PrefabInstance: {fileID: 5272365440196649216}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: baa8dd430e2421349b55ce51aedde0cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &953184938
@@ -1081,7 +1091,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.13725491, g: 0.61960787, b: 0.94509804, a: 0}
+  m_BackGroundColor: {r: 0.3647059, g: 0.43529412, b: 0.85490197, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -1292,7 +1302,7 @@ PrefabInstance:
       objectReference: {fileID: 1419910202}
     - target: {fileID: 6666298423405771595, guid: a255d925b90a92e418c669c0cfae21e9, type: 3}
       propertyPath: stayOnScene
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6666298423405771595, guid: a255d925b90a92e418c669c0cfae21e9, type: 3}
       propertyPath: tutorialData

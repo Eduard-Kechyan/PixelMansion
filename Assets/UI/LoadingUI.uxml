@@ -2,14 +2,19 @@
     <Style src="project://database/Assets/UI/Styles/!MainStyles.uss?fileID=7433441132597879392&amp;guid=d72cb646ff9afd2458a02dbd4dc56421&amp;type=3#!MainStyles" />
     <Style src="project://database/Assets/UI/Styles/LoadingStyle.uss?fileID=7433441132597879392&amp;guid=d3edca44cec65344aa261208ef07e1d2&amp;type=3#LoadingStyle" />
     <ui:VisualElement name="SkyUp" class="sky_up" style="display: none;">
-        <ui:VisualElement class="img" style="background-image: url(&quot;project://database/Assets/Sprites/Scenes/Loading/SkyUp.png?fileID=2800000&amp;guid=5cc777d5624f2a74b9c845b2ff6a4267&amp;type=3#SkyUp&quot;);" />
-        <ui:VisualElement class="img" style="background-image: url(&quot;project://database/Assets/Sprites/Scenes/Loading/SkyUp.png?fileID=2800000&amp;guid=5cc777d5624f2a74b9c845b2ff6a4267&amp;type=3#SkyUp&quot;);" />
+        <ui:VisualElement class="img" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/Loading/SkyUp.png?fileID=2800000&amp;guid=5cc777d5624f2a74b9c845b2ff6a4267&amp;type=3#SkyUp&apos;);" />
+        <ui:VisualElement class="img" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/Loading/SkyUp.png?fileID=2800000&amp;guid=5cc777d5624f2a74b9c845b2ff6a4267&amp;type=3#SkyUp&apos;);" />
     </ui:VisualElement>
     <ui:VisualElement name="SkyDown" class="sky_down" style="display: none;">
-        <ui:VisualElement class="img" style="background-image: url(&quot;project://database/Assets/Sprites/Scenes/Loading/SkyDown.png?fileID=2800000&amp;guid=da9216fa9b665944c9866f384cd15f39&amp;type=3#SkyDown&quot;);" />
-        <ui:VisualElement class="img" style="background-image: url(&quot;project://database/Assets/Sprites/Scenes/Loading/SkyDown.png?fileID=2800000&amp;guid=da9216fa9b665944c9866f384cd15f39&amp;type=3#SkyDown&quot;);" />
+        <ui:VisualElement class="img" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/Loading/SkyDown.png?fileID=2800000&amp;guid=da9216fa9b665944c9866f384cd15f39&amp;type=3#SkyDown&apos;);" />
+        <ui:VisualElement class="img" style="background-image: url(&apos;project://database/Assets/Sprites/Scenes/Loading/SkyDown.png?fileID=2800000&amp;guid=da9216fa9b665944c9866f384cd15f39&amp;type=3#SkyDown&apos;);" />
     </ui:VisualElement>
-    <ui:VisualElement name="Background" class="background" style="background-image: url(&quot;project://database/Assets/Sprites/Scenes/Loading/LoadingBackground.png?fileID=2800000&amp;guid=a68217ba1bc6f9a4dbb85ace70b9ca17&amp;type=3#LoadingBackground&quot;);" />
+    <ui:VisualElement name="Background" class="background" style="background-image: url(&quot;project://database/Assets/Sprites/Scenes/Loading/SceneCMain.png?fileID=2800000&amp;guid=574f573158e695c4ea19cbe4b97db077&amp;type=3#SceneCMain&quot;);" />
+    <ui:VisualElement name="TopOverlay" style="background-image: url(&quot;project://database/Assets/Sprites/Scenes/Loading/SceneCTopOverlay.png?fileID=2800000&amp;guid=076e21f5a36023f4a97f0dd2d1fa87ca&amp;type=3#SceneCTopOverlay&quot;); position: absolute; left: 0; right: 0; top: 0; width: 180px; height: 38px;" />
+    <ui:VisualElement name="BottomOverlay" style="width: 180px; height: 60px; background-image: url(&quot;project://database/Assets/Sprites/Scenes/Loading/SceneCBottomOverlay.png?fileID=2800000&amp;guid=66992cd4f17960c438a696d9cdd80bd0&amp;type=3#SceneCBottomOverlay&quot;); left: 0; bottom: 0; right: 0; position: absolute;">
+        <ui:VisualElement name="FrogEyes" style="background-image: url(&quot;project://database/Assets/Sprites/Scenes/Loading/SceneCFrogEye1.png?fileID=2800000&amp;guid=ecbfb9d1c2b03d04c993139fb0306417&amp;type=3#SceneCFrogEye1&quot;); width: 16px; height: 4px; position: absolute; left: 34px; bottom: 16px;" />
+        <ui:VisualElement name="FloatingStone" style="width: 8px; height: 8px; background-image: url(&quot;project://database/Assets/Sprites/Scenes/Loading/SceneCFloatingStone1.png?fileID=2800000&amp;guid=f6edbe81e0ad86346a071bbbfea34177&amp;type=3#SceneCFloatingStone1&quot;); position: absolute; right: 63px; bottom: 22px;" />
+    </ui:VisualElement>
     <ui:VisualElement name="ShadowBottom" style="background-image: url(&quot;project://database/Assets/Sprites/Scenes/BackgroundShadow.png?fileID=2800000&amp;guid=5af0a1ef3db269a48ac96828aad562c5&amp;type=3#BackgroundShadow&quot;); width: 180px; height: 180px; position: absolute; left: 0; right: 0; top: -90px;" />
     <ui:VisualElement name="ShadowBottom" style="background-image: url(&quot;project://database/Assets/Sprites/Scenes/BackgroundShadow.png?fileID=2800000&amp;guid=5af0a1ef3db269a48ac96828aad562c5&amp;type=3#BackgroundShadow&quot;); rotate: 180deg; width: 180px; height: 180px; position: absolute; left: 0; right: 0; bottom: -90px;" />
     <ui:VisualElement name="MainTitle" class="main_title">
@@ -18,10 +23,6 @@
     </ui:VisualElement>
     <ui:Label tabindex="-1" text="Merge Mystery" display-tooltip-when-elided="false" name="SubtitleLabel" class="chunk subtitle" />
     <ui:VisualElement name="Spinner" class="spinner" />
-    <ui:VisualElement name="Loader" class="loader" style="background-image: url(&quot;project://database/Assets/Sprites/Scenes/Loading/LoaderBackground.png?fileID=2800000&amp;guid=8d3c0e13abeda294daf3dafdd4914243&amp;type=3#LoaderBackground&quot;); display: none;">
-        <ui:VisualElement name="Fill" class="fill" style="background-image: url(&quot;project://database/Assets/Sprites/Scenes/Loading/Fill.png?fileID=2800000&amp;guid=1ebc37de54c49164095e17c603278279&amp;type=3#Fill&quot;);" />
-        <ui:VisualElement name="Frame" class="frame" style="background-image: url(&quot;project://database/Assets/Sprites/Scenes/Loading/LoaderFrame.png?fileID=2800000&amp;guid=cf15db4c14889544f93c0531e528d239&amp;type=3#LoaderFrame&quot;);" />
-    </ui:VisualElement>
     <ui:Label text="Version: 0.0.0" display-tooltip-when-elided="true" name="Version" class="version" />
     <ui:VisualElement name="OverlayBackground" class="overlay_background" />
     <ui:VisualElement name="TermsMenu" class="loading_scene_menu terms_menu" style="display: none; opacity: 0;">
