@@ -39,16 +39,31 @@ namespace Merge
         {
             Collider2D hit = Physics2D.OverlapCircle(transform.position, radius, LayerMask.GetMask("Room"));
 
-            if (hit.transform.name != currentRoomName)
+            if (hit != null)
             {
-                OrderSetter roomOrderSetter = hit.transform.GetComponent<OrderSetter>();
-
-                if (roomOrderSetter != null)
+                if (hit.transform.name != currentRoomName)
                 {
-                    mainSpriteRenderer.sortingLayerName = roomOrderSetter.sortingLayer;
-                    shadowSpriteRenderer.sortingLayerName = roomOrderSetter.sortingLayer;
+                    OrderSetter roomOrderSetter = hit.transform.GetComponent<OrderSetter>();
 
-                    currentRoomName = hit.transform.name;
+                    if (roomOrderSetter)
+                    {
+                        mainSpriteRenderer.sortingLayerName = roomOrderSetter.sortingLayer;
+                        shadowSpriteRenderer.sortingLayerName = roomOrderSetter.sortingLayer;
+
+                        currentRoomName = hit.transform.name;
+                    }
+                    else
+                    {
+                        AreaOrderSetter areaOrderSetter = hit.transform.GetComponent<AreaOrderSetter>();
+
+                        if (areaOrderSetter)
+                        {
+                            mainSpriteRenderer.sortingLayerName = areaOrderSetter.sortingLayer;
+                            shadowSpriteRenderer.sortingLayerName = areaOrderSetter.sortingLayer;
+
+                            currentRoomName = hit.transform.name;
+                        }
+                    }
                 }
             }
         }

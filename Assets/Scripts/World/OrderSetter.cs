@@ -167,7 +167,7 @@ namespace Merge
                         Transform singleChild = transform.GetChild(i);
                         SpriteRenderer singleChildRenderer = singleChild.GetComponent<SpriteRenderer>();
 
-                        if (singleChild.name.Contains("End") || singleChild.name.Contains("WindowFrame"))
+                        if (singleChild.name.Contains("End") || singleChild.name.Contains("Corner") || singleChild.name.Contains("WindowFrame"))
                         {
                             // Wall ends
                             singleChildRenderer.sortingOrder = 1;

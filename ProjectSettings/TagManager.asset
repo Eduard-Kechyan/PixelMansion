@@ -8,7 +8,7 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Unclick
   - Water
   - UI
   - 
@@ -82,4 +82,7 @@ TagManager:
     locked: 0
   - name: Overlay
     uniqueID: 2027826095
+    locked: 0
+  - name: PreWalls
+    uniqueID: 3870314169
     locked: 0

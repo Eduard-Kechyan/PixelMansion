@@ -281,7 +281,7 @@ namespace Merge
                                     selector.CancelSelecting();
                                 }
 
-                                if (!moved && tutorialManager != null)
+                                if (!moved)//&& tutorialManager != null
                                 {
                                     if (debugCharacterMovement && !selector.isSelected)
                                     {
@@ -343,7 +343,7 @@ namespace Merge
                                         && !selector.isSelecting
                                         && !selector.isSelected
                                         && !popupManager.isSelectorPopup
-                                        // &&  tutorialManager != null // FIX - Check if we need to check tutorialManager
+                                    // &&  tutorialManager != null // FIX - Check if we need to check tutorialManager
                                     )
                                     {
                                         selector.StartSelecting(
