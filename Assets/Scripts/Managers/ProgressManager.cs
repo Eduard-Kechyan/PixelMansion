@@ -327,7 +327,7 @@ namespace Merge
                             {
                                 navMeshManager.Bake();
 
-                                foundRoomHandler.Unlock(() =>
+                                foundRoomHandler.Unlock((Vector3 roomCenter) =>
                                 {
                                     worldDataManager.UnlockRoom(areaId);
                                 });
@@ -382,12 +382,12 @@ namespace Merge
                 id = stepId,
             };
 
-            string progressStepString=JsonConvert.SerializeObject(newProgressStep);
+            string progressStepString = JsonConvert.SerializeObject(newProgressStep);
 
             PlayerPrefs.SetString("progressStep", progressStepString);
 
             PlayerPrefs.Save();
-            
+
             cloudSave.SaveDataAsync("progressStep", progressStepString);
         }
     }

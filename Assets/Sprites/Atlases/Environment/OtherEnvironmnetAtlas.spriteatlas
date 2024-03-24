@@ -55,23 +55,29 @@ SpriteAtlas:
     - 9f64f3a1f4e751346b84be2b8b31551a: 21300000
     - 0c6d12c14d2f847469053a9201138b38: 21300000
     - c84b8eb4f5a868d448766a73d860da90: 21300000
+    - 41f49355012fc5c4084be4620fc81b92: 21300000
     - bd478638a2122444e97ff157c924ce5e: 21300000
     - a45001598fe607841939ebe470c1f949: 21300000
+    - 3e7e2fdf69bd9c94298032497b6065e8: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: 3a8b8a410264f1548b7615fa5d3877e8, type: 3}
   - {fileID: 21300000, guid: 9f64f3a1f4e751346b84be2b8b31551a, type: 3}
   - {fileID: 21300000, guid: 0c6d12c14d2f847469053a9201138b38, type: 3}
   - {fileID: 21300000, guid: c84b8eb4f5a868d448766a73d860da90, type: 3}
+  - {fileID: 21300000, guid: 41f49355012fc5c4084be4620fc81b92, type: 3}
   - {fileID: 21300000, guid: bd478638a2122444e97ff157c924ce5e, type: 3}
   - {fileID: 21300000, guid: a45001598fe607841939ebe470c1f949, type: 3}
+  - {fileID: 21300000, guid: 3e7e2fdf69bd9c94298032497b6065e8, type: 3}
   m_PackedSpriteNamesToIndex:
   - Tree1
   - Tree4
   - Tree2
   - Tree3
+  - DoorExterior
   - DoorLeft
   - DoorRight
+  - Patio
   m_RenderDataMap: {}
   m_Tag: OtherEnvironmnetAtlas
   m_IsVariant: 0

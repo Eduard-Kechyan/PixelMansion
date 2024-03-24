@@ -74,15 +74,15 @@ TagManager:
   - name: OuterStairs
     uniqueID: 2841718309
     locked: 0
-  - name: GardenDummy
-    uniqueID: 3088312485
-    locked: 0
-  - name: NavMeshArea
-    uniqueID: 3312263077
-    locked: 0
   - name: Overlay
     uniqueID: 2027826095
     locked: 0
   - name: PreWalls
     uniqueID: 3870314169
+    locked: 0
+  - name: GardenDummy
+    uniqueID: 3088312485
+    locked: 0
+  - name: NavMeshArea
+    uniqueID: 3312263077
     locked: 0

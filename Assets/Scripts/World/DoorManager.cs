@@ -110,5 +110,22 @@ namespace Merge
 
             callback?.Invoke(new Vector2(foundDoorPosition.x, foundDoorPosition.y - doorOffset));
         }
+
+        public void GetPosition(string roomSortingLayer, Action<Vector2> callback)
+        {
+            Vector2 foundDoorPosition = Vector2.zero;
+
+            for (int i = 0; i < doors.Length; i++)
+            {
+                if (doors[i].roomSortingLayer == roomSortingLayer)
+                {
+                    foundDoorPosition = doors[i].transform.position;
+
+                    break;
+                }
+            }
+
+            callback?.Invoke(new Vector2(foundDoorPosition.x, foundDoorPosition.y - doorOffset));
+        }
     }
 }

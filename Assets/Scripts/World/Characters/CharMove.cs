@@ -77,6 +77,8 @@ namespace Merge
             directionOrder = (int)direction;
 
             animator.SetFloat("Direction", directionOrder);
+
+            enabled = false;
         }
 
         // Update is called once per frame

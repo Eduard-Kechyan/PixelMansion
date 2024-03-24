@@ -13,10 +13,10 @@ namespace Merge
         public float unlockSpeed = 3f;
         public bool hasDoor = false;
         public bool showOverlay = false;
-        public Color lockOverlayColor;
-        public float overlayOffset = 5f;
-        public float overlayTime = 2f;
-        public float overlayTimeOffset = 0.5f;
+        public Color cloudColor;
+        public float cloudOffset = 40f;
+        public float cloudTime = 1.7f;
+        public float cloudTimeOffset = 0.5f;
 
         [Header("Sorting Layers")]
         [SortingLayer]
@@ -44,6 +44,7 @@ namespace Merge
         private SoundManager soundManager;
         private CharMove charMove;
         private CameraMotion cameraMotion;
+        private NavMeshManager navMeshManager;
 
         void Start()
         {
@@ -52,6 +53,7 @@ namespace Merge
             soundManager = SoundManager.Instance;
             charMove = CharMain.Instance.charMove;
             cameraMotion = Camera.main.GetComponent<CameraMotion>();
+            navMeshManager = NavMeshManager.Instance;
 
             lockedOverlayPH = transform.GetComponentInChildren<LockedOverlayPH>();
             navPH = transform.GetComponentInChildren<NavPH>();
@@ -88,7 +90,7 @@ namespace Merge
                 // Debug
                 if (locked)
                 {
-                    Unlock(null, true);
+                    Unlock(null);
                 }
                 else
                 {
@@ -193,7 +195,7 @@ namespace Merge
                 {
                     if (lockedOverlay.transform.GetChild(i).TryGetComponent(out SpriteRenderer spriteRenderer))
                     {
-                        //  spriteRenderer.color = lockOverlayColor;
+                        //  spriteRenderer.color = cloudColor;
                         spriteRenderer.sortingLayerName = overlaySortingLayer;
                     }
                 }
@@ -204,7 +206,21 @@ namespace Merge
             locked = true;
         }
 
-        public void Unlock(Action callback = null, bool alt = false)
+        public void MoveRoomIntoView(float cameraMoveSpeed, float cameraScaleSpeed, float scaleSize, Vector2 positionOffset, Action callback = null)
+        {
+            doorManager.GetPosition(roomSortingLayer, (Vector2 position) =>
+            {
+                charMove.SetPosition(position, () =>
+                {
+                    cameraMotion.MoveToAndScaleTo(position + positionOffset, cameraMoveSpeed, scaleSize, cameraScaleSpeed, () =>
+                    {
+                        callback?.Invoke();
+                    });
+                });
+            });
+        }
+
+        public void Unlock(Action<Vector3> callback = null)
         {
             locked = false;
 
@@ -212,10 +228,7 @@ namespace Merge
 
             EnableNav(() =>
             {
-                if (debugOn && alt)
-                {
-                    transform.parent.Find("NavMesh").GetComponent<NavMeshManager>().Bake();
-                }
+                navMeshManager.Bake();
 
                 doorManager.OpenDoor(roomSortingLayer, (Vector2 position) =>
                 {
@@ -226,7 +239,7 @@ namespace Merge
                 });
             });
 
-            cameraMotion.MoveTo(roomCenter, -1f, () =>
+            cameraMotion.MoveToAndScaleTo(roomCenter, -1f, 195f, -1f, () =>
             {
                 soundManager.PlaySound(Types.SoundType.LevelUp); // TODO add proper unlocking sfx (RoomUnlocking)
 
@@ -235,7 +248,7 @@ namespace Merge
                 RemoveClouds(roomCenter);
             });
 
-            callback?.Invoke();
+            callback?.Invoke(roomCenter);
         }
 
         void RemoveClouds(Vector3 roomCenter)
@@ -258,23 +271,23 @@ namespace Merge
         {
             Vector3 startingPos = cloud.transform.position;
 
-            float finalXPos = cloud.transform.position.x + (cloud.transform.position.x > roomCenterX ? overlayOffset : -overlayOffset);
+            float finalXPos = cloud.transform.position.x + (cloud.transform.position.x > roomCenterX ? cloudOffset : -cloudOffset);
 
             float elapsedTime = 0;
 
-            float newOverlayTime = overlayTime + (UnityEngine.Random.value >= 0.5 ? overlayTimeOffset : -overlayTimeOffset);
+            float newcloudTime = cloudTime + (UnityEngine.Random.value >= 0.5 ? cloudTimeOffset : -cloudTimeOffset);
 
             SpriteRenderer renderer = cloud.GetComponent<SpriteRenderer>();
 
             Color initialColor = renderer.color;
 
-            while (elapsedTime < newOverlayTime)
+            while (elapsedTime < newcloudTime)
             {
-                float time = elapsedTime / newOverlayTime;
+                float time = elapsedTime / newcloudTime;
 
                 cloud.transform.position = Vector3.Lerp(startingPos, new Vector3(finalXPos, cloud.transform.position.y, cloud.transform.position.z), time);
 
-                renderer.color = Color.Lerp(initialColor, lockOverlayColor, time);
+                renderer.color = Color.Lerp(initialColor, cloudColor, time);
 
                 elapsedTime += Time.deltaTime;
 
@@ -288,11 +301,11 @@ namespace Merge
         {
             float elapsedTime = 0;
 
-            while (elapsedTime < overlayTime)
+            while (elapsedTime < cloudTime)
             {
                 elapsedTime += Time.deltaTime;
 
-                if (elapsedTime / overlayTime > overlayTime / 3)
+                if (elapsedTime / cloudTime > cloudTime / 3)
                 {
                     // TODO - Add a nice particle effect here
 
