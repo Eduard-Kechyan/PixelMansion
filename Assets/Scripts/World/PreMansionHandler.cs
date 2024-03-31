@@ -43,9 +43,13 @@ namespace Merge
 
         void Start()
         {
+            // Destroy the mansion at the start of the game if we have already unlocked it
             if (PlayerPrefs.HasKey("PreMansionRemoved"))
             {
-                Remove();
+                if (!dontDestroyAtStart || !Debug.isDebugBuild)
+                {
+                    Destroy(gameObject);
+                }
             }
         }
 
@@ -56,128 +60,77 @@ namespace Merge
             {
                 remove = false;
 
-                Remove(false);
+                Remove();
             }
         }
 #endif
 
-        public void Remove(bool destroy = true)
+        // Remove the pre mansion
+        public void Remove(Action callback = null)
         {
-            // Set stairs sorting layer
+            // Set mansion entrance stairs sorting layer
             stairs.sortingLayerName = stairsSortingLayer;
 
-            if (destroy)
+            firstRoom.MoveRoomIntoView(moveIntoViewSpeed, scaleToViewSpeed, scaleToViewSize, moveIntoViewOffset, () =>
             {
-                if (!dontDestroyAtStart || !Application.isEditor)
+                HandlePartsRemoval(() =>
                 {
-                    Destroy(gameObject);
-                }
-            }
-            else
-            {
-                firstRoom.MoveRoomIntoView(moveIntoViewSpeed, scaleToViewSpeed, scaleToViewSize, moveIntoViewOffset, () =>
-                {
-                    HandlePartsRemoval(() =>
+                    // Unlock the first room that the player enters
+                    firstRoom.Unlock((Vector3 newRoomCenter) =>
                     {
-                        // Unlock the first room that the player enters
-                        firstRoom.Unlock((Vector3 newRoomCenter) =>
-                        {
-                            roomCenter = newRoomCenter;
+                        roomCenter = newRoomCenter;
 
-                            // Save state
-                            PlayerPrefs.SetInt("PreMansionRemoved", 1);
+                        // Save state
+                        PlayerPrefs.SetInt("PreMansionRemoved", 1);
 
-                            // Destroy at the end
-                            Destroy(gameObject);
-                        });
+                        // Call the callback
+                        callback?.Invoke();
+
+                        // Destroy at the end
+                        Destroy(gameObject);
                     });
                 });
-            }
+            });
         }
 
+        // Remove all clouds and mansion parts
         void HandlePartsRemoval(Action callback)
         {
+            int cloudsCount = clouds.childCount;
+            int mansionPartsLength = mansionParts.Length;
+
             // Remove clouds
-            for (int i = 0; i < clouds.childCount; i++)
+            for (int i = 0; i < cloudsCount; i++)
             {
+                // Get the cloud child object
                 Transform child = clouds.GetChild(i);
 
                 if (child.name.Contains("Cloud"))
                 {
-                    bool last = i == clouds.childCount - 1;
+                    // Determine if this is the last cloud
+                    bool last = i == cloudsCount - 1;
 
                     StartCoroutine(MoveCloud(child, last));
                 }
             }
 
-            // Remove parts
-            for (int i = 0; i < mansionParts.Length; i++)
+            // Remove mansion parts
+            for (int i = 0; i < mansionPartsLength; i++)
             {
                 for (int j = 0; j < mansionParts[i].childCount; j++)
                 {
-                    bool last = i == mansionParts.Length - 1 && j == mansionParts[i].childCount - 1;
-
-                    if (last)
-                    {
-                        Debug.Log(mansionParts[i].GetChild(j).name);
-                    }
+                    // Determine if this is the last mansion part
+                    bool last = i == mansionPartsLength - 1 && j == mansionParts[i].childCount - 1;
 
                     StartCoroutine(RemovePart(mansionParts[i].GetChild(j), last));
                 }
             }
 
-            // Wait for removal
             StartCoroutine(WaitForPartsAndClouds(callback));
         }
 
-        IEnumerator RemovePart(Transform part, bool last = false)
-        {
-            //// START
-
-            float randomDelay = UnityEngine.Random.Range(0f, 2f);
-
-            yield return new WaitForSeconds(randomDelay);
-
-            //// FIRST
-
-            Vector3 newFirstTargetScale = new Vector3(firstTargetScale, firstTargetScale, firstTargetScale);
-
-            while (part.localScale != newFirstTargetScale)
-            {
-                part.localScale = Vector3.MoveTowards(
-                    part.localScale,
-                    newFirstTargetScale,
-                    firstScaleSpeed * Time.deltaTime
-                );
-
-                yield return null;
-            }
-
-            //// SECOND
-
-            Vector3 newSecondTargetScale = new Vector3(secondTargetScale, secondTargetScale, secondTargetScale);
-
-            while (part.localScale != newSecondTargetScale)
-            {
-                part.localScale = Vector3.MoveTowards(
-                    part.localScale,
-                    newSecondTargetScale,
-                    firstScaleSpeed * Time.deltaTime
-                );
-
-                yield return null;
-            }
-
-            //// END
-
-            if (last)
-            {
-                yield return new WaitForSeconds(finishDelay);
-
-                partsRemoved = true;
-            }
-        }
-
+        // Move the clouds to the left or the right depending on the center of the room.
+        // Also make them transparent little by little until they are invisible
         IEnumerator MoveCloud(Transform cloud, bool last = false)
         {
             Vector3 startingPos = cloud.transform.position;
@@ -207,12 +160,59 @@ namespace Merge
 
             renderer.sortingLayerName = "Default";
 
+            // Check if this is the last cloud
             if (last)
             {
                 cloudsRemoved = true;
             }
         }
 
+        // Make the mansion part disappear
+        IEnumerator RemovePart(Transform part, bool last = false)
+        {
+            // Add a random delay before starting the removal
+            float randomDelay = UnityEngine.Random.Range(0f, 2f);
+
+            yield return new WaitForSeconds(randomDelay);
+
+            // Increase the part scale slightly
+            Vector3 newFirstTargetScale = new Vector3(firstTargetScale, firstTargetScale, firstTargetScale);
+
+            while (part.localScale != newFirstTargetScale)
+            {
+                part.localScale = Vector3.MoveTowards(
+                    part.localScale,
+                    newFirstTargetScale,
+                    firstScaleSpeed * Time.deltaTime
+                );
+
+                yield return null;
+            }
+
+            // Increase the part scale to 0
+            Vector3 newSecondTargetScale = new Vector3(secondTargetScale, secondTargetScale, secondTargetScale);
+
+            while (part.localScale != newSecondTargetScale)
+            {
+                part.localScale = Vector3.MoveTowards(
+                    part.localScale,
+                    newSecondTargetScale,
+                    firstScaleSpeed * Time.deltaTime
+                );
+
+                yield return null;
+            }
+
+            // Check if this is the last part
+            if (last)
+            {
+                yield return new WaitForSeconds(finishDelay);
+
+                partsRemoved = true;
+            }
+        }
+
+        // Wait until all clouds and mansion parts have been removed
         IEnumerator WaitForPartsAndClouds(Action callback)
         {
             while (!partsRemoved || !cloudsRemoved)

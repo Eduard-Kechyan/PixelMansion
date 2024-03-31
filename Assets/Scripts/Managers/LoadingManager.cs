@@ -64,6 +64,8 @@ namespace Merge
             }
         }
 
+        // TODO   Make this a coroutine! 
+
         void Start()
         {
             // Cache
@@ -74,7 +76,7 @@ namespace Merge
             services = Services.Instance;
             authManager = services.GetComponent<AuthManager>();
             cloudSave = services.GetComponent<CloudSave>();
-           // analyticsManager = services.GetComponent<AnalyticsManager>();
+            // analyticsManager = services.GetComponent<AnalyticsManager>();
             analyticsManager = AnalyticsManager.Instance;
 
             // Get Ready
@@ -310,10 +312,10 @@ namespace Merge
                 {
                     if (tutorialData.steps[i].id == tutorialStep)
                     {
-                        if (tutorialData.steps[i].scene == Types.Scene.GamePlay)
+                        if (tutorialData.steps[i].scene == Types.Scene.Merge)
                         {
-                            // GamePlay scene
-                            sceneLoader.Load(Types.Scene.GamePlay);
+                            // Merge scene
+                            sceneLoader.Load(Types.Scene.Merge);
 
                             return;
                         }
@@ -323,8 +325,8 @@ namespace Merge
                 }
             }
 
-            // Hub scene
-            sceneLoader.Load(Types.Scene.Hub);
+            // World scene
+            sceneLoader.Load(Types.Scene.World);
         }
 
         bool CheckForLoading()

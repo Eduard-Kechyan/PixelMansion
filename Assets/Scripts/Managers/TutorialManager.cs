@@ -37,9 +37,9 @@ namespace Merge
 
         // References
         private ValuesUI valuesUI;
-        private HubUI hubUI;
-        private UIDocument hubGameUIDoc;
-        private GameplayUI gamePlayUI;
+        private WorldUI worldUI;
+        private UIDocument worldGameUIDoc;
+        private MergeUI mergeUI;
         private UIButtons uiButtons;
         private DataManager dataManager;
         private InputMenu inputMenu;
@@ -103,9 +103,9 @@ namespace Merge
         {
             // Cache
             valuesUI = GameRefs.Instance.valuesUI;
-            hubUI = GameRefs.Instance.hubUI;
-            hubGameUIDoc = GameRefs.Instance.hubGameUIDoc;
-            gamePlayUI = GameRefs.Instance.gamePlayUI;
+            worldUI = GameRefs.Instance.worldUI;
+            worldGameUIDoc = GameRefs.Instance.worldGameUIDoc;
+            mergeUI = GameRefs.Instance.mergeUI;
             dataManager = DataManager.Instance;
             inputMenu = GameRefs.Instance.inputMenu;
             uiButtons = GameData.Instance.GetComponent<UIButtons>();
@@ -118,9 +118,9 @@ namespace Merge
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
 
-            if (hubGameUIDoc != null)
+            if (worldGameUIDoc != null)
             {
-                convoBackground = hubGameUIDoc.GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("ConvoBackground");
+                convoBackground = worldGameUIDoc.GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("ConvoBackground");
             }
 
             if (tutorialStarted)
@@ -137,7 +137,7 @@ namespace Merge
 
         IEnumerator WaitForLoading()
         {
-            while (handlingLast || !dataManager.loaded || !valuesUI.loaded || (convoUIHandler != null && !convoUIHandler.loaded) || (hubUI != null && !hubUI.loaded) || (gamePlayUI != null && !gamePlayUI.loaded))
+            while (handlingLast || !dataManager.loaded || !valuesUI.loaded || (convoUIHandler != null && !convoUIHandler.loaded) || (worldUI != null && !worldUI.loaded) || (mergeUI != null && !mergeUI.loaded))
             {
                 yield return null;
             }
@@ -165,10 +165,10 @@ namespace Merge
             {
                 if (tutorialData.steps[i].id == tutorialStep)
                 {
-                    if (tutorialData.steps[i].scene == Types.Scene.GamePlay && currentScene != Types.Scene.GamePlay)
+                    if (tutorialData.steps[i].scene == Types.Scene.Merge && currentScene != Types.Scene.Merge)
                     {
-                        // GamePlay scene
-                        sceneLoader.Load(Types.Scene.GamePlay);
+                        // Merge scene
+                        sceneLoader.Load(Types.Scene.Merge);
 
                         return false;
                     }
@@ -374,19 +374,19 @@ namespace Merge
 
         void TaskPress(Types.TutorialStep step)
         {
-            if (step.scene == Types.Scene.Hub)
+            if (step.scene == Types.Scene.World)
             {
                 if (step.taskButton == Types.Button.Play)
                 {
-                    hubUI.ShowButton(Types.Button.Play);
+                    worldUI.ShowButton(Types.Button.Play);
 
                     Glob.SetTimeout(() =>
                     {
-                        pointerHandler.HandlePress(uiButtons.hubPlayButtonPos, Types.Button.Play, () =>
+                        pointerHandler.HandlePress(uiButtons.worldPlayButtonPos, Types.Button.Play, () =>
                         {
                             NextStep(false, () =>
                             {
-                                sceneLoader.Load(Types.Scene.GamePlay);
+                                sceneLoader.Load(Types.Scene.Merge);
                             });
                         });
                     }, 0.5f);
@@ -394,12 +394,12 @@ namespace Merge
 
                 if (step.taskButton == Types.Button.Task)
                 {
-                    hubUI.ShowButton(Types.Button.Task);
-                    hubUI.HideButton(Types.Button.Play, true);
+                    worldUI.ShowButton(Types.Button.Task);
+                    worldUI.HideButton(Types.Button.Play, true);
 
                     Glob.SetTimeout(() =>
                     {
-                        pointerHandler.HandlePress(uiButtons.hubTaskButtonPos, Types.Button.Task, () =>
+                        pointerHandler.HandlePress(uiButtons.worldTaskButtonPos, Types.Button.Task, () =>
                         {
                             NextStep();
                         });
@@ -410,10 +410,10 @@ namespace Merge
             {
                 if (step.taskButton == Types.Button.Task)
                 {
-                    gamePlayUI.ShowButton(Types.Button.Task);
-                    gamePlayUI.HideButton(Types.Button.Home, true);
+                    mergeUI.ShowButton(Types.Button.Task);
+                    mergeUI.HideButton(Types.Button.Home, true);
 
-                    pointerHandler.HandlePress(uiButtons.gamePlayTaskButtonPos, Types.Button.Task, () =>
+                    pointerHandler.HandlePress(uiButtons.mergeTaskButtonPos, Types.Button.Task, () =>
                     {
                         NextStep();
                     });
@@ -421,13 +421,13 @@ namespace Merge
 
                 if (step.taskButton == Types.Button.Home)
                 {
-                    gamePlayUI.ShowButton(Types.Button.Home);
+                    mergeUI.ShowButton(Types.Button.Home);
 
-                    pointerHandler.HandlePress(uiButtons.gamePlayHomeButtonPos, Types.Button.Home, () =>
+                    pointerHandler.HandlePress(uiButtons.mergeHomeButtonPos, Types.Button.Home, () =>
                     {
                         NextStep(false, () =>
                         {
-                            sceneLoader.Load(Types.Scene.Hub);
+                            sceneLoader.Load(Types.Scene.World);
                         });
                     });
                 }
@@ -534,8 +534,8 @@ namespace Merge
                 }
 
                 valuesUI = GameRefs.Instance.valuesUI;
-                hubUI = GameRefs.Instance.hubUI;
-                gamePlayUI = GameRefs.Instance.gamePlayUI;
+                worldUI = GameRefs.Instance.worldUI;
+                mergeUI = GameRefs.Instance.mergeUI;
 
                 if (valuesUI != null)
                 {
@@ -543,14 +543,14 @@ namespace Merge
                     valuesUI.EnableButtonsAlt();
                 }
 
-                if (hubUI != null)
+                if (worldUI != null)
                 {
-                    hubUI.ShowButtons();
+                    worldUI.ShowButtons();
                 }
 
-                if (gamePlayUI != null)
+                if (mergeUI != null)
                 {
-                    gamePlayUI.ShowButtons();
+                    mergeUI.ShowButtons();
                 }
             }
 

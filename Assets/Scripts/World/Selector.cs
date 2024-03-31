@@ -34,7 +34,7 @@ namespace Merge
         // References
         private Camera cam;
         private SoundManager soundManager;
-        private UIDocument hubGameUiDoc;
+        private UIDocument worldGameUiDoc;
         private SelectorUIHandler selectorUIHandler;
         private PopupManager popupManager;
         private I18n LOCALE;
@@ -50,8 +50,8 @@ namespace Merge
             // Cache
             cam = Camera.main;
             soundManager = SoundManager.Instance;
-            hubGameUiDoc = GameRefs.Instance.hubGameUIDoc;
-            selectorUIHandler = hubGameUiDoc.GetComponent<SelectorUIHandler>();
+            worldGameUiDoc = GameRefs.Instance.worldGameUIDoc;
+            selectorUIHandler = worldGameUiDoc.GetComponent<SelectorUIHandler>();
             popupManager = PopupManager.Instance;
             LOCALE = I18n.Instance;
             worldDataManager = GetComponent<WorldDataManager>();
@@ -61,7 +61,7 @@ namespace Merge
             duration = arrowDuration / 6;
 
             // UI
-            root = hubGameUiDoc.rootVisualElement;
+            root = worldGameUiDoc.rootVisualElement;
 
             selectorArrow = root.Q<VisualElement>("SelectorArrow");
         }

@@ -66,7 +66,7 @@ namespace Merge
             cameraMotion = GetComponent<CameraMotion>();
 
             // UI
-            root = GameRefs.Instance.hubUIDoc.rootVisualElement;
+            root = GameRefs.Instance.worldUIDoc.rootVisualElement;
 
             // Get the camera's initial orthographic size
             initialCamSize = CalcInitialCamSize();

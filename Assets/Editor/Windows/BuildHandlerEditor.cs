@@ -42,8 +42,8 @@ namespace Merge
                  target = releasePlatform == ReleasePlatform.Android ? BuildTarget.Android : BuildTarget.iOS,
                  scenes = new[]{
                      "Assets/Scenes/Loading.unity",
-                     "Assets/Scenes/Hub.unity",
-                     "Assets/Scenes/Gameplay.unity",
+                     "Assets/Scenes/World.unity",
+                     "Assets/Scenes/Merge.unity",
                  },
              };
 

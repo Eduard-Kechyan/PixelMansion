@@ -98,11 +98,11 @@ namespace Merge
 
             switch (scene)
             {
-                case Types.Scene.Hub:
+                case Types.Scene.World:
                     if (PlayerPrefs.HasKey("tutorialFinished"))
                     {
-                        // Play hub background music
-                        soundManager.PlayMusic(Types.MusicType.Hub);
+                        // Play world background music
+                        soundManager.PlayMusic(Types.MusicType.World);
                     }
                     else
                     {
@@ -120,9 +120,9 @@ namespace Merge
 
                     break;
 
-                case Types.Scene.GamePlay:
+                case Types.Scene.Merge:
                     // Play background music
-                    soundManager.PlayMusic(Types.MusicType.GamePlay);
+                    soundManager.PlayMusic(Types.MusicType.Merge);
 
                     soundManager.FadeInMusic(fadeDuration);
 

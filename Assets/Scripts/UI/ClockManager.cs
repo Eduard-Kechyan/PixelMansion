@@ -60,7 +60,7 @@ namespace Merge
 
                     if ((gameData.timers[i].startTime - endTime).TotalSeconds < gameData.timers[i].seconds)
                     {
-                        Vector2 position = boardManager.GetBoardItemPosById(gameData.timers[i].id);
+                        Vector2 position = boardManager.GetTileItemPosById(gameData.timers[i].id);
 
                         AddClock(position, gameData.timers[i].id, gameData.timers[i].seconds);
                     }

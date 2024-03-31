@@ -83,7 +83,7 @@ namespace Merge
 
         // Board
         [HideInInspector]
-        public Types.Board[,] boardData;
+        public Types.Tile[,] boardData;
         [HideInInspector]
         public string[] unlockedData = new string[0];
         [HideInInspector]
@@ -131,7 +131,7 @@ namespace Merge
 
         // References
         private ValuesUI valuesUI;
-        private GameplayUI gamePlayUI;
+        private MergeUI mergeUI;
         private DataManager dataManager;
         private SoundManager soundManager;
         private CloudSave cloudSave;
@@ -174,9 +174,9 @@ namespace Merge
         {
             valuesUI = GameRefs.Instance.valuesUI;
 
-            if (scene == Types.Scene.GamePlay)
+            if (scene == Types.Scene.Merge)
             {
-                gamePlayUI = GameRefs.Instance.gamePlayUI;
+                mergeUI = GameRefs.Instance.mergeUI;
             }
         }
 
@@ -584,7 +584,7 @@ namespace Merge
 
         public void CheckBonus()
         {
-            gamePlayUI.CheckBonusButton();
+            mergeUI.CheckBonusButton();
         }
 
         public Types.Bonus GetAndRemoveLatestBonus()
@@ -595,7 +595,7 @@ namespace Merge
 
             bonusData.RemoveAt(latestIndex);
 
-            gamePlayUI.CheckBonusButton();
+            mergeUI.CheckBonusButton();
 
             return newBonus;
         }

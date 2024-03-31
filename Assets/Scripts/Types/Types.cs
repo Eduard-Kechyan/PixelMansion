@@ -294,7 +294,7 @@ namespace Merge
 
         //// BOARD ////
         [Serializable]
-        public class BoardEmpty
+        public class TileEmpty
         {
             public int order;
             public Vector2Int loc;
@@ -302,7 +302,7 @@ namespace Merge
         }
 
         [Serializable]
-        public class Board
+        public class Tile
         {
             public Sprite sprite;
             public Type type;
@@ -345,7 +345,7 @@ namespace Merge
         }
 
         [Serializable]
-        public class BoardJson
+        public class TileJson
         {
             public string sprite;
             public string type;
@@ -696,8 +696,8 @@ namespace Merge
         public enum MusicType
         {
             Loading,
-            Hub,
-            GamePlay,
+            World,
+            Merge,
             Magical,
         };
 
@@ -720,11 +720,19 @@ namespace Merge
         };
 
         //// OTHER ////
+        public enum SelectType
+        {
+            None,
+            Both,
+            Info,
+            Only
+        }
+
         public enum Scene
         {
             Loading,
-            Hub,
-            GamePlay,
+            World,
+            Merge,
             None
         };
 

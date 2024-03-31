@@ -61,7 +61,7 @@ namespace Merge
         [HideInInspector]
         public int crate = 0;
 
-        private bool loaded= false;
+        private bool loaded = false;
 
         private float moveSpeed;
         private float scaleSpeed;

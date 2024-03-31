@@ -23,7 +23,7 @@ namespace Merge
         // References
         private TaskManager taskManager;
         private GameData gameData;
-        private HubUI hubUI;
+        private WorldUI worldUI;
         private ValuesUI valuesUI;
         private CharMain charMain;
         private CameraMotion cameraMotion;
@@ -34,7 +34,7 @@ namespace Merge
             // Cache
             taskManager = GetComponent<TaskManager>();
             gameData = GameData.Instance;
-            hubUI = GameRefs.Instance.hubUI;
+            worldUI = GameRefs.Instance.worldUI;
             valuesUI = GameRefs.Instance.valuesUI;
             charMain = CharMain.Instance;
             cameraMotion = Camera.main.GetComponent<CameraMotion>();
@@ -148,7 +148,7 @@ namespace Merge
 
                                 if (shouldShowUI)
                                 {
-                                    hubUI.OpenUI();
+                                    worldUI.OpenUI();
 
                                     valuesUI.OpenUI();
 

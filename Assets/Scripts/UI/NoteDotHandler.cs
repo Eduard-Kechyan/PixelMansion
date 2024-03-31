@@ -12,20 +12,20 @@ namespace Merge
         public int taskNoteDotAmount = 0;
 
         [HideInInspector]
-        public bool isHub = true;
+        public bool isWorld = true;
 
         // References
-        private HubUI hubUI;
-        private GameplayUI gamePlayUI;
+        private WorldUI worldUI;
+        private MergeUI mergeUI;
 
         void Start()
         {
-            hubUI = GetComponent<HubUI>();
-            gamePlayUI = GetComponent<GameplayUI>();
+            worldUI = GetComponent<WorldUI>();
+            mergeUI = GetComponent<MergeUI>();
 
-            if (hubUI == null)
+            if (worldUI == null)
             {
-                isHub = false;
+                isWorld = false;
             }
         }
 
@@ -42,44 +42,44 @@ namespace Merge
             switch (buttonName)
             {
                 case "settings":
-                    buttonNoteDot = hubUI.settingsButtonNoteDot;
+                    buttonNoteDot = worldUI.settingsButtonNoteDot;
                     break;
                 case "play":
-                    buttonNoteDot = hubUI.playButtonNoteDot;
+                    buttonNoteDot = worldUI.playButtonNoteDot;
                     break;
                 case "home":
-                    buttonNoteDot = gamePlayUI.homeButtonNoteDot;
+                    buttonNoteDot = mergeUI.homeButtonNoteDot;
                     break;
                 case "inventory":
-                    buttonNoteDot = gamePlayUI.inventoryButtonNoteDot;
+                    buttonNoteDot = mergeUI.inventoryButtonNoteDot;
                     break;
                 case "shop":
-                    if (isHub)
+                    if (isWorld)
                     {
-                        buttonNoteDot = hubUI.shopButtonNoteDot;
+                        buttonNoteDot = worldUI.shopButtonNoteDot;
                     }
                     else
                     {
-                        buttonNoteDot = gamePlayUI.shopButtonNoteDot;
+                        buttonNoteDot = mergeUI.shopButtonNoteDot;
                     }
                     break;
                 case "task":
-                    if (isHub)
+                    if (isWorld)
                     {
-                        buttonNoteDot = hubUI.taskButtonNoteDot;
+                        buttonNoteDot = worldUI.taskButtonNoteDot;
 
                         if (amount > 0)
                         {
-                            hubUI.taskButtonNoteDotLabel.text = amount.ToString();
+                            worldUI.taskButtonNoteDotLabel.text = amount.ToString();
                         }
                     }
                     else
                     {
-                        buttonNoteDot = gamePlayUI.taskButtonNoteDot;
+                        buttonNoteDot = mergeUI.taskButtonNoteDot;
 
                         if (amount > 0)
                         {
-                            gamePlayUI.taskButtonNoteDotLabel.text = amount.ToString();
+                            mergeUI.taskButtonNoteDotLabel.text = amount.ToString();
                         }
                     }
 

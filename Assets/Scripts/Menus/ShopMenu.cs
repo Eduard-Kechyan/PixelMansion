@@ -11,8 +11,8 @@ namespace Merge
     public class ShopMenu : MonoBehaviour
     {
         // Variables
-        public bool gamePlayScene = false;
-        public GameplayUI gamePlayUI;
+        public bool mergeScene = false;
+        public MergeUI mergeUI;
         public BoardManager boardManager;
         public SceneLoader sceneLoader;
         public ShopData shopData;
@@ -572,7 +572,7 @@ namespace Merge
                 HandleDailyItem(order);
             }
 
-            if (sceneLoader.scene == Types.Scene.GamePlay)
+            if (sceneLoader.scene == Types.Scene.Merge)
             {
                 StartCoroutine(AddItemToBoardOrBonusButton(order, shopItemType));
             }
@@ -657,7 +657,7 @@ namespace Merge
             yield return new WaitForSeconds(0.5f);
 
             // Add item to the board or to the bonus button
-            List<Types.BoardEmpty> emptyBoard = boardManager.GetEmptyBoardItems(Vector2Int.zero, false);
+            List<Types.TileEmpty> emptyBoard = boardManager.GetEmptyTileItems(Vector2Int.zero, false);
 
             Types.ItemData boardItem;
             Item newItem;
@@ -696,11 +696,11 @@ namespace Merge
             {
                 emptyBoard.Sort((p1, p2) => p1.distance.CompareTo(p2.distance));
 
-                boardManager.CreateItemOnEmptyTile(boardItem, emptyBoard[0], uiButtons.gamePlayShopButtonPos);
+                boardManager.CreateItemOnEmptyTile(boardItem, emptyBoard[0], uiButtons.mergeShopButtonPos);
             }
             else
             {
-                valuePop.PopBonus(newItem, uiButtons.gamePlayShopButtonPos, uiButtons.gamePlayBonusButtonPos);
+                valuePop.PopBonus(newItem, uiButtons.mergeShopButtonPos, uiButtons.mergeBonusButtonPos);
             }
         }
 
@@ -719,7 +719,7 @@ namespace Merge
                 newItem = itemHandler.CreateItemTemp(shopData.dailyContent[order]);
             }
 
-            valuePop.PopBonus(newItem, uiButtons.hubShopButtonPos, uiButtons.hubPlayButtonPos);
+            valuePop.PopBonus(newItem, uiButtons.worldShopButtonPos, uiButtons.worldPlayButtonPos);
         }
     }
 }

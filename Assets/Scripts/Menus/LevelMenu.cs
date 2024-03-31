@@ -10,9 +10,9 @@ namespace Merge
     public class LevelMenu : MonoBehaviour
     {
         // Variables
-        public bool gamePlayScene = false;
+        public bool mergeScene = false;
         public float levelButtonOffset = 9f;
-        public HubUI hubUI;
+        public WorldUI worldUI;
         public LevelData levelData;
         [ReadOnly]
         public bool isRewarding = false;
@@ -368,13 +368,13 @@ namespace Merge
                 levelRewardButton0.style.scale = new StyleScale(nullScale);
             }
 
-            if (gamePlayScene)
+            if (mergeScene)
             {
-                buttonPosition = uiButtons.gamePlayBonusButtonPos;
+                buttonPosition = uiButtons.mergeBonusButtonPos;
             }
             else
             {
-                buttonPosition = uiButtons.hubPlayButtonPos;
+                buttonPosition = uiButtons.worldPlayButtonPos;
 
                 check = false;
             }

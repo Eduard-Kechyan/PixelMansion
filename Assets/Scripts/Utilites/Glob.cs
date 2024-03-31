@@ -74,7 +74,11 @@ namespace Merge
 
         public static void StopTimeout(Coroutine timeout)
         {
-            timeouts.Remove(timeout);
+            if (timeout != null)
+            {
+                timeouts.Remove(timeout);
+                Instance.StopCoroutine(timeout);
+            }
         }
 
         //// INTERVALS ////
@@ -113,7 +117,11 @@ namespace Merge
 
         public static void StopInterval(Coroutine interval)
         {
-            intervals.Remove(interval);
+            if (interval != null)
+            {
+                intervals.Remove(interval);
+                Instance.StopCoroutine(interval);
+            }
         }
 
         //// CHANCES ////

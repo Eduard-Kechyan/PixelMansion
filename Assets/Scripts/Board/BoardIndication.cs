@@ -30,8 +30,8 @@ namespace Merge
         [Serializable]
         public class Pair
         {
-            public Types.Board item1;
-            public Types.Board item2;
+            public Types.Tile item1;
+            public Types.Tile item2;
             public Vector2 pos1;
             public Vector2 pos2;
             public Vector2 desiredPos1;
@@ -39,6 +39,7 @@ namespace Merge
         }
 
         // References
+        private BoardInitialization boardInitialization;
         private BoardManager boardManager;
         private BoardInteractions boardInteractions;
         private GameData gameData;
@@ -46,7 +47,8 @@ namespace Merge
 
         void Start()
         {
-            // References
+            // Cache
+            boardInitialization = GetComponent<BoardInitialization>();
             boardManager = GetComponent<BoardManager>();
             boardInteractions = GetComponent<BoardInteractions>();
             gameData = GameData.Instance;
@@ -55,30 +57,33 @@ namespace Merge
 
         void Update()
         {
-            if (pointerHandler != null && pointerHandler.mergeSprite != null && !pointerHandler.merging)
+            if (boardInitialization.set)
             {
-                StopPossibleMergeCheck();
-
-                if (boardInteractions.interactionsEnabled && !boardInteractions.isDragging && dataManager.loaded)
+                if (pointerHandler != null && pointerHandler.mergeSprite != null && !pointerHandler.merging)
                 {
-                    StartAltMergeCheck();
+                    StopPossibleMergeCheck();
+
+                    if (boardInteractions.interactionsEnabled && !boardInteractions.isDragging && dataManager.loaded)
+                    {
+                        StartAltMergeCheck();
+                    }
+                    else
+                    {
+                        StopAltMergeCheck();
+                    }
                 }
                 else
                 {
                     StopAltMergeCheck();
-                }
-            }
-            else
-            {
-                StopAltMergeCheck();
 
-                if (boardInteractions.interactionsEnabled && !boardInteractions.isDragging && dataManager.loaded)
-                {
-                    StartPossibleMergeCheck();
-                }
-                else
-                {
-                    StopPossibleMergeCheck();
+                    if (boardInteractions.interactionsEnabled && !boardInteractions.isDragging && dataManager.loaded)
+                    {
+                        StartPossibleMergeCheck();
+                    }
+                    else
+                    {
+                        StopPossibleMergeCheck();
+                    }
                 }
             }
         }
@@ -201,7 +206,7 @@ namespace Merge
             yield return new WaitForSeconds(UnityEngine.Random.Range(2, 5));
 
             // Variables
-            List<Types.Board> singleArray = new();
+            List<Types.Tile> singleArray = new();
 
             List<Pair> pairs = new();
 
@@ -210,7 +215,7 @@ namespace Merge
             {
                 for (int j = 0; j < GameData.HEIGHT; j++)
                 {
-                    Types.Board singleItem = gameData.boardData[i, j];
+                    Types.Tile singleItem = gameData.boardData[i, j];
 
                     if (singleItem.state == Types.State.Default && singleItem.sprite != null)
                     {
@@ -316,7 +321,7 @@ namespace Merge
             yield return new WaitForSeconds(0.3f);
 
             // Variables
-            List<Types.Board> singleArray = new();
+            List<Types.Tile> singleArray = new();
 
             List<Pair> pairs = new();
 
@@ -325,7 +330,7 @@ namespace Merge
             {
                 for (int j = 0; j < GameData.HEIGHT; j++)
                 {
-                    Types.Board singleItem = gameData.boardData[i, j];
+                    Types.Tile singleItem = gameData.boardData[i, j];
 
                     if ((singleItem.state == Types.State.Default || singleItem.state == Types.State.Locker) && singleItem.sprite != null)
                     {

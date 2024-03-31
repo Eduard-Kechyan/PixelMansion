@@ -60,11 +60,11 @@ namespace Merge
                 case Types.Scene.Loading:
                     break;
 
-                case Types.Scene.Hub:
+                case Types.Scene.World:
                     break;
 
-                case Types.Scene.GamePlay:
-                    SetGameplayUI();
+                case Types.Scene.Merge:
+                    SetMergeUI();
                     break;
 
                 default:
@@ -74,7 +74,7 @@ namespace Merge
 
         }
 
-        void SetGameplayUI()
+        void SetMergeUI()
         {
             root = GetComponent<UIDocument>().rootVisualElement;
             bottomBox = root.Q<VisualElement>("BottomBox");

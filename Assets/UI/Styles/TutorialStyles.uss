@@ -3,7 +3,7 @@
     left: 0;
     top: 50%;
     right: 0;
-    background-image: url('project://database/Assets/Sprites/Scenes/GamePlay/Background.png?fileID=2800000&guid=67e0e2f1b7ca3854b95261c156f6d02b&type=3#Background');
+    background-image: url('project://database/Assets/Sprites/Scenes/Merge/Background.png?fileID=2800000&guid=67e0e2f1b7ca3854b95261c156f6d02b&type=3#Background');
     height: 500px;
     translate: 0 -50%;
     transition-duration: 0.2s;

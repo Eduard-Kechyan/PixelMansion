@@ -81,16 +81,16 @@ namespace Merge
 
                     Vector2Int tileLoc = boardManager.GetBoardLocation(0, tile);
 
-                    List<Types.BoardEmpty> emptyBoard = boardManager.GetEmptyBoardItems(tileLoc);
+                    List<Types.TileEmpty> emptyTile = boardManager.GetEmptyTileItems(tileLoc);
 
                     // Check if the board is full
-                    if (emptyBoard.Count > 0)
+                    if (emptyTile.Count > 0)
                     {
-                        emptyBoard.Sort((p1, p2) => p1.distance.CompareTo(p2.distance));
+                        emptyTile.Sort((p1, p2) => p1.distance.CompareTo(p2.distance));
 
                         boardIndication.StopPossibleMergeCheck();
 
-                        SelectRandomGroupAndItem(emptyBoard[0], tile.transform.position);
+                        SelectRandomGroupAndItem(emptyTile[0], tile.transform.position);
 
                         timeManager.CheckCoolDown(interactions.currentItem);
                     }
@@ -148,16 +148,16 @@ namespace Merge
 
                 Vector2Int tileLoc = boardManager.GetBoardLocation(0, tile);
 
-                List<Types.BoardEmpty> emptyBoard = boardManager.GetEmptyBoardItems(tileLoc);
+                List<Types.TileEmpty> emptyTile = boardManager.GetEmptyTileItems(tileLoc);
 
                 // Check if the board is full
-                if (emptyBoard.Count > 0)
+                if (emptyTile.Count > 0)
                 {
-                    emptyBoard.Sort((p1, p2) => p1.distance.CompareTo(p2.distance));
+                    emptyTile.Sort((p1, p2) => p1.distance.CompareTo(p2.distance));
 
                     boardIndication.StopPossibleMergeCheck();
 
-                    SelectRandomItemFromChest(emptyBoard[0], tile.transform.position, interactions.currentItem.chestItems == 1);
+                    SelectRandomItemFromChest(emptyTile[0], tile.transform.position, interactions.currentItem.chestItems == 1);
                 }
                 else
                 {
@@ -171,7 +171,7 @@ namespace Merge
             }
         }
 
-        void SelectRandomGroupAndItem(Types.BoardEmpty emptyBoard, Vector2 initialPosition)
+        void SelectRandomGroupAndItem(Types.TileEmpty emptyTile, Vector2 initialPosition)
         {
             Types.Creates[] creates = interactions.currentItem.creates;
 
@@ -241,7 +241,7 @@ namespace Merge
 
                     boardManager.CreateItemOnEmptyTile(
                         gameData.itemsData[i].content[selectedItem],
-                        emptyBoard,
+                        emptyTile,
                         initialPosition,
                         true,
                         true
@@ -259,7 +259,7 @@ namespace Merge
             itemParent = null;
         }
 
-        void SelectRandomItemFromChest(Types.BoardEmpty emptyBoard, Vector2 initialPosition, bool last = false)
+        void SelectRandomItemFromChest(Types.TileEmpty emptyTile, Vector2 initialPosition, bool last = false)
         {
             if (interactions.currentItem.chestGroup == Types.ChestGroup.Energy)
             {
@@ -288,7 +288,7 @@ namespace Merge
 
                 boardManager.CreateItemOnEmptyTile(
                     energyItems.content[randomEnergyOrder],
-                    emptyBoard,
+                    emptyTile,
                     initialPosition,
                     true,
                     true
@@ -347,7 +347,7 @@ namespace Merge
 
                 boardManager.CreateItemOnEmptyTile(
                     collItems.content[randomCollOrder],
-                    emptyBoard,
+                    emptyTile,
                     initialPosition,
                     true,
                     true
@@ -397,7 +397,7 @@ namespace Merge
                                 {
                                     boardManager.CreateItemOnEmptyTile(
                                     gameData.generatorsData[i].content[j],
-                                    emptyBoard,
+                                    emptyTile,
                                     initialPosition,
                                     true,
                                     true
@@ -423,7 +423,7 @@ namespace Merge
                                 {
                                     boardManager.CreateItemOnEmptyTile(
                                         gameData.collectablesData[i].content[j],
-                                        emptyBoard,
+                                        emptyTile,
                                         initialPosition,
                                         true,
                                         true

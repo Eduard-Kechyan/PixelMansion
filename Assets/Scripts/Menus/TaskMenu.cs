@@ -203,7 +203,7 @@ namespace Merge
 
                             playButton.style.unityBackgroundImageTintColor = Glob.colorBlue;
 
-                            if (sceneLoader.GetScene() == Types.Scene.Hub)
+                            if (sceneLoader.GetScene() == Types.Scene.World)
                             {
                                 playButton.clicked += () =>
                                 {
@@ -211,12 +211,12 @@ namespace Merge
                                     {
                                         pointerHandler.ButtonPress(Types.Button.TaskMenu, true, () =>
                                         {
-                                            sceneLoader.Load(Types.Scene.GamePlay);
+                                            sceneLoader.Load(Types.Scene.Merge);
                                         });
                                     }
                                     else
                                     {
-                                        sceneLoader.Load(Types.Scene.GamePlay);
+                                        sceneLoader.Load(Types.Scene.Merge);
                                     }
                                 };
                             }
@@ -283,13 +283,13 @@ namespace Merge
             }
         }
 
-        // Check if we are on the hub scene and complete the task,
+        // Check if we are on the world scene and complete the task,
         // but if we are on the game play scene,
         // then save the task group id and task id to a static variable
-        // so it can be used in the hub scene
+        // so it can be used in the world scene
         void HandleCompletedTap(string groupId, string taskId)
         {
-            if (sceneLoader.GetScene() == Types.Scene.Hub)
+            if (sceneLoader.GetScene() == Types.Scene.World)
             {
                 taskManager.TryToCompleteTask(groupId, taskId, () =>
                 {
@@ -302,7 +302,7 @@ namespace Merge
             {
                 Glob.taskToComplete = groupId + "|" + taskId;
 
-                sceneLoader.Load(Types.Scene.Hub);
+                sceneLoader.Load(Types.Scene.World);
             }
         }
 

@@ -30,7 +30,7 @@ namespace Merge
         [HideInInspector]
         public bool canUndo = false;
         private Item undoItem;
-        Types.Board undoBoardItem = new();
+        Types.Tile undoTileItem = new();
         private GameObject undoTile;
         private Vector2 undoScale;
         private int sellUndoAmount = 0;
@@ -43,7 +43,7 @@ namespace Merge
         // References
         private SelectionManager selectionManager;
         private BoardManager boardManager;
-        private InitializeBoard initializeBoard;
+        private BoardInitialization boardInitialization;
         private BoardIndication boardIndication;
         private PopupManager popupManager;
         private InventoryMenu inventoryMenu;
@@ -65,7 +65,7 @@ namespace Merge
         private void Start()
         {
             // Cache
-            initializeBoard = GetComponent<InitializeBoard>();
+            boardInitialization = GetComponent<BoardInitialization>();
             selectionManager = GetComponent<SelectionManager>();
             boardManager = GetComponent<BoardManager>();
             boardIndication = GetComponent<BoardIndication>();
@@ -75,10 +75,10 @@ namespace Merge
             dataManager = DataManager.Instance;
             gameData = GameData.Instance;
             itemHandler = dataManager.GetComponent<ItemHandler>();
-            LOCALE = I18n.Instance; 
+            LOCALE = I18n.Instance;
 
             // Cache root and dragOverlay
-            root = GameRefs.Instance.gamePlayUIDoc.rootVisualElement;
+            root = GameRefs.Instance.mergeUIDoc.rootVisualElement;
             dragOverlay = root.Q<VisualElement>("DragOverlay");
 
             // Drag overlay shouldn't be pickable
@@ -156,8 +156,8 @@ namespace Merge
                                 if (currentItem != null && currentItem.isSelected)
                                 {
                                     isSelected = false;
-                                    selectionManager.Unselect("both");
-                                    selectionManager.Select("only");
+                                    selectionManager.Unselect(Types.SelectType.Both);
+                                    selectionManager.Select(Types.SelectType.Only);
                                 }
 
                                 // Drag the item around
@@ -235,17 +235,17 @@ namespace Merge
                 if (item != null && item.state != Types.State.Crate && item.state != Types.State.Locker)
                 {
                     CancelUndo();
-                    
+
                     if (currentItem != null && currentItem.isSelected)
                     {
-                        selectionManager.Unselect("both");
+                        selectionManager.Unselect(Types.SelectType.Both);
                     }
 
                     // Set current item
                     currentItem = item;
 
                     // Show selected item's info in the info box
-                    selectionManager.Select("info");
+                    selectionManager.Select(Types.SelectType.Info);
 
                     // Start dragging the item
                     StartDragging();
@@ -473,7 +473,7 @@ namespace Merge
             boardManager.SwapBoardData(initialTile, tile);
 
             // Select item
-            selectionManager.Select("both");
+            selectionManager.Select(Types.SelectType.Both);
         }
 
         void Merge(Item otherItem)
@@ -487,7 +487,7 @@ namespace Merge
 
             // Calc new item name
             Item item = otherItem;
-            Types.Board boardItem = new()
+            Types.Tile tileItem = new()
             {
                 sprite = item.sprite,
                 type = item.type,
@@ -514,8 +514,8 @@ namespace Merge
             // Get the prefab that's one level higher
             currentItem = itemHandler.CreateItem(
                 otherTile,
-                initializeBoard.tileSize,
-                boardItem,
+                boardInitialization.tileSize,
+                tileItem,
                 spriteName
             );
 
@@ -563,7 +563,7 @@ namespace Merge
         void MergeBackCallback()
         {
             // Select item
-            selectionManager.Select("both", false);
+            selectionManager.Select(Types.SelectType.Both, false);
         }
 
         void Swap(Item otherItem)
@@ -592,7 +592,7 @@ namespace Merge
             boardManager.SwapBoardData(initialTile, otherTile);
 
             // Select item
-            selectionManager.Select("both");
+            selectionManager.Select(Types.SelectType.Both);
         }
 
         void MoveBack()
@@ -616,7 +616,7 @@ namespace Merge
         void MoveBackCallback()
         {
             // Select item
-            selectionManager.Select("both");
+            selectionManager.Select(Types.SelectType.Both);
         }
 
         IEnumerator MoveBackOverlay(Item item)
@@ -673,7 +673,7 @@ namespace Merge
                             timeManager.RemoveTimer(currentItem.id);
 
                             // Play crate opening audio
-                            soundManager.PlaySound(Types.SoundType.None,"PopBubble" + UnityEngine.Random.Range(0, 3));
+                            soundManager.PlaySound(Types.SoundType.None, "PopBubble" + UnityEngine.Random.Range(0, 3));
                             break;
 
                         default:
@@ -807,29 +807,29 @@ namespace Merge
 
                     Vector2Int loc = boardManager.GetBoardLocation(0, undoTile);
 
-                    undoBoardItem = gameData.boardData[loc.x, loc.y];
+                    undoTileItem = gameData.boardData[loc.x, loc.y];
 
                     undoItem.transform.parent = null;
 
                     undoItem.ScaleToSize(Vector2.zero, scaleSpeed, false);
 
-                    gameData.boardData[loc.x, loc.y] = new Types.Board { order = undoBoardItem.order };
+                    gameData.boardData[loc.x, loc.y] = new Types.Tile { order = undoTileItem.order };
                 }
                 else
                 {
                     Vector2Int loc = boardManager.GetBoardLocation(0, currentItem.transform.parent.gameObject);
 
-                    Types.Board removeBoardItem = gameData.boardData[loc.x, loc.y];
+                    Types.Tile removeTileItem = gameData.boardData[loc.x, loc.y];
 
                     currentItem.transform.parent = null;
 
-                    selectionManager.Unselect("info");
+                    selectionManager.Unselect(Types.SelectType.Info);
 
                     currentItem.ScaleToSize(Vector2.zero, scaleSpeed, true);
 
                     currentItem = null;
 
-                    gameData.boardData[loc.x, loc.y] = new Types.Board { order = removeBoardItem.order };
+                    gameData.boardData[loc.x, loc.y] = new Types.Tile { order = removeTileItem.order };
                 }
 
                 dataManager.SaveBoard(true, false);
@@ -850,13 +850,13 @@ namespace Merge
 
                 Vector2Int loc = boardManager.GetBoardLocation(0, undoTile);
 
-                gameData.boardData[loc.x, loc.y] = new Types.Board
+                gameData.boardData[loc.x, loc.y] = new Types.Tile
                 {
-                    sprite = undoBoardItem.sprite,
-                    group = undoBoardItem.group,
-                    state = undoBoardItem.state,
-                    crate = undoBoardItem.crate,
-                    order = undoBoardItem.order,
+                    sprite = undoTileItem.sprite,
+                    group = undoTileItem.group,
+                    state = undoTileItem.state,
+                    crate = undoTileItem.crate,
+                    order = undoTileItem.order,
                 };
 
                 selectionManager.SelectItemAfterUndo();
@@ -876,11 +876,11 @@ namespace Merge
             if (canUndo)
             {
                 canUndo = false;
-                
+
                 if (undoItem != null)
                 {
                     undoItem = null;
-                    undoBoardItem = null;
+                    undoTileItem = null;
                     undoTile = null;
                     undoScale = Vector2.zero;
                 }

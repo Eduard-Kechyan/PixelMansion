@@ -106,7 +106,7 @@ namespace Merge
             string sceneName = SceneManager.GetActiveScene().name;
 
             // Make this script run if we aren't starting from the Loading scene
-            if (!loaded && (sceneName == Types.Scene.GamePlay.ToString() || sceneName == Types.Scene.Hub.ToString()))
+            if (!loaded && (sceneName == Types.Scene.Merge.ToString() || sceneName == Types.Scene.World.ToString()))
             {
                 StartCoroutine(WaitForLoadedSprites());
             }
@@ -282,7 +282,7 @@ namespace Merge
             // Finish Task
             loaded = true;
 
-            if (SceneManager.GetActiveScene().name == Types.Scene.Hub.ToString())
+            if (SceneManager.GetActiveScene().name == Types.Scene.World.ToString())
             {
                 if (rateMenu.shouldShow)
                 {

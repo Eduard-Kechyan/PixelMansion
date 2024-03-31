@@ -69,7 +69,7 @@ namespace Merge
         private MenuUI menuUI;
         private PopupManager popupManager;
         private CharMove charMove;
-        private HubUI hubUI;
+        private WorldUI worldUI;
         private CameraMotion cameraMotion;
 
         // UI
@@ -82,11 +82,11 @@ namespace Merge
             menuUI = GameRefs.Instance.menuUI;
             popupManager = PopupManager.Instance;
             charMove = CharMain.Instance.charMove;
-            hubUI = GameRefs.Instance.hubUI;
+            worldUI = GameRefs.Instance.worldUI;
             cameraMotion = GetComponent<CameraMotion>();
 
             // UI
-            root = GameRefs.Instance.hubUIDoc.rootVisualElement;
+            root = GameRefs.Instance.worldUIDoc.rootVisualElement;
 
             if (selector == null)
             {
@@ -550,7 +550,7 @@ namespace Merge
             PlayerPrefs.SetFloat("lastCamPosX", transform.position.x);
             PlayerPrefs.SetFloat("lastCamPosY", transform.position.y);
 
-            hubUI.SetUIButtons();
+            worldUI.SetUIButtons();
         }
     }
 }

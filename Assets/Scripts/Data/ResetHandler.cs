@@ -52,7 +52,25 @@ namespace Merge
 #if UNITY_EDITOR
                     Debug.Log("Restarting application!");
 #elif UNITY_ANDROID
-        using (var unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+        AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+        AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+
+        currentActivity.Call("finishAffinity");
+        currentActivity.Call("startActivity", currentActivity.Call<AndroidJavaObject>("getIntent"));
+
+        
+/*
+        // Close the current instance of the application
+        Application.Quit();
+
+        // Restart the application by launching the main activity again
+        AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+        AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+        AndroidJavaObject intentObject = currentActivity.Call<AndroidJavaObject>("getIntent");
+        currentActivity.Call("startActivity", intentObject);
+*/
+
+       /* using (var unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
         {
             const int kIntent_FLAG_ACTIVITY_CLEAR_TASK = 0x00008000;
             const int kIntent_FLAG_ACTIVITY_NEW_TASK = 0x10000000;
@@ -67,11 +85,9 @@ namespace Merge
             var process = new AndroidJavaClass("android.os.Process");
             int pid = process.CallStatic<int>("myPid");
             process.CallStatic("killProcess", pid);
-        }
+        }*/
 #elif UNITY_IOS
-        // TODO - Show a message that says the following: 
-        // The game will be closing, please open it up again!
-        // OR - Find a way to restart the game
+        UnityEngine.iOS.Device.RequestRestartApp();
 #endif
                 });
             }
@@ -79,26 +95,13 @@ namespace Merge
 #if UNITY_EDITOR
             Debug.Log("Restarting application!");
 #elif UNITY_ANDROID
-        using (var unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
-        {
-            const int kIntent_FLAG_ACTIVITY_CLEAR_TASK = 0x00008000;
-            const int kIntent_FLAG_ACTIVITY_NEW_TASK = 0x10000000;
+        AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+        AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
 
-            var currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
-            var pm = currentActivity.Call<AndroidJavaObject>("getPackageManager");
-            var intent = pm.Call<AndroidJavaObject>("getLaunchIntentForPackage", Application.identifier);
-
-            intent.Call<AndroidJavaObject>("setFlags", kIntent_FLAG_ACTIVITY_NEW_TASK | kIntent_FLAG_ACTIVITY_CLEAR_TASK);
-            currentActivity.Call("startActivity", intent);
-            currentActivity.Call("finish");
-            var process = new AndroidJavaClass("android.os.Process");
-            int pid = process.CallStatic<int>("myPid");
-            process.CallStatic("killProcess", pid);
-        }
+        currentActivity.Call("finishAffinity");
+        currentActivity.Call("startActivity", currentActivity.Call<AndroidJavaObject>("getIntent"));
 #elif UNITY_IOS
-        // TODO - Show a message that says the following: 
-        // The game will be closing, please open it up again!
-        // OR - Find a way to restart the game
+        UnityEngine.iOS.Device.RequestRestartApp();
 #endif
         }
 

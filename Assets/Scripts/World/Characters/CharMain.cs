@@ -35,9 +35,10 @@ namespace Merge
             charOrderSetter = GetComponent<CharOrderSetter>();
         }
 
-        void Start(){
+        void Start()
+        {
             // Cache
-            speechBubble = GameRefs.Instance.hubGameUI.GetComponent<SpeechBubble>();
+            speechBubble = GameRefs.Instance.worldGameUI.GetComponent<SpeechBubble>();
         }
 
         public void SelectableTapped(Vector2 position, Selectable selectable = null)
@@ -59,7 +60,8 @@ namespace Merge
             }
         }
 
-        public void SelectSelectableAtPosition(Vector2 position){
+        public void SelectSelectableAtPosition(Vector2 position)
+        {
             Selectable selectable = selector.SelectAndReturn(position);
 
             if (selectable == null)

@@ -1,0 +1,285 @@
+.bottom_box {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding-bottom: 15px;
+    padding-right: 3px;
+    padding-left: 3px;
+    display: flex;
+}
+
+.info_box {
+    margin-left: 1px;
+    margin-right: 1px;
+    margin-bottom: 15px;
+    flex-direction: column;
+    width: 172px;
+    height: 38px;
+    background-image: url("project://database/Assets/Sprites/Scenes/Merge/InfoBox.png?fileID=2800000&guid=08c0e298129b6a54ca567e82f7614357&type=3#InfoBox");
+}
+
+.info_box .info_item {
+    width: 24px;
+    height: 24px;
+    background-color: rgba(123, 219, 132, 0);
+    position: absolute;
+    top: 7px;
+    left: 2px;
+    -unity-text-outline-color: rgba(0, 0, 0, 0.35);
+}
+
+.info_box .info_item_locked {
+    width: 24px;
+    height: 24px;
+    background-color: rgba(123, 219, 132, 0);
+    position: absolute;
+    top: 7px;
+    left: 2px;
+    -unity-text-outline-color: rgba(0, 0, 0, 0.35);
+    display: none;
+    background-image: url("project://database/Assets/Sprites/Items/Locker.png?fileID=2800000&guid=5889a0a2b4de54b42ae7c45d4adf1e0a&type=3#Locker");
+}
+
+.info_box .info_item_bubble {
+    width: 24px;
+    height: 24px;
+    background-color: rgba(123, 219, 132, 0);
+    position: absolute;
+    top: 7px;
+    left: 2px;
+    -unity-text-outline-color: rgba(0, 0, 0, 0.35);
+    display: none;
+    background-image: url("project://database/Assets/Sprites/Items/Bubble.png?fileID=2800000&guid=1c7c7461fb449e748864b63e8d6d22d1&type=3#Bubble");
+}
+
+.info_box .info_item_has_timer {
+    top: 2px;
+}
+
+.info_box .info_timer {
+    background-image: url("project://database/Assets/Sprites/Scenes/Merge/InfoBoxTimer.png?fileID=2800000&guid=766ffd76950db664486e655c708a4a47&type=3#InfoBoxTimer");
+    width: 24px;
+    height: 8px;
+    position: absolute;
+    left: 2px;
+    bottom: 2px;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    -unity-text-align: middle-center;
+    font-size: 6px;
+    color: rgb(87, 87, 87);
+    display: none;
+}
+
+.info_box .item_name {
+    color: rgb(58, 58, 58);
+    font-size: 6px;
+    position: absolute;
+    top: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    left: 28px;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    -unity-text-align: middle-left;
+    white-space: nowrap;
+    height: 9px;
+    right: 20px;
+}
+
+.info_box .item_data {
+    color: rgb(53, 53, 53);
+    font-size: 4px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    position: absolute;
+    left: 28px;
+    top: 11px;
+    white-space: normal;
+    width: 74px;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    height: 25px;
+}
+
+.info_item_avatar .info_item {
+    width: 34px;
+    height: 34px;
+    left: 2px;
+    top: 2px;
+}
+
+.info_item_avatar .item_name {
+    left: 40px;
+}
+
+.info_item_avatar .item_data {
+    left: 40px;
+    right: 2px;
+    width: auto;
+    font-size: 6px;
+}
+
+.info_box_button {
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    top: 4px;
+    display: none;
+    background-image: url("project://database/Assets/Sprites/Buttons/Menu/ShopBoxInfoButton.png?fileID=2800000&guid=5b1619c1a050de54a94113d994ffd7cf&type=3#ShopBoxInfoButton");
+    right: 4px;
+}
+
+.info_box_button_container {
+    position: absolute;
+    bottom: 2px;
+    flex-direction: row;
+    right: 2px;
+}
+
+.info_box_action_button {
+    width: 32px;
+    height: 14px;
+    display: none;
+    background-image: url("project://database/Assets/Sprites/Scenes/Merge/InfoBoxButton.png?fileID=2800000&guid=4845d5095b10cf142966fd25e7f7cf8c&type=3#InfoBoxButton");
+    overflow: visible;
+}
+
+.info_box_action_button .value {
+    padding-left: 10px;
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    left: 1px;
+    top: 1px;
+    display: none;
+}
+
+.info_box_action_button .amount_label {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    -unity-text-align: middle-center;
+    white-space: nowrap;
+    font-size: 6px;
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.info_box_action_button .name_label {
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    position: absolute;
+    width: 32px;
+    height: 6px;
+    font-size: 4px;
+    top: -6px;
+    left: 0;
+    right: 0;
+}
+
+.info_box_action_button .remove_icon {
+    background-image: url("project://database/Assets/Sprites/Scenes/Merge/InfoBoxRemove.png?fileID=2800000&guid=b46655c522c065045be06c5139afd1bf&type=3#InfoBoxRemove");
+    width: 10px;
+    height: 12px;
+    position: absolute;
+    top: 1px;
+    left: 11px;
+    display: none;
+}
+
+.info_box_action_button_has_value .amount_label {
+    left: 11px;
+}
+
+.board {
+    width: 174px;
+    height: 222px;
+    margin-bottom: 15px;
+    background-image: url("project://database/Assets/Sprites/Scenes/Merge/Board.png?fileID=2800000&guid=dcdc28b82ad02ce469c4a972cf5733b0&type=3#Board");
+    visibility: hidden;
+}
+
+.options {
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: stretch;
+}
+
+.options .inventory_indicator {
+    flex-grow: 1;
+    background-color: rgba(0, 0, 0, 0);
+    position: absolute;
+    width: 38px;
+    height: 38px;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+    display: none;
+}
+
+.options .bonus_indicator {
+    flex-grow: 1;
+    background-color: rgba(0, 0, 0, 0);
+    position: absolute;
+    width: 38px;
+    height: 38px;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+    display: none;
+}
+
+.options .bonus_image {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    left: 2px;
+    top: 2px;
+}
+
+.drag_overlay {
+    width: 24px;
+    height: 24px;
+    visibility: hidden;
+    display: flex;
+}
+
+.background_shadow {
+    width: 180px;
+    background-image: url("project://database/Assets/Sprites/Scenes/BackgroundShadow.png?fileID=2800000&guid=5af0a1ef3db269a48ac96828aad562c5&type=3#BackgroundShadow");
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -50px;
+    height: 90px;
+}

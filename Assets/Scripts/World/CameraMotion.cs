@@ -29,14 +29,14 @@ namespace Merge
         private Action callBack;
 
         // References
-        private HubUI hubUI;
+        private WorldUI worldUI;
         private CharMain charMain;
         private Camera cam;
 
         void Start()
         {
             // Cache
-            hubUI = GameRefs.Instance.hubUI;
+            worldUI = GameRefs.Instance.worldUI;
             charMain = CharMain.Instance;
             cam = Camera.main;
 
@@ -61,7 +61,7 @@ namespace Merge
                     PlayerPrefs.SetFloat("lastCamPosX", transform.position.x);
                     PlayerPrefs.SetFloat("lastCamPosY", transform.position.y);
 
-                    hubUI.SetUIButtons();
+                    worldUI.SetUIButtons();
 
                     enabled = false;
 
@@ -108,7 +108,7 @@ namespace Merge
                     PlayerPrefs.SetFloat("lastCamPosX", transform.position.x);
                     PlayerPrefs.SetFloat("lastCamPosY", transform.position.y);
 
-                    hubUI.SetUIButtons();
+                    worldUI.SetUIButtons();
 
                     enabled = false;
 

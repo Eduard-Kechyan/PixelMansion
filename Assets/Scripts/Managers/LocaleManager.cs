@@ -21,8 +21,8 @@ namespace Merge
 
         private List<VisualElement> wrappers = new();
         private VisualElement menuLocaleWrapper;
-        private VisualElement hubLocaleWrapper;
-        private VisualElement gamePlayLocaleWrapper;
+        private VisualElement worldLocaleWrapper;
+        private VisualElement mergeLocaleWrapper;
 
         public void Init(Types.Scene scene)
         {
@@ -38,19 +38,19 @@ namespace Merge
                 wrappers.Add(menuLocaleWrapper);
             }
 
-            // Get hub locale wrapper
-            if (scene == Types.Scene.Hub)
+            // Get world locale wrapper
+            if (scene == Types.Scene.World)
             {
-                hubLocaleWrapper = gameRefs.hubUI.GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("LocaleWrapper");
+                worldLocaleWrapper = gameRefs.worldUI.GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("LocaleWrapper");
 
-                wrappers.Add(hubLocaleWrapper);
+                wrappers.Add(worldLocaleWrapper);
             }
             // Get game play locale wrapper
-            else if (scene == Types.Scene.GamePlay)
+            else if (scene == Types.Scene.Merge)
             {
-                gamePlayLocaleWrapper = gameRefs.gamePlayUI.GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("LocaleWrapper");
+                mergeLocaleWrapper = gameRefs.mergeUI.GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("LocaleWrapper");
 
-                wrappers.Add(gamePlayLocaleWrapper);
+                wrappers.Add(mergeLocaleWrapper);
             }
 
             SetLocaleWrappers(Settings.Instance.currentLocale);
@@ -76,8 +76,8 @@ namespace Merge
             wrappers.Clear();
 
             menuLocaleWrapper = null;
-            hubLocaleWrapper = null;
-            gamePlayLocaleWrapper = null;
+            worldLocaleWrapper = null;
+            mergeLocaleWrapper = null;
         }
     }
 }

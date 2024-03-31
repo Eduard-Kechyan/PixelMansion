@@ -447,7 +447,7 @@ namespace Merge
                         {
                             boardInteractions.OpenItem(item, openAmount, Types.State.Crate);
                             Select(item);
-                            selectionManager.Select("both", false);
+                            selectionManager.Select(Types.SelectType.Both, false);
                         }
                         break;
                     case ActionType.Unlock:
@@ -459,13 +459,13 @@ namespace Merge
                         {
                             boardInteractions.OpenItem(item, unlockAmount, Types.State.Locker);
                             Select(item);
-                            selectionManager.Select("both", false);
+                            selectionManager.Select(Types.SelectType.Both, false);
                         }
                         break;
                     case ActionType.UnlockChest:
                         boardInteractions.UnlockChest(item);
                         Select(item);
-                        selectionManager.Select("both", false);
+                        selectionManager.Select(Types.SelectType.Both, false);
                         break;
                     case ActionType.Pop:
                         if (gameData.gems < popAmount)
@@ -476,7 +476,7 @@ namespace Merge
                         {
                             boardInteractions.OpenItem(item, unlockAmount, Types.State.Bubble);
                             Select(item);
-                            selectionManager.Select("both", false);
+                            selectionManager.Select(Types.SelectType.Both, false);
                         }
                         break;
                     case ActionType.Sell:
@@ -524,7 +524,7 @@ namespace Merge
                         {
                             boardInteractions.SpeedUpItem(item, speedUpAmount);
                             Select(item);
-                            selectionManager.Select("both", false);
+                            selectionManager.Select(Types.SelectType.Both, false);
                             timeOn = false;
                         }
                         break;
@@ -533,7 +533,7 @@ namespace Merge
                         {
                             boardInteractions.OpenItem(item, unlockAmount, Types.State.Bubble);
                             Select(item);
-                            selectionManager.Select("both", false);
+                            selectionManager.Select(Types.SelectType.Both, false);
                             timeOn = false;
                         });
                         break;

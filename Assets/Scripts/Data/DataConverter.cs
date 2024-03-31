@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using Newtonsoft.Json;
 
 namespace Merge
@@ -26,34 +24,34 @@ namespace Merge
 
         //// BOARD ////
 
-        public Types.Board[] ConvertBoardFromJson(string boardString)
+        public Types.Tile[] ConvertBoardFromJson(string boardString)
         {
-            Types.BoardJson[] boardJson = JsonConvert.DeserializeObject<Types.BoardJson[]>(boardString);
+            Types.TileJson[] tileJson = JsonConvert.DeserializeObject<Types.TileJson[]>(boardString);
 
-            Types.Board[] boardData = new Types.Board[boardJson.Length];
+            Types.Tile[] boardData = new Types.Tile[tileJson.Length];
 
-            for (int i = 0; i < boardJson.Length; i++)
+            for (int i = 0; i < tileJson.Length; i++)
             {
-                Types.Type newType = Glob.ParseEnum<Types.Type>(boardJson[i].type);
+                Types.Type newType = Glob.ParseEnum<Types.Type>(tileJson[i].type);
 
-                Types.Board newBoardData = new()
+                Types.Tile newBoardData = new()
                 {
-                    sprite = gameData.GetSprite(boardJson[i].sprite, newType),
-                    state = Glob.ParseEnum<Types.State>(boardJson[i].state),
+                    sprite = gameData.GetSprite(tileJson[i].sprite, newType),
+                    state = Glob.ParseEnum<Types.State>(tileJson[i].state),
                     type = newType,
-                    group = Glob.ParseEnum<ItemTypes.Group>(boardJson[i].group),
-                    genGroup = Glob.ParseEnum<ItemTypes.GenGroup>(boardJson[i].genGroup),
-                    collGroup = Glob.ParseEnum<Types.CollGroup>(boardJson[i].collGroup),
-                    chestGroup = Glob.ParseEnum<Types.ChestGroup>(boardJson[i].chestGroup),
-                    chestItems = boardJson[i].chestItems,
-                    chestItemsSet = boardJson[i].chestItemsSet,
-                    chestOpen = boardJson[i].chestOpen,
-                    id = boardJson[i].id,
-                    generatesAtLevel = boardJson[i].generatesAtLevel,
-                    crate = boardJson[i].crate,
-                    gemPopped = boardJson[i].gemPopped,
-                    isCompleted = boardJson[i].isCompleted,
-                    timerOn = boardJson[i].timerOn,
+                    group = Glob.ParseEnum<ItemTypes.Group>(tileJson[i].group),
+                    genGroup = Glob.ParseEnum<ItemTypes.GenGroup>(tileJson[i].genGroup),
+                    collGroup = Glob.ParseEnum<Types.CollGroup>(tileJson[i].collGroup),
+                    chestGroup = Glob.ParseEnum<Types.ChestGroup>(tileJson[i].chestGroup),
+                    chestItems = tileJson[i].chestItems,
+                    chestItemsSet = tileJson[i].chestItemsSet,
+                    chestOpen = tileJson[i].chestOpen,
+                    id = tileJson[i].id,
+                    generatesAtLevel = tileJson[i].generatesAtLevel,
+                    crate = tileJson[i].crate,
+                    gemPopped = tileJson[i].gemPopped,
+                    isCompleted = tileJson[i].isCompleted,
+                    timerOn = tileJson[i].timerOn,
                 };
 
                 boardData[i] = newBoardData;
@@ -62,15 +60,15 @@ namespace Merge
             return boardData;
         }
 
-        public string ConvertBoardToJson(Types.Board[] boardData, bool initialLoop = false)
+        public string ConvertBoardToJson(Types.Tile[] boardData, bool initialLoop = false)
         {
-            Types.BoardJson[] boardJson = new Types.BoardJson[boardData.Length];
+            Types.TileJson[] tileJson = new Types.TileJson[boardData.Length];
 
             for (int i = 0; i < boardData.Length; i++)
             {
                 int randomInt = Random.Range(0, itemHandler.crateSprites.Length);
 
-                Types.BoardJson newBoardJson = new()
+                Types.TileJson newTileJson = new()
                 {
                     sprite = boardData[i].sprite == null ? "" : boardData[i].sprite.name,
                     state = boardData[i].state.ToString(),
@@ -90,15 +88,15 @@ namespace Merge
                     timerOn = boardData[i].timerOn,
                 };
 
-                boardJson[i] = newBoardJson;
+                tileJson[i] = newTileJson;
             }
 
-            return JsonConvert.SerializeObject(boardJson);
+            return JsonConvert.SerializeObject(tileJson);
         }
 
-        public Types.Board[,] ConvertArrayToBoard(Types.Board[] boardArray)
+        public Types.Tile[,] ConvertArrayToBoard(Types.Tile[] boardArray)
         {
-            Types.Board[,] newBoardData = new Types.Board[GameData.WIDTH, GameData.HEIGHT];
+            Types.Tile[,] newBoardData = new Types.Tile[GameData.WIDTH, GameData.HEIGHT];
 
             int count = 0;
 
@@ -106,7 +104,7 @@ namespace Merge
             {
                 for (int j = 0; j < GameData.HEIGHT; j++)
                 {
-                    newBoardData[i, j] = new Types.Board
+                    newBoardData[i, j] = new Types.Tile
                     {
                         sprite = boardArray[count].sprite,
                         type = boardArray[count].type,
@@ -134,15 +132,15 @@ namespace Merge
             return newBoardData;
         }
 
-        public Types.Board[] ConvertBoardToArray(Types.Board[,] boardData)
+        public Types.Tile[] ConvertBoardToArray(Types.Tile[,] boardData)
         {
-            Types.Board[] newBoardArray = new Types.Board[GameData.ITEM_COUNT];
+            Types.Tile[] newBoardArray = new Types.Tile[GameData.ITEM_COUNT];
 
             int count = 0;
 
-            foreach (Types.Board boardItem in boardData)
+            foreach (Types.Tile boardItem in boardData)
             {
-                newBoardArray[count] = new Types.Board
+                newBoardArray[count] = new Types.Tile
                 {
                     sprite = boardItem.sprite,
                     type = boardItem.type,

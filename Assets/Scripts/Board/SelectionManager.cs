@@ -13,9 +13,7 @@ namespace Merge
         // References
         private BoardInteractions interactions;
         private DoubleTapManager doubleTapManager;
-
-        // Instances
-        private GameplayUI gamePlayUI;
+        private MergeUI mergeUI;
         private InfoBox infoBox;
 
         void Start()
@@ -23,12 +21,11 @@ namespace Merge
             // Cache
             interactions = GetComponent<BoardInteractions>();
             doubleTapManager = GetComponent<DoubleTapManager>();
-
-            // Cache instances
-            gamePlayUI = GameRefs.Instance.gamePlayUI;
-            infoBox = gamePlayUI.GetComponent<InfoBox>();
+            mergeUI = GameRefs.Instance.mergeUI;
+            infoBox = mergeUI.GetComponent<InfoBox>();
         }
 
+        // Find and select the item at the given position
         public void SelectItem(Vector3 worldPos)
         {
             // Cast a ray to find an item on the current position
@@ -57,14 +54,14 @@ namespace Merge
                     if (item.isIndicating || !item.isPlaying) // FIX - This was "!item.isPlaying", check if it's good now
                     {
                         // Unselect other items if they exist
-                        Unselect("both");
+                        Unselect(Types.SelectType.Both);
 
                         // Set current item
                         interactions.currentItem = item;
 
                         // Select the item
                         interactions.isSelected = true;
-                        Select("both");
+                        Select(Types.SelectType.Both);
                     }
                 }
             }
@@ -73,14 +70,15 @@ namespace Merge
             CheckUnselect(worldPos);
         }
 
+        // Select the item after undoing the items from a state of being sold or removed
         public void SelectItemAfterUndo()
         {
             // Unselect other items if they exist
-            Unselect("both");
+            Unselect(Types.SelectType.Both);
 
             // Select the item
             interactions.isSelected = true;
-            Select("both");
+            Select(Types.SelectType.Both);
         }
 
         void CheckUnselect(Vector3 worldPos)
@@ -97,16 +95,16 @@ namespace Merge
             {
                 // Unselect other items if they exist
                 interactions.isSelected = false;
-                Unselect("both");
+                Unselect(Types.SelectType.Both);
             }
         }
 
-        // Selection
-        public void Select(string type, bool animate = true)
+        // Select the given item
+        public void Select(Types.SelectType selectType, bool animate = true)
         {
             if (interactions.currentItem != null)
             {
-                if (type == "info")
+                if (selectType == Types.SelectType.Info)
                 {
                     infoBox.Select(interactions.currentItem);
                 }
@@ -114,7 +112,7 @@ namespace Merge
                 {
                     interactions.currentItem.isSelected = true;
 
-                    if (type != "only")
+                    if (selectType != Types.SelectType.Only)
                     {
                         interactions.currentItem.Select(selectSpeed, animate);
                         infoBox.Select(interactions.currentItem);
@@ -123,9 +121,10 @@ namespace Merge
             }
         }
 
-        public void Unselect(string type)
+        // Unselect the given item
+        public void Unselect(Types.SelectType selectType)
         {
-            if (type == "info")
+            if (selectType == Types.SelectType.Info)
             {
                 infoBox.Unselect();
             }
@@ -142,6 +141,7 @@ namespace Merge
             }
         }
 
+        // Alternative way of unselecting the given item
         public void UnselectAlt()
         {
             interactions.isSelected = false;
@@ -154,6 +154,7 @@ namespace Merge
             }
         }
 
+        // Unselect the item when undoing
         public void UnselectUndo()
         {
             interactions.isSelected = false;

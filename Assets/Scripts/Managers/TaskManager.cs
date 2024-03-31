@@ -28,8 +28,8 @@ namespace Merge
         private CameraMotion cameraMotion;
         private CameraPinch cameraPinch;
         private NoteDotHandler noteDotHandler;
-        private HubUI hubUI;
-        private GameplayUI gamePlayUI;
+        private WorldUI worldUI;
+        private MergeUI mergeUI;
         private UIButtons uiButtons;
 
         void Start()
@@ -41,11 +41,11 @@ namespace Merge
             cameraMotion = Camera.main.GetComponent<CameraMotion>();
             cameraPinch = Camera.main.GetComponent<CameraPinch>();
             noteDotHandler = GameRefs.Instance.noteDotHandler;
-            hubUI = GameRefs.Instance.hubUI;
-            gamePlayUI = GameRefs.Instance.gamePlayUI;
+            worldUI = GameRefs.Instance.worldUI;
+            mergeUI = GameRefs.Instance.mergeUI;
             uiButtons = gameData.GetComponent<UIButtons>();
 
-            // The world data manager is only attached in the hub scene
+            // The world data manager is only attached in the world scene
             if (worldDataManager != null)
             {
                 selector = worldDataManager.GetComponent<Selector>();
@@ -372,7 +372,7 @@ namespace Merge
                             int oldOrder = gameData.boardData[x, y].order;
 
                             // Create a new board data using the old older
-                            gameData.boardData[x, y] = new Types.Board { order = oldOrder };
+                            gameData.boardData[x, y] = new Types.Tile { order = oldOrder };
 
                             // Nullify the needs
                             needs[i] = new Types.TaskItem();
@@ -417,7 +417,7 @@ namespace Merge
                     }
                     else
                     {
-                        valuePop.PopValue(rewards[k].amount, rewards[k].collGroup, uiButtons.hubTaskButtonPos, false);
+                        valuePop.PopValue(rewards[k].amount, rewards[k].collGroup, uiButtons.worldTaskButtonPos, false);
                     }
                 }
                 else
@@ -450,15 +450,15 @@ namespace Merge
                 Vector2 initialPosition;
                 Vector2 buttonPosition;
 
-                if (noteDotHandler.isHub)
+                if (noteDotHandler.isWorld)
                 {
-                    initialPosition = uiButtons.hubTaskButtonPos;
-                    buttonPosition = uiButtons.hubPlayButtonPos;
+                    initialPosition = uiButtons.worldTaskButtonPos;
+                    buttonPosition = uiButtons.worldPlayButtonPos;
                 }
                 else
                 {
-                    initialPosition = uiButtons.gamePlayTaskButtonPos;
-                    buttonPosition = uiButtons.gamePlayBonusButtonPos;
+                    initialPosition = uiButtons.mergeTaskButtonPos;
+                    buttonPosition = uiButtons.mergeBonusButtonPos;
                 }
 
                 valuePop.PopBonus(newItem, initialPosition, buttonPosition);
@@ -485,7 +485,7 @@ namespace Merge
 
             if (noteDotHandler != null)
             {
-                if (noteDotHandler.isHub && completedCount == noteDotHandler.taskNoteDotAmount)
+                if (noteDotHandler.isWorld && completedCount == noteDotHandler.taskNoteDotAmount)
                 {
                     return;
                 }
@@ -638,7 +638,7 @@ namespace Merge
         }
 
         // After tapping the complete button on the task in the game play scene, 
-        // send the data to the hub scene and try to complete the scene here
+        // send the data to the world scene and try to complete the scene here
         public void CheckIfThereIsATaskToComplete(Action callback = null)
         {
             if (Glob.taskToComplete != "")

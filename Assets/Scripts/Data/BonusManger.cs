@@ -10,7 +10,7 @@ namespace Merge
         public BoardManager boardManager;
 
         // References
-        private GameplayUI gamePlayUI;
+        private MergeUI mergeUI;
         private PopupManager popupManager;
         private DataManager dataManager;
         private UIButtons uiButtons;
@@ -22,7 +22,7 @@ namespace Merge
         void Start()
         {
             // References
-            gamePlayUI = GetComponent<GameplayUI>();
+            mergeUI = GetComponent<MergeUI>();
             popupManager = PopupManager.Instance;
             dataManager = DataManager.Instance;
             uiButtons = GameData.Instance.GetComponent<UIButtons>();
@@ -34,7 +34,7 @@ namespace Merge
 
         public void GetBonus()
         {
-            List<Types.BoardEmpty> emptyBoard = boardManager.GetEmptyBoardItems(Vector2Int.zero, false);
+            List<Types.TileEmpty> emptyBoard = boardManager.GetEmptyTileItems(Vector2Int.zero, false);
 
             // Check if the board is full
             if (emptyBoard.Count > 0)
@@ -57,7 +57,7 @@ namespace Merge
                 boardManager.CreateItemOnEmptyTile(
                     itemData,
                     emptyBoard[0],
-                    uiButtons.gamePlayBonusButtonPos,
+                    uiButtons.mergeBonusButtonPos,
                     false
                 );
 
@@ -67,7 +67,7 @@ namespace Merge
             {
                 popupManager.Pop(
                     LOCALE.Get("pop_board_full"),
-                    uiButtons.gamePlayBonusButtonPos,
+                    uiButtons.mergeBonusButtonPos,
                     Types.SoundType.Buzz,
                     true
                 );

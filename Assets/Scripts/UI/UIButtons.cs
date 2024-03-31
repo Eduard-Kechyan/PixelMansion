@@ -12,49 +12,49 @@ namespace Merge
         [Header("Debug")]
         public bool drawGizmos = false;
         [Condition("drawGizmos", true)]
-        public float gizmoRadiusHub = 28f;
+        public float gizmoRadiusWorld = 28f;
         [Condition("drawGizmos", true)]
-        public float gizmoRadiusHubSmall = 20f;
+        public float gizmoRadiusWorldSmall = 20f;
         [Condition("drawGizmos", true)]
-        public float gizmoRadiusGameplay = 0.65f;
+        public float gizmoRadiusMerge = 0.65f;
         [Condition("drawGizmos", true)]
         public Color gizmoColor = Color.blue;
 
-        private Vector2 gizmosSizeHub;
-        private Vector2 gizmosSizeHubSmall;
-        private Vector2 gizmosSizeGameplay;
+        private Vector2 gizmosSizeWorld;
+        private Vector2 gizmosSizeWorldSmall;
+        private Vector2 gizmosSizeMerge;
 #endif
 
-        [Header("Hub Scene")]
+        [Header("World Scene")]
         [ReadOnly]
-        public bool hubButtonsSet = false;
+        public bool worldButtonsSet = false;
         [ReadOnly]
-        public Vector2 hubShopButtonPos;
+        public Vector2 worldShopButtonPos;
         [ReadOnly]
-        public Vector2 hubPlayButtonPos;
+        public Vector2 worldPlayButtonPos;
         [ReadOnly]
-        public Vector2 hubTaskButtonPos;
+        public Vector2 worldTaskButtonPos;
 
-        [Header("GamePlay Scene")]
+        [Header("Merge Scene")]
         [ReadOnly]
-        public bool gamePlayButtonsSet = false;
+        public bool mergeButtonsSet = false;
         [ReadOnly]
-        public Vector2 gamePlayHomeButtonPos;
+        public Vector2 mergeHomeButtonPos;
         [ReadOnly]
-        public Vector2 gamePlayShopButtonPos;
+        public Vector2 mergeShopButtonPos;
         [ReadOnly]
-        public Vector2 gamePlayTaskButtonPos;
+        public Vector2 mergeTaskButtonPos;
         [ReadOnly]
-        public Vector2 gamePlayBonusButtonPos;
+        public Vector2 mergeBonusButtonPos;
 
 #if UNITY_EDITOR
         void OnValidate()
         {
             if (drawGizmos)
             {
-                gizmosSizeHub = new Vector2(gizmoRadiusHub, gizmoRadiusHub);
-                gizmosSizeHubSmall = new Vector2(gizmoRadiusHubSmall, gizmoRadiusHubSmall);
-                gizmosSizeGameplay = new Vector2(gizmoRadiusGameplay, gizmoRadiusGameplay);
+                gizmosSizeWorld = new Vector2(gizmoRadiusWorld, gizmoRadiusWorld);
+                gizmosSizeWorldSmall = new Vector2(gizmoRadiusWorldSmall, gizmoRadiusWorldSmall);
+                gizmosSizeMerge = new Vector2(gizmoRadiusMerge, gizmoRadiusMerge);
             }
         }
 
@@ -64,17 +64,17 @@ namespace Merge
             {
                 Gizmos.color = gizmoColor;
 
-                if (SceneManager.GetActiveScene().name == Types.Scene.Hub.ToString())
+                if (SceneManager.GetActiveScene().name == Types.Scene.World.ToString())
                 {
-                    Gizmos.DrawWireCube(hubShopButtonPos, gizmosSizeHubSmall);
-                    Gizmos.DrawWireCube(hubPlayButtonPos, gizmosSizeHub);
-                    Gizmos.DrawWireCube(hubTaskButtonPos, gizmosSizeHub);
+                    Gizmos.DrawWireCube(worldShopButtonPos, gizmosSizeWorldSmall);
+                    Gizmos.DrawWireCube(worldPlayButtonPos, gizmosSizeWorld);
+                    Gizmos.DrawWireCube(worldTaskButtonPos, gizmosSizeWorld);
                 }
                 else
                 {
-                    Gizmos.DrawWireCube(gamePlayShopButtonPos, gizmosSizeGameplay);
-                    Gizmos.DrawWireCube(Camera.main.ScreenToWorldPoint(gamePlayTaskButtonPos), gizmosSizeGameplay);
-                    Gizmos.DrawWireCube(gamePlayBonusButtonPos, gizmosSizeGameplay);
+                    Gizmos.DrawWireCube(mergeShopButtonPos, gizmosSizeMerge);
+                    Gizmos.DrawWireCube(Camera.main.ScreenToWorldPoint(mergeTaskButtonPos), gizmosSizeMerge);
+                    Gizmos.DrawWireCube(mergeBonusButtonPos, gizmosSizeMerge);
                 }
             }
         }

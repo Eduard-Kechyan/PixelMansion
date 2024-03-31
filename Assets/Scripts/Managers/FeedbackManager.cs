@@ -93,7 +93,7 @@ namespace Merge
 
         void Awake()
         {
-            if (Glob.ParseEnum<Types.Scene>(SceneManager.GetActiveScene().name) != Types.Scene.Hub && !Debug.isDebugBuild && !Application.isEditor)
+            if (Glob.ParseEnum<Types.Scene>(SceneManager.GetActiveScene().name) != Types.Scene.World && !Debug.isDebugBuild && !Application.isEditor)
             {
                 Destroy(gameObject);
             }

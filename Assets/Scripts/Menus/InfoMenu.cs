@@ -36,9 +36,9 @@ namespace Merge
             LOCALE = I18n.Instance;
             menuUI = GetComponent<MenuUI>();
 
-            if (SceneManager.GetActiveScene().name == Types.Scene.GamePlay.ToString())
+            if (SceneManager.GetActiveScene().name == Types.Scene.Merge.ToString())
             {
-                infoBox = GameRefs.Instance.gamePlayUI.GetComponent<InfoBox>();
+                infoBox = GameRefs.Instance.mergeUI.GetComponent<InfoBox>();
             }
 
             // UI

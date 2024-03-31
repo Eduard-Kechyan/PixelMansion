@@ -10,21 +10,21 @@ namespace Merge
     {
         // UI scripts
         [Header("UI Scripts")]
-        public GameplayUI gamePlayUI;
-        public HubUI hubUI;
-        public HubGameUI hubGameUI;
+        public MergeUI mergeUI;
+        public WorldUI worldUI;
+        public WorldGameUI worldGameUI;
         public MenuUI menuUI;
         public ValuesUI valuesUI;
 
         // UI documents
         [HideInInspector]
-        public UIDocument gamePlayUIDoc;
+        public UIDocument mergeUIDoc;
 
         [HideInInspector]
-        public UIDocument hubUIDoc;
+        public UIDocument worldUIDoc;
 
         [HideInInspector]
-        public UIDocument hubGameUIDoc;
+        public UIDocument worldGameUIDoc;
 
         [HideInInspector]
         public UIDocument menuUIDoc;
@@ -116,19 +116,19 @@ namespace Merge
         void Init()
         {
             // UI documents
-            if (gamePlayUI != null)
+            if (mergeUI != null)
             {
-                gamePlayUIDoc = gamePlayUI.GetComponent<UIDocument>();
-                safeAreaHandler = gamePlayUI.GetComponent<SafeAreaHandler>();
-                noteDotHandler = gamePlayUI.GetComponent<NoteDotHandler>();
+                mergeUIDoc = mergeUI.GetComponent<UIDocument>();
+                safeAreaHandler = mergeUI.GetComponent<SafeAreaHandler>();
+                noteDotHandler = mergeUI.GetComponent<NoteDotHandler>();
             }
 
-            if (hubUI != null)
+            if (worldUI != null)
             {
-                hubUIDoc = hubUI.GetComponent<UIDocument>();
-                hubGameUIDoc = hubGameUI.GetComponent<UIDocument>();
-                safeAreaHandler = hubUI.GetComponent<SafeAreaHandler>();
-                noteDotHandler = hubUI.GetComponent<NoteDotHandler>();
+                worldUIDoc = worldUI.GetComponent<UIDocument>();
+                worldGameUIDoc = worldGameUI.GetComponent<UIDocument>();
+                safeAreaHandler = worldUI.GetComponent<SafeAreaHandler>();
+                noteDotHandler = worldUI.GetComponent<NoteDotHandler>();
             }
 
             if (valuesUI != null)

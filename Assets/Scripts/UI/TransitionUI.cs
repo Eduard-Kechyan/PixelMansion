@@ -113,13 +113,13 @@ namespace Merge
             {
                 switch (sceneLoader.GetScene())
                 {
-                    case Types.Scene.Hub:
+                    case Types.Scene.World:
                         if (worldDataManager.loaded)
                         {
                             readyToOpen = true;
                         }
                         break;
-                    case Types.Scene.GamePlay:
+                    case Types.Scene.Merge:
                         if (boardManager.boardSet)
                         {
                             readyToOpen = true;

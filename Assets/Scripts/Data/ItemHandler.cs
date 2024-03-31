@@ -23,22 +23,22 @@ namespace Merge
         public Item CreateItem(
             GameObject tile,
             float tileSize,
-            Types.Board boardItem,
+            Types.Tile tileItem,
             string spriteName = ""
         )
         {
-            Types.ItemData itemData = FindItem(boardItem, null, spriteName);
+            Types.ItemData itemData = FindItem(tileItem, null, spriteName);
 
             // Instantiate item
             GameObject newItemPre = Instantiate(item, tile.transform.position, Quaternion.identity);
             Item newItem = newItemPre.GetComponent<Item>();
 
-            newItem.id = boardItem.id;
+            newItem.id = tileItem.id;
             newItem.sprite = itemData.sprite;
             newItem.itemName = itemData.itemName;
             newItem.level = itemData.level;
-            newItem.state = boardItem.state;
-            newItem.isCompleted = boardItem.isCompleted;
+            newItem.state = tileItem.state;
+            newItem.isCompleted = tileItem.isCompleted;
             newItem.type = itemData.type;
             newItem.hasLevel = itemData.hasLevel;
             newItem.parents = itemData.parents;
@@ -49,22 +49,22 @@ namespace Merge
             newItem.genGroup = itemData.genGroup;
             newItem.collGroup = itemData.collGroup;
             newItem.chestGroup = itemData.chestGroup;
-            newItem.timerOn = boardItem.timerOn;
+            newItem.timerOn = tileItem.timerOn;
             newItem.generatesAtLevel = itemData.generatesAtLevel;
-            newItem.chestOpen = boardItem.chestOpen;
+            newItem.chestOpen = tileItem.chestOpen;
             newItem.chestItems = itemData.chestItems;
             newItem.chestItemsSet = itemData.chestItemsSet;
-            newItem.crate = boardItem.crate;
+            newItem.crate = tileItem.crate;
             newItem.gemPopped = itemData.gemPopped;
 
-            if (boardItem.state == Types.State.Crate)
+            if (tileItem.state == Types.State.Crate)
             {
-                newItem.SetCrateSprite(crateSprites[boardItem.crate]);
+                newItem.SetCrateSprite(crateSprites[tileItem.crate]);
             }
 
             if (!itemData.isMaxLevel)
             {
-                newItem.nextName = GetNextItem(boardItem);
+                newItem.nextName = GetNextItem(tileItem);
             }
 
             // Set item scale
@@ -110,7 +110,7 @@ namespace Merge
 
         // Find the given item for the scriptable object
         public Types.ItemData FindItem(
-            Types.Board boardItem = null,
+            Types.Tile tileItem = null,
             Types.ShopItemsContent shopItem = null,
             string newSpriteName = ""
         )
@@ -124,7 +124,7 @@ namespace Merge
             Types.CollGroup collGroup = Types.CollGroup.Experience;
             Types.ChestGroup chestGroup;
 
-            if (boardItem == null)
+            if (tileItem == null)
             {
                 spriteName = shopItem.sprite.name;
                 type = shopItem.type;
@@ -134,12 +134,12 @@ namespace Merge
             }
             else
             {
-                spriteName = boardItem.sprite.name;
-                type = boardItem.type;
-                group = boardItem.group;
-                genGroup = boardItem.genGroup;
-                collGroup = boardItem.collGroup;
-                chestGroup = boardItem.chestGroup;
+                spriteName = tileItem.sprite.name;
+                type = tileItem.type;
+                group = tileItem.group;
+                genGroup = tileItem.genGroup;
+                collGroup = tileItem.collGroup;
+                chestGroup = tileItem.chestGroup;
             }
 
             if (newSpriteName != "")
@@ -247,23 +247,23 @@ namespace Merge
         }
 
         // Get the next item's name
-        string GetNextItem(Types.Board boardItem)
+        string GetNextItem(Types.Tile tileItem)
         {
             string nextName = "";
 
-            switch (boardItem.type)
+            switch (tileItem.type)
             {
                 case Types.Type.Item:
                     Types.Item[] itemsData = gameData.itemsData;
 
                     for (int i = 0; i < itemsData.Length; i++)
                     {
-                        if (boardItem.group == itemsData[i].group)
+                        if (tileItem.group == itemsData[i].group)
                         {
                             for (int j = 0; j < itemsData[i].content.Length; j++)
                             {
                                 if (
-                                    boardItem.sprite.name == itemsData[i].content[j].sprite.name
+                                    tileItem.sprite.name == itemsData[i].content[j].sprite.name
                                     && itemsData[i].content[j + 1] != null
                                 )
                                 {
@@ -283,12 +283,12 @@ namespace Merge
 
                     for (int i = 0; i < generatorsData.Length; i++)
                     {
-                        if (boardItem.genGroup == generatorsData[i].genGroup)
+                        if (tileItem.genGroup == generatorsData[i].genGroup)
                         {
                             for (int j = 0; j < generatorsData[i].content.Length; j++)
                             {
                                 if (
-                                    boardItem.sprite.name == generatorsData[i].content[j].sprite.name
+                                    tileItem.sprite.name == generatorsData[i].content[j].sprite.name
                                     && generatorsData[i].content[j + 1] != null
                                 )
                                 {
@@ -308,12 +308,12 @@ namespace Merge
 
                     for (int i = 0; i < collectablesData.Length; i++)
                     {
-                        if (boardItem.collGroup == collectablesData[i].collGroup)
+                        if (tileItem.collGroup == collectablesData[i].collGroup)
                         {
                             for (int j = 0; j < collectablesData[i].content.Length; j++)
                             {
                                 if (
-                                    boardItem.sprite.name == collectablesData[i].content[j].sprite.name
+                                    tileItem.sprite.name == collectablesData[i].content[j].sprite.name
                                     && collectablesData[i].content[j + 1] != null
                                 )
                                 {
@@ -333,12 +333,12 @@ namespace Merge
 
                     for (int i = 0; i < chestsData.Length; i++)
                     {
-                        if (boardItem.chestGroup == chestsData[i].chestGroup)
+                        if (tileItem.chestGroup == chestsData[i].chestGroup)
                         {
                             for (int j = 0; j < chestsData[i].content.Length; j++)
                             {
                                 if (
-                                    boardItem.sprite.name == chestsData[i].content[j].sprite.name
+                                    tileItem.sprite.name == chestsData[i].content[j].sprite.name
                                     && chestsData[i].content[j + 1] != null
                                 )
                                 {
@@ -355,7 +355,7 @@ namespace Merge
 
                 default:
                     // ERROR
-                    ErrorManager.Instance.Throw(Types.ErrorType.Code, "ItemHandler.cs -> GetNextItem()", "Wrong type: " + boardItem.type);
+                    ErrorManager.Instance.Throw(Types.ErrorType.Code, "ItemHandler.cs -> GetNextItem()", "Wrong type: " + tileItem.type);
                     break;
             }
 

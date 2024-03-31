@@ -12,6 +12,7 @@ namespace Merge
         // Variables
         public BoardInteractions boardInteractions;
         public LoadingManager loadingManager;
+        public PreMansionHandler preMansionHandler;
         public float transitionDuration = 0.1f;
 
         private bool valuesShown;
@@ -33,6 +34,7 @@ namespace Merge
         private Button diagnosticsButton;
         private Button logsButton;
         private Button logsShakingButton;
+        private Button unlockPreMansionButton;
 
         private VisualElement loadingContainer;
         private Button skipButton;
@@ -64,6 +66,7 @@ namespace Merge
             diagnosticsButton = otherContainer.Q<Button>("DiagnosticsButton");
             logsButton = otherContainer.Q<Button>("LogsButton");
             logsShakingButton = otherContainer.Q<Button>("LogsShakingButton");
+            unlockPreMansionButton = otherContainer.Q<Button>("UnlockPreMansionButton");
 
             // Button taps
             menuBackground.AddManipulator(new Clickable(evt =>
@@ -82,6 +85,7 @@ namespace Merge
             diagnosticsButton.clicked += () => ToggleDiagnostic();
             logsButton.clicked += () => logs.Toggle();
             logsShakingButton.clicked += () => ToggleLogsShaking();
+            unlockPreMansionButton.clicked += () => RemovePreMansion();
 
             // Init
             Init();
@@ -203,6 +207,15 @@ namespace Merge
             debugMenu.style.display = DisplayStyle.Flex;
             debugMenu.style.opacity = 1;
 
+            if (preMansionHandler == null || (!preMansionHandler.dontDestroyAtStart && PlayerPrefs.HasKey("PreMansionRemoved")))
+            {
+                unlockPreMansionButton.style.display = DisplayStyle.None;
+            }
+            else
+            {
+                unlockPreMansionButton.style.display = DisplayStyle.Flex;
+            }
+
             ShowValues();
 
             // Disable the board
@@ -261,6 +274,16 @@ namespace Merge
                 valuesUI.SetSortingOrder(10);
 
                 valuesUI.EnableButtons();
+            }
+        }
+
+        void RemovePreMansion()
+        {
+            if (preMansionHandler != null)
+            {
+                preMansionHandler.Remove();
+
+                CloseMenu();
             }
         }
     }

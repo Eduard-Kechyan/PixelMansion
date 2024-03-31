@@ -32,7 +32,7 @@ namespace Merge
         private float crateTimeout = 0f;
 
         // References
-        private InitializeBoard initializeBoard;
+        private BoardInitialization boardInitialization;
         private BoardInteractions interactions;
         private SelectionManager selectionManager;
         private DataManager dataManager;
@@ -40,12 +40,13 @@ namespace Merge
         private GameData gameData;
         private ItemHandler itemHandler;
         private ValuePop valuePop;
+        private ErrorManager errorManager;
 
         void Start()
         {
             // Cache
             boardTiles = transform.GetChild(0).gameObject;
-            initializeBoard = GetComponent<InitializeBoard>();
+            boardInitialization = GetComponent<BoardInitialization>();
             interactions = GetComponent<BoardInteractions>();
             selectionManager = GetComponent<SelectionManager>();
             dataManager = DataManager.Instance;
@@ -53,41 +54,55 @@ namespace Merge
             gameData = GameData.Instance;
             itemHandler = dataManager.GetComponent<ItemHandler>();
             valuePop = GameRefs.Instance.valuePop;
+            errorManager = ErrorManager.Instance;
         }
 
         /////// GET BOARD DATA ////////
 
+        // Get the item's order from the board by its location
         public int GetBoardOrder(int checkX, int checkY)
         {
-            // Get the item's order from the board by its location
+            int width = gameData.boardData.GetLength(0);
+            int height = gameData.boardData.GetLength(1);
 
-            int count = 0;
-
-            for (int x = 0; x < gameData.boardData.GetLength(0); x++)
+            if (checkX < 0 || checkX >= width || checkY < 0 || checkY >= height)
             {
-                for (int y = 0; y < gameData.boardData.GetLength(1); y++)
-                {
-                    if (x == checkX && y == checkY)
-                    {
-                        return count;
-                    }
-
-                    count++;
-                }
+                // ERROR
+                errorManager.ThrowWarning(Types.ErrorType.Code, "BoardManager", "Invalid indices provided.");
+                return 0;
             }
 
-            return 0;
+            // Calculate the linear index from 2D indices
+            return checkY * width + checkX;
         }
 
+        // Get the item's location from the board by its tile's order
         public Vector2Int GetBoardLocation(int order, GameObject tile = null)
         {
-            // Get the item's location from the board by its tile's order
-
             Vector2Int loc = new(0, 0);
 
             if (tile != null)
             {
-                order = int.Parse(tile.gameObject.name[(tile.gameObject.name.LastIndexOf('e') + 1)..]);
+                int index = tile.gameObject.name.LastIndexOf('e') + 1;
+                if (index >= 0 && index < tile.gameObject.name.Length)
+                {
+                    if (int.TryParse(tile.gameObject.name.Substring(index), out int parsedOrder))
+                    {
+                        order = parsedOrder;
+                    }
+                    else
+                    {
+                        // ERROR
+                        errorManager.ThrowWarning(Types.ErrorType.Code, "BoardManager", "Failed to parse order from tile name.");
+                        return loc;
+                    }
+                }
+                else
+                {
+                    // ERROR
+                    errorManager.ThrowWarning(Types.ErrorType.Code, "BoardManager", "Invalid tile name format.");
+                    return loc;
+                }
             }
 
             int count = 0;
@@ -118,20 +133,25 @@ namespace Merge
             return GetBoardOrder(loc.x, loc.y);
         }
 
-        public Vector2 GetBoardItemPosByLoc(int checkX, int checkY)
+        public Vector2 GetTileItemPosByLoc(int checkX, int checkY)
         {
-            for (int i = 0; i < boardTiles.transform.childCount; i++)
-            {
-                if (i == GetBoardOrder(checkX, checkY))
-                {
-                    return boardTiles.transform.GetChild(i).position;
-                }
-            }
+            int order = GetBoardOrder(checkX, checkY);
 
-            return Vector2.zero;
+            Transform tileTransform = boardTiles.transform.GetChild(order);
+
+            if (tileTransform != null)
+            {
+                return tileTransform.position;
+            }
+            else
+            {
+                // ERROR
+                errorManager.ThrowWarning(Types.ErrorType.Code, "BoardManager", "Failed to retrieve tile transform.");
+                return Vector2.zero;
+            }
         }
 
-        public Vector2 GetBoardItemPosById(string id)
+        public Vector2 GetTileItemPosById(string id)
         {
             for (int x = 0; x < gameData.boardData.GetLength(0); x++)
             {
@@ -139,11 +159,13 @@ namespace Merge
                 {
                     if (gameData.boardData[x, y].id == id)
                     {
-                        return GetBoardItemPosByLoc(x, y);
+                        return GetTileItemPosByLoc(x, y);
                     }
                 }
             }
 
+            // ERROR
+            errorManager.ThrowWarning(Types.ErrorType.Code, "BoardManager", "Item with ID " + id + " not found on the board.");
             return Vector2.zero;
         }
 
@@ -156,8 +178,12 @@ namespace Merge
             Vector2Int newLoc = GetBoardLocation(0, newTile);
 
             // Save items
-            Types.Board oldItem = gameData.boardData[oldLoc.x, oldLoc.y];
-            Types.Board newItem = gameData.boardData[newLoc.x, newLoc.y];
+            Types.Tile oldItem = gameData.boardData[oldLoc.x, oldLoc.y];
+            Types.Tile newItem = gameData.boardData[newLoc.x, newLoc.y];
+
+            Types.Tile temp = gameData.boardData[oldLoc.x, oldLoc.y];
+            gameData.boardData[oldLoc.x, oldLoc.y] = gameData.boardData[newLoc.x, newLoc.y];
+            gameData.boardData[newLoc.x, newLoc.y] = temp;
 
             // Set items
             gameData.boardData[oldLoc.x, oldLoc.y] = new()
@@ -207,7 +233,7 @@ namespace Merge
             int oldOrder = gameData.boardData[oldLoc.x, oldLoc.y].order;
             int newOrder = gameData.boardData[newLoc.x, newLoc.y].order;
 
-            // Clear old items
+            // Clear old items (preserve the order)
             gameData.boardData[oldLoc.x, oldLoc.y] = new() { order = oldOrder };
 
             // Set new item
@@ -246,7 +272,7 @@ namespace Merge
             int oldOrder = gameData.boardData[oldLoc.x, oldLoc.y].order;
 
             // Clear old items
-            gameData.boardData[oldLoc.x, oldLoc.y] = new Types.Board { order = oldOrder };
+            gameData.boardData[oldLoc.x, oldLoc.y] = new Types.Tile { order = oldOrder };
 
             // Save the board to disk
             dataManager.SaveBoard();
@@ -254,7 +280,34 @@ namespace Merge
 
         public void ToggleTimerOnItem(int order, bool enable)
         {
-            boardTiles.transform.GetChild(order).GetChild(0).GetComponent<Item>().ToggleTimer(enable);
+            if (order < 0 || order >= boardTiles.transform.childCount)
+            {
+                // ERROR
+                errorManager.ThrowWarning(Types.ErrorType.Code, "BoardManager", "Invalid order provided.");
+                return;
+            }
+
+            Transform tileTransform = boardTiles.transform.GetChild(order);
+
+            if (tileTransform != null)
+            {
+                Item itemComponent = tileTransform.GetComponentInChildren<Item>();
+
+                if (itemComponent != null)
+                {
+                    itemComponent.ToggleTimer(enable);
+                }
+                else
+                {
+                    // ERROR
+                    errorManager.ThrowWarning(Types.ErrorType.Code, "BoardManager", "Item component not found on tile.");
+                }
+            }
+            else
+            {
+                // ERROR
+                errorManager.ThrowWarning(Types.ErrorType.Code, "BoardManager", "Tile transform not found.");
+            }
         }
 
         /////// CRATE ////////
@@ -296,7 +349,7 @@ namespace Merge
                 // Play crate opening audio
                 if (crateTimeout == 0)
                 {
-                    if(crateCoroutine!=null)
+                    if (crateCoroutine != null)
                     {
                         StopCoroutine(crateCoroutine);
                         crateCoroutine = null;
@@ -367,7 +420,7 @@ namespace Merge
 
                     Vector2Int tileLoc = GetBoardLocation(0, tile);
 
-                    List<Types.BoardEmpty> emptyBoard = GetEmptyBoardItems(tileLoc);
+                    List<Types.TileEmpty> emptyBoard = GetEmptyTileItems(tileLoc);
 
                     // Check if the board is full
                     if (emptyBoard.Count > 0)
@@ -430,9 +483,9 @@ namespace Merge
 
                             Vector2 position = bubbleItem.transform.position;
 
-                            selectionManager.Unselect("none");
+                            selectionManager.Unselect(Types.SelectType.None);
 
-                            Types.BoardEmpty boardEmpty = new()
+                            Types.TileEmpty tileEmpty = new()
                             {
                                 order = count,
                                 loc = new(x, y),
@@ -453,7 +506,7 @@ namespace Merge
                                             {
                                                 CreateItemOnEmptyTile(
                                                     gameData.collectablesData[i].content[j],
-                                                    boardEmpty,
+                                                    tileEmpty,
                                                     position,
                                                     false,
                                                     false,
@@ -487,7 +540,7 @@ namespace Merge
 
             Vector2Int tileLoc = GetBoardLocation(0, tile);
 
-            List<Types.BoardEmpty> emptyBoard = GetEmptyBoardItems(tileLoc);
+            List<Types.TileEmpty> emptyBoard = GetEmptyTileItems(tileLoc);
 
             // Check if the board is full
             if (emptyBoard.Count > 0)
@@ -517,7 +570,7 @@ namespace Merge
 
         public void CreateItemOnEmptyTile(
             Types.ItemData itemData,
-            Types.BoardEmpty emptyBoard,
+            Types.TileEmpty emptyBoard,
             Vector2 initialPosition,
             bool canUnlock = true,
             bool useEnergy = false,
@@ -528,11 +581,11 @@ namespace Merge
         {
             GameObject emptyTile = boardTiles.transform.GetChild(emptyBoard.order).gameObject;
 
-            Types.Board boardItem;
+            Types.Tile tileItem;
 
             if (inventoryItem != null && itemData == null)
             {
-                boardItem = new()
+                tileItem = new()
                 {
                     sprite = inventoryItem.sprite,
                     type = inventoryItem.type,
@@ -547,7 +600,7 @@ namespace Merge
             }
             else
             {
-                boardItem = new()
+                tileItem = new()
                 {
                     sprite = itemData.sprite,
                     type = itemData.type,
@@ -561,13 +614,13 @@ namespace Merge
                 };
             }
 
-            if (boardItem.id == "")
+            if (tileItem.id == "")
             {
-                boardItem.id = Guid.NewGuid().ToString();
+                tileItem.id = Guid.NewGuid().ToString();
             }
 
             // Create the item on the board
-            Item newItem = itemHandler.CreateItem(emptyTile, initializeBoard.tileSize, boardItem);
+            Item newItem = itemHandler.CreateItem(emptyTile, boardInitialization.tileSize, tileItem);
 
             Vector2 tempScale = new(
                 newItem.transform.localScale.x,
@@ -633,9 +686,9 @@ namespace Merge
             dataManager.SaveBoard();
         }
 
-        public List<Types.BoardEmpty> GetEmptyBoardItems(Vector2Int tileLoc, bool useTileLoc = true)
+        public List<Types.TileEmpty> GetEmptyTileItems(Vector2Int tileLoc, bool useTileLoc = true)
         {
-            List<Types.BoardEmpty> emptyBoard = new();
+            List<Types.TileEmpty> emptyBoard = new();
 
             for (int x = 0; x < gameData.boardData.GetLength(0); x++)
             {
@@ -644,7 +697,7 @@ namespace Merge
                     if (gameData.boardData[x, y].sprite == null)
                     {
                         emptyBoard.Add(
-                            new Types.BoardEmpty
+                            new Types.TileEmpty
                             {
                                 order = gameData.boardData[x, y].order,
                                 loc = GetBoardLocation(gameData.boardData[x, y].order),
@@ -662,7 +715,7 @@ namespace Merge
 
         public bool IsThereAnEmptyBoardSpace()
         {
-            List<Types.BoardEmpty> emptyBoard = GetEmptyBoardItems(Vector2Int.zero, false);
+            List<Types.TileEmpty> emptyBoard = GetEmptyTileItems(Vector2Int.zero, false);
 
             return emptyBoard.Count > 0;
         }

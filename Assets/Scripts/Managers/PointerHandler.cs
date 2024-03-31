@@ -53,9 +53,9 @@ namespace Merge
 
             pointer = root.Q<VisualElement>("Pointer");
 
-            if (GameRefs.Instance.hubUIDoc != null)
+            if (GameRefs.Instance.worldUIDoc != null)
             {
-                pointerBackground = GameRefs.Instance.hubUIDoc.rootVisualElement.Q<VisualElement>("PointerBackground");
+                pointerBackground = GameRefs.Instance.worldUIDoc.rootVisualElement.Q<VisualElement>("PointerBackground");
             }
         }
 

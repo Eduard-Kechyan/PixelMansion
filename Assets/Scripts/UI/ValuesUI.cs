@@ -73,9 +73,9 @@ namespace Merge
             energyMenu = GameRefs.Instance.energyMenu;
             shopMenu = GameRefs.Instance.shopMenu;
 
-            if (GameRefs.Instance.hubUI != null)
+            if (GameRefs.Instance.worldUI != null)
             {
-                safeAreaHandler = GameRefs.Instance.hubUI.GetComponent<SafeAreaHandler>();
+                safeAreaHandler = GameRefs.Instance.worldUI.GetComponent<SafeAreaHandler>();
             }
 
             // Cache instances
