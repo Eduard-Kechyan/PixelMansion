@@ -325,11 +325,9 @@ namespace Merge
 
                             if (foundRoomHandler != null)
                             {
-                                navMeshManager.Bake();
-
-                                foundRoomHandler.Unlock((Vector3 roomCenter) =>
+                                navMeshManager.Bake(() =>
                                 {
-                                    worldDataManager.UnlockRoom(areaId);
+                                    foundRoomHandler.Unlock();
                                 });
                             }
                             else

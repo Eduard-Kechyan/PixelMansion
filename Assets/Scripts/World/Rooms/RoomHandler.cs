@@ -187,6 +187,37 @@ namespace Merge
             }
         }
 
+        public Vector2 GetRoomCenter()
+        {
+            if (roomCenter == Vector3.zero && lockedOverlayPH != null)
+            {
+                lockedOverlay = lockedOverlayPH.gameObject;
+
+                if (lockedOverlay.transform.GetChild(0).GetComponent<NavMeshModifier>() != null)
+                {
+                    lockedNavArea = lockedOverlay.transform.GetChild(0).gameObject;
+
+                    roomCenter = lockedNavArea.GetComponent<PolygonCollider2D>().bounds.center;
+                }
+            }
+
+            return roomCenter;
+        }
+
+        public void MoveRoomIntoView(float cameraMoveSpeed, float cameraScaleSpeed, float scaleSize, Vector2 positionOffset, Action<Vector3> callback = null)
+        {
+            doorManager.GetPosition(roomSortingLayer, (Vector2 position) =>
+            {
+                charMove.SetPosition(position, () =>
+                {
+                    cameraMotion.MoveToAndScaleTo(position + positionOffset, cameraMoveSpeed, scaleSize, cameraScaleSpeed, () =>
+                    {
+                        callback?.Invoke(roomCenter);
+                    });
+                });
+            });
+        }
+
         void Lock()
         {
             if (lockedOverlay != null)
@@ -206,20 +237,6 @@ namespace Merge
             locked = true;
         }
 
-        public void MoveRoomIntoView(float cameraMoveSpeed, float cameraScaleSpeed, float scaleSize, Vector2 positionOffset, Action callback = null)
-        {
-            doorManager.GetPosition(roomSortingLayer, (Vector2 position) =>
-            {
-                charMove.SetPosition(position, () =>
-                {
-                    cameraMotion.MoveToAndScaleTo(position + positionOffset, cameraMoveSpeed, scaleSize, cameraScaleSpeed, () =>
-                    {
-                        callback?.Invoke();
-                    });
-                });
-            });
-        }
-
         public void Unlock(Action<Vector3> callback = null)
         {
             locked = false;
@@ -228,13 +245,14 @@ namespace Merge
 
             EnableNav(() =>
             {
-                navMeshManager.Bake();
-
-                doorManager.OpenDoor(roomSortingLayer, (Vector2 position) =>
+                navMeshManager.Bake(() =>
                 {
-                    charMove.SetPosition(position, () =>
+                    doorManager.OpenDoor(roomSortingLayer, (Vector2 position) =>
                     {
-                        UnlockAfter();
+                        charMove.SetPosition(position, () =>
+                        {
+                            UnlockAfter();
+                        });
                     });
                 });
             });

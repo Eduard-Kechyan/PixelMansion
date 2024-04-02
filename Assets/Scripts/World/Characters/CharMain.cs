@@ -1,13 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json.Serialization;
 using UnityEngine;
 
 namespace Merge
 {
     public class CharMain : MonoBehaviour
     {
+        // Variable
+        public WorldDataManager worldDataManager;
+
         // References
-        public Selector selector;
+        private Selector selector;
         [HideInInspector]
         public CharSpeech charSpeech;
         [HideInInspector]
@@ -30,6 +34,7 @@ namespace Merge
                 Instance = this;
             }
 
+            // Cache
             charSpeech = GetComponent<CharSpeech>();
             charMove = GetComponent<CharMove>();
             charOrderSetter = GetComponent<CharOrderSetter>();
@@ -39,6 +44,7 @@ namespace Merge
         {
             // Cache
             speechBubble = GameRefs.Instance.worldGameUI.GetComponent<SpeechBubble>();
+            selector = worldDataManager.GetComponent<Selector>();
         }
 
         public void SelectableTapped(Vector2 position, Selectable selectable = null)
@@ -76,12 +82,30 @@ namespace Merge
             charSpeech.Speak(selectableSpeech.GetSpeech(), false);
         }
 
+        public void SetRoom(Vector2 roomCenter, bool waitForData = false)
+        {
+            StartCoroutine(WaitForData(roomCenter, waitForData));
+        }
+
+        IEnumerator WaitForData(Vector2 roomCenter, bool waitForData = false)
+        {
+            while (waitForData && !worldDataManager.loaded)
+            {
+                yield return null;
+            }
+
+            charMove.SetPosition(roomCenter, () =>
+            {
+                charOrderSetter.CheckArea();
+            });
+        }
+
         // TODO - Do we really need this method?
         bool CheckIfInRoom(Selectable selectable)
         {
             bool inRoom = false;
 
-            string selectableRoomName = "";
+            string selectableRoomName;
 
             // Get selectable's room name
             if (selectable.type == Selectable.Type.Furniture)

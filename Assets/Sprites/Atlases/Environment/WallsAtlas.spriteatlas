@@ -65,6 +65,7 @@ SpriteAtlas:
     - 8a0dada29b44bfb4aacd7766caa0f89e: -5014496360875322671
     - 2145d80393f2bb44580001893683d573: 21300000
     - bfe41a232f1b19d4ebf4c74d8878642c: 21300000
+    - 6f0e3a639b6ea1145a6c02f57badc27f: 21300000
     - 0ba8a48376143e244ac042c7f79c31f9: 21300000
     - 1bcc2b93cce3ba744ab3debcf61162e0: 21300000
     - 2e878bc40ab7cec4989a74fd8be5a729: 21300000
@@ -141,6 +142,7 @@ SpriteAtlas:
   - {fileID: -5014496360875322671, guid: 8a0dada29b44bfb4aacd7766caa0f89e, type: 3}
   - {fileID: 21300000, guid: 2145d80393f2bb44580001893683d573, type: 3}
   - {fileID: 21300000, guid: bfe41a232f1b19d4ebf4c74d8878642c, type: 3}
+  - {fileID: 21300000, guid: 6f0e3a639b6ea1145a6c02f57badc27f, type: 3}
   - {fileID: 21300000, guid: 0ba8a48376143e244ac042c7f79c31f9, type: 3}
   - {fileID: 21300000, guid: 1bcc2b93cce3ba744ab3debcf61162e0, type: 3}
   - {fileID: 21300000, guid: 2e878bc40ab7cec4989a74fd8be5a729, type: 3}
@@ -216,6 +218,7 @@ SpriteAtlas:
   - OuterHalfWallLeftCornerIn_0
   - WallWindowPlaceholder
   - OuterWallRightCornerIn
+  - OuterHalfWallRightEndAlt
   - OuterHalfWallLeft
   - WallLinerLeft
   - WallWindowLeft3

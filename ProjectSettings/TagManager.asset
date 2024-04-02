@@ -80,8 +80,11 @@ TagManager:
   - name: PreWalls
     uniqueID: 3870314169
     locked: 0
-  - name: GardenDummy
+  - name: Garden
     uniqueID: 3088312485
+    locked: 0
+  - name: PreWallPatio
+    uniqueID: 3152450919
     locked: 0
   - name: NavMeshArea
     uniqueID: 3312263077

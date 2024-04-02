@@ -900,6 +900,20 @@ namespace Merge
                     .Commit();
             }
 
+            for (int i = 0; i < gameData.areasData.Count; i++)
+            {
+                if (gameData.areasData[i].name == roomName && gameData.areasData[i].isLocked)
+                {
+                    gameData.areasData[i].isLocked = false;
+
+                    writer
+                        .Write("areas", dataConverter.ConvertAreaToJson(gameData.areasData))
+                        .Commit();
+
+                    break;
+                }
+            }
+
             return found;
         }
 

@@ -3,19 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using CI.QuickSave;
 using Newtonsoft.Json;
 
 namespace Merge
 {
     public class WorldDataManager : MonoBehaviour
     {
+        // Variables
         public Transform worldRoot;
         public TaskManager taskManager;
         public int roomInHierarchyOffset = 2;
 
+        [Header("Debug")]
         public bool canLog = false;
-
         public bool saveData = false;
         public bool loadData = false;
         public bool clearData = false;
@@ -83,8 +83,9 @@ namespace Merge
             // Check world root
             if (worldRoot == null)
             {
+                // ERROR
                 ErrorManager.Instance.FindUsed(
-                    "the World Root",
+                    "World Root",
                     GetType().Name
                 );
 
@@ -108,6 +109,7 @@ namespace Merge
             }
         }
 
+        // Read the data to be saved from the root gameObject and it's children
         void GetDataFromRoot(bool alt = false)
         {
             for (int i = 0; i < worldRoot.childCount; i++)
@@ -128,6 +130,7 @@ namespace Merge
             }
         }
 
+        // Write the saved data to the root gameObject and it's children
         void SetDataToRoot()
         {
             LoadData();
@@ -193,44 +196,9 @@ namespace Merge
             }
 
             StartCoroutine(BakeNavMeshAfterPhysicsUpdate());
-
-            StartCoroutine(TryCheckingForTasks());
         }
 
-        void SaveData()
-        {
-            string areasJson = dataConverter.ConvertAreaToJson(gameData.areasData);
-
-            if (initial)
-            {
-                dataManager.SaveValue(new(){
-                    {"areaSet", true},
-                    {"areas", areasJson}
-                });
-
-                PlayerPrefs.SetInt("areaSet", 1);
-                PlayerPrefs.Save();
-            }
-            else
-            {
-                dataManager.SaveValue("areas", areasJson);
-            }
-
-            StartCoroutine(BakeNavMeshAfterPhysicsUpdate());
-        }
-
-        void LoadData()
-        {
-            if (gameData.areasData.Count == 0)
-            {
-                string newAreasData = dataManager.LoadValue<string>("areas");
-
-                gameData.areasData = dataConverter.ConvertJsonToArea(newAreasData);
-
-                LogData();
-            }
-        }
-
+        // Read the data from the given area
         WorldTypes.Area HandleArea(Transform area)
         {
             bool isRoom;
@@ -301,6 +269,43 @@ namespace Merge
             return newArea;
         }
 
+        // Save the data to disk
+        void SaveData()
+        {
+            string areasJson = dataConverter.ConvertAreaToJson(gameData.areasData);
+
+            if (initial)
+            {
+                dataManager.SaveValue(new(){
+                    {"areaSet", true},
+                    {"areas", areasJson}
+                });
+
+                PlayerPrefs.SetInt("areaSet", 1);
+                PlayerPrefs.Save();
+            }
+            else
+            {
+                dataManager.SaveValue("areas", areasJson);
+            }
+
+            StartCoroutine(BakeNavMeshAfterPhysicsUpdate());
+        }
+
+        // Read the saved data from disk
+        void LoadData()
+        {
+            if (gameData.areasData.Count == 0)
+            {
+                string newAreasData = dataManager.LoadValue<string>("areas");
+
+                gameData.areasData = dataConverter.ConvertJsonToArea(newAreasData);
+
+                LogData();
+            }
+        }
+
+        // Delete the saved data from disk
         void ClearData()
         {
             string folderPath = Application.persistentDataPath + "/QuickSave/Areas.json";
@@ -314,6 +319,7 @@ namespace Merge
             PlayerPrefs.Save();
         }
 
+        // Log the read data
         void LogData()
         {
             if (canLog)
@@ -337,15 +343,18 @@ namespace Merge
             }
         }
 
+        // Bakes the navigation mesh after reading or writing the root
         IEnumerator BakeNavMeshAfterPhysicsUpdate()
         {
             yield return new WaitForSeconds(1f);
 
-            navMeshManager.Bake();
-
-            loaded = true;
+            navMeshManager.Bake(() =>
+            {
+                StartCoroutine(TryCheckingForTasks());
+            });
         }
 
+        // Check if there is a tasks to complete
         IEnumerator TryCheckingForTasks()
         {
             while (!taskManager.isLoaded)
@@ -407,6 +416,7 @@ namespace Merge
             SaveData();
         }
 
+        // Get the rooms that are initially unlocked (should be none)
         public string GetInitialUnlockedRooms()
         {
             List<string> unlockedRooms = new();
@@ -438,6 +448,7 @@ namespace Merge
             return dataManager.unlockedRoomsJsonData;
         }
 
+        // Get the selectable world item for the given task
         public Transform GetWorldItem(string groupId, Types.Task task)
         {
             Transform worldArea = null;
@@ -471,6 +482,7 @@ namespace Merge
             return null;
         }
 
+        // Fine the position of a room in the world (root)
         public Transform FindRoomInWorld(string roomName)
         {
             for (int i = 0; i < worldRoot.childCount; i++)
@@ -484,19 +496,6 @@ namespace Merge
             }
 
             return null;
-        }
-
-        public void UnlockRoom(string roomName)
-        {
-            for (int i = 0; i < gameData.areasData.Count; i++)
-            {
-                if (gameData.areasData[i].name == roomName)
-                {
-                    gameData.areasData[i].isLocked = false;
-                }
-            }
-
-            SaveData();
         }
 
         // Doors

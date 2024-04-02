@@ -72,7 +72,7 @@ namespace Merge
             callback?.Invoke();
         }
 
-        public void Bake()
+        public async void Bake(Action callback = null)
         {
             if (navMeshSurface == null)
             {
@@ -83,7 +83,9 @@ namespace Merge
             navMeshSurface.hideEditorLogs = !log;
 
             // Build nav mesh
-            navMeshSurface.BuildNavMesh();
+            await navMeshSurface.BuildNavMeshAsync();
+
+            callback?.Invoke();
         }
     }
 }

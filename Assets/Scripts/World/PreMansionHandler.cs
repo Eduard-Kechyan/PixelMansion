@@ -3,15 +3,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+    At the start of the game the exterior of the mansion is initially visible to the player.
+    Only after completing the Garden area, will the mansion open up.
+    This function is responsible for unlocking the mansion and the extra clouds next to.
+    It also unlocks the living room and moves the main character inside.
+    After unlocking the mansion and entering the World scene, the mansion will be automatically destroyed.
+*/
+
 namespace Merge
 {
     public class PreMansionHandler : MonoBehaviour
     {
         // Variables
+        [Header("Rooms")]
         public RoomHandler firstRoom;
-        public SpriteRenderer stairs;
+        public PolygonCollider2D gardenPolygonCollider2D;
+        [SortingLayer]
+        public string gardenSortingLayer;
+
+        [Header("Stairs")]
+        public OrderSetter stairsOrderSetter;
         [SortingLayer]
         public string stairsSortingLayer;
+        public int stairsSortingOrder = 12;
+
+        [Header("Movement and Scale")]
         public float finishDelay = 0.2f;
         public float moveIntoViewSpeed = 100f;
         public float scaleToViewSpeed = 2f;
@@ -19,7 +36,6 @@ namespace Merge
         public Vector2 moveIntoViewOffset;
 
         [Header("Mansion Parts")]
-        public Transform[] mansionParts;
         public float firstScaleSpeed = 3.5f;
         public float firstTargetScale = 1.2f;
         public float secondScaleSpeed = 8f;
@@ -33,23 +49,60 @@ namespace Merge
         public float cloudTimeOffset = 0.5f;
 
         [Header("Debug")]
+        public bool togglePreMansionSceneVisibility = false;
         public bool remove = false;
         public bool dontDestroyAtStart = false;
 
         private Vector3 roomCenter;
+        private List<Transform> mansionParts;
 
         private bool partsRemoved = false;
         private bool cloudsRemoved = false;
 
+        [Header("Stats")]
+        [SerializeField]
+        [ReadOnly]
+        public bool preMansionHidden = false;
+
+        // References
+        private SpriteRenderer stairsSpriteRenderer;
+        private CharMain charMain;
+
         void Start()
         {
+            // Cache
+            stairsSpriteRenderer = stairsOrderSetter.transform.GetChild(0).GetComponent<SpriteRenderer>();
+            charMain = CharMain.Instance;
+
+            if (!Debug.isDebugBuild)
+            {
+                dontDestroyAtStart = false;
+            }
+
             // Destroy the mansion at the start of the game if we have already unlocked it
             if (PlayerPrefs.HasKey("PreMansionRemoved"))
             {
-                if (!dontDestroyAtStart || !Debug.isDebugBuild)
+                if (!dontDestroyAtStart)
                 {
+                    // Set the main character's post position
+                    charMain.SetRoom(firstRoom.GetRoomCenter(), true);
+
+                    // Destroy the pre mansion
                     Destroy(gameObject);
                 }
+            }
+            else
+            {
+                // Set the main character's pre position
+                Debug.Log(gardenPolygonCollider2D.bounds.center);
+                charMain.SetRoom(gardenPolygonCollider2D.bounds.center);
+            }
+
+            GetMansionParts();
+
+            if (preMansionHidden)
+            {
+                TogglePreMansionSceneVisibility();
             }
         }
 
@@ -62,6 +115,16 @@ namespace Merge
 
                 Remove();
             }
+
+            if (togglePreMansionSceneVisibility)
+            {
+                togglePreMansionSceneVisibility = false;
+
+                Glob.Validate(() =>
+                {
+                    TogglePreMansionSceneVisibility();
+                }, this);
+            }
         }
 #endif
 
@@ -69,17 +132,19 @@ namespace Merge
         public void Remove(Action callback = null)
         {
             // Set mansion entrance stairs sorting layer
-            stairs.sortingLayerName = stairsSortingLayer;
+            stairsSpriteRenderer.sortingLayerName = stairsSortingLayer;
+            stairsSpriteRenderer.sortingOrder = stairsSortingOrder;
+            stairsOrderSetter.sortingLayer = stairsSortingLayer;
 
-            firstRoom.MoveRoomIntoView(moveIntoViewSpeed, scaleToViewSpeed, scaleToViewSize, moveIntoViewOffset, () =>
+            firstRoom.MoveRoomIntoView(moveIntoViewSpeed, scaleToViewSpeed, scaleToViewSize, moveIntoViewOffset, (Vector3 newRoomCenter) =>
             {
+                roomCenter = newRoomCenter;
+
                 HandlePartsRemoval(() =>
                 {
                     // Unlock the first room that the player enters
                     firstRoom.Unlock((Vector3 newRoomCenter) =>
                     {
-                        roomCenter = newRoomCenter;
-
                         // Save state
                         PlayerPrefs.SetInt("PreMansionRemoved", 1);
 
@@ -97,7 +162,7 @@ namespace Merge
         void HandlePartsRemoval(Action callback)
         {
             int cloudsCount = clouds.childCount;
-            int mansionPartsLength = mansionParts.Length;
+            int mansionPartsCount = mansionParts.Count;
 
             // Remove clouds
             for (int i = 0; i < cloudsCount; i++)
@@ -115,12 +180,12 @@ namespace Merge
             }
 
             // Remove mansion parts
-            for (int i = 0; i < mansionPartsLength; i++)
+            for (int i = 0; i < mansionPartsCount; i++)
             {
                 for (int j = 0; j < mansionParts[i].childCount; j++)
                 {
                     // Determine if this is the last mansion part
-                    bool last = i == mansionPartsLength - 1 && j == mansionParts[i].childCount - 1;
+                    bool last = i == mansionPartsCount - 1 && j == mansionParts[i].childCount - 1;
 
                     StartCoroutine(RemovePart(mansionParts[i].GetChild(j), last));
                 }
@@ -173,6 +238,11 @@ namespace Merge
             // Add a random delay before starting the removal
             float randomDelay = UnityEngine.Random.Range(0f, 2f);
 
+            if (finishDelay < randomDelay)
+            {
+                finishDelay = randomDelay + 0.1f;
+            }
+
             yield return new WaitForSeconds(randomDelay);
 
             // Increase the part scale slightly
@@ -221,6 +291,46 @@ namespace Merge
             }
 
             callback();
+        }
+
+        // Toggle the pre mansion's visibility in the scene view
+        void TogglePreMansionSceneVisibility()
+        {
+            GetMansionParts();
+
+            int cloudsCount = clouds.childCount;
+            int mansionPartsCount = mansionParts.Count;
+
+            // Toggle clouds
+            for (int i = 0; i < cloudsCount; i++)
+            {
+                clouds.GetChild(i).gameObject.SetActive(preMansionHidden);
+            }
+
+            // Toggle mansion parts
+            for (int i = 0; i < mansionPartsCount; i++)
+            {
+                mansionParts[i].gameObject.SetActive(preMansionHidden);
+            }
+
+            preMansionHidden = !preMansionHidden;
+        }
+
+        // Get the mansion parts
+        void GetMansionParts()
+        {
+            if (mansionParts.Count == 0)
+            {
+                for (int i = 0; i < transform.childCount; i++)
+                {
+                    Transform part = transform.GetChild(i);
+
+                    if (part != null && !part.name.Contains("Cloud"))
+                    {
+                        mansionParts.Add(part);
+                    }
+                }
+            }
         }
     }
 }
