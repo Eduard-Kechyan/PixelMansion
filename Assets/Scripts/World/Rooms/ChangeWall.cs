@@ -4,14 +4,13 @@ using UnityEngine;
 
 namespace Merge
 {
-    public class ChangeWall : MonoBehaviour
+    public class ChangeWall : MonoBehaviour, IChanger
     {
         // Variables
         public Side side = Side.Left;
         [HideInInspector]
         public bool isRight;
         public float changeSpeed = 0.1f;
-        public int spriteOrder = -1;
         [Condition("isRight", true)]
         public Color shadowColor;
         [Condition("isRight", true)]
@@ -24,20 +23,10 @@ namespace Merge
 
         [Header("States")]
         [ReadOnly]
-        public bool isOld = true;
-        [ReadOnly]
         [SerializeField]
         private bool isChanging = false;
         [ReadOnly]
         private bool isSelected = false;
-
-        [Header("Sprites")]
-        public Sprite[] sprites = new Sprite[3];
-        public Sprite[] windowSpritesLeft = new Sprite[3];
-        public Sprite[] windowSpritesRight = new Sprite[3];
-        public Sprite[] doorFrameSpritesLeft = new Sprite[3];
-        public Sprite[] doorFrameSpritesRight = new Sprite[3];
-        public Sprite[] optionSprites = new Sprite[3];
 
         // Sprites
         private readonly List<SpriteRenderer> chunks = new();
@@ -75,7 +64,7 @@ namespace Merge
 
         void Update()
         {
-            HandleOverlays();
+            HandleOverlay();
         }
 
 #if UNITY_EDITOR
@@ -122,7 +111,7 @@ namespace Merge
 
                             chunks.Add(newChild);
 
-                            if (isOld)
+                            if (selectable.isOld)
                             {
                                 tempOldChunks.Add(newChild);
                             }
@@ -137,7 +126,7 @@ namespace Merge
 
                 chunks.Sort((a, b) => a.transform.position.x.CompareTo(b.transform.position.x));
 
-                if (isOld)
+                if (selectable.isOld)
                 {
                     tempOldChunks.Sort((a, b) => a.transform.position.x.CompareTo(b.transform.position.x));
 
@@ -152,38 +141,35 @@ namespace Merge
         }
 
         //// SELECT ////
-        public void Select()
+        public void Select(bool select = true)
         {
-            isSelected = true;
+            isSelected = select;
 
-            enabled = true;
+            enabled = select;
 
-            SetInitial();
-        }
-
-        public void Unselect()
-        {
-            isSelected = false;
-
-            enabled = false;
-
-            // Reset flashing
-            ResetOverlays();
+            if (select)
+            {
+                SetInitial();
+            }
+            else
+            {
+                ResetOverlays();
+            }
         }
 
         //// SPRITES ////
         public void SetInitial()
         {
             // Set the sprite order to the first one
-            if (spriteOrder == -1)
+            if (selectable.spriteOrder == -1)
             {
-                spriteOrder = 0;
+                selectable.spriteOrder = 0;
             }
 
             // Set the sprites
             for (int i = 0; i < chunks.Count; i++)
             {
-                chunks[i].sprite = ConvertOrder(spriteOrder, chunks[i].name);
+                chunks[i].sprite = selectable.GetSprite(selectable.spriteOrder);
             }
         }
 
@@ -196,7 +182,7 @@ namespace Merge
             }
 
             // Set the sprite order
-            spriteOrder = order;
+            selectable.spriteOrder = order;
 
             if (alt)
             {
@@ -206,7 +192,7 @@ namespace Merge
             // Set the sprites
             for (int i = 0; i < chunks.Count; i++)
             {
-                chunks[i].sprite = ConvertOrder(order, chunks[i].name);
+                chunks[i].sprite = selectable.GetSprite(order);
             }
         }
 
@@ -219,7 +205,7 @@ namespace Merge
             }
 
             // Reset the sprites to the old ones
-            if (isOld)
+            if (selectable.isOld)
             {
                 // Reset the sprites to the old ones
                 for (int i = 0; i < chunks.Count; i++)
@@ -232,7 +218,7 @@ namespace Merge
                 // Reset the sprites to the new ones
                 for (int i = 0; i < chunks.Count; i++)
                 {
-                    chunks[i].sprite = ConvertOrder(order, chunks[i].name);
+                    chunks[i].sprite = selectable.GetSprite(order);
                 }
             }
         }
@@ -246,7 +232,7 @@ namespace Merge
             }
 
             // Check if we are confirming for the first time
-            if (isOld)
+            if (selectable.isOld)
             {
                 // Reset the sprites to the old ones
                 for (int i = 0; i < chunks.Count; i++)
@@ -267,7 +253,7 @@ namespace Merge
                 // Reset overlay flashing
                 ResetOverlays();
 
-                isOld = false;
+                selectable.isOld = false;
             }
         }
 
@@ -282,7 +268,7 @@ namespace Merge
 
                 SoundManager.Instance.PlaySound(Types.SoundType.Generate);
 
-                chunks[i].sprite = ConvertOrder(spriteOrder, chunks[i].name);
+                chunks[i].sprite = selectable.GetSprite(selectable.spriteOrder);
 
                 yield return new WaitForSeconds(changeSpeed);
 
@@ -293,37 +279,8 @@ namespace Merge
             Glob.selectableIsChanging = false;
         }
 
-        Sprite ConvertOrder(int order, string chunkName)
-        {
-            if (chunkName.Contains("Window"))
-            {
-                if (chunkName.Contains("Left"))
-                {
-                    return windowSpritesLeft[order];
-                }
-                else
-                {
-                    return windowSpritesRight[order];
-                }
-            }
-
-            if (chunkName.Contains("DoorFrame"))
-            {
-                if (chunkName.Contains("Left"))
-                {
-                    return doorFrameSpritesLeft[order];
-                }
-                else
-                {
-                    return doorFrameSpritesRight[order];
-                }
-            }
-
-            return sprites[order];
-        }
-
         //// OVERLAY ////
-        void HandleOverlays()
+        void HandleOverlay()
         {
             // Flash if selected and isn't changing the tiles
             if (isSelected && !isChanging)

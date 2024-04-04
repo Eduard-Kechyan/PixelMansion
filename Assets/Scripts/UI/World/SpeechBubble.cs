@@ -14,9 +14,8 @@ namespace Merge
         public float speechLength = 3f;
         public float borderClamp;
         public float tailDiffOffset = 4f;
-        public float tailTopOffset = 40f;
         public float tailRightOffset = 15f;
-        public float charTopOffset = 10f;
+        public float charTopOffset = 20f;
 
         [Header("Sprites")]
         public Sprite tailTopLeftSprite;
@@ -239,21 +238,27 @@ namespace Merge
             // Set the tail's sprite and position
             if (isOnTheTop) // Top
             {
+                tail.style.top = -8;
+                tail.style.bottom = new StyleLength(StyleKeyword.Auto);
+
                 if (isOnTheLeft) // Left
                 {
                     tail.style.backgroundImage = new StyleBackground(tailTopLeftSprite);
 
-                    tail.style.translate = new Translate(0, -tailTopOffset);
+                    tail.style.translate = new Translate(0, 0);
                 }
                 else // Right
                 {
                     tail.style.backgroundImage = new StyleBackground(tailTopRightSprite);
 
-                    tail.style.translate = new Translate(-tailRightOffset, -tailTopOffset);
+                    tail.style.translate = new Translate(-tailRightOffset, 0);
                 }
             }
             else // Bottom
             {
+                tail.style.top = new StyleLength(StyleKeyword.Auto);
+                tail.style.bottom = -7;
+
                 if (isOnTheLeft) // Left
                 {
                     tail.style.backgroundImage = new StyleBackground(tailBottomLeftSprite);

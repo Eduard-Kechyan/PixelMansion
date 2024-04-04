@@ -109,7 +109,7 @@ namespace Merge
                     newTaskGroup.Q<Label>("GroupTitle").text = LOCALE.Get("task_group_" + gameData.tasksData[i].id);
 
                     newTaskGroup.Q<VisualElement>("Image").style.backgroundImage = new StyleBackground(
-                        gameData.GetTaskSprite("TaskGroup" + gameData.tasksData[i].id)
+                        gameData.GetSprite("TaskGroup" + gameData.tasksData[i].id)
                     );
 
                     newTaskGroup.Q<Label>("Desc").text = LOCALE.Get(

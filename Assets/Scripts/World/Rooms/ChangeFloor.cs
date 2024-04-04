@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Merge
 {
-    public class ChangeFloor : MonoBehaviour
+    public class ChangeFloor : MonoBehaviour, IChanger
     {
         // Variables
         public float changeSpeed = 0.1f;
@@ -18,16 +18,10 @@ namespace Merge
 
         [Header("States")]
         [ReadOnly]
-        public bool isOld = true;
-        [ReadOnly]
         [SerializeField]
         private bool isChanging = false;
         [ReadOnly]
         private bool isSelected = false;
-
-        [Header("Sprites")]
-        public Sprite[] sprites = new Sprite[3];
-        public Sprite[] optionSprites = new Sprite[3];
 
         // Tiles
         private readonly List<List<SpriteRenderer>> tiles = new();
@@ -58,7 +52,7 @@ namespace Merge
 
         void Update()
         {
-            HandleOverlays();
+            HandleOverlay();
         }
 
         void GetTiles()
@@ -95,7 +89,7 @@ namespace Merge
 
                         tiles.Add(tempTile);
 
-                        if (isOld)
+                        if (selectable.isOld)
                         {
                             List<Sprite> tempTileSprites = new() { newSpriteRenderer.sprite };
 
@@ -110,7 +104,7 @@ namespace Merge
 
                             tiles[count].Add(newSpriteRenderer);
 
-                            if (isOld)
+                            if (selectable.isOld)
                             {
                                 oldTilesSprites[count].Add(newSpriteRenderer.sprite);
                             }
@@ -123,7 +117,7 @@ namespace Merge
 
                             tiles.Add(tempTiles);
 
-                            if (isOld)
+                            if (selectable.isOld)
                             {
                                 List<Sprite> tempTileSprites = new() { newSpriteRenderer.sprite };
 
@@ -140,23 +134,20 @@ namespace Merge
         }
 
         //// SELECT ////
-        public void Select()
+        public void Select(bool select = true)
         {
-            isSelected = true;
+            isSelected = select;
 
-            enabled = true;
+            enabled = select;
 
-            SetInitial();
-        }
-
-        public void Unselect()
-        {
-            isSelected = false;
-
-            enabled = false;
-
-            // Reset overlay flashing
-            ResetOverlays();
+            if (select)
+            {
+                SetInitial();
+            }
+            else
+            {
+                ResetOverlays();
+            }
         }
 
         //// SPRITES ////
@@ -173,7 +164,7 @@ namespace Merge
             {
                 for (int j = 0; j < tiles[i].Count; j++)
                 {
-                    tiles[i][j].sprite = sprites[spriteOrder];
+                    tiles[i][j].sprite = selectable.GetSprite(spriteOrder);
                 }
             }
         }
@@ -199,7 +190,7 @@ namespace Merge
             {
                 for (int j = 0; j < tiles[i].Count; j++)
                 {
-                    tiles[i][j].sprite = sprites[order];
+                    tiles[i][j].sprite = selectable.GetSprite(spriteOrder);
                 }
             }
         }
@@ -215,7 +206,7 @@ namespace Merge
             // Reset the sprite order
             spriteOrder = order;
 
-            if (isOld)
+            if (selectable.isOld)
             {
                 // Reset the sprites to the old ones
                 for (int i = 0; i < tiles.Count; i++)
@@ -233,7 +224,7 @@ namespace Merge
                 {
                     for (int j = 0; j < tiles[i].Count; j++)
                     {
-                        tiles[i][j].sprite = sprites[order];
+                        tiles[i][j].sprite = selectable.GetSprite(spriteOrder);
                     }
                 }
             }
@@ -248,7 +239,7 @@ namespace Merge
             }
 
             // Check if we are confirming for the first time
-            if (isOld && spriteOrder > -1)
+            if (selectable.isOld && spriteOrder > -1)
             {
                 // Reset the sprites to the old ones
                 for (int i = 0; i < tiles.Count; i++)
@@ -269,7 +260,7 @@ namespace Merge
                 // Reset overlay flashing
                 ResetOverlays();
 
-                isOld = false;
+                selectable.isOld = false;
             }
         }
 
@@ -286,7 +277,7 @@ namespace Merge
 
                     SoundManager.Instance.PlaySound(Types.SoundType.Generate);
 
-                    tiles[i][j].sprite = sprites[spriteOrder];
+                    tiles[i][j].sprite = selectable.GetSprite(spriteOrder);
                 }
 
                 yield return new WaitForSeconds(changeSpeed);
@@ -302,7 +293,7 @@ namespace Merge
         }
 
         //// OVERLAY ////
-        void HandleOverlays()
+        void HandleOverlay()
         {
             // Flash if selected and isn't changing the tiles
             if (isSelected && !isChanging)

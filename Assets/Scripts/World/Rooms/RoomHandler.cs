@@ -43,6 +43,7 @@ namespace Merge
         private DataManager dataManager;
         private SoundManager soundManager;
         private CharMove charMove;
+        private CharSpeech charSpeech;
         private CameraMotion cameraMotion;
         private NavMeshManager navMeshManager;
 
@@ -52,6 +53,7 @@ namespace Merge
             dataManager = DataManager.Instance;
             soundManager = SoundManager.Instance;
             charMove = CharMain.Instance.charMove;
+            charSpeech = CharMain.Instance.charSpeech;
             cameraMotion = Camera.main.GetComponent<CameraMotion>();
             navMeshManager = NavMeshManager.Instance;
 
@@ -237,7 +239,7 @@ namespace Merge
             locked = true;
         }
 
-        public void Unlock(Action<Vector3> callback = null)
+        public void Unlock(Action<Vector3> callback = null, float speechDelay = 0.3f)
         {
             locked = false;
 
@@ -251,7 +253,7 @@ namespace Merge
                     {
                         charMove.SetPosition(position, () =>
                         {
-                            UnlockAfter();
+                            UnlockAfter(speechDelay);
                         });
                     });
                 });
@@ -293,15 +295,15 @@ namespace Merge
 
             float elapsedTime = 0;
 
-            float newcloudTime = cloudTime + (UnityEngine.Random.value >= 0.5 ? cloudTimeOffset : -cloudTimeOffset);
+            float newCloudTime = cloudTime + (UnityEngine.Random.value >= 0.5 ? cloudTimeOffset : -cloudTimeOffset);
 
             SpriteRenderer renderer = cloud.GetComponent<SpriteRenderer>();
 
             Color initialColor = renderer.color;
 
-            while (elapsedTime < newcloudTime)
+            while (elapsedTime < newCloudTime)
             {
-                float time = elapsedTime / newcloudTime;
+                float time = elapsedTime / newCloudTime;
 
                 cloud.transform.position = Vector3.Lerp(startingPos, new Vector3(finalXPos, cloud.transform.position.y, cloud.transform.position.z), time);
 
@@ -332,7 +334,7 @@ namespace Merge
             }
         }
 
-        public void UnlockAfter()
+        public void UnlockAfter(float speechDelay = 0.3f)
         {
             if (nav != null)
             {
@@ -344,7 +346,12 @@ namespace Merge
 
                     if (navCollider != null)
                     {
-                        charMove.SetDestination(navCollider.bounds.center, false, false, null, "speech_room_unlocked_" + roomSortingLayer);
+                        Glob.SetTimeout(() =>
+                        {
+                            charSpeech.StopAndSpeak("speech_room_unlocked_" + roomSortingLayer, true, true);
+                        }, speechDelay);
+
+                        charMove.SetDestination(navCollider.bounds.center, false, false, null);
                     }
                 }
             }

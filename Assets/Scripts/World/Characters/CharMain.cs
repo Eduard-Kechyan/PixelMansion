@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Newtonsoft.Json.Serialization;
 using UnityEngine;
 
 namespace Merge
@@ -77,7 +76,11 @@ namespace Merge
 
             charMove.SetDestination(position, CheckIfInRoom(selectable));
 
+            Debug.Log(selectable);
+
             SelectableSpeech selectableSpeech = selectable.GetComponent<SelectableSpeech>();
+
+            Debug.Log(selectableSpeech);
 
             charSpeech.Speak(selectableSpeech.GetSpeech(), false);
         }

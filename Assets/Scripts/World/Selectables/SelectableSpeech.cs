@@ -30,10 +30,10 @@ namespace Merge
 
         public string GetSpeech()
         {
-           // if (selectable.canBeTapped && charSpeech.canSpeakRandomly && !charSpeech.isSpeaking && !charSpeech.isTimeOut)
-            if (selectable.canBeTapped )
+            // if (selectable.canBeTapped && charSpeech.canSpeakRandomly && !charSpeech.isSpeaking && !charSpeech.isTimeOut)
+            if (selectable.canBeTapped)
             {
-                string newSpeechCode = "speech_" + speechCode + "_" + selectable.GetSpriteOrder();
+                string newSpeechCode = "speech_" + speechCode + "_" + selectable.spriteOrder;
 
                 int speechCount = LOCALE.GetNestedLength(newSpeechCode);
 

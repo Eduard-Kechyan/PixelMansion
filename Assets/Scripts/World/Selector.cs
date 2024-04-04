@@ -86,13 +86,13 @@ namespace Merge
             Vector2 worldPosition = cam.ScreenToWorldPoint(position);
 
             // Check if the selected selectable is the same
-            if (!tapped && isSelected && selectable != null && (selectable.id == newSelectable.id || (checkForOld && newSelectable.GetOld())))
+            if (!tapped && isSelected && selectable != null && (selectable.id == newSelectable.id || (checkForOld && newSelectable.isOld)))
             {
                 return;
             }
             else
             {
-                if (checkForOld && selectable != null && selectable.GetOld())
+                if (checkForOld && selectable != null && selectable.isOld)
                 {
                     return;
                 }
@@ -106,7 +106,7 @@ namespace Merge
                 selectable = newSelectable;
             }
 
-            lastSpriteOrder = selectable.GetSpriteOrder();
+            lastSpriteOrder = selectable.spriteOrder;
 
             // Check if we can select the selectable
             if (selectable.canBeSelected)
@@ -123,7 +123,8 @@ namespace Merge
 
                         soundManager.PlaySound(Types.SoundType.Generate);
 
-                        selectorUIHandler.Open(selectable.GetSpriteOptions(), selectable.GetSpriteOrder(), false);
+                        //selectorUIHandler.Open(selectable.GetSpriteOptions(), selectable.spriteOrder, false);
+                        selectorUIHandler.Open(selectable.spriteOrder, false);
                     }
                     else
                     {
@@ -217,7 +218,8 @@ namespace Merge
 
             selectable = newSelectable;
 
-            selectorUIHandler.Open(selectable.GetSpriteOptions(), selectable.GetSpriteOrder(), true, true);
+            //selectorUIHandler.Open(selectable.GetSpriteOptions(), selectable.spriteOrder, true, true);
+            selectorUIHandler.Open(selectable.spriteOrder, true, true);
 
             soundManager.PlaySound(Types.SoundType.Pop);
 
@@ -245,7 +247,7 @@ namespace Merge
 
             selectorArrow.style.opacity = 0;
 
-            selectable.Unselect();
+            selectable.Select(false);
 
             if (denied)
             {
@@ -262,7 +264,7 @@ namespace Merge
 
         void CancelSelectingAlt()
         {
-            selectable.Unselect();
+            selectable.Select(false);
 
             selectable.CancelSpriteChange(lastSpriteOrder);
 
@@ -279,11 +281,11 @@ namespace Merge
             isSelecting = false;
             isSelected = false;
 
-            selectable.ConfirmSpriteChange(lastSpriteOrder);
+            selectable.ConfirmSpriteChange();
 
             worldDataManager.SetSelectable(selectable);
 
-            selectable.Unselect();
+            selectable.Select(false);
 
             selectable = null;
 
@@ -340,7 +342,8 @@ namespace Merge
 
             selectorArrow.style.display = DisplayStyle.None;
 
-            selectorUIHandler.Open(selectable.GetSpriteOptions(), selectable.GetSpriteOrder(), true);
+            //selectorUIHandler.Open(selectable.GetSpriteOptions(), selectable.spriteOrder, true);
+            selectorUIHandler.Open(selectable.spriteOrder, true);
 
             isSelecting = false;
             isSelected = true;

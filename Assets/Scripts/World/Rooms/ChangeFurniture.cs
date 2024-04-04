@@ -4,11 +4,9 @@ using UnityEngine;
 
 namespace Merge
 {
-    public class ChangeFurniture : MonoBehaviour
+    public class ChangeFurniture : MonoBehaviour, IChanger
     {
         // Variables
-        public int spriteOrder = -1;
-
         [Header("Flash")]
         public float flashSpeed = 1f;
         public float flashDelay = 0.8f;
@@ -16,13 +14,7 @@ namespace Merge
 
         [Header("States")]
         [ReadOnly]
-        public bool isOld = true;
-        [ReadOnly]
         private bool isSelected = false;
-
-        [Header("Sprites")]
-        public Sprite[] sprites = new Sprite[3];
-        public Sprite[] optionSprites = new Sprite[3];
 
         private Sprite oldSprite;
 
@@ -42,10 +34,9 @@ namespace Merge
             spriteRenderer = GetComponent<SpriteRenderer>();
             navMeshManager = NavMeshManager.Instance;
 
-            if (isOld)
+            if (selectable.isOld)
             {
                 oldSprite = spriteRenderer.sprite;
-                //selectable.order = spriteRenderer.sortingOrder;
             }
 
             enabled = false;
@@ -57,42 +48,39 @@ namespace Merge
         }
 
         //// SELECT ////
-        public void Select()
+        public void Select(bool select = true)
         {
-            isSelected = true;
+            isSelected = select;
 
-            enabled = true;
+            enabled = select;
 
-            SetInitial();
-        }
-
-        public void Unselect()
-        {
-            isSelected = false;
-
-            enabled = false;
-
-            // Reset overlay flashing
-            ResetOverlay();
+            if (select)
+            {
+                SetInitial();
+            }
+            else
+            {
+                ResetOverlay();
+            }
         }
 
         //// SPRITES ////
         public void SetInitial()
         {
             // Set the sprite order to the first one
-            if (spriteOrder == -1)
+            if (selectable.spriteOrder == -1)
             {
-                spriteOrder = 0;
+                selectable.spriteOrder = 0;
             }
 
             // Set the sprite
-            spriteRenderer.sprite = sprites[spriteOrder];
+            spriteRenderer.sprite = selectable.GetSprite(selectable.spriteOrder);
         }
 
         public void SetSprites(int order, bool alt = false)
         {
             // Set the sprite order
-            spriteOrder = order;
+            selectable.spriteOrder = order;
 
             if (spriteRenderer == null)
             {
@@ -105,12 +93,12 @@ namespace Merge
             }
 
             // Set the sprite
-            spriteRenderer.sprite = sprites[order];
+            spriteRenderer.sprite = selectable.GetSprite(order);
         }
 
         public void Cancel(int order)
         {
-            if (isOld)
+            if (selectable.isOld)
             {
                 // Reset the sprite to the old one
                 spriteRenderer.sprite = oldSprite;
@@ -118,19 +106,19 @@ namespace Merge
             else
             {
                 // Reset the sprite to the new one
-                spriteRenderer.sprite = sprites[order];
+                spriteRenderer.sprite = selectable.GetSprite(order);
             }
         }
 
         public void Confirm()
         {
             // Check if we are confirming for the first time
-            if (isOld && spriteOrder > -1)
+            if (selectable.isOld && selectable.spriteOrder > -1)
             {
                 // Reset the sprite to the old one
                 spriteRenderer.sprite = oldSprite;
 
-                spriteRenderer.sprite = sprites[spriteOrder];
+                spriteRenderer.sprite = selectable.GetSprite(selectable.spriteOrder);
 
                 if (Settings.Instance.vibrationOn && (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer))
                 {
@@ -142,13 +130,13 @@ namespace Merge
 
                 CheckNavAreas();
 
-                isOld = false;
+                selectable.isOld = false;
             }
         }
 
         void CheckNavAreas(bool alt = false)
         {
-            if (spriteOrder > 0)
+            if (selectable.spriteOrder > 0)
             {
                 // Nav areas
                 if (transform.childCount == 3)
@@ -159,7 +147,7 @@ namespace Merge
                     {
                         Transform navArea = transform.GetChild(i);
 
-                        if (navArea != null && i == spriteOrder)
+                        if (navArea != null && i == selectable.spriteOrder)
                         {
                             navArea.gameObject.SetActive(true);
 
@@ -184,7 +172,7 @@ namespace Merge
                 {
                     for (int i = 0; i < colliders.Length; i++)
                     {
-                        if (i == spriteOrder)
+                        if (i == selectable.spriteOrder)
                         {
                             colliders[i].enabled = true;
                         }
@@ -241,7 +229,7 @@ namespace Merge
                         flashSpeed * Time.deltaTime
                     );
                 }
-                
+
                 spriteRenderer.material.SetFloat("_FlashAmount", newFlashAmount);
             }
         }

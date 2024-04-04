@@ -17,6 +17,8 @@ namespace Merge
             public int wallRightOrder;
             public int floorOrder;
             public List<Furniture> furniture;
+            public List<Prop> props;
+            public List<string> dirt;
         }
 
         [Serializable]
@@ -29,10 +31,19 @@ namespace Merge
             public int wallRightOrder;
             public int floorOrder;
             public string furniture;
+            public string props;
+            public string dirt;
         }
 
         [Serializable]
         public class Furniture
+        {
+            public string name;
+            public int order;
+        }
+
+        [Serializable]
+        public class Prop
         {
             public string name;
             public int order;

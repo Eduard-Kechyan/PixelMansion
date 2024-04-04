@@ -120,6 +120,15 @@ namespace Merge
         private Sprite[] chestSprites;
         private Sprite[] taskSprites;
 
+        private Sprite[] furnitureSprites;
+        private Sprite[] floorSprites;
+        private Sprite[] wallSprites;
+        private Sprite[] propsSprites;
+
+        /* private Sprite[] furnitureOptionSprites;
+         private Sprite[] floorOptionSprites;
+         private Sprite[] wallOptionSprites;*/
+
         // Debug
 #if DEVELOPMENT_BUILD || UNITY_EDITOR
         public List<Types.LogData> logsData = new();
@@ -182,11 +191,25 @@ namespace Merge
 
         public async void LoadSprites()
         {
+            // Items
             itemSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("items");
             generatorSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("generators");
             collectableSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("collectables");
             chestSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("chests");
+
+            // Tasks
             taskSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("tasks");
+
+            // Selectables
+            furnitureSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("furniture");
+            floorSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("floors");
+            wallSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("walls");
+            propsSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("props");
+
+            // Options
+            /*furnitureOptionSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("furnitureOption");
+            floorOptionSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("floorOption");
+            wallOptionSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("wallOption");*/
 
             spritesLoaded = true;
         }
@@ -612,68 +635,66 @@ namespace Merge
             cloudSave.SaveDataAsync("canLevelUp", canLevelUp ? 1 : 0);
         }
 
-        // Get Sprite from sprite name
+        // Get item sprite from sprite name
         public Sprite GetSprite(string name, Types.Type type)
         {
             switch (type)
             {
                 case Types.Type.Item:
-                    if (type == Types.Type.Item)
-                    {
-                        foreach (Sprite sprite in itemSprites)
-                        {
-                            if (sprite.name == name)
-                            {
-                                return sprite;
-                            }
-                        }
-                    }
-                    break;
+                    return FindSpriteByName(itemSprites, name);
                 case Types.Type.Gen:
-                    foreach (Sprite sprite in generatorSprites)
-                    {
-                        if (sprite.name == name)
-                        {
-                            return sprite;
-                        }
-                    }
-                    break;
+                    return FindSpriteByName(generatorSprites, name);
                 case Types.Type.Coll:
-                    foreach (Sprite sprite in collectableSprites)
-                    {
-                        if (sprite.name == name)
-                        {
-                            return sprite;
-                        }
-                    }
-                    break;
+                    return FindSpriteByName(collectableSprites, name);
                 case Types.Type.Chest:
-                    foreach (Sprite sprite in chestSprites)
-                    {
-                        if (sprite.name == name)
-                        {
-                            return sprite;
-                        }
-                    }
-                    break;
+                    return FindSpriteByName(chestSprites, name);
                 default:
                     // ERROR
-                    ErrorManager.Instance.Throw(Types.ErrorType.Code, "GameData.cs -> GetSprite()", "Wrong type: " + type);
-                    break;
+                    ErrorManager.Instance.Throw(Types.ErrorType.Code, GetType() + " // Item", "Wrong type: " + type);
+                    return null;
             }
-
-            return null;
         }
 
-        public Sprite GetTaskSprite(string name)
+        // Get task sprite from sprite name
+        public Sprite GetSprite(string name)
         {
-            foreach (Sprite sprite in taskSprites)
+            return FindSpriteByName(taskSprites, name);
+        }
+
+        // Get selectable from sprite name
+        public Sprite GetSprite(string name, Selectable.Type type, bool isOption = false)
+        {
+            switch (type)
+            {
+                case Selectable.Type.Floor:
+                    return FindSpriteByName(floorSprites, name);
+                //return FindSpriteByName(isOption ? floorOptionSprites : floorSprites, name);
+                case Selectable.Type.Wall:
+                    return FindSpriteByName(wallSprites, name);
+                case Selectable.Type.Furniture:
+                    return FindSpriteByName(furnitureSprites, name);
+                case Selectable.Type.Prop:
+                    return FindSpriteByName(propsSprites, name);
+                default:
+                    // ERROR
+                    ErrorManager.Instance.Throw(Types.ErrorType.Code, GetType() + " // Selectable", "Wrong type: " + type);
+                    return null;
+            }
+        }
+
+        // Find the given sprite
+        Sprite FindSpriteByName(Sprite[] sprites, string name)
+        {
+            foreach (Sprite sprite in sprites)
             {
                 if (sprite.name == name)
                 {
                     return sprite;
                 }
             }
+
+            // ERROR
+            ErrorManager.Instance.Throw(Types.ErrorType.Code, GetType().ToString(), "Sprite not found with name: " + name);
 
             return null;
         }

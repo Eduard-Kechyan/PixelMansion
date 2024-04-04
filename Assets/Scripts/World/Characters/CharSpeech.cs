@@ -124,13 +124,18 @@ namespace Merge
             }
         }
 
-        public void StopAndSpeak(string content = "", bool speakIfEmpty = true)
+        public void StopAndSpeak(string content = "", bool speakIfEmpty = true, bool useLocale = false)
         {
             isSpeaking = false;
 
             isTimeOut = true;
 
             speechBubble.Close(true);
+
+            if (useLocale)
+            {
+                content = LOCALE.Get(content);
+            }
 
             Speak(content, speakIfEmpty);
         }
@@ -187,40 +192,43 @@ namespace Merge
 
         IEnumerator RandomSpeech(bool useDelay = true)
         {
-            int randomCount = 0;
-
-            if (!randomCounted)
+            if (enabled)
             {
-                randomCounted = true;
+                int randomCount = 0;
 
-                randomCount = LOCALE.GetLength("speech_" + gameObject.name + "_random_");
-            }
+                if (!randomCounted)
+                {
+                    randomCounted = true;
 
-            isRandomSpeechTimeOut = true;
+                    randomCount = LOCALE.GetLength("speech_" + gameObject.name + "_random_");
+                }
 
-            if (useDelay)
-            {
-                yield return new WaitForSeconds(randomSpeechDelay);
-            }
+                isRandomSpeechTimeOut = true;
 
-            int waitTime = Mathf.RoundToInt(Random.Range(minRandomSpeechTime, maxRandomSpeechTime));
+                if (useDelay)
+                {
+                    yield return new WaitForSeconds(randomSpeechDelay);
+                }
 
-            if (useDelay)
-            {
-                yield return new WaitForSeconds(waitTime);
-            }
+                int waitTime = Mathf.RoundToInt(Random.Range(minRandomSpeechTime, maxRandomSpeechTime));
 
-            if (randomCount > 0)
-            {
-                lastRandomContent = GetRandomInt(randomCount);
+                if (useDelay)
+                {
+                    yield return new WaitForSeconds(waitTime);
+                }
 
-                int randomSpeech = Random.Range(0, lastRandomContent);
+                if (randomCount > 0)
+                {
+                    lastRandomContent = GetRandomInt(randomCount);
 
-                TryToSpeak(LOCALE.Get("speech_" + gameObject.name + "_random_" + randomSpeech));
-            }
-            else
-            {
-                TryToSpeak("Huh? I'm out of topics to talk about. Please! Help me out!");
+                    int randomSpeech = Random.Range(0, lastRandomContent);
+
+                    TryToSpeak(LOCALE.Get("speech_" + gameObject.name + "_random_" + randomSpeech));
+                }
+                else
+                {
+                    TryToSpeak("Huh? I'm out of topics to talk about. Please! Help me out!");
+                }
             }
         }
 

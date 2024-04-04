@@ -49,82 +49,10 @@ SpriteAtlas:
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
-    packedSpriteRenderDataKeys:
-    - 9f0ca380008283542b6aebe94a90d920: 21300000
-    - 94e7fef037d065a448ea8c192499dfb7: 21300000
-    - ff23d84184fc3d44b8844c396d35b9a7: 21300000
-    - fe60e4a1052f98441be5237fb74f0816: 21300000
-    - 19a11a62778e98046bcdfa9bc97469dd: 21300000
-    - d4d938f247afa1a4fabf559d6f67e63c: 21300000
-    - afb92123195aa644e9ab6d8fb78f91f6: 21300000
-    - 5eb46e8494c7bcc4b857961d1b65c37d: 21300000
-    - e6826fe4f831e484c895e26e5ab63b62: 21300000
-    - be50e1163d10cd447b26ad390fc0628f: 21300000
-    - 743a8d7655504c34a92838be8c89536d: 21300000
-    - 40eead86dcbb6e44d8b829f0b45c4d97: 21300000
-    - 90d9c29711c901f45b938e37a3b7fe77: 21300000
-    - 0fa03dc866fcc7c49a7ba12ae1d61372: 21300000
-    - e10efdf9f5cf91d439541946217566a5: 21300000
-    - 8d05795a5f665e34cb64654edf39d4c1: 21300000
-    - facd2a6a010afb246b4bc881403a73a2: 21300000
-    - 8c3b08dade8427740964297a7302681a: 21300000
-    - 758fc73bceb9e7b44ba83c8567a37b89: 21300000
-    - 5cb2297b7068cd94c8979ba6fd0de804: 21300000
-    - 7fee5c2ebc92b3644a71c790b53291dc: 21300000
-    - dbd3259e6c3a0bf42aa7f31f030687e2: 21300000
-    - c761ec3f3d04ee14988d77db6c169f0f: 21300000
-    - 3a7815dfb2e00484ea82a1d39e412163: 21300000
+    packedSpriteRenderDataKeys: []
   m_MasterAtlas: {fileID: 0}
-  m_PackedSprites:
-  - {fileID: 21300000, guid: 9f0ca380008283542b6aebe94a90d920, type: 3}
-  - {fileID: 21300000, guid: 94e7fef037d065a448ea8c192499dfb7, type: 3}
-  - {fileID: 21300000, guid: ff23d84184fc3d44b8844c396d35b9a7, type: 3}
-  - {fileID: 21300000, guid: fe60e4a1052f98441be5237fb74f0816, type: 3}
-  - {fileID: 21300000, guid: 19a11a62778e98046bcdfa9bc97469dd, type: 3}
-  - {fileID: 21300000, guid: d4d938f247afa1a4fabf559d6f67e63c, type: 3}
-  - {fileID: 21300000, guid: afb92123195aa644e9ab6d8fb78f91f6, type: 3}
-  - {fileID: 21300000, guid: 5eb46e8494c7bcc4b857961d1b65c37d, type: 3}
-  - {fileID: 21300000, guid: e6826fe4f831e484c895e26e5ab63b62, type: 3}
-  - {fileID: 21300000, guid: be50e1163d10cd447b26ad390fc0628f, type: 3}
-  - {fileID: 21300000, guid: 743a8d7655504c34a92838be8c89536d, type: 3}
-  - {fileID: 21300000, guid: 40eead86dcbb6e44d8b829f0b45c4d97, type: 3}
-  - {fileID: 21300000, guid: 90d9c29711c901f45b938e37a3b7fe77, type: 3}
-  - {fileID: 21300000, guid: 0fa03dc866fcc7c49a7ba12ae1d61372, type: 3}
-  - {fileID: 21300000, guid: e10efdf9f5cf91d439541946217566a5, type: 3}
-  - {fileID: 21300000, guid: 8d05795a5f665e34cb64654edf39d4c1, type: 3}
-  - {fileID: 21300000, guid: facd2a6a010afb246b4bc881403a73a2, type: 3}
-  - {fileID: 21300000, guid: 8c3b08dade8427740964297a7302681a, type: 3}
-  - {fileID: 21300000, guid: 758fc73bceb9e7b44ba83c8567a37b89, type: 3}
-  - {fileID: 21300000, guid: 5cb2297b7068cd94c8979ba6fd0de804, type: 3}
-  - {fileID: 21300000, guid: 7fee5c2ebc92b3644a71c790b53291dc, type: 3}
-  - {fileID: 21300000, guid: dbd3259e6c3a0bf42aa7f31f030687e2, type: 3}
-  - {fileID: 21300000, guid: c761ec3f3d04ee14988d77db6c169f0f, type: 3}
-  - {fileID: 21300000, guid: 3a7815dfb2e00484ea82a1d39e412163, type: 3}
-  m_PackedSpriteNamesToIndex:
-  - WallOption2
-  - PaintingOption2
-  - BookcaseOption1
-  - FloorOption1
-  - WallOption3
-  - PaintingOption3
-  - FloorOption3
-  - TableLargeOption1
-  - WallOption1
-  - BookcaseOption3
-  - FloorOption2
-  - BedOption3
-  - BedOption1
-  - FridgeOption1
-  - TableLargeOption3
-  - FridgeOption3
-  - FridgeOption2
-  - BookcaseOption2
-  - BedOption2
-  - BedsideTableOption1
-  - PaintingOption1
-  - TableLargeOption2
-  - BedsideTableOption2
-  - BedsideTableOption3
+  m_PackedSprites: []
+  m_PackedSpriteNamesToIndex: []
   m_RenderDataMap: {}
   m_Tag: OptionsAtlas
   m_IsVariant: 0

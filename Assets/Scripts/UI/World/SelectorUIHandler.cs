@@ -20,6 +20,7 @@ namespace Merge
         private ValuesUI valuesUI;
         private CharMain charMain;
         private Camera cam;
+        private CameraPan cameraPan;
 
         // UI
         private VisualElement root;
@@ -39,6 +40,7 @@ namespace Merge
             valuesUI = GameRefs.Instance.valuesUI;
             charMain = CharMain.Instance;
             cam = Camera.main;
+            cameraPan = cam.GetComponent<CameraPan>();
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
@@ -62,11 +64,12 @@ namespace Merge
         }
 
         // Open the selector and set the appropriate sprites
-        public void Open(Sprite[] sprites, int order, bool initialSelection, bool isAlt = false)
+        // public void Open(Sprite[] sprites, int order, bool initialSelection, bool isAlt = false)
+        public void Open(int order, bool initialSelection, bool isAlt = false)
         {
-            option1Button.style.backgroundImage = new StyleBackground(sprites[0]);
-            option2Button.style.backgroundImage = new StyleBackground(sprites[1]);
-            option3Button.style.backgroundImage = new StyleBackground(sprites[2]);
+            // option1Button.style.backgroundImage = new StyleBackground(sprites[0]);
+            // option2Button.style.backgroundImage = new StyleBackground(sprites[1]);
+            // option3Button.style.backgroundImage = new StyleBackground(sprites[2]);
 
             SelectOptionButton(order);
 
@@ -143,7 +146,10 @@ namespace Merge
 
                     charMain.Show();
 
-                    charMain.SelectSelectableAtPosition(cam.transform.position);
+                    if (!cameraPan.isPanning && !cameraPan.isRebounding && !cameraPan.isResetting)
+                    {
+                        charMain.SelectSelectableAtPosition(cam.transform.position);
+                    }
                 }
 
                 selectorBox.style.bottom = -60f;

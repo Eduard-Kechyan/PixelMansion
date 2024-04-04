@@ -998,6 +998,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firstRoom: {fileID: 0}
+  gardenPolygonCollider2D: {fileID: 0}
+  gardenSortingLayer: Garden
   stairsOrderSetter: {fileID: 0}
   stairsSortingLayer: OuterStairs
   stairsSortingOrder: 12
@@ -1015,8 +1017,10 @@ MonoBehaviour:
   cloudOffset: 40
   cloudTime: 1.7
   cloudTimeOffset: 0.5
+  togglePreMansionSceneVisibility: 0
   remove: 0
   dontDestroyAtStart: 0
+  preMansionHidden: 1
 --- !u!114 &8539154909044783077
 MonoBehaviour:
   m_ObjectHideFlags: 0

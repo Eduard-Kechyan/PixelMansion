@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace Merge
@@ -11,10 +12,15 @@ namespace Merge
         public Type type;
         [Header("Selection")]
         public bool canBeSelected = false;
-        [Condition("canBeSelected", true)]
-        public float selectSpeed = 1.8f;
         [Condition("canBeSelected", true, true)]
         public bool notifyCantBeSelected = false;
+
+        [HideInInspector]
+        public bool isProp = false;
+        [Condition("isProp", true, true)]
+        public bool isStatic = false;
+        [Condition("isProp", true, true)]
+        public bool isInitiallyHidden = false;
 
         [Header("Taps")]
         public bool canBeTapped = false;
@@ -25,9 +31,15 @@ namespace Merge
         [SerializeField]
         [ReadOnly]
         public bool isPlaying = false;
+        [ReadOnly]
+        public bool isOld = true;
+        [ReadOnly]
+        public int spriteOrder = -1;
 
         [HideInInspector]
         public string id;
+
+        private Dictionary<Type, IChanger> changers = new();
 
         // Enums
         public enum Type
@@ -35,10 +47,11 @@ namespace Merge
             Floor,
             Wall,
             Furniture,
-            Item,
+            Prop,
         }
 
         // References
+        private GameData gameData;
         private Animation anim;
 
         [HideInInspector]
@@ -47,10 +60,13 @@ namespace Merge
         public ChangeWall changeWall;
         [HideInInspector]
         public ChangeFurniture changeFurniture;
+        [HideInInspector]
+        public ChangeProp changeProp;
 
         void Start()
         {
             // Cache
+            gameData = GameData.Instance;
             anim = GetComponent<Animation>();
 
             Initialize();
@@ -68,6 +84,24 @@ namespace Merge
             }
         }
 
+        void OnValidate()
+        {
+            if (type == Type.Prop)
+            {
+                isProp = true;
+            }
+
+            if (isProp && isStatic)
+            {
+                isInitiallyHidden = false;
+            }
+
+            if (isProp && isInitiallyHidden)
+            {
+                isStatic = false;
+            }
+        }
+
         void Initialize()
         {
             // Generate random id for comparison
@@ -80,163 +114,83 @@ namespace Merge
             {
                 case Type.Floor:
                     changeFloor = GetComponent<ChangeFloor>();
+                    changers.Add(type, changeFloor);
                     break;
 
                 case Type.Wall:
                     changeWall = GetComponent<ChangeWall>();
+                    changers.Add(type, changeFloor);
                     break;
 
                 case Type.Furniture:
                     changeFurniture = GetComponent<ChangeFurniture>();
+                    changers.Add(type, changeFloor);
+                    break;
+
+                case Type.Prop:
+                    if (!isStatic)
+                    {
+                        changeProp = GetComponent<ChangeProp>();
+                        changers.Add(type, changeFloor);
+                    }
                     break;
             }
         }
 
-        public bool GetOld()
+        public Sprite GetSprite(int order)
         {
-            bool isOld = true;
+            string name = Regex.Replace(gameObject.name, $"\\(.*", "") + (order + 2);
 
-            switch (type)
-            {
-                case Type.Floor:
-                    isOld = changeFloor.isOld;
-                    break;
-
-                case Type.Wall:
-                    isOld = changeWall.isOld;
-                    break;
-
-                case Type.Furniture:
-                    isOld = changeFurniture.isOld;
-                    break;
-            }
-
-            return isOld;
-        }
-
-        public int GetSpriteOrder()
-        {
-            switch (type)
-            {
-                case Type.Floor:
-                    return changeFloor.spriteOrder;
-
-                case Type.Wall:
-                    return changeWall.spriteOrder;
-
-                default: // Type.Furniture
-                    return changeFurniture.spriteOrder;
-            }
+            return gameData.GetSprite(name, type);
         }
 
         public Sprite[] GetSpriteOptions()
         {
-            switch (type)
+            Sprite[] spriteOptions = new Sprite[3];
+
+            for (int i = 0; i < spriteOptions.Length; i++)
             {
-                case Type.Floor:
-                    return changeFloor.optionSprites;
+                string name = Regex.Replace(gameObject.name, $"\\(.*", "") + "Option" + (i + 1);
 
-                case Type.Wall:
-                    return changeWall.optionSprites;
-
-                default: // Type.Furniture
-                    return changeFurniture.optionSprites;
+                spriteOptions[i] = gameData.GetSprite(name, type, true);
             }
+
+            return spriteOptions;
         }
 
         public void SetSprites(int order)
         {
-            switch (type)
-            {
-                case Type.Floor:
-                    changeFloor.SetSprites(order);
-                    break;
-
-                case Type.Wall:
-                    changeWall.SetSprites(order);
-                    break;
-
-                case Type.Furniture:
-                    changeFurniture.SetSprites(order);
-                    break;
-            }
+            GetChanger().SetSprites(order);
         }
 
         public void CancelSpriteChange(int order)
         {
-            switch (type)
-            {
-                case Type.Floor:
-                    changeFloor.Cancel(order);
-                    break;
-
-                case Type.Wall:
-                    changeWall.Cancel(order);
-                    break;
-
-                case Type.Furniture:
-                    changeFurniture.Cancel(order);
-                    break;
-            }
+            GetChanger().Cancel(order);
         }
 
-        public void ConfirmSpriteChange(int order)
+        public void ConfirmSpriteChange()
         {
             canBeSelected = true;
 
-            switch (type)
-            {
-                case Type.Floor:
-                    changeFloor.Confirm();
-                    break;
-
-                case Type.Wall:
-                    changeWall.Confirm();
-                    break;
-
-                case Type.Furniture:
-                    changeFurniture.Confirm();
-                    break;
-            }
+            GetChanger().Confirm();
         }
 
-        public void Select()
+        public void Select(bool select = true)
         {
-            switch (type)
-            {
-                case Type.Floor:
-                    changeFloor.Select();
-                    break;
-
-                case Type.Wall:
-                    changeWall.Select();
-                    break;
-
-                case Type.Furniture:
-                    changeFurniture.Select();
-                    break;
-            }
+            GetChanger().Select(select);
         }
 
-        public void Unselect()
+        IChanger GetChanger()
         {
-            switch (type)
+            if (changers.TryGetValue(type, out var changer))
             {
-                case Type.Floor:
-                    changeFloor.Unselect();
-                    break;
-
-                case Type.Wall:
-                    changeWall.Unselect();
-                    break;
-
-                case Type.Furniture:
-                    changeFurniture.Unselect();
-                    break;
+                return changer;
             }
+
+            return null;
         }
 
-        public bool Tapped()
+        public bool Tapped(float selectSpeed = 1.8f)
         {
             if (canBeTapped && anim != null)
             {
@@ -252,5 +206,16 @@ namespace Merge
 
             return false;
         }
+    }
+
+    public interface IChanger
+    {
+        void Select(bool select = true);
+
+        void SetSprites(int order, bool alt = false);
+
+        void Cancel(int order);
+
+        void Confirm();
     }
 }

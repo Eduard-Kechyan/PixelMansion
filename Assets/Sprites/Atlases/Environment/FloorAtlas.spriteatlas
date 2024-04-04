@@ -52,28 +52,19 @@ SpriteAtlas:
     packedSpriteRenderDataKeys:
     - 376e10e053a80674c8e4e94b4a5d2739: 21300000
     - d19c7c526b4785a469afc23e3676c896: 21300000
-    - b94c3ec20b049f745be791370b05105a: 21300000
     - 847a12d2213ea91459952fd3687615c1: 21300000
-    - 9ecd0ee330e59e84fb987b6003002b45: 21300000
     - b88eb0288d263704e98604a5b43da583: 21300000
-    - f2ecf32d0c31d9146acf8d09b97811b8: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: 376e10e053a80674c8e4e94b4a5d2739, type: 3}
   - {fileID: 21300000, guid: d19c7c526b4785a469afc23e3676c896, type: 3}
-  - {fileID: 21300000, guid: b94c3ec20b049f745be791370b05105a, type: 3}
   - {fileID: 21300000, guid: 847a12d2213ea91459952fd3687615c1, type: 3}
-  - {fileID: 21300000, guid: 9ecd0ee330e59e84fb987b6003002b45, type: 3}
   - {fileID: 21300000, guid: b88eb0288d263704e98604a5b43da583, type: 3}
-  - {fileID: 21300000, guid: f2ecf32d0c31d9146acf8d09b97811b8, type: 3}
   m_PackedSpriteNamesToIndex:
   - FloorOld3
   - FloorOld1
-  - Floor2
   - FloorOld2
-  - Floor3
   - FloorOld4
-  - Floor1
   m_RenderDataMap: {}
   m_Tag: FloorAtlas
   m_IsVariant: 0

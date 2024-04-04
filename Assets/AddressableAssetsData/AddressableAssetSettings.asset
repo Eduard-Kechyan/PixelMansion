@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: 79473346699d1934582f31ec36d000f9
   m_currentHash:
     serializedVersion: 2
-    Hash: 00000000000000000000000000000000
+    Hash: 9c5b307b49ef7e7f257f2d073b0d84fd
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_BundleLocalCatalog: 0
@@ -93,6 +93,14 @@ MonoBehaviour:
     - chests
     - tasks
     - avatars
+    - floors
+    - furniture
+    - walls
+    - props
+    - floorOption
+    - furnitureOption
+    - wallOption
+    - propOption
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 13def40c1ff6d9c449baae4dc148e960, type: 2}

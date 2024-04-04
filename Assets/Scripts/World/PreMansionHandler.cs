@@ -54,7 +54,7 @@ namespace Merge
         public bool dontDestroyAtStart = false;
 
         private Vector3 roomCenter;
-        private List<Transform> mansionParts;
+        private List<Transform> mansionParts = new();
 
         private bool partsRemoved = false;
         private bool cloudsRemoved = false;
@@ -94,7 +94,6 @@ namespace Merge
             else
             {
                 // Set the main character's pre position
-                Debug.Log(gardenPolygonCollider2D.bounds.center);
                 charMain.SetRoom(gardenPolygonCollider2D.bounds.center);
             }
 
@@ -153,7 +152,7 @@ namespace Merge
 
                         // Destroy at the end
                         Destroy(gameObject);
-                    });
+                    }, 1f);
                 });
             });
         }

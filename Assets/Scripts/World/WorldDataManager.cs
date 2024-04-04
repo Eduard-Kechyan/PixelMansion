@@ -189,6 +189,22 @@ namespace Merge
                                         }
                                     }
                                 }
+
+                                // Props
+                                for (int k = 0; k < gameData.areasData[i].props.Count; k++)
+                                {
+                                    Transform props = worldArea.GetChild(4).GetChild(k);
+
+                                    if (props.name == gameData.areasData[i].props[k].name)
+                                    {
+                                        if (gameData.areasData[i].props[k].order >= 0 && props.TryGetComponent(out ChangeProp changeProp))
+                                        {
+                                            changeProp.SetSprites(gameData.areasData[i].props[k].order, true);
+
+                                            changeProp.GetComponent<Selectable>().canBeSelected = true;
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -207,6 +223,8 @@ namespace Merge
             int wallRightOrder = -1;
             int floorOrder = -1;
             List<WorldTypes.Furniture> furniture = new();
+            List<WorldTypes.Prop> props = new();
+            List<string> dirt = new();
 
             RoomHandler roomHandler = area.GetComponent<RoomHandler>();
 
@@ -215,25 +233,26 @@ namespace Merge
                 isRoom = true;
                 isLocked = roomHandler.locked;
 
-                ChangeWall changeWallLeft = area.GetChild(0).GetComponent<ChangeWall>();
-                ChangeWall changeWallRight = area.GetChild(1).GetComponent<ChangeWall>();
-                ChangeFloor changeFloor = area.GetChild(2).GetComponent<ChangeFloor>();
+                Selectable wallLeftSelectable = area.GetChild(0).GetComponent<Selectable>();
+                Selectable wallRightSelectable = area.GetChild(1).GetComponent<Selectable>();
+                Selectable floorSelectable = area.GetChild(2).GetComponent<Selectable>();
 
-                if (!changeWallLeft.isOld)
+                if (!wallLeftSelectable.isOld)
                 {
-                    wallLeftOrder = changeWallLeft.spriteOrder;
+                    wallLeftOrder = wallLeftSelectable.spriteOrder;
                 }
 
-                if (!changeWallRight.isOld)
+                if (!wallRightSelectable.isOld)
                 {
-                    wallRightOrder = changeWallRight.spriteOrder;
+                    wallRightOrder = wallRightSelectable.spriteOrder;
                 }
 
-                if (!changeFloor.isOld)
+                if (!floorSelectable.isOld)
                 {
-                    floorOrder = changeFloor.spriteOrder;
+                    floorOrder = floorSelectable.spriteOrder;
                 }
 
+                // Furniture
                 Transform areaFurniture = area.GetChild(3);
 
                 for (int i = 0; i < areaFurniture.childCount; i++)
@@ -247,6 +266,30 @@ namespace Merge
                     };
 
                     furniture.Add(furnitureItem);
+                }
+
+                // Props
+                Transform areaProps = area.GetChild(4);
+
+                for (int i = 0; i < areaProps.childCount; i++)
+                {
+                    ChangeProp changeItem = areaProps.GetChild(i).GetComponent<ChangeProp>();
+
+                    WorldTypes.Prop propItem = new()
+                    {
+                        name = areaProps.GetChild(i).name,
+                        order = changeItem.spriteOrder
+                    };
+
+                    props.Add(propItem);
+                }
+
+                // Dirt
+                Transform areaDirt = area.GetChild(5);
+
+                for (int i = 0; i < areaDirt.childCount; i++)
+                {
+                    dirt.Add(areaDirt.GetChild(i).name);
                 }
             }
             else
@@ -263,7 +306,9 @@ namespace Merge
                 wallLeftOrder = wallLeftOrder,
                 wallRightOrder = wallRightOrder,
                 floorOrder = floorOrder,
-                furniture = furniture
+                furniture = furniture,
+                props = props,
+                dirt = dirt,
             };
 
             return newArea;
@@ -404,6 +449,22 @@ namespace Merge
                         if (gameData.areasData[i].furniture[j].name == selectable.name)
                         {
                             gameData.areasData[i].furniture[j].order = selectable.changeFurniture.spriteOrder;
+
+                            break;
+                        }
+                    }
+
+                    break;
+                }
+
+                // Prop
+                if (selectable.type == Selectable.Type.Prop && gameData.areasData[i].name == selectable.transform.parent.transform.parent.name)
+                {
+                    for (int j = 0; j < gameData.areasData[i].props.Count; j++)
+                    {
+                        if (gameData.areasData[i].props[j].name == selectable.name)
+                        {
+                            gameData.areasData[i].props[j].order = selectable.changeProp.spriteOrder;
 
                             break;
                         }
