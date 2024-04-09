@@ -35,7 +35,7 @@ namespace Merge
             {
                 string newSpeechCode = "speech_" + speechCode + "_" + selectable.spriteOrder;
 
-                int speechCount = LOCALE.GetNestedLength(newSpeechCode);
+                int speechCount = LOCALE.GetNestedLength(newSpeechCode, true);
 
                 if (speechCount >= 0)
                 {
@@ -43,11 +43,14 @@ namespace Merge
 
                     return LOCALE.Get(newSpeechCode, randomInt);
                 }
-                else
+                else if (speechCount == 0)
                 {
                     return LOCALE.Get(newSpeechCode);
                 }
-
+                else
+                {
+                    return "";
+                }
             }
             else
             {

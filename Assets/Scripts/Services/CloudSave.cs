@@ -240,8 +240,18 @@ namespace Merge
             }
         }
 
-        void SetUnsavedData(Dictionary<string, object> unsavedData)
+        public void SetUnsavedData<T>(string key, T value)
         {
+            SetUnsavedData(new Dictionary<string, object> { { key, value } });
+        }
+
+        public void SetUnsavedData(Dictionary<string, object> unsavedData)
+        {
+            if (dataManager == null)
+            {
+                dataManager = DataManager.Instance;
+            }
+
             if (dataManager.loaded && (unsentData == null || unsentData.Count == 0))
             {
                 unsentData = dataManager.LoadUnsentData();

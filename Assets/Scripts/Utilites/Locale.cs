@@ -110,7 +110,7 @@ namespace Merge
             return config[key] != null;
         }
 
-        public int GetNestedLength(string key)
+        public int GetNestedLength(string key, bool zeroExpected = false)
         {
             int count = -1;
 
@@ -123,7 +123,7 @@ namespace Merge
             {
                 count = config[key].Count;
             }
-            else if (isLoggingMissing)
+            else if (isLoggingMissing && !zeroExpected)
             {
                 // ERROR
                 ErrorManager.Instance.ThrowWarning(Types.ErrorType.Locale, GetType().Name, "Missing translation for: " + key);

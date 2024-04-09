@@ -26,19 +26,25 @@ namespace Merge
         private WorldUI worldUI;
         private ValuesUI valuesUI;
         private CharMain charMain;
-        private CameraMotion cameraMotion;
         private CloudSave cloudSave;
 
         void Start()
         {
             // Cache
-            taskManager = GetComponent<TaskManager>();
             gameData = GameData.Instance;
             worldUI = GameRefs.Instance.worldUI;
             valuesUI = GameRefs.Instance.valuesUI;
             charMain = CharMain.Instance;
-            cameraMotion = Camera.main.GetComponent<CameraMotion>();
-            cloudSave = Services.Instance.GetComponent<CloudSave>();
+
+            if (taskManager == null)
+            {
+                taskManager = GetComponent<TaskManager>();
+            }
+
+            if (cloudSave == null)
+            {
+                cloudSave = Services.Instance.GetComponent<CloudSave>();
+            }
 
             Glob.SetTimeout(() =>
             {
@@ -55,11 +61,14 @@ namespace Merge
         {
             settingInitial = true;
 
+            taskManager = GetComponent<TaskManager>();
+            cloudSave = Services.Instance.GetComponent<CloudSave>();
+
             if (last)
             {
                 PlayerPrefs.SetInt("initialTaskDataSet", 1);
 
-                cloudSave.SaveDataAsync("initialTaskDataSet", 1);
+                cloudSave.SetUnsavedData("initialTaskDataSet", 1);
             }
             else if (!initialSet)
             {

@@ -14,9 +14,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   check: 0
   areas:
+  - name: Garden
+    id: Garden
+    steps:
+    - name: Task RemoveFilth1
+      id: RemoveFilth1
+      stepType: 0
+      nextIds:
+      - RemoveFilth2
+      requiredIds: []
+    - name: Task RemoveFilth2
+      id: RemoveFilth2
+      stepType: 0
+      nextIds:
+      - RemoveFilth3
+      requiredIds: []
+    - name: Task RemoveFilth3
+      id: RemoveFilth3
+      stepType: 0
+      nextIds:
+      - Last
+      requiredIds: []
+    - name: Task Last
+      id: Last
+      stepType: 0
+      nextIds:
+      - LivingRoom
+      requiredIds: []
   - name: LivingRoom
     id: LivingRoom
     steps:
+    - name: RoomUnlocking RoomUnlocking
+      id: RoomUnlocking
+      stepType: 2
+      nextIds:
+      - ChangeFloor
+      requiredIds: []
     - name: Task ChangeFloor
       id: ChangeFloor
       stepType: 0

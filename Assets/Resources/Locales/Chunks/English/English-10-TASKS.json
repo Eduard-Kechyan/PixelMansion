@@ -1,5 +1,7 @@
 {
     "________ TASK GROUPS ________": "________________",
+    "task_group_Garden": "The Forgotten Garden",
+    "task_group_Garden_desc": "Someone forgot to do maintenance here!",
     "task_group_LivingRoom": "The Grand Living Room",
     "task_group_LivingRoom_desc": "Lets clean it up before we explore it!",
     "task_group_BedRoom": "The Tiny Bedroom",
@@ -11,6 +13,10 @@
     "task_button_complete": "Complete",
     "task_button_finish": "Finish",
     "task_empty": "No tasks found!",
+    "________ GARDEN ROOM TASKS________": "________________",
+    "task_Garden_RemoveFilth1": "Clean up (1)",
+    "task_Garden_RemoveFilth2": "Clean up (2)",
+    "task_Garden_Last": "Finish Garden!",
     "________ LIVING ROOM TASKS________": "________________",
     "task_LivingRoom_ChangeFloor": "Repair the floor",
     "task_LivingRoom_ChangeWallLeft": "Repair The Walls (1)",

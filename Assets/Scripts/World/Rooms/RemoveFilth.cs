@@ -70,7 +70,7 @@ namespace Merge
 
             callback = newCallback;
 
-            StartCoroutine(MakeDustClouds());
+            StartCoroutine(WaitForFilth());
 
             int filthCount = refFilth.childCount;
 
@@ -200,17 +200,8 @@ namespace Merge
         }
 
         // Make dust clouds appear
-        IEnumerator MakeDustClouds()
+        IEnumerator WaitForFilth()
         {
-            /*  int newOffset = UnityEngine.Random.Range(1, 3);
-
-              int newDustCloudCount = UnityEngine.Random.Range(dustCloudCount - newOffset, dustCloudCount + newOffset);
-
-              for (int i = 0; i < newDustCloudCount; i++)
-              {
-                  StartCoroutine(HandleDustCloud());
-              }*/
-
             while (!filthRemoved)
             {
                 yield return null;
@@ -227,107 +218,9 @@ namespace Merge
 
             filthRemoved = false;
 
-            StopCoroutine(MakeDustClouds());
+            callback?.Invoke();
 
-            StartCoroutine(RemoveLeftOverDustClouds(() =>
-            {
-                callback?.Invoke();
-
-                callback = null;
-            }));
-        }
-
-        IEnumerator RemoveLeftOverDustClouds(Action callbackAlt)
-        {
-            for (int i = 0; i < dustCloudRoot.childCount; i++)
-            {
-                if (dustCloudRoot.GetChild(i) != null)
-                {
-                    HandleDustCloud(dustCloudRoot.GetChild(i));
-                }
-            }
-
-            while (dustCloudRoot.childCount > 0)
-            {
-                yield return null;
-            }
-
-            callbackAlt();
-        }
-
-        IEnumerator HandleDustCloud(Transform dustCloud = null)
-        {
-            Transform newDustCloud = dustCloud;
-            SpriteRenderer newDustCloudSpriteRenderer = null;
-            Vector3 newTargetScale = new Vector3(1, 1, 1);
-
-            // Set up random values
-            float randomDelay = UnityEngine.Random.Range(0f, 0.5f);
-            int randomDustCloud = UnityEngine.Random.Range(0, dustCloudPrefabs.Length);
-            int randomOffsetX = UnityEngine.Random.Range(-dustCloudOffsetX, dustCloudOffsetX);
-            int randomOffsetY = UnityEngine.Random.Range(-dustCloudOffsetY, dustCloudOffsetY);
-
-            Vector3 newOffsetTransform = new Vector3(
-                refFilth.transform.position.x + randomOffsetX,
-                refFilth.transform.position.y + randomOffsetY,
-                0
-            );
-
-            yield return new WaitForSeconds(randomDelay);
-
-            // Instantiate dust cloud
-            newDustCloud = Instantiate(dustCloudPrefabs[randomDustCloud], newOffsetTransform, Quaternion.identity);
-
-            newDustCloud.SetParent(dustCloudRoot);
-
-            newDustCloudSpriteRenderer = newDustCloud.GetComponent<SpriteRenderer>();
-
-            soundManager.PlaySound(Types.SoundType.Generate); // TODO - Change this to Types.SoundType.DustCloud and add the proper sound 
-
-            // Increase the part scale to 1
-            while (newDustCloud.localScale != newTargetScale)
-            {
-                float timeChange = dustCloudScaleSpeed * Time.deltaTime;
-
-                newDustCloud.localScale = Vector3.MoveTowards(
-                    newDustCloud.localScale,
-                    newTargetScale,
-                    timeChange
-                );
-
-                newDustCloudSpriteRenderer.color = Color.Lerp(newDustCloudSpriteRenderer.color, dustCloudColorHalf, timeChange);
-
-                yield return null;
-            }
-
-            randomDelay = UnityEngine.Random.Range(1.5f, 3f);
-
-            yield return new WaitForSeconds(randomDelay);
-
-            if (newDustCloudSpriteRenderer == null)
-            {
-                newDustCloudSpriteRenderer = newDustCloud.GetComponent<SpriteRenderer>();
-            }
-
-            newTargetScale = new Vector3(0, 0, 0);
-
-            // Decrease the part scale to 0
-            while (newDustCloud.localScale != newTargetScale)
-            {
-                float timeChange = dustCloudScaleSpeed * Time.deltaTime;
-
-                newDustCloud.localScale = Vector3.MoveTowards(
-                    newDustCloud.localScale,
-                    newTargetScale,
-                    timeChange
-                );
-
-                newDustCloudSpriteRenderer.color = Color.Lerp(newDustCloudSpriteRenderer.color, dustCloudColorNull, timeChange);
-
-                yield return null;
-            }
-
-            Destroy(newDustCloud.gameObject);
+            callback = null;
         }
     }
 }

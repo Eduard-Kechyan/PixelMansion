@@ -57,22 +57,14 @@ namespace Merge
         {
             currentScene = Glob.ParseEnum<Types.Scene>(SceneManager.GetActiveScene().name);
 
-            //  Debug.Log(PlayerPrefs.HasKey("tutorialFinished"));
-            // Debug.Log(skipTutorial);
-            //  Debug.Log((Glob.lastScene != Types.Scene.None && Glob.lastScene == currentScene));
-
             if (PlayerPrefs.HasKey("tutorialFinished") || skipTutorial || (Glob.lastScene != Types.Scene.None && Glob.lastScene == currentScene))
             {
-                // Debug.Log("A");
-                progressManager.SetInitialData(0, true);
-
                 handlingLast = true;
 
-                HandleLast();
+                StartCoroutine(WaitForDataManager());
             }
             else
             {
-                // Debug.Log("B");
                 if (startFromStep && stepToStartFrom != "")
                 {
                     tutorialStep = stepToStartFrom;
@@ -516,7 +508,19 @@ namespace Merge
 
             analyticsManager.FireTutorialEvent("", false, true);
 
-            StartCoroutine(WaitForGameReferences());
+            Destroy(gameObject);
+        }
+
+        IEnumerator WaitForDataManager()
+        {
+            while (DataManager.Instance == null)
+            {
+                yield return null;
+            }
+
+            progressManager.SetInitialData(0, true);
+
+            Destroy(gameObject);
         }
 
         IEnumerator WaitForGameReferences()
@@ -537,21 +541,21 @@ namespace Merge
                 worldUI = GameRefs.Instance.worldUI;
                 mergeUI = GameRefs.Instance.mergeUI;
 
-                if (valuesUI != null)
-                {
-                    valuesUI.SetSortingOrder(10);
-                    valuesUI.EnableButtonsAlt();
-                }
+                /*  if (valuesUI != null)
+                  {
+                      valuesUI.SetSortingOrder(10);
+                      valuesUI.EnableButtonsAlt();
+                  }
 
-                if (worldUI != null)
-                {
-                    worldUI.ShowButtons();
-                }
+                  if (worldUI != null)
+                  {
+                      worldUI.ShowButtons();
+                  }
 
-                if (mergeUI != null)
-                {
-                    mergeUI.ShowButtons();
-                }
+                  if (mergeUI != null)
+                  {
+                      mergeUI.ShowButtons();
+                  }*/
             }
 
             Destroy(gameObject);
