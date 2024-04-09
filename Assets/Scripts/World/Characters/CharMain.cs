@@ -76,11 +76,7 @@ namespace Merge
 
             charMove.SetDestination(position, CheckIfInRoom(selectable));
 
-            Debug.Log(selectable);
-
             SelectableSpeech selectableSpeech = selectable.GetComponent<SelectableSpeech>();
-
-            Debug.Log(selectableSpeech);
 
             charSpeech.Speak(selectableSpeech.GetSpeech(), false);
         }
@@ -131,7 +127,8 @@ namespace Merge
 
         public void Hide()
         {
-            charSpeech.Closed();
+            charSpeech.Stop();
+
             charSpeech.enabled = false;
 
             speechBubble.Close();

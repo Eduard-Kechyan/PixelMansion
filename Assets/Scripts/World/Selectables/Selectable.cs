@@ -15,11 +15,11 @@ namespace Merge
         [Condition("canBeSelected", true, true)]
         public bool notifyCantBeSelected = false;
 
-        [HideInInspector]
+        [ReadOnly]
         public bool isProp = false;
-        [Condition("isProp", true, true)]
+        [Condition("isProp", true)]
         public bool isStatic = false;
-        [Condition("isProp", true, true)]
+        [Condition("isProp", true)]
         public bool isInitiallyHidden = false;
 
         [Header("Taps")]
@@ -39,15 +39,13 @@ namespace Merge
         [HideInInspector]
         public string id;
 
-        private Dictionary<Type, IChanger> changers = new();
-
         // Enums
         public enum Type
         {
             Floor,
             Wall,
             Furniture,
-            Prop,
+            Prop
         }
 
         // References
@@ -90,6 +88,10 @@ namespace Merge
             {
                 isProp = true;
             }
+            else
+            {
+                isProp = false;
+            }
 
             if (isProp && isStatic)
             {
@@ -114,24 +116,17 @@ namespace Merge
             {
                 case Type.Floor:
                     changeFloor = GetComponent<ChangeFloor>();
-                    changers.Add(type, changeFloor);
                     break;
-
                 case Type.Wall:
                     changeWall = GetComponent<ChangeWall>();
-                    changers.Add(type, changeFloor);
                     break;
-
                 case Type.Furniture:
                     changeFurniture = GetComponent<ChangeFurniture>();
-                    changers.Add(type, changeFloor);
                     break;
-
-                case Type.Prop:
+                default: // Type.Prop
                     if (!isStatic)
                     {
                         changeProp = GetComponent<ChangeProp>();
-                        changers.Add(type, changeFloor);
                     }
                     break;
             }
@@ -182,12 +177,20 @@ namespace Merge
 
         IChanger GetChanger()
         {
-            if (changers.TryGetValue(type, out var changer))
+            switch (type)
             {
-                return changer;
-            }
+                case Type.Floor:
+                    return changeFloor;
 
-            return null;
+                case Type.Wall:
+                    return changeWall;
+
+                case Type.Furniture:
+                    return changeFurniture;
+
+                default: // Type.Prop
+                    return changeProp;
+            }
         }
 
         public bool Tapped(float selectSpeed = 1.8f)

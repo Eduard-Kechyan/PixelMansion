@@ -489,6 +489,7 @@ namespace Merge
             Wall,
             Furniture,
             Item,
+            Filth
         };
 
         [Serializable]
@@ -716,7 +717,8 @@ namespace Merge
             Gold,
             Gems,
             Pop,
-            Buzz
+            Buzz,
+            RemoveFilth
         };
 
         //// OTHER ////

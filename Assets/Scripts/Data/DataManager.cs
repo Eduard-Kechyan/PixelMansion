@@ -351,7 +351,8 @@ namespace Merge
                 "followResult",
                 "rateResult",
                 "canLevelUp",
-                "termsAccepted"
+                "termsAccepted",
+                "preMansionRemoved",
             };
         }
 
@@ -726,6 +727,11 @@ namespace Merge
                         services.termsAccepted = true;
 
                         PlayerPrefs.SetInt("termsAccepted", 1);
+                        break;
+                    case "preMansionRemoved":
+                        services.termsAccepted = true;
+
+                        PlayerPrefs.SetInt("preMansionRemoved", 1);
                         break;
                     default:
                         // ERROR

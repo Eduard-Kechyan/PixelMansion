@@ -292,7 +292,7 @@ namespace Merge
                     floorOrder = areaJson[i].floorOrder,
                     furniture = JsonConvert.DeserializeObject<List<WorldTypes.Furniture>>(areaJson[i].furniture),
                     props = JsonConvert.DeserializeObject<List<WorldTypes.Prop>>(areaJson[i].props),
-                    dirt = JsonConvert.DeserializeObject<List<string>>(areaJson[i].dirt),
+                    filth = JsonConvert.DeserializeObject<List<WorldTypes.Filth>>(areaJson[i].filth),
                 };
 
                 areasData.Add(newAreasData);
@@ -317,7 +317,7 @@ namespace Merge
                     floorOrder = areasData[i].floorOrder,
                     furniture = JsonConvert.SerializeObject(areasData[i].furniture),
                     props = JsonConvert.SerializeObject(areasData[i].props),
-                    dirt = JsonConvert.SerializeObject(areasData[i].dirt),
+                    filth = JsonConvert.SerializeObject(areasData[i].filth),
                 };
 
                 areaJson[i] = newAreaJson;

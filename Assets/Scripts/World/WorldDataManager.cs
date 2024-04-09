@@ -13,6 +13,7 @@ namespace Merge
         public Transform worldRoot;
         public TaskManager taskManager;
         public int roomInHierarchyOffset = 2;
+        public float bakeDelay = 0.5f;
 
         [Header("Debug")]
         public bool canLog = false;
@@ -205,6 +206,20 @@ namespace Merge
                                         }
                                     }
                                 }
+
+                                // Filth
+                                for (int k = 0; k < gameData.areasData[i].filth.Count; k++)
+                                {
+                                    Transform filth = worldArea.GetChild(5).GetChild(k);
+
+                                    if (filth.name == gameData.areasData[i].filth[k].name)
+                                    {
+                                        if (gameData.areasData[i].filth[k].removed)
+                                        {
+                                            filth.gameObject.SetActive(false);
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -224,7 +239,7 @@ namespace Merge
             int floorOrder = -1;
             List<WorldTypes.Furniture> furniture = new();
             List<WorldTypes.Prop> props = new();
-            List<string> dirt = new();
+            List<WorldTypes.Filth> filth = new();
 
             RoomHandler roomHandler = area.GetComponent<RoomHandler>();
 
@@ -257,12 +272,12 @@ namespace Merge
 
                 for (int i = 0; i < areaFurniture.childCount; i++)
                 {
-                    ChangeFurniture changeFurniture = areaFurniture.GetChild(i).GetComponent<ChangeFurniture>();
+                    Selectable furnitureSelectable = areaFurniture.GetChild(i).GetComponent<Selectable>();
 
                     WorldTypes.Furniture furnitureItem = new()
                     {
                         name = areaFurniture.GetChild(i).name,
-                        order = changeFurniture.spriteOrder
+                        order = furnitureSelectable.spriteOrder
                     };
 
                     furniture.Add(furnitureItem);
@@ -273,23 +288,31 @@ namespace Merge
 
                 for (int i = 0; i < areaProps.childCount; i++)
                 {
-                    ChangeProp changeItem = areaProps.GetChild(i).GetComponent<ChangeProp>();
+                    Selectable propSelectable = areaFurniture.GetChild(i).GetComponent<Selectable>();
 
                     WorldTypes.Prop propItem = new()
                     {
                         name = areaProps.GetChild(i).name,
-                        order = changeItem.spriteOrder
+                        order = propSelectable.spriteOrder
                     };
 
                     props.Add(propItem);
                 }
 
-                // Dirt
-                Transform areaDirt = area.GetChild(5);
+                // Filth
+                Transform areaFilth = area.GetChild(5);
 
-                for (int i = 0; i < areaDirt.childCount; i++)
+                for (int i = 0; i < areaFilth.childCount; i++)
                 {
-                    dirt.Add(areaDirt.GetChild(i).name);
+                    Transform filthItemTransform = areaProps.GetChild(i);
+
+                    WorldTypes.Filth filthItem = new()
+                    {
+                        name = filthItemTransform.name,
+                        removed = !filthItemTransform.gameObject.activeSelf
+                    };
+
+                    filth.Add(filthItem);
                 }
             }
             else
@@ -308,7 +331,7 @@ namespace Merge
                 floorOrder = floorOrder,
                 furniture = furniture,
                 props = props,
-                dirt = dirt,
+                filth = filth,
             };
 
             return newArea;
@@ -391,11 +414,18 @@ namespace Merge
         // Bakes the navigation mesh after reading or writing the root
         IEnumerator BakeNavMeshAfterPhysicsUpdate()
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(bakeDelay);
 
             navMeshManager.Bake(() =>
             {
-                StartCoroutine(TryCheckingForTasks());
+                if (taskManager == null || !taskManager.enabled)
+                {
+                    loaded = true;
+                }
+                else
+                {
+                    StartCoroutine(TryCheckingForTasks());
+                }
             });
         }
 
@@ -421,14 +451,7 @@ namespace Merge
                 // Walls
                 if (selectable.type == Selectable.Type.Wall && gameData.areasData[i].name == selectable.transform.parent.name)
                 {
-                    if (selectable.name.Contains("Left"))
-                    {
-                        gameData.areasData[i].wallLeftOrder = selectable.changeWall.spriteOrder;
-                    }
-                    else
-                    {
-                        gameData.areasData[i].wallRightOrder = selectable.changeWall.spriteOrder;
-                    }
+                    gameData.areasData[i].wallRightOrder = selectable.spriteOrder;
 
                     break;
                 }
@@ -436,7 +459,7 @@ namespace Merge
                 // Floor
                 if (selectable.type == Selectable.Type.Floor && gameData.areasData[i].name == selectable.transform.parent.name)
                 {
-                    gameData.areasData[i].floorOrder = selectable.changeFloor.spriteOrder;
+                    gameData.areasData[i].floorOrder = selectable.spriteOrder;
 
                     break;
                 }
@@ -448,7 +471,7 @@ namespace Merge
                     {
                         if (gameData.areasData[i].furniture[j].name == selectable.name)
                         {
-                            gameData.areasData[i].furniture[j].order = selectable.changeFurniture.spriteOrder;
+                            gameData.areasData[i].furniture[j].order = selectable.spriteOrder;
 
                             break;
                         }
@@ -464,13 +487,34 @@ namespace Merge
                     {
                         if (gameData.areasData[i].props[j].name == selectable.name)
                         {
-                            gameData.areasData[i].props[j].order = selectable.changeProp.spriteOrder;
+                            gameData.areasData[i].props[j].order = selectable.spriteOrder;
 
                             break;
                         }
                     }
 
                     break;
+                }
+            }
+
+            SaveData();
+        }
+
+        public void SetFilth(Transform filth)
+        {
+            for (int i = 0; i < gameData.areasData.Count; i++)
+            {
+                if (gameData.areasData[i].name == filth.parent.name)
+                {
+                    for (int j = 0; j < gameData.areasData[i].props.Count; j++)
+                    {
+                        if (gameData.areasData[i].filth[j].name == filth.name)
+                        {
+                            gameData.areasData[i].filth[j].removed = true;
+
+                            break;
+                        }
+                    }
                 }
             }
 
@@ -532,7 +576,8 @@ namespace Merge
                         return worldArea;
                     case Types.TaskRefType.Wall:
                         return worldArea.Find(task.taskRefType.ToString() + (task.isTaskRefRight ? "Right" : "Left"));
-                    case Types.TaskRefType.Floor:
+                    case Types.TaskRefType.Filth:
+                        return worldArea.Find("Filth").Find(task.taskRefName);
                     default:
                         // Floor, Furniture, Item and others
                         // TODO - Possibly find Furniture and Item first before getting their children

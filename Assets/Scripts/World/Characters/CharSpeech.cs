@@ -140,6 +140,17 @@ namespace Merge
             Speak(content, speakIfEmpty);
         }
 
+        public void Stop()
+        {
+            isSpeaking = false;
+
+            isTimeOut = true;
+
+            speechBubble.Close(true);
+
+            StartCoroutine(StopTimeOut());
+        }
+
         public void Closed()
         {
             StartCoroutine(StopSpeaking(true));

@@ -18,7 +18,7 @@ namespace Merge
             public int floorOrder;
             public List<Furniture> furniture;
             public List<Prop> props;
-            public List<string> dirt;
+            public List<Filth> filth;
         }
 
         [Serializable]
@@ -32,7 +32,7 @@ namespace Merge
             public int floorOrder;
             public string furniture;
             public string props;
-            public string dirt;
+            public string filth;
         }
 
         [Serializable]
@@ -47,6 +47,13 @@ namespace Merge
         {
             public string name;
             public int order;
+        }
+
+        [Serializable]
+        public class Filth
+        {
+            public string name;
+            public bool removed;
         }
     }
 }

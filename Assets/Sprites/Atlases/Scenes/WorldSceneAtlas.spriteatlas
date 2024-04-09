@@ -50,6 +50,7 @@ SpriteAtlas:
     isAtlasV2: 0
     cachedData: {fileID: 0}
     packedSpriteRenderDataKeys:
+    - 61db3f908b3dc1d4f8b0ff15cbc2d7b0: 21300000
     - c8a70331c0324a746b5a4e429cd08032: 21300000
     - 254bab9125440e640acddbc2c61f4e93: 21300000
     - 3f4d0d13a592dad438f05c6957d17c85: 21300000
@@ -61,11 +62,13 @@ SpriteAtlas:
     - 984be7b612866e44d98f436204326558: 21300000
     - 82c45348b3ab85f44a91ef007f8c3ff9: 21300000
     - e6767378c2d650c4aa97fb6c6bbf54db: 21300000
+    - e4e06e1914d3f3046b92f0380893b191: 21300000
     - 9eca50a9594d95a42ade3c576b71a688: 21300000
     - bc07fac9ef3d23c42bca327964006b1e: 21300000
     - ee0b96f9932e8bd458be213d7d02a920: 21300000
     - df4c881ac6275744ab526a3462edf51d: 21300000
     - e0edb3da496684a4180c94f492a4d3f4: 21300000
+    - 5ef9c4ea2b91dd24d91d2a006746b465: 21300000
     - 33623c0bbdf2f074bae076e2657fbd79: 21300000
     - d700eaac57d46024283bbf2c2ebb0951: 21300000
     - 42c93ccd0c642b8489745835f3ad703f: 21300000
@@ -74,6 +77,7 @@ SpriteAtlas:
     - 51d6745f8e967da45b734a9906c8fdfc: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: 21300000, guid: 61db3f908b3dc1d4f8b0ff15cbc2d7b0, type: 3}
   - {fileID: 21300000, guid: c8a70331c0324a746b5a4e429cd08032, type: 3}
   - {fileID: 21300000, guid: 254bab9125440e640acddbc2c61f4e93, type: 3}
   - {fileID: 21300000, guid: 3f4d0d13a592dad438f05c6957d17c85, type: 3}
@@ -85,11 +89,13 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 984be7b612866e44d98f436204326558, type: 3}
   - {fileID: 21300000, guid: 82c45348b3ab85f44a91ef007f8c3ff9, type: 3}
   - {fileID: 21300000, guid: e6767378c2d650c4aa97fb6c6bbf54db, type: 3}
+  - {fileID: 21300000, guid: e4e06e1914d3f3046b92f0380893b191, type: 3}
   - {fileID: 21300000, guid: 9eca50a9594d95a42ade3c576b71a688, type: 3}
   - {fileID: 21300000, guid: bc07fac9ef3d23c42bca327964006b1e, type: 3}
   - {fileID: 21300000, guid: ee0b96f9932e8bd458be213d7d02a920, type: 3}
   - {fileID: 21300000, guid: df4c881ac6275744ab526a3462edf51d, type: 3}
   - {fileID: 21300000, guid: e0edb3da496684a4180c94f492a4d3f4, type: 3}
+  - {fileID: 21300000, guid: 5ef9c4ea2b91dd24d91d2a006746b465, type: 3}
   - {fileID: 21300000, guid: 33623c0bbdf2f074bae076e2657fbd79, type: 3}
   - {fileID: 21300000, guid: d700eaac57d46024283bbf2c2ebb0951, type: 3}
   - {fileID: 21300000, guid: 42c93ccd0c642b8489745835f3ad703f, type: 3}
@@ -97,6 +103,7 @@ SpriteAtlas:
   - {fileID: 1061297433894834710, guid: b31d31fed61fa994f80446fd42d310d1, type: 3}
   - {fileID: 21300000, guid: 51d6745f8e967da45b734a9906c8fdfc, type: 3}
   m_PackedSpriteNamesToIndex:
+  - SelectorOption2
   - SelectionArrows5
   - SpeechBubbleBorderLeftTop
   - SelectorOptionOverlay
@@ -108,11 +115,13 @@ SpriteAtlas:
   - SpeechBubbleTailBottomLeft
   - SpeechBubbleBorderLeftBottom
   - Selector
+  - SelectorOption3
   - SpeechBubbleBorderLeft
   - SpeechBubbleBorderRightTop
   - SpeechBubbleTailBottomRight
   - SpeechBubbleShadow
   - SpeechBubbleBorderRight
+  - SelectorOption1
   - SelectionArrows3
   - SelectionArrows4
   - SpeechBubbleBorderRightBottom

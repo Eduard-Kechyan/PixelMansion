@@ -207,7 +207,7 @@ namespace Merge
             debugMenu.style.display = DisplayStyle.Flex;
             debugMenu.style.opacity = 1;
 
-            if (preMansionHandler == null || (!preMansionHandler.dontDestroyAtStart && PlayerPrefs.HasKey("PreMansionRemoved")))
+            if (preMansionHandler == null || (!preMansionHandler.dontDestroyAtStart && PlayerPrefs.HasKey("preMansionRemoved")))
             {
                 unlockPreMansionButton.style.display = DisplayStyle.None;
             }

@@ -67,12 +67,14 @@ namespace Merge
         // References
         private SpriteRenderer stairsSpriteRenderer;
         private CharMain charMain;
+        private CloudSave cloudSave;
 
         void Start()
         {
             // Cache
             stairsSpriteRenderer = stairsOrderSetter.transform.GetChild(0).GetComponent<SpriteRenderer>();
             charMain = CharMain.Instance;
+            cloudSave = Services.Instance.GetComponent<CloudSave>();
 
             if (!Debug.isDebugBuild)
             {
@@ -80,7 +82,7 @@ namespace Merge
             }
 
             // Destroy the mansion at the start of the game if we have already unlocked it
-            if (PlayerPrefs.HasKey("PreMansionRemoved"))
+            if (PlayerPrefs.HasKey("preMansionRemoved"))
             {
                 if (!dontDestroyAtStart)
                 {
@@ -145,7 +147,9 @@ namespace Merge
                     firstRoom.Unlock((Vector3 newRoomCenter) =>
                     {
                         // Save state
-                        PlayerPrefs.SetInt("PreMansionRemoved", 1);
+                        cloudSave.SaveDataAsync("preMansionRemoved", 1);
+
+                        PlayerPrefs.SetInt("preMansionRemoved", 1);
 
                         // Call the callback
                         callback?.Invoke();
@@ -258,7 +262,7 @@ namespace Merge
                 yield return null;
             }
 
-            // Increase the part scale to 0
+            // Decrease the part scale to 0
             Vector3 newSecondTargetScale = new Vector3(secondTargetScale, secondTargetScale, secondTargetScale);
 
             while (part.localScale != newSecondTargetScale)
@@ -266,7 +270,7 @@ namespace Merge
                 part.localScale = Vector3.MoveTowards(
                     part.localScale,
                     newSecondTargetScale,
-                    firstScaleSpeed * Time.deltaTime
+                    scaleToViewSpeed * Time.deltaTime
                 );
 
                 yield return null;
@@ -282,14 +286,14 @@ namespace Merge
         }
 
         // Wait until all clouds and mansion parts have been removed
-        IEnumerator WaitForPartsAndClouds(Action callback)
+        IEnumerator WaitForPartsAndClouds(Action callback = null)
         {
             while (!partsRemoved || !cloudsRemoved)
             {
                 yield return null;
             }
 
-            callback();
+            callback?.Invoke();
         }
 
         // Toggle the pre mansion's visibility in the scene view

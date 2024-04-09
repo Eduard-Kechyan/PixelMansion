@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6365606390912938974}
   - component: {fileID: 2612081357836540789}
   - component: {fileID: 5041890705364766301}
+  - component: {fileID: 5063033521910697582}
   m_Layer: 0
   m_Name: ProgressManager
   m_TagString: Untagged
@@ -26,13 +27,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6123228280949545067}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6365606390912938974
 MonoBehaviour:
@@ -48,6 +49,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tasksData: {fileID: 11400000, guid: 31a3c4f66f2dbff4aaf2ce9b549c16ed, type: 2}
   progressData: {fileID: 11400000, guid: e1503265c32dad0459e900ae4ca3a5fa, type: 2}
+  worldDataManager: {fileID: 0}
+  convoUIHandler: {fileID: 0}
+  boardManager: {fileID: 0}
+  tutorialManager: {fileID: 0}
+  navMeshManager: {fileID: 0}
 --- !u!114 &2612081357836540789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,6 +69,8 @@ MonoBehaviour:
   tasksData: {fileID: 11400000, guid: 31a3c4f66f2dbff4aaf2ce9b549c16ed, type: 2}
   worldDataManager: {fileID: 0}
   boardManager: {fileID: 0}
+  valuePop: {fileID: 0}
+  isLoaded: 0
 --- !u!114 &5041890705364766301
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76,3 +84,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resetData: 0
+--- !u!114 &5063033521910697582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6123228280949545067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bae49ad18b9a5144ca80692adf1f7d8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dustCloudRoot: {fileID: 0}
+  dustCloudPrefabs:
+  - {fileID: 8080856886911897472, guid: 1cc981edfefe00b47a8c9ca7423a5ff0, type: 3}
+  - {fileID: 8080856886911897472, guid: 86efe95f23e8e83469ae32f247417ccd, type: 3}
+  dustCloudCount: 20
+  dustCloudOffsetX: 20
+  dustCloudOffsetY: 12
+  dustCloudColorHalf: {r: 1, g: 1, b: 1, a: 0.5019608}
+  dustCloudColorNull: {r: 1, g: 1, b: 1, a: 0}
+  dustCloudSize: 0.8
+  dustCloudScaleSpeed: 1
+  finishDelay: 0.2
+  scaleSpeed: 8
+  targetScale: 0
+  debug: 1
+  remove: 0
+  dummyFilth: {fileID: 0}

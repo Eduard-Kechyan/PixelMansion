@@ -89,7 +89,7 @@ namespace Merge
 
         void OnValidate()
         {
-            if (characterHights.Length < 5)
+            if (characterHights == null || characterHights.Length < 5)
             {
                 Debug.LogWarning("Character Hights Length needs to be 5!");
             }

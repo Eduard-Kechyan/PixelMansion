@@ -25,11 +25,10 @@ namespace Merge
         private DataManager dataManager;
         private Selector selector;
         private ProgressManager progressManager;
+        private RemoveFilth removeFilth;
         private CameraMotion cameraMotion;
         private CameraPinch cameraPinch;
         private NoteDotHandler noteDotHandler;
-        private WorldUI worldUI;
-        private MergeUI mergeUI;
         private UIButtons uiButtons;
 
         void Start()
@@ -38,11 +37,10 @@ namespace Merge
             gameData = GameData.Instance;
             dataManager = DataManager.Instance;
             progressManager = GetComponent<ProgressManager>();
+            removeFilth = GetComponent<RemoveFilth>();
             cameraMotion = Camera.main.GetComponent<CameraMotion>();
             cameraPinch = Camera.main.GetComponent<CameraPinch>();
             noteDotHandler = GameRefs.Instance.noteDotHandler;
-            worldUI = GameRefs.Instance.worldUI;
-            mergeUI = GameRefs.Instance.mergeUI;
             uiButtons = gameData.GetComponent<UIButtons>();
 
             // The world data manager is only attached in the world scene
@@ -236,6 +234,7 @@ namespace Merge
         {
             Transform taskRef = null;
             Vector2 taskRefPos = Vector2.zero;
+            Types.TaskRefType taskRefType = Types.TaskRefType.Area;
             bool isLastStep = false;
             Types.TaskItem[] rewards = null;
 
@@ -252,7 +251,9 @@ namespace Merge
 
                             taskRef = worldDataManager.GetWorldItem(groupId, gameData.tasksData[i].tasks[j]);
 
-                            taskRefPos = worldDataManager.GetColliderCenter(taskRef, gameData.tasksData[i].tasks[j].taskRefType);
+                            taskRefType = gameData.tasksData[i].tasks[j].taskRefType;
+
+                            taskRefPos = worldDataManager.GetColliderCenter(taskRef, taskRefType);
 
                             isLastStep = gameData.tasksData[i].tasks[j].id == "Last";
 
@@ -265,29 +266,54 @@ namespace Merge
             }
 
             // Move the camera to the item we want to change
-            cameraMotion.MoveTo(taskRefPos, 250);
-            cameraPinch.isResetting = true;
-
-            if (isLastStep)
+            if (taskRefType == Types.TaskRefType.Filth)
             {
-                TaskCompleted(groupId, taskId, true);
+                cameraMotion.MoveTo(taskRefPos, 250, () =>
+                {
+                    removeFilth.Remove(taskRef, () =>
+                    {
+                        // If successfully changed, give the rewards and complete the task
+
+                        worldDataManager.SetFilth(taskRef);
+
+                        callback?.Invoke();
+
+                        Glob.SetTimeout(() =>
+                        {
+                            HandleRewards(rewards, groupId, taskId);
+                        }, 0.35f);
+
+                        TaskCompleted(groupId, taskId);
+                    });
+                });
+                cameraPinch.isResetting = true;
             }
             else
             {
-                // Select the item
-                selector.SelectAlt(taskRef.GetComponent<Selectable>(), () =>
+                cameraMotion.MoveTo(taskRefPos, 250);
+                cameraPinch.isResetting = true;
+
+                if (isLastStep)
                 {
-                    // If successfully changed, give the rewards and complete the task
-
-                    callback?.Invoke();
-
-                    Glob.SetTimeout(() =>
+                    TaskCompleted(groupId, taskId, true);
+                }
+                else
+                {
+                    // Select the item
+                    selector.SelectAlt(taskRef.GetComponent<Selectable>(), () =>
                     {
-                        HandleRewards(rewards, groupId, taskId);
-                    }, 0.35f);
+                        // If successfully changed, give the rewards and complete the task
 
-                    TaskCompleted(groupId, taskId);
-                });
+                        callback?.Invoke();
+
+                        Glob.SetTimeout(() =>
+                        {
+                            HandleRewards(rewards, groupId, taskId);
+                        }, 0.35f);
+
+                        TaskCompleted(groupId, taskId);
+                    });
+                }
             }
         }
 

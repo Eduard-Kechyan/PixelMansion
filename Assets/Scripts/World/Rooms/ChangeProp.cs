@@ -29,9 +29,11 @@ namespace Merge
 
         void Awake()
         {
+            selectable = GetComponent<Selectable>();
+
             if (selectable.isInitiallyHidden && selectable.isOld)
             {
-                spriteRenderer.sprite = null;
+                GetComponent<SpriteRenderer>().sprite = null;
             }
         }
 

@@ -172,7 +172,7 @@ namespace Merge
                 Toggle();
             }
 
-            if (useBlackList && blackList.Length == 0)
+            if (useBlackList && (blackList == null || blackList.Length == 0))
             {
                 Debug.LogWarning("The logs black list is enabled, but there are no entries in the list!");
             }
