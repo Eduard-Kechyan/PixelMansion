@@ -38,6 +38,7 @@ namespace Merge
         private SafeAreaHandler safeAreaHandler;
         [HideInInspector]
         public EnergyTimer energyTimer;
+        private ErrorManager errorManager;
 
         // Instances
         private GameData gameData;
@@ -72,6 +73,7 @@ namespace Merge
             levelMenu = GameRefs.Instance.levelMenu;
             energyMenu = GameRefs.Instance.energyMenu;
             shopMenu = GameRefs.Instance.shopMenu;
+            errorManager = ErrorManager.Instance;
 
             if (GameRefs.Instance.worldUI != null)
             {
@@ -414,21 +416,6 @@ namespace Merge
             }
         }
 
-        public void DisableButtonsAlt()
-        {
-            /* levelButton.SetEnabled(false);
-             energyButton.SetEnabled(false);
-             goldButton.SetEnabled(false);
-             gemsButton.SetEnabled(false);
-
-             energyPlus.style.visibility = Visibility.Hidden;
-             energyPlus.style.opacity = 0f;
-             goldPlus.style.visibility = Visibility.Hidden;
-             goldPlus.style.opacity = 0f;
-             gemsPlus.style.visibility = Visibility.Hidden;
-             gemsPlus.style.opacity = 0f;*/
-        }
-
         public void EnableButtons()
         {
             levelButton.SetEnabled(levelEnabled);
@@ -457,55 +444,15 @@ namespace Merge
             enabledSet = false;
         }
 
-        public void EnableButtonsAlt()
-        {
-            levelButton.SetEnabled(true);
-            energyButton.SetEnabled(true);
-            goldButton.SetEnabled(true);
-            gemsButton.SetEnabled(true);
-
-            if (energyPlusEnabled)
-            {
-                energyPlus.style.visibility = Visibility.Visible;
-                energyPlus.style.opacity = 1f;
-            }
-
-            if (goldPlusEnabled)
-            {
-                goldPlus.style.visibility = Visibility.Visible;
-                goldPlus.style.opacity = 1f;
-            }
-
-            if (gemsPlusEnabled)
-            {
-                gemsPlus.style.visibility = Visibility.Visible;
-                gemsPlus.style.opacity = 1f;
-            }
-
-            //  enabledSet = false;
-        }
-
         public void HideButtons()
         {
-            /*if (!PlayerPrefs.HasKey("valuesLevelButtonShowing"))
+            if (!PlayerPrefs.HasKey("tutorialFinished"))
             {
                 levelButton.style.display = DisplayStyle.None;
-            }
-
-            if (!PlayerPrefs.HasKey("valuesEnergyButtonShowing"))
-            {
                 energyButton.style.display = DisplayStyle.None;
-            }
-
-            if (!PlayerPrefs.HasKey("valuesGoldButtonShowing"))
-            {
                 goldButton.style.display = DisplayStyle.None;
-            }
-
-            if (!PlayerPrefs.HasKey("valuesGemsButtonShowing"))
-            {
                 gemsButton.style.display = DisplayStyle.None;
-            }*/
+            }
         }
 
         public void ShowButtons()
@@ -516,26 +463,28 @@ namespace Merge
             gemsButton.style.display = DisplayStyle.Flex;
         }
 
-        public void ShowButton(string name)
+        public void ShowButton(Types.CollGroup collGroup)
         {
-            switch (name)
+            if (!PlayerPrefs.HasKey("tutorialFinished"))
             {
-                case "level":
-                    levelButton.style.display = DisplayStyle.Flex;
-                    PlayerPrefs.SetInt("valuesLevelButtonShowing", 1);
-                    break;
-                case "energy":
-                    energyButton.style.display = DisplayStyle.Flex;
-                    PlayerPrefs.SetInt("valuesEnergyButtonShowing", 1);
-                    break;
-                case "gold":
-                    goldButton.style.display = DisplayStyle.Flex;
-                    PlayerPrefs.SetInt("valuesGoldButtonShowing", 1);
-                    break;
-                case "gems":
-                    gemsButton.style.display = DisplayStyle.Flex;
-                    PlayerPrefs.SetInt("valuesGemsButtonShowing", 1);
-                    break;
+                switch (collGroup)
+                {
+                    case Types.CollGroup.Experience:
+                        levelButton.style.display = DisplayStyle.Flex;
+                        break;
+                    case Types.CollGroup.Energy:
+                        energyButton.style.display = DisplayStyle.Flex;
+                        break;
+                    case Types.CollGroup.Gold:
+                        goldButton.style.display = DisplayStyle.Flex;
+                        break;
+                    case Types.CollGroup.Gems:
+                        gemsButton.style.display = DisplayStyle.Flex;
+                        break;
+                    default:
+                        errorManager.ThrowWarning(Types.ErrorType.Code, GetType().ToString(), "Types.CollGroup " + collGroup + " is not implemented!");
+                        break;
+                }
             }
         }
 

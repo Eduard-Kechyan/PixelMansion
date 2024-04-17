@@ -23,6 +23,7 @@ namespace Merge
         private TextField inputTextField;
         private Button inputButton;
         private Label inputLimitLabel;
+        private Button inputRandomButton;
 
         void Start()
         {
@@ -44,6 +45,15 @@ namespace Merge
             inputButton.clicked += () => Accept();
 
             inputButton.SetEnabled(false);
+
+            if (Debug.isDebugBuild && !PlayerPrefs.HasKey("tutorialFinished"))
+            {
+                inputRandomButton = inputMenu.Q<Button>("RandomButton");
+
+                inputRandomButton.style.display = DisplayStyle.Flex;
+
+                inputRandomButton.clicked += () => AcceptRandomName();
+            }
 
             Init();
         }
@@ -105,7 +115,6 @@ namespace Merge
                 inputText = changeEvent.newValue;
 
                 inputLimitLabel.style.opacity = 0;
-                Debug.Log("Nope");
             }
 
             if (inputText == "")
@@ -135,6 +144,16 @@ namespace Merge
             menuUI.CloseMenu(inputMenu.name, () =>
             {
                 callback(inputText);
+            });
+        }
+
+        void AcceptRandomName()
+        {
+            string randomName = Glob.GetRandomWord(3, 12, true);
+
+            menuUI.CloseMenu(inputMenu.name, () =>
+            {
+                callback(randomName);
             });
         }
     }

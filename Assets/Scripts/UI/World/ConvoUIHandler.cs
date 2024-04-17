@@ -85,8 +85,6 @@ namespace Merge
             convoUnderlay = convoContainer.Q<VisualElement>("ConvoUnderlay");
 
             convoBoxUnderlay = convoContainer.Q<VisualElement>("ConvoBoxUnderlay");
-            skipButton = convoContainer.Q<VisualElement>("SkipButtonContainer");
-            skipLabel = skipButton.Q<Label>("Label");
 
             convoBox = convoContainer.Q<VisualElement>("ConvoBox");
             nextButton = convoBox.Q<VisualElement>("NextButtonContainer");
@@ -101,11 +99,6 @@ namespace Merge
             avatarRight = convoBox.Q<VisualElement>("AvatarRight");
 
             // UI Taps
-            skipButton.AddManipulator(new Clickable(evt =>
-            {
-                HandleSkip();
-            }));
-
             nextButton.AddManipulator(new Clickable(evt =>
             {
                 HandleNext();
@@ -116,7 +109,6 @@ namespace Merge
 
         async void Init()
         {
-            skipLabel.text = LOCALE.Get("convo_skip_button");
             nextLabel.text = LOCALE.Get("convo_next_button");
 
             nextButton.style.opacity = 0;
@@ -124,6 +116,21 @@ namespace Merge
             avatarsSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("avatars");
 
             loaded = true;
+
+            if (Debug.isDebugBuild)
+            {
+                skipButton = convoContainer.Q<VisualElement>("SkipButtonContainer");
+                skipLabel = skipButton.Q<Label>("Label");
+
+                skipButton.style.display = DisplayStyle.Flex;
+
+                skipButton.AddManipulator(new Clickable(evt =>
+                {
+                    HandleSkip();
+                }));
+
+                skipLabel.text = LOCALE.Get("convo_skip_button");
+            }
         }
 
         void OnValidate()

@@ -52,6 +52,8 @@ namespace Merge
             // Run this first
             gameData.UpdateValue(amount, type, multiply);
 
+            valuesUI.ShowButton(type);
+
             StartCoroutine(HandlePopValue(amount, type, initialPosition, multiply, isUIPosition, callback));
         }
 
@@ -167,6 +169,8 @@ namespace Merge
 
             // Remove the value pop
             root.Remove(valuePop);
+
+            valuesUI.HideButtons();
 
             // Update data
             if (type != Types.CollGroup.Experience)

@@ -142,8 +142,7 @@ namespace Merge
         {
             if (CheckScene())
             {
-                valuesUI.SetSortingOrder(4);
-                valuesUI.DisableButtonsAlt();
+                SetUI();
 
                 progressManager.SetInitialData(0, false);
 
@@ -174,8 +173,7 @@ namespace Merge
 #else
         void Init()
         {
-            valuesUI.SetSortingOrder(4);
-            valuesUI.DisableButtonsAlt();
+            SetUI();
 
             progressManager.SetInitialData(0, false);
 
@@ -508,6 +506,8 @@ namespace Merge
 
             analyticsManager.FireTutorialEvent("", false, true);
 
+            ResetUI();
+
             Destroy(gameObject);
         }
 
@@ -523,42 +523,39 @@ namespace Merge
             Destroy(gameObject);
         }
 
-        IEnumerator WaitForGameReferences()
+        void SetUI()
         {
-            if (!skipTutorial)
+            valuesUI.SetSortingOrder(4);
+
+            valuesUI.HideButtons();
+
+            if (worldUI != null)
             {
-                while (GameRefs.Instance == null)
-                {
-                    yield return null;
-                }
-
-                while (!GameRefs.Instance.ready)
-                {
-                    yield return null;
-                }
-
-                valuesUI = GameRefs.Instance.valuesUI;
-                worldUI = GameRefs.Instance.worldUI;
-                mergeUI = GameRefs.Instance.mergeUI;
-
-                /*  if (valuesUI != null)
-                  {
-                      valuesUI.SetSortingOrder(10);
-                      valuesUI.EnableButtonsAlt();
-                  }
-
-                  if (worldUI != null)
-                  {
-                      worldUI.ShowButtons();
-                  }
-
-                  if (mergeUI != null)
-                  {
-                      mergeUI.ShowButtons();
-                  }*/
+                worldUI.HideButtons();
+                worldUI.CheckButtons();
             }
 
-            Destroy(gameObject);
+            if (mergeUI != null)
+            {
+                mergeUI.HideButtons();
+                mergeUI.CheckButtons();
+            }
+        }
+
+        void ResetUI()
+        {
+            valuesUI.SetSortingOrder(10);
+
+            valuesUI.ShowButtons();
+
+            if (worldUI != null)
+            {
+                worldUI.ShowButtons();
+            }
+            if (mergeUI != null)
+            {
+                mergeUI.ShowButtons();
+            }
         }
     }
 }

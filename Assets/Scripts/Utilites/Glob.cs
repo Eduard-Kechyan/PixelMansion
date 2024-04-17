@@ -217,6 +217,27 @@ namespace Merge
             return newColor;
         }
 
+        public static string GetRandomWord(int min = 0, int max = 0, bool firstIsUppercase = false)
+        {
+            string randomWord = "";
+            int wordLength = UnityEngine.Random.Range(min, max + 1);
+            int startIndex = 0;
+
+            if (firstIsUppercase)
+            {
+                startIndex = 1;
+
+                randomWord += (char)UnityEngine.Random.Range('A', 'Z' + 1);
+            }
+
+            for (int i = startIndex; i < wordLength; i++)
+            {
+                randomWord += (char)UnityEngine.Random.Range('a', 'z' + 1);
+            }
+
+            return randomWord;
+        }
+
 #if UNITY_EDITOR
         public static void Validate(Action callback, params UnityEngine.Object[] newObjects)
         {

@@ -77,7 +77,7 @@
     </ui:VisualElement>
     <ui:VisualElement name="ConvoContainer" class="convo_container">
         <ui:VisualElement name="ConvoUnderlay" class="convo_underlay" />
-        <ui:VisualElement name="SkipButtonContainer" class="convo_button_container" style="right: 8px; top: 22px;">
+        <ui:VisualElement name="SkipButtonContainer" class="convo_button_container" style="right: 8px; top: 22px; display: none;">
             <ui:Label tabindex="-1" text="Skip" display-tooltip-when-elided="true" name="Label" class="convo_button_label" />
             <ui:VisualElement name="Icon" class="icon convo_button_icon" />
         </ui:VisualElement>

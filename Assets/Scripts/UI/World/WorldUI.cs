@@ -23,8 +23,6 @@ namespace Merge
 
         private float singlePixelWidth;
 
-        private bool uiButtonHidden = false;
-
         // References
         private SafeAreaHandler safeAreaHandler;
         private SettingsMenu settingsMenu;
@@ -33,6 +31,7 @@ namespace Merge
         private SoundManager soundManager;
         private UIButtons uiButtons;
         private SelectorUIHandler selectorUIHandler;
+        private ErrorManager errorManager;
 
         // UI
         private VisualElement root;
@@ -59,6 +58,7 @@ namespace Merge
             soundManager = SoundManager.Instance;
             uiButtons = GameData.Instance.GetComponent<UIButtons>();
             selectorUIHandler = GameRefs.Instance.worldGameUIDoc.GetComponent<SelectorUIHandler>();
+            errorManager = ErrorManager.Instance;
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
@@ -177,70 +177,14 @@ namespace Merge
             uiButtons.worldShopButtonPos = CalcButtonPosition(shopButton);
             uiButtons.worldTaskButtonPos = CalcButtonPosition(taskButton, true);
             uiButtons.worldPlayButtonPos = CalcButtonPosition(playButton, true);
-
-            if (!uiButtonHidden)
-            {
-                HideButtons();
-                uiButtonHidden = true;
-            }
         }
 
-        public void DisableButtons()
+        public void HideButtons()
         {
-            /* playButton.SetEnabled(false);
-             settingsButton.SetEnabled(false);
-             shopButton.SetEnabled(false);
-             taskButton.SetEnabled(false);*/
-        }
-
-        public void EnableButtons()
-        {
-            playButton.SetEnabled(true);
-            settingsButton.SetEnabled(true);
-            shopButton.SetEnabled(true);
-            taskButton.SetEnabled(true);
-        }
-
-        public void ToggleButton(string name, bool enabled = false)
-        {
-            /*  switch (name)
-              {
-                  case "play":
-                      playButton.SetEnabled(enabled);
-                      break;
-                  case "settings":
-                      settingsButton.SetEnabled(enabled);
-                      break;
-                  case "shop":
-                      shopButton.SetEnabled(enabled);
-                      break;
-                  case "task":
-                      taskButton.SetEnabled(enabled);
-                      break;
-              }*/
-        }
-
-        void HideButtons()
-        {
-            /*   if (!PlayerPrefs.HasKey("worldPlayButtonShowing"))
-               {
-                   playButton.style.display = DisplayStyle.None;
-               }
-
-               if (!PlayerPrefs.HasKey("worldSettingsButtonShowing"))
-               {
-                   settingsButton.style.display = DisplayStyle.None;
-               }
-
-               if (!PlayerPrefs.HasKey("worldShopButtonShowing"))
-               {
-                   shopButton.style.display = DisplayStyle.None;
-               }
-
-               if (!PlayerPrefs.HasKey("worldTaskButtonShowing"))
-               {
-                   taskButton.style.display = DisplayStyle.None;
-               }*/
+            playButton.style.display = DisplayStyle.None;
+            settingsButton.style.display = DisplayStyle.None;
+            shopButton.style.display = DisplayStyle.None;
+            taskButton.style.display = DisplayStyle.None;
         }
 
         public void ShowButtons()
@@ -250,10 +194,33 @@ namespace Merge
             shopButton.style.display = DisplayStyle.Flex;
             taskButton.style.display = DisplayStyle.Flex;
 
-            PlayerPrefs.SetInt("worldPlayButtonShowing", 1);
-            PlayerPrefs.SetInt("worldSettingsButtonShowing", 1);
-            PlayerPrefs.SetInt("worldShopButtonShowing", 1);
-            PlayerPrefs.SetInt("worldTaskButtonShowing", 1);
+            PlayerPrefs.DeleteKey("worldPlayButtonShowing");
+            PlayerPrefs.DeleteKey("worldSettingsButtonShowing");
+            PlayerPrefs.DeleteKey("worldShopButtonShowing");
+            PlayerPrefs.DeleteKey("worldTaskButtonShowing");
+        }
+
+        public void CheckButtons()
+        {
+            if (PlayerPrefs.HasKey("worldPlayButtonShowing"))
+            {
+                playButton.style.display = DisplayStyle.Flex;
+            }
+
+            if (PlayerPrefs.HasKey("worldSettingsButtonShowing"))
+            {
+                settingsButton.style.display = DisplayStyle.Flex;
+            }
+
+            if (PlayerPrefs.HasKey("worldShopButtonShowing"))
+            {
+                shopButton.style.display = DisplayStyle.Flex;
+            }
+
+            if (PlayerPrefs.HasKey("worldTaskButtonShowing"))
+            {
+                taskButton.style.display = DisplayStyle.Flex;
+            }
         }
 
         public void ShowButton(Types.Button button)
@@ -285,53 +252,56 @@ namespace Merge
 
         public void HideButton(Types.Button button, bool alt = false)
         {
-            /* switch (button)
-             {
-                 case Types.Button.Play:
-                     if (alt)
-                     {
-                         playButton.SetEnabled(false);
-                     }
-                     else
-                     {
-                         playButton.style.display = DisplayStyle.None;
-                         PlayerPrefs.DeleteKey("worldPlayButtonShowing");
-                     }
-                     break;
-                 case Types.Button.Settings:
-                     if (alt)
-                     {
-                         settingsButton.SetEnabled(false);
-                     }
-                     else
-                     {
-                         settingsButton.style.display = DisplayStyle.None;
-                         PlayerPrefs.DeleteKey("worldSettingsButtonShowing");
-                     }
-                     break;
-                 case Types.Button.Shop:
-                     if (alt)
-                     {
-                         shopButton.SetEnabled(false);
-                     }
-                     else
-                     {
-                         shopButton.style.display = DisplayStyle.None;
-                         PlayerPrefs.DeleteKey("worldShopButtonShowing");
-                     }
-                     break;
-                 case Types.Button.Task:
-                     if (alt)
-                     {
-                         taskButton.SetEnabled(false);
-                     }
-                     else
-                     {
-                         taskButton.style.display = DisplayStyle.None;
-                         PlayerPrefs.DeleteKey("worldTaskButtonShowing");
-                     }
-                     break;
-             }*/
+            switch (button)
+            {
+                case Types.Button.Play:
+                    if (alt)
+                    {
+                        playButton.SetEnabled(false);
+                    }
+                    else
+                    {
+                        playButton.style.display = DisplayStyle.None;
+                        PlayerPrefs.DeleteKey("worldPlayButtonShowing");
+                    }
+                    break;
+                case Types.Button.Settings:
+                    if (alt)
+                    {
+                        settingsButton.SetEnabled(false);
+                    }
+                    else
+                    {
+                        settingsButton.style.display = DisplayStyle.None;
+                        PlayerPrefs.DeleteKey("worldSettingsButtonShowing");
+                    }
+                    break;
+                case Types.Button.Shop:
+                    if (alt)
+                    {
+                        shopButton.SetEnabled(false);
+                    }
+                    else
+                    {
+                        shopButton.style.display = DisplayStyle.None;
+                        PlayerPrefs.DeleteKey("worldShopButtonShowing");
+                    }
+                    break;
+                case Types.Button.Task:
+                    if (alt)
+                    {
+                        taskButton.SetEnabled(false);
+                    }
+                    else
+                    {
+                        taskButton.style.display = DisplayStyle.None;
+                        PlayerPrefs.DeleteKey("worldTaskButtonShowing");
+                    }
+                    break;
+                default:
+                    errorManager.ThrowWarning(Types.ErrorType.Code, GetType().ToString(), "Types.Button " + button + " is not implemented!");
+                    break;
+            }
         }
 
 
