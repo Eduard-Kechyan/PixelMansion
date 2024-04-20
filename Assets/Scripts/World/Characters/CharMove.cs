@@ -57,8 +57,7 @@ namespace Merge
         private CharSpeech charSpeech;
         private I18n LOCALE;
 
-        // Start is called before the first frame update
-        void Start()
+        void Awake()
         {
             // Cache
             charOrderSetter = GetComponent<CharOrderSetter>();
@@ -67,7 +66,10 @@ namespace Merge
             charRoam = GetComponent<CharRoam>();
             charSpeech = GetComponent<CharSpeech>();
             LOCALE = I18n.Instance;
+        }
 
+        void Start()
+        {
             // Initialize the character nav mesh agent
             agent.updateRotation = false;
             agent.updateUpAxis = false;
@@ -81,7 +83,6 @@ namespace Merge
             enabled = false;
         }
 
-        // Update is called once per frame
         void Update()
         {
             MoveChar();

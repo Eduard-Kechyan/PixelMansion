@@ -210,22 +210,22 @@ namespace Merge
 
         public void CheckButtons()
         {
-            if (!PlayerPrefs.HasKey("mergeHomeButtonShowing"))
+            if (PlayerPrefs.HasKey("mergeHomeButtonShowing"))
             {
                 homeButton.style.display = DisplayStyle.Flex;
             }
 
-            if (!PlayerPrefs.HasKey("mergeInventoryButtonShowing"))
+            if (PlayerPrefs.HasKey("mergeInventoryButtonShowing"))
             {
                 inventoryButton.style.display = DisplayStyle.Flex;
             }
 
-            if (!PlayerPrefs.HasKey("mergeShopButtonShowing"))
+            if (PlayerPrefs.HasKey("mergeShopButtonShowing"))
             {
                 shopButton.style.display = DisplayStyle.Flex;
             }
 
-            if (!PlayerPrefs.HasKey("mergeTaskButtonShowing"))
+            if (PlayerPrefs.HasKey("mergeTaskButtonShowing"))
             {
                 taskButton.style.display = DisplayStyle.Flex;
             }

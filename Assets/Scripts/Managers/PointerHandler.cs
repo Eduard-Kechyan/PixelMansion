@@ -220,6 +220,18 @@ namespace Merge
             }
         }
 
+        public void StopMerge()
+        {
+            if (merging)
+            {
+                merging = false;
+
+                animateMerge = false;
+
+                StopAllAnimations();
+            }
+        }
+
         IEnumerator AnimateMerge(Vector2 firstPos, Vector2 secondPos)
         {
             Vector2 firstUIPos = GetUIPos(firstPos);

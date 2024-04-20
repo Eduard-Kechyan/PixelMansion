@@ -35,6 +35,8 @@ namespace Merge
         private bool closeAfter = true;
         private bool showUnderlay = true;
 
+        private bool canHandleNext = false;
+
         private Sprite[] avatarsSprites;
 
         private Scale fullScale = new(new Vector2(1f, 1f));
@@ -99,7 +101,12 @@ namespace Merge
             avatarRight = convoBox.Q<VisualElement>("AvatarRight");
 
             // UI Taps
-            nextButton.AddManipulator(new Clickable(evt =>
+            /*nextButton.AddManipulator(new Clickable(evt =>
+            {
+                HandleNext();
+            }));*/
+
+            convoContainer.AddManipulator(new Clickable(evt =>
             {
                 HandleNext();
             }));
@@ -112,6 +119,8 @@ namespace Merge
             nextLabel.text = LOCALE.Get("convo_next_button");
 
             nextButton.style.opacity = 0;
+
+            canHandleNext = false;
 
             avatarsSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("avatars");
 
@@ -295,6 +304,8 @@ namespace Merge
                         nextButton.style.display = DisplayStyle.Flex;
                         nextButton.style.opacity = 1;
 
+                        canHandleNext = true;
+
                         showText = false;
                     }
 
@@ -322,27 +333,32 @@ namespace Merge
 
         void HandleNext()
         {
-            nextButton.style.display = DisplayStyle.None;
-            nextButton.style.opacity = 0;
-
-            convoLabel.text = "";
-
-            currentConvo++;
-
-            if (convoId == "TutorialPart1" && currentConvo == 3)
+            if (canHandleNext)
             {
-                tutorialManager.CheckConvoBackground(true);
-            }
+                nextButton.style.display = DisplayStyle.None;
+                nextButton.style.opacity = 0;
 
-            if (LOCALE.CheckNext("convo_" + currentConvoGroup.id + "_" + currentConvo))
-            {
-                // Next
-                SetNameAndText(currentConvo);
-            }
-            else
-            {
-                // Last
-                HandleSkip();
+                canHandleNext = false;
+
+                convoLabel.text = "";
+
+                currentConvo++;
+
+                if (convoId == "TutorialPart1" && currentConvo == 3)
+                {
+                    tutorialManager.CheckConvoBackground(true);
+                }
+
+                if (LOCALE.CheckNext("convo_" + currentConvoGroup.id + "_" + currentConvo))
+                {
+                    // Next
+                    SetNameAndText(currentConvo);
+                }
+                else
+                {
+                    // Last
+                    HandleSkip();
+                }
             }
         }
 

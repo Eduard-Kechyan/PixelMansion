@@ -23,7 +23,7 @@
     background-color: rgb(255, 255, 255);
 }
 
-.unity-base-dropdown__checkmark {
+.unity-base-dropdown__container-inner .unity-base-dropdown__item .unity-base-dropdown__appendix {
     margin-left: 0;
     margin-right: 0;
     height: 24px;

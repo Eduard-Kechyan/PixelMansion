@@ -468,6 +468,8 @@ namespace Merge
 
                     PlayerPrefs.Save();
 
+                    cloudSave.SaveDataAsync("playerName", inputResult);
+
                     NextStep();
                 });
             }

@@ -18,12 +18,15 @@ namespace Merge
         [HideInInspector]
         public string currentRoomName = "";
 
-        void Start()
+        void Awake()
         {
             // Cache
             mainSpriteRenderer = GetComponent<SpriteRenderer>();
             shadowSpriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>(); // 0 is shadow
+        }
 
+        void Start()
+        {
             shadowSpriteRenderer.sortingOrder = mainSpriteRenderer.sortingOrder - 1;
 
             CheckArea();

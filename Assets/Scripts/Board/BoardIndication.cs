@@ -83,6 +83,8 @@ namespace Merge
                     else
                     {
                         StopPossibleMergeCheck();
+
+                        pointerHandler.StopMerge();
                     }
                 }
             }
