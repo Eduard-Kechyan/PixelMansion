@@ -149,7 +149,7 @@ namespace Merge
 
                                 for (int k = 0; k < progressData.areas[i].steps[j].nextIds.Length; k++)
                                 {
-                                    if (!HandleNextStep(groupId, progressData.areas[i].steps[j].nextIds[k], progressData.areas[i].steps))
+                                    if ((tutorialManager != null && tutorialManager.CheckIfNextStepIsConvo()) || !HandleNextStep(groupId, progressData.areas[i].steps[j].nextIds[k], progressData.areas[i].steps))
                                     {
                                         shouldShowUI = false;
                                     }
@@ -190,6 +190,7 @@ namespace Merge
                     {
                         addNewTask = CheckLastRequirements(groupId);
                     }
+
                     // Check for requirements
                     else if (steps[i].requiredIds.Length > 0)
                     {

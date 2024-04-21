@@ -285,8 +285,36 @@ namespace Merge
                     crateChild.SetActive(false);
                     itemChild.SetActive(true); //
                     bubbleChild.SetActive(false);
+
+                    if (type == Types.Type.Gen && level >= generatesAtLevel)
+                    {
+                        if (timerOn)
+                        {
+                            readyChild.SetActive(false);
+                        }
+                        else
+                        {
+                            readyChild.SetActive(true); //
+                        }
+                    }
+
+                    if (type == Types.Type.Chest && chestGroup == Types.ChestGroup.Item)
+                    {
+                        if (timerOn)
+                        {
+                            readyAltChild.SetActive(false);
+                        }
+                        else
+                        {
+                            if (!chestOpen)
+                            {
+                                readyAltChild.SetActive(true); //
+                            }
+                        }
+                    }
                     break;
                 case Types.State.Crate:
+                    lockerChild.SetActive(false);
                     crateChild.SetActive(true); //
                     itemChild.SetActive(false);
                     bubbleChild.SetActive(false);
@@ -305,36 +333,6 @@ namespace Merge
                     break;
             }
 
-            if (state == Types.State.Default)
-            {
-                if (type == Types.Type.Gen && level >= generatesAtLevel)
-                {
-                    if (timerOn)
-                    {
-                        readyChild.SetActive(false);
-                    }
-                    else
-                    {
-                        readyChild.SetActive(true); //
-                    }
-                }
-
-                if (type == Types.Type.Chest && chestGroup == Types.ChestGroup.Item)
-                {
-                    if (timerOn)
-                    {
-                        readyAltChild.SetActive(false);
-                    }
-                    else
-                    {
-                        if (!chestOpen)
-                        {
-                            readyAltChild.SetActive(true);
-                        }
-                    }
-                }
-            }
-
             if (isCompleted)
             {
                 completionChild.SetActive(true); //
@@ -349,7 +347,7 @@ namespace Merge
         {
             timerOn = enable;
 
-            if (type == Types.Type.Gen && level >= generatesAtLevel)
+            if (state == Types.State.Default && type == Types.Type.Gen && level >= generatesAtLevel)
             {
                 if (timerOn)
                 {
@@ -511,7 +509,7 @@ namespace Merge
                 completionChild.SetActive(true);
             }
 
-            if (type == Types.Type.Gen && level >= generatesAtLevel && !timerOn && !isReadyPlaying)
+            if (state == Types.State.Default && type == Types.Type.Gen && level >= generatesAtLevel && !timerOn && !isReadyPlaying)
             {
                 AnimateReady();
             }

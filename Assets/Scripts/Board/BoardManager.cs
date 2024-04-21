@@ -62,18 +62,22 @@ namespace Merge
         // Get the item's order from the board by its location
         public int GetBoardOrder(int checkX, int checkY)
         {
-            int width = gameData.boardData.GetLength(0);
-            int height = gameData.boardData.GetLength(1);
+            int count = 0;
 
-            if (checkX < 0 || checkX >= width || checkY < 0 || checkY >= height)
+            for (int x = 0; x < GameData.WIDTH; x++)
             {
-                // ERROR
-                errorManager.ThrowWarning(Types.ErrorType.Code, "BoardManager", "Invalid indices provided.");
-                return 0;
+                for (int y = 0; y < GameData.HEIGHT; y++)
+                {
+                    if (x == checkX && y == checkY)
+                    {
+                        return count;
+                    }
+
+                    count++;
+                }
             }
 
-            // Calculate the linear index from 2D indices
-            return checkY * width + checkX;
+            return 0;
         }
 
         // Get the item's location from the board by its tile's order

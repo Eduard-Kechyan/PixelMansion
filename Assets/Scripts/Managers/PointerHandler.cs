@@ -20,7 +20,7 @@ namespace Merge
         private Types.Button currentButton;
 
         private Coroutine pressCoroutine;
-        // private bool pressing = false;
+        private bool pressing = false;
         private bool animatePress = false;
 
         private Coroutine mergeCoroutine;
@@ -112,7 +112,7 @@ namespace Merge
                 pointerBackground.style.display = DisplayStyle.Flex;
             }
 
-            // pressing = true;
+            pressing = true;
 
             animatePress = true;
             pressCoroutine = StartCoroutine(AnimatePress());
@@ -137,7 +137,7 @@ namespace Merge
                     buttonCallback();
                 }
 
-                //  pressing = false;
+                pressing = false;
 
                 callback?.Invoke();
             }
@@ -145,13 +145,13 @@ namespace Merge
             {
                 callback?.Invoke();
             }
-
-            buttonCallback = null;
         }
 
         public void ButtonPressFinish()
         {
-            buttonCallback();
+            buttonCallback?.Invoke();
+
+            buttonCallback = null;
         }
 
         IEnumerator AnimatePress()
@@ -280,8 +280,15 @@ namespace Merge
             pointer.style.opacity = 0;
             pointer.style.display = DisplayStyle.None;
 
-            animatePress = false;
-            animateMerge = false;
+            if (pressing)
+            {
+                animatePress = false;
+            }
+
+            if (merging)
+            {
+                animateMerge = false;
+            }
 
             if (pressCoroutine != null)
             {
@@ -298,6 +305,16 @@ namespace Merge
 
         public void ShowPointer()
         {
+            if (pressing)
+            {
+                animatePress = true;
+
+                pointer.style.opacity = 1;
+                pointer.style.display = DisplayStyle.Flex;
+
+                pressCoroutine = StartCoroutine(AnimatePress());
+            }
+
             if (merging)
             {
                 animateMerge = true;

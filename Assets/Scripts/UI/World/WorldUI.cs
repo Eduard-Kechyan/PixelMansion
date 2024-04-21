@@ -304,7 +304,6 @@ namespace Merge
             }
         }
 
-
         public void CloseUI()
         {
             List<TimeValue> fullDelay = new() { new TimeValue(0.6f) };

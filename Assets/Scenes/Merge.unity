@@ -340,7 +340,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1537458401331318770, guid: f4034c2be9714cc41b0cf4ef9809c444, type: 3}
       propertyPath: log
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1537458401331318770, guid: f4034c2be9714cc41b0cf4ef9809c444, type: 3}
       propertyPath: combine
@@ -445,10 +445,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -7698504415603008170, guid: af9e0bfb46c520a4fac5c30843ed2d4e, type: 3}
-      propertyPath: initialItems
-      value: 
-      objectReference: {fileID: 11400000, guid: 41cd74e911fe92f40b79942656fe44ad, type: 2}
     - target: {fileID: 961345630706959843, guid: af9e0bfb46c520a4fac5c30843ed2d4e, type: 3}
       propertyPath: m_RootOrder
       value: 14

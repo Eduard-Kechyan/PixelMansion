@@ -66,9 +66,12 @@ SpriteAtlas:
     - 738a22a3b8e6c9d49959bb6bd14fad0f: 1917365507
     - 47c024a3d93ed024682db3aea79ab753: 21300000
     - 24854bc316a55d14f9e9432226be36f0: 21300000
+    - 48b881767d8881d47b986babaf954a6e: 21300000
     - 10ae97084fab2e84aa049483478f1099: 21300000
     - 62ab0ca8cc14d2c47a6bd3acf0fe70e5: 21300000
     - f71e5ad897003bf4b9546bbf9fe1d382: 21300000
+    - 8e8ec1e828f961247b9d7da6c5660e88: 21300000
+    - 2b922719b8eddab45b2264a7e40ec674: 21300000
     - 54a459897a9654e438b730019c89f977: 21300000
     - a47610faeca58b3499fb8790b4d36113: 21300000
     - 4780be5b5da79ed44b59725a93db5c9b: 590581419
@@ -79,6 +82,7 @@ SpriteAtlas:
     - 3078797be50a44a4c81503a76b206c67: -245944086
     - 3078797be50a44a4c81503a76b206c67: 1900683017
     - 3078797be50a44a4c81503a76b206c67: 1066697082
+    - af1124ac9c777874fbacf1c9543ceaa5: 21300000
     - 2cc5fcac1541bbb4392c9e86b6059bbe: 383109696
     - 2cc5fcac1541bbb4392c9e86b6059bbe: 1565363511
     - 2cc5fcac1541bbb4392c9e86b6059bbe: 435106307
@@ -103,9 +107,12 @@ SpriteAtlas:
   - {fileID: 1917365507, guid: 738a22a3b8e6c9d49959bb6bd14fad0f, type: 3}
   - {fileID: 21300000, guid: 47c024a3d93ed024682db3aea79ab753, type: 3}
   - {fileID: 21300000, guid: 24854bc316a55d14f9e9432226be36f0, type: 3}
+  - {fileID: 21300000, guid: 48b881767d8881d47b986babaf954a6e, type: 3}
   - {fileID: 21300000, guid: 10ae97084fab2e84aa049483478f1099, type: 3}
   - {fileID: 21300000, guid: 62ab0ca8cc14d2c47a6bd3acf0fe70e5, type: 3}
   - {fileID: 21300000, guid: f71e5ad897003bf4b9546bbf9fe1d382, type: 3}
+  - {fileID: 21300000, guid: 8e8ec1e828f961247b9d7da6c5660e88, type: 3}
+  - {fileID: 21300000, guid: 2b922719b8eddab45b2264a7e40ec674, type: 3}
   - {fileID: 21300000, guid: 54a459897a9654e438b730019c89f977, type: 3}
   - {fileID: 21300000, guid: a47610faeca58b3499fb8790b4d36113, type: 3}
   - {fileID: 590581419, guid: 4780be5b5da79ed44b59725a93db5c9b, type: 3}
@@ -116,6 +123,7 @@ SpriteAtlas:
   - {fileID: -245944086, guid: 3078797be50a44a4c81503a76b206c67, type: 3}
   - {fileID: 1900683017, guid: 3078797be50a44a4c81503a76b206c67, type: 3}
   - {fileID: 1066697082, guid: 3078797be50a44a4c81503a76b206c67, type: 3}
+  - {fileID: 21300000, guid: af1124ac9c777874fbacf1c9543ceaa5, type: 3}
   - {fileID: 383109696, guid: 2cc5fcac1541bbb4392c9e86b6059bbe, type: 3}
   - {fileID: 1565363511, guid: 2cc5fcac1541bbb4392c9e86b6059bbe, type: 3}
   - {fileID: 435106307, guid: 2cc5fcac1541bbb4392c9e86b6059bbe, type: 3}
@@ -139,9 +147,12 @@ SpriteAtlas:
   - Shine_4
   - Completion
   - Crate2
+  - Selection3
   - Crate3
   - ReadyChest
   - Crate1
+  - Selection2
+  - Selection1
   - Ready
   - Selection
   - Crate3Breaking_1
@@ -152,6 +163,7 @@ SpriteAtlas:
   - Crate2Breaking_1
   - Crate2Breaking_2
   - Crate2Breaking_3
+  - Selection4
   - BubblePopping_2
   - BubblePopping_1
   - BubblePopping_0

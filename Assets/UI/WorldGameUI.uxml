@@ -75,13 +75,13 @@
         <ui:VisualElement name="Shadow" class="convo_background_shadow" />
         <ui:VisualElement name="Shadow" class="convo_background_shadow" style="top: auto; bottom: -30px; rotate: 180deg;" />
     </ui:VisualElement>
-    <ui:VisualElement name="ConvoContainer" class="convo_container">
+    <ui:VisualElement name="ConvoContainer" class="convo_container" style="display: none; opacity: 1;">
         <ui:VisualElement name="ConvoUnderlay" class="convo_underlay" />
         <ui:VisualElement name="SkipButtonContainer" class="convo_button_container" style="right: 8px; top: 22px; display: none;">
             <ui:Label tabindex="-1" text="Skip" display-tooltip-when-elided="true" name="Label" class="convo_button_label" />
             <ui:VisualElement name="Icon" class="icon convo_button_icon" />
         </ui:VisualElement>
-        <ui:VisualElement name="ConvoBox" class="convo_box">
+        <ui:VisualElement name="ConvoBox" class="convo_box" style="bottom: -120px;">
             <ui:VisualElement name="AvatarLeft" class="convo_avatar" />
             <ui:VisualElement name="AvatarRight" class="convo_avatar" style="right: -96px; left: auto; scale: -1 1;" />
             <ui:VisualElement name="ConvoBoxUnderlay" class="convo_box_underlay" style="rotate: 180deg;" />

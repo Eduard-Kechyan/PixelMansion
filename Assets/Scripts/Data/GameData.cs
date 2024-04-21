@@ -125,10 +125,6 @@ namespace Merge
         private Sprite[] wallSprites;
         private Sprite[] propsSprites;
 
-        /* private Sprite[] furnitureOptionSprites;
-         private Sprite[] floorOptionSprites;
-         private Sprite[] wallOptionSprites;*/
-
         // Debug
 #if DEVELOPMENT_BUILD || UNITY_EDITOR
         public List<Types.LogData> logsData = new();
@@ -205,11 +201,6 @@ namespace Merge
             floorSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("floors");
             wallSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("walls");
             propsSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("props");
-
-            // Options
-            /*furnitureOptionSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("furnitureOption");
-            floorOptionSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("floorOption");
-            wallOptionSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("wallOption");*/
 
             spritesLoaded = true;
         }
@@ -638,6 +629,11 @@ namespace Merge
         // Get item sprite from sprite name
         public Sprite GetSprite(string name, Types.Type type)
         {
+            if (name == null || name == "")
+            {
+                return null;
+            }
+
             switch (type)
             {
                 case Types.Type.Item:

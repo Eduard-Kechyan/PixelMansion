@@ -65,7 +65,7 @@ namespace Merge
             }
             else
             {
-                if (startFromStep && stepToStartFrom != "")
+                if (startFromStep && stepToStartFrom != "" && !PlayerPrefs.HasKey("tutorialStep"))
                 {
                     tutorialStep = stepToStartFrom;
 
@@ -266,6 +266,24 @@ namespace Merge
             }
 
             yield return null;
+        }
+
+        public bool CheckIfNextStepIsConvo()
+        {
+            for (int i = 0; i < tutorialData.steps.Length; i++)
+            {
+                if (tutorialData.steps[i].id == tutorialStep)
+                {
+                    if (tutorialData.steps[i].type == Types.TutorialStepType.Convo)
+                    {
+                        return true;
+                    }
+
+                    break;
+                }
+            }
+
+            return false;
         }
 
         void HandleStep()
