@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.UIElements;
 
 namespace Merge
@@ -10,19 +11,21 @@ namespace Merge
     {
         // Variables
         public BoardInteractions boardInteractions;
+        public BoardManager boardManager;
 
         private Scale fullScale = new(new Vector2(1f, 1f));
         private Scale tapScale = new(new Vector2(0.8f, 0.8f));
 
-        public Action buttonCallback = null;
-        private Action mergeCallback = null;
-
         private Types.Button currentButton;
+        private bool pointerHidden;
 
+        // Press
         private Coroutine pressCoroutine;
         private bool pressing = false;
         private bool animatePress = false;
+        public Action buttonCallback = null;
 
+        // Merge
         private Coroutine mergeCoroutine;
         [HideInInspector]
         public bool merging = false;
@@ -31,12 +34,22 @@ namespace Merge
         private Vector2 mergeSecondPos;
         [HideInInspector]
         public Sprite mergeSprite;
+        private Action mergeCallback = null;
 
+        // Gen
+        private Coroutine genCoroutine;
         [HideInInspector]
-        public bool waitForBoardIndication = false;
+        public bool generating = false;
+        private bool animateGen = false;
+        [HideInInspector]
+        public Sprite genSprite;
+        public Sprite genItemSprite;
+        public ItemTypes.Group genItemGroup;
+        private Action genCallback = null;
 
         // References
         private TaskMenu taskMenu;
+        private Camera cam;
 
         // UI
         private VisualElement root;
@@ -47,6 +60,7 @@ namespace Merge
         {
             // Cache 
             taskMenu = GameRefs.Instance.taskMenu;
+            cam = Camera.main;
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
@@ -150,8 +164,6 @@ namespace Merge
         public void ButtonPressFinish()
         {
             buttonCallback?.Invoke();
-
-            buttonCallback = null;
         }
 
         IEnumerator AnimatePress()
@@ -177,7 +189,6 @@ namespace Merge
 
             mergeCallback = callback;
 
-            waitForBoardIndication = true;
             mergeSprite = itemSprite;
         }
 
@@ -206,8 +217,6 @@ namespace Merge
                 pointer.RemoveFromClassList("pointer_tap");
                 pointer.RemoveFromClassList("pointer_pos_transition");
                 pointer.style.scale = new StyleScale(tapScale);
-
-                waitForBoardIndication = false;
 
                 merging = false;
 
@@ -271,9 +280,92 @@ namespace Merge
             }
         }
 
+        //// Gen ////
+        public void HandleGen(Sprite generatorSprite, Sprite itemSprite, ItemTypes.Group itemGroup, Action callback)
+        {
+            StopAllAnimations();
+
+            genCallback = callback;
+
+            genSprite = generatorSprite;
+            genItemSprite = itemSprite;
+
+            genItemGroup = itemGroup;
+
+            ContinueGen();
+        }
+
+        public void ContinueGen()
+        {
+            pointer.style.opacity = 1;
+            pointer.style.display = DisplayStyle.Flex;
+
+            SetGenPos();
+
+            if (pointerBackground != null)
+            {
+                pointerBackground.style.display = DisplayStyle.Flex;
+            }
+
+            generating = true;
+
+            animateGen = true;
+            pressCoroutine = StartCoroutine(AnimateGen());
+        }
+
+        public void SetGenPos()
+        {
+            Vector2 tilePos = boardManager.GetTileItemPosBySpriteName(genSprite.name);
+
+            Vector2 tileUiPos = RuntimePanelUtils.CameraTransformWorldToPanel(
+              root.panel,
+              tilePos,
+              cam
+            );
+
+            pointer.style.left = tileUiPos.x;
+            pointer.style.top = tileUiPos.y;
+        }
+
+        public void CheckGen()
+        {
+            StopAllAnimations();
+
+            pointer.style.opacity = 0;
+            pointer.style.display = DisplayStyle.None;
+            pointer.RemoveFromClassList("pointer_tap");
+            pointer.RemoveFromClassList("pointer_pos_transition");
+            pointer.style.scale = new StyleScale(tapScale);
+
+            generating = false;
+
+            genSprite = null;
+            genItemSprite = null;
+
+            genCallback?.Invoke();
+        }
+
+        IEnumerator AnimateGen()
+        {
+            while (animateGen)
+            {
+                pointer.RemoveFromClassList("pointer_tap");
+                pointer.style.scale = new StyleScale(fullScale);
+
+                yield return new WaitForSeconds(0.4f);
+
+                pointer.AddToClassList("pointer_tap");
+                pointer.style.scale = new StyleScale(tapScale);
+
+                yield return new WaitForSeconds(0.6f);
+            }
+        }
+
         //// Other ////
         void StopAllAnimations()
         {
+            pointerHidden = false;
+
             pointer.RemoveFromClassList("pointer_tap");
             pointer.RemoveFromClassList("pointer_pos_transition");
             pointer.style.scale = new StyleScale(fullScale);
@@ -290,6 +382,11 @@ namespace Merge
                 animateMerge = false;
             }
 
+            if (generating)
+            {
+                animateGen = false;
+            }
+
             if (pressCoroutine != null)
             {
                 StopCoroutine(pressCoroutine);
@@ -301,24 +398,47 @@ namespace Merge
                 StopCoroutine(mergeCoroutine);
                 mergeCoroutine = null;
             }
+
+            if (genCoroutine != null)
+            {
+                StopCoroutine(genCoroutine);
+                genCoroutine = null;
+            }
         }
 
         public void ShowPointer()
         {
-            if (pressing)
+            if (pointerHidden)
             {
-                animatePress = true;
+                pointerHidden = false;
 
-                pointer.style.opacity = 1;
-                pointer.style.display = DisplayStyle.Flex;
+                if (pressing)
+                {
+                    animatePress = true;
 
-                pressCoroutine = StartCoroutine(AnimatePress());
-            }
+                    pointer.style.opacity = 1;
+                    pointer.style.display = DisplayStyle.Flex;
 
-            if (merging)
-            {
-                animateMerge = true;
-                mergeCoroutine = StartCoroutine(AnimateMerge(mergeFirstPos, mergeSecondPos));
+                    pressCoroutine = StartCoroutine(AnimatePress());
+                }
+
+                if (merging)
+                {
+                    animateMerge = true;
+                    mergeCoroutine = StartCoroutine(AnimateMerge(mergeFirstPos, mergeSecondPos));
+                }
+
+                if (generating)
+                {
+                    animateGen = true;
+
+                    pointer.style.opacity = 1;
+                    pointer.style.display = DisplayStyle.Flex;
+
+                    SetGenPos();
+
+                    genCoroutine = StartCoroutine(AnimateGen());
+                }
             }
         }
 

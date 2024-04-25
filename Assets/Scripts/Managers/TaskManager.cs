@@ -16,6 +16,7 @@ namespace Merge
         public WorldDataManager worldDataManager;
         public BoardManager boardManager;
         public ValuePop valuePop;
+        public TutorialManager tutorialManager;
 
         [HideInInspector]
         public bool isLoaded = false;
@@ -580,7 +581,7 @@ namespace Merge
             dataManager.SaveInventory();
             dataManager.SaveTasks();
 
-            // Set board items to completed in the game play scene
+            // Set board items to completed in the merge scene
             if (completedAtLeastOnItem && boardManager != null)
             {
                 if (Application.isEditor)
@@ -663,23 +664,50 @@ namespace Merge
             return amount;
         }
 
-        // After tapping the complete button on the task in the game play scene, 
+        // After tapping the complete button on the task in the merge scene, 
         // send the data to the world scene and try to complete the scene here
-        public void CheckIfThereIsATaskToComplete(Action callback = null)
+        public void CheckIfThereIsATaskToComplete(Action callback = null, bool isFromMerge = false)
         {
-            if (Glob.taskToComplete != "")
+            if (PlayerPrefs.HasKey("taskToComplete"))
             {
-                string[] splitTaskData = Glob.taskToComplete.Split("|");
+                string[] splitTaskData = PlayerPrefs.GetString("taskToComplete").Split("|");
 
                 TryToCompleteTask(splitTaskData[0], splitTaskData[1]);
 
-                Glob.taskToComplete = "";
+                PlayerPrefs.DeleteKey("taskToComplete");
+
+                PlayerPrefs.Save();
             }
 
-            if (callback != null)
+            if (PlayerPrefs.HasKey("waitForTaskChange") && tutorialManager != null)
             {
-                callback();
+                if (isFromMerge)
+                {
+                    tutorialManager.NextStep();
+                }
+                else
+                {
+                    StartCoroutine(WaitForTaskChangingToFinish());
+                }
             }
+
+            callback?.Invoke();
+        }
+
+        IEnumerator WaitForTaskChangingToFinish()
+        {
+            yield return new WaitForSeconds(0.3f);
+
+            while (Glob.taskLoading)
+            {
+                yield return null;
+            }
+
+            PlayerPrefs.DeleteKey("waitForTaskChange");
+
+            PlayerPrefs.Save();
+
+            tutorialManager.NextStep();
         }
     }
 }

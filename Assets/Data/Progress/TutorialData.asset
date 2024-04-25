@@ -20,6 +20,8 @@ MonoBehaviour:
     taskType: 0
     taskButton: 0
     taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
     taskOrder: 0
     keepConvoOpen: 1
   - name: Input PlayerName
@@ -29,6 +31,8 @@ MonoBehaviour:
     taskType: 0
     taskButton: 0
     taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
     taskOrder: 0
     keepConvoOpen: 0
   - name: Convo Part1
@@ -38,6 +42,8 @@ MonoBehaviour:
     taskType: 0
     taskButton: 0
     taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
     taskOrder: 0
     keepConvoOpen: 0
   - name: Task Press Play1
@@ -47,6 +53,8 @@ MonoBehaviour:
     taskType: 0
     taskButton: 1
     taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
     taskOrder: 0
     keepConvoOpen: 0
   - name: Task Merge MergeGloves1
@@ -56,6 +64,8 @@ MonoBehaviour:
     taskType: 1
     taskButton: 0
     taskSprite: {fileID: 21300000, guid: 6e077ce393ad2964b99f0b9570de9afe, type: 3}
+    itemGroup: 1
+    genSprite: {fileID: 0}
     taskOrder: 0
     keepConvoOpen: 0
   - name: Task Merge MergeGloves2
@@ -65,6 +75,8 @@ MonoBehaviour:
     taskType: 1
     taskButton: 0
     taskSprite: {fileID: 21300000, guid: 76493dcb8626c364db7ad859d09cef65, type: 3}
+    itemGroup: 1
+    genSprite: {fileID: 0}
     taskOrder: 0
     keepConvoOpen: 0
   - name: Task Press Home
@@ -74,6 +86,8 @@ MonoBehaviour:
     taskType: 0
     taskButton: 2
     taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
     taskOrder: 0
     keepConvoOpen: 0
   - name: Task Press Task1
@@ -83,6 +97,8 @@ MonoBehaviour:
     taskType: 0
     taskButton: 3
     taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
     taskOrder: 0
     keepConvoOpen: 0
   - name: Task Menu TaskMenu1
@@ -92,6 +108,8 @@ MonoBehaviour:
     taskType: 3
     taskButton: 0
     taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
     taskOrder: 0
     keepConvoOpen: 0
   - name: Convo Part2
@@ -101,6 +119,8 @@ MonoBehaviour:
     taskType: 0
     taskButton: 0
     taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
     taskOrder: 0
     keepConvoOpen: 0
   - name: Task Press Play2
@@ -110,6 +130,8 @@ MonoBehaviour:
     taskType: 0
     taskButton: 1
     taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
     taskOrder: 0
     keepConvoOpen: 0
   - name: Task Gen GenGloves
@@ -118,7 +140,9 @@ MonoBehaviour:
     type: 0
     taskType: 2
     taskButton: 0
-    taskSprite: {fileID: 0}
+    taskSprite: {fileID: 21300000, guid: 6e077ce393ad2964b99f0b9570de9afe, type: 3}
+    itemGroup: 1
+    genSprite: {fileID: 21300000, guid: 42bead8e5cf2e514785ce37d0791b327, type: 3}
     taskOrder: 0
     keepConvoOpen: 0
   - name: Task Merge MergeGloves3
@@ -128,15 +152,19 @@ MonoBehaviour:
     taskType: 1
     taskButton: 0
     taskSprite: {fileID: 21300000, guid: 6e077ce393ad2964b99f0b9570de9afe, type: 3}
+    itemGroup: 1
+    genSprite: {fileID: 0}
     taskOrder: 0
     keepConvoOpen: 0
-  - name: Task Merge MergeGloves5
-    id: MergeGloves5
+  - name: Task Merge MergeGloves4
+    id: MergeGloves4
     scene: 2
     type: 0
     taskType: 1
     taskButton: 0
-    taskSprite: {fileID: 0}
+    taskSprite: {fileID: 21300000, guid: 76493dcb8626c364db7ad859d09cef65, type: 3}
+    itemGroup: 1
+    genSprite: {fileID: 0}
     taskOrder: 0
     keepConvoOpen: 0
   - name: Task Press Task2
@@ -146,6 +174,8 @@ MonoBehaviour:
     taskType: 0
     taskButton: 3
     taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
     taskOrder: 0
     keepConvoOpen: 0
   - name: Task Menu TaskMenu2
@@ -155,6 +185,8 @@ MonoBehaviour:
     taskType: 3
     taskButton: 0
     taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
     taskOrder: 0
     keepConvoOpen: 0
   - name: Convo Part3
@@ -164,6 +196,8 @@ MonoBehaviour:
     taskType: 0
     taskButton: 0
     taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
     taskOrder: 0
     keepConvoOpen: 0
   - name: Task Press Task3
@@ -173,15 +207,19 @@ MonoBehaviour:
     taskType: 0
     taskButton: 3
     taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
     taskOrder: 0
     keepConvoOpen: 0
-  - name: Task Press TaskMenu3
+  - name: Task Menu TaskMenu3
     id: TaskMenu3
     scene: 1
     type: 0
-    taskType: 0
-    taskButton: 0
+    taskType: 3
+    taskButton: 4
     taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
     taskOrder: 0
     keepConvoOpen: 0
   - name: Task Gen GenHammer
@@ -190,7 +228,9 @@ MonoBehaviour:
     type: 0
     taskType: 2
     taskButton: 0
-    taskSprite: {fileID: 21300000, guid: cb6ce5f5a51a81a439116edb839e4a4c, type: 3}
+    taskSprite: {fileID: 21300000, guid: d25fb806c5d4bd440a7840db6bf08834, type: 3}
+    itemGroup: 0
+    genSprite: {fileID: 21300000, guid: 42bead8e5cf2e514785ce37d0791b327, type: 3}
     taskOrder: 0
     keepConvoOpen: 0
   - name: Task Merge MergeHammer1
@@ -199,25 +239,9 @@ MonoBehaviour:
     type: 0
     taskType: 1
     taskButton: 0
-    taskSprite: {fileID: 21300000, guid: 44fb2d4df3aa4f54f89d77dd7249aed7, type: 3}
-    taskOrder: 0
-    keepConvoOpen: 0
-  - name: Task Merge MergeHammer2
-    id: MergeHammer2
-    scene: 2
-    type: 0
-    taskType: 1
-    taskButton: 0
-    taskSprite: {fileID: 21300000, guid: ef488eadea2597c4f8d11a7763e15512, type: 3}
-    taskOrder: 0
-    keepConvoOpen: 0
-  - name: Task Merge MergeHammer3
-    id: MergeHammer3
-    scene: 2
-    type: 0
-    taskType: 1
-    taskButton: 0
     taskSprite: {fileID: 21300000, guid: d25fb806c5d4bd440a7840db6bf08834, type: 3}
+    itemGroup: 0
+    genSprite: {fileID: 0}
     taskOrder: 0
     keepConvoOpen: 0
   - name: Task Press Task3
@@ -227,6 +251,8 @@ MonoBehaviour:
     taskType: 0
     taskButton: 0
     taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
     taskOrder: 0
     keepConvoOpen: 0
   - name: Task Menu TaskMenu3
@@ -236,6 +262,8 @@ MonoBehaviour:
     taskType: 3
     taskButton: 0
     taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
     taskOrder: 0
     keepConvoOpen: 0
   - name: Convo Part4
@@ -245,5 +273,7 @@ MonoBehaviour:
     taskType: 0
     taskButton: 0
     taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
     taskOrder: 0
     keepConvoOpen: 0

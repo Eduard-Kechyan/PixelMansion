@@ -152,20 +152,25 @@ namespace Merge
 
         bool CheckScene()
         {
-            for (int i = 0; i < tutorialData.steps.Length; i++)
+            if (!PlayerPrefs.HasKey("taskToComplete"))
             {
-                if (tutorialData.steps[i].id == tutorialStep)
+                for (int i = 0; i < tutorialData.steps.Length; i++)
                 {
-                    if (tutorialData.steps[i].scene == Types.Scene.Merge && currentScene != Types.Scene.Merge)
+                    if (tutorialData.steps[i].id == tutorialStep)
                     {
-                        // Merge scene
-                        sceneLoader.Load(Types.Scene.Merge);
+                        if (tutorialData.steps[i].scene == Types.Scene.Merge && currentScene != Types.Scene.Merge)
+                        {
+                            // Merge scene
+                            sceneLoader.Load(Types.Scene.Merge);
 
-                        return false;
+                            return false;
+                        }
+
+                        break;
                     }
-
-                    break;
                 }
+
+                return true;
             }
 
             return true;
@@ -315,7 +320,7 @@ namespace Merge
             }
         }
 
-        void NextStep(bool handleNextStep = true, Action callback = null)
+        public void NextStep(bool handleNextStep = true, Action callback = null)
         {
             for (int i = 0; i < tutorialData.steps.Length; i++)
             {
@@ -376,6 +381,10 @@ namespace Merge
                     });
                     break;
                 case Types.TutorialStepTask.Gen:
+                    pointerHandler.HandleGen(step.genSprite, step.taskSprite, step.itemGroup, () =>
+                    {
+                        NextStep();
+                    });
                     break;
             }
         }

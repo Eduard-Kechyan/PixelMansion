@@ -340,7 +340,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1537458401331318770, guid: f4034c2be9714cc41b0cf4ef9809c444, type: 3}
       propertyPath: log
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1537458401331318770, guid: f4034c2be9714cc41b0cf4ef9809c444, type: 3}
       propertyPath: combine
@@ -445,6 +445,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -7698504415603008170, guid: af9e0bfb46c520a4fac5c30843ed2d4e, type: 3}
+      propertyPath: initialItems
+      value: 
+      objectReference: {fileID: 11400000, guid: d7d45b4685016ba419bd296eeac036a1, type: 2}
     - target: {fileID: 961345630706959843, guid: af9e0bfb46c520a4fac5c30843ed2d4e, type: 3}
       propertyPath: m_RootOrder
       value: 14
@@ -879,7 +883,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6008772859430314081, guid: 1bd750316f540934998c943551a39ba8, type: 3}
       propertyPath: startFromStep
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6008772859430314081, guid: 1bd750316f540934998c943551a39ba8, type: 3}
       propertyPath: progressManager
@@ -887,8 +891,12 @@ PrefabInstance:
       objectReference: {fileID: 1754641312}
     - target: {fileID: 6008772859430314081, guid: 1bd750316f540934998c943551a39ba8, type: 3}
       propertyPath: stepToStartFrom
-      value: MergeGloves1
+      value: GenGloves
       objectReference: {fileID: 0}
+    - target: {fileID: 6221008523312400612, guid: 1bd750316f540934998c943551a39ba8, type: 3}
+      propertyPath: boardManager
+      value: 
+      objectReference: {fileID: 639326507}
     - target: {fileID: 6221008523312400612, guid: 1bd750316f540934998c943551a39ba8, type: 3}
       propertyPath: boardInteractions
       value: 
@@ -988,6 +996,10 @@ PrefabInstance:
       propertyPath: boardManager
       value: 
       objectReference: {fileID: 639326507}
+    - target: {fileID: 2612081357836540789, guid: 09379b30afef3214ba489f71db8fa4dd, type: 3}
+      propertyPath: tutorialManager
+      value: 
+      objectReference: {fileID: 1663649672}
     - target: {fileID: 5041890705364766301, guid: 09379b30afef3214ba489f71db8fa4dd, type: 3}
       propertyPath: resetData
       value: 0
@@ -2189,6 +2201,10 @@ PrefabInstance:
       propertyPath: tilePrefab
       value: 
       objectReference: {fileID: 3144219979623524005, guid: 2ac088b13948a194babd4a9e969ce74c, type: 3}
+    - target: {fileID: 3470717317267958793, guid: fb6bd1ade9d0e614da3b3eabc6c46c06, type: 3}
+      propertyPath: taskManager
+      value: 
+      objectReference: {fileID: 1754641311}
     - target: {fileID: 4494591135200674788, guid: fb6bd1ade9d0e614da3b3eabc6c46c06, type: 3}
       propertyPath: m_Name
       value: Board
@@ -2257,6 +2273,10 @@ PrefabInstance:
       propertyPath: timeManager
       value: 
       objectReference: {fileID: 783295151}
+    - target: {fileID: 8002734882105849631, guid: fb6bd1ade9d0e614da3b3eabc6c46c06, type: 3}
+      propertyPath: tutorialManager
+      value: 
+      objectReference: {fileID: 1663649672}
     - target: {fileID: 8002734882105849631, guid: fb6bd1ade9d0e614da3b3eabc6c46c06, type: 3}
       propertyPath: generationCurves.Array.size
       value: 20

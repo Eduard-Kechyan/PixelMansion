@@ -66,6 +66,8 @@ namespace Merge
 
         public void Remove(Transform newRefFilth, Action newCallback = null)
         {
+            Glob.taskLoading = true;
+
             refFilth = newRefFilth;
 
             callback = newCallback;
@@ -217,6 +219,8 @@ namespace Merge
             refFilth.gameObject.SetActive(false);
 
             filthRemoved = false;
+
+            Glob.taskLoading = false;
 
             callback?.Invoke();
 

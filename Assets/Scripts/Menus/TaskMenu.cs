@@ -160,7 +160,7 @@ namespace Merge
                                 {
                                     pointerHandler.ButtonPress(Types.Button.TaskMenu, true, () =>
                                     {
-                                        HandleCompletedTap(groupId, taskId);
+                                        HandleCompletedTap(groupId, taskId, true);
                                     });
                                 }
                                 else
@@ -184,7 +184,7 @@ namespace Merge
                                 {
                                     pointerHandler.ButtonPress(Types.Button.TaskMenu, true, () =>
                                     {
-                                        HandleCompletedTap(groupId, taskId);
+                                        HandleCompletedTap(groupId, taskId, true);
                                     });
                                 }
                                 else
@@ -211,6 +211,10 @@ namespace Merge
                                     {
                                         pointerHandler.ButtonPress(Types.Button.TaskMenu, true, () =>
                                         {
+                                            PlayerPrefs.SetInt("waitForTaskChange", 1);
+
+                                            PlayerPrefs.Save();
+
                                             sceneLoader.Load(Types.Scene.Merge);
                                         });
                                     }
@@ -284,23 +288,39 @@ namespace Merge
         }
 
         // Check if we are on the world scene and complete the task,
-        // but if we are on the game play scene,
+        // but if we are on the merge scene,
         // then save the task group id and task id to a static variable
         // so it can be used in the world scene
-        void HandleCompletedTap(string groupId, string taskId)
+        void HandleCompletedTap(string groupId, string taskId, bool wait = false)
         {
             if (sceneLoader.GetScene() == Types.Scene.World)
             {
                 taskManager.TryToCompleteTask(groupId, taskId, () =>
                 {
-                    StartCoroutine(WaitForTaskChangingToFinish());
+                    if (wait)
+                    {
+                        PlayerPrefs.SetInt("waitForTaskChange", 1);
+
+                        PlayerPrefs.Save();
+
+                        StartCoroutine(WaitForTaskChangingToFinish());
+                    }
                 });
 
                 menuUI.CloseMenu(taskMenu.name);
             }
             else
             {
-                Glob.taskToComplete = groupId + "|" + taskId;
+                PlayerPrefs.SetString("taskToComplete", groupId + "|" + taskId);
+
+                PlayerPrefs.Save();
+
+                if (wait)
+                {
+                    PlayerPrefs.SetInt("waitForTaskChange", 1);
+
+                    PlayerPrefs.Save();
+                }
 
                 sceneLoader.Load(Types.Scene.World);
             }
@@ -308,10 +328,16 @@ namespace Merge
 
         IEnumerator WaitForTaskChangingToFinish()
         {
-            while (Glob.selectableIsChanging)
+            while (Glob.taskLoading)
             {
                 yield return null;
             }
+
+            PlayerPrefs.DeleteKey("waitForTaskChange");
+
+            PlayerPrefs.Save();
+
+            Debug.Log("A");
 
             pointerHandler.ButtonPressFinish();
         }

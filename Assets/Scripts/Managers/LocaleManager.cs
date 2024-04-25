@@ -45,7 +45,7 @@ namespace Merge
 
                 wrappers.Add(worldLocaleWrapper);
             }
-            // Get game play locale wrapper
+            // Get merge locale wrapper
             else if (scene == Types.Scene.Merge)
             {
                 mergeLocaleWrapper = gameRefs.mergeUI.GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("LocaleWrapper");

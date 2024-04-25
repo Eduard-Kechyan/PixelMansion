@@ -322,8 +322,6 @@ namespace Merge
             // Hide the drag overlay in UI
             dragOverlay.style.visibility = Visibility.Hidden;
 
-            pointerHandler.ShowPointer();
-
             // Check what needs to happen when we drop the item
             CheckItemDropAction();
         }
@@ -450,6 +448,8 @@ namespace Merge
             //// If there is nothing to do, move the item back to it's initial position ////
 
             MoveBack();
+
+            pointerHandler.ShowPointer();
         }
 
         void MoveItem(GameObject tile)
@@ -593,6 +593,8 @@ namespace Merge
 
             // Select item
             selectionManager.Select(Types.SelectType.Both);
+
+            pointerHandler.ShowPointer();
         }
 
         void MoveBack()

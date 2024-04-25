@@ -147,20 +147,28 @@ namespace Merge
             {
                 // Add background click handler
                 VisualElement background = currentMenu.Q<VisualElement>("Background");
+                VisualElement closeButton = currentMenu.Q<VisualElement>("Close");
 
                 if (background != null)
                 {
-                    background.AddManipulator(new Clickable(evt =>
+                    if (PlayerPrefs.HasKey("tutorialFinished"))
                     {
-                        if (closeAllMenus)
+                        background.AddManipulator(new Clickable(evt =>
                         {
-                            CloseAllMenus();
-                        }
-                        else
+                            HandleBackgroundClose();
+                        }));
+
+                        closeButton.style.display = DisplayStyle.Flex;
+                    }
+                    else
+                    {
+                        background.RemoveManipulator(new Clickable(evt =>
                         {
-                            CloseMenu(currentMenu.name);
-                        }
-                    }));
+                            HandleBackgroundClose();
+                        }));
+
+                        closeButton.style.display = DisplayStyle.None;
+                    }
                 }
 
                 // Disable the close button
@@ -186,6 +194,18 @@ namespace Merge
             if (boardInteractions != null)
             {
                 boardInteractions.DisableInteractions();
+            }
+        }
+
+        void HandleBackgroundClose()
+        {
+            if (closeAllMenus)
+            {
+                CloseAllMenus();
+            }
+            else
+            {
+                CloseMenu(currentMenu.name);
             }
         }
 

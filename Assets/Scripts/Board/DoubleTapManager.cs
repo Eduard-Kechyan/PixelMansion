@@ -9,8 +9,8 @@ namespace Merge
         // Variables
         public float moveSpeed = 14f;
         public float scaleSpeed = 8f;
-        public ClockManager clockManager;
         public TimeManager timeManager;
+        public TutorialManager tutorialManager;
 
         [Tooltip("Will automatically adjust")]
         public AnimationCurve[] randomGoldCurves;
@@ -30,6 +30,7 @@ namespace Merge
         private EnergyMenu energyMenu;
         private ValuePop valuePop;
         private LevelMenu levelMenu;
+        private PointerHandler pointerHandler;
 
         private GameObject itemParent;
 
@@ -46,6 +47,7 @@ namespace Merge
             LOCALE = I18n.Instance;
             energyMenu = GameRefs.Instance.energyMenu;
             valuePop = GameRefs.Instance.valuePop;
+            pointerHandler = tutorialManager.GetComponent<PointerHandler>();
         }
 
         public bool CheckForDoubleTaps()
@@ -70,6 +72,7 @@ namespace Merge
             }
         }
 
+        // Generator
         void DoubleTappedGenerator()
         {
             if (interactions.currentItem.creates.Length > 0 && interactions.currentItem.level >= interactions.currentItem.generatesAtLevel && !interactions.currentItem.timerOn)
@@ -90,7 +93,17 @@ namespace Merge
 
                         boardIndication.StopPossibleMergeCheck();
 
-                        SelectRandomGroupAndItem(emptyTile[0], tile.transform.position);
+                        if (tutorialManager != null)
+                        {
+                            if (pointerHandler != null && pointerHandler.generating)
+                            {
+                                HandleGenTutorial(emptyTile[0], tile.transform.position);
+                            }
+                        }
+                        else
+                        {
+                            SelectRandomGroupAndItem(emptyTile[0], tile.transform.position);
+                        }
 
                         timeManager.CheckCoolDown(interactions.currentItem);
                     }
@@ -107,66 +120,6 @@ namespace Merge
                 else
                 {
                     energyMenu.Open();
-                }
-            }
-        }
-
-        void DoubleTappedCollectable()
-        {
-            if (levelMenu != null && interactions.currentItem.collGroup == Types.CollGroup.Experience)
-            {
-                levelMenu.isRewarding = true;
-            }
-
-            valuePop.PopValue(
-                interactions.currentItem.level,
-                interactions.currentItem.collGroup,
-                interactions.currentItem.transform.position,
-                true,
-                false,
-                () =>
-                {
-                    levelMenu.isRewarding = false;
-                }
-            );
-
-            itemParent = interactions.currentItem.transform.parent.gameObject;
-
-            interactions.currentItem.ScaleToSize(Vector2.zero, scaleSpeed, true, RemoveCollectableFromTheBoard);
-        }
-
-        void DoubleTappedChest()
-        {
-            if (!interactions.currentItem.timerOn)
-            {
-                if (interactions.currentItem.chestGroup == Types.ChestGroup.Item && !interactions.currentItem.chestOpen)
-                {
-                    return;
-                }
-
-                GameObject tile = interactions.currentItem.transform.parent.gameObject;
-
-                Vector2Int tileLoc = boardManager.GetBoardLocation(0, tile);
-
-                List<Types.TileEmpty> emptyTile = boardManager.GetEmptyTileItems(tileLoc);
-
-                // Check if the board is full
-                if (emptyTile.Count > 0)
-                {
-                    emptyTile.Sort((p1, p2) => p1.distance.CompareTo(p2.distance));
-
-                    boardIndication.StopPossibleMergeCheck();
-
-                    SelectRandomItemFromChest(emptyTile[0], tile.transform.position, interactions.currentItem.chestItems == 1);
-                }
-                else
-                {
-                    popupManager.Pop(
-                        LOCALE.Get("pop_board_full"),
-                        interactions.currentItem.transform.position,
-                        Types.SoundType.Buzz,
-                        true
-                    );
                 }
             }
         }
@@ -252,11 +205,105 @@ namespace Merge
             }
         }
 
+        void HandleGenTutorial(Types.TileEmpty emptyTile, Vector2 initialPosition)
+        {
+            for (int i = 0; i < gameData.itemsData.Length; i++)
+            {
+                if (gameData.itemsData[i].group == pointerHandler.genItemGroup)
+                {
+                    for (int j = 0; j < gameData.itemsData[i].content.Length; j++)
+                    {
+                        if (gameData.itemsData[i].content[j].sprite == pointerHandler.genItemSprite)
+                        {
+                            boardManager.CreateItemOnEmptyTile(
+                                gameData.itemsData[i].content[j],
+                                emptyTile,
+                                initialPosition,
+                                true,
+                                true,
+                                null,
+                                (Vector2 pos) =>
+                                {
+                                    pointerHandler.CheckGen();
+                                }
+                            );
+
+                            break;
+                        }
+                    }
+
+                    break;
+                }
+            }
+        }
+
+        // Collectable
+        void DoubleTappedCollectable()
+        {
+            if (levelMenu != null && interactions.currentItem.collGroup == Types.CollGroup.Experience)
+            {
+                levelMenu.isRewarding = true;
+            }
+
+            valuePop.PopValue(
+                interactions.currentItem.level,
+                interactions.currentItem.collGroup,
+                interactions.currentItem.transform.position,
+                true,
+                false,
+                () =>
+                {
+                    levelMenu.isRewarding = false;
+                }
+            );
+
+            itemParent = interactions.currentItem.transform.parent.gameObject;
+
+            interactions.currentItem.ScaleToSize(Vector2.zero, scaleSpeed, true, RemoveCollectableFromTheBoard);
+        }
+
         void RemoveCollectableFromTheBoard()
         {
             boardManager.RemoveBoardData(itemParent);
 
             itemParent = null;
+        }
+
+        // Chest
+        void DoubleTappedChest()
+        {
+            if (!interactions.currentItem.timerOn)
+            {
+                if (interactions.currentItem.chestGroup == Types.ChestGroup.Item && !interactions.currentItem.chestOpen)
+                {
+                    return;
+                }
+
+                GameObject tile = interactions.currentItem.transform.parent.gameObject;
+
+                Vector2Int tileLoc = boardManager.GetBoardLocation(0, tile);
+
+                List<Types.TileEmpty> emptyTile = boardManager.GetEmptyTileItems(tileLoc);
+
+                // Check if the board is full
+                if (emptyTile.Count > 0)
+                {
+                    emptyTile.Sort((p1, p2) => p1.distance.CompareTo(p2.distance));
+
+                    boardIndication.StopPossibleMergeCheck();
+
+                    SelectRandomItemFromChest(emptyTile[0], tile.transform.position, interactions.currentItem.chestItems == 1);
+                }
+                else
+                {
+                    popupManager.Pop(
+                        LOCALE.Get("pop_board_full"),
+                        interactions.currentItem.transform.position,
+                        Types.SoundType.Buzz,
+                        true
+                    );
+                }
+            }
         }
 
         void SelectRandomItemFromChest(Types.TileEmpty emptyTile, Vector2 initialPosition, bool last = false)

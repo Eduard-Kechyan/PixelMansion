@@ -120,7 +120,7 @@ namespace Merge
                     }
                     else
                     {
-                        PlayerSettings.SetIl2CppCodeGeneration(NamedBuildTarget.Android, Il2CppCodeGeneration.OptimizeSpeed); // Faster game play
+                        PlayerSettings.SetIl2CppCodeGeneration(NamedBuildTarget.Android, Il2CppCodeGeneration.OptimizeSpeed); // Faster gameplay
                     }
 
                     PlayerSettings.Android.bundleVersionCode = tempBuildNumber;

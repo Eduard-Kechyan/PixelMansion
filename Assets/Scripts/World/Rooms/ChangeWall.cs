@@ -260,7 +260,7 @@ namespace Merge
         IEnumerator ChangeWallChunks()
         {
             isChanging = true;
-            Glob.selectableIsChanging = true;
+            Glob.taskLoading = true;
 
             for (int i = 0; i < chunks.Count; i++)
             {
@@ -276,7 +276,7 @@ namespace Merge
             }
 
             isChanging = false;
-            Glob.selectableIsChanging = false;
+            Glob.taskLoading = false;
         }
 
         //// OVERLAY ////

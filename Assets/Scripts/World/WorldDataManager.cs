@@ -414,23 +414,26 @@ namespace Merge
         // Bakes the navigation mesh after reading or writing the root
         IEnumerator BakeNavMeshAfterPhysicsUpdate()
         {
-            yield return new WaitForSeconds(bakeDelay);
-
-            navMeshManager.Bake(() =>
+            if (!loaded)
             {
-                if (taskManager == null || !taskManager.enabled)
+                yield return new WaitForSeconds(bakeDelay);
+
+                navMeshManager.Bake(() =>
                 {
-                    loaded = true;
-                }
-                else
-                {
-                    StartCoroutine(TryCheckingForTasks());
-                }
-            });
+                    if (taskManager == null || !taskManager.enabled)
+                    {
+                        loaded = true;
+                    }
+                    else
+                    {
+                        StartCoroutine(CheckIfThereIsATaskToComplete());
+                    }
+                });
+            }
         }
 
         // Check if there is a tasks to complete
-        IEnumerator TryCheckingForTasks()
+        IEnumerator CheckIfThereIsATaskToComplete()
         {
             while (!taskManager.isLoaded)
             {

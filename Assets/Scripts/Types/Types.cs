@@ -603,6 +603,8 @@ namespace Merge
             public TutorialStepTask taskType;
             public Button taskButton;
             public Sprite taskSprite;
+            public ItemTypes.Group itemGroup;
+            public Sprite genSprite;
             public int taskOrder;
             public bool keepConvoOpen;
         }

@@ -22,13 +22,10 @@ namespace Merge
         public static Color colorYellow = Color.yellow;
         public static Color colorRed = Color.red;
 
-        public static bool selectableIsChanging = false;
+        public static bool taskLoading = false;
         public static bool convoUILoading = true;
 
         public static Types.Scene lastScene = Types.Scene.None;
-
-        // Temp data
-        public static string taskToComplete = "";
 
         // Instance
         public static Glob Instance;
@@ -41,7 +38,6 @@ namespace Merge
             Instance = this;
 
             lastScene = Types.Scene.None;
-            taskToComplete = "";
 
             colorBlue = FromHEX("71A0F6");
             colorCyan = FromHEX("55CBB3");
@@ -162,7 +158,7 @@ namespace Merge
 
         private static IEnumerator WaitForSelectableTimeout(Action function)
         {
-            while (selectableIsChanging)
+            while (taskLoading)
             {
                 yield return null;
             }

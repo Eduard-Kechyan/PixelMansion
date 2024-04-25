@@ -29,6 +29,30 @@ MonoBehaviour:
         collGroup: 0
         chestGroup: 0
         amount: 1
+        completed: 1
+      rewards:
+      - sprite: {fileID: 21300000, guid: ca3a280a957839843b47b3b96175df80, type: 3}
+        type: 2
+        group: 0
+        genGroup: 0
+        collGroup: 1
+        chestGroup: 0
+        amount: 10
+        completed: 0
+      completed: 1
+    - name: RemoveFilth2
+      id: RemoveFilth2
+      taskRefName: FilthGroup2
+      taskRefType: 5
+      isTaskRefRight: 0
+      needs:
+      - sprite: {fileID: 21300000, guid: ca76bd9341439e145a7e676f297f7ab0, type: 3}
+        type: 0
+        group: 0
+        genGroup: 0
+        collGroup: 0
+        chestGroup: 0
+        amount: 1
         completed: 0
       rewards:
       - sprite: {fileID: 21300000, guid: ca3a280a957839843b47b3b96175df80, type: 3}
@@ -40,9 +64,9 @@ MonoBehaviour:
         amount: 10
         completed: 0
       completed: 0
-    - name: RemoveFilth2
-      id: RemoveFilth2
-      taskRefName: FilthGroup2
+    - name: RemoveFilth3
+      id: RemoveFilth3
+      taskRefName: FilthGroup3
       taskRefType: 5
       isTaskRefRight: 0
       needs:
@@ -53,23 +77,7 @@ MonoBehaviour:
         collGroup: 0
         chestGroup: 0
         amount: 1
-        completed: 2
-      rewards:
-      - sprite: {fileID: 21300000, guid: ca3a280a957839843b47b3b96175df80, type: 3}
-        type: 2
-        group: 0
-        genGroup: 0
-        collGroup: 1
-        chestGroup: 0
-        amount: 10
         completed: 0
-      completed: 2
-    - name: RemoveFilth3
-      id: RemoveFilth3
-      taskRefName: FilthGroup3
-      taskRefType: 0
-      isTaskRefRight: 0
-      needs: []
       rewards:
       - sprite: {fileID: 21300000, guid: ca3a280a957839843b47b3b96175df80, type: 3}
         type: 2

@@ -23,12 +23,6 @@ MonoBehaviour:
       nextIds:
       - RemoveFilth2
       requiredIds: []
-    - name: Convo Part2
-      id: Part2
-      stepType: 1
-      nextIds:
-      - LivingRoom
-      requiredIds: []
     - name: Task RemoveFilth2
       id: RemoveFilth2
       stepType: 0

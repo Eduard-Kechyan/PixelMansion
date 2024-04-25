@@ -9,6 +9,7 @@ namespace Merge
     public class BoardInitialization : MonoBehaviour
     {
         // Variables
+        public TaskManager taskManager;
         public GameObject tilePrefab;
         public float tileWidth = 24f;
         public float tileSize;
@@ -209,6 +210,22 @@ namespace Merge
             dataManager.SaveBoard(false, false);
 
             boardManager.boardSet = true;
+
+            if (taskManager != null && taskManager.enabled)
+            {
+                StartCoroutine(CheckIfThereIsATaskToComplete());
+            }
+
+            // Check if there is a tasks to complete
+            IEnumerator CheckIfThereIsATaskToComplete()
+            {
+                while (!taskManager.isLoaded)
+                {
+                    yield return null;
+                }
+
+                taskManager.CheckIfThereIsATaskToComplete(null, true);
+            }
         }
     }
 }

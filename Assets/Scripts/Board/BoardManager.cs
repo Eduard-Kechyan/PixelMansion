@@ -141,6 +141,11 @@ namespace Merge
         {
             int order = GetBoardOrder(checkX, checkY);
 
+            return GetTileItemPosByOrder(order);
+        }
+
+        public Vector2 GetTileItemPosByOrder(int order)
+        {
             Transform tileTransform = boardTiles.transform.GetChild(order);
 
             if (tileTransform != null)
@@ -153,6 +158,29 @@ namespace Merge
                 errorManager.ThrowWarning(Types.ErrorType.Code, "BoardManager", "Failed to retrieve tile transform.");
                 return Vector2.zero;
             }
+        }
+
+        public Vector2 GetTileItemPosBySpriteName(string spriteName)
+        {
+            int count = 0;
+
+            for (int x = 0; x < GameData.WIDTH; x++)
+            {
+                for (int y = 0; y < GameData.HEIGHT; y++)
+                {
+                    if (gameData.boardData[x, y].sprite != null && gameData.boardData[x, y].sprite.name == spriteName)
+                    {
+                        return GetTileItemPosByOrder(count);
+                    }
+
+                    count++;
+                }
+            }
+
+            // ERROR
+            errorManager.ThrowWarning(Types.ErrorType.Code, GetType().ToString(), "Board item with sprite name \'" + spriteName + "\' not found!");
+
+            return default;
         }
 
         public Vector2 GetTileItemPosById(string id)
