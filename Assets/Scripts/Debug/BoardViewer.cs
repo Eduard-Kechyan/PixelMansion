@@ -15,6 +15,10 @@ namespace Merge
         public float tileWidth = 24f;
         public float bottomOffset = 20f;
 
+        [Header("UI")]
+        public Vector2 countLabelOffset;
+        public Vector2 countIndexOffset;
+
         private float singlePixelWidth;
         private float screenUnitWidth;
         private float boardHalfWidth;
@@ -28,11 +32,20 @@ namespace Merge
         // References
         private Camera cam;
 
+        // UI
+        private VisualElement root;
+
         void Start()
         {
             // Cache
             cam = Camera.main;
 
+            // UI
+            root = GetComponent<UIDocument>().rootVisualElement;
+
+            root.Clear();
+
+            // Initialization
             boardData = ConvertArrayToBoard(initialItems.content);
 
             // Set the gameObject
@@ -139,6 +152,7 @@ namespace Merge
 
                         newItem.transform.localScale = new Vector3(1, 1, 1);
 
+                        CreateUIElements(count, x, y, newTile.transform.position);
                     }
 
                     // Increase count for the next loop
@@ -147,7 +161,7 @@ namespace Merge
             }
         }
 
-        public Types.Tile[,] ConvertArrayToBoard(Types.Tile[] boardArray)
+        Types.Tile[,] ConvertArrayToBoard(Types.Tile[] boardArray)
         {
             Types.Tile[,] newBoardData = new Types.Tile[GameData.WIDTH, GameData.HEIGHT];
 
@@ -183,6 +197,30 @@ namespace Merge
             }
 
             return newBoardData;
+        }
+
+        void CreateUIElements(int count, int indexX, int indexY, Vector2 pos)
+        {
+            Vector2 uiPos = RuntimePanelUtils.CameraTransformWorldToPanel(
+              root.panel,
+              pos,
+              cam
+            );
+
+            Label newCountLabel = new() { name = "Count" + count, text = count.ToString() };
+            Label newIndexLabel = new() { name = "Index" + indexX + "." + indexY, text = indexX + "." + indexY };
+
+            newCountLabel.AddToClassList("count_label");
+            newIndexLabel.AddToClassList("index_label");
+
+            newCountLabel.style.top = uiPos.y + countLabelOffset.y;
+            newCountLabel.style.left = uiPos.x + countLabelOffset.x;
+
+            newIndexLabel.style.top = uiPos.y + countIndexOffset.y;
+            newIndexLabel.style.left = uiPos.x + countIndexOffset.x;
+
+            root.Add(newCountLabel);
+            root.Add(newIndexLabel);
         }
     }
 }

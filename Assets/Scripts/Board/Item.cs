@@ -75,6 +75,11 @@ namespace Merge
         private Vector2 scale;
         private Action callback;
 
+        // Events
+        public delegate void OnInitializedEvent();
+        public event OnInitializedEvent OnInitialized;
+
+        // References
         private Animation anim;
         private Animation animReady;
 
@@ -136,6 +141,8 @@ namespace Merge
             {
                 bubbleSpriteRenderer = bubbleChild.GetComponent<SpriteRenderer>();
             }
+
+            OnInitialized?.Invoke();
 
             SetItemInitial();
 
@@ -281,6 +288,7 @@ namespace Merge
             switch (state)
             {
                 case Types.State.Default:
+                    Debug.Log(lockerChild);
                     lockerChild.SetActive(false);
                     crateChild.SetActive(false);
                     itemChild.SetActive(true); //
@@ -421,13 +429,20 @@ namespace Merge
             crateChild.GetComponent<SpriteRenderer>().sprite = newSprite;
         }
 
-        public void UnlockLock(float lockOpenSpeed = 0.05f)
+        public void UnlockLock(float lockOpenSpeed = 0.05f, bool wait = true)
         {
             if (state == Types.State.Locker)
             {
                 state = Types.State.Default;
 
-                StartCoroutine(WaitForLockToOpenAnimation(lockOpenSpeed));
+                if (wait)
+                {
+                    StartCoroutine(WaitForLockToOpenAnimation(lockOpenSpeed));
+                }
+                else
+                {
+                    CheckChildren();
+                }
             }
         }
 

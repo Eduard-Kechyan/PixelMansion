@@ -421,6 +421,60 @@ namespace Merge
             }
         }
 
+        public Vector2 UnlockAndGetItemPos(string spriteName)
+        {
+            int count = 0;
+            Vector2 pos = new();
+
+            for (int x = 0; x < GameData.WIDTH; x++)
+            {
+                for (int y = 0; y < GameData.HEIGHT; y++)
+                {
+                    if (gameData.boardData[x, y].sprite != null && gameData.boardData[x, y].sprite.name == spriteName)
+                    {
+                        Transform tileTransform = boardTiles.transform.GetChild(count);
+
+                        if (tileTransform != null)
+                        {
+                            pos = tileTransform.position;
+
+                            Transform itemTransform = tileTransform.GetChild(0);
+
+                            if (itemTransform != null)
+                            {
+                                if (itemTransform.TryGetComponent(out Item item))
+                                {
+                                    item.UnlockLock(0.05f, false);
+                                }
+                                else
+                                {
+                                    // ERROR
+                                    errorManager.ThrowWarning(Types.ErrorType.Code, GetType().ToString(), "Failed to retrieve item.");
+                                    return default;
+                                }
+                            }
+                            else
+                            {
+                                // ERROR
+                                errorManager.ThrowWarning(Types.ErrorType.Code, GetType().ToString(), "Failed to retrieve item transform.");
+                                return default;
+                            }
+                        }
+                        else
+                        {
+                            // ERROR
+                            errorManager.ThrowWarning(Types.ErrorType.Code, GetType().ToString(), "Failed to retrieve tile transform.");
+                            return default;
+                        }
+                    }
+
+                    count++;
+                }
+            }
+
+            return pos;
+        }
+
         /////// BUBBLE ////////
 
         public void CheckForBubble(Item item)

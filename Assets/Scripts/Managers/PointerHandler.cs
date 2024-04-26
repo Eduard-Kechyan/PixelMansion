@@ -10,7 +10,6 @@ namespace Merge
     public class PointerHandler : MonoBehaviour
     {
         // Variables
-        public BoardInteractions boardInteractions;
         public BoardManager boardManager;
 
         private Scale fullScale = new(new Vector2(1f, 1f));
@@ -43,12 +42,15 @@ namespace Merge
         private bool animateGen = false;
         [HideInInspector]
         public Sprite genSprite;
+        [HideInInspector]
         public Sprite genItemSprite;
+        [HideInInspector]
         public ItemTypes.Group genItemGroup;
         private Action genCallback = null;
 
         // References
         private TaskMenu taskMenu;
+        private BoardInteractions boardInteractions;
         private Camera cam;
 
         // UI
@@ -58,9 +60,14 @@ namespace Merge
 
         void Start()
         {
-            // Cache 
+            // Cache
             taskMenu = GameRefs.Instance.taskMenu;
             cam = Camera.main;
+
+            if(boardManager!=null)
+            {
+                boardInteractions = boardManager.GetComponent<BoardInteractions>();
+            }
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
@@ -72,17 +79,6 @@ namespace Merge
                 pointerBackground = GameRefs.Instance.worldUIDoc.rootVisualElement.Q<VisualElement>("PointerBackground");
             }
         }
-
-        /* void Update()
-        {if (boardInteractions.interactionsEnabled && !boardInteractions.isDragging)
-            {
-                pointer.style.visibility = Visibility.Visible;
-            }
-            else
-            {
-                pointer.style.visibility = Visibility.Hidden;
-            }
-        }*/
 
         //// Press ////
         public void HandlePress(Vector2 position, Types.Button button, Action callback)
@@ -300,7 +296,9 @@ namespace Merge
             pointer.style.opacity = 1;
             pointer.style.display = DisplayStyle.Flex;
 
-            SetGenPos();
+            Vector2 itemPos = boardManager.UnlockAndGetItemPos(genSprite.name);
+
+            SetGenPos(itemPos, true);
 
             if (pointerBackground != null)
             {
@@ -313,9 +311,18 @@ namespace Merge
             pressCoroutine = StartCoroutine(AnimateGen());
         }
 
-        public void SetGenPos()
+        public void SetGenPos(Vector2 newPos = default, bool useNewPos = false)
         {
-            Vector2 tilePos = boardManager.GetTileItemPosBySpriteName(genSprite.name);
+            Vector2 tilePos;
+
+            if (useNewPos)
+            {
+                tilePos = newPos;
+            }
+            else
+            {
+                tilePos = boardManager.GetTileItemPosBySpriteName(genSprite.name);
+            }
 
             Vector2 tileUiPos = RuntimePanelUtils.CameraTransformWorldToPanel(
               root.panel,
@@ -364,13 +371,13 @@ namespace Merge
         //// Other ////
         void StopAllAnimations()
         {
-            pointerHidden = false;
-
             pointer.RemoveFromClassList("pointer_tap");
             pointer.RemoveFromClassList("pointer_pos_transition");
             pointer.style.scale = new StyleScale(fullScale);
             pointer.style.opacity = 0;
             pointer.style.display = DisplayStyle.None;
+
+            pointerHidden = false;
 
             if (pressing)
             {
@@ -445,6 +452,8 @@ namespace Merge
         public void HidePointer()
         {
             StopAllAnimations();
+
+            pointerHidden = true;
         }
 
         Vector2 GetUIPos(Vector2 position)

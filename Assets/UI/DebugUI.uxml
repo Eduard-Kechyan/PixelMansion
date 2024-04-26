@@ -7,9 +7,11 @@
         <ui:VisualElement name="Container" class="container">
             <ui:VisualElement name="Content" class="content">
                 <ui:ScrollView vertical-scroller-visibility="Hidden" horizontal-scroller-visibility="Hidden" class="debug_menu_scroller">
-                    <ui:VisualElement name="LoadingContainer" class="debug_menu_container" style="display: none;">
+                    <ui:VisualElement name="SceneContainer" class="debug_menu_container">
                         <ui:Label tabindex="-1" text="Loading Scene" display-tooltip-when-elided="true" name="ContainerLabel" class="debug_menu_container_label" />
-                        <ui:Button text="Skip Loading" display-tooltip-when-elided="true" name="SkipButton" class="button_active debug_menu_button debug_menu_button_red" />
+                        <ui:Button text="Skip Loading Scene" display-tooltip-when-elided="true" name="SkipSceneButton" class="button_active debug_menu_button debug_menu_button_red" />
+                        <ui:Button text="World Scene" display-tooltip-when-elided="true" name="WorldSceneButton" class="button_active debug_menu_button debug_menu_button_red" />
+                        <ui:Button text="Merge Scene" display-tooltip-when-elided="true" name="MergeSceneButton" class="button_active debug_menu_button debug_menu_button_red" />
                     </ui:VisualElement>
                     <ui:VisualElement name="OtherContainer" class="debug_menu_container" style="justify-content: center; flex-direction: row; flex-wrap: wrap; bottom: -4px;">
                         <ui:Label tabindex="-1" text="Other" display-tooltip-when-elided="true" name="ContainerLabel" class="debug_menu_container_label" />

@@ -1,0 +1,43 @@
+.count_label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 10px;
+    height: 6px;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    font-size: 4px;
+    color: rgb(255, 0, 0);
+    -unity-text-align: middle-left;
+    -unity-font-style: bold;
+    -unity-font-definition: url("project://database/Assets/Fonts/Files/RobotoMono.ttf?fileID=12800000&guid=7144b63d91be9e740aa1f0e7ba467a67&type=3#RobotoMono");
+}
+
+.index_label {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    width: 10px;
+    height: 6px;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    font-size: 4px;
+    color: rgb(51, 51, 51);
+    -unity-text-align: middle-right;
+    -unity-font-style: bold;
+    -unity-font-definition: url("project://database/Assets/Fonts/Files/RobotoMono.ttf?fileID=12800000&guid=7144b63d91be9e740aa1f0e7ba467a67&type=3#RobotoMono");
+    -unity-text-outline-color: rgb(0, 0, 0);
+    text-shadow: 0 0 2px rgb(255, 255, 255);
+}

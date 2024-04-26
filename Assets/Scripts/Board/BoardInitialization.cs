@@ -22,6 +22,10 @@ namespace Merge
         private float boardHalfHeight;
 
         [HideInInspector]
+        public int itemsTotal;
+        [HideInInspector]
+        public int itemsInitialized;
+        [HideInInspector]
         public bool set;
         private bool readyToInitialize;
 
@@ -150,10 +154,10 @@ namespace Merge
 
         void CreateBoard()
         {
-            // Loop the items to the board
-
             int count = 0;
+            bool initial = false;
 
+            // Loop the items to the board
             for (int x = 0; x < GameData.WIDTH; x++)
             {
                 for (int y = 0; y < GameData.HEIGHT; y++)
@@ -184,11 +188,14 @@ namespace Merge
                     if (gameData.boardData[x, y].id == "")
                     {
                         gameData.boardData[x, y].id = Guid.NewGuid().ToString();
+
+                        initial = true;
                     }
 
                     if (tileItem != null && tileItem.sprite != null)
                     {
                         Item newItem = itemHandler.CreateItem(newTile, tileSize, tileItem);
+
                         if (newItem)
                         {
                             dataManager.UnlockItem(
@@ -200,6 +207,13 @@ namespace Merge
                                 newItem.chestGroup
                             );
                         }
+
+                        newItem.OnInitialized += () =>
+                        {
+                            itemsInitialized++;
+                        };
+
+                        itemsTotal++;
                     }
 
                     // Increase count for the next loop
@@ -207,7 +221,20 @@ namespace Merge
                 }
             }
 
-            dataManager.SaveBoard(false, false);
+            if (initial)
+            {
+                dataManager.SaveBoard(false, false);
+            }
+
+            StartCoroutine(WaitForItemsToInitialize());
+        }
+
+        IEnumerator WaitForItemsToInitialize()
+        {
+            while (itemsTotal != itemsInitialized)
+            {
+                yield return null;
+            }
 
             boardManager.boardSet = true;
 
@@ -215,17 +242,17 @@ namespace Merge
             {
                 StartCoroutine(CheckIfThereIsATaskToComplete());
             }
+        }
 
-            // Check if there is a tasks to complete
-            IEnumerator CheckIfThereIsATaskToComplete()
+        // Check if there is a tasks to complete
+        IEnumerator CheckIfThereIsATaskToComplete()
+        {
+            while (!taskManager.isLoaded)
             {
-                while (!taskManager.isLoaded)
-                {
-                    yield return null;
-                }
-
-                taskManager.CheckIfThereIsATaskToComplete(null, true);
+                yield return null;
             }
+
+            taskManager.CheckIfThereIsATaskToComplete(null, true);
         }
     }
 }

@@ -448,7 +448,7 @@ PrefabInstance:
     - target: {fileID: -7698504415603008170, guid: af9e0bfb46c520a4fac5c30843ed2d4e, type: 3}
       propertyPath: initialItems
       value: 
-      objectReference: {fileID: 11400000, guid: d7d45b4685016ba419bd296eeac036a1, type: 2}
+      objectReference: {fileID: 11400000, guid: 4e4dfc5175592b245906d52a6ec1dcd6, type: 2}
     - target: {fileID: 961345630706959843, guid: af9e0bfb46c520a4fac5c30843ed2d4e, type: 3}
       propertyPath: m_RootOrder
       value: 14
@@ -878,12 +878,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2129448916}
     - target: {fileID: 6008772859430314081, guid: 1bd750316f540934998c943551a39ba8, type: 3}
+      propertyPath: boardManager
+      value: 
+      objectReference: {fileID: 639326507}
+    - target: {fileID: 6008772859430314081, guid: 1bd750316f540934998c943551a39ba8, type: 3}
       propertyPath: skipTutorial
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6008772859430314081, guid: 1bd750316f540934998c943551a39ba8, type: 3}
       propertyPath: startFromStep
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6008772859430314081, guid: 1bd750316f540934998c943551a39ba8, type: 3}
       propertyPath: progressManager
@@ -1946,6 +1950,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 554370427392037314, guid: e1c8ec3ef43242d44bb7abb8be31fbcb, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 4208465795605924439, guid: e1c8ec3ef43242d44bb7abb8be31fbcb, type: 3}
       propertyPath: m_RootOrder
       value: 1

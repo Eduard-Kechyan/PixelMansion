@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using GoogleMobileAds.Api;
+using UnityEngine.SceneManagement;
 
 namespace Merge
 {
@@ -36,8 +37,10 @@ namespace Merge
         private Button logsShakingButton;
         private Button unlockPreMansionButton;
 
-        private VisualElement loadingContainer;
-        private Button skipButton;
+        private VisualElement sceneContainer;
+        private Button skipSceneButton;
+        private Button worldSceneButton;
+        private Button mergeSceneButton;
 
         // Instance
         public static DebugManager Instance;
@@ -68,6 +71,11 @@ namespace Merge
             logsShakingButton = otherContainer.Q<Button>("LogsShakingButton");
             unlockPreMansionButton = otherContainer.Q<Button>("UnlockPreMansionButton");
 
+            sceneContainer = debugMenu.Q<VisualElement>("SceneContainer");
+            skipSceneButton = sceneContainer.Q<Button>("SkipSceneButton");
+            worldSceneButton = sceneContainer.Q<Button>("WorldSceneButton");
+            mergeSceneButton = sceneContainer.Q<Button>("MergeSceneButton");
+
             // Button taps
             menuBackground.AddManipulator(new Clickable(evt =>
             {
@@ -87,6 +95,22 @@ namespace Merge
             logsShakingButton.clicked += () => ToggleLogsShaking();
             unlockPreMansionButton.clicked += () => RemovePreMansion();
 
+            skipSceneButton.clicked += () =>
+            {
+                loadingManager.LoadNextScene();
+                CloseMenu();
+            };
+            worldSceneButton.clicked += () =>
+            {
+                SceneManager.LoadScene((int)Types.Scene.World);
+                CloseMenu();
+            };
+            mergeSceneButton.clicked += () =>
+            {
+                SceneManager.LoadScene((int)Types.Scene.Merge);
+                CloseMenu();
+            };
+
             // Init
             Init();
         }
@@ -103,23 +127,24 @@ namespace Merge
             // Log shaking
             CheckLogsShaking();
 
-            // Loading scene
-            if (loadingManager != null)
+            // Handle scenes
+            switch (Glob.ParseEnum<Types.Scene>(SceneManager.GetActiveScene().name))
             {
-                // UI
-                loadingContainer = debugMenu.Q<VisualElement>("LoadingContainer");
-
-                skipButton = loadingContainer.Q<Button>("SkipButton");
-
-                // Button taps
-                skipButton.clicked += () =>
-                {
-                    loadingManager.LoadNextScene();
-                    CloseMenu();
-                };
-
-                // Init
-                loadingContainer.style.display = DisplayStyle.Flex;
+                case Types.Scene.Loading:
+                    skipSceneButton.style.display = DisplayStyle.Flex; //
+                    worldSceneButton.style.display = DisplayStyle.None;
+                    mergeSceneButton.style.display = DisplayStyle.None;
+                    break;
+                case Types.Scene.World:
+                    skipSceneButton.style.display = DisplayStyle.None;
+                    worldSceneButton.style.display = DisplayStyle.None;
+                    mergeSceneButton.style.display = DisplayStyle.Flex;//
+                    break;
+                case Types.Scene.Merge:
+                    skipSceneButton.style.display = DisplayStyle.None;
+                    worldSceneButton.style.display = DisplayStyle.Flex;//
+                    mergeSceneButton.style.display = DisplayStyle.None;
+                    break;
             }
         }
 

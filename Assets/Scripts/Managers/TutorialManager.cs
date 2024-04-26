@@ -17,6 +17,7 @@ namespace Merge
         public TutorialData tutorialData;
         public ProgressManager progressManager;
         public ConvoUIHandler convoUIHandler;
+        public BoardManager boardManager;
         public SceneLoader sceneLoader;
         public ShineSprites[] shineSprites;
 
@@ -146,7 +147,7 @@ namespace Merge
 
                 progressManager.SetInitialData(0, false);
 
-                HandleStep();
+                StartCoroutine(WaitForDataOrBoard());
             }
         }
 
@@ -182,9 +183,19 @@ namespace Merge
 
             progressManager.SetInitialData(0, false);
 
-            HandleStep();
+            StartCoroutine(WaitForDataOrBoard());
         }
 #endif
+
+        IEnumerator WaitForDataOrBoard()
+        {
+            while (!dataManager.loaded || (boardManager != null && !boardManager.boardSet))
+            {
+                yield return null;
+            }
+
+            HandleStep();
+        }
 
         public void CheckConvoBackground(bool alt = false)
         {
@@ -396,6 +407,7 @@ namespace Merge
                 if (step.taskButton == Types.Button.Play)
                 {
                     worldUI.ShowButton(Types.Button.Play);
+                    worldUI.HideButton(Types.Button.Task, true);
 
                     Glob.SetTimeout(() =>
                     {
@@ -411,8 +423,8 @@ namespace Merge
 
                 if (step.taskButton == Types.Button.Task)
                 {
-                    worldUI.ShowButton(Types.Button.Task);
                     worldUI.HideButton(Types.Button.Play, true);
+                    worldUI.ShowButton(Types.Button.Task);
 
                     Glob.SetTimeout(() =>
                     {
@@ -427,8 +439,8 @@ namespace Merge
             {
                 if (step.taskButton == Types.Button.Task)
                 {
-                    mergeUI.ShowButton(Types.Button.Task);
                     mergeUI.HideButton(Types.Button.Home, true);
+                    mergeUI.ShowButton(Types.Button.Task);
 
                     pointerHandler.HandlePress(uiButtons.mergeTaskButtonPos, Types.Button.Task, () =>
                     {
@@ -439,6 +451,7 @@ namespace Merge
                 if (step.taskButton == Types.Button.Home)
                 {
                     mergeUI.ShowButton(Types.Button.Home);
+                    mergeUI.HideButton(Types.Button.Task, true);
 
                     pointerHandler.HandlePress(uiButtons.mergeHomeButtonPos, Types.Button.Home, () =>
                     {

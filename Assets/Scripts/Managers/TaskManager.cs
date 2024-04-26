@@ -56,13 +56,13 @@ namespace Merge
         void OnEnable()
         {
             // Subscribe to events
-            DataManager.BoardSaveEventAction += CheckBoardAndInventoryForTasks;
+            DataManager.OnBoardSave += CheckBoardAndInventoryForTasks;
         }
 
         void OnDestroy()
         {
             // Unsubscribe from events
-            DataManager.BoardSaveEventAction -= CheckBoardAndInventoryForTasks;
+            DataManager.OnBoardSave -= CheckBoardAndInventoryForTasks;
         }
 
         //// Tasks ////

@@ -24,9 +24,9 @@ namespace Merge
         public WorldDataManager worldDataManager;
 
         public delegate void BoardSaveEvent();
-        public static event BoardSaveEvent BoardSaveEventAction;
+        public static event BoardSaveEvent OnBoardSave;
         public delegate void BoardSaveUndoEvent(bool unselect);
-        public static event BoardSaveUndoEvent BoardSaveUndoEventAction;
+        public static event BoardSaveUndoEvent OnBoardSaveUndo;
 
         // Whether data has been fully loaded
         public bool loaded;
@@ -427,14 +427,14 @@ namespace Merge
 
             cloudSave.SaveDataAsync("boardData", newBoardData);
 
-            if (fireEvent && BoardSaveEventAction != null)
+            if (fireEvent)
             {
-                BoardSaveEventAction();
+                OnBoardSave?.Invoke();
             }
 
-            if (fireEventForUndo && BoardSaveUndoEventAction != null)
+            if (fireEventForUndo)
             {
-                BoardSaveUndoEventAction(true);
+                OnBoardSaveUndo?.Invoke(true);
             }
         }
 

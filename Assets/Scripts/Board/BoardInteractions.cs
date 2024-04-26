@@ -88,13 +88,13 @@ namespace Merge
         void OnEnable()
         {
             // Subscribe to events
-            DataManager.BoardSaveUndoEventAction += CancelUndo;
+            DataManager.OnBoardSaveUndo += CancelUndo;
         }
 
         void OnDestroy()
         {
             // Unsubscribe from events
-            DataManager.BoardSaveUndoEventAction -= CancelUndo;
+            DataManager.OnBoardSaveUndo -= CancelUndo;
         }
 
         void Update()
@@ -474,6 +474,8 @@ namespace Merge
 
             // Select item
             selectionManager.Select(Types.SelectType.Both);
+
+            pointerHandler.ShowPointer();
         }
 
         void Merge(Item otherItem)

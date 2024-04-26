@@ -115,6 +115,7 @@ namespace Merge
             bool cloudDataHandled = false;
             bool cloudDeletionFailed = false;
             bool networkAvailable = true;
+            bool resettingInsideEditor = false;
 
             // Reset Cloud Save data
             if (cloudSave == null)
@@ -122,6 +123,8 @@ namespace Merge
                 if (Application.isEditor)
                 {
                     Debug.LogWarning("Game needs to be in play mode to be able to delete the cloud data!");
+
+                    resettingInsideEditor = true;
                 }
 
                 cloudDataHandled = true;
@@ -197,6 +200,11 @@ namespace Merge
                 if (Directory.Exists(folderPath))
                 {
                     Directory.Delete(folderPath, true);
+                }
+
+                if (!resettingInsideEditor)
+                {
+                    Debug.Log("Resetting game data!");
                 }
 
                 if (quit)
