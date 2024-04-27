@@ -1,18 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Merge
 {
-    public class SelectionManager : MonoBehaviour
+    public class BoardSelection : MonoBehaviour
     {
         // Variables
         public float selectSpeed = 1.8f;
 
         // References
         private BoardInteractions interactions;
-        private DoubleTapManager doubleTapManager;
+        private BoardDoubleTap boardDoubleTap;
         private MergeUI mergeUI;
         private InfoBox infoBox;
 
@@ -20,7 +19,7 @@ namespace Merge
         {
             // Cache
             interactions = GetComponent<BoardInteractions>();
-            doubleTapManager = GetComponent<DoubleTapManager>();
+            boardDoubleTap = GetComponent<BoardDoubleTap>();
             mergeUI = GameRefs.Instance.mergeUI;
             infoBox = mergeUI.GetComponent<InfoBox>();
         }
@@ -47,7 +46,7 @@ namespace Merge
                     // See if the same exact item was double tapped
                     if (interactions.currentItem != null && interactions.currentItem.isSelected && interactions.currentItem.id == item.id)
                     {
-                        doubleTapManager.CheckForDoubleTaps();
+                        boardDoubleTap.CheckForDoubleTaps();
                     }
 
                     //item.gameObject.layer == LayerMask.NameToLayer("Item")

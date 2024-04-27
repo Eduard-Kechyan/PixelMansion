@@ -9,7 +9,6 @@ namespace Merge
     public class BoardInitialization : MonoBehaviour
     {
         // Variables
-        public TaskManager taskManager;
         public GameObject tilePrefab;
         public float tileWidth = 24f;
         public float tileSize;
@@ -28,10 +27,12 @@ namespace Merge
         [HideInInspector]
         public bool set;
         private bool readyToInitialize;
+        private List<Item> items = new();
 
         // References
         private BoardManager boardManager;
         private DataManager dataManager;
+        public TaskManager taskManager;
         private GameData gameData;
         private ItemHandler itemHandler;
         private MergeUI mergeUI;
@@ -46,6 +47,7 @@ namespace Merge
             // Cache
             boardManager = GetComponent<BoardManager>();
             dataManager = DataManager.Instance;
+            taskManager = GameRefs.Instance.taskManager;
             gameData = GameData.Instance;
             itemHandler = dataManager.GetComponent<ItemHandler>();
             mergeUI = GameRefs.Instance.mergeUI;
@@ -208,10 +210,9 @@ namespace Merge
                             );
                         }
 
-                        newItem.OnInitialized += () =>
-                        {
-                            itemsInitialized++;
-                        };
+                        newItem.OnInitialized += IncreaseInitializedItemCount;
+
+                        items.Add(newItem);
 
                         itemsTotal++;
                     }
@@ -229,6 +230,11 @@ namespace Merge
             StartCoroutine(WaitForItemsToInitialize());
         }
 
+        void IncreaseInitializedItemCount()
+        {
+            itemsInitialized++;
+        }
+
         IEnumerator WaitForItemsToInitialize()
         {
             while (itemsTotal != itemsInitialized)
@@ -242,6 +248,15 @@ namespace Merge
             {
                 StartCoroutine(CheckIfThereIsATaskToComplete());
             }
+
+            // Unsubscribe from events and clear references
+            for (int i = 0; i < items.Count; i++)
+            {
+                items[i].OnInitialized -= IncreaseInitializedItemCount;
+            }
+
+            items.Clear();
+            items = null;
         }
 
         // Check if there is a tasks to complete

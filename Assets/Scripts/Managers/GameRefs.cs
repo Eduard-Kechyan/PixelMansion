@@ -9,12 +9,43 @@ namespace Merge
     public class GameRefs : MonoBehaviour
     {
         // UI scripts
-        [Header("UI Scripts")]
-        public MergeUI mergeUI;
+        [Header("All Scenes")]
+        public ProgressManager progressManager;
+        public TaskManager taskManager;
+        public TutorialManager tutorialManager;
+        public PointerHandler pointerHandler;
+        public TimeManager timeManager;
+        public SceneLoader sceneLoader;
+        public FeedbackManager feedbackManager;
+
+        [Header("World Scene")]
         public WorldUI worldUI;
         public WorldGameUI worldGameUI;
+        public WorldDataManager worldDataManager;
+        public ConvoUIHandler convoUIHandler;
+        public NavMeshManager navMeshManager;
+
+        [Header("Merge Scene")]
+        public MergeUI mergeUI;
+        public BoardIndication boardIndication;
+        public BoardInitialization boardInitialization;
+        public BoardInteractions boardInteractions;
+        public BoardManager boardManager;
+        public BoardSelection boardSelection;
+        public InfoBox infoBox;
+        public ClockManager clockManager;
+
+        [Header("UI")]
         public MenuUI menuUI;
         public ValuesUI valuesUI;
+
+        [Header("Sprites")]
+        public SpriteArray[] crateBreakSprites;
+        public Sprite[] lockOpenSprites;
+        public Sprite[] bubblePopSprites;
+
+        [Header("Other")]
+        public float readySpeed = 1f;
 
         // UI documents
         [HideInInspector]
@@ -73,12 +104,6 @@ namespace Merge
         public ValuePop valuePop;
 
         // Other
-        [Header("Other")]
-        public float readySpeed = 1f;
-        public ClockManager clockManager;
-        public InfoBox infoBox;
-        public BoardManager boardManager;
-
         [HideInInspector]
         public bool initialized = false;
 
@@ -93,12 +118,6 @@ namespace Merge
         {
             public Sprite[] content;
         }
-
-        public SpriteArray[] crateBreakSprites;
-
-        public Sprite[] lockOpenSprites;
-
-        public Sprite[] bubblePopSprites;
 
         [HideInInspector]
         public bool ready;

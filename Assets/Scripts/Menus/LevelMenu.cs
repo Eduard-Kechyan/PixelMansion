@@ -12,7 +12,6 @@ namespace Merge
         // Variables
         public bool mergeScene = false;
         public float levelButtonOffset = 9f;
-        public WorldUI worldUI;
         public LevelData levelData;
         [ReadOnly]
         public bool isRewarding = false;
@@ -42,6 +41,7 @@ namespace Merge
         private InfoMenu infoMenu;
         private ValuePop valuePop;
         private ValuesUI valuesUI;
+        private WorldUI worldUI;
         private UIButtons uiButtons;
 
         // UI
@@ -77,6 +77,7 @@ namespace Merge
             infoMenu = menuUI.GetComponent<InfoMenu>();
             valuePop = GetComponent<ValuePop>();
             valuesUI = GameRefs.Instance.valuesUI;
+            worldUI = GameRefs.Instance.worldUI;
             uiButtons = gameData.GetComponent<UIButtons>();
 
             // UI

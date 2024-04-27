@@ -11,9 +11,6 @@ namespace Merge
     {
         // Variables
         public TransitionData transitionData;
-        public BoardManager boardManager;
-        public WorldDataManager worldDataManager;
-        public SceneLoader sceneLoader;
         public float duration = 0.5f;
         public Color[] backgroundColors = new Color[0];
         public Sprite[] iconSprites = new Sprite[0];
@@ -22,6 +19,9 @@ namespace Merge
 
         // References
         private DataManager dataManager;
+        private BoardManager boardManager;
+        private WorldDataManager worldDataManager;
+        private SceneLoader sceneLoader;
 
         // UI
         private VisualElement root;
@@ -31,6 +31,9 @@ namespace Merge
         {
             // Cache
             dataManager = DataManager.Instance;
+            boardManager = GameRefs.Instance.boardManager;
+            worldDataManager = GameRefs.Instance.worldDataManager;
+            sceneLoader = GameRefs.Instance.sceneLoader;
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;

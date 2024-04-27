@@ -6,14 +6,12 @@ namespace Merge
 {
     public class BonusManager : MonoBehaviour
     {
-        // Variables
-        public BoardManager boardManager;
-
         // References
         private MergeUI mergeUI;
         private PopupManager popupManager;
         private DataManager dataManager;
         private UIButtons uiButtons;
+        private BoardManager boardManager;
 
         // Instances
         private GameData gameData;
@@ -26,6 +24,7 @@ namespace Merge
             popupManager = PopupManager.Instance;
             dataManager = DataManager.Instance;
             uiButtons = GameData.Instance.GetComponent<UIButtons>();
+            boardManager = GameRefs.Instance.boardManager;
 
             // Cache instances
             gameData = GameData.Instance;

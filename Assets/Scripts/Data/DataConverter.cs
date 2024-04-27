@@ -7,7 +7,7 @@ namespace Merge
 {
     public class DataConverter : MonoBehaviour
     {
-        // Instances
+        // References
         private GameData gameData;
         private DataManager dataManager;
         private ItemHandler itemHandler;
@@ -15,7 +15,7 @@ namespace Merge
 
         void Start()
         {
-            // Cache instances
+            // Cache
             gameData = GameData.Instance;
             dataManager = DataManager.Instance;
             itemHandler = dataManager.GetComponent<ItemHandler>();

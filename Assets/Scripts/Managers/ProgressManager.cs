@@ -11,16 +11,16 @@ namespace Merge
         // Variables
         public TasksData tasksData;
         public ProgressData progressData;
-        public WorldDataManager worldDataManager;
-        public ConvoUIHandler convoUIHandler;
-        public BoardManager boardManager;
-        public TutorialManager tutorialManager;
-        public NavMeshManager navMeshManager;
 
         private bool initialSet = false;
         private bool settingInitial = false;
 
         // References
+        private WorldDataManager worldDataManager;
+        private ConvoUIHandler convoUIHandler;
+        private BoardManager boardManager;
+        private TutorialManager tutorialManager;
+        private NavMeshManager navMeshManager;
         private TaskManager taskManager;
         private GameData gameData;
         private WorldUI worldUI;
@@ -31,6 +31,11 @@ namespace Merge
         void Start()
         {
             // Cache
+            worldDataManager = GameRefs.Instance.worldDataManager;
+            convoUIHandler = GameRefs.Instance.convoUIHandler;
+            boardManager = GameRefs.Instance.boardManager;
+            tutorialManager = GameRefs.Instance.tutorialManager;
+            navMeshManager = GameRefs.Instance.navMeshManager;
             gameData = GameData.Instance;
             worldUI = GameRefs.Instance.worldUI;
             valuesUI = GameRefs.Instance.valuesUI;

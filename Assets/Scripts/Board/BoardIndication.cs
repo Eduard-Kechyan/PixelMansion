@@ -10,11 +10,10 @@ namespace Merge
         // Variables
         public float indicateDelay = 2f;
         public float indicateSpeed = 1f;
-        public PointerHandler pointerHandler;
         // public float getCloserSpeed = 3f;
 
-        Pair selectedPairs = null;
-        //List<Types.Board> lastSingleArray = new List<Types.Board>();
+        private Pair selectedPairs = null;
+        //private List<Types.Board> lastSingleArray = new List<Types.Board>();
 
         private bool checkingPossibleMerges = false;
         private bool indicatingPossibleMerges = false;
@@ -42,6 +41,7 @@ namespace Merge
         private BoardInitialization boardInitialization;
         private BoardManager boardManager;
         private BoardInteractions boardInteractions;
+        private PointerHandler pointerHandler;
         private GameData gameData;
         private DataManager dataManager;
 
@@ -51,6 +51,7 @@ namespace Merge
             boardInitialization = GetComponent<BoardInitialization>();
             boardManager = GetComponent<BoardManager>();
             boardInteractions = GetComponent<BoardInteractions>();
+            pointerHandler = GameRefs.Instance.pointerHandler;
             gameData = GameData.Instance;
             dataManager = DataManager.Instance;
         }

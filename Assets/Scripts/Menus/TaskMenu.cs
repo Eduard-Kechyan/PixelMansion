@@ -8,10 +8,7 @@ namespace Merge
 {
     public class TaskMenu : MonoBehaviour
     {
-        public SceneLoader sceneLoader;
-        public TaskManager taskManager;
-        public PointerHandler pointerHandler;
-
+        // Variables
         [HideInInspector]
         public bool loadingTaskMenuButton = true;
         [HideInInspector]
@@ -31,6 +28,9 @@ namespace Merge
         private GameData gameData;
         private ItemHandler itemHandler;
         private AddressableManager addressableManager;
+        private SceneLoader sceneLoader;
+        private TaskManager taskManager;
+        private PointerHandler pointerHandler;
 
         // UI
         private VisualElement root;
@@ -50,6 +50,9 @@ namespace Merge
             LOCALE = I18n.Instance;
             gameData = GameData.Instance;
             addressableManager = DataManager.Instance.GetComponent<AddressableManager>();
+            sceneLoader = GameRefs.Instance.sceneLoader;
+            taskManager = GameRefs.Instance.taskManager;
+            pointerHandler = GameRefs.Instance.pointerHandler;
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;

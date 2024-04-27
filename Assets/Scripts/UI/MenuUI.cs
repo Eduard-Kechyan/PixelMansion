@@ -9,7 +9,6 @@ namespace Merge
     public class MenuUI : MonoBehaviour
     {
         // Variables
-        public BoardInteractions boardInteractions;
         public float transitionDuration = 0.1f;
         public float menuDecreaseOffset = 0.8f;
         public bool menuOpen = false;
@@ -34,6 +33,7 @@ namespace Merge
 
         // References
         private ValuesUI valuesUI;
+        private BoardInteractions boardInteractions;
 
         // UI
         private VisualElement root;
@@ -51,6 +51,7 @@ namespace Merge
         {
             // Cache
             valuesUI = GameRefs.Instance.valuesUI;
+            boardInteractions = GameRefs.Instance.boardInteractions;
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;

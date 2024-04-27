@@ -9,7 +9,6 @@ namespace Merge
     public class ClockManager : MonoBehaviour
     {
         // Variables
-        public BoardManager boardManager;
         public GameObject clockPanel;
         public GameObject clockObject;
         public Vector2 offset = new(48f, -48f);
@@ -29,6 +28,7 @@ namespace Merge
         private GameData gameData;
         private DataManager dataManager;
         private Camera cam;
+        private BoardManager boardManager;
 
         void Start()
         {
@@ -36,6 +36,7 @@ namespace Merge
             gameData = GameData.Instance;
             dataManager = DataManager.Instance;
             cam = Camera.main;
+            boardManager = GameRefs.Instance.boardManager;
 
             StartCoroutine(WaitForGameData());
         }

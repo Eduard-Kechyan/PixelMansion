@@ -21,8 +21,6 @@ namespace Merge
         public Chests chests;
         public InitialItems initialItems;
 
-        public WorldDataManager worldDataManager;
-
         public delegate void BoardSaveEvent();
         public static event BoardSaveEvent OnBoardSave;
         public delegate void BoardSaveUndoEvent(bool unselect);
@@ -62,6 +60,7 @@ namespace Merge
         private Services services;
         private CloudSave cloudSave;
         private ErrorManager errorManager;
+        private WorldDataManager worldDataManager;
 
         // Instance
         public static DataManager Instance;
@@ -99,6 +98,7 @@ namespace Merge
             services = Services.Instance;
             cloudSave = services.GetComponent<CloudSave>();
             errorManager = ErrorManager.Instance;
+            worldDataManager = GameRefs.Instance.worldDataManager;
 
 #if UNITY_EDITOR
             isEditor = true;

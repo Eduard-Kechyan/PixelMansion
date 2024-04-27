@@ -9,8 +9,6 @@ namespace Merge
     public class ConvoUIHandler : MonoBehaviour
     {
         // Variables
-        public ProgressManager progressManager;
-        public TutorialManager tutorialManager;
         public ConvoData convoData;
         public Types.CharacterColor[] characterColors;
         [ReadOnly]
@@ -50,6 +48,8 @@ namespace Merge
         private I18n LOCALE;
         private CharMain charMain;
         private AddressableManager addressableManager;
+        private ProgressManager progressManager;
+        private TutorialManager tutorialManager;
 
         // UI
         private VisualElement root;
@@ -79,6 +79,8 @@ namespace Merge
             LOCALE = I18n.Instance;
             charMain = CharMain.Instance;
             addressableManager = DataManager.Instance.GetComponent<AddressableManager>();
+            progressManager = GameRefs.Instance.progressManager;
+            tutorialManager = GameRefs.Instance.tutorialManager;
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;

@@ -6,11 +6,7 @@ namespace Merge
 {
     public class CharMain : MonoBehaviour
     {
-        // Variable
-        public WorldDataManager worldDataManager;
-
         // References
-        private Selector selector;
         [HideInInspector]
         public CharSpeech charSpeech;
         [HideInInspector]
@@ -18,6 +14,8 @@ namespace Merge
         [HideInInspector]
         public CharOrderSetter charOrderSetter;
         private SpeechBubble speechBubble;
+        private WorldDataManager worldDataManager;
+        private Selector selector;
 
         // Instance
         public static CharMain Instance;
@@ -43,6 +41,7 @@ namespace Merge
         {
             // Cache
             speechBubble = GameRefs.Instance.worldGameUI.GetComponent<SpeechBubble>();
+            worldDataManager = GameRefs.Instance.worldDataManager;
             selector = worldDataManager.GetComponent<Selector>();
         }
 

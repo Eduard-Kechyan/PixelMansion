@@ -9,11 +9,13 @@ namespace Merge
     {
         // Variables
         public float doorOffset = 40;
-        public WorldDataManager worldDataManager;
         [HideInInspector]
         public DoorPH[] doors;
 
         private List<string> unlockedDoors = new();
+
+        // References
+        public WorldDataManager worldDataManager;
 
         // Instance
         public static DoorManager Instance;
@@ -25,6 +27,10 @@ namespace Merge
 
         void Start()
         {
+            // Cache
+            worldDataManager = GameRefs.Instance.worldDataManager;
+
+            // Init
             StartCoroutine(WaitForWorldData());
         }
 

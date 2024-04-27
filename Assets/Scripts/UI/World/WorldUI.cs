@@ -8,13 +8,6 @@ namespace Merge
     public class WorldUI : MonoBehaviour
     {
         // Variables
-        public SceneLoader sceneLoader;
-        public PointerHandler pointerHandler;
-
-#if DEVELOPMENT_BUILD || UNITY_EDITOR
-        public FeedbackManager feedbackManager;
-#endif
-
         public float extraTopPadding = 15;
         public float visibilityBottomOffset = 50f;
 
@@ -32,6 +25,12 @@ namespace Merge
         private UIButtons uiButtons;
         private SelectorUIHandler selectorUIHandler;
         private ErrorManager errorManager;
+        private SceneLoader sceneLoader;
+        private PointerHandler pointerHandler;
+
+#if DEVELOPMENT_BUILD || UNITY_EDITOR
+        private FeedbackManager feedbackManager;
+#endif
 
         // UI
         private VisualElement root;
@@ -59,6 +58,12 @@ namespace Merge
             uiButtons = GameData.Instance.GetComponent<UIButtons>();
             selectorUIHandler = GameRefs.Instance.worldGameUIDoc.GetComponent<SelectorUIHandler>();
             errorManager = ErrorManager.Instance;
+            sceneLoader = GameRefs.Instance.sceneLoader;
+            pointerHandler = GameRefs.Instance.pointerHandler;
+
+#if DEVELOPMENT_BUILD || UNITY_EDITOR
+            feedbackManager = GameRefs.Instance.feedbackManager;
+#endif
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;

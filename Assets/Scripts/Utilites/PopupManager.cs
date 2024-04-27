@@ -9,7 +9,6 @@ namespace Merge
     public class PopupManager : MonoBehaviour
     {
         // Variables
-        public SceneLoader sceneLoader;
         public Color textColor;
         public Color outlineColor;
         public Color shadowColor;
@@ -24,6 +23,7 @@ namespace Merge
         private SoundManager soundManager;
         private LocaleManager localeManager;
         private UIDocument popupUI;
+        private SceneLoader sceneLoader;
 
         // UI
         private VisualElement root;
@@ -42,6 +42,7 @@ namespace Merge
             soundManager = SoundManager.Instance;
             localeManager = Settings.Instance.GetComponent<LocaleManager>();
             popupUI = GetComponent<UIDocument>();
+            sceneLoader = GameRefs.Instance.sceneLoader;
 
             // UI
             root = popupUI.rootVisualElement;

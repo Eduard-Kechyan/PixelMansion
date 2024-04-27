@@ -718,7 +718,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72ac31ea7381d6143b92ef634ac1836d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boardManager: {fileID: 639326507}
   clockPanel: {fileID: 342696619}
   clockObject: {fileID: 5270843192992118451, guid: b08960cb79ccd3045b40911b25b78e69, type: 3}
   offset: {x: 48, y: -48}
@@ -766,11 +765,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4655c44ee47889444a90787bd9a64528, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mergeUI: {fileID: 3894635478175162773}
+  progressManager: {fileID: 1754641312}
+  taskManager: {fileID: 1754641311}
+  tutorialManager: {fileID: 1663649672}
+  pointerHandler: {fileID: 1663649671}
+  timeManager: {fileID: 783295151}
+  sceneLoader: {fileID: 2129448916}
+  feedbackManager: {fileID: 1900486871}
   worldUI: {fileID: 0}
   worldGameUI: {fileID: 0}
+  worldDataManager: {fileID: 0}
+  convoUIHandler: {fileID: 0}
+  navMeshManager: {fileID: 0}
+  mergeUI: {fileID: 3894635478175162773}
+  boardIndication: {fileID: 8488441445584660634}
+  boardInitialization: {fileID: 8488441445584660633}
+  boardInteractions: {fileID: 639326501}
+  boardManager: {fileID: 639326507}
+  boardSelection: {fileID: 639326506}
+  infoBox: {fileID: 6663394658226059765}
+  clockManager: {fileID: 1566288111}
   menuUI: {fileID: 2529494230138778357}
   valuesUI: {fileID: 7866921526989002608}
+  crateBreakSprites:
+  - content:
+    - {fileID: -2080925376, guid: 3a30e2d0c41d7d944998714f91450bd6, type: 3}
+    - {fileID: 582241861, guid: 3a30e2d0c41d7d944998714f91450bd6, type: 3}
+    - {fileID: -24004613, guid: 3a30e2d0c41d7d944998714f91450bd6, type: 3}
+    - {fileID: 25909703, guid: 3a30e2d0c41d7d944998714f91450bd6, type: 3}
+  - content:
+    - {fileID: 1862503040, guid: 3078797be50a44a4c81503a76b206c67, type: 3}
+    - {fileID: -245944086, guid: 3078797be50a44a4c81503a76b206c67, type: 3}
+    - {fileID: 1900683017, guid: 3078797be50a44a4c81503a76b206c67, type: 3}
+    - {fileID: 1066697082, guid: 3078797be50a44a4c81503a76b206c67, type: 3}
+  - content:
+    - {fileID: 436150994, guid: 4780be5b5da79ed44b59725a93db5c9b, type: 3}
+    - {fileID: 590581419, guid: 4780be5b5da79ed44b59725a93db5c9b, type: 3}
+    - {fileID: 1184151187, guid: 4780be5b5da79ed44b59725a93db5c9b, type: 3}
+    - {fileID: -1299078420, guid: 4780be5b5da79ed44b59725a93db5c9b, type: 3}
+  readySpeed: 1
+  lockOpenSprites:
+  - {fileID: -204737844, guid: a3863c2f2ff768542adf220576e55519, type: 3}
+  - {fileID: 452446565, guid: a3863c2f2ff768542adf220576e55519, type: 3}
+  - {fileID: 989579714, guid: a3863c2f2ff768542adf220576e55519, type: 3}
+  bubblePopSprites:
+  - {fileID: 435106307, guid: 2cc5fcac1541bbb4392c9e86b6059bbe, type: 3}
+  - {fileID: 1565363511, guid: 2cc5fcac1541bbb4392c9e86b6059bbe, type: 3}
+  - {fileID: 383109696, guid: 2cc5fcac1541bbb4392c9e86b6059bbe, type: 3}
   mergeUIDoc: {fileID: 0}
   worldUIDoc: {fileID: 0}
   worldGameUIDoc: {fileID: 0}
@@ -789,37 +830,9 @@ MonoBehaviour:
   shopMenu: {fileID: 0}
   taskMenu: {fileID: 0}
   valuePop: {fileID: 0}
-  readySpeed: 1
-  clockManager: {fileID: 1566288111}
-  infoBox: {fileID: 6663394658226059765}
-  boardManager: {fileID: 639326507}
   initialized: 0
   safeAreaHandler: {fileID: 0}
   noteDotHandler: {fileID: 0}
-  crateBreakSprites:
-  - content:
-    - {fileID: -2080925376, guid: 3a30e2d0c41d7d944998714f91450bd6, type: 3}
-    - {fileID: 582241861, guid: 3a30e2d0c41d7d944998714f91450bd6, type: 3}
-    - {fileID: -24004613, guid: 3a30e2d0c41d7d944998714f91450bd6, type: 3}
-    - {fileID: 25909703, guid: 3a30e2d0c41d7d944998714f91450bd6, type: 3}
-  - content:
-    - {fileID: 1862503040, guid: 3078797be50a44a4c81503a76b206c67, type: 3}
-    - {fileID: -245944086, guid: 3078797be50a44a4c81503a76b206c67, type: 3}
-    - {fileID: 1900683017, guid: 3078797be50a44a4c81503a76b206c67, type: 3}
-    - {fileID: 1066697082, guid: 3078797be50a44a4c81503a76b206c67, type: 3}
-  - content:
-    - {fileID: 436150994, guid: 4780be5b5da79ed44b59725a93db5c9b, type: 3}
-    - {fileID: 590581419, guid: 4780be5b5da79ed44b59725a93db5c9b, type: 3}
-    - {fileID: 1184151187, guid: 4780be5b5da79ed44b59725a93db5c9b, type: 3}
-    - {fileID: -1299078420, guid: 4780be5b5da79ed44b59725a93db5c9b, type: 3}
-  lockOpenSprites:
-  - {fileID: -204737844, guid: a3863c2f2ff768542adf220576e55519, type: 3}
-  - {fileID: 452446565, guid: a3863c2f2ff768542adf220576e55519, type: 3}
-  - {fileID: 989579714, guid: a3863c2f2ff768542adf220576e55519, type: 3}
-  bubblePopSprites:
-  - {fileID: 435106307, guid: 2cc5fcac1541bbb4392c9e86b6059bbe, type: 3}
-  - {fileID: 1565363511, guid: 2cc5fcac1541bbb4392c9e86b6059bbe, type: 3}
-  - {fileID: 383109696, guid: 2cc5fcac1541bbb4392c9e86b6059bbe, type: 3}
   ready: 0
 --- !u!1001 &1663649670
 PrefabInstance:
@@ -1848,8 +1861,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneLoader: {fileID: 2129448916}
-  pointerHandler: {fileID: 1663649671}
-  feedbackManager: {fileID: 1900486871}
   loaded: 0
   inventoryIndicatorSprites:
   - {fileID: -2105459946, guid: 4d91f211f5df6004391e14554e998da1, type: 3}
@@ -2022,10 +2033,6 @@ MonoBehaviour:
   goldValue: {fileID: 21300000, guid: 9927c70a39873234ead5f8d41fb591bf, type: 3}
   gemValue: {fileID: 21300000, guid: 324e7e0db7beb9248b629fa2da728b06, type: 3}
   avatarSprite: {fileID: 21300000, guid: 2ddee409164f0a14983daf1fef113f6b, type: 3}
-  boardInteractions: {fileID: 639326501}
-  selectionManager: {fileID: 639326506}
-  timeManager: {fileID: 783295151}
-  tutorialManager: {fileID: 1663649672}
   openAmount: 10
   unlockAmount: 5
   speedUpAmount: 5
@@ -3654,6 +3661,28 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb6bd1ade9d0e614da3b3eabc6c46c06, type: 3}
+--- !u!114 &8488441445584660633 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3470717317267958793, guid: fb6bd1ade9d0e614da3b3eabc6c46c06, type: 3}
+  m_PrefabInstance: {fileID: 8488441445584660632}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cae90e361364b694bb6d5aae463589ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8488441445584660634 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3064645934079383963, guid: fb6bd1ade9d0e614da3b3eabc6c46c06, type: 3}
+  m_PrefabInstance: {fileID: 8488441445584660632}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17a8aee079b12bc47b48d260a234f5a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8570955994690060040
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3751,7 +3780,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d89f99669cc4ab4f9bfd95485411a85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boardManager: {fileID: 639326507}
 --- !u!114 &8763348161959856569
 MonoBehaviour:
   m_ObjectHideFlags: 0

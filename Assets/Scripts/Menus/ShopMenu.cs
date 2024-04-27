@@ -12,9 +12,6 @@ namespace Merge
     {
         // Variables
         public bool mergeScene = false;
-        public MergeUI mergeUI;
-        public BoardManager boardManager;
-        public SceneLoader sceneLoader;
         public ShopData shopData;
         public Sprite smallGoldSprite;
         public Sprite smallGemSprite;
@@ -36,6 +33,9 @@ namespace Merge
         private PaymentsManager paymentsManager;
         private UIButtons uiButtons;
         private AddressableManager addressableManager;
+        private MergeUI mergeUI;
+        private BoardManager boardManager;
+        private SceneLoader sceneLoader;
 
         // UI
         private VisualElement root;
@@ -69,6 +69,9 @@ namespace Merge
             paymentsManager = services.GetComponent<PaymentsManager>();
             uiButtons = gameData.GetComponent<UIButtons>();
             addressableManager = DataManager.Instance.GetComponent<AddressableManager>();
+            mergeUI = GameRefs.Instance.mergeUI;
+            boardManager = GameRefs.Instance.boardManager;
+            sceneLoader = GameRefs.Instance.sceneLoader;
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;

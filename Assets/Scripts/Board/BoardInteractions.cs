@@ -19,9 +19,6 @@ namespace Merge
         public bool isDragging = false; // Are we currently dragging
         public bool isSelected = false; // Have we currently selected something
         public Item currentItem;
-        public ClockManager clockManager;
-        public TimeManager timeManager;
-        public PointerHandler pointerHandler;
 
         [HideInInspector]
         public GameObject tempTile;
@@ -30,7 +27,7 @@ namespace Merge
         [HideInInspector]
         public bool canUndo = false;
         private Item undoItem;
-        Types.Tile undoTileItem = new();
+        private Types.Tile undoTileItem = new();
         private GameObject undoTile;
         private Vector2 undoScale;
         private int sellUndoAmount = 0;
@@ -41,7 +38,7 @@ namespace Merge
         private Action callback;
 
         // References
-        private SelectionManager selectionManager;
+        private BoardSelection boardSelection;
         private BoardManager boardManager;
         private BoardInitialization boardInitialization;
         private BoardIndication boardIndication;
@@ -52,6 +49,9 @@ namespace Merge
         private ItemHandler itemHandler;
         private SoundManager soundManager;
         private I18n LOCALE;
+        private ClockManager clockManager;
+        private TimeManager timeManager;
+        private PointerHandler pointerHandler;
 
         // UI
         private VisualElement root;
@@ -66,7 +66,7 @@ namespace Merge
         {
             // Cache
             boardInitialization = GetComponent<BoardInitialization>();
-            selectionManager = GetComponent<SelectionManager>();
+            boardSelection = GetComponent<BoardSelection>();
             boardManager = GetComponent<BoardManager>();
             boardIndication = GetComponent<BoardIndication>();
             popupManager = PopupManager.Instance;
@@ -76,6 +76,9 @@ namespace Merge
             gameData = GameData.Instance;
             itemHandler = dataManager.GetComponent<ItemHandler>();
             LOCALE = I18n.Instance;
+            clockManager = GameRefs.Instance.clockManager;
+            timeManager = GameRefs.Instance.timeManager;
+            pointerHandler = GameRefs.Instance.pointerHandler;
 
             // Cache root and dragOverlay
             root = GameRefs.Instance.mergeUIDoc.rootVisualElement;
@@ -156,8 +159,8 @@ namespace Merge
                                 if (currentItem != null && currentItem.isSelected)
                                 {
                                     isSelected = false;
-                                    selectionManager.Unselect(Types.SelectType.Both);
-                                    selectionManager.Select(Types.SelectType.Only);
+                                    boardSelection.Unselect(Types.SelectType.Both);
+                                    boardSelection.Select(Types.SelectType.Only);
                                 }
 
                                 // Drag the item around
@@ -190,7 +193,7 @@ namespace Merge
                         else
                         {
                             // Select the item
-                            selectionManager.SelectItem(worldPos);
+                            boardSelection.SelectItem(worldPos);
                         }
                     }
                 }
@@ -238,14 +241,14 @@ namespace Merge
 
                     if (currentItem != null && currentItem.isSelected)
                     {
-                        selectionManager.Unselect(Types.SelectType.Both);
+                        boardSelection.Unselect(Types.SelectType.Both);
                     }
 
                     // Set current item
                     currentItem = item;
 
                     // Show selected item's info in the info box
-                    selectionManager.Select(Types.SelectType.Info);
+                    boardSelection.Select(Types.SelectType.Info);
 
                     // Start dragging the item
                     StartDragging();
@@ -473,7 +476,7 @@ namespace Merge
             boardManager.SwapBoardData(initialTile, tile);
 
             // Select item
-            selectionManager.Select(Types.SelectType.Both);
+            boardSelection.Select(Types.SelectType.Both);
 
             pointerHandler.ShowPointer();
         }
@@ -565,7 +568,7 @@ namespace Merge
         void MergeBackCallback()
         {
             // Select item
-            selectionManager.Select(Types.SelectType.Both, false);
+            boardSelection.Select(Types.SelectType.Both, false);
         }
 
         void Swap(Item otherItem)
@@ -594,7 +597,7 @@ namespace Merge
             boardManager.SwapBoardData(initialTile, otherTile);
 
             // Select item
-            selectionManager.Select(Types.SelectType.Both);
+            boardSelection.Select(Types.SelectType.Both);
 
             pointerHandler.ShowPointer();
         }
@@ -620,7 +623,7 @@ namespace Merge
         void MoveBackCallback()
         {
             // Select item
-            selectionManager.Select(Types.SelectType.Both);
+            boardSelection.Select(Types.SelectType.Both);
         }
 
         IEnumerator MoveBackOverlay(Item item)
@@ -827,7 +830,7 @@ namespace Merge
 
                     currentItem.transform.parent = null;
 
-                    selectionManager.Unselect(Types.SelectType.Info);
+                    boardSelection.Unselect(Types.SelectType.Info);
 
                     currentItem.ScaleToSize(Vector2.zero, scaleSpeed, true);
 
@@ -863,7 +866,7 @@ namespace Merge
                     order = undoTileItem.order,
                 };
 
-                selectionManager.SelectItemAfterUndo();
+                boardSelection.SelectItemAfterUndo();
 
                 if (sellUndoAmount > 0)
                 {
@@ -891,7 +894,7 @@ namespace Merge
 
                 if (unselect)
                 {
-                    selectionManager.UnselectUndo();
+                    boardSelection.UnselectUndo();
                 }
             }
         }

@@ -13,10 +13,6 @@ namespace Merge
     {
         // Variables
         public TasksData tasksData;
-        public WorldDataManager worldDataManager;
-        public BoardManager boardManager;
-        public ValuePop valuePop;
-        public TutorialManager tutorialManager;
 
         [HideInInspector]
         public bool isLoaded = false;
@@ -24,6 +20,9 @@ namespace Merge
         // References
         private GameData gameData;
         private DataManager dataManager;
+        private WorldDataManager worldDataManager;
+        private BoardManager boardManager;
+        private TutorialManager tutorialManager;
         private Selector selector;
         private ProgressManager progressManager;
         private RemoveFilth removeFilth;
@@ -31,18 +30,23 @@ namespace Merge
         private CameraPinch cameraPinch;
         private NoteDotHandler noteDotHandler;
         private UIButtons uiButtons;
+        private ValuePop valuePop;
 
         void Start()
         {
             // Cache
             gameData = GameData.Instance;
             dataManager = DataManager.Instance;
+            worldDataManager = GameRefs.Instance.worldDataManager;
+            boardManager = GameRefs.Instance.boardManager;
+            tutorialManager = GameRefs.Instance.tutorialManager;
             progressManager = GetComponent<ProgressManager>();
             removeFilth = GetComponent<RemoveFilth>();
             cameraMotion = Camera.main.GetComponent<CameraMotion>();
             cameraPinch = Camera.main.GetComponent<CameraPinch>();
             noteDotHandler = GameRefs.Instance.noteDotHandler;
             uiButtons = gameData.GetComponent<UIButtons>();
+            valuePop = GameRefs.Instance.valuePop;
 
             // The world data manager is only attached in the world scene
             if (worldDataManager != null)

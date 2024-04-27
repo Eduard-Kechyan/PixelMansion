@@ -10,7 +10,6 @@ namespace Merge
         // Variables
         public Sprite rootSprite;
         public Selector selector;
-        public TutorialManager tutorialManager;
 
         [Header("Pan")]
         public bool canPan = true;
@@ -71,6 +70,7 @@ namespace Merge
         private CharMove charMove;
         private WorldUI worldUI;
         private CameraMotion cameraMotion;
+        private TutorialManager tutorialManager;
 
         // UI
         private VisualElement root;
@@ -84,6 +84,7 @@ namespace Merge
             charMove = CharMain.Instance.charMove;
             worldUI = GameRefs.Instance.worldUI;
             cameraMotion = GetComponent<CameraMotion>();
+            tutorialManager = GameRefs.Instance.tutorialManager;
 
             // UI
             root = GameRefs.Instance.worldUIDoc.rootVisualElement;

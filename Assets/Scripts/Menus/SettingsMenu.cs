@@ -8,7 +8,6 @@ namespace Merge
     public class SettingsMenu : MonoBehaviour
     {
         // Variables
-        public FeedbackManager feedbackManager;
         public Color onColor;
         public Color offColor;
 
@@ -26,6 +25,7 @@ namespace Merge
         private AuthManager authManager;
         //  private Notifics notifics;
         private ResetHandler resetHandler;
+        private FeedbackManager feedbackManager;
 
         // UI
         private VisualElement root;
@@ -72,8 +72,9 @@ namespace Merge
             settings = Settings.Instance;
             services = Services.Instance;
             authManager = services.GetComponent<AuthManager>();
-            //  notifics = Services.Instance.GetComponent<Notifics>();
+            //notifics = Services.Instance.GetComponent<Notifics>();
             resetHandler = GetComponent<ResetHandler>();
+            feedbackManager = GameRefs.Instance.feedbackManager;
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;

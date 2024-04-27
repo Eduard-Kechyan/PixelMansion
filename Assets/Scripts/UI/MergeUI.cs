@@ -9,11 +9,6 @@ namespace Merge
     {
         // Variables
         public SceneLoader sceneLoader;
-        public PointerHandler pointerHandler;
-
-#if DEVELOPMENT_BUILD || UNITY_EDITOR
-        public FeedbackManager feedbackManager;
-#endif
 
         [HideInInspector]
         public bool loaded = false;
@@ -38,6 +33,11 @@ namespace Merge
         private SoundManager soundManager;
         private UIButtons uiButtons;
         private ErrorManager errorManager;
+        private PointerHandler pointerHandler;
+
+#if DEVELOPMENT_BUILD || UNITY_EDITOR
+        private FeedbackManager feedbackManager;
+#endif
 
         // UI
         private VisualElement root;
@@ -68,6 +68,11 @@ namespace Merge
             soundManager = SoundManager.Instance;
             uiButtons = gameData.GetComponent<UIButtons>();
             errorManager = ErrorManager.Instance;
+            pointerHandler = GameRefs.Instance.pointerHandler;
+
+#if DEVELOPMENT_BUILD || UNITY_EDITOR
+            feedbackManager = GameRefs.Instance.feedbackManager;
+#endif
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;

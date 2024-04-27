@@ -10,10 +10,8 @@ namespace Merge
     public class InventoryMenu : MonoBehaviour
     {
         // Variables
-        public BoardManager boardManager;
         public int newSlotPrice = 50;
         public float slotPriceMultiplier = 0.5f;
-        public TimeManager timeManager;
 
         // References
         private MenuUI menuUI;
@@ -22,11 +20,13 @@ namespace Merge
         private GameData gameData;
         private DataManager dataManager;
         private PopupManager popupManager;
-        private SelectionManager selectionManager;
+        private BoardSelection boardSelection;
         private ValuePop valuePop;
         private MergeUI mergeUI;
         private SoundManager soundManager;
         private UIButtons uiButtons;
+        private TimeManager timeManager;
+        private BoardManager boardManager;
 
         // Instances
         private I18n LOCALE;
@@ -51,15 +51,13 @@ namespace Merge
             gameData = GameData.Instance;
             dataManager = DataManager.Instance;
             popupManager = PopupManager.Instance;
-            valuePop = GameRefs.Instance.valuePop;
+            valuePop = GetComponent<ValuePop>();
             mergeUI = GameRefs.Instance.mergeUI;
             soundManager = SoundManager.Instance;
             uiButtons = gameData.GetComponent<UIButtons>();
-
-            if (boardManager != null)
-            {
-                selectionManager = boardManager.GetComponent<SelectionManager>();
-            }
+            timeManager = GameRefs.Instance.timeManager;
+            boardManager = GameRefs.Instance.boardManager;
+            boardSelection = GameRefs.Instance.boardSelection;
 
             // Cache instances
             LOCALE = I18n.Instance;
@@ -397,7 +395,7 @@ namespace Merge
 
                         dataManager.SaveBoard();
 
-                        selectionManager.Unselect(Types.SelectType.None);
+                        boardSelection.Unselect(Types.SelectType.None);
 
                         return true;
                     }

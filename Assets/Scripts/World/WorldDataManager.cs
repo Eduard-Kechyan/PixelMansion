@@ -11,7 +11,6 @@ namespace Merge
     {
         // Variables
         public Transform worldRoot;
-        public TaskManager taskManager;
         public int roomInHierarchyOffset = 2;
         public float bakeDelay = 0.5f;
 
@@ -31,6 +30,7 @@ namespace Merge
         private DataManager dataManager;
         private DataConverter dataConverter;
         private GameData gameData;
+        private TaskManager taskManager;
 
         void Start()
         {
@@ -39,6 +39,7 @@ namespace Merge
             dataManager = DataManager.Instance;
             dataConverter = dataManager.GetComponent<DataConverter>();
             gameData = GameData.Instance;
+            taskManager = GameRefs.Instance.taskManager;
 
             StartCoroutine(WaitForData());
         }

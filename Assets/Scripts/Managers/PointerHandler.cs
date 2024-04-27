@@ -10,8 +10,6 @@ namespace Merge
     public class PointerHandler : MonoBehaviour
     {
         // Variables
-        public BoardManager boardManager;
-
         private Scale fullScale = new(new Vector2(1f, 1f));
         private Scale tapScale = new(new Vector2(0.8f, 0.8f));
 
@@ -52,6 +50,7 @@ namespace Merge
         private TaskMenu taskMenu;
         private BoardInteractions boardInteractions;
         private Camera cam;
+        private BoardManager boardManager;
 
         // UI
         private VisualElement root;
@@ -63,11 +62,8 @@ namespace Merge
             // Cache
             taskMenu = GameRefs.Instance.taskMenu;
             cam = Camera.main;
-
-            if(boardManager!=null)
-            {
-                boardInteractions = boardManager.GetComponent<BoardInteractions>();
-            }
+            boardManager = GameRefs.Instance.boardManager;
+            boardInteractions = GameRefs.Instance.boardInteractions;
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;

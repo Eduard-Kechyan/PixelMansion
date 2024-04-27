@@ -14,7 +14,6 @@ namespace Merge
         public float altScaleSpeed = 8f;
         public int experienceThreshold = 4;
         public float crateSoundTimeout = 1f;
-        public TimeManager timeManager;
 
         [ReadOnly]
         public bool boardSet = false;
@@ -34,13 +33,14 @@ namespace Merge
         // References
         private BoardInitialization boardInitialization;
         private BoardInteractions interactions;
-        private SelectionManager selectionManager;
+        private BoardSelection boardSelection;
         private DataManager dataManager;
         private SoundManager soundManager;
         private GameData gameData;
         private ItemHandler itemHandler;
         private ValuePop valuePop;
         private ErrorManager errorManager;
+        private TimeManager timeManager;
 
         void Start()
         {
@@ -48,13 +48,14 @@ namespace Merge
             boardTiles = transform.GetChild(0).gameObject;
             boardInitialization = GetComponent<BoardInitialization>();
             interactions = GetComponent<BoardInteractions>();
-            selectionManager = GetComponent<SelectionManager>();
+            boardSelection = GetComponent<BoardSelection>();
             dataManager = DataManager.Instance;
             soundManager = SoundManager.Instance;
             gameData = GameData.Instance;
             itemHandler = dataManager.GetComponent<ItemHandler>();
             valuePop = GameRefs.Instance.valuePop;
             errorManager = ErrorManager.Instance;
+            timeManager = GameRefs.Instance.timeManager;
         }
 
         /////// GET BOARD DATA ////////
@@ -569,7 +570,7 @@ namespace Merge
 
                             Vector2 position = bubbleItem.transform.position;
 
-                            selectionManager.Unselect(Types.SelectType.None);
+                            boardSelection.Unselect(Types.SelectType.None);
 
                             Types.TileEmpty tileEmpty = new()
                             {

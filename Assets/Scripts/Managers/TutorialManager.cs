@@ -15,10 +15,6 @@ namespace Merge
         public bool startFromStep = false;
         public string stepToStartFrom = "";
         public TutorialData tutorialData;
-        public ProgressManager progressManager;
-        public ConvoUIHandler convoUIHandler;
-        public BoardManager boardManager;
-        public SceneLoader sceneLoader;
         public ShineSprites[] shineSprites;
 
         private string tutorialStep = "First";
@@ -48,6 +44,10 @@ namespace Merge
         private InfoBox infoBox;
         private CloudSave cloudSave;
         private AnalyticsManager analyticsManager;
+        public ProgressManager progressManager;
+        public ConvoUIHandler convoUIHandler;
+        public BoardManager boardManager;
+        public SceneLoader sceneLoader;
 
         // UI
         private VisualElement root;
@@ -105,8 +105,11 @@ namespace Merge
             pointerHandler = GetComponent<PointerHandler>();
             infoBox = GameRefs.Instance.infoBox;
             cloudSave = Services.Instance.GetComponent<CloudSave>();
-            //analyticsManager = Services.Instance.GetComponent<AnalyticsManager>();
             analyticsManager = AnalyticsManager.Instance;
+            progressManager = GameRefs.Instance.progressManager;
+            convoUIHandler = GameRefs.Instance.convoUIHandler;
+            boardManager = GameRefs.Instance.boardManager;
+            sceneLoader = GameRefs.Instance.sceneLoader;
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;

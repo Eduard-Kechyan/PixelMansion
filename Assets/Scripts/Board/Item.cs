@@ -288,7 +288,6 @@ namespace Merge
             switch (state)
             {
                 case Types.State.Default:
-                    Debug.Log(lockerChild);
                     lockerChild.SetActive(false);
                     crateChild.SetActive(false);
                     itemChild.SetActive(true); //

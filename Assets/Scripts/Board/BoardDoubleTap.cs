@@ -4,13 +4,11 @@ using UnityEngine;
 
 namespace Merge
 {
-    public class DoubleTapManager : MonoBehaviour
+    public class BoardDoubleTap : MonoBehaviour
     {
         // Variables
         public float moveSpeed = 14f;
         public float scaleSpeed = 8f;
-        public TimeManager timeManager;
-        public TutorialManager tutorialManager;
 
         [Tooltip("Will automatically adjust")]
         public AnimationCurve[] randomGoldCurves;
@@ -18,6 +16,8 @@ namespace Merge
 
         [Tooltip("Lower values, higher chance. Default is 8")]
         public int gemChance = 8;
+
+        private GameObject itemParent;
 
         // References
         private BoardInteractions interactions;
@@ -31,8 +31,8 @@ namespace Merge
         private ValuePop valuePop;
         private LevelMenu levelMenu;
         private PointerHandler pointerHandler;
-
-        private GameObject itemParent;
+        private TimeManager timeManager;
+        private TutorialManager tutorialManager;
 
         void Start()
         {
@@ -47,7 +47,9 @@ namespace Merge
             LOCALE = I18n.Instance;
             energyMenu = GameRefs.Instance.energyMenu;
             valuePop = GameRefs.Instance.valuePop;
-            pointerHandler = tutorialManager.GetComponent<PointerHandler>();
+            pointerHandler = GameRefs.Instance.pointerHandler;
+            timeManager = GameRefs.Instance.timeManager;
+            tutorialManager = GameRefs.Instance.tutorialManager;
         }
 
         public bool CheckForDoubleTaps()

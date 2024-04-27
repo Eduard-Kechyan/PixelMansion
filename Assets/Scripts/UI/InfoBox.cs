@@ -12,10 +12,6 @@ namespace Merge
         public Sprite goldValue;
         public Sprite gemValue;
         public Sprite avatarSprite;
-        public BoardInteractions boardInteractions;
-        public SelectionManager selectionManager;
-        public TimeManager timeManager;
-        public TutorialManager tutorialManager;
         public int openAmount = 10;
         public int unlockAmount = 5;
         public int speedUpAmount = 5;
@@ -56,6 +52,10 @@ namespace Merge
         private GameData gameData;
         private I18n LOCALE;
         private AdsManager adsManager;
+        private BoardInteractions boardInteractions;
+        private BoardSelection boardSelection;
+        private TimeManager timeManager;
+        private TutorialManager tutorialManager;
 
         // UI
         private VisualElement root;
@@ -87,6 +87,10 @@ namespace Merge
             gameData = GameData.Instance;
             LOCALE = I18n.Instance;
             adsManager = Services.Instance.GetComponent<AdsManager>();
+            boardInteractions = GameRefs.Instance.boardInteractions;
+            boardSelection = GameRefs.Instance.boardSelection;
+            timeManager = GameRefs.Instance.timeManager;
+            tutorialManager = GameRefs.Instance.tutorialManager;
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
@@ -447,7 +451,7 @@ namespace Merge
                         {
                             boardInteractions.OpenItem(item, openAmount, Types.State.Crate);
                             Select(item);
-                            selectionManager.Select(Types.SelectType.Both, false);
+                            boardSelection.Select(Types.SelectType.Both, false);
                         }
                         break;
                     case ActionType.Unlock:
@@ -459,13 +463,13 @@ namespace Merge
                         {
                             boardInteractions.OpenItem(item, unlockAmount, Types.State.Locker);
                             Select(item);
-                            selectionManager.Select(Types.SelectType.Both, false);
+                            boardSelection.Select(Types.SelectType.Both, false);
                         }
                         break;
                     case ActionType.UnlockChest:
                         boardInteractions.UnlockChest(item);
                         Select(item);
-                        selectionManager.Select(Types.SelectType.Both, false);
+                        boardSelection.Select(Types.SelectType.Both, false);
                         break;
                     case ActionType.Pop:
                         if (gameData.gems < popAmount)
@@ -476,7 +480,7 @@ namespace Merge
                         {
                             boardInteractions.OpenItem(item, unlockAmount, Types.State.Bubble);
                             Select(item);
-                            selectionManager.Select(Types.SelectType.Both, false);
+                            boardSelection.Select(Types.SelectType.Both, false);
                         }
                         break;
                     case ActionType.Sell:
@@ -487,7 +491,7 @@ namespace Merge
                             {
                                 boardInteractions.RemoveItem(item, sellAmount);
                                 Unselect(true);
-                                selectionManager.UnselectAlt();
+                                boardSelection.UnselectAlt();
                                 SetUndoButton(true);
                             });
                         }
@@ -495,14 +499,14 @@ namespace Merge
                         {
                             boardInteractions.RemoveItem(item, sellAmount);
                             Unselect(true);
-                            selectionManager.UnselectAlt();
+                            boardSelection.UnselectAlt();
                             SetUndoButton(true);
                         }
                         break;
                     case ActionType.Remove:
                         boardInteractions.RemoveItem(item);
                         Unselect(true);
-                        selectionManager.UnselectAlt();
+                        boardSelection.UnselectAlt();
                         SetUndoButton();
                         break;
                     case ActionType.Undo:
@@ -524,7 +528,7 @@ namespace Merge
                         {
                             boardInteractions.SpeedUpItem(item, speedUpAmount);
                             Select(item);
-                            selectionManager.Select(Types.SelectType.Both, false);
+                            boardSelection.Select(Types.SelectType.Both, false);
                             timeOn = false;
                         }
                         break;
@@ -533,7 +537,7 @@ namespace Merge
                         {
                             boardInteractions.OpenItem(item, unlockAmount, Types.State.Bubble);
                             Select(item);
-                            selectionManager.Select(Types.SelectType.Both, false);
+                            boardSelection.Select(Types.SelectType.Both, false);
                             timeOn = false;
                         });
                         break;
