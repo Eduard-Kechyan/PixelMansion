@@ -759,7 +759,7 @@ namespace Merge
             }
         }
 
-        void OpenLockCallback(Item item)
+        public void OpenLockCallback(Item item)
         {
             GameObject itemTile = item.transform.parent.gameObject;
 

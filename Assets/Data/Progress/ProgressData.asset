@@ -35,21 +35,15 @@ MonoBehaviour:
       nextIds:
       - Last
       requiredIds: []
-    - name: Task Last
+    - name: PreMansion Last
       id: Last
-      stepType: 0
+      stepType: 3
       nextIds:
       - LivingRoom
       requiredIds: []
   - name: LivingRoom
     id: LivingRoom
     steps:
-    - name: RoomUnlocking RoomUnlocking
-      id: RoomUnlocking
-      stepType: 2
-      nextIds:
-      - ChangeFloor
-      requiredIds: []
     - name: Task ChangeFloor
       id: ChangeFloor
       stepType: 0
@@ -68,21 +62,15 @@ MonoBehaviour:
       nextIds:
       - Last
       requiredIds: []
-    - name: Task Last
+    - name: Last Last
       id: Last
-      stepType: 0
+      stepType: 2
       nextIds:
       - KitchenRoom
       requiredIds: []
   - name: KitchenRoom
     id: KitchenRoom
     steps:
-    - name: RoomUnlocking RoomUnlocking
-      id: RoomUnlocking
-      stepType: 2
-      nextIds:
-      - ChangeFloor
-      requiredIds: []
     - name: Task ChangeFloor
       id: ChangeFloor
       stepType: 0

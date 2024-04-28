@@ -6,6 +6,8 @@ namespace Merge
 {
     public class DoorPH : MonoBehaviour
     {
+        // Note - This is a placeholder script
+
         [SortingLayer]
         public string roomSortingLayer;
 

@@ -19,6 +19,8 @@ namespace Merge
 
         private GameObject itemParent;
 
+        private bool generatingForTutorial = false;
+
         // References
         private BoardInteractions interactions;
         private BoardManager boardManager;
@@ -77,11 +79,13 @@ namespace Merge
         // Generator
         void DoubleTappedGenerator()
         {
-            if (interactions.currentItem.creates.Length > 0 && interactions.currentItem.level >= interactions.currentItem.generatesAtLevel && !interactions.currentItem.timerOn)
+            if (interactions.currentItem.creates.Length > 0 && interactions.currentItem.level >= interactions.currentItem.generatesAtLevel && !interactions.currentItem.timerOn && !generatingForTutorial)
             {
                 // Check if we have enough energy to generate an item
                 if (gameData.energy >= 1)
                 {
+                    generatingForTutorial = true;
+
                     GameObject tile = interactions.currentItem.transform.parent.gameObject;
 
                     Vector2Int tileLoc = boardManager.GetBoardLocation(0, tile);
@@ -95,7 +99,7 @@ namespace Merge
 
                         boardIndication.StopPossibleMergeCheck();
 
-                        if (tutorialManager != null)
+                        if (!PlayerPrefs.HasKey("tutorialFinished") && tutorialManager != null)
                         {
                             if (pointerHandler != null && pointerHandler.generating)
                             {
@@ -128,6 +132,8 @@ namespace Merge
 
         void SelectRandomGroupAndItem(Types.TileEmpty emptyTile, Vector2 initialPosition)
         {
+            bool found = false;
+
             Types.Creates[] creates = interactions.currentItem.creates;
 
             System.Random random = new();
@@ -199,16 +205,30 @@ namespace Merge
                         emptyTile,
                         initialPosition,
                         true,
-                        true
+                        true,
+                        null,
+                        (Vector2 pos) =>
+                        {
+                            generatingForTutorial = false;
+                        }
                     );
+
+                    found = true;
 
                     break;
                 }
+            }
+
+            if (!found)
+            {
+                generatingForTutorial = false;
             }
         }
 
         void HandleGenTutorial(Types.TileEmpty emptyTile, Vector2 initialPosition)
         {
+            bool found = false;
+
             for (int i = 0; i < gameData.itemsData.Length; i++)
             {
                 if (gameData.itemsData[i].group == pointerHandler.genItemGroup)
@@ -222,13 +242,18 @@ namespace Merge
                                 emptyTile,
                                 initialPosition,
                                 true,
-                                true,
+                                false,
                                 null,
                                 (Vector2 pos) =>
                                 {
-                                    pointerHandler.CheckGen();
+                                    pointerHandler.CheckGen(() =>
+                                    {
+                                        generatingForTutorial = false;
+                                    });
                                 }
                             );
+
+                            found = true;
 
                             break;
                         }
@@ -236,6 +261,11 @@ namespace Merge
 
                     break;
                 }
+            }
+
+            if (!found)
+            {
+                generatingForTutorial = false;
             }
         }
 

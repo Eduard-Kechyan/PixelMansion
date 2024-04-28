@@ -41,6 +41,7 @@ namespace Merge
         private ValuePop valuePop;
         private ErrorManager errorManager;
         private TimeManager timeManager;
+        private TutorialManager tutorialManager;
 
         void Start()
         {
@@ -56,6 +57,7 @@ namespace Merge
             valuePop = GameRefs.Instance.valuePop;
             errorManager = ErrorManager.Instance;
             timeManager = GameRefs.Instance.timeManager;
+            tutorialManager = GameRefs.Instance.tutorialManager;
         }
 
         /////// GET BOARD DATA ////////
@@ -446,6 +448,11 @@ namespace Merge
                                 if (itemTransform.TryGetComponent(out Item item))
                                 {
                                     item.UnlockLock(0.05f, false);
+
+                                    // Play unlocking audio
+                                    soundManager.PlaySound(Types.SoundType.UnlockLock);
+
+                                    interactions.OpenLockCallback(item);
                                 }
                                 else
                                 {
@@ -480,7 +487,7 @@ namespace Merge
 
         public void CheckForBubble(Item item)
         {
-            if (item.level >= minBubbleLevel && item.type == Types.Type.Item)
+            if (PlayerPrefs.HasKey("tutorialFinished") && item.level >= minBubbleLevel && item.type == Types.Type.Item)
             {
                 float a = 0;
                 float b = 0;

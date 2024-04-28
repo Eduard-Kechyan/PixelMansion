@@ -36,9 +36,9 @@ namespace Merge
         public Vector2 moveIntoViewOffset;
 
         [Header("Mansion Parts")]
-        public float firstScaleSpeed = 3.5f;
+        public float firstScaleSpeed = 5f;
         public float firstTargetScale = 1.2f;
-        public float secondScaleSpeed = 8f;
+        public float secondScaleSpeed = 9f;
         public float secondTargetScale = 0f;
 
         [Header("Clouds")]
@@ -132,6 +132,8 @@ namespace Merge
         // Remove the pre mansion
         public void Remove(Action callback = null)
         {
+            Glob.taskLoading = true;
+
             // Set mansion entrance stairs sorting layer
             stairsSpriteRenderer.sortingLayerName = stairsSortingLayer;
             stairsSpriteRenderer.sortingOrder = stairsSortingOrder;
@@ -153,6 +155,8 @@ namespace Merge
 
                         // Call the callback
                         callback?.Invoke();
+
+                        Glob.taskLoading = false;
 
                         // Destroy at the end
                         Destroy(gameObject);
@@ -270,7 +274,7 @@ namespace Merge
                 part.localScale = Vector3.MoveTowards(
                     part.localScale,
                     newSecondTargetScale,
-                    scaleToViewSpeed * Time.deltaTime
+                    secondScaleSpeed * Time.deltaTime
                 );
 
                 yield return null;

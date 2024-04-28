@@ -16,6 +16,8 @@ namespace Merge
 
         private float singlePixelWidth;
 
+        private bool buttonsHidden = false;
+
         // References
         private SafeAreaHandler safeAreaHandler;
         private SettingsMenu settingsMenu;
@@ -137,6 +139,18 @@ namespace Merge
             root.RegisterCallback<GeometryChangedEvent>(Init);
         }
 
+        void OnEnable()
+        {
+            // Subscribe to events
+            TaskManager.OnTaskHandling += ToggleButtons;
+        }
+
+        void OnDestroy()
+        {
+            // Unsubscribe from events
+            TaskManager.OnTaskHandling -= ToggleButtons;
+        }
+
         void Init(GeometryChangedEvent evt)
         {
             root.UnregisterCallback<GeometryChangedEvent>(Init);
@@ -194,6 +208,15 @@ namespace Merge
 
         public void ShowButtons()
         {
+            if (!buttonsHidden)
+            {
+                playButton.SetEnabled(true);
+                taskButton.SetEnabled(true);
+            }
+
+            settingsButton.SetEnabled(true);
+            shopButton.SetEnabled(true);
+
             playButton.style.display = DisplayStyle.Flex;
             settingsButton.style.display = DisplayStyle.Flex;
             shopButton.style.display = DisplayStyle.Flex;
@@ -233,23 +256,23 @@ namespace Merge
             switch (button)
             {
                 case Types.Button.Play:
-                    playButton.style.display = DisplayStyle.Flex;
                     playButton.SetEnabled(true);
+                    playButton.style.display = DisplayStyle.Flex;
                     PlayerPrefs.SetInt("worldPlayButtonShowing", 1);
                     break;
                 case Types.Button.Settings:
-                    settingsButton.style.display = DisplayStyle.Flex;
                     settingsButton.SetEnabled(true);
+                    settingsButton.style.display = DisplayStyle.Flex;
                     PlayerPrefs.SetInt("worldSettingsButtonShowing", 1);
                     break;
                 case Types.Button.Shop:
-                    shopButton.style.display = DisplayStyle.Flex;
                     shopButton.SetEnabled(true);
+                    shopButton.style.display = DisplayStyle.Flex;
                     PlayerPrefs.SetInt("worldShopButtonShowing", 1);
                     break;
                 case Types.Button.Task:
-                    taskButton.style.display = DisplayStyle.Flex;
                     taskButton.SetEnabled(true);
+                    taskButton.style.display = DisplayStyle.Flex;
                     PlayerPrefs.SetInt("worldTaskButtonShowing", 1);
                     break;
             }
@@ -306,6 +329,27 @@ namespace Merge
                 default:
                     errorManager.ThrowWarning(Types.ErrorType.Code, GetType().ToString(), "Types.Button " + button + " is not implemented!");
                     break;
+            }
+        }
+
+        public void ToggleButtons()
+        {
+            if (PlayerPrefs.HasKey("tutorialFinished"))
+            {
+                if (buttonsHidden)
+                {
+                    ShowButton(Types.Button.Play);
+                    ShowButton(Types.Button.Task);
+
+                    buttonsHidden = false;
+                }
+                else
+                {
+                    HideButton(Types.Button.Play, true);
+                    HideButton(Types.Button.Task, true);
+
+                    buttonsHidden = true;
+                }
             }
         }
 

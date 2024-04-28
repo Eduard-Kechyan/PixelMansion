@@ -89,3 +89,6 @@ TagManager:
   - name: NavMeshArea
     uniqueID: 3312263077
     locked: 0
+  - name: TempOverlay
+    uniqueID: 2621318201
+    locked: 0

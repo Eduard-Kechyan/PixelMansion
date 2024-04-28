@@ -431,7 +431,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tile: {fileID: 3144219979623524005, guid: 2ac088b13948a194babd4a9e969ce74c, type: 3}
   item: {fileID: 5764234588304267110, guid: 0e3162765ad06634a923dbe5f9ffda08, type: 3}
-  initialItems: {fileID: 11400000, guid: 4e4dfc5175592b245906d52a6ec1dcd6, type: 2}
+  initialItems: {fileID: 11400000, guid: fa99bfa1008dce34fba0add1cc2f1319, type: 2}
   tileWidth: 24
   bottomOffset: 80
   countLabelOffset: {x: -11, y: 3.36}

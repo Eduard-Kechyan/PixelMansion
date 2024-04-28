@@ -31,6 +31,7 @@ namespace Merge
         private SceneLoader sceneLoader;
         private TaskManager taskManager;
         private PointerHandler pointerHandler;
+        private TutorialManager tutorialManager;
 
         // UI
         private VisualElement root;
@@ -53,6 +54,7 @@ namespace Merge
             sceneLoader = GameRefs.Instance.sceneLoader;
             taskManager = GameRefs.Instance.taskManager;
             pointerHandler = GameRefs.Instance.pointerHandler;
+            tutorialManager = GameRefs.Instance.tutorialManager;
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
@@ -153,7 +155,7 @@ namespace Merge
                         }
 
                         // Set button
-                        if (taskId == "Last")
+                        if (gameData.tasksData[i].tasks[j].taskRefType == Types.TaskRefType.Last || gameData.tasksData[i].tasks[j].taskRefType == Types.TaskRefType.PreMansion)
                         {
                             newTask.Q<VisualElement>("TaskNeeds").style.display = DisplayStyle.None;
 
@@ -172,7 +174,15 @@ namespace Merge
                                 }
                             };
 
-                            playButton.text = LOCALE.Get("task_button_finish");
+                            if (gameData.tasksData[i].tasks[j].taskRefType == Types.TaskRefType.Last)
+                            {
+                                playButton.text = LOCALE.Get("task_button_finish");
+                            }
+                            else
+                            {
+
+                                playButton.text = LOCALE.Get("task_button_finish_alt");
+                            }
 
                             playButton.AddToClassList("task_button_last");
 
@@ -214,11 +224,10 @@ namespace Merge
                                     {
                                         pointerHandler.ButtonPress(Types.Button.TaskMenu, true, () =>
                                         {
-                                            PlayerPrefs.SetInt("waitForTaskChange", 1);
-
-                                            PlayerPrefs.Save();
-
-                                            sceneLoader.Load(Types.Scene.Merge);
+                                            tutorialManager.NextStep(false, () =>
+                                            {
+                                                sceneLoader.Load(Types.Scene.Merge);
+                                            });
                                         });
                                     }
                                     else
@@ -339,8 +348,6 @@ namespace Merge
             PlayerPrefs.DeleteKey("waitForTaskChange");
 
             PlayerPrefs.Save();
-
-            Debug.Log("A");
 
             pointerHandler.ButtonPressFinish();
         }

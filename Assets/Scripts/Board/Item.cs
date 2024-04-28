@@ -102,8 +102,9 @@ namespace Merge
             anim = GetComponent<Animation>();
 
             // Cache children
+            // TODO - Improve this child getting using placeholder (PH)
             selectionChild = transform.GetChild(0).gameObject; // Selection
-            crateChild = transform.GetChild(1).gameObject; // Crate (In SetCrateSprite() too)
+            crateChild = transform.GetChild(1).gameObject; // Crate (In SetCrateSprite() too
             lockerChild = transform.GetChild(2).gameObject; // Locker
             bubbleChild = transform.GetChild(3).gameObject; // Bubble
             readyChild = transform.GetChild(4).gameObject; // Ready

@@ -39,7 +39,7 @@ namespace Merge
             errorManager = ErrorManager.Instance;
             dataManager = DataManager.Instance;
 
-            if (!Debug.isDebugBuild)
+            if (!Debug.isDebugBuild || !services.servicesAvailable)
             {
                 logData = false;
 
@@ -164,13 +164,13 @@ namespace Merge
 
         public async void SaveDataAsync(Dictionary<string, object> newData, Action callback = null, Action failCallback = null)
         {
-            if (services == null)
-            {
-                services = Services.Instance;
-            }
-
             if (cloudSaveEnabled)
             {
+                if (services == null)
+                {
+                    services = Services.Instance;
+                }
+
                 if (services.cloudSaveAvailable)
                 {
                     try
@@ -247,85 +247,91 @@ namespace Merge
 
         public void SetUnsavedData(Dictionary<string, object> unsavedData)
         {
-            if (dataManager == null)
+            if (cloudSaveEnabled)
             {
-                dataManager = DataManager.Instance;
-            }
-
-            if (dataManager.loaded && (unsentData == null || unsentData.Count == 0))
-            {
-                unsentData = dataManager.LoadUnsentData();
-            }
-
-            foreach (var dataItem in unsavedData)
-            {
-                bool found = false;
-
-                // Update previous
-                foreach (var unsentDataItem in unsentData)
+                if (dataManager == null)
                 {
-                    if (unsentDataItem.Key == dataItem.Key)
-                    {
-                        found = true;
-
-                        unsentData[dataItem.Key] = dataItem.Value;
-
-                        break;
-                    }
+                    dataManager = DataManager.Instance;
                 }
 
-                // Create new 
-                if (!found)
+                if (dataManager.loaded && (unsentData == null || unsentData.Count == 0))
                 {
-                    unsentData.Add(dataItem.Key, dataItem.Value);
+                    unsentData = dataManager.LoadUnsentData();
                 }
-            }
 
-            PlayerPrefs.SetInt("hasUnsentData", 1);
-            PlayerPrefs.Save();
-
-            // Save to disk
-            dataManager.SaveUnsentData(unsentData);
-        }
-
-        void RemoveFromUnsavedData(Dictionary<string, object> savedData)
-        {
-            if (unsentData != null && unsentData.Count > 0)
-            {
-                List<string> foundKeys = new();
-
-                foreach (var dataItem in savedData)
+                foreach (var dataItem in unsavedData)
                 {
+                    bool found = false;
+
+                    // Update previous
                     foreach (var unsentDataItem in unsentData)
                     {
                         if (unsentDataItem.Key == dataItem.Key)
                         {
-                            foundKeys.Add(unsentDataItem.Key);
+                            found = true;
+
+                            unsentData[dataItem.Key] = dataItem.Value;
 
                             break;
                         }
                     }
+
+                    // Create new 
+                    if (!found)
+                    {
+                        unsentData.Add(dataItem.Key, dataItem.Value);
+                    }
                 }
 
-                for (int i = 0; i < foundKeys.Count; i++)
-                {
-                    unsentData.Remove(foundKeys[i]);
-                }
-
-                if (unsentData.Count == 0)
-                {
-                    PlayerPrefs.DeleteKey("hasUnsentData");
-                    PlayerPrefs.Save();
-                }
+                PlayerPrefs.SetInt("hasUnsentData", 1);
+                PlayerPrefs.Save();
 
                 // Save to disk
                 dataManager.SaveUnsentData(unsentData);
             }
         }
 
+        void RemoveFromUnsavedData(Dictionary<string, object> savedData)
+        {
+            if (cloudSaveEnabled)
+            {
+                if (unsentData != null && unsentData.Count > 0)
+                {
+                    List<string> foundKeys = new();
+
+                    foreach (var dataItem in savedData)
+                    {
+                        foreach (var unsentDataItem in unsentData)
+                        {
+                            if (unsentDataItem.Key == dataItem.Key)
+                            {
+                                foundKeys.Add(unsentDataItem.Key);
+
+                                break;
+                            }
+                        }
+                    }
+
+                    for (int i = 0; i < foundKeys.Count; i++)
+                    {
+                        unsentData.Remove(foundKeys[i]);
+                    }
+
+                    if (unsentData.Count == 0)
+                    {
+                        PlayerPrefs.DeleteKey("hasUnsentData");
+                        PlayerPrefs.Save();
+                    }
+
+                    // Save to disk
+                    dataManager.SaveUnsentData(unsentData);
+                }
+            }
+        }
+
         void CheckUnsavedData()
         {
-            if (PlayerPrefs.HasKey("hasUnsentData"))
+            if (PlayerPrefs.HasKey("hasUnsentData") && cloudSaveEnabled)
             {
                 bool isReady = false;
 

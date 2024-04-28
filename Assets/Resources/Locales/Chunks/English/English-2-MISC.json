@@ -13,8 +13,20 @@
     "notification_energy_title": "Energy full",
     "notification_energy_text": "Fantastic, you now have enough energy to play around!",
     "________ SOCIAL ________": "________________",
-    "social_Google":"Google",
+    "social_Google": "Google",
     "social_Apple": "Apple",
-    "social_Facebook":"Facebook",
-    "social_Instagram": "Instagram"
+    "social_Facebook": "Facebook",
+    "social_Instagram": "Instagram",
+    "________ TUTORIAL ________": "________________",
+    "tutorial_info_merge_MergeGloves1": "Let's Merge these Gloves to get a pair of them.",
+    "tutorial_info_merge_MergeGloves2": "Now, Merge again with the locked Gloves to get a pair of Super Gloves.",
+    "tutorial_info_merge_Home": "Perfect! Now, let's go back and use it.",
+    "tutorial_info_merge_GenGloves": "It's a Toolbox. Double Tap it to see what it has inside.",
+    "tutorial_info_merge_MergeGloves3": "A glove, perfect, let's Merge again.",
+    "tutorial_info_merge_MergeGloves4": "Let's Merge once more.",
+    "tutorial_info_merge_Task2": "Let's view our tasks.",
+    "tutorial_info_merge_GenHammer": "Try to find a hammer this time.",
+    "tutorial_info_merge_MergeHammer1": "And now, let's Merge these Pliers and see what we will get.",
+    "tutorial_info_merge_Task4": "Perfect, a Hammer! And finally, let's view our tasks again.",
+    "tutorial_info_world_AAAAA": "AAAAA"
 }

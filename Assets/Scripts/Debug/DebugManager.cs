@@ -11,10 +11,10 @@ namespace Merge
     public class DebugManager : MonoBehaviour
     {
         // Variables
-        public BoardInteractions boardInteractions;
         public LoadingManager loadingManager;
         public PreMansionHandler preMansionHandler;
         public float transitionDuration = 0.1f;
+        public SceneLoader sceneLoader;
 
         private bool valuesShown;
 
@@ -23,6 +23,7 @@ namespace Merge
         private Logs logs;
         private ValuesUI valuesUI;
         private ErrorManager errorManager;
+        private BoardInteractions boardInteractions;
 
         // UI
         private VisualElement root;
@@ -57,6 +58,7 @@ namespace Merge
             logs = Logs.Instance;
             valuesUI = GameRefs.Instance.valuesUI;
             errorManager = ErrorManager.Instance;
+            boardInteractions = GameRefs.Instance.boardInteractions;
 
             // UI
             root = debugUI.rootVisualElement;
@@ -102,12 +104,12 @@ namespace Merge
             };
             worldSceneButton.clicked += () =>
             {
-                SceneManager.LoadScene((int)Types.Scene.World);
+                sceneLoader.Load(Types.Scene.World);
                 CloseMenu();
             };
             mergeSceneButton.clicked += () =>
             {
-                SceneManager.LoadScene((int)Types.Scene.Merge);
+                sceneLoader.Load(Types.Scene.Merge);
                 CloseMenu();
             };
 

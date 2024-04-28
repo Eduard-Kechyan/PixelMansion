@@ -559,50 +559,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f100cd1ba440738438e81af6df41ec0d, type: 3}
---- !u!1 &1413949063
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1413949064}
-  - component: {fileID: 1413949065}
-  m_Layer: 0
-  m_Name: BoardAlt
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1413949064
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1413949063}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1413949065
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1413949063}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ad8a2e12f8a52141a0781f8e129d378, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1566288106
 GameObject:
   m_ObjectHideFlags: 0
@@ -803,7 +759,6 @@ MonoBehaviour:
     - {fileID: 590581419, guid: 4780be5b5da79ed44b59725a93db5c9b, type: 3}
     - {fileID: 1184151187, guid: 4780be5b5da79ed44b59725a93db5c9b, type: 3}
     - {fileID: -1299078420, guid: 4780be5b5da79ed44b59725a93db5c9b, type: 3}
-  readySpeed: 1
   lockOpenSprites:
   - {fileID: -204737844, guid: a3863c2f2ff768542adf220576e55519, type: 3}
   - {fileID: 452446565, guid: a3863c2f2ff768542adf220576e55519, type: 3}
@@ -812,6 +767,7 @@ MonoBehaviour:
   - {fileID: 435106307, guid: 2cc5fcac1541bbb4392c9e86b6059bbe, type: 3}
   - {fileID: 1565363511, guid: 2cc5fcac1541bbb4392c9e86b6059bbe, type: 3}
   - {fileID: 383109696, guid: 2cc5fcac1541bbb4392c9e86b6059bbe, type: 3}
+  readySpeed: 1
   mergeUIDoc: {fileID: 0}
   worldUIDoc: {fileID: 0}
   worldGameUIDoc: {fileID: 0}
@@ -3799,7 +3755,6 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 8488441445584660632}
-  - {fileID: 1413949064}
   - {fileID: 5455458386238615322}
   - {fileID: 6786505432524341889}
   - {fileID: 5299547135438882136}

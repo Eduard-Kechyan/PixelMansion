@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEngine.SceneManagement;
-using Unity.Mathematics;
 
 namespace Merge
 {
@@ -19,11 +17,12 @@ namespace Merge
 
         private string tutorialStep = "First";
         private bool pointsShone = false;
-        private Types.Scene currentScene;
 
-        private bool handlingLast = false;
+        private bool destroyingTutorial = false;
 
         private bool tutorialStarted = false;
+
+        private bool referencesSet = false;
 
         [Serializable]
         public class ShineSprites
@@ -39,30 +38,42 @@ namespace Merge
         private MergeUI mergeUI;
         private UIButtons uiButtons;
         private DataManager dataManager;
+        private GameData gameData;
         private InputMenu inputMenu;
         private PointerHandler pointerHandler;
         private InfoBox infoBox;
         private CloudSave cloudSave;
         private AnalyticsManager analyticsManager;
-        public ProgressManager progressManager;
-        public ConvoUIHandler convoUIHandler;
-        public BoardManager boardManager;
-        public SceneLoader sceneLoader;
+        private ProgressManager progressManager;
+        private ConvoUIHandler convoUIHandler;
+        private BoardManager boardManager;
+        private SceneLoader sceneLoader;
+        private ValuePop valuePop;
 
         // UI
-        private VisualElement root;
-
         private VisualElement convoBackground;
 
         void Awake()
         {
-            currentScene = Glob.ParseEnum<Types.Scene>(SceneManager.GetActiveScene().name);
-
-            if (PlayerPrefs.HasKey("tutorialFinished") || skipTutorial || (Glob.lastScene != Types.Scene.None && Glob.lastScene == currentScene))
+            if (PlayerPrefs.HasKey("tutorialFinished"))
             {
-                handlingLast = true;
+                StartCoroutine(WaitForReferences(() =>
+                {
+                    progressManager.SetInitialData(0, true);
+                }));
+            }
+            else if (skipTutorial || (Glob.lastScene != Types.Scene.None && Glob.lastScene == sceneLoader.GetScene()))
+            {
+                StartCoroutine(WaitForReferences(() =>
+                {
+                    progressManager.SetInitialData(0);
 
-                StartCoroutine(WaitForDataManager());
+                    PlayerPrefs.SetInt("tutorialFinished", 1);
+
+                    PlayerPrefs.DeleteKey("tutorialStep");
+
+                    PlayerPrefs.Save();
+                }));
             }
             else
             {
@@ -100,20 +111,22 @@ namespace Merge
             worldGameUIDoc = GameRefs.Instance.worldGameUIDoc;
             mergeUI = GameRefs.Instance.mergeUI;
             dataManager = DataManager.Instance;
+            gameData = GameData.Instance;
             inputMenu = GameRefs.Instance.inputMenu;
             uiButtons = GameData.Instance.GetComponent<UIButtons>();
             pointerHandler = GetComponent<PointerHandler>();
             infoBox = GameRefs.Instance.infoBox;
             cloudSave = Services.Instance.GetComponent<CloudSave>();
             analyticsManager = AnalyticsManager.Instance;
-            progressManager = GameRefs.Instance.progressManager;
             convoUIHandler = GameRefs.Instance.convoUIHandler;
             boardManager = GameRefs.Instance.boardManager;
             sceneLoader = GameRefs.Instance.sceneLoader;
+            progressManager = GameRefs.Instance.progressManager;
+            valuePop = GameRefs.Instance.valuePop;
+
+            referencesSet = true;
 
             // UI
-            root = GetComponent<UIDocument>().rootVisualElement;
-
             if (worldGameUIDoc != null)
             {
                 convoBackground = worldGameUIDoc.GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("ConvoBackground");
@@ -133,7 +146,7 @@ namespace Merge
 
         IEnumerator WaitForLoading()
         {
-            while (handlingLast || !dataManager.loaded || !valuesUI.loaded || (convoUIHandler != null && !convoUIHandler.loaded) || (worldUI != null && !worldUI.loaded) || (mergeUI != null && !mergeUI.loaded))
+            while (destroyingTutorial || !dataManager.loaded || !valuesUI.loaded || (convoUIHandler != null && !convoUIHandler.loaded) || (worldUI != null && !worldUI.loaded) || (mergeUI != null && !mergeUI.loaded))
             {
                 yield return null;
             }
@@ -148,7 +161,7 @@ namespace Merge
             {
                 SetUI();
 
-                progressManager.SetInitialData(0, false);
+                progressManager.SetInitialData(0);
 
                 StartCoroutine(WaitForDataOrBoard());
             }
@@ -156,6 +169,8 @@ namespace Merge
 
         bool CheckScene()
         {
+            Types.Scene currentScene = sceneLoader.GetScene();
+
             if (!PlayerPrefs.HasKey("taskToComplete"))
             {
                 for (int i = 0; i < tutorialData.steps.Length; i++)
@@ -166,6 +181,14 @@ namespace Merge
                         {
                             // Merge scene
                             sceneLoader.Load(Types.Scene.Merge);
+
+                            return false;
+                        }
+
+                        if (tutorialData.steps[i].scene == Types.Scene.World && currentScene != Types.Scene.World)
+                        {
+                            // World scene
+                            sceneLoader.Load(Types.Scene.World);
 
                             return false;
                         }
@@ -184,7 +207,7 @@ namespace Merge
         {
             SetUI();
 
-            progressManager.SetInitialData(0, false);
+            progressManager.SetInitialData(0);
 
             StartCoroutine(WaitForDataOrBoard());
         }
@@ -307,6 +330,8 @@ namespace Merge
 
         void HandleStep()
         {
+            HideButtons();
+
             CheckConvoBackground();
 
             for (int i = 0; i < tutorialData.steps.Length; i++)
@@ -340,7 +365,7 @@ namespace Merge
             {
                 if (tutorialData.steps[i].id == tutorialStep)
                 {
-                    if (tutorialData.steps[i + 1] != null) // Next
+                    if (i + 1 < tutorialData.steps.Length) // Check if the next one exists
                     {
                         tutorialStep = tutorialData.steps[i + 1].id;
 
@@ -368,6 +393,27 @@ namespace Merge
             }
 
             callback?.Invoke();
+        }
+
+        public void HideButtons()
+        {
+            Types.Scene currentScene = sceneLoader.GetScene();
+
+            if (currentScene == Types.Scene.World)
+            {
+                worldUI.HideButton(Types.Button.Play, true);
+                worldUI.HideButton(Types.Button.Task, true);
+
+                return;
+            }
+
+            if (currentScene == Types.Scene.Merge)
+            {
+                mergeUI.HideButton(Types.Button.Home, true);
+                mergeUI.HideButton(Types.Button.Task, true);
+
+                return;
+            }
         }
 
         void HandleTask(Types.TutorialStep step)
@@ -438,7 +484,7 @@ namespace Merge
                     }, 0.5f);
                 }
             }
-            else
+            else // Types.Scene.Merge
             {
                 if (step.taskButton == Types.Button.Task)
                 {
@@ -469,13 +515,29 @@ namespace Merge
 
         void HandleConvo(Types.TutorialStep step)
         {
-            convoUIHandler.Converse("Tutorial" + step.id, true, !step.keepConvoOpen, false, () =>
+            Glob.WaitForSelectable(() =>
             {
-                Glob.SetTimeout(() =>
+                StartCoroutine(WaitForPop(() =>
                 {
-                    NextStep();
-                }, 0.4f);
+                    convoUIHandler.Converse("Tutorial" + step.id, true, !step.keepConvoOpen, false, () =>
+                    {
+                        Glob.SetTimeout(() =>
+                        {
+                            NextStep();
+                        }, 0.4f);
+                    });
+                }));
             });
+        }
+
+        IEnumerator WaitForPop(Action callback)
+        {
+            while (valuePop.popping || valuePop.mightPop)
+            {
+                yield return null;
+            }
+
+            callback();
         }
 
         void HandleStory()
@@ -556,18 +618,6 @@ namespace Merge
             Destroy(gameObject);
         }
 
-        IEnumerator WaitForDataManager()
-        {
-            while (DataManager.Instance == null)
-            {
-                yield return null;
-            }
-
-            progressManager.SetInitialData(0, true);
-
-            Destroy(gameObject);
-        }
-
         void SetUI()
         {
             valuesUI.SetSortingOrder(4);
@@ -597,10 +647,30 @@ namespace Merge
             {
                 worldUI.ShowButtons();
             }
+
             if (mergeUI != null)
             {
                 mergeUI.ShowButtons();
             }
+        }
+
+        IEnumerator WaitForReferences(Action callback)
+        {
+            destroyingTutorial = true;
+
+            while (!referencesSet)
+            {
+                yield return null;
+            }
+
+            while (gameData.boardData == null)
+            {
+                yield return null;
+            }
+
+            callback();
+
+            Destroy(gameObject);
         }
     }
 }

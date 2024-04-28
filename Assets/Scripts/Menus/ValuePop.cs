@@ -15,6 +15,11 @@ namespace Merge
         public Sprite goldSprite;
         public Sprite gemsSprite;
 
+        [ReadOnly]
+        public bool popping = false;
+        [ReadOnly]
+        public bool mightPop = false;
+
         // References
         private ValuesUI valuesUI;
         private SafeAreaHandler safeAreaHandler;
@@ -49,6 +54,8 @@ namespace Merge
 
         public void PopValue(int amount, Types.CollGroup type, Vector2 initialPosition, bool multiply = false, bool isUIPosition = false, Action callback = null)
         {
+            popping = true;
+
             // Run this first
             gameData.UpdateValue(amount, type, multiply);
 
@@ -59,6 +66,9 @@ namespace Merge
 
         public void PopValue(int amount, Types.CollGroup type, bool multiply = false, bool isUIPosition = false, Action callback = null)
         {
+            popping = true;
+            mightPop = false;
+
             Vector2 screenCenter;
 
             if (isUIPosition)
@@ -75,6 +85,9 @@ namespace Merge
 
         public void PopInventoryItem(Sprite sprite, Vector2 initialPosition, Vector2 position, Action callback = null)
         {
+            popping = true;
+            mightPop = false;
+
             StartCoroutine(HandlePopInventoryItem(sprite, initialPosition, position, callback));
         }
 
@@ -85,6 +98,9 @@ namespace Merge
             bool isUIPosition = false
         )
         {
+            popping = true;
+            mightPop = false;
+
             StartCoroutine(
                 HandlePopBonus(item, initialPosition, bonusButtonPosition, isUIPosition)
             );
@@ -172,6 +188,8 @@ namespace Merge
 
             valuesUI.HideButtons();
 
+            popping = false;
+
             // Update data
             if (type != Types.CollGroup.Experience)
             {
@@ -227,6 +245,8 @@ namespace Merge
 
             // Remove the value pop
             root.Remove(valuePop);
+
+            popping = false;
         }
 
         IEnumerator HandlePopBonus(
@@ -285,6 +305,8 @@ namespace Merge
             valuePop.style.opacity = 0;
 
             yield return new WaitForSeconds(0.5f);
+
+            popping = false;
 
             // Remove the value pop
             root.Remove(valuePop);

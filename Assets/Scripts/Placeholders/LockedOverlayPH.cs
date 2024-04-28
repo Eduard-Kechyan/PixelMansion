@@ -6,6 +6,6 @@ namespace Merge
 {
     public class LockedOverlayPH : MonoBehaviour
     {
-        // TODO - This is an empty placeholder script and should be improved
+        // Note - This is an empty placeholder script
     }
 }

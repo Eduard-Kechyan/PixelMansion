@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Merge
 {
-    public class NavPH : MonoBehaviour
+    public class PropsPH : MonoBehaviour
     {
         // Note - This is an empty placeholder script
     }

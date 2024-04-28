@@ -13,9 +13,17 @@ namespace Merge
     {
         // Variables
         public TasksData tasksData;
+        public PreMansionHandler preMansionHandler;
 
         [HideInInspector]
         public bool isLoaded = false;
+
+        [HideInInspector]
+        public bool handlingTask = false;
+
+        // Events
+        public delegate void HandlingTaskEvent();
+        public static event HandlingTaskEvent OnTaskHandling;
 
         // References
         private GameData gameData;
@@ -31,6 +39,7 @@ namespace Merge
         private NoteDotHandler noteDotHandler;
         private UIButtons uiButtons;
         private ValuePop valuePop;
+        private CharMove charMove;
 
         void Start()
         {
@@ -52,6 +61,7 @@ namespace Merge
             if (worldDataManager != null)
             {
                 selector = worldDataManager.GetComponent<Selector>();
+                charMove = CharMain.Instance.GetComponent<CharMove>();
             }
 
             isLoaded = true;
@@ -239,9 +249,15 @@ namespace Merge
         {
             Transform taskRef = null;
             Vector2 taskRefPos = Vector2.zero;
-            Types.TaskRefType taskRefType = Types.TaskRefType.Area;
-            bool isLastStep = false;
+            Types.TaskRefType taskRefType = Types.TaskRefType.Last;
             Types.TaskItem[] rewards = null;
+
+            bool handling = false;
+
+            valuePop.mightPop = true;
+
+            handlingTask = true;
+            OnTaskHandling();
 
             // Get the task item form the world
             for (int i = 0; i < gameData.tasksData.Count; i++)
@@ -252,15 +268,20 @@ namespace Merge
                     {
                         if (gameData.tasksData[i].tasks[j].id == taskId)
                         {
-                            rewards = gameData.tasksData[i].tasks[j].rewards;
+                            worldDataManager.GetWorldItem(groupId, gameData.tasksData[i].tasks[j], (Transform foundWorldItem) =>
+                            {
+                                rewards = gameData.tasksData[i].tasks[j].rewards;
 
-                            taskRef = worldDataManager.GetWorldItem(groupId, gameData.tasksData[i].tasks[j]);
+                                taskRef = foundWorldItem;
 
-                            taskRefType = gameData.tasksData[i].tasks[j].taskRefType;
+                                taskRefType = gameData.tasksData[i].tasks[j].taskRefType;
 
-                            taskRefPos = worldDataManager.GetColliderCenter(taskRef, taskRefType);
+                                taskRefPos = worldDataManager.GetColliderCenter(taskRef, taskRefType);
 
-                            isLastStep = gameData.tasksData[i].tasks[j].id == "Last";
+                                handling = true;
+
+                                HandleTaskCompletion(groupId, taskId, taskRef, taskRefType, taskRefPos, rewards, callback);
+                            });
 
                             break;
                         }
@@ -270,55 +291,95 @@ namespace Merge
                 }
             }
 
-            // Move the camera to the item we want to change
-            if (taskRefType == Types.TaskRefType.Filth)
+            if (!handling)
             {
-                cameraMotion.MoveTo(taskRefPos, 250, () =>
-                {
-                    removeFilth.Remove(taskRef, () =>
-                    {
-                        // If successfully changed, give the rewards and complete the task
-
-                        worldDataManager.SetFilth(taskRef);
-
-                        callback?.Invoke();
-
-                        Glob.SetTimeout(() =>
-                        {
-                            HandleRewards(rewards, groupId, taskId);
-                        }, 0.35f);
-
-                        TaskCompleted(groupId, taskId);
-                    });
-                });
-                cameraPinch.isResetting = true;
+                handlingTask = false;
+                OnTaskHandling();
             }
-            else
-            {
-                cameraMotion.MoveTo(taskRefPos, 250);
-                cameraPinch.isResetting = true;
+        }
 
-                if (isLastStep)
-                {
-                    TaskCompleted(groupId, taskId, true);
-                }
-                else
-                {
+        void HandleTaskCompletion(string groupId, string taskId, Transform taskRef, Types.TaskRefType taskRefType, Vector2 taskRefPos, Types.TaskItem[] rewards, Action callback)
+        {
+            // Move the camera to the item we want to change
+            switch (taskRefType)
+            {
+                case Types.TaskRefType.Filth:
+                    cameraMotion.MoveTo(taskRefPos, 250, () =>
+                    {
+                        removeFilth.Remove(taskRef, () =>
+                        {
+                            // If successfully changed, give the rewards and complete the task
+
+                            worldDataManager.SetFilth(taskRef);
+
+                            charMove.SetDestination(taskRef.position);
+
+                            callback?.Invoke();
+
+                            HandleRewards(rewards, () =>
+                            {
+                                TaskCompleted(groupId, taskId);
+                            });
+                        });
+                    });
+
+                    cameraPinch.isResetting = true;
+                    break;
+                case Types.TaskRefType.Last:
+                    Transform foundRoom = worldDataManager.FindRoomInWorld(groupId);
+
+                    if (foundRoom != null)
+                    {
+                        RoomHandler foundRoomHandler = foundRoom.GetComponent<RoomHandler>();
+
+                        if (foundRoomHandler != null)
+                        {
+                            foundRoomHandler.Unlock((Vector3 roomCenter) =>
+                            {
+                                HandleRewards(rewards, () =>
+                                {
+                                    TaskCompleted(groupId, taskId, true);
+                                });
+                            });
+                        }
+                        else
+                        {
+                            Debug.LogWarning("foundRoomHandler is null");
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogWarning("foundRoom is null");
+                    }
+                    break;
+                case Types.TaskRefType.PreMansion:
+                    preMansionHandler.Remove(() =>
+                    {
+                        HandleRewards(rewards, () =>
+                        {
+                            TaskCompleted(groupId, taskId, true);
+                        });
+                    });
+                    break;
+                default:
+                    cameraMotion.MoveTo(taskRefPos, 250);
+                    cameraPinch.isResetting = true;
+
                     // Select the item
                     selector.SelectAlt(taskRef.GetComponent<Selectable>(), () =>
                     {
                         // If successfully changed, give the rewards and complete the task
 
+                        charMove.SetDestination(taskRef.position);
+
                         callback?.Invoke();
 
-                        Glob.SetTimeout(() =>
+                        HandleRewards(rewards, () =>
                         {
-                            HandleRewards(rewards, groupId, taskId);
-                        }, 0.35f);
-
-                        TaskCompleted(groupId, taskId);
+                            TaskCompleted(groupId, taskId);
+                        });
                     });
-                }
+                    break;
             }
         }
 
@@ -338,6 +399,9 @@ namespace Merge
 
             if (isLastStep)
             {
+                handlingTask = false;
+                OnTaskHandling();
+
                 progressManager.CheckNextArea(groupId);
 
                 RemoveTaskGroup(groupId);
@@ -346,6 +410,9 @@ namespace Merge
             }
             else
             {
+                handlingTask = false;
+                OnTaskHandling();
+
                 RemoveNeedsFromBoardAndInventory(groupId, taskId, () =>
                 {
                     RemoveTask(groupId, taskId);
@@ -434,32 +501,36 @@ namespace Merge
         //// Rewards ////
 
         // Get the rewards and handle them as needed
-        void HandleRewards(Types.TaskItem[] rewards, string groupId, string taskId)
+        void HandleRewards(Types.TaskItem[] rewards, Action callback)
         {
-            bool nextIsConvo = progressManager.CheckIfNextIsConvo(groupId, taskId);
-
-            for (int k = 0; k < rewards.Length; k++)
+            if (rewards.Length > 0)
             {
-                if (rewards[k].type == Types.Type.Coll)
+                valuePop.popping = true;
+                valuePop.mightPop = false;
+
+                for (int i = 0; i < rewards.Length; i++)
                 {
-                    if (nextIsConvo)
+                    if (rewards[i].type == Types.Type.Coll)
                     {
-                        gameData.UpdateValue(rewards[k].amount, rewards[k].collGroup, false, true);
+                        valuePop.PopValue(rewards[i].amount, rewards[i].collGroup, uiButtons.worldTaskButtonPos);
+
+                        callback();
                     }
                     else
                     {
-                        valuePop.PopValue(rewards[k].amount, rewards[k].collGroup, uiButtons.worldTaskButtonPos, false);
+                        StartCoroutine(AddItemToBonus(rewards[i], callback));
                     }
                 }
-                else
-                {
-                    AddItemToBonus(rewards[k], nextIsConvo);
-                }
+            }
+            else
+            {
+                valuePop.popping = false;
+                valuePop.mightPop = false;
             }
         }
 
         // Handle Items, Generators and Chests
-        IEnumerator AddItemToBonus(Types.TaskItem reward, bool nextIsConvo = false)
+        IEnumerator AddItemToBonus(Types.TaskItem reward, Action callback)
         {
             yield return new WaitForSeconds(0.5f);
 
@@ -472,28 +543,23 @@ namespace Merge
                 chestGroup = reward.chestGroup
             };
 
-            if (nextIsConvo)
+            Vector2 initialPosition;
+            Vector2 buttonPosition;
+
+            if (noteDotHandler.isWorld)
             {
-                gameData.AddToBonus(newItem);
+                initialPosition = uiButtons.worldTaskButtonPos;
+                buttonPosition = uiButtons.worldPlayButtonPos;
             }
             else
             {
-                Vector2 initialPosition;
-                Vector2 buttonPosition;
-
-                if (noteDotHandler.isWorld)
-                {
-                    initialPosition = uiButtons.worldTaskButtonPos;
-                    buttonPosition = uiButtons.worldPlayButtonPos;
-                }
-                else
-                {
-                    initialPosition = uiButtons.mergeTaskButtonPos;
-                    buttonPosition = uiButtons.mergeBonusButtonPos;
-                }
-
-                valuePop.PopBonus(newItem, initialPosition, buttonPosition);
+                initialPosition = uiButtons.mergeTaskButtonPos;
+                buttonPosition = uiButtons.mergeBonusButtonPos;
             }
+
+            valuePop.PopBonus(newItem, initialPosition, buttonPosition);
+
+            callback();
         }
 
         //// Checks ////

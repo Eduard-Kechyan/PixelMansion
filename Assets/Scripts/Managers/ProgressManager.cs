@@ -18,28 +18,28 @@ namespace Merge
         // References
         private WorldDataManager worldDataManager;
         private ConvoUIHandler convoUIHandler;
-        private BoardManager boardManager;
         private TutorialManager tutorialManager;
-        private NavMeshManager navMeshManager;
         private TaskManager taskManager;
         private GameData gameData;
         private WorldUI worldUI;
         private ValuesUI valuesUI;
         private CharMain charMain;
         private CloudSave cloudSave;
+        private ErrorManager errorManager;
+        private ValuePop valuePop;
 
         void Start()
         {
             // Cache
             worldDataManager = GameRefs.Instance.worldDataManager;
             convoUIHandler = GameRefs.Instance.convoUIHandler;
-            boardManager = GameRefs.Instance.boardManager;
             tutorialManager = GameRefs.Instance.tutorialManager;
-            navMeshManager = GameRefs.Instance.navMeshManager;
             gameData = GameData.Instance;
             worldUI = GameRefs.Instance.worldUI;
             valuesUI = GameRefs.Instance.valuesUI;
             charMain = CharMain.Instance;
+            errorManager = ErrorManager.Instance;
+            valuePop = GameRefs.Instance.valuePop;
 
             if (taskManager == null)
             {
@@ -101,7 +101,7 @@ namespace Merge
                     // To get the last step
                     int length = progressData.areas[i].steps.Length - 1;
 
-                    if (progressData.areas[i].steps[length].id == "Last")
+                    if (progressData.areas[i].steps[length].stepType == Types.StepType.Last || progressData.areas[i].steps[length].stepType == Types.StepType.PreMansion)
                     {
                         // Check if the step even has next ids
                         if (progressData.areas[i].steps[length].nextIds.Length > 0)
@@ -154,7 +154,7 @@ namespace Merge
 
                                 for (int k = 0; k < progressData.areas[i].steps[j].nextIds.Length; k++)
                                 {
-                                    if ((tutorialManager != null && tutorialManager.CheckIfNextStepIsConvo()) || !HandleNextStep(groupId, progressData.areas[i].steps[j].nextIds[k], progressData.areas[i].steps))
+                                    if (!HandleNextStep(groupId, progressData.areas[i].steps[j].nextIds[k], progressData.areas[i].steps) || (tutorialManager != null && tutorialManager.CheckIfNextStepIsConvo()))
                                     {
                                         shouldShowUI = false;
                                     }
@@ -191,7 +191,7 @@ namespace Merge
                     bool addNewTask = true;
 
                     // Check for the last step
-                    if (nextStepId == "Last")
+                    if (steps[i].stepType == Types.StepType.Last || steps[i].stepType == Types.StepType.PreMansion)
                     {
                         addNewTask = CheckLastRequirements(groupId);
                     }
@@ -235,6 +235,7 @@ namespace Merge
             return shouldShowUI;
         }
 
+        // TODO - This funciton isn't being used anymore, check if we need to keep it? 
         public bool CheckIfNextIsConvo(string groupId, string stepId)
         {
             bool nextIsConvo = false;
@@ -321,7 +322,10 @@ namespace Merge
 
                         Glob.WaitForSelectable(() =>
                         {
-                            convoUIHandler.Converse(stepId);
+                            StartCoroutine(WaitForPop(() =>
+                            {
+                                convoUIHandler.Converse(stepId);
+                            }));
                         });
                     }
                     else
@@ -329,38 +333,20 @@ namespace Merge
                         Debug.LogWarning("convoUIHandler is null");
                     }
                     break;
-                case Types.StepType.RoomUnlocking:
-                    if (worldDataManager != null)
-                    {
-                        Transform foundRoom = worldDataManager.FindRoomInWorld(areaId);
-
-                        if (foundRoom != null)
-                        {
-                            RoomHandler foundRoomHandler = foundRoom.GetComponent<RoomHandler>();
-
-                            if (foundRoomHandler != null)
-                            {
-                                navMeshManager.Bake(() =>
-                                {
-                                    foundRoomHandler.Unlock();
-                                });
-                            }
-                            else
-                            {
-                                Debug.LogWarning("foundRoomHandler is null");
-                            }
-                        }
-                        else
-                        {
-                            Debug.LogWarning("foundRoom is null");
-                        }
-                    }
-                    else
-                    {
-                        Debug.LogWarning("worldDataManager is null");
-                    }
+                default:
+                    taskManager.TryToAddTask(areaId, stepId);
                     break;
             }
+        }
+
+        IEnumerator WaitForPop(Action callback)
+        {
+            while (valuePop.popping || valuePop.mightPop)
+            {
+                yield return null;
+            }
+
+            callback();
         }
 
         void CheckForProgressSteps()
@@ -376,7 +362,13 @@ namespace Merge
                         {
                             Glob.SetTimeout(() =>
                             {
-                                convoUIHandler.Converse(oldProgressStep.id);
+                                Glob.WaitForSelectable(() =>
+                                {
+                                    StartCoroutine(WaitForPop(() =>
+                                    {
+                                        convoUIHandler.Converse(oldProgressStep.id);
+                                    }));
+                                });
                             }, 0.2f);
                         }
                         break;

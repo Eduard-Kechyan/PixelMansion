@@ -48,9 +48,9 @@ namespace Merge
 
         // References
         private TaskMenu taskMenu;
-        private BoardInteractions boardInteractions;
         private Camera cam;
         private BoardManager boardManager;
+        private TutorialManager tutorialManager;
 
         // UI
         private VisualElement root;
@@ -63,7 +63,7 @@ namespace Merge
             taskMenu = GameRefs.Instance.taskMenu;
             cam = Camera.main;
             boardManager = GameRefs.Instance.boardManager;
-            boardInteractions = GameRefs.Instance.boardInteractions;
+            tutorialManager = GameRefs.Instance.tutorialManager;
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
@@ -128,6 +128,8 @@ namespace Merge
         {
             if (currentButton == button && buttonCallback != null)
             {
+                tutorialManager.HideButtons();
+
                 StopAllAnimations();
 
                 pointer.style.opacity = 0;
@@ -140,7 +142,7 @@ namespace Merge
 
                 if (!alt)
                 {
-                    buttonCallback();
+                    buttonCallback?.Invoke();
                 }
 
                 pressing = false;
@@ -330,7 +332,7 @@ namespace Merge
             pointer.style.top = tileUiPos.y;
         }
 
-        public void CheckGen()
+        public void CheckGen(Action callback = null)
         {
             StopAllAnimations();
 
@@ -346,6 +348,8 @@ namespace Merge
             genItemSprite = null;
 
             genCallback?.Invoke();
+
+            callback?.Invoke();
         }
 
         IEnumerator AnimateGen()

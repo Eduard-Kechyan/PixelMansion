@@ -31,14 +31,13 @@ namespace Merge
         [Condition("debugOn", true)]
         public bool unlock = false;
 
-        private LockedOverlayPH lockedOverlayPH;
-        private NavPH navPH;
-        private GameObject lockedOverlay;
         private GameObject lockedNavArea;
-        private GameObject nav;
+        public GameObject lockedOverlay;
+        public GameObject nav;
         private Vector3 roomCenter;
 
         // References
+        private AreaRefs areaRefs;
         private DoorManager doorManager;
         private DataManager dataManager;
         private SoundManager soundManager;
@@ -46,6 +45,14 @@ namespace Merge
         private CharSpeech charSpeech;
         private CameraMotion cameraMotion;
         private NavMeshManager navMeshManager;
+
+        void Awake()
+        {
+            areaRefs = GetComponent<AreaRefs>();
+
+            lockedOverlay = areaRefs.GetLockedOverlay();
+            nav = areaRefs.GetNav();
+        }
 
         void Start()
         {
@@ -56,19 +63,6 @@ namespace Merge
             charSpeech = CharMain.Instance.charSpeech;
             cameraMotion = Camera.main.GetComponent<CameraMotion>();
             navMeshManager = NavMeshManager.Instance;
-
-            lockedOverlayPH = transform.GetComponentInChildren<LockedOverlayPH>();
-            navPH = transform.GetComponentInChildren<NavPH>();
-
-            if (lockedOverlayPH != null)
-            {
-                lockedOverlay = lockedOverlayPH.gameObject;
-            }
-
-            if (navPH != null)
-            {
-                nav = navPH.gameObject;
-            }
 
             ToggleOverlay();
 
@@ -109,15 +103,13 @@ namespace Merge
 
         void ToggleOverlay()
         {
-            /* if (lockedOverlay == null)
-             {
-                 lockedOverlayPH = transform.GetComponentInChildren<LockedOverlayPH>();
-             }*/
-
-            if (lockedOverlayPH != null)
+            if (lockedOverlay == null)
             {
-                lockedOverlay = lockedOverlayPH.gameObject;
+                lockedOverlay = areaRefs.GetLockedOverlay();
+            }
 
+            if (lockedOverlay != null)
+            {
                 if (lockedOverlay.transform.GetChild(0).GetComponent<NavMeshModifier>() != null)
                 {
                     lockedNavArea = lockedOverlay.transform.GetChild(0).gameObject;
@@ -139,12 +131,7 @@ namespace Merge
         {
             if (nav == null)
             {
-                navPH = transform.GetComponentInChildren<NavPH>();
-
-                if (navPH != null)
-                {
-                    nav = navPH.gameObject;
-                }
+                nav = areaRefs.GetNav();
             }
 
             if (nav != null)
@@ -155,7 +142,12 @@ namespace Merge
                 }
             }
 
-            if (lockedNavArea != null)
+            if (lockedOverlay == null)
+            {
+                lockedOverlay = areaRefs.GetLockedOverlay();
+            }
+
+            if (lockedOverlay != null)
             {
                 lockedNavArea.SetActive(false);
             }
@@ -167,12 +159,7 @@ namespace Merge
         {
             if (nav == null)
             {
-                navPH = transform.GetComponentInChildren<NavPH>();
-
-                if (navPH != null)
-                {
-                    nav = navPH.gameObject;
-                }
+                nav = areaRefs.GetNav();
             }
 
             if (nav != null)
@@ -191,9 +178,9 @@ namespace Merge
 
         public Vector2 GetRoomCenter()
         {
-            if (roomCenter == Vector3.zero && lockedOverlayPH != null)
+            if (roomCenter == Vector3.zero && areaRefs.lockedOverlayPH != null)
             {
-                lockedOverlay = lockedOverlayPH.gameObject;
+                lockedOverlay = areaRefs.lockedOverlayPH.gameObject;
 
                 if (lockedOverlay.transform.GetChild(0).GetComponent<NavMeshModifier>() != null)
                 {
@@ -222,6 +209,11 @@ namespace Merge
 
         void Lock()
         {
+            if (lockedOverlay == null)
+            {
+                lockedOverlay = areaRefs.GetLockedOverlay();
+            }
+
             if (lockedOverlay != null)
             {
                 for (int i = 0; i < lockedOverlay.transform.childCount; i++)
@@ -241,6 +233,8 @@ namespace Merge
 
         public void Unlock(Action<Vector3> callback = null, float speechDelay = 0.3f)
         {
+            Glob.taskLoading = true;
+
             locked = false;
 
             dataManager.UnlockRoom(gameObject.name);
@@ -268,11 +262,18 @@ namespace Merge
                 RemoveClouds(roomCenter);
             });
 
+            Glob.taskLoading = false;
+
             callback?.Invoke(roomCenter);
         }
 
         void RemoveClouds(Vector3 roomCenter)
         {
+            if (lockedOverlay == null)
+            {
+                lockedOverlay = areaRefs.GetLockedOverlay();
+            }
+
             if (lockedOverlay != null)
             {
                 for (int i = 0; i < lockedOverlay.transform.childCount; i++)
@@ -336,6 +337,11 @@ namespace Merge
 
         public void UnlockAfter(float speechDelay = 0.3f)
         {
+            if (nav == null)
+            {
+                nav = areaRefs.GetNav();
+            }
+
             if (nav != null)
             {
                 Transform walkingArea = nav.transform.GetChild(0);
@@ -359,6 +365,11 @@ namespace Merge
 
         public void UnlockAlt(bool initial = false)
         {
+            if (lockedOverlay == null)
+            {
+                lockedOverlay = areaRefs.GetLockedOverlay();
+            }
+
             if (lockedOverlay != null)
             {
                 lockedOverlay.SetActive(false);

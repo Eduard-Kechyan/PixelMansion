@@ -118,6 +118,17 @@ MonoBehaviour:
       isRight: 0
       isSide: 0
       convoExtra: 
+  - name: TutorialPart5
+    id: TutorialPart5
+    hasTimeOut: 0
+    characterA: 1
+    characterB: 0
+    content:
+    - character: 1
+      expression: 6
+      isRight: 0
+      isSide: 0
+      convoExtra: 
   - name: Response
     id: Response
     hasTimeOut: 1

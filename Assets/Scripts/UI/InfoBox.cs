@@ -755,11 +755,11 @@ namespace Merge
 
         public void SetTutorialData(string stepId)
         {
-            if (tutorialManager != null && LOCALE.CheckIfExists("info_box_tutorial_" + stepId))
+            if (tutorialManager != null && LOCALE.CheckIfExists("tutorial_info_merge_" + stepId))
             {
                 infoBox.AddToClassList("info_item_avatar");
 
-                infoData.text = LOCALE.Get("info_box_tutorial_" + stepId);
+                infoData.text = LOCALE.Get("tutorial_info_merge_" + stepId);
 
                 infoItem.style.backgroundImage = new StyleBackground(avatarSprite);
             }

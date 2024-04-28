@@ -10,20 +10,32 @@ namespace Merge
     public class Services : MonoBehaviour
     {
         // Variables
+        public bool servicesAvailable = true;
+        [ReadOnly]
         public bool networkAvailable = false;
+        [ReadOnly]
         public bool unityServicesAvailable = false;
+        [ReadOnly]
         public bool iapAvailable = false;
+        [ReadOnly]
         public bool adsAvailable = false;
+        [ReadOnly]
         public bool authAvailable = false;
+        [ReadOnly]
         public bool cloudSaveAvailable = false;
+        [ReadOnly]
         public bool analyticsAvailable = false;
 
         [Header("Sign Ins")]
+        [ReadOnly]
         public bool anonymousSignIn = false;
+        [ReadOnly]
         public bool googleSignIn = false;
+        [ReadOnly]
         public bool appleSignIn = false;
 
         [Header("Other")]
+        [ReadOnly]
         public bool termsAccepted = false;
 
         [Header("Options")]
@@ -44,6 +56,11 @@ namespace Merge
                 DontDestroyOnLoad(gameObject);
 
                 // StartCoroutine(CheckNetwork());
+
+                if (!servicesAvailable && !Debug.isDebugBuild)
+                {
+                    servicesAvailable = true;
+                }
 
                 GetInitialSignInData();
 

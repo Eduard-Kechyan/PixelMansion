@@ -15,11 +15,11 @@ namespace Merge
             {
                 if (steps[i].type == Types.TutorialStepType.Task)
                 {
-                    steps[i].name = steps[i].type.ToString() + " " + steps[i].taskType.ToString() + " " + steps[i].id;
+                    steps[i].name = steps[i].scene.ToString() + " " + steps[i].type.ToString() + " " + steps[i].taskType.ToString() + " " + steps[i].id;
                 }
                 else
                 {
-                    steps[i].name = steps[i].type.ToString() + " " + steps[i].id;
+                    steps[i].name = steps[i].scene.ToString() + " " + steps[i].type.ToString() + " " + steps[i].id;
 
                     steps[i].taskOrder = 0;
                 }

@@ -70,7 +70,6 @@ namespace Merge
         private CharMove charMove;
         private WorldUI worldUI;
         private CameraMotion cameraMotion;
-        private TutorialManager tutorialManager;
 
         // UI
         private VisualElement root;
@@ -84,7 +83,6 @@ namespace Merge
             charMove = CharMain.Instance.charMove;
             worldUI = GameRefs.Instance.worldUI;
             cameraMotion = GetComponent<CameraMotion>();
-            tutorialManager = GameRefs.Instance.tutorialManager;
 
             // UI
             root = GameRefs.Instance.worldUIDoc.rootVisualElement;
@@ -282,7 +280,7 @@ namespace Merge
                                     selector.CancelSelecting();
                                 }
 
-                                if (!moved)//&& tutorialManager != null
+                                if (!moved && !PlayerPrefs.HasKey("tutorialFinished"))
                                 {
                                     if (debugCharacterMovement && !selector.isSelected)
                                     {
@@ -344,7 +342,7 @@ namespace Merge
                                         && !selector.isSelecting
                                         && !selector.isSelected
                                         && !popupManager.isSelectorPopup
-                                    // &&  tutorialManager != null // FIX - Check if we need to check tutorialManager
+                                        && !PlayerPrefs.HasKey("tutorialFinished")
                                     )
                                     {
                                         selector.StartSelecting(

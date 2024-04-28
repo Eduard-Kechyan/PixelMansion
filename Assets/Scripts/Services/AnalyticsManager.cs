@@ -30,6 +30,11 @@ namespace Merge
             services = Services.Instance;
             errorManager = ErrorManager.Instance;
 
+            if (!services.servicesAvailable)
+            {
+                analyticsEnabled = false;
+            }
+
             if (analyticsEnabled)
             {
                 StartCoroutine(WaitForUnityServicesAndAuthorization());
@@ -57,7 +62,7 @@ namespace Merge
         {
             // TODO - Add a genuinity check here
 
-            if (!termsChecked)
+            if (!termsChecked && analyticsEnabled)
             {
                 AnalyticsService.Instance.StartDataCollection();
 
@@ -67,63 +72,73 @@ namespace Merge
 
         public void FireAdImpressionEvent(string rewardName, bool clicked = false, long value = default)
         {
-            AdImpressionEvent adImpression;
-
-            if (value == default)
+            if (analyticsEnabled)
             {
-                adImpression = new()
-                {
-                    AdProvider = AdProvider.AdMob,
-                    AdCompletionStatus = AdCompletionStatus.Completed,
-                    // AdStoreDestinationId = "",
-                    AdHasClicked = clicked,
-                    PlacementId = AdPlacementType.REWARDED + "_" + rewardName,
-                    PlacementName = rewardName,
-                    PlacementType = AdPlacementType.REWARDED
-                };
-            }
-            else
-            {
-                adImpression = new()
-                {
-                    AdProvider = AdProvider.AdMob,
-                    AdCompletionStatus = AdCompletionStatus.Completed,
-                    // AdStoreDestinationId = "",
-                    AdEcpmUsd = value,
-                    AdHasClicked = clicked,
-                    PlacementId = AdPlacementType.REWARDED + "_" + rewardName,
-                    PlacementName = rewardName,
-                    PlacementType = AdPlacementType.REWARDED
-                };
-            }
+                AdImpressionEvent adImpression;
 
-            AnalyticsService.Instance.RecordEvent(adImpression);
+                if (value == default)
+                {
+                    adImpression = new()
+                    {
+                        AdProvider = AdProvider.AdMob,
+                        AdCompletionStatus = AdCompletionStatus.Completed,
+                        // AdStoreDestinationId = "",
+                        AdHasClicked = clicked,
+                        PlacementId = AdPlacementType.REWARDED + "_" + rewardName,
+                        PlacementName = rewardName,
+                        PlacementType = AdPlacementType.REWARDED
+                    };
+                }
+                else
+                {
+                    adImpression = new()
+                    {
+                        AdProvider = AdProvider.AdMob,
+                        AdCompletionStatus = AdCompletionStatus.Completed,
+                        // AdStoreDestinationId = "",
+                        AdEcpmUsd = value,
+                        AdHasClicked = clicked,
+                        PlacementId = AdPlacementType.REWARDED + "_" + rewardName,
+                        PlacementName = rewardName,
+                        PlacementType = AdPlacementType.REWARDED
+                    };
+                }
+
+                AnalyticsService.Instance.RecordEvent(adImpression);
+            }
         }
 
         public void FireTutorialEvent(string step, bool started = false, bool ended = false)
         {
-            TutorialEvent newTutorialEvent = new()
+            if (analyticsEnabled)
             {
-                tutorialStep = step,
-                tutorialStart = started,
-                tutorialEnded = ended,
-            };
+                TutorialEvent newTutorialEvent = new()
+                {
+                    tutorialStep = step,
+                    tutorialStart = started,
+                    tutorialEnded = ended,
+                };
 
-            AnalyticsService.Instance.RecordEvent(newTutorialEvent);
+                AnalyticsService.Instance.RecordEvent(newTutorialEvent);
+            }
+
         }
 
         // Bought with Gems
         public void FireEnergyBoughtEvent(int playerLevel, int energyCount, int gemCount, bool boughtWithIAP = false)
         {
-            EnergyBoughtEvent newEnergyBoughtEvent = new()
+            if (analyticsEnabled)
             {
-                playerLevel = playerLevel,
-                energyCount = energyCount,
-                gemCount = gemCount,
-                boughtWithIAP = boughtWithIAP
-            };
+                EnergyBoughtEvent newEnergyBoughtEvent = new()
+                {
+                    playerLevel = playerLevel,
+                    energyCount = energyCount,
+                    gemCount = gemCount,
+                    boughtWithIAP = boughtWithIAP
+                };
 
-            AnalyticsService.Instance.RecordEvent(newEnergyBoughtEvent);
+                AnalyticsService.Instance.RecordEvent(newEnergyBoughtEvent);
+            }
         }
     }
 

@@ -419,7 +419,8 @@ namespace Merge
         {
             Task,
             Convo,
-            RoomUnlocking
+            Last,
+            PreMansion,
         };
 
         [Serializable]
@@ -484,12 +485,13 @@ namespace Merge
         //// TASKS ////
         public enum TaskRefType
         {
-            Area,
             Floor,
             Wall,
             Furniture,
             Item,
-            Filth
+            Filth,
+            Last,
+            PreMansion
         };
 
         [Serializable]

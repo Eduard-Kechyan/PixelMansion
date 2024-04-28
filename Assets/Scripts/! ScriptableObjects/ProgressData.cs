@@ -35,11 +35,6 @@ namespace Merge
                         {
                             areas[i].steps[j].name = areas[i].steps[j].stepType.ToString() + " " + areas[i].steps[j].id;
 
-                            if (areas[i].steps[j].stepType == Types.StepType.RoomUnlocking)
-                            {
-                                areas[i].steps[j].id = "RoomUnlocking";
-                            }
-
                             if (areas[i].steps[j].id == "")
                             {
                                 Debug.LogWarning("Step " + j + " in Area " + i + " doesn't have an id. In ProgressData.cs");

@@ -129,6 +129,10 @@ namespace Merge
 
                 cloudDataHandled = true;
             }
+            else if (!cloudSave.cloudSaveEnabled)
+            {
+                cloudDataHandled = true;
+            }
             else
             {
                 if (Application.internetReachability == NetworkReachability.NotReachable)

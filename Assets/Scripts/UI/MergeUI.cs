@@ -202,6 +202,11 @@ namespace Merge
 
         public void ShowButtons()
         {
+            homeButton.SetEnabled(true);
+            inventoryButton.SetEnabled(true);
+            shopButton.SetEnabled(true);
+            taskButton.SetEnabled(true);
+
             homeButton.style.display = DisplayStyle.Flex;
             inventoryButton.style.display = DisplayStyle.Flex;
             shopButton.style.display = DisplayStyle.Flex;
@@ -241,18 +246,22 @@ namespace Merge
             switch (button)
             {
                 case Types.Button.Home:
+                    homeButton.SetEnabled(true);
                     homeButton.style.display = DisplayStyle.Flex;
                     PlayerPrefs.SetInt("mergeHomeButtonShowing", 1);
                     break;
                 case Types.Button.Settings:
+                    inventoryButton.SetEnabled(true);
                     inventoryButton.style.display = DisplayStyle.Flex;
                     PlayerPrefs.SetInt("mergeInventoryButtonShowing", 1);
                     break;
                 case Types.Button.Shop:
+                    shopButton.SetEnabled(true);
                     shopButton.style.display = DisplayStyle.Flex;
                     PlayerPrefs.SetInt("mergeShopButtonShowing", 1);
                     break;
                 case Types.Button.Task:
+                    taskButton.SetEnabled(true);
                     taskButton.style.display = DisplayStyle.Flex;
                     PlayerPrefs.SetInt("mergeTaskButtonShowing", 1);
                     break;

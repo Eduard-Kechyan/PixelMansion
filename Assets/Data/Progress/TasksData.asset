@@ -19,7 +19,7 @@ MonoBehaviour:
     - name: RemoveFilth1
       id: RemoveFilth1
       taskRefName: FilthGroup1
-      taskRefType: 5
+      taskRefType: 4
       isTaskRefRight: 0
       needs:
       - sprite: {fileID: 21300000, guid: ca76bd9341439e145a7e676f297f7ab0, type: 3}
@@ -43,17 +43,17 @@ MonoBehaviour:
     - name: RemoveFilth2
       id: RemoveFilth2
       taskRefName: FilthGroup2
-      taskRefType: 5
+      taskRefType: 4
       isTaskRefRight: 0
       needs:
       - sprite: {fileID: 21300000, guid: ca76bd9341439e145a7e676f297f7ab0, type: 3}
         type: 0
-        group: 0
+        group: 1
         genGroup: 0
         collGroup: 0
         chestGroup: 0
         amount: 1
-        completed: 0
+        completed: 1
       rewards:
       - sprite: {fileID: 21300000, guid: ca3a280a957839843b47b3b96175df80, type: 3}
         type: 2
@@ -63,11 +63,11 @@ MonoBehaviour:
         chestGroup: 0
         amount: 10
         completed: 0
-      completed: 0
+      completed: 1
     - name: RemoveFilth3
       id: RemoveFilth3
       taskRefName: FilthGroup3
-      taskRefType: 5
+      taskRefType: 4
       isTaskRefRight: 0
       needs:
       - sprite: {fileID: 21300000, guid: cb6ce5f5a51a81a439116edb839e4a4c, type: 3}
@@ -77,7 +77,7 @@ MonoBehaviour:
         collGroup: 0
         chestGroup: 0
         amount: 1
-        completed: 0
+        completed: 1
       rewards:
       - sprite: {fileID: 21300000, guid: ca3a280a957839843b47b3b96175df80, type: 3}
         type: 2
@@ -87,11 +87,11 @@ MonoBehaviour:
         chestGroup: 0
         amount: 10
         completed: 0
-      completed: 0
+      completed: 1
     - name: Last
       id: Last
       taskRefName: 
-      taskRefType: 0
+      taskRefType: 6
       isTaskRefRight: 0
       needs: []
       rewards:
@@ -112,7 +112,7 @@ MonoBehaviour:
     - name: ChangeFloor
       id: ChangeFloor
       taskRefName: 
-      taskRefType: 1
+      taskRefType: 0
       isTaskRefRight: 0
       needs:
       - sprite: {fileID: 21300000, guid: ca76bd9341439e145a7e676f297f7ab0, type: 3}
@@ -136,7 +136,7 @@ MonoBehaviour:
     - name: ChangeWallLeft
       id: ChangeWallLeft
       taskRefName: 
-      taskRefType: 2
+      taskRefType: 1
       isTaskRefRight: 0
       needs:
       - sprite: {fileID: 21300000, guid: ca76bd9341439e145a7e676f297f7ab0, type: 3}
@@ -160,7 +160,7 @@ MonoBehaviour:
     - name: ChangeWallRight
       id: ChangeWallRight
       taskRefName: 
-      taskRefType: 2
+      taskRefType: 1
       isTaskRefRight: 1
       needs:
       - sprite: {fileID: 21300000, guid: cb6ce5f5a51a81a439116edb839e4a4c, type: 3}
@@ -184,7 +184,7 @@ MonoBehaviour:
     - name: Last
       id: Last
       taskRefName: 
-      taskRefType: 0
+      taskRefType: 5
       isTaskRefRight: 0
       needs: []
       rewards:
@@ -205,7 +205,7 @@ MonoBehaviour:
     - name: ChangeFloor
       id: ChangeFloor
       taskRefName: 
-      taskRefType: 1
+      taskRefType: 0
       isTaskRefRight: 0
       needs:
       - sprite: {fileID: 21300000, guid: cb6ce5f5a51a81a439116edb839e4a4c, type: 3}
