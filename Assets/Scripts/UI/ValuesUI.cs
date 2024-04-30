@@ -14,14 +14,14 @@ namespace Merge
         public bool loaded = false;
 
         // Variables
-        private bool levelEnabled = false;
-        private bool energyEnabled = false;
-        private bool goldEnabled = false;
-        private bool gemsEnabled = false;
+        private bool levelEnabled = true;
+        private bool energyEnabled = true;
+        private bool goldEnabled = true;
+        private bool gemsEnabled = true;
 
-        private bool energyPlusEnabled = false;
-        private bool goldPlusEnabled = false;
-        private bool gemsPlusEnabled = false;
+        private bool energyPlusEnabled = true;
+        private bool goldPlusEnabled = true;
+        private bool gemsPlusEnabled = true;
 
         private bool enabledSet = false;
 
@@ -52,20 +52,23 @@ namespace Merge
         private VisualElement levelFill;
         private Label levelValue;
         private VisualElement levelUpIndicator;
+        public VisualElement dummyLevelButton;
 
         public Button energyButton;
         private VisualElement energyPlus;
         private VisualElement energySlash;
-
         private Label energyTimerLabel;
+        public VisualElement dummyEnergyButton;
 
         public Button goldButton;
         private VisualElement goldPlus;
         private VisualElement goldSlash;
+        public VisualElement dummyGoldButton;
 
         public Button gemsButton;
         private VisualElement gemsPlus;
         private VisualElement gemsSlash;
+        public VisualElement dummyGemsButton;
 
         void Start()
         {
@@ -92,28 +95,32 @@ namespace Merge
             levelFill = levelButton.Q<VisualElement>("Fill");
             levelValue = levelButton.Q<Label>("Value");
             levelUpIndicator = valuesBox.Q<VisualElement>("Indicator");
+            dummyLevelButton = valuesBox.Q<VisualElement>("DummyLevelButton");
 
             energyButton = valuesBox.Q<Button>("EnergyButton");
             energyPlus = energyButton.Q<VisualElement>("Plus");
-            energyTimerLabel = energyButton.Q<Label>("EnergyTimer");
             energySlash = energyButton.Q<VisualElement>("Slash");
-
-            energyTimerLabel.style.display = DisplayStyle.None;
+            energyTimerLabel = energyButton.Q<Label>("EnergyTimer");
+            dummyEnergyButton = valuesBox.Q<VisualElement>("DummyEnergyButton");
 
             goldButton = valuesBox.Q<Button>("GoldButton");
             goldPlus = goldButton.Q<VisualElement>("Plus");
             goldSlash = goldButton.Q<VisualElement>("Slash");
+            dummyGoldButton = valuesBox.Q<VisualElement>("DummyGoldButton");
 
             gemsButton = valuesBox.Q<Button>("GemsButton");
             gemsPlus = gemsButton.Q<VisualElement>("Plus");
             gemsSlash = gemsButton.Q<VisualElement>("Slash");
+            dummyGemsButton = valuesBox.Q<VisualElement>("DummyGemsButton");
 
             // Init
+            energyTimerLabel.style.display = DisplayStyle.None;
+
             energySlash.RemoveFromClassList("slashing");
             goldSlash.RemoveFromClassList("slashing");
             gemsSlash.RemoveFromClassList("slashing");
 
-            SetValues();
+            UpdateValues();
 
             CheckForTaps();
 
@@ -130,22 +137,6 @@ namespace Merge
             root.UnregisterCallback<GeometryChangedEvent>(SetLoaded);
 
             loaded = true;
-        }
-
-        void SetValues()
-        {
-            // FIX - Remove comments and set to false
-            //levelButton.SetEnabled(false);
-            //energyButton.SetEnabled(false);
-            //goldButton.SetEnabled(false);
-            //gemsButton.SetEnabled(false);
-
-            // FIX - Add a check for the plusses
-            energyPlus.style.display = DisplayStyle.None;
-            goldPlus.style.display = DisplayStyle.None;
-            gemsPlus.style.display = DisplayStyle.None;
-
-            UpdateValues();
         }
 
         void CheckForTaps()
@@ -335,8 +326,10 @@ namespace Merge
             return Length.Percent(fillPercent);
         }
 
-        public void SlashValues(Types.CollGroup type)
+        public void SlashValues(Types.CollGroup type, Action callback = null)
         {
+            bool calledBack = false;
+
             switch (type)
             {
                 case Types.CollGroup.Energy:
@@ -344,11 +337,15 @@ namespace Merge
                     {
                         isEnergySlashing = true;
 
+                        calledBack = true;
+
                         energySlash.AddToClassList("slashing");
 
                         Glob.SetTimeout(() =>
                         {
                             isEnergySlashing = false;
+
+                            callback?.Invoke();
 
                             energySlash.RemoveFromClassList("slashing");
                         }, 0.4f);
@@ -359,11 +356,15 @@ namespace Merge
                     {
                         isGoldSlashing = true;
 
+                        calledBack = true;
+
                         goldSlash.AddToClassList("slashing");
 
                         Glob.SetTimeout(() =>
                         {
                             isGoldSlashing = false;
+
+                            callback?.Invoke();
 
                             goldSlash.RemoveFromClassList("slashing");
                         }, 0.4f);
@@ -374,45 +375,25 @@ namespace Merge
                     {
                         isGemsSlashing = true;
 
+                        calledBack = true;
+
                         gemsSlash.AddToClassList("slashing");
 
                         Glob.SetTimeout(() =>
                         {
                             isGemsSlashing = false;
 
+                            callback?.Invoke();
+
                             gemsSlash.RemoveFromClassList("slashing");
                         }, 0.4f);
                     }
                     break;
             }
-        }
 
-        public void DisableButtons()
-        {
-            if (!enabledSet)
+            if (!calledBack)
             {
-                levelEnabled = levelButton.enabledSelf;
-                energyEnabled = energyButton.enabledSelf;
-                goldEnabled = goldButton.enabledSelf;
-                gemsEnabled = gemsButton.enabledSelf;
-
-                levelButton.SetEnabled(false);
-                energyButton.SetEnabled(false);
-                goldButton.SetEnabled(false);
-                gemsButton.SetEnabled(false);
-
-                energyPlusEnabled = energyPlus.resolvedStyle.visibility == Visibility.Visible;
-                goldPlusEnabled = goldPlus.resolvedStyle.visibility == Visibility.Visible;
-                gemsPlusEnabled = gemsPlus.resolvedStyle.visibility == Visibility.Visible;
-
-                energyPlus.style.visibility = Visibility.Hidden;
-                energyPlus.style.opacity = 0f;
-                goldPlus.style.visibility = Visibility.Hidden;
-                goldPlus.style.opacity = 0f;
-                gemsPlus.style.visibility = Visibility.Hidden;
-                gemsPlus.style.opacity = 0f;
-
-                enabledSet = true;
+                callback?.Invoke();
             }
         }
 
@@ -444,6 +425,35 @@ namespace Merge
             enabledSet = false;
         }
 
+        public void DisableButtons()
+        {
+            if (!enabledSet)
+            {
+                levelEnabled = levelButton.enabledSelf;
+                energyEnabled = energyButton.enabledSelf;
+                goldEnabled = goldButton.enabledSelf;
+                gemsEnabled = gemsButton.enabledSelf;
+
+                levelButton.SetEnabled(false);
+                energyButton.SetEnabled(false);
+                goldButton.SetEnabled(false);
+                gemsButton.SetEnabled(false);
+
+                energyPlusEnabled = energyPlus.resolvedStyle.visibility == Visibility.Visible;
+                goldPlusEnabled = goldPlus.resolvedStyle.visibility == Visibility.Visible;
+                gemsPlusEnabled = gemsPlus.resolvedStyle.visibility == Visibility.Visible;
+
+                energyPlus.style.visibility = Visibility.Hidden;
+                energyPlus.style.opacity = 0f;
+                goldPlus.style.visibility = Visibility.Hidden;
+                goldPlus.style.opacity = 0f;
+                gemsPlus.style.visibility = Visibility.Hidden;
+                gemsPlus.style.opacity = 0f;
+
+                enabledSet = true;
+            }
+        }
+
         public void HideButtons()
         {
             if (!PlayerPrefs.HasKey("tutorialFinished"))
@@ -452,6 +462,18 @@ namespace Merge
                 energyButton.style.display = DisplayStyle.None;
                 goldButton.style.display = DisplayStyle.None;
                 gemsButton.style.display = DisplayStyle.None;
+
+                dummyLevelButton.style.display = DisplayStyle.Flex;
+                dummyEnergyButton.style.display = DisplayStyle.Flex;
+                dummyGoldButton.style.display = DisplayStyle.Flex;
+                dummyGemsButton.style.display = DisplayStyle.Flex;
+
+                energyPlus.style.visibility = Visibility.Hidden;
+                energyPlus.style.opacity = 0f;
+                goldPlus.style.visibility = Visibility.Hidden;
+                goldPlus.style.opacity = 0f;
+                gemsPlus.style.visibility = Visibility.Hidden;
+                gemsPlus.style.opacity = 0f;
             }
         }
 
@@ -461,6 +483,18 @@ namespace Merge
             energyButton.style.display = DisplayStyle.Flex;
             goldButton.style.display = DisplayStyle.Flex;
             gemsButton.style.display = DisplayStyle.Flex;
+
+            dummyLevelButton.style.display = DisplayStyle.None;
+            dummyEnergyButton.style.display = DisplayStyle.None;
+            dummyGoldButton.style.display = DisplayStyle.None;
+            dummyGemsButton.style.display = DisplayStyle.None;
+
+            energyPlus.style.visibility = Visibility.Visible;
+            energyPlus.style.opacity = 1f;
+            goldPlus.style.visibility = Visibility.Visible;
+            goldPlus.style.opacity = 1f;
+            gemsPlus.style.visibility = Visibility.Visible;
+            gemsPlus.style.opacity = 1f;
         }
 
         public void ShowButton(Types.CollGroup collGroup)
@@ -471,15 +505,19 @@ namespace Merge
                 {
                     case Types.CollGroup.Experience:
                         levelButton.style.display = DisplayStyle.Flex;
+                        dummyLevelButton.style.display = DisplayStyle.None;
                         break;
                     case Types.CollGroup.Energy:
                         energyButton.style.display = DisplayStyle.Flex;
+                        dummyEnergyButton.style.display = DisplayStyle.None;
                         break;
                     case Types.CollGroup.Gold:
                         goldButton.style.display = DisplayStyle.Flex;
+                        dummyGoldButton.style.display = DisplayStyle.None;
                         break;
                     case Types.CollGroup.Gems:
                         gemsButton.style.display = DisplayStyle.Flex;
+                        dummyGemsButton.style.display = DisplayStyle.None;
                         break;
                     default:
                         errorManager.ThrowWarning(Types.ErrorType.Code, GetType().ToString(), "Types.CollGroup " + collGroup + " is not implemented!");

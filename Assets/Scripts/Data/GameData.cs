@@ -125,6 +125,9 @@ namespace Merge
         private Sprite[] wallSprites;
         private Sprite[] propsSprites;
 
+        // Other
+        public Types.Scene lastScene = Types.Scene.None;
+
         // Debug
 #if DEVELOPMENT_BUILD || UNITY_EDITOR
         public List<Types.LogData> logsData = new();
@@ -393,7 +396,7 @@ namespace Merge
             return true;
         }
 
-        public void UpdateValueUI(int amount, Types.CollGroup type, bool useMultiplier = false)
+        public void UpdateValueUI(int amount, Types.CollGroup type, bool useMultiplier = false, Action callback = null)
         {
             int tempAmount = CalcNewAmount(amount, type, useMultiplier);
 
@@ -426,14 +429,13 @@ namespace Merge
             {
                 SetUpdating(type, false);
 
-                StopCoroutine(UpdateNumber(type, currentAmount, tempAmount, shouldFlash)); // Remove energy
+                StopCoroutine(UpdateNumber(type, currentAmount, tempAmount, shouldFlash, callback)); // Remove energy
             }
-
-            if (!isUpdating)
+            else
             {
                 SetUpdating(type, true);
 
-                StartCoroutine(UpdateNumber(type, currentAmount, tempAmount, shouldFlash));
+                StartCoroutine(UpdateNumber(type, currentAmount, tempAmount, shouldFlash, callback));
             }
         }
 
@@ -480,7 +482,7 @@ namespace Merge
             }
         }
 
-        IEnumerator UpdateNumber(Types.CollGroup type, int amount, int newAmount, bool slash)
+        IEnumerator UpdateNumber(Types.CollGroup type, int amount, int newAmount, bool slash, Action callback = null)
         {
             int prevAmount = amount;
             int stepAmount;
@@ -514,7 +516,7 @@ namespace Merge
 
                 if (slash)
                 {
-                    valuesUI.SlashValues(type);
+                    valuesUI.SlashValues(type, callback);
                 }
 
                 SetUpdating(type, false);
@@ -539,10 +541,15 @@ namespace Merge
 
                 if (slash)
                 {
-                    valuesUI.SlashValues(type);
+                    valuesUI.SlashValues(type, callback);
                 }
 
                 SetUpdating(type, false);
+            }
+
+            if (!slash)
+            {
+                callback?.Invoke();
             }
         }
 

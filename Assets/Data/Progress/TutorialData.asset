@@ -277,3 +277,25 @@ MonoBehaviour:
     genSprite: {fileID: 0}
     taskOrder: 0
     keepConvoOpen: 0
+  - name: World Task Press Task5
+    id: Task5
+    scene: 1
+    type: 0
+    taskType: 0
+    taskButton: 3
+    taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
+    taskOrder: 0
+    keepConvoOpen: 0
+  - name: World Task Menu TaskMenu5
+    id: TaskMenu5
+    scene: 1
+    type: 0
+    taskType: 3
+    taskButton: 0
+    taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
+    taskOrder: 0
+    keepConvoOpen: 0

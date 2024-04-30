@@ -189,7 +189,8 @@ namespace Merge
                 uiButtons.mergeBonusButtonPos = CalcButtonPosition(bonusButton);
             }
 
-            HideButtons();
+            inventoryButton.style.display = DisplayStyle.None;
+            shopButton.style.display = DisplayStyle.None;
         }
 
         public void HideButtons()
@@ -208,8 +209,8 @@ namespace Merge
             taskButton.SetEnabled(true);
 
             homeButton.style.display = DisplayStyle.Flex;
-            inventoryButton.style.display = DisplayStyle.Flex;
-            shopButton.style.display = DisplayStyle.Flex;
+            // inventoryButton.style.display = DisplayStyle.Flex;
+            // shopButton.style.display = DisplayStyle.Flex;
             taskButton.style.display = DisplayStyle.Flex;
 
             PlayerPrefs.DeleteKey("mergeHomeButtonShowing");

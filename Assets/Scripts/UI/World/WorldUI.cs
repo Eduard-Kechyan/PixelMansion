@@ -17,6 +17,10 @@ namespace Merge
         private float singlePixelWidth;
 
         private bool buttonsHidden = false;
+        private bool settingsButtonHidden = false;
+        private bool shopButtonHidden = false;
+
+        private bool textBoxOpen = false;
 
         // References
         private SafeAreaHandler safeAreaHandler;
@@ -29,6 +33,8 @@ namespace Merge
         private ErrorManager errorManager;
         private SceneLoader sceneLoader;
         private PointerHandler pointerHandler;
+        private TutorialManager tutorialManager;
+        private I18n LOCALE;
 
 #if DEVELOPMENT_BUILD || UNITY_EDITOR
         private FeedbackManager feedbackManager;
@@ -49,6 +55,9 @@ namespace Merge
         public VisualElement taskButtonNoteDot;
         public Label taskButtonNoteDotLabel;
 
+        private VisualElement textBox;
+        private Label textBoxText;
+
         void Start()
         {
             // Cache
@@ -62,6 +71,8 @@ namespace Merge
             errorManager = ErrorManager.Instance;
             sceneLoader = GameRefs.Instance.sceneLoader;
             pointerHandler = GameRefs.Instance.pointerHandler;
+            tutorialManager = GameRefs.Instance.tutorialManager;
+            LOCALE = I18n.Instance;
 
 #if DEVELOPMENT_BUILD || UNITY_EDITOR
             feedbackManager = GameRefs.Instance.feedbackManager;
@@ -84,6 +95,9 @@ namespace Merge
             playButtonNoteDot = playButton.Q<VisualElement>("NoteDot");
             taskButtonNoteDot = taskButton.Q<VisualElement>("NoteDot");
             taskButtonNoteDotLabel = taskButtonNoteDot.Q<Label>("Value");
+
+            textBox = root.Q<VisualElement>("TextBox");
+            textBoxText = textBox.Q<Label>("Text");
 
             // UI taps
             settingsButton.clicked += () => settingsMenu.Open();
@@ -196,6 +210,8 @@ namespace Merge
             uiButtons.worldShopButtonPos = CalcButtonPosition(shopButton);
             uiButtons.worldTaskButtonPos = CalcButtonPosition(taskButton, true);
             uiButtons.worldPlayButtonPos = CalcButtonPosition(playButton, true);
+
+            shopButton.style.display = DisplayStyle.None;
         }
 
         public void HideButtons()
@@ -206,20 +222,28 @@ namespace Merge
             taskButton.style.display = DisplayStyle.None;
         }
 
-        public void ShowButtons()
+        public void ShowButtons(bool fromTutorial = false)
         {
             if (!buttonsHidden)
             {
+                Debug.Log("C");
                 playButton.SetEnabled(true);
                 taskButton.SetEnabled(true);
+
+                if (fromTutorial)
+                {
+                    buttonsHidden = true;
+                }
             }
 
+            playButton.SetEnabled(true);
             settingsButton.SetEnabled(true);
             shopButton.SetEnabled(true);
+            taskButton.SetEnabled(true);
 
             playButton.style.display = DisplayStyle.Flex;
             settingsButton.style.display = DisplayStyle.Flex;
-            shopButton.style.display = DisplayStyle.Flex;
+            // shopButton.style.display = DisplayStyle.Flex;
             taskButton.style.display = DisplayStyle.Flex;
 
             PlayerPrefs.DeleteKey("worldPlayButtonShowing");
@@ -373,6 +397,42 @@ namespace Merge
             topBox.style.transitionDelay = nullDelay;
             bottomBox.style.bottom = 0;
             bottomBox.style.transitionDelay = nullDelay;
+        }
+
+        public void OpenTextBox(string stepId)
+        {
+            if (tutorialManager != null && LOCALE.TryCheckIfExists("tutorial_info_world_" + stepId, out string foundText))
+            {
+                textBoxOpen = true;
+
+                textBox.style.display = DisplayStyle.Flex;
+                textBox.style.opacity = 1;
+
+                if (Random.value > 0.5f)
+                {
+                    textBox.AddToClassList("text_box_right");
+                }
+                else
+                {
+                    textBox.RemoveFromClassList("text_box_right");
+                }
+
+                textBoxText.text = foundText;
+            }
+        }
+
+        public void CloseTextBox()
+        {
+            if (textBoxOpen)
+            {
+                textBox.style.display = DisplayStyle.None;
+                textBox.style.opacity = 0;
+
+                Glob.SetTimeout(() =>
+                {
+                    textBoxOpen = false;
+                }, 0.3f);
+            }
         }
     }
 }

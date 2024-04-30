@@ -42,7 +42,7 @@
     width: 40px;
     height: 20px;
     overflow: hidden;
-    background-image: url('project://database/Assets/Sprites/Values/ValueBox.png?fileID=2800000&guid=7f2582712c649454cac7fdacf465ec27&type=3#ValueBox');
+    background-image: url("project://database/Assets/Sprites/Values/ValueBox.png?fileID=2800000&guid=7f2582712c649454cac7fdacf465ec27&type=3#ValueBox");
 }
 
 .value_button:active {
@@ -68,14 +68,14 @@
     position: absolute;
     top: 0;
     right: 0;
-    background-image: url('project://database/Assets/Sprites/Values/ValueBoxEdge.png?fileID=2800000&guid=374ad9b173b598746ba971596a0a6415&type=3#ValueBoxEdge');
+    background-image: url("project://database/Assets/Sprites/Values/ValueBoxEdge.png?fileID=2800000&guid=374ad9b173b598746ba971596a0a6415&type=3#ValueBoxEdge");
 }
 
 .value_button .slash {
     width: 8px;
     height: 18px;
     position: absolute;
-    background-image: url('project://database/Assets/Sprites/Values/ValueSlash.png?fileID=2800000&guid=920ec226e86a00044a00ae5d8a9c9974&type=3#ValueSlash');
+    background-image: url("project://database/Assets/Sprites/Values/ValueSlash.png?fileID=2800000&guid=920ec226e86a00044a00ae5d8a9c9974&type=3#ValueSlash");
     left: 5px;
 }
 
@@ -176,7 +176,7 @@
     padding-bottom: 0;
     bottom: 0;
     display: none;
-    -unity-font-definition: url('project://database/Assets/Fonts/RobotoMono%20SDF.asset?fileID=11400000&guid=26200f3517d34d040a046d6ffe9a951f&type=2#RobotoMono SDF');
+    -unity-font-definition: url("project://database/Assets/Fonts/RobotoMono%20SDF.asset?fileID=11400000&guid=26200f3517d34d040a046d6ffe9a951f&type=2#RobotoMono SDF");
 }
 
 .gold_button {
@@ -196,4 +196,287 @@
 
 .gems_button .plus {
     left: 10px;
+}
+
+.tutorial_cycle_container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    opacity: 0;
+    transition-duration: 0.3s;
+}
+
+.tutorial_cycle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 164px;
+    height: 164px;
+    translate: -50% -50%;
+    border-top-left-radius: 100px;
+    border-top-right-radius: 100px;
+    border-bottom-right-radius: 100px;
+    border-bottom-left-radius: 100px;
+    background-color: rgb(238, 226, 195);
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-left-color: rgb(223, 209, 173);
+    border-right-color: rgb(223, 209, 173);
+    border-top-color: rgb(223, 209, 173);
+    border-bottom-color: rgb(223, 209, 173);
+}
+
+.tutorial_cycle_border {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background-color: rgba(0, 0, 0, 0.1);
+    width: 168px;
+    height: 168px;
+    border-top-left-radius: 100px;
+    border-top-right-radius: 100px;
+    border-bottom-right-radius: 100px;
+    border-bottom-left-radius: 100px;
+    translate: -50% -50%;
+    padding-top: 1px;
+    padding-right: 1px;
+    padding-bottom: 1px;
+    padding-left: 1px;
+}
+
+.tutorial_cycle_border_inner {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-top-left-radius: 100px;
+    border-top-right-radius: 100px;
+    border-bottom-right-radius: 100px;
+    border-bottom-left-radius: 100px;
+}
+
+.tutorial_cycle_title {
+    top: 35%;
+    left: 50%;
+    -unity-text-align: middle-center;
+    translate: -50% 0;
+    font-size: 14px;
+    -unity-font-definition: url("project://database/Assets/Fonts/Venice%20SDF.asset?fileID=11400000&guid=3c03944c7f3e946479e761eb649b302c&type=2#Venice SDF");
+    color: rgb(130, 116, 79);
+    -unity-font-style: bold;
+    opacity: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    transition-duration: 0.3s;
+}
+
+.tutorial_cycle_number {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    -unity-text-align: middle-center;
+    color: rgb(199, 79, 79);
+    font-size: 8px;
+    -unity-font-definition: url("project://database/Assets/Fonts/Roboto%20SDF.asset?fileID=11400000&guid=1c5dedeb0ccefb74ebe6e5ff0a6f7e56&type=2#Roboto SDF");
+    -unity-font-style: bold;
+    top: -10px;
+    left: 50%;
+    background-image: url("project://database/Assets/Sprites/Scenes/World/ProgressCycleNumber.png?fileID=2800000&guid=1e2a319fe62f8bd4f86924474337c22f&type=3#ProgressCycleNumber");
+    translate: -50% 0;
+}
+
+.tutorial_cycle_text {
+    position: absolute;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    font-size: 6px;
+    -unity-font-definition: url("project://database/Assets/Fonts/RobotoMono%20SDF.asset?fileID=11400000&guid=26200f3517d34d040a046d6ffe9a951f&type=2#RobotoMono SDF");
+    -unity-text-align: middle-center;
+    color: rgb(115, 106, 82);
+    top: 50px;
+    left: 50%;
+    translate: -50% 0;
+    width: 50px;
+    -unity-font-style: bold;
+}
+
+.tutorial_cycle_close_button {
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    font-size: 12px;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    background-color: rgba(0, 0, 0, 0);
+    bottom: -26px;
+    left: 50%;
+    position: absolute;
+    width: 16px;
+    translate: -50% 0;
+    transition-duration: 0.2s;
+    height: 16px;
+    background-image: url("project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=2800000&guid=de292eed4f8226d44902262e6258cb7b&type=3#MenuCloseButton");
+    display: none;
+    opacity: 0;
+}
+
+.tutorial_cycle_close_button:active {
+    scale: 0.8 0.8;
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.tutorial_cycle_close_button .border {
+    position: absolute;
+    background-image: url("project://database/Assets/Sprites/Buttons/Menu/MenuCloseButtonBorder.png?fileID=2800000&guid=5bd5ca7e63db671418d83f61bbba219e&type=3#MenuCloseButtonBorder");
+    top: -2px;
+    left: -2px;
+    width: 20px;
+    height: 20px;
+}
+
+.tutorial_cycle_step_1 {
+    position: absolute;
+    top: 4px;
+    left: 50%;
+    translate: -50% 0;
+    background-image: url("project://database/Assets/Sprites/Scenes/World/ProgressCycle1.png?fileID=2800000&guid=ebc288442f00ee045b46de4295aae31e&type=3#ProgressCycle1");
+    width: 42px;
+    height: 42px;
+    opacity: 0;
+    transition-duration: 0.4s;
+}
+
+.tutorial_cycle_step_2 {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    translate: 0 -50%;
+    background-image: url("project://database/Assets/Sprites/Scenes/World/ProgressCycle2.png?fileID=2800000&guid=cc262fbb6af9f0d438415a3555ee08bc&type=3#ProgressCycle2");
+    width: 42px;
+    height: 42px;
+    opacity: 0;
+    transition-duration: 0.4s;
+}
+
+.tutorial_cycle_step_3 {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    translate: -50% 0;
+    background-image: url("project://database/Assets/Sprites/Scenes/World/ProgressCycle3.png?fileID=2800000&guid=dc90cc671d3b9f14b982648b9b3ed52b&type=3#ProgressCycle3");
+    width: 42px;
+    height: 50px;
+    opacity: 0;
+    transition-duration: 0.4s;
+}
+
+.tutorial_cycle_step_4 {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    translate: 0 -50%;
+    background-image: url("project://database/Assets/Sprites/Scenes/World/ProgressCycle4.png?fileID=2800000&guid=4973eeb73d42d774eb61293f9edd22cf&type=3#ProgressCycle4");
+    width: 23px;
+    height: 32px;
+    opacity: 0;
+    transition-duration: 0.4s;
+}
+
+.tutorial_cycle_step_label {
+    position: absolute;
+    left: 50%;
+    bottom: -6px;
+    width: 50px;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    -unity-text-align: middle-center;
+    -unity-font-definition: url("project://database/Assets/Fonts/Roboto%20SDF.asset?fileID=11400000&guid=1c5dedeb0ccefb74ebe6e5ff0a6f7e56&type=2#Roboto SDF");
+    font-size: 6px;
+    translate: -50% 0;
+    -unity-font-style: bold;
+    color: rgb(137, 122, 82);
+}
+
+.tutorial_cycle_arrow {
+    position: absolute;
+    background-image: url("project://database/Assets/Sprites/Scenes/World/ProgressCycleArrow.png?fileID=2800000&guid=fdf5d6f52b60e6349be5ab13962ba472&type=3#ProgressCycleArrow");
+    width: 58px;
+    height: 58px;
+    top: 0;
+    right: 0;
+    opacity: 0;
+    transition-duration: 0.2s;
+}
+
+.tutorial_cycle_title {
+    top: 35%;
+    left: 50%;
+    -unity-text-align: middle-center;
+    translate: -50% 0;
+    font-size: 14px;
+    -unity-font-definition: url("project://database/Assets/Fonts/Venice%20SDF.asset?fileID=11400000&guid=3c03944c7f3e946479e761eb649b302c&type=2#Venice SDF");
+    color: rgb(130, 116, 79);
+    -unity-font-style: bold;
+}
+
+.tutorial_cycle_level {
+    position: absolute;
+    -unity-text-align: middle-center;
+    color: rgb(79, 79, 79);
+    width: 17px;
+    height: 17px;
+    font-size: 9px;
+    color: rgb(42, 83, 125);
+    -unity-font-style: bold;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    left: 3px;
+    top: 3px;
+    -unity-font-definition: url("project://database/Assets/Fonts/Files/RobotoMono.ttf?fileID=12800000&guid=7144b63d91be9e740aa1f0e7ba467a67&type=3#RobotoMono");
 }

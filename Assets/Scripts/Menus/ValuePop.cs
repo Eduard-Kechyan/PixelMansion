@@ -124,22 +124,22 @@ namespace Merge
             {
                 case Types.CollGroup.Energy:
                     valuePopSprite = energySprite;
-                    valuePopOffset = valuesUI.energyButton.layout.x;
+                    valuePopOffset = valuesUI.energyButton.resolvedStyle.display == DisplayStyle.Flex ? valuesUI.energyButton.layout.x : valuesUI.dummyEnergyButton.layout.x;
                     valuePopSoundType = Types.SoundType.Energy;
                     break;
                 case Types.CollGroup.Gold:
                     valuePopSprite = goldSprite;
-                    valuePopOffset = valuesUI.goldButton.layout.x;
+                    valuePopOffset = valuesUI.goldButton.resolvedStyle.display == DisplayStyle.Flex ? valuesUI.goldButton.layout.x : valuesUI.dummyGoldButton.layout.x;
                     valuePopSoundType = Types.SoundType.Gold;
                     break;
                 case Types.CollGroup.Gems:
                     valuePopSprite = gemsSprite;
-                    valuePopOffset = valuesUI.gemsButton.layout.x;
+                    valuePopOffset = valuesUI.gemsButton.resolvedStyle.display == DisplayStyle.Flex ? valuesUI.gemsButton.layout.x : valuesUI.dummyGemsButton.layout.x;
                     valuePopSoundType = Types.SoundType.Gems;
                     break;
                 default: // Types.CollGroup.Experience
                     valuePopSprite = experienceSprite;
-                    valuePopOffset = valuesUI.levelButton.layout.x;
+                    valuePopOffset = valuesUI.levelButton.resolvedStyle.display == DisplayStyle.Flex ? valuesUI.levelButton.layout.x : valuesUI.dummyLevelButton.layout.x;
                     valuePopSoundType = Types.SoundType.Experience;
                     break;
             }
@@ -172,7 +172,7 @@ namespace Merge
 
             yield return new WaitForSeconds(0.1f);
 
-            callback?.Invoke();
+            // callback?.Invoke();
 
             // Play value pop sound
             soundManager.PlaySound(valuePopSoundType);
@@ -186,14 +186,25 @@ namespace Merge
             // Remove the value pop
             root.Remove(valuePop);
 
-            valuesUI.HideButtons();
-
-            popping = false;
-
             // Update data
             if (type != Types.CollGroup.Experience)
             {
-                gameData.UpdateValueUI(amount, type, multiply);
+                gameData.UpdateValueUI(amount, type, multiply, () =>
+                {
+                    popping = false;
+
+                    valuesUI.HideButtons();
+
+                    callback?.Invoke();
+                });
+            }
+            else
+            {
+                popping = false;
+
+                valuesUI.HideButtons();
+
+                callback?.Invoke();
             }
         }
 

@@ -12,8 +12,12 @@ namespace Merge
         public bool skipTutorial = false;
         public bool startFromStep = false;
         public string stepToStartFrom = "";
+        public SceneLoader sceneLoader;
         public TutorialData tutorialData;
         public ShineSprites[] shineSprites;
+
+        [HideInInspector]
+        public bool ready = false;
 
         private string tutorialStep = "First";
         private bool pointsShone = false;
@@ -41,13 +45,13 @@ namespace Merge
         private GameData gameData;
         private InputMenu inputMenu;
         private PointerHandler pointerHandler;
+        private TutorialCycle tutorialCycle;
         private InfoBox infoBox;
         private CloudSave cloudSave;
         private AnalyticsManager analyticsManager;
         private ProgressManager progressManager;
         private ConvoUIHandler convoUIHandler;
         private BoardManager boardManager;
-        private SceneLoader sceneLoader;
         private ValuePop valuePop;
 
         // UI
@@ -57,12 +61,9 @@ namespace Merge
         {
             if (PlayerPrefs.HasKey("tutorialFinished"))
             {
-                StartCoroutine(WaitForReferences(() =>
-                {
-                    progressManager.SetInitialData(0, true);
-                }));
+                Destroy(gameObject);
             }
-            else if (skipTutorial || (Glob.lastScene != Types.Scene.None && Glob.lastScene == sceneLoader.GetScene()))
+            else if (skipTutorial)
             {
                 StartCoroutine(WaitForReferences(() =>
                 {
@@ -105,48 +106,51 @@ namespace Merge
 
         void Start()
         {
-            // Cache
-            valuesUI = GameRefs.Instance.valuesUI;
-            worldUI = GameRefs.Instance.worldUI;
-            worldGameUIDoc = GameRefs.Instance.worldGameUIDoc;
-            mergeUI = GameRefs.Instance.mergeUI;
-            dataManager = DataManager.Instance;
-            gameData = GameData.Instance;
-            inputMenu = GameRefs.Instance.inputMenu;
-            uiButtons = GameData.Instance.GetComponent<UIButtons>();
-            pointerHandler = GetComponent<PointerHandler>();
-            infoBox = GameRefs.Instance.infoBox;
-            cloudSave = Services.Instance.GetComponent<CloudSave>();
-            analyticsManager = AnalyticsManager.Instance;
-            convoUIHandler = GameRefs.Instance.convoUIHandler;
-            boardManager = GameRefs.Instance.boardManager;
-            sceneLoader = GameRefs.Instance.sceneLoader;
-            progressManager = GameRefs.Instance.progressManager;
-            valuePop = GameRefs.Instance.valuePop;
-
-            referencesSet = true;
-
-            // UI
-            if (worldGameUIDoc != null)
+            if (!skipTutorial && !PlayerPrefs.HasKey("tutorialFinished"))
             {
-                convoBackground = worldGameUIDoc.GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("ConvoBackground");
+                // Cache
+                valuesUI = GameRefs.Instance.valuesUI;
+                worldUI = GameRefs.Instance.worldUI;
+                worldGameUIDoc = GameRefs.Instance.worldGameUIDoc;
+                mergeUI = GameRefs.Instance.mergeUI;
+                dataManager = DataManager.Instance;
+                gameData = GameData.Instance;
+                inputMenu = GameRefs.Instance.inputMenu;
+                uiButtons = GameData.Instance.GetComponent<UIButtons>();
+                pointerHandler = GetComponent<PointerHandler>();
+                tutorialCycle = GetComponent<TutorialCycle>();
+                infoBox = GameRefs.Instance.infoBox;
+                cloudSave = Services.Instance.GetComponent<CloudSave>();
+                analyticsManager = AnalyticsManager.Instance;
+                convoUIHandler = GameRefs.Instance.convoUIHandler;
+                boardManager = GameRefs.Instance.boardManager;
+                progressManager = GameRefs.Instance.progressManager;
+                valuePop = GameRefs.Instance.valuePop;
+
+                referencesSet = true;
+
+                // UI
+                if (worldGameUIDoc != null)
+                {
+                    convoBackground = worldGameUIDoc.GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("ConvoBackground");
+                }
+
+                if (tutorialStarted)
+                {
+                    analyticsManager.FireTutorialEvent("", true);
+
+                    tutorialStarted = false;
+                }
+
+                cloudSave.SaveDataAsync("tutorialStep", PlayerPrefs.GetString("tutorialStep"));
+
+                StartCoroutine(WaitForLoading());
             }
-
-            if (tutorialStarted)
-            {
-                analyticsManager.FireTutorialEvent("", true);
-
-                tutorialStarted = false;
-            }
-
-            cloudSave.SaveDataAsync("tutorialStep", PlayerPrefs.GetString("tutorialStep"));
-
-            StartCoroutine(WaitForLoading());
         }
 
         IEnumerator WaitForLoading()
         {
-            while (destroyingTutorial || !dataManager.loaded || !valuesUI.loaded || (convoUIHandler != null && !convoUIHandler.loaded) || (worldUI != null && !worldUI.loaded) || (mergeUI != null && !mergeUI.loaded))
+            while (skipTutorial || destroyingTutorial || !dataManager.loaded || !valuesUI.loaded || (convoUIHandler != null && !convoUIHandler.loaded) || (worldUI != null && !worldUI.loaded) || (mergeUI != null && !mergeUI.loaded))
             {
                 yield return null;
             }
@@ -157,14 +161,17 @@ namespace Merge
 #if UNITY_EDITOR
         void Init()
         {
-            if (CheckScene())
+            CheckForMenuStepOnStart(() =>
             {
-                SetUI();
+                if (CheckScene())
+                {
+                    SetUI();
 
-                progressManager.SetInitialData(0);
+                    progressManager.SetInitialData(0);
 
-                StartCoroutine(WaitForDataOrBoard());
-            }
+                    StartCoroutine(WaitForDataOrBoard());
+                }
+            });
         }
 
         bool CheckScene()
@@ -205,11 +212,14 @@ namespace Merge
 #else
         void Init()
         {
-            SetUI();
+            CheckForMenuStepOnStart(() =>
+            {
+                SetUI();
 
-            progressManager.SetInitialData(0);
+                progressManager.SetInitialData(0);
 
-            StartCoroutine(WaitForDataOrBoard());
+                StartCoroutine(WaitForDataOrBoard());
+            });
         }
 #endif
 
@@ -219,6 +229,8 @@ namespace Merge
             {
                 yield return null;
             }
+
+            ready = true;
 
             HandleStep();
         }
@@ -328,6 +340,40 @@ namespace Merge
             return false;
         }
 
+        public void CheckForMenuStepOnStart(Action callback)
+        {
+            bool found = false;
+
+            if (gameData.lastScene == Types.Scene.None)
+            {
+                for (int i = 0; i < tutorialData.steps.Length; i++)
+                {
+                    if (tutorialData.steps[i].id == tutorialStep)
+                    {
+                        if (tutorialData.steps[i].type == Types.TutorialStepType.Task && tutorialData.steps[i].taskType == Types.TutorialStepTask.Menu)
+                        {
+                            tutorialStep = tutorialData.steps[i - 1].id;
+
+                            PlayerPrefs.SetString("tutorialStep", tutorialStep);
+
+                            PlayerPrefs.Save();
+                        }
+
+                        found = true;
+
+                        callback?.Invoke();
+
+                        break;
+                    }
+                }
+            }
+
+            if (!found)
+            {
+                callback?.Invoke();
+            }
+        }
+
         void HandleStep()
         {
             HideButtons();
@@ -361,6 +407,11 @@ namespace Merge
 
         public void NextStep(bool handleNextStep = true, Action callback = null)
         {
+            if (worldUI)
+            {
+                worldUI.CloseTextBox();
+            }
+
             for (int i = 0; i < tutorialData.steps.Length; i++)
             {
                 if (tutorialData.steps[i].id == tutorialStep)
@@ -418,9 +469,14 @@ namespace Merge
 
         void HandleTask(Types.TutorialStep step)
         {
-            if (infoBox != null)
+            if (infoBox)
             {
                 infoBox.SetTutorialData(step.id);
+            }
+
+            if (worldUI)
+            {
+                worldUI.OpenTextBox(step.id);
             }
 
             switch (step.taskType)
@@ -615,7 +671,10 @@ namespace Merge
 
             ResetUI();
 
-            Destroy(gameObject);
+            tutorialCycle.ShowCycle(() =>
+            {
+                Destroy(gameObject);
+            });
         }
 
         void SetUI()
@@ -645,7 +704,7 @@ namespace Merge
 
             if (worldUI != null)
             {
-                worldUI.ShowButtons();
+                worldUI.ShowButtons(true);
             }
 
             if (mergeUI != null)

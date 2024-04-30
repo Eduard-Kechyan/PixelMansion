@@ -2,33 +2,70 @@
     <Style src="project://database/Assets/UI/Styles/ValuesStyles.uss?fileID=7433441132597879392&amp;guid=fdd662583d3420b43a2f35180b16b042&amp;type=3#ValuesStyles" />
     <ui:VisualElement name="ValuesBox" class="values_box">
         <ui:VisualElement name="Values" class="values">
-            <ui:Button display-tooltip-when-elided="true" name="LevelButton" class="value_button level_button" style="background-image: url(&apos;project://database/Assets/Sprites/Values/ValueLevel.png?fileID=2800000&amp;guid=db2a0b434fd00d148947a026afc58439&amp;type=3#ValueLevel&apos;); padding-bottom: 0;">
+            <ui:VisualElement name="DummyLevelButton" style="width: 37px; height: 17px; display: none;" />
+            <ui:Button display-tooltip-when-elided="true" name="LevelButton" class="value_button level_button" style="background-image: url(&quot;project://database/Assets/Sprites/Values/ValueLevel.png?fileID=2800000&amp;guid=db2a0b434fd00d148947a026afc58439&amp;type=3#ValueLevel&quot;); padding-bottom: 0;">
                 <ui:VisualElement name="Indicator" class="indicator" />
                 <ui:VisualElement name="FillContainer" class="fill_container" style="background-image: none; display: flex;">
                     <ui:VisualElement name="Fill" class="fill" style="background-image: none; width: 50%; display: flex;" />
-                    <ui:VisualElement name="FillBorder" class="fill_border" style="background-image: url(&apos;project://database/Assets/Sprites/Values/ValueLevelFillBorder.png?fileID=2800000&amp;guid=09e7da2e64b1ede4ca10b0c65b687aa3&amp;type=3#ValueLevelFillBorder&apos;);" />
+                    <ui:VisualElement name="FillBorder" class="fill_border" style="background-image: url(&quot;project://database/Assets/Sprites/Values/ValueLevelFillBorder.png?fileID=2800000&amp;guid=09e7da2e64b1ede4ca10b0c65b687aa3&amp;type=3#ValueLevelFillBorder&quot;);" />
                 </ui:VisualElement>
-                <ui:VisualElement name="Extra" class="extra" style="background-image: url(&apos;project://database/Assets/Sprites/Values/ValueLevelExtra.png?fileID=2800000&amp;guid=7376b57cbcfa0cf4784e7a2a910b2c38&amp;type=3#ValueLevelExtra&apos;);" />
+                <ui:VisualElement name="Extra" class="extra" style="background-image: url(&quot;project://database/Assets/Sprites/Values/ValueLevelExtra.png?fileID=2800000&amp;guid=7376b57cbcfa0cf4784e7a2a910b2c38&amp;type=3#ValueLevelExtra&quot;);" />
                 <ui:Label tabindex="-1" text="00" display-tooltip-when-elided="true" name="Value" class="value" />
             </ui:Button>
+            <ui:VisualElement name="DummyEnergyButton" style="display: none; width: 40px; height: 20px;" />
             <ui:Button display-tooltip-when-elided="true" name="EnergyButton" text="0000" class="value_button energy_button">
                 <ui:VisualElement name="Slash" class="slash" />
-                <ui:VisualElement name="Item" style="background-image: url(&apos;project://database/Assets/Sprites/Values/ValueBoxEnergy.png?fileID=2800000&amp;guid=ddd9df73c1cda4346ade788ba7efec3b&amp;type=3#ValueBoxEnergy&apos;); width: 18px; height: 18px; position: absolute; top: 0; left: 0;" />
-                <ui:VisualElement name="Plus" class="plus" style="background-image: url(&apos;project://database/Assets/Sprites/Values/ValuePlus.png?fileID=2800000&amp;guid=c164332ef8545e14c804928c22c83a7b&amp;type=3#ValuePlus&apos;);" />
+                <ui:VisualElement name="Item" style="background-image: url(&quot;project://database/Assets/Sprites/Values/ValueBoxEnergy.png?fileID=2800000&amp;guid=ddd9df73c1cda4346ade788ba7efec3b&amp;type=3#ValueBoxEnergy&quot;); width: 18px; height: 18px; position: absolute; top: 0; left: 0;" />
+                <ui:VisualElement name="Plus" class="plus" style="background-image: url(&quot;project://database/Assets/Sprites/Values/ValuePlus.png?fileID=2800000&amp;guid=c164332ef8545e14c804928c22c83a7b&amp;type=3#ValuePlus&quot;);" />
                 <ui:Label tabindex="-1" text="00:00" display-tooltip-when-elided="true" name="EnergyTimer" enable-rich-text="false" class="timer" />
                 <ui:VisualElement name="Edge" class="edge" />
             </ui:Button>
+            <ui:VisualElement name="DummyGoldButton" style="display: none; width: 40px; height: 20px;" />
             <ui:Button display-tooltip-when-elided="true" name="GoldButton" text="0000" class="value_button gold_button" style="overflow: hidden;">
                 <ui:VisualElement name="Slash" class="slash" />
-                <ui:VisualElement name="Item" style="background-image: url(&apos;project://database/Assets/Sprites/Values/ValueBoxGold.png?fileID=2800000&amp;guid=c1cd829e51693f342ab508d6f519052f&amp;type=3#ValueBoxGold&apos;); position: absolute; left: 0; top: 0; width: 18px; height: 18px;" />
-                <ui:VisualElement name="Plus" class="plus" style="background-image: url(&apos;project://database/Assets/Sprites/Values/ValuePlus.png?fileID=2800000&amp;guid=c164332ef8545e14c804928c22c83a7b&amp;type=3#ValuePlus&apos;);" />
+                <ui:VisualElement name="Item" style="background-image: url(&quot;project://database/Assets/Sprites/Values/ValueBoxGold.png?fileID=2800000&amp;guid=c1cd829e51693f342ab508d6f519052f&amp;type=3#ValueBoxGold&quot;); position: absolute; left: 0; top: 0; width: 18px; height: 18px;" />
+                <ui:VisualElement name="Plus" class="plus" style="background-image: url(&quot;project://database/Assets/Sprites/Values/ValuePlus.png?fileID=2800000&amp;guid=c164332ef8545e14c804928c22c83a7b&amp;type=3#ValuePlus&quot;);" />
                 <ui:VisualElement name="Edge" class="edge" />
             </ui:Button>
+            <ui:VisualElement name="DummyGemsButton" style="display: none; width: 40px; height: 20px;" />
             <ui:Button display-tooltip-when-elided="true" name="GemsButton" text="0000" class="value_button gems_button" style="overflow: hidden;">
                 <ui:VisualElement name="Slash" class="slash" />
-                <ui:VisualElement name="Item" style="background-image: url(&apos;project://database/Assets/Sprites/Values/ValueBoxGems.png?fileID=2800000&amp;guid=33008d2d55001e24b9e3d814fc8c0a30&amp;type=3#ValueBoxGems&apos;); width: 18px; height: 18px; position: absolute; left: 0; top: 0;" />
-                <ui:VisualElement name="Plus" class="plus" style="background-image: url(&apos;project://database/Assets/Sprites/Values/ValuePlus.png?fileID=2800000&amp;guid=c164332ef8545e14c804928c22c83a7b&amp;type=3#ValuePlus&apos;);" />
+                <ui:VisualElement name="Item" style="background-image: url(&quot;project://database/Assets/Sprites/Values/ValueBoxGems.png?fileID=2800000&amp;guid=33008d2d55001e24b9e3d814fc8c0a30&amp;type=3#ValueBoxGems&quot;); width: 18px; height: 18px; position: absolute; left: 0; top: 0;" />
+                <ui:VisualElement name="Plus" class="plus" style="background-image: url(&quot;project://database/Assets/Sprites/Values/ValuePlus.png?fileID=2800000&amp;guid=c164332ef8545e14c804928c22c83a7b&amp;type=3#ValuePlus&quot;);" />
                 <ui:VisualElement name="Edge" class="edge" />
+            </ui:Button>
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="TutorialCycle" class="tutorial_cycle_container" style="display: none; opacity: 0;">
+        <ui:VisualElement name="Border" class="tutorial_cycle_border" style="flex-grow: 1;">
+            <ui:VisualElement name="Inner" class="tutorial_cycle_border_inner" style="flex-grow: 1;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="Cycle" class="tutorial_cycle_ring_0 tutorial_cycle" style="flex-grow: 1;">
+            <ui:Label text="How To&#10;Progress:" name="Title" class="tutorial_cycle_title" style="opacity: 0;" />
+            <ui:VisualElement name="Step1" class="tutorial_cycle_step_1" style="opacity: 0;">
+                <ui:Label text="Merge" name="StepLabel" class="tutorial_cycle_step_label" />
+                <ui:Label text="1" name="Number" class="tutorial_cycle_number" />
+            </ui:VisualElement>
+            <ui:VisualElement name="Arrow1" class="tutorial_cycle_arrow" />
+            <ui:VisualElement name="Step2" class="tutorial_cycle_step_2" style="flex-grow: 1; opacity: 0;">
+                <ui:Label text="New Items" name="StepLabel" class="tutorial_cycle_step_label" style="bottom: -3px;" />
+                <ui:Label text="2" name="Number" class="tutorial_cycle_number" style="top: -6px;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="Arrow2" class="tutorial_cycle_arrow" style="bottom: 0; top: auto; rotate: 90deg;" />
+            <ui:VisualElement name="Step3" class="tutorial_cycle_step_3" style="flex-grow: 1; bottom: 10px; opacity: 0;">
+                <ui:VisualElement name="Inner" style="background-image: url(&quot;project://database/Assets/Sprites/Scenes/World/ProgressCycle3a.png?fileID=2800000&amp;guid=821b38a3b60de63419ab31bf92c443e6&amp;type=3#ProgressCycle3a&quot;); position: absolute; top: 6px; left: 6px; height: 28px; width: 30px;" />
+                <ui:Label text="Customize" name="StepLabel" class="tutorial_cycle_step_label" style="bottom: -7px;" />
+                <ui:Label text="3" name="Number" class="tutorial_cycle_number" />
+            </ui:VisualElement>
+            <ui:VisualElement name="Arrow3" class="tutorial_cycle_arrow" style="bottom: 0; top: auto; rotate: 180deg; left: 0; right: auto;" />
+            <ui:VisualElement name="Step4" class="tutorial_cycle_step_4" style="flex-grow: 1; opacity: 0;">
+                <ui:Label text="12" name="LevelAmount" class="tutorial_cycle_level" />
+                <ui:Label text="Level Up" name="StepLabel" class="tutorial_cycle_step_label" style="bottom: -8px;" />
+                <ui:Label text="4" name="Number" class="tutorial_cycle_number" style="top: -12px;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="Arrow4" class="tutorial_cycle_arrow" style="rotate: -90deg; left: 0; right: auto; opacity: 0;" />
+            <ui:Button display-tooltip-when-elided="true" name="Close" class="tutorial_cycle_close_button" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/Menu/MenuCloseButton.png?fileID=21300000&amp;guid=de292eed4f8226d44902262e6258cb7b&amp;type=3#MenuCloseButton&quot;); opacity: 0; display: none;">
+                <ui:VisualElement name="Border" class="border" />
             </ui:Button>
         </ui:VisualElement>
     </ui:VisualElement>

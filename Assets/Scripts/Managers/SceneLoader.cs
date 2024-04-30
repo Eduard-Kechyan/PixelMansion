@@ -18,13 +18,22 @@ namespace Merge
         // References
         private SoundManager soundManager;
         private LocaleManager localeManager;
+        private GameData gameData;
+
+        void Start()
+        {
+            // Cache
+            soundManager = SoundManager.Instance;
+            localeManager = Settings.Instance.GetComponent<LocaleManager>();
+            gameData = GameData.Instance;
+
+            InitializeScene();
+        }
 
         void OnEnable()
         {
             // Subscribe to events
             SceneManager.sceneLoaded += OnSceneLoaded;
-
-            SceneManager.sceneUnloaded += OnSceneUnloaded;
         }
 
         void OnDisable()
@@ -35,15 +44,6 @@ namespace Merge
             SceneManager.sceneUnloaded += OnSceneUnloaded;
         }
 
-        void Start()
-        {
-            // Cache
-            soundManager = SoundManager.Instance;
-            localeManager = Settings.Instance.GetComponent<LocaleManager>();
-
-            InitializeScene();
-        }
-
         void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             InitializeScene();
@@ -51,7 +51,9 @@ namespace Merge
 
         void OnSceneUnloaded(Scene scene)
         {
-            Glob.lastScene = Glob.ParseEnum<Types.Scene>(scene.name);
+            gameData.lastScene = Glob.ParseEnum<Types.Scene>(scene.name);
+
+            SceneManager.sceneUnloaded -= OnSceneUnloaded;
         }
 
         public void Load(Types.Scene scene)

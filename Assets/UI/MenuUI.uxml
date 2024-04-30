@@ -249,7 +249,7 @@
                 <ui:VisualElement name="Content" class="content">
                     <ui:ScrollView name="TaskScrollView" class="scroller" />
                 </ui:VisualElement>
-                <ui:VisualElement name="BorderBottom" class="border_bottom" style="background-image: url(&quot;project://database/Assets/Sprites/Menus/MenuBorderBottom.png?fileID=2800000&amp;guid=80923a0de08b2cb4ca2cad385b4f59c7&amp;type=3#MenuBorderBottom&quot;);" />
+                <ui:VisualElement name="BorderBottom" class="border_bottom" style="background-image: url(&quot;project://database/Assets/Sprites/Menus/MenuBorderBottom.png?fileID=2800000&amp;guid=80923a0de08b2cb4ca2cad385b4f59c7&amp;type=3#MenuBorderBottom&quot;); height: 6px; width: 165px;" />
                 <ui:VisualElement name="ShadowDot" class="shadow_dot" />
                 <ui:VisualElement name="Title" class="menu_title" style="background-image: url(&quot;project://database/Assets/Sprites/Menus/MenuTitle.png?fileID=2800000&amp;guid=830ffbc9a26c02c4cb218a8e5568ad67&amp;type=3#MenuTitle&quot;);">
                     <ui:Label text="Title" display-tooltip-when-elided="true" name="Value" class="menu_title_value" />

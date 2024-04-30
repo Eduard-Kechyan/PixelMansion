@@ -25,8 +25,6 @@ namespace Merge
         public static bool taskLoading = false;
         public static bool convoUILoading = true;
 
-        public static Types.Scene lastScene = Types.Scene.None;
-
         // Instance
         public static Glob Instance;
 
@@ -36,8 +34,6 @@ namespace Merge
         void Awake()
         {
             Instance = this;
-
-            lastScene = Types.Scene.None;
 
             colorBlue = FromHEX("71A0F6");
             colorCyan = FromHEX("55CBB3");

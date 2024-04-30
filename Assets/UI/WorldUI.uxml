@@ -1,7 +1,8 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/Styles/!MainStyles.uss?fileID=7433441132597879392&amp;guid=d72cb646ff9afd2458a02dbd4dc56421&amp;type=3#!MainStyles" />
     <Style src="project://database/Assets/UI/Styles/WorldUIStyles.uss?fileID=7433441132597879392&amp;guid=c4905c9400910184b8844a8f2260b54b&amp;type=3#WorldUIStyles" />
-    <ui:VisualElement name="LocaleWrapper" class="locale_wrapper" style="display: none;" />
+    <ui:VisualElement name="LocaleWrapper" class="locale_wrapper" style="display: none;">
+    </ui:VisualElement>
     <ui:VisualElement name="PointerBackground" class="poitner_background" />
     <ui:VisualElement name="TopBox" class="top_box">
         <ui:Button name="SettingsButton" class="button_standard button_standard_small" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/Main/SettingsButton.png?fileID=2800000&amp;guid=ba1e299eb262acc479335a62d081f530&amp;type=3#SettingsButton&quot;);">
@@ -32,5 +33,9 @@
                 </ui:VisualElement>
             </ui:Button>
         </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="TextBox" class="text_box">
+        <ui:Label text="So, hello there." name="Text" class="text_box_text" />
+        <ui:VisualElement name="Avatar" class="text_box_avatar" />
     </ui:VisualElement>
 </ui:UXML>

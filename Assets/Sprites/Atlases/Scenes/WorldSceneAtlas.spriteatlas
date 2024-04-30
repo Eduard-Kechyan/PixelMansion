@@ -55,11 +55,16 @@ SpriteAtlas:
     - 254bab9125440e640acddbc2c61f4e93: 21300000
     - 3f4d0d13a592dad438f05c6957d17c85: 21300000
     - bc1da323638462847834e3c84d776c48: 21300000
+    - 821b38a3b60de63419ab31bf92c443e6: 21300000
     - dd9361345201533459c0194d3102bdb0: 21300000
+    - ebc288442f00ee045b46de4295aae31e: 21300000
+    - fdf5d6f52b60e6349be5ab13962ba472: 21300000
     - a05199067d49e0b49a57533c59688790: 21300000
     - 52cbf66651a7ef245a62e26371238e99: 21300000
     - 802c6866113c0944792db9e432563348: 21300000
     - 984be7b612866e44d98f436204326558: 21300000
+    - dc90cc671d3b9f14b982648b9b3ed52b: 21300000
+    - 4973eeb73d42d774eb61293f9edd22cf: 21300000
     - 82c45348b3ab85f44a91ef007f8c3ff9: 21300000
     - e6767378c2d650c4aa97fb6c6bbf54db: 21300000
     - e4e06e1914d3f3046b92f0380893b191: 21300000
@@ -70,11 +75,14 @@ SpriteAtlas:
     - e0edb3da496684a4180c94f492a4d3f4: 21300000
     - 5ef9c4ea2b91dd24d91d2a006746b465: 21300000
     - 33623c0bbdf2f074bae076e2657fbd79: 21300000
+    - cc262fbb6af9f0d438415a3555ee08bc: 21300000
     - d700eaac57d46024283bbf2c2ebb0951: 21300000
+    - 4d3e71fcb47fa9b4a86a01c85e27e220: 21300000
     - 42c93ccd0c642b8489745835f3ad703f: 21300000
     - 75cfcdeeff0b510459b184b452921749: 21300000
     - b31d31fed61fa994f80446fd42d310d1: 1061297433894834710
     - 51d6745f8e967da45b734a9906c8fdfc: 21300000
+    - 1e2a319fe62f8bd4f86924474337c22f: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: 61db3f908b3dc1d4f8b0ff15cbc2d7b0, type: 3}
@@ -82,11 +90,16 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 254bab9125440e640acddbc2c61f4e93, type: 3}
   - {fileID: 21300000, guid: 3f4d0d13a592dad438f05c6957d17c85, type: 3}
   - {fileID: 21300000, guid: bc1da323638462847834e3c84d776c48, type: 3}
+  - {fileID: 21300000, guid: 821b38a3b60de63419ab31bf92c443e6, type: 3}
   - {fileID: 21300000, guid: dd9361345201533459c0194d3102bdb0, type: 3}
+  - {fileID: 21300000, guid: ebc288442f00ee045b46de4295aae31e, type: 3}
+  - {fileID: 21300000, guid: fdf5d6f52b60e6349be5ab13962ba472, type: 3}
   - {fileID: 21300000, guid: a05199067d49e0b49a57533c59688790, type: 3}
   - {fileID: 21300000, guid: 52cbf66651a7ef245a62e26371238e99, type: 3}
   - {fileID: 21300000, guid: 802c6866113c0944792db9e432563348, type: 3}
   - {fileID: 21300000, guid: 984be7b612866e44d98f436204326558, type: 3}
+  - {fileID: 21300000, guid: dc90cc671d3b9f14b982648b9b3ed52b, type: 3}
+  - {fileID: 21300000, guid: 4973eeb73d42d774eb61293f9edd22cf, type: 3}
   - {fileID: 21300000, guid: 82c45348b3ab85f44a91ef007f8c3ff9, type: 3}
   - {fileID: 21300000, guid: e6767378c2d650c4aa97fb6c6bbf54db, type: 3}
   - {fileID: 21300000, guid: e4e06e1914d3f3046b92f0380893b191, type: 3}
@@ -97,22 +110,30 @@ SpriteAtlas:
   - {fileID: 21300000, guid: e0edb3da496684a4180c94f492a4d3f4, type: 3}
   - {fileID: 21300000, guid: 5ef9c4ea2b91dd24d91d2a006746b465, type: 3}
   - {fileID: 21300000, guid: 33623c0bbdf2f074bae076e2657fbd79, type: 3}
+  - {fileID: 21300000, guid: cc262fbb6af9f0d438415a3555ee08bc, type: 3}
   - {fileID: 21300000, guid: d700eaac57d46024283bbf2c2ebb0951, type: 3}
+  - {fileID: 21300000, guid: 4d3e71fcb47fa9b4a86a01c85e27e220, type: 3}
   - {fileID: 21300000, guid: 42c93ccd0c642b8489745835f3ad703f, type: 3}
   - {fileID: 21300000, guid: 75cfcdeeff0b510459b184b452921749, type: 3}
   - {fileID: 1061297433894834710, guid: b31d31fed61fa994f80446fd42d310d1, type: 3}
   - {fileID: 21300000, guid: 51d6745f8e967da45b734a9906c8fdfc, type: 3}
+  - {fileID: 21300000, guid: 1e2a319fe62f8bd4f86924474337c22f, type: 3}
   m_PackedSpriteNamesToIndex:
   - SelectorOption2
   - SelectionArrows5
   - SpeechBubbleBorderLeftTop
   - SelectorOptionOverlay
   - SpeechBubbleTailTopLeft
+  - ProgressCycle3a
   - SelectorOptionSelected
+  - ProgressCycle1
+  - ProgressCycleArrow
   - SpeechBubble
   - SelectionArrows0
   - SelectionArrows2
   - SpeechBubbleTailBottomLeft
+  - ProgressCycle3
+  - ProgressCycle4
   - SpeechBubbleBorderLeftBottom
   - Selector
   - SelectorOption3
@@ -123,11 +144,14 @@ SpriteAtlas:
   - SpeechBubbleBorderRight
   - SelectorOption1
   - SelectionArrows3
+  - ProgressCycle2
   - SelectionArrows4
+  - TextBox
   - SpeechBubbleBorderRightBottom
   - SpeechBubbleTailTopRight
   - Sprite-0002
   - SelectionArrows1
+  - ProgressCycleNumber
   m_RenderDataMap: {}
   m_Tag: WorldSceneAtlas
   m_IsVariant: 0

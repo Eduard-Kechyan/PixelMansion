@@ -105,9 +105,18 @@ namespace Merge
             return config[key] != null;
         }
 
-        public bool CheckNext(string key)
+        public bool TryCheckIfExists(string key, out string data)
         {
-            return config[key] != null;
+            data = "";
+
+            if (config[key] != null)
+            {
+                data = Get(key);
+
+                return data != "";
+            }
+
+            return false;
         }
 
         public int GetNestedLength(string key, bool zeroExpected = false)

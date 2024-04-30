@@ -40,3 +40,61 @@
     bottom: 0;
     left: 0;
 }
+
+.text_box {
+    position: absolute;
+    transition-duration: 0.3s;
+    left: 4px;
+    top: 60%;
+    width: 138px;
+    height: 42px;
+    background-image: url("project://database/Assets/Sprites/Scenes/World/TextBox.png?fileID=2800000&guid=4d3e71fcb47fa9b4a86a01c85e27e220&type=3#TextBox");
+    bottom: auto;
+    display: none;
+    opacity: 0;
+}
+
+.text_box_avatar {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 34px;
+    height: 34px;
+    background-image: url("project://database/Assets/Sprites/Scenes/Merge/InfoBoxAvatar.png?fileID=2800000&guid=2ddee409164f0a14983daf1fef113f6b&type=3#InfoBoxAvatar");
+}
+
+.text_box_text {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 38px;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 4px;
+    padding-right: 8px;
+    padding-bottom: 4px;
+    padding-left: 8px;
+    font-size: 6px;
+    color: rgb(58, 58, 58);
+    -unity-text-align: middle-left;
+    -unity-font-definition: url("project://database/Assets/Fonts/Files/Roboto.ttf?fileID=12800000&guid=0435ef74bc89d2044a778758a25a13b0&type=3#Roboto");
+    white-space: normal;
+}
+
+.text_box_right .text_box_avatar {
+    right: 4px;
+    left: auto;
+}
+
+.text_box_right .text_box_text {
+    right: 38px;
+    left: 0;
+}
+
+.text_box_right {
+    left: auto;
+    right: 4px;
+}

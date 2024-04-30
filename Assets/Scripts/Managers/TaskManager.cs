@@ -336,6 +336,8 @@ namespace Merge
                         {
                             foundRoomHandler.Unlock((Vector3 roomCenter) =>
                             {
+                                callback?.Invoke();
+
                                 HandleRewards(rewards, () =>
                                 {
                                     TaskCompleted(groupId, taskId, true);
@@ -355,6 +357,8 @@ namespace Merge
                 case Types.TaskRefType.PreMansion:
                     preMansionHandler.Remove(() =>
                     {
+                        callback?.Invoke();
+
                         HandleRewards(rewards, () =>
                         {
                             TaskCompleted(groupId, taskId, true);
@@ -749,11 +753,11 @@ namespace Merge
                 PlayerPrefs.Save();
             }
 
-            if (PlayerPrefs.HasKey("waitForTaskChange") && tutorialManager != null)
+            if (PlayerPrefs.HasKey("waitForTaskChange") && tutorialManager != null && tutorialManager.ready)
             {
                 if (isFromMerge)
                 {
-                    tutorialManager.NextStep();
+                    StartCoroutine(WaitForTutorialToBeReady());
                 }
                 else
                 {
@@ -762,6 +766,16 @@ namespace Merge
             }
 
             callback?.Invoke();
+        }
+
+        IEnumerator WaitForTutorialToBeReady()
+        {
+            while (!tutorialManager.ready)
+            {
+                yield return null;
+            }
+
+            tutorialManager.NextStep();
         }
 
         IEnumerator WaitForTaskChangingToFinish()

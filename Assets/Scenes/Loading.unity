@@ -738,14 +738,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4655c44ee47889444a90787bd9a64528, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gamePlayUI: {fileID: 0}
-  hubUI: {fileID: 0}
-  hubGameUI: {fileID: 0}
+  progressManager: {fileID: 0}
+  taskManager: {fileID: 0}
+  tutorialManager: {fileID: 0}
+  pointerHandler: {fileID: 0}
+  timeManager: {fileID: 0}
+  sceneLoader: {fileID: 0}
+  feedbackManager: {fileID: 0}
+  worldUI: {fileID: 0}
+  worldGameUI: {fileID: 0}
+  worldDataManager: {fileID: 0}
+  convoUIHandler: {fileID: 0}
+  navMeshManager: {fileID: 0}
+  mergeUI: {fileID: 0}
+  boardIndication: {fileID: 0}
+  boardInitialization: {fileID: 0}
+  boardInteractions: {fileID: 0}
+  boardManager: {fileID: 0}
+  boardSelection: {fileID: 0}
+  infoBox: {fileID: 0}
+  clockManager: {fileID: 0}
   menuUI: {fileID: 0}
   valuesUI: {fileID: 0}
-  gamePlayUIDoc: {fileID: 0}
-  hubUIDoc: {fileID: 0}
-  hubGameUIDoc: {fileID: 0}
+  crateBreakSprites: []
+  lockOpenSprites: []
+  bubblePopSprites: []
+  readySpeed: 1
+  mergeUIDoc: {fileID: 0}
+  worldUIDoc: {fileID: 0}
+  worldGameUIDoc: {fileID: 0}
   menuUIDoc: {fileID: 0}
   valuesUIDoc: {fileID: 0}
   confirmMenu: {fileID: 0}
@@ -761,16 +782,9 @@ MonoBehaviour:
   shopMenu: {fileID: 0}
   taskMenu: {fileID: 0}
   valuePop: {fileID: 0}
-  readySpeed: 1
-  clockManager: {fileID: 0}
-  infoBox: {fileID: 0}
-  boardManager: {fileID: 0}
   initialized: 0
   safeAreaHandler: {fileID: 0}
   noteDotHandler: {fileID: 0}
-  crateBreakSprites: []
-  lockOpenSprites: []
-  bubblePopSprites: []
   ready: 0
 --- !u!4 &993497632
 Transform:
@@ -1302,7 +1316,7 @@ PrefabInstance:
       objectReference: {fileID: 1419910202}
     - target: {fileID: 6666298423405771595, guid: a255d925b90a92e418c669c0cfae21e9, type: 3}
       propertyPath: stayOnScene
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6666298423405771595, guid: a255d925b90a92e418c669c0cfae21e9, type: 3}
       propertyPath: tutorialData

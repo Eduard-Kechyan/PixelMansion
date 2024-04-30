@@ -351,7 +351,7 @@ namespace Merge
                     tutorialManager.CheckConvoBackground(true);
                 }
 
-                if (LOCALE.CheckNext("convo_" + currentConvoGroup.id + "_" + currentConvo))
+                if (LOCALE.CheckIfExists("convo_" + currentConvoGroup.id + "_" + currentConvo))
                 {
                     // Next
                     SetNameAndText(currentConvo);
