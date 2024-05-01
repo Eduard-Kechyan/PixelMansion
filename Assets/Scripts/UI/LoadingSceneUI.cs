@@ -12,9 +12,7 @@ namespace Merge
 #if DEVELOPMENT_BUILD || UNITY_EDITOR
         public FeedbackManager feedbackManager;
 #endif
-
-        [Header("Title")]
-        public LocaleManager localeManager;
+        public MenuUI menuUI;
 
         [Header("Age")]
         public int ageHeight = 24;
@@ -24,17 +22,13 @@ namespace Merge
         [SerializeField]
         private Sprite[] spinnerSprites;
 
-        private Action termsCallback;
         private Action<int> ageCallback;
-        private Action<bool> conflictCallback;
-        private Action updateCallback;
         private bool isAgeScrolling;
         private int currentAge = 0;
 
         // References
         private I18n LOCALE;
-        private DataManager dataManager;
-        private Services services;
+        private DebugMenu debugMenu;
 
         // UI
         private VisualElement root;
@@ -46,14 +40,6 @@ namespace Merge
 
         private VisualElement overlayBackground;
 
-        // Terms
-        private VisualElement termsMenu;
-        private Label termsTitleLabel;
-        private Label termsLabel;
-        private Button termsAcceptButton;
-        private Button termsTermsButton;
-        private Button termsPrivacyButton;
-
         // Age
         private VisualElement ageMenu;
         private Label ageTitleLabel;
@@ -61,27 +47,11 @@ namespace Merge
         private Button ageAcceptButton;
         private ScrollView ageScrollView;
 
-        // Conflict
-        private VisualElement conflictMenu;
-        private Label conflictTitleLabel;
-        private Label conflictLabelA;
-        private Label conflictLabelB;
-        private Button conflictNewButton;
-        private Button conflictPreviousButton;
-
-        // Update
-        private VisualElement updateMenu;
-        private Label updateTitleLabel;
-        private Label updateLabel;
-        private Button updateButton;
-        private Button updateExitButton;
-
         void Start()
         {
             // Cache
             LOCALE = I18n.Instance;
-            dataManager = DataManager.Instance;
-            services = Services.Instance;
+            debugMenu = menuUI.GetComponent<DebugMenu>();
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
@@ -93,56 +63,14 @@ namespace Merge
 
             overlayBackground = root.Q<VisualElement>("OverlayBackground");
 
-            termsMenu = root.Q<VisualElement>("TermsMenu");
-            termsTitleLabel = termsMenu.Q<Label>("TitleLabel");
-            termsLabel = termsMenu.Q<Label>("TermsLabel");
-            termsAcceptButton = termsMenu.Q<Button>("AcceptButton");
-            termsTermsButton = termsMenu.Q<Button>("TermsButton");
-            termsPrivacyButton = termsMenu.Q<Button>("PrivacyButton");
-
             ageMenu = root.Q<VisualElement>("AgeMenu");
             ageTitleLabel = ageMenu.Q<Label>("TitleLabel");
             ageLabel = ageMenu.Q<Label>("AgeLabel");
             ageAcceptButton = ageMenu.Q<Button>("AcceptButton");
             ageScrollView = ageMenu.Q<ScrollView>("AgeScrollView");
 
-            conflictMenu = root.Q<VisualElement>("ConflictMenu");
-            conflictTitleLabel = conflictMenu.Q<Label>("TitleLabel");
-            conflictLabelA = conflictMenu.Q<Label>("ConflictLabelA");
-            conflictLabelB = conflictMenu.Q<Label>("ConflictLabelB");
-            conflictNewButton = conflictMenu.Q<Button>("NewButton");
-            conflictPreviousButton = conflictMenu.Q<Button>("PreviousButton");
-
-            updateMenu = root.Q<VisualElement>("UpdateMenu");
-            updateTitleLabel = updateMenu.Q<Label>("TitleLabel");
-            updateLabel = updateMenu.Q<Label>("UpdateLabel");
-            updateButton = updateMenu.Q<Button>("UpdateButton");
-            updateExitButton = updateMenu.Q<Button>("ExitButton");
-
             // UI taps
-            termsAcceptButton.clicked += () => AcceptTerms();
-            termsTermsButton.clicked += () =>
-            {
-                Application.OpenURL(GameData.WEB_ADDRESS + "/terms");
-            };
-            termsPrivacyButton.clicked += () =>
-            {
-                Application.OpenURL(GameData.WEB_ADDRESS + "/privacy");
-            };
-
             ageAcceptButton.clicked += () => SetAge();
-
-            conflictNewButton.clicked += () =>
-            {
-                ResolveConflict(true);
-            };
-            conflictPreviousButton.clicked += () =>
-            {
-                ResolveConflict(false);
-            };
-
-            updateButton.clicked += () => UpdateGame();
-            updateExitButton.clicked += () => Application.Quit();
 
             ageScrollView.verticalScroller.valueChanged += newValue => AgeScrollerHandle(newValue);
 
@@ -153,7 +81,7 @@ namespace Merge
 
                 debugButton.style.display = DisplayStyle.Flex;
 
-                debugButton.clicked += () => DebugManager.Instance.OpenMenu();
+                debugButton.clicked += () => debugMenu.OpenMenu();
 
                 if (feedbackManager != null)
                 {
@@ -178,11 +106,7 @@ namespace Merge
 
             SetTitle();
 
-            HideTermsMenu();
-
             HideAgeMenu();
-
-            HideConflictMenu();
         }
 
         // Dynamically set the game's title
@@ -238,58 +162,6 @@ namespace Merge
             }
         }
 
-        //// TERMS ////
-
-        // Show the terms and privacy policy menu before continuing
-        public void CheckTerms(Action callback = null)
-        {
-            termsCallback = callback;
-
-            // Show the overlay
-            overlayBackground.style.display = DisplayStyle.Flex;
-            overlayBackground.style.opacity = 1;
-
-            // Show the menu
-            termsMenu.style.display = DisplayStyle.Flex;
-            termsMenu.style.opacity = 1f;
-
-            termsTitleLabel.text = LOCALE.Get("terms_menu_title");
-            termsLabel.text = LOCALE.Get("terms_menu_label");
-
-            termsAcceptButton.text = LOCALE.Get("terms_accept");
-            termsTermsButton.text = LOCALE.Get("terms_terms_button");
-            termsPrivacyButton.text = LOCALE.Get("terms_privacy_button");
-        }
-
-        // Handle the player accepting the terms
-        void AcceptTerms()
-        {
-            HideTermsMenu();
-
-            PlayerPrefs.SetInt("termsAccepted", 1);
-            PlayerPrefs.Save();
-
-            services.termsAccepted = true;
-
-            dataManager.SaveValue("termsAccepted", true, false);
-
-            if (termsCallback != null)
-            {
-                termsCallback();
-            }
-        }
-
-        void HideTermsMenu()
-        {
-            // Hide the overlay
-            overlayBackground.style.display = DisplayStyle.None;
-            overlayBackground.style.opacity = 0;
-
-            // Hide the menu
-            termsMenu.style.display = DisplayStyle.None;
-            termsMenu.style.opacity = 0;
-        }
-
         //// AGE ////
 
         // Show the age menu 
@@ -307,10 +179,10 @@ namespace Merge
             ageMenu.style.display = DisplayStyle.Flex;
             ageMenu.style.opacity = 1f;
 
-            ageTitleLabel.text = LOCALE.Get("age_menu_title");
-            ageLabel.text = LOCALE.Get("age_menu_label", 12); // TODO - Change 12 to the proper age
+            ageTitleLabel.text = LOCALE.Get("menu_Age_title");
+            ageLabel.text = LOCALE.Get("menu_Age_label", 12); // TODO - Change 12 to the proper age
 
-            ageAcceptButton.text = LOCALE.Get("age_accept");
+            ageAcceptButton.text = LOCALE.Get("menu_Age_accept");
             ageAcceptButton.SetEnabled(false);
         }
 
@@ -412,90 +284,6 @@ namespace Merge
             {
                 ageAcceptButton.SetEnabled(false);
             }
-        }
-
-        //// CONFLICT ////
-
-        // Show the conflict menu 
-        public void CheckConflict(Action<bool> callback = null)
-        {
-            conflictCallback = callback;
-
-            // Show the overlay
-            overlayBackground.style.display = DisplayStyle.Flex;
-            overlayBackground.style.opacity = 1;
-
-            // Show the menu
-            conflictMenu.style.display = DisplayStyle.Flex;
-            conflictMenu.style.opacity = 1f;
-
-            conflictTitleLabel.text = LOCALE.Get("conflict_menu_title");
-            conflictLabelA.text = LOCALE.Get("conflict_menu_label_a");
-            conflictLabelB.text = LOCALE.Get("conflict_menu_label_b");
-
-            conflictNewButton.text = LOCALE.Get("conflict_create_new");
-            conflictPreviousButton.text = LOCALE.Get("conflict_use_previous");
-        }
-
-        // Handle the player resolving the conflict
-        void ResolveConflict(bool forceLinking)
-        {
-            HideConflictMenu();
-
-            if (conflictCallback != null)
-            {
-                conflictCallback(forceLinking);
-            }
-        }
-
-        void HideConflictMenu()
-        {
-            // Hide the overlay
-            overlayBackground.style.display = DisplayStyle.None;
-            overlayBackground.style.opacity = 0;
-
-            // Hide the menu
-            conflictMenu.style.display = DisplayStyle.None;
-            conflictMenu.style.opacity = 0;
-        }
-
-        //// UPDATE ////
-
-        // Check if there any game updates available and notify the player
-        public void CheckForUpdates(Action callback = null)
-        {
-            updateCallback = callback;
-
-            // FIX - Check here if the game version matches the latest available version on the app store
-            if (true)
-            {
-                if (updateCallback != null)
-                {
-                    updateCallback();
-                }
-            }
-            else
-            {
-                // Show the overlay
-                //overlayBackground.style.display = DisplayStyle.Flex;
-                // overlayBackground.style.opacity = 1;
-
-                // Show the menu
-                /* updateMenu.style.display = DisplayStyle.Flex;
-                 updateMenu.style.opacity = 1f;
-    
-                 updateTitleLabel.text = LOCALE.Get("update_menu_title");
-                 updateLabel.text = LOCALE.Get("update_menu_label");
-    
-                 updateButton.text = LOCALE.Get("update_button");
-                 updateExitButton.text = LOCALE.Get("update_exit_button");*/
-            }
-        }
-
-        void UpdateGame()
-        {
-            // FIX - Open the app store here, or update in game
-            Debug.Log("Updating!");
         }
     }
 }

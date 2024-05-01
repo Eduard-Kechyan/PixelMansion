@@ -100,14 +100,14 @@ namespace Merge
                     else
                     {
                         // ERROR
-                        errorManager.ThrowWarning(Types.ErrorType.Code, "BoardManager", "Failed to parse order from tile name.");
+                        errorManager.ThrowWarning(Types.ErrorType.Code, GetType().ToString(), "Failed to parse order from tile name.");
                         return loc;
                     }
                 }
                 else
                 {
                     // ERROR
-                    errorManager.ThrowWarning(Types.ErrorType.Code, "BoardManager", "Invalid tile name format.");
+                    errorManager.ThrowWarning(Types.ErrorType.Code, GetType().ToString(), "Invalid tile name format.");
                     return loc;
                 }
             }
@@ -158,7 +158,7 @@ namespace Merge
             else
             {
                 // ERROR
-                errorManager.ThrowWarning(Types.ErrorType.Code, "BoardManager", "Failed to retrieve tile transform.");
+                errorManager.ThrowWarning(Types.ErrorType.Code, GetType().ToString(), "Failed to retrieve tile transform.");
                 return Vector2.zero;
             }
         }
@@ -200,7 +200,7 @@ namespace Merge
             }
 
             // ERROR
-            errorManager.ThrowWarning(Types.ErrorType.Code, "BoardManager", "Item with ID " + id + " not found on the board.");
+            errorManager.ThrowWarning(Types.ErrorType.Code, GetType().ToString(), "Item with ID " + id + " not found on the board.");
             return Vector2.zero;
         }
 
@@ -318,7 +318,7 @@ namespace Merge
             if (order < 0 || order >= boardTiles.transform.childCount)
             {
                 // ERROR
-                errorManager.ThrowWarning(Types.ErrorType.Code, "BoardManager", "Invalid order provided.");
+                errorManager.ThrowWarning(Types.ErrorType.Code, GetType().ToString(), "Invalid order provided.");
                 return;
             }
 
@@ -335,13 +335,13 @@ namespace Merge
                 else
                 {
                     // ERROR
-                    errorManager.ThrowWarning(Types.ErrorType.Code, "BoardManager", "Item component not found on tile.");
+                    errorManager.ThrowWarning(Types.ErrorType.Code, GetType().ToString(), "Item component not found on tile.");
                 }
             }
             else
             {
                 // ERROR
-                errorManager.ThrowWarning(Types.ErrorType.Code, "BoardManager", "Tile transform not found.");
+                errorManager.ThrowWarning(Types.ErrorType.Code, GetType().ToString(), "Tile transform not found.");
             }
         }
 

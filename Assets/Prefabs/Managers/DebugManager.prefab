@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3856526671071279619}
   - component: {fileID: 352704914890339314}
-  - component: {fileID: 5111980928839035584}
   - component: {fileID: 1537458401331318770}
   - component: {fileID: 506799054121238711}
   - component: {fileID: 2090259560186866042}
@@ -52,21 +51,6 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: c5e13725cc8f44245a93b736f95ae058, type: 3}
   m_SortingOrder: 120
---- !u!114 &5111980928839035584
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5872986444647865221}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 696fd0b5bfeb2c64890e3534a5afcb0b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  boardInteractions: {fileID: 0}
-  loadingManager: {fileID: 0}
-  transitionDuration: 0.1
 --- !u!114 &1537458401331318770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,3 +104,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   set: 0
   log: 0
+  localesToCreate: 

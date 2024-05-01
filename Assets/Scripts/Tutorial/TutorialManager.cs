@@ -36,6 +36,7 @@ namespace Merge
         }
 
         // References
+        private GameRefs gameRefs;
         private ValuesUI valuesUI;
         private WorldUI worldUI;
         private UIDocument worldGameUIDoc;
@@ -67,13 +68,16 @@ namespace Merge
             {
                 StartCoroutine(WaitForReferences(() =>
                 {
-                    progressManager.SetInitialData(0);
+                    if (!PlayerPrefs.HasKey("tutorialFinished"))
+                    {
+                        progressManager.SetInitialData(0);
 
-                    PlayerPrefs.SetInt("tutorialFinished", 1);
+                        PlayerPrefs.SetInt("tutorialFinished", 1);
 
-                    PlayerPrefs.DeleteKey("tutorialStep");
+                        PlayerPrefs.DeleteKey("tutorialStep");
 
-                    PlayerPrefs.Save();
+                        PlayerPrefs.Save();
+                    }
                 }));
             }
             else
@@ -106,26 +110,34 @@ namespace Merge
 
         void Start()
         {
-            if (!skipTutorial && !PlayerPrefs.HasKey("tutorialFinished"))
+            if (skipTutorial || PlayerPrefs.HasKey("tutorialFinished"))
+            {
+                progressManager = GameRefs.Instance.progressManager;
+                dataManager = DataManager.Instance;
+
+                referencesSet = true;
+            }
+            else
             {
                 // Cache
-                valuesUI = GameRefs.Instance.valuesUI;
-                worldUI = GameRefs.Instance.worldUI;
-                worldGameUIDoc = GameRefs.Instance.worldGameUIDoc;
-                mergeUI = GameRefs.Instance.mergeUI;
+                gameRefs = GameRefs.Instance;
+                valuesUI = gameRefs.valuesUI;
+                worldUI = gameRefs.worldUI;
+                worldGameUIDoc = gameRefs.worldGameUIDoc;
+                mergeUI = gameRefs.mergeUI;
                 dataManager = DataManager.Instance;
                 gameData = GameData.Instance;
-                inputMenu = GameRefs.Instance.inputMenu;
+                inputMenu = gameRefs.inputMenu;
                 uiButtons = GameData.Instance.GetComponent<UIButtons>();
                 pointerHandler = GetComponent<PointerHandler>();
                 tutorialCycle = GetComponent<TutorialCycle>();
-                infoBox = GameRefs.Instance.infoBox;
+                infoBox = gameRefs.infoBox;
                 cloudSave = Services.Instance.GetComponent<CloudSave>();
                 analyticsManager = AnalyticsManager.Instance;
-                convoUIHandler = GameRefs.Instance.convoUIHandler;
-                boardManager = GameRefs.Instance.boardManager;
-                progressManager = GameRefs.Instance.progressManager;
-                valuePop = GameRefs.Instance.valuePop;
+                convoUIHandler = gameRefs.convoUIHandler;
+                boardManager = gameRefs.boardManager;
+                progressManager = gameRefs.progressManager;
+                valuePop = gameRefs.valuePop;
 
                 referencesSet = true;
 
@@ -722,7 +734,7 @@ namespace Merge
                 yield return null;
             }
 
-            while (gameData.boardData == null)
+            while (!dataManager.loaded)
             {
                 yield return null;
             }

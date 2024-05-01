@@ -47,6 +47,7 @@ namespace Merge
         private Action genCallback = null;
 
         // References
+        private GameRefs gameRefs;
         private TaskMenu taskMenu;
         private Camera cam;
         private BoardManager boardManager;
@@ -60,19 +61,20 @@ namespace Merge
         void Start()
         {
             // Cache
-            taskMenu = GameRefs.Instance.taskMenu;
+            gameRefs = GameRefs.Instance;
+            taskMenu = gameRefs.taskMenu;
             cam = Camera.main;
-            boardManager = GameRefs.Instance.boardManager;
-            tutorialManager = GameRefs.Instance.tutorialManager;
+            boardManager = gameRefs.boardManager;
+            tutorialManager = gameRefs.tutorialManager;
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
 
             pointer = root.Q<VisualElement>("Pointer");
 
-            if (GameRefs.Instance.worldUIDoc != null)
+            if (gameRefs.worldUIDoc != null)
             {
-                pointerBackground = GameRefs.Instance.worldUIDoc.rootVisualElement.Q<VisualElement>("PointerBackground");
+                pointerBackground = gameRefs.worldUIDoc.rootVisualElement.Q<VisualElement>("PointerBackground");
             }
         }
 

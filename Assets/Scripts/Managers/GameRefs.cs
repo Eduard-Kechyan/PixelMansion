@@ -101,6 +101,9 @@ namespace Merge
         public TaskMenu taskMenu;
 
         [HideInInspector]
+        public DebugMenu debugMenu;
+
+        [HideInInspector]
         public ValuePop valuePop;
 
         // Other
@@ -172,6 +175,7 @@ namespace Merge
                 inputMenu = menuUI.GetComponent<InputMenu>();
                 shopMenu = menuUI.GetComponent<ShopMenu>();
                 taskMenu = menuUI.GetComponent<TaskMenu>();
+                debugMenu = menuUI.GetComponent<DebugMenu>();
 
                 valuePop = menuUI.GetComponent<ValuePop>();
             }

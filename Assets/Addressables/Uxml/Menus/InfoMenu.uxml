@@ -1,0 +1,12 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="Content" class="content">
+                    <ui:VisualElement name="ItemInfo" class="item_info" style="background-image: url(&quot;project://database/Assets/Sprites/Menus/InfoMenu/ItemInfo.png?fileID=2800000&amp;guid=93d4998d1420f3f4fa9eb55a6449fc2d&amp;type=3#ItemInfo&quot;);">
+                        <ui:VisualElement name="ItemSprite" class="item_sprite" />
+                        <ui:Label text="Item Name" display-tooltip-when-elided="true" name="ItemName" class="item_name" />
+                        <ui:Label text="Item Data" display-tooltip-when-elided="true" name="ItemData" class="item_data" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="UnlockedItems" class="unlocked_items" />
+                    <ui:VisualElement name="ContainItems" class="unlocked_items" style="display: flex; margin-top: 14px;" />
+                    <ui:VisualElement name="InfoParent" class="info_parent" style="display: none; background-image: url(&quot;project://database/Assets/Sprites/Menus/InfoMenu/InfoParent.png?fileID=2800000&amp;guid=28abd295326bb634cb3348e6d2a1849a&amp;type=3#InfoParent&quot;);" />
+                </ui:VisualElement>
+</ui:UXML>

@@ -13,12 +13,15 @@ namespace Merge
 
         private bool externalAppOpened = false;
 
+        private Types.Menu menuType = Types.Menu.Settings;
+
         // References
         private MenuUI menuUI;
         private LocaleMenu localeMenu;
         private ConfirmMenu confirmMenu;
         private NoteMenu noteMenu;
         private RateMenu rateMenu;
+        private MenuUtilities menuUtilities;
         private I18n LOCALE;
         private Settings settings;
         private Services services;
@@ -26,10 +29,10 @@ namespace Merge
         //  private Notifics notifics;
         private ResetHandler resetHandler;
         private FeedbackManager feedbackManager;
+        private UIData uiData;
 
         // UI
-        private VisualElement root;
-        private VisualElement settingsMenu;
+        private VisualElement content;
 
         private Button soundButton;
         private Button musicButton;
@@ -68,6 +71,7 @@ namespace Merge
             confirmMenu = GetComponent<ConfirmMenu>();
             noteMenu = GetComponent<NoteMenu>();
             rateMenu = GetComponent<RateMenu>();
+            menuUtilities = GetComponent<MenuUtilities>();
             LOCALE = I18n.Instance;
             settings = Settings.Instance;
             services = Services.Instance;
@@ -75,58 +79,59 @@ namespace Merge
             //notifics = Services.Instance.GetComponent<Notifics>();
             resetHandler = GetComponent<ResetHandler>();
             feedbackManager = GameRefs.Instance.feedbackManager;
+            uiData = GameData.Instance.GetComponent<UIData>();
 
-            // UI
-            root = GetComponent<UIDocument>().rootVisualElement;
+            DataManager.Instance.CheckLoaded(() =>
+            {
+                // UI
+                content = uiData.GetMenuAsset(menuType);
 
-            settingsMenu = root.Q<VisualElement>("SettingsMenu");
+                soundButton = content.Q<Button>("SoundButton");
+                musicButton = content.Q<Button>("MusicButton");
+                vibrationButton = content.Q<Button>("VibrationButton");
+                notificationsButton = content.Q<Button>("NotificationsButton");
 
-            soundButton = settingsMenu.Q<Button>("SoundButton");
-            musicButton = settingsMenu.Q<Button>("MusicButton");
-            vibrationButton = settingsMenu.Q<Button>("VibrationButton");
-            notificationsButton = settingsMenu.Q<Button>("NotificationsButton");
+                feedbackButton = content.Q<Button>("FeedbackButton");
+                supportButton = content.Q<Button>("SupportButton");
+                privacyButton = content.Q<Button>("PrivacyButton");
+                termsButton = content.Q<Button>("TermsButton");
+                languageButton = content.Q<Button>("LanguageButton");
+                resetButton = content.Q<Button>("ResetButton");
+                exitButton = content.Q<Button>("ExitButton");
+                rateButton = content.Q<Button>("RateButton");
 
-            feedbackButton = settingsMenu.Q<Button>("FeedbackButton");
-            supportButton = settingsMenu.Q<Button>("SupportButton");
-            privacyButton = settingsMenu.Q<Button>("PrivacyButton");
-            termsButton = settingsMenu.Q<Button>("TermsButton");
-            languageButton = settingsMenu.Q<Button>("LanguageButton");
-            resetButton = settingsMenu.Q<Button>("ResetButton");
-            exitButton = settingsMenu.Q<Button>("ExitButton");
-            rateButton = settingsMenu.Q<Button>("RateButton");
+                signInButton = content.Q<Button>("SignInButton");
+                signOutButton = content.Q<Button>("SignOutButton");
 
-            signInButton = settingsMenu.Q<Button>("SignInButton");
-            signOutButton = settingsMenu.Q<Button>("SignOutButton");
+                instagramFollowButton = content.Q<Button>("InstagramFollowButton");
+                facebookFollowButton = content.Q<Button>("FacebookFollowButton");
+                youtubeFollowButton = content.Q<Button>("YoutubeFollowButton");
 
-            instagramFollowButton = settingsMenu.Q<Button>("InstagramFollowButton");
-            facebookFollowButton = settingsMenu.Q<Button>("FacebookFollowButton");
-            youtubeFollowButton = settingsMenu.Q<Button>("YoutubeFollowButton");
+                signInLabel = content.Q<Label>("SignInLabel");
+                followLabel = content.Q<Label>("FollowLabel");
+                versionLabel = content.Q<Label>("VersionLabel");
 
-            signInLabel = settingsMenu.Q<Label>("SignInLabel");
-            followLabel = settingsMenu.Q<Label>("FollowLabel");
-            versionLabel = settingsMenu.Q<Label>("VersionLabel");
+                idLabel = content.Q<Label>("IDLabel");
+                idCopyButton = content.Q<Button>("IDCopyButton");
+                copyCheck = content.Q<VisualElement>("CopyCheck");
 
-            idLabel = settingsMenu.Q<Label>("IDLabel");
-            idCopyButton = settingsMenu.Q<Button>("IDCopyButton");
-            copyCheck = settingsMenu.Q<VisualElement>("CopyCheck");
+                // Button clicks 
+                soundButton.clicked += () => settings.ToggleSound();
+                musicButton.clicked += () => settings.ToggleMusic();
+                vibrationButton.clicked += () => settings.ToggleVibration();
+                notificationsButton.clicked += () => settings.ToggleNotifications();
 
-            // Button clicks 
-            soundButton.clicked += () => settings.ToggleSound();
-            musicButton.clicked += () => settings.ToggleMusic();
-            vibrationButton.clicked += () => settings.ToggleVibration();
-            notificationsButton.clicked += () => settings.ToggleNotifications();
-
-            feedbackButton.clicked += () => feedbackManager.Open();
-            supportButton.clicked += () => Application.OpenURL(GameData.WEB_ADDRESS + "/support");
-            privacyButton.clicked += () => Application.OpenURL(GameData.WEB_ADDRESS + "/privacy");
-            termsButton.clicked += () => Application.OpenURL(GameData.WEB_ADDRESS + "/terms");
-            languageButton.clicked += () => localeMenu.Open();
-            resetButton.clicked += () => confirmMenu.Open("reset", resetHandler.ResetAndRestartApp);
-            exitButton.clicked += () => confirmMenu.Open("exit", Application.Quit);
-            rateButton.clicked += () => rateMenu.Open(true);
+                feedbackButton.clicked += () => feedbackManager.Open();
+                supportButton.clicked += () => Application.OpenURL(GameData.WEB_ADDRESS + "/support");
+                privacyButton.clicked += () => menuUtilities.TryToGetOnlineData(Types.MessageType.Terms);
+                termsButton.clicked += () => menuUtilities.TryToGetOnlineData(Types.MessageType.Privacy);
+                languageButton.clicked += () => localeMenu.Open();
+                resetButton.clicked += () => confirmMenu.Open("reset", resetHandler.ResetAndRestartApp);
+                exitButton.clicked += () => confirmMenu.Open("exit", Application.Quit);
+                rateButton.clicked += () => rateMenu.Open(true);
 
 #if UNITY_ANDROID
-            signInButton.clicked += () => HandleSignIn(AuthManager.AuthType.Google);
+                signInButton.clicked += () => HandleSignIn(AuthManager.AuthType.Google);
 #elif UNITY_IOS
             signInButton.clicked += () => HandleSignIn(AuthManager.AuthType.Apple);
 #elif UNITY_EDITOR
@@ -135,20 +140,19 @@ namespace Merge
             };
 #endif
 
-            signOutButton.clicked += () =>
-            {
-                authManager.SignOut();
+                signOutButton.clicked += () =>
+                {
+                    authManager.SignOut();
 
-                SetUISignInText();
-            };
+                    SetUISignInText();
+                };
 
-            instagramFollowButton.clicked += () => OpenSocialMediaLink(Types.SocialMediaType.Instagram);
-            facebookFollowButton.clicked += () => OpenSocialMediaLink(Types.SocialMediaType.Facebook);
-            youtubeFollowButton.clicked += () => OpenSocialMediaLink(Types.SocialMediaType.Youtube);
+                instagramFollowButton.clicked += () => OpenSocialMediaLink(Types.SocialMediaType.Instagram);
+                facebookFollowButton.clicked += () => OpenSocialMediaLink(Types.SocialMediaType.Facebook);
+                youtubeFollowButton.clicked += () => OpenSocialMediaLink(Types.SocialMediaType.Youtube);
 
-            idCopyButton.clicked += () => CopyIdToClipboard();
-
-            Init();
+                idCopyButton.clicked += () => CopyIdToClipboard();
+            });
         }
 
         void OnApplicationPause(bool pauseStatus)
@@ -156,26 +160,18 @@ namespace Merge
             externalAppOpened = true;
         }
 
-        void Init()
-        {
-            // Make sure the menu is closed
-            settingsMenu.style.display = DisplayStyle.None;
-            settingsMenu.style.opacity = 0;
-        }
-
         public void Open()
         {
-            if (menuUI.IsMenuOpen(settingsMenu.name))
+            // Check menu
+            if (menuUI.IsMenuOpen(menuType))
             {
                 return;
             }
 
-            // Set the title
-            string title = LOCALE.Get("settings_menu_title");
-
-            // Hide the rate menu button if it's disabled
+            // Set menu content            
             if (rateMenu == null)
             {
+                // Hide the rate menu button if it's disabled
                 rateButton.style.display = DisplayStyle.None;
             }
 
@@ -190,7 +186,7 @@ namespace Merge
             SetUISignInText();
 
             // Open menu
-            menuUI.OpenMenu(settingsMenu, title);
+            menuUI.OpenMenu(content, menuType);
         }
 
         void SetUIText()

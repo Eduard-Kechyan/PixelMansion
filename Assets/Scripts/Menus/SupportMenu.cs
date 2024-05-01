@@ -1,21 +1,49 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Merge
 {
     public class SupportMenu : MonoBehaviour
     {
-        // Start is called before the first frame update
+        // Variables
+        private Types.Menu menuType = Types.Menu.Support;
+
+        // References
+        private MenuUI menuUI;
+        // private I18n LOCALE;
+        private UIData uiData;
+
+        // UI
+        private VisualElement content;
+
         void Start()
         {
-        
+            // Cache
+            menuUI = GetComponent<MenuUI>();
+            // LOCALE = I18n.Instance;
+            uiData = GameData.Instance.GetComponent<UIData>();
+
+            DataManager.Instance.CheckLoaded(() =>
+            {
+                // UI
+                content = uiData.GetMenuAsset(menuType);
+            });
         }
 
-        // Update is called once per frame
-        void Update()
+        public void Open()
         {
-        
+            // Check menu
+            if (menuUI.IsMenuOpen(menuType))
+            {
+                return;
+            }
+
+            // Set menu content
+
+            // Open menu
+            menuUI.OpenMenu(content, menuType);
         }
     }
 }

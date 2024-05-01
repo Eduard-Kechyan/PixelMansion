@@ -26,6 +26,9 @@ GameObject:
   - component: {fileID: 5298958223823578319}
   - component: {fileID: 3488903112042956216}
   - component: {fileID: 1160504944796771873}
+  - component: {fileID: 5271890099761773273}
+  - component: {fileID: 1184929206519300778}
+  - component: {fileID: 1888713277073087154}
   m_Layer: 0
   m_Name: MenuUI
   m_TagString: Untagged
@@ -76,7 +79,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc801789153fc83458cd8fbccfd639be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boardInteractions: {fileID: 0}
   transitionDuration: 0.1
   menuDecreaseOffset: 0.8
   menuOpen: 0
@@ -104,6 +106,7 @@ MonoBehaviour:
   - {fileID: -648292492, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
   - {fileID: 1255185831, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
   - {fileID: 1921920836, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
+  menusToLoad: 0
   isClosing: 0
 --- !u!114 &8964243059281490872
 MonoBehaviour:
@@ -122,6 +125,8 @@ MonoBehaviour:
   energySprite: {fileID: 21300000, guid: 657cb52cfa9591f42805162173ae326d, type: 3}
   goldSprite: {fileID: 21300000, guid: 91052942d1bb9e64fb2e7057a21be27d, type: 3}
   gemsSprite: {fileID: 21300000, guid: 0ac1b32f0c68fa5488ef306136d17434, type: 3}
+  popping: 0
+  mightPop: 0
 --- !u!114 &8011534459483396748
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174,10 +179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6fd892c8d3f1a441a91ec7f012a8a56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gamePlayScene: 0
-  gamePlayUI: {fileID: 0}
-  boardManager: {fileID: 0}
-  sceneLoader: {fileID: 0}
+  mergeScene: 0
   shopData: {fileID: 11400000, guid: 9ccd7e0ffc1f88547b1138b322dfed0d, type: 2}
   smallGoldSprite: {fileID: 21300000, guid: 9927c70a39873234ead5f8d41fb591bf, type: 3}
   smallGemSprite: {fileID: 21300000, guid: 324e7e0db7beb9248b629fa2da728b06, type: 3}
@@ -207,10 +209,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 616eb8d755ff4e84799c51851841e90c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boardManager: {fileID: 0}
   newSlotPrice: 50
   slotPriceMultiplier: 2
-  timeManager: {fileID: 0}
 --- !u!114 &990211674076651926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,9 +223,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e967bd34d6f806448c186ff05a8a84b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneLoader: {fileID: 0}
-  taskManager: {fileID: 0}
-  pointerHandler: {fileID: 0}
   loadingTaskMenuButton: 1
   tempTaskButtonPos: {x: 0, y: 0}
 --- !u!114 &269867168095586740
@@ -240,9 +237,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 826b75ec9afa49348b94ee9c5c93c3ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gamePlayScene: 0
+  mergeScene: 0
   levelButtonOffset: 9
-  hubUI: {fileID: 0}
   levelData: {fileID: 11400000, guid: 8c88eefc0fdf45146ba2dc71a2f1e938, type: 2}
   isRewarding: 0
 --- !u!114 &194810349795178729
@@ -323,3 +319,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3523ec34c1da6af41a7c4d5951a032f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5271890099761773273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2529494229858904796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 696fd0b5bfeb2c64890e3534a5afcb0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loadingManager: {fileID: 0}
+  preMansionHandler: {fileID: 0}
+  transitionDuration: 0.1
+  sceneLoader: {fileID: 0}
+--- !u!114 &1184929206519300778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2529494229858904796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d56118eb0369f34ab0a07b1e01b644b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1888713277073087154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2529494229858904796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a78a8bef367d98f459856c325a0a59bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  termsHtml: {fileID: 4900000, guid: b5ccd28da206d3148bb5df8aef9699ee, type: 3}
+  privacyHtml: {fileID: 4900000, guid: c56a377319dfd084f8194ae4ffd84eb3, type: 3}

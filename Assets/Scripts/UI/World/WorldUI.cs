@@ -17,16 +17,16 @@ namespace Merge
         private float singlePixelWidth;
 
         private bool buttonsHidden = false;
-        private bool settingsButtonHidden = false;
-        private bool shopButtonHidden = false;
 
         private bool textBoxOpen = false;
 
         // References
+        private GameRefs gameRefs;
         private SafeAreaHandler safeAreaHandler;
         private SettingsMenu settingsMenu;
         private ShopMenu shopMenu;
         private TaskMenu taskMenu;
+        private DebugMenu debugMenu;
         private SoundManager soundManager;
         private UIButtons uiButtons;
         private SelectorUIHandler selectorUIHandler;
@@ -61,21 +61,23 @@ namespace Merge
         void Start()
         {
             // Cache
-            safeAreaHandler = GameRefs.Instance.safeAreaHandler;
-            settingsMenu = GameRefs.Instance.settingsMenu;
-            shopMenu = GameRefs.Instance.shopMenu;
-            taskMenu = GameRefs.Instance.taskMenu;
+            gameRefs = GameRefs.Instance;
+            safeAreaHandler = gameRefs.safeAreaHandler;
+            settingsMenu = gameRefs.settingsMenu;
+            shopMenu = gameRefs.shopMenu;
+            taskMenu = gameRefs.taskMenu;
+            debugMenu = gameRefs.debugMenu;
             soundManager = SoundManager.Instance;
             uiButtons = GameData.Instance.GetComponent<UIButtons>();
-            selectorUIHandler = GameRefs.Instance.worldGameUIDoc.GetComponent<SelectorUIHandler>();
+            selectorUIHandler = gameRefs.worldGameUIDoc.GetComponent<SelectorUIHandler>();
             errorManager = ErrorManager.Instance;
-            sceneLoader = GameRefs.Instance.sceneLoader;
-            pointerHandler = GameRefs.Instance.pointerHandler;
-            tutorialManager = GameRefs.Instance.tutorialManager;
+            sceneLoader = gameRefs.sceneLoader;
+            pointerHandler = gameRefs.pointerHandler;
+            tutorialManager = gameRefs.tutorialManager;
             LOCALE = I18n.Instance;
 
 #if DEVELOPMENT_BUILD || UNITY_EDITOR
-            feedbackManager = GameRefs.Instance.feedbackManager;
+            feedbackManager = gameRefs.feedbackManager;
 #endif
 
             // UI
@@ -137,7 +139,7 @@ namespace Merge
 
                 debugButton.style.display = DisplayStyle.Flex;
 
-                debugButton.clicked += () => DebugManager.Instance.OpenMenu();
+                debugButton.clicked += () => debugMenu.OpenMenu();
 
                 if (feedbackManager != null)
                 {

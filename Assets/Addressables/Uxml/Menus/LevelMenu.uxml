@@ -1,0 +1,38 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="Content" class="content">
+                    <ui:Label tabindex="-1" text="Level Label Text" display-tooltip-when-elided="true" name="LevelLabel" class="menu_label" style="font-size: 5px;" />
+                    <ui:VisualElement name="LevelIndicator" class="level_indicator" style="background-image: url(&quot;project://database/Assets/Sprites/Menus/LevelMenu/LevelIndicator.png?fileID=2800000&amp;guid=5dc1ab80869f7cc4c963864ca1e145d4&amp;type=3#LevelIndicator&quot;);">
+                        <ui:VisualElement name="FillContainer" class="fill_container">
+                            <ui:VisualElement name="Fill" class="fill" style="width: 0;" />
+                            <ui:VisualElement name="FillBorder" class="fill_border" style="background-image: url(&quot;project://database/Assets/Sprites/Menus/LevelMenu/LevelIndicatorBorder.png?fileID=2800000&amp;guid=fc68bb4abe2ce18418e523afb5f0543b&amp;type=3#LevelIndicatorBorder&quot;);" />
+                            <ui:Label tabindex="-1" text="000/000" display-tooltip-when-elided="true" name="FillLabel" class="fill_label" />
+                        </ui:VisualElement>
+                        <ui:Label tabindex="-1" text="00" display-tooltip-when-elided="true" name="Value" class="label" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="LevelRewards" class="level_rewards" style="background-image: url(&quot;project://database/Assets/Sprites/Menus/LevelMenu/LevelRewards.png?fileID=2800000&amp;guid=e05b780883c7329459ca413a68fdf80f&amp;type=3#LevelRewards&quot;);">
+                        <ui:Label tabindex="-1" text="Level Label Text" display-tooltip-when-elided="true" name="Label" style="font-size: 5px; -unity-text-align: middle-center; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; position: absolute; left: 0; right: 0; top: 0; height: 12px; white-space: nowrap;" />
+                        <ui:VisualElement name="LevelReward0" class="reward_item" style="width: 24px; height: 24px; margin-left: 4px; margin-right: 4px;">
+                            <ui:Button display-tooltip-when-elided="true" name="InfoButton" class="button button_active" />
+                        </ui:VisualElement>
+                        <ui:VisualElement name="LevelReward1" class="reward_item" style="width: 24px; height: 24px; margin-left: 4px; margin-right: 4px;">
+                            <ui:Button display-tooltip-when-elided="true" name="InfoButton" class="button button_active" />
+                        </ui:VisualElement>
+                        <ui:VisualElement name="LevelReward2" class="reward_item" style="width: 24px; height: 24px; margin-left: 4px; margin-right: 4px;">
+                            <ui:Button display-tooltip-when-elided="true" name="InfoButton" class="button button_active" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:Button display-tooltip-when-elided="true" name="LevelUpButton" class="button_active" style="width: auto; height: 18px; margin-left: auto; margin-right: auto; margin-top: 0; margin-bottom: 0; padding-left: 4px; padding-right: 4px; padding-top: 0; padding-bottom: 0; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; background-color: rgb(85, 203, 152); color: rgb(255, 255, 255); font-size: 8px; transition-duration: 0.1s; min-width: 46px; overflow: visible;">
+                        <ui:Label tabindex="-1" text="Level  Up asdawe" display-tooltip-when-elided="true" name="LevelUpLabel" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; height: 18px;" />
+                        <ui:VisualElement name="SlashBox" style="left: 0; top: 0; right: 0; position: absolute; bottom: 0; overflow: hidden;">
+                            <ui:VisualElement name="ButtonSlash" class="button_slash" style="width: 16px; height: 18px; background-image: url(&quot;project://database/Assets/Sprites/Buttons/ButtonSlash.png?fileID=2800000&amp;guid=db93ba826a02b8b4586a074cbc017fcd&amp;type=3#ButtonSlash&quot;);" />
+                        </ui:VisualElement>
+                        <ui:VisualElement name="EdgeLeft" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/ButtonEdgeAlt.png?fileID=2800000&amp;guid=8a734ca7811da104aad964373af27bcd&amp;type=3#ButtonEdgeAlt&quot;); -unity-background-image-tint-color: rgb(238, 226, 195); width: 3px; height: 20px; position: absolute; left: -1px; top: -1px;" />
+                        <ui:VisualElement name="EdgeRight" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/ButtonEdgeAlt.png?fileID=2800000&amp;guid=8a734ca7811da104aad964373af27bcd&amp;type=3#ButtonEdgeAlt&quot;); -unity-background-image-tint-color: rgb(238, 226, 195); width: 3px; height: 20px; position: absolute; top: -1px; rotate: 180deg; right: -1px;" />
+                    </ui:Button>
+                    <ui:Button display-tooltip-when-elided="true" name="LevelUpDummyButton" picking-mode="Ignore" style="width: auto; height: 18px; margin-left: auto; margin-right: auto; margin-top: 0; margin-bottom: 0; padding-left: 4px; padding-right: 4px; padding-top: 0; padding-bottom: 0; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; background-color: rgb(169, 209, 192); color: rgb(231, 231, 231); font-size: 8px; transition-duration: 0.1s; min-width: 42px; overflow: visible; display: none;">
+                        <ui:Label tabindex="-1" text="Level Up" display-tooltip-when-elided="true" name="LevelUpLabel" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; height: 18px;" />
+                        <ui:VisualElement name="EdgeLeft" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/ButtonEdge.png?fileID=2800000&amp;guid=4c9ef3aa134eb114b9811a37dd468eb1&amp;type=3#ButtonEdge&quot;); -unity-background-image-tint-color: rgb(169, 209, 192); width: 3px; height: 18px; position: absolute; left: -2px; top: 0;" />
+                        <ui:VisualElement name="EdgeRight" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/ButtonEdge.png?fileID=2800000&amp;guid=4c9ef3aa134eb114b9811a37dd468eb1&amp;type=3#ButtonEdge&quot;); -unity-background-image-tint-color: rgb(169, 209, 192); width: 3px; height: 18px; position: absolute; top: 0; rotate: 180deg; right: -2px;" />
+                    </ui:Button>
+                </ui:VisualElement>
+</ui:UXML>

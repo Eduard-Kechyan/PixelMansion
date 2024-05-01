@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="Content" class="content">
+        <ui:ScrollView name="MessageScrollView" vertical-scroller-visibility="Auto" horizontal-scroller-visibility="AlwaysVisible" class="scroller" style="width: 100%;"/>
+        <ui:VisualElement name="ButtonBox" class="button_box">
+            <ui:Button text="Accept" display-tooltip-when-elided="true" name="AcceptButton" class="button button_active accept_button" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/LongButtonExtra.png?fileID=2800000&amp;guid=5807375128b344f44a31b9300397a38e&amp;type=3#LongButtonExtra&quot;);" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

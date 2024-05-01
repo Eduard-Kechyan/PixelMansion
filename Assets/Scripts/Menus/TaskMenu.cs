@@ -21,11 +21,15 @@ namespace Merge
             public int amount;
         }
 
+        private Types.Menu menuType = Types.Menu.Task;
+
         // References
+        private GameRefs gameRefs;
         private MenuUI menuUI;
         private InfoMenu infoMenu;
         private I18n LOCALE;
         private GameData gameData;
+        private UIData uiData;
         private ItemHandler itemHandler;
         private AddressableManager addressableManager;
         private SceneLoader sceneLoader;
@@ -35,65 +39,51 @@ namespace Merge
 
         // UI
         private VisualElement root;
-        private VisualElement taskMenu;
-        private ScrollView taskScrollView;
+        private VisualElement content;
+        private VisualElement taskScrollView;
 
-        private VisualTreeAsset taskGroupPrefab;
-        private VisualTreeAsset taskPrefab;
-        private VisualTreeAsset taskNeedPrefab;
-
-        async void Start()
+        void Start()
         {
             // Cache
+            gameRefs = GameRefs.Instance;
             menuUI = GetComponent<MenuUI>();
             infoMenu = GetComponent<InfoMenu>();
             itemHandler = DataManager.Instance.GetComponent<ItemHandler>();
             LOCALE = I18n.Instance;
             gameData = GameData.Instance;
+            uiData = gameData.GetComponent<UIData>();
             addressableManager = DataManager.Instance.GetComponent<AddressableManager>();
-            sceneLoader = GameRefs.Instance.sceneLoader;
-            taskManager = GameRefs.Instance.taskManager;
-            pointerHandler = GameRefs.Instance.pointerHandler;
-            tutorialManager = GameRefs.Instance.tutorialManager;
+            sceneLoader = gameRefs.sceneLoader;
+            taskManager = gameRefs.taskManager;
+            pointerHandler = gameRefs.pointerHandler;
+            tutorialManager = gameRefs.tutorialManager;
 
-            // UI
-            root = GetComponent<UIDocument>().rootVisualElement;
+            DataManager.Instance.CheckLoaded(() =>
+            {
+                // UI
+                root = GetComponent<UIDocument>().rootVisualElement;
+                content = uiData.GetMenuAsset(menuType);
 
-            taskMenu = root.Q<VisualElement>("TaskMenu");
-
-            taskScrollView = root.Q<ScrollView>("TaskScrollView");
-
-            taskGroupPrefab = await addressableManager.LoadAssetAsync<VisualTreeAsset>("Assets/Addressables/Uxml/TaskGroup.uxml");
-            taskPrefab = await addressableManager.LoadAssetAsync<VisualTreeAsset>("Assets/Addressables/Uxml/Task.uxml");
-            taskNeedPrefab = await addressableManager.LoadAssetAsync<VisualTreeAsset>("Assets/Addressables/Uxml/TaskNeed.uxml");
-
-            Init();
+                taskScrollView = content.Q<ScrollView>("TaskScrollView");
+            });
         }
 
-        void Init()
+        public void Open()
         {
-            // Make sure the menu is closed
-            taskMenu.style.display = DisplayStyle.None;
-            taskMenu.style.opacity = 0;
-        }
-
-        public void Open(Action<Vector2> callback = null)
-        {
-            if (menuUI.IsMenuOpen(taskMenu.name))
+            // Check menu
+            if (menuUI.IsMenuOpen(menuType))
             {
                 return;
             }
 
-            // Set the title
-            string title = LOCALE.Get("task_menu_title");
-
+            // Set menu content
             loadingTaskMenuButton = true;
             tempTaskButtonPos = Vector2.zero;
 
             SetTasks();
 
             // Open menu
-            menuUI.OpenMenu(taskMenu, title);
+            menuUI.OpenMenu(content, menuType);
         }
 
         // Show task data
@@ -107,7 +97,7 @@ namespace Merge
                 // Task groups
                 for (int i = 0; i < gameData.tasksData.Count; i++)
                 {
-                    var newTaskGroup = taskGroupPrefab.CloneTree();
+                    var newTaskGroup = uiData.taskGroupPrefab.CloneTree();
 
                     newTaskGroup.name = gameData.tasksData[i].id;
 
@@ -134,7 +124,7 @@ namespace Merge
                     // Tasks
                     for (int j = 0; j < gameData.tasksData[i].tasks.Count; j++)
                     {
-                        var newTask = taskPrefab.CloneTree();
+                        var newTask = uiData.taskPrefab.CloneTree();
 
                         newTask.Q<Label>("TaskTitle").text = LOCALE.Get(
                             "task_"
@@ -246,7 +236,7 @@ namespace Merge
                         // Task needs
                         for (int k = 0; k < gameData.tasksData[i].tasks[j].needs.Length; k++)
                         {
-                            var newTaskNeed = taskNeedPrefab.CloneTree();
+                            var newTaskNeed = uiData.taskNeedPrefab.CloneTree();
 
                             string amount = gameData.tasksData[i].tasks[j].needs[k].completed + "/" + gameData.tasksData[i].tasks[j].needs[k].amount;
 
@@ -319,7 +309,7 @@ namespace Merge
                     }
                 });
 
-                menuUI.CloseMenu(taskMenu.name);
+                menuUI.CloseMenu(menuType);
             }
             else
             {

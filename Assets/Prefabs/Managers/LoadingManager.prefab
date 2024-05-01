@@ -47,16 +47,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stayOnScene: 0
   acceptTermsAuto: 0
-  logPhases: 1
+  logPhases: 0
+  logSystemAndDeviceInfo: 0
   fillSpeed: 30
   tutorialData: {fileID: 0}
   sceneLoader: {fileID: 0}
   uiDocument: {fileID: 0}
-  loadingSceneUI: {fileID: 0}
+  menuUI: {fileID: 0}
+  feedbackManager: {fileID: 0}
+  logs: {fileID: 0}
+  maxPhase: 9
   phase: 1
-  maxPhase: 6
-  loading: 0
   fillCount: 0
+  loading: 0
 --- !u!114 &684697571465597321
 MonoBehaviour:
   m_ObjectHideFlags: 0

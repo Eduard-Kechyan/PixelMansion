@@ -36,7 +36,7 @@
     left: 0;
     right: auto;
     top: auto;
-    width: 166px;
+    width: 165px;
     height: 6px;
     display: flex;
     bottom: -5px;
@@ -53,6 +53,7 @@
 
 .menu .content {
     display: flex;
+    width: 100%;
     padding-left: 4px;
     padding-right: 4px;
     padding-top: 12px;
@@ -73,6 +74,7 @@
     white-space: normal;
     width: 80%;
     display: flex;
+    color: rgb(70, 70, 70);
 }
 
 .menu_title {
@@ -166,7 +168,7 @@
     height: 20px;
 }
 
-.settings_menu .label {
+.Settings_menu .label {
     font-size: 8px;
     -unity-text-align: middle-center;
     color: rgb(51, 51, 51);
@@ -180,19 +182,12 @@
     margin-bottom: 4px;
 }
 
-.settings_menu .container {
-    flex-grow: 1;
-    background-color: rgba(0, 0, 0, 0);
-    flex-direction: row;
-    justify-content: center;
-}
-
-.settings_menu .options_container {
+.Settings_menu .options_container {
     margin-top: 4px;
     margin-bottom: 12px;
 }
 
-.settings_menu .option_button {
+.Settings_menu .option_button {
     transition-duration: 0.1s;
     border-left-width: 0;
     border-right-width: 0;
@@ -212,20 +207,20 @@
     -unity-background-image-tint-color: rgb(85, 203, 152);
 }
 
-.settings_menu .option_button .option_icon {
+.Settings_menu .option_button .option_icon {
     flex-grow: 1;
     background-color: rgba(0, 0, 0, 0);
     width: 16px;
     height: 16px;
 }
 
-.settings_menu .buttons_container {
+.Settings_menu .buttons_container {
     margin-bottom: 8px;
     width: 100%;
     flex-wrap: wrap;
 }
 
-.settings_menu .buttons_container .settings_button {
+.Settings_menu .buttons_container .settings_button {
     margin-right: 2px;
     margin-top: 0;
     margin-bottom: 4px;
@@ -249,11 +244,11 @@
     white-space: normal;
 }
 
-.settings_menu .sing_in_container {
+.Settings_menu .sing_in_container {
     margin-bottom: 8px;
 }
 
-.settings_menu .sing_in_container .sing_in_button {
+.Settings_menu .sing_in_container .sing_in_button {
     width: 20px;
     height: 20px;
     margin-left: 4px;
@@ -273,7 +268,7 @@
     transition-duration: 0.1s;
 }
 
-.settings_menu .sing_in_container .sing_in_button .check {
+.Settings_menu .sing_in_container .sing_in_button .check {
     width: 12px;
     height: 10px;
     position: absolute;
@@ -281,11 +276,11 @@
     bottom: -5px;
 }
 
-.settings_menu .follow_container {
+.Settings_menu .follow_container {
     margin-bottom: 8px;
 }
 
-.settings_menu .follow_container .follow_button {
+.Settings_menu .follow_container .follow_button {
     padding-bottom: 0;
     background-color: rgba(188, 188, 188, 0);
     border-left-width: 0;
@@ -304,14 +299,14 @@
     padding-top: 0;
 }
 
-.settings_menu .id {
+.Settings_menu .id {
     flex-grow: 1;
     background-color: rgba(0, 0, 0, 0);
     flex-direction: row;
     justify-content: center;
 }
 
-.settings_menu .id .label {
+.Settings_menu .id .label {
     font-size: 6px;
     color: rgb(51, 51, 51);
     -unity-text-align: middle-center;
@@ -325,13 +320,13 @@
     margin-bottom: 2px;
 }
 
-.settings_menu .id .copy_button {
+.Settings_menu .id .copy_button {
     overflow: visible;
     height: 16px;
     width: 16px;
 }
 
-.settings_menu .id .copy_button .check {
+.Settings_menu .id .copy_button .check {
     position: absolute;
     right: -3px;
     bottom: 0;
@@ -342,7 +337,7 @@
     height: 10px;
 }
 
-.settings_menu .divider {
+.Settings_menu .divider {
     background-color: rgb(227, 213, 179);
     width: 90%;
     height: 1px;
@@ -350,7 +345,7 @@
     margin-right: auto;
 }
 
-.settings_menu .version {
+.Settings_menu .version {
     font-size: 6px;
     color: rgb(51, 51, 51);
     -unity-text-align: middle-center;
@@ -364,7 +359,7 @@
     margin-bottom: 0;
 }
 
-.locale_menu .menu .content {
+.Locale_menu .menu .content {
     margin-left: 0;
     margin-right: 0;
     margin-top: 0;
@@ -403,7 +398,7 @@
     color: rgb(113, 160, 246);
 }
 
-.energy_menu .energy_label {
+.Energy_menu .energy_label {
     position: relative;
     width: auto;
     font-size: 6px;
@@ -484,19 +479,19 @@
     left: 3px;
 }
 
-.inventory_menu .menu .menu_label_alt {
+.Inventory_menu .menu .menu_label_alt {
     width: 100%;
     -unity-text-align: middle-center;
     color: rgb(58, 58, 58);
 }
 
-.inventory_menu .menu .menu_label {
+.Inventory_menu .menu .menu_label {
     -unity-text-align: middle-center;
     font-size: 6px;
     color: rgb(55, 55, 55);
 }
 
-.inventory_menu .buy_more_container {
+.Inventory_menu .buy_more_container {
     flex-grow: 1;
     background-color: rgba(0, 0, 0, 0);
     margin-top: 7px;
@@ -504,7 +499,7 @@
     justify-content: center;
 }
 
-.inventory_menu .buy_more_container .label {
+.Inventory_menu .buy_more_container .label {
     margin-left: 0;
     margin-right: 5px;
     margin-top: 0;
@@ -644,16 +639,16 @@
     top: 3px;
 }
 
-.shop_menu .container {
+.Shop_menu .container {
     max-height: 70%;
 }
 
-.shop_menu .content {
+.Shop_menu .content {
     max-height: 100%;
     overflow: hidden;
 }
 
-.shop_menu .sub_title {
+.Shop_menu .sub_title {
     background-image: url("project://database/Assets/Sprites/Menus/MenuSubtitle.png?fileID=21300000&guid=f8151e7c91cd3e341a010482e952df1e&type=3#MenuSubtitle");
     width: 149px;
     height: 15px;
@@ -663,7 +658,7 @@
     margin-bottom: 10px;
 }
 
-.shop_menu .box_container {
+.Shop_menu .box_container {
     flex-grow: 1;
     background-color: rgba(0, 0, 0, 0);
     flex-direction: row;
@@ -673,29 +668,29 @@
     flex-wrap: wrap;
 }
 
-.shop_menu .shop_item_box {
+.Shop_menu .shop_item_box {
     width: 45px;
     height: 73px;
     margin-bottom: 10px;
 }
 
-.shop_menu .shop_item_box_daily {
+.Shop_menu .shop_item_box_daily {
     background-image: url("project://database/Assets/Sprites/Menus/ShopMenu/ShopBox.png?fileID=2800000&guid=9e7c70b32b740ac4eb78b2cfd3943bd2&type=3#ShopBox");
 }
 
-.shop_menu .shop_item_box_item {
+.Shop_menu .shop_item_box_item {
     background-image: url("project://database/Assets/Sprites/Menus/ShopMenu/ShopBox.png?fileID=2800000&guid=9e7c70b32b740ac4eb78b2cfd3943bd2&type=3#ShopBox");
 }
 
-.shop_menu .shop_item_box_gold {
+.Shop_menu .shop_item_box_gold {
     background-image: url("project://database/Assets/Sprites/Menus/ShopMenu/ShopBoxGold.png?fileID=2800000&guid=c8bc6674a420b9247b84a1b9e7ebbcb0&type=3#ShopBoxGold");
 }
 
-.shop_menu .shop_item_box_gems {
+.Shop_menu .shop_item_box_gems {
     background-image: url("project://database/Assets/Sprites/Menus/ShopMenu/ShopBoxGems.png?fileID=2800000&guid=985158be3a613a545a112be3f553ccfc&type=3#ShopBoxGems");
 }
 
-.shop_menu .shop_item_box .shop_box_top_label {
+.Shop_menu .shop_item_box .shop_box_top_label {
     position: absolute;
     left: 0;
     right: 0;
@@ -713,7 +708,7 @@
     -unity-text-align: middle-center;
 }
 
-.shop_menu .shop_item_box .shop_box_popular {
+.Shop_menu .shop_item_box .shop_box_popular {
     flex-grow: 1;
     background-image: url("project://database/Assets/Sprites/Menus/ShopMenu/Pupular.png?fileID=2800000&guid=c2d14d57d3b1655499c3441f6745b3fb&type=3#Pupular");
     width: 30px;
@@ -723,7 +718,7 @@
     right: -2px;
 }
 
-.shop_menu .shop_item_box .shop_box_popular .popular_label {
+.Shop_menu .shop_item_box .shop_box_popular .popular_label {
     font-size: 5px;
     color: rgb(255, 255, 255);
     -unity-text-align: middle-center;
@@ -745,7 +740,7 @@
     right: -5px;
 }
 
-.shop_menu .shop_item_box .shop_box_image {
+.Shop_menu .shop_item_box .shop_box_image {
     width: 37px;
     height: 37px;
     position: absolute;
@@ -755,7 +750,7 @@
     flex-grow: 1;
 }
 
-.shop_menu .shop_item_box .shop_box_bonus {
+.Shop_menu .shop_item_box .shop_box_bonus {
     background-image: url("project://database/Assets/Sprites/Menus/ShopMenu/EnergyBonus.png?fileID=2800000&guid=e84b1151ce36e9b4892a7e645a454983&type=3#EnergyBonus");
     width: 37px;
     height: 12px;
@@ -764,7 +759,7 @@
     left: 4px;
 }
 
-.shop_menu .shop_item_box .shop_box_bonus .bonus_label {
+.Shop_menu .shop_item_box .shop_box_bonus .bonus_label {
     font-size: 6px;
     -unity-text-align: middle-right;
     margin-left: 0;
@@ -779,7 +774,7 @@
     width: 100%;
 }
 
-.shop_menu .shop_item_box .shop_box_buy_button {
+.Shop_menu .shop_item_box .shop_box_buy_button {
     border-left-width: 0;
     border-right-width: 0;
     border-top-width: 0;
@@ -805,14 +800,14 @@
     -unity-background-image-tint-color: rgb(85, 203, 152);
 }
 
-.shop_menu .shop_item_box .shop_box_buy_button .shop_box_buy_button_value {
+.Shop_menu .shop_item_box .shop_box_buy_button .shop_box_buy_button_value {
     background-color: rgba(0, 0, 0, 0);
     background-image: url("project://database/Assets/Sprites/Values/SmallGold.png?fileID=2800000&guid=9927c70a39873234ead5f8d41fb591bf&type=3#SmallGold");
     width: 12px;
     height: 12px;
 }
 
-.shop_menu .shop_item_box .shop_box_buy_button .shop_box_buy_button_label {
+.Shop_menu .shop_item_box .shop_box_buy_button .shop_box_buy_button_label {
     width: 21px;
     margin-left: 0;
     margin-right: 0;
@@ -825,15 +820,15 @@
     height: 12px;
 }
 
-.shop_menu .shop_item_box .shop_box_buy_button .shop_box_buy_button_label_full {
+.Shop_menu .shop_item_box .shop_box_buy_button .shop_box_buy_button_label_full {
     width: 100%;
 }
 
-.shop_menu .shop_item_box .shop_box_buy_button:disabled {
+.Shop_menu .shop_item_box .shop_box_buy_button:disabled {
     -unity-background-image-tint-color: rgb(250, 126, 30);
 }
 
-.shop_menu .shop_item_box .shop_box_info_button {
+.Shop_menu .shop_item_box .shop_box_info_button {
     position: absolute;
     top: -2px;
     right: -2px;
@@ -856,7 +851,7 @@
     transition-duration: 0.1s;
 }
 
-.shop_menu .restore_button {
+.Shop_menu .restore_button {
     justify-content: center;
     padding-left: 0;
     padding-right: 0;
@@ -875,18 +870,18 @@
     transition-duration: 0.2s;
 }
 
-.shop_menu .restore_button:active {
+.Shop_menu .restore_button:active {
     scale: 0.8 0.8;
 }
 
-.shop_menu .restore_button .img {
+.Shop_menu .restore_button .img {
     background-image: url("project://database/Assets/Sprites/Menus/ShopMenu/Restore.png?fileID=21300000&guid=010266370f308ac469d2802810b2ee0f&type=3#Restore");
     width: 13px;
     height: 13px;
     margin-right: 2px;
 }
 
-.shop_menu .restore_button .label {
+.Shop_menu .restore_button .label {
     padding-left: 0;
     padding-right: 0;
     padding-top: 0;
@@ -901,15 +896,15 @@
     color: rgb(85, 203, 152);
 }
 
-.level_menu .menu_title_value {
+.Level_menu .menu_title_value {
     top: -2px;
 }
 
-.level_menu .level_value_bloop {
+.Level_menu .level_value_bloop {
     scale: 1.5 1.5;
 }
 
-.level_menu .level_indicator {
+.Level_menu .level_indicator {
     width: 106px;
     height: 17px;
     margin-left: auto;
@@ -917,7 +912,7 @@
     margin-bottom: 10px;
 }
 
-.level_menu .level_indicator .fill_container {
+.Level_menu .level_indicator .fill_container {
     position: absolute;
     width: 88px;
     height: 7px;
@@ -925,7 +920,7 @@
     left: 17px;
 }
 
-.level_menu .level_indicator .fill_container .fill {
+.Level_menu .level_indicator .fill_container .fill {
     background-color: rgb(129, 170, 222);
     width: 50%;
     height: 100%;
@@ -933,7 +928,7 @@
     -unity-background-image-tint-color: rgb(210, 230, 248);
 }
 
-.level_menu .level_indicator .fill_container .fill_border {
+.Level_menu .level_indicator .fill_container .fill_border {
     width: 90px;
     height: 9px;
     position: absolute;
@@ -941,7 +936,7 @@
     top: -1px;
 }
 
-.level_menu .level_indicator .fill_container .fill_label {
+.Level_menu .level_indicator .fill_container .fill_label {
     color: rgb(255, 255, 255);
     height: 7px;
     width: 100%;
@@ -958,7 +953,7 @@
     -unity-font-style: bold;
 }
 
-.level_menu .level_indicator .label {
+.Level_menu .level_indicator .label {
     font-size: 9px;
     color: rgb(42, 83, 125);
     -unity-text-align: middle-center;
@@ -980,7 +975,7 @@
     background-image: url("project://database/Assets/Sprites/Values/Experience.png?fileID=2800000&guid=e35c219a6b21fcc4e8f87256aab8e82b&type=3#Experience");
 }
 
-.level_menu .level_rewards {
+.Level_menu .level_rewards {
     padding-bottom: 1px;
     padding-top: 20px;
     margin-bottom: 10px;
@@ -994,7 +989,7 @@
     padding-right: 6px;
 }
 
-.level_menu .level_rewards .label {
+.Level_menu .level_rewards .label {
     font-size: 5px;
     -unity-text-align: middle-center;
     margin-left: 0;
@@ -1013,7 +1008,7 @@
     white-space: nowrap;
 }
 
-.level_menu .level_rewards .reward_item {
+.Level_menu .level_rewards .reward_item {
     width: 24px;
     height: 24px;
     margin-left: 4px;
@@ -1021,7 +1016,7 @@
     transition-duration: 0.3s;
 }
 
-.level_menu .level_rewards .reward_item .button {
+.Level_menu .level_rewards .reward_item .button {
     margin-left: 0;
     margin-right: 0;
     margin-top: 0;
@@ -1044,7 +1039,7 @@
     transition-duration: 0.3s;
 }
 
-.level_menu .level_button {
+.Level_menu .level_button {
     width: auto;
     height: 18px;
     margin-left: auto;
@@ -1066,7 +1061,7 @@
     transition-duration: 0.1s;
 }
 
-.level_menu .level_button .label {
+.Level_menu .level_button .label {
     margin-left: 0;
     margin-right: 0;
     margin-top: 0;
@@ -1078,7 +1073,7 @@
     height: 18px;
 }
 
-.level_menu .level_button .edge_left {
+.Level_menu .level_button .edge_left {
     position: absolute;
     left: -2px;
     top: 0;
@@ -1088,7 +1083,7 @@
     -unity-background-image-tint-color: rgb(85, 203, 152);
 }
 
-.level_menu .level_button .edge_right {
+.Level_menu .level_button .edge_right {
     position: absolute;
     left: auto;
     top: 0;
@@ -1100,7 +1095,7 @@
     rotate: 180deg;
 }
 
-.task_menu .container {
+.Task_menu .container {
     max-height: 70%;
 }
 
@@ -1328,7 +1323,7 @@
     top: -4px;
 }
 
-.input_menu .input_label {
+.Input_menu .input_label {
     -unity-text-align: middle-center;
     font-size: 8px;
     color: rgb(67, 67, 67);
@@ -1342,7 +1337,7 @@
     padding-left: 0;
 }
 
-.input_menu .input_text_field {
+.Input_menu .input_text_field {
     margin-top: 0;
     margin-right: auto;
     margin-bottom: 5px;
@@ -1355,11 +1350,11 @@
     width: 90%;
 }
 
-.input_menu .input_text_field .unity-text-field__label {
+.Input_menu .input_text_field .unity-text-field__label {
     display: none;
 }
 
-.input_menu .input_text_field .unity-text-field__input {
+.Input_menu .input_text_field .unity-text-field__input {
     width: 100%;
     height: 24px;
     margin-top: 0;
@@ -1385,11 +1380,11 @@
     border-bottom-left-radius: 4px;
 }
 
-.input_menu .input_text_field:active .unity-text-field__input {
+.Input_menu .input_text_field:active .unity-text-field__input {
     background-color: rgba(207, 194, 161, 0);
 }
 
-.input_menu .input_button {
+.Input_menu .input_button {
     background-image: url("project://database/Assets/Sprites/Buttons/LongButtonExtra.png?fileID=2800000&guid=5807375128b344f44a31b9300397a38e&type=3#LongButtonExtra");
     width: 68px;
     height: 20px;
@@ -1399,13 +1394,13 @@
     color: rgb(255, 255, 255);
 }
 
-.input_menu .input_button:disabled {
+.Input_menu .input_button:disabled {
     opacity: 1;
     color: rgb(77, 77, 77);
     -unity-background-image-tint-color: rgb(224, 211, 178);
 }
 
-.info_menu .item_info {
+.Info_menu .item_info {
     width: 107px;
     height: 24px;
     margin-right: auto;
@@ -1415,12 +1410,12 @@
     display: flex;
 }
 
-.info_menu .item_info .item_sprite {
+.Info_menu .item_info .item_sprite {
     width: 24px;
     height: 24px;
 }
 
-.info_menu .item_info .item_name {
+.Info_menu .item_info .item_name {
     position: absolute;
     color: rgb(58, 58, 58);
     font-size: 6px;
@@ -1432,7 +1427,7 @@
     left: 25px;
 }
 
-.info_menu .item_info .item_data {
+.Info_menu .item_info .item_data {
     position: absolute;
     width: 80px;
     font-size: 4px;
@@ -1442,7 +1437,7 @@
     white-space: normal;
 }
 
-.info_menu .unlocked_items {
+.Info_menu .unlocked_items {
     flex-direction: row;
     align-items: flex-end;
     justify-content: center;
@@ -1453,7 +1448,7 @@
     display: none;
 }
 
-.info_menu .unlocked_items .value {
+.Info_menu .unlocked_items .value {
     position: absolute;
     left: 0;
     top: -12px;
@@ -1471,7 +1466,7 @@
     font-size: 6px;
 }
 
-.info_menu .unlocked_items .bg {
+.Info_menu .unlocked_items .bg {
     width: 24px;
     height: 24px;
     margin-right: 4px;
@@ -1479,7 +1474,7 @@
     display: none;
 }
 
-.info_menu .unlocked_items .bg .label {
+.Info_menu .unlocked_items .bg .label {
     position: absolute;
     -unity-background-image-tint-color: rgb(53, 53, 53);
     font-size: 6px;
@@ -1495,14 +1490,14 @@
     white-space: nowrap;
 }
 
-.info_menu .unlocked_items .current_item {
+.Info_menu .unlocked_items .current_item {
     width: 24px;
     height: 24px;
     margin-right: 4px;
     margin-bottom: 10px;
 }
 
-.info_menu .unlocked_items .current_item .item {
+.Info_menu .unlocked_items .current_item .item {
     width: 24px;
     height: 24px;
     position: absolute;
@@ -1510,7 +1505,7 @@
     top: 0;
 }
 
-.info_menu .unlocked_items .current_item .item .order {
+.Info_menu .unlocked_items .current_item .item .order {
     width: 24px;
     position: absolute;
     left: 50%;
@@ -1528,7 +1523,7 @@
     -unity-text-align: middle-center;
 }
 
-.info_menu .unlocked_items .current_item .item .line {
+.Info_menu .unlocked_items .current_item .item .line {
     width: 2px;
     height: 1px;
     position: absolute;
@@ -1538,7 +1533,7 @@
     background-color: rgba(0, 0, 0, 0.11);
 }
 
-.info_menu .info_parent {
+.Info_menu .info_parent {
     align-items: stretch;
     justify-content: center;
     align-self: flex-start;
@@ -1556,7 +1551,7 @@
     flex-direction: row;
 }
 
-.info_menu .info_parent .value {
+.Info_menu .info_parent .value {
     position: absolute;
     left: 0;
     top: 0;
@@ -1574,7 +1569,7 @@
     font-size: 6px;
 }
 
-.info_menu .info_parent .parent {
+.Info_menu .info_parent .parent {
     width: 24px;
     height: 24px;
     background-image: url("project://database/Assets/Sprites/Menus/InfoMenu/InfoParentItem.png?fileID=2800000&guid=49c117f476be9d14f9f248b548270113&type=3#InfoParentItem");
@@ -1582,18 +1577,18 @@
     margin-right: 2px;
 }
 
-.info_menu .info_parent .parent .parent_item {
+.Info_menu .info_parent .parent .parent_item {
     width: 24px;
     height: 24px;
 }
 
-.info_menu .info_coll_parent {
+.Info_menu .info_coll_parent {
     width: 55%;
     margin-right: auto;
     margin-left: auto;
 }
 
-.info_menu .obtain {
+.Info_menu .obtain {
     padding-left: 0;
     padding-right: 0;
     padding-top: 0;
@@ -1607,7 +1602,7 @@
     -unity-text-align: middle-center;
 }
 
-.info_menu .obtain_from {
+.Info_menu .obtain_from {
     font-size: 6px;
     margin-left: 0;
     margin-right: 0;
@@ -1620,11 +1615,65 @@
     color: rgb(123, 123, 123);
 }
 
-.confirm_menu .content .button {
+.Confirm_menu .content .button {
     width: 42px;
     height: 18px;
     font-size: 8px;
     color: rgb(255, 255, 255);
+}
+
+.Terms_menu .accept_button {
+    width: 68px;
+    height: 20px;
+    font-size: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    color: rgb(255, 255, 255);
+    margin-right: auto;
+    margin-left: auto;
+    -unity-background-image-tint-color: rgb(85, 203, 152);
+}
+
+.Terms_menu .button_box {
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.Terms_menu .alt_button {
+    width: 68px;
+    height: 20px;
+    color: rgb(255, 255, 255);
+    font-size: 8px;
+    margin-right: auto;
+    margin-left: auto;
+}
+.Age_menu .arrow_up {
+    flex-grow: 1;
+    width: 10px;
+    height: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 4px;
+}
+
+.Age_menu .arrow_down {
+    flex-grow: 1;
+    width: 10px;
+    height: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 8px;
+    margin-top: 3px;
+    rotate: 180deg;
+}
+
+.Age_menu .accept_button {
+    font-size: 10px;
+    margin-bottom: 10px;
+    margin-right: auto;
+    margin-left: auto;
+    -unity-background-image-tint-color: rgb(85, 203, 152);
 }
 
 .menu_slider .unity-slider__label {
@@ -1828,4 +1877,117 @@
     margin-bottom: 2px;
     color: rgb(255, 255, 255);
     font-size: 10px;
+}
+
+.Message_menu .message_label {
+    font-size: 6px;
+    width: 100%;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    color: rgb(60, 60, 60);
+    -unity-font-style: normal;
+    white-space: normal;
+    -unity-text-align: upper-left;
+    -unity-font-definition: url("project://database/Assets/Fonts/Roboto%20SDF.asset?fileID=11400000&guid=1c5dedeb0ccefb74ebe6e5ff0a6f7e56&type=2#Roboto SDF");
+}
+
+.Message_menu .content {
+    padding-bottom: 30px;
+}
+
+.Message_menu .button_box {
+    position: absolute;
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+    height: 20px;
+    bottom: 5px;
+    left: 0px;
+}
+
+.Message_menu .accept_button {
+    width: 68px;
+    height: 20px;
+    font-size: 10px;
+    color: rgb(255, 255, 255);
+    -unity-background-image-tint-color: rgb(85, 203, 152);
+}
+
+.Debug_menu .debug_menu_container {
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.Debug_menu .debug_menu_container_label {
+    width: 100%;
+    -unity-text-align: middle-center;
+    color: rgb(46, 46, 46);
+    font-size: 8px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.Debug_menu .debug_menu_button {
+    margin-right: 2px;
+    margin-top: 0;
+    margin-bottom: 4px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    background-color: rgba(188, 188, 188, 0);
+    background-image: url("project://database/Assets/Sprites/Buttons/LongButtonExtra.png?fileID=21300000&guid=5807375128b344f44a31b9300397a38e&type=3#LongButtonExtra");
+    width: 68px;
+    height: 20px;
+    font-size: 6px;
+    -unity-background-image-tint-color: rgb(113, 160, 246);
+    color: rgb(255, 255, 255);
+    margin-left: 2px;
+    transition-duration: 0.1s;
+    white-space: normal;
+}
+
+.Debug_menu .debug_menu_button_red {
+    -unity-background-image-tint-color: rgb(236, 115, 127);
+}
+
+.Debug_menu .debug_menu_button_green {
+    -unity-background-image-tint-color: rgb(62, 195, 123);
+}
+
+.Debug_menu .debug_menu_button_yellow {
+    -unity-background-image-tint-color: rgb(254, 218, 117);
+}
+
+.Debug_menu .debug_menu_button_cyan {
+    -unity-background-image-tint-color: rgb(85, 203, 179);
+}
+
+.Debug_menu .debug_menu_scroller .unity-base-slider__tracker {
+    width: 0;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+}
+
+.Debug_menu .debug_menu_scroller .unity-base-slider__dragger {
+    width: 0;
 }

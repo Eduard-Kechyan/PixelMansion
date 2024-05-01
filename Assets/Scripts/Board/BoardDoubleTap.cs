@@ -22,6 +22,7 @@ namespace Merge
         private bool generatingForTutorial = false;
 
         // References
+        private GameRefs gameRefs;
         private BoardInteractions interactions;
         private BoardManager boardManager;
         private PopupManager popupManager;
@@ -39,19 +40,20 @@ namespace Merge
         void Start()
         {
             // Cache
+            gameRefs = GameRefs.Instance;
             interactions = GetComponent<BoardInteractions>();
             boardManager = GetComponent<BoardManager>();
             popupManager = PopupManager.Instance;
             boardIndication = GetComponent<BoardIndication>();
             dataManager = DataManager.Instance;
-            levelMenu = GameRefs.Instance.levelMenu;
+            levelMenu = gameRefs.levelMenu;
             gameData = GameData.Instance;
             LOCALE = I18n.Instance;
-            energyMenu = GameRefs.Instance.energyMenu;
-            valuePop = GameRefs.Instance.valuePop;
-            pointerHandler = GameRefs.Instance.pointerHandler;
-            timeManager = GameRefs.Instance.timeManager;
-            tutorialManager = GameRefs.Instance.tutorialManager;
+            energyMenu = gameRefs.energyMenu;
+            valuePop = gameRefs.valuePop;
+            pointerHandler = gameRefs.pointerHandler;
+            timeManager = gameRefs.timeManager;
+            tutorialManager = gameRefs.tutorialManager;
         }
 
         public bool CheckForDoubleTaps()

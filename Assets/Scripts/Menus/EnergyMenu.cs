@@ -15,6 +15,8 @@ namespace Merge
 
         private bool waitingForAd = false;
 
+        private Types.Menu menuType = Types.Menu.Energy;
+
         // References
         private GameData gameData;
         private I18n LOCALE;
@@ -24,10 +26,10 @@ namespace Merge
         private AdsManager adsManager;
         private AnalyticsManager analyticsManager;
         private NoteMenu noteMenu;
+        private UIData uiData;
 
         // UI
-        private VisualElement root;
-        private VisualElement energyMenu;
+        private VisualElement content;
         private Label energyLabelA;
         private Label energyLabelB;
         private Label energyBuyLabel;
@@ -44,53 +46,44 @@ namespace Merge
             shopMenu = GetComponent<ShopMenu>();
             valuePop = GetComponent<ValuePop>();
             adsManager = Services.Instance.GetComponent<AdsManager>();
-            // analyticsManager = Services.Instance.GetComponent<AnalyticsManager>();
             analyticsManager = AnalyticsManager.Instance;
             noteMenu = GetComponent<NoteMenu>();
+            uiData = GameData.Instance.GetComponent<UIData>();
 
-            // UI
-            root = GetComponent<UIDocument>().rootVisualElement;
+            DataManager.Instance.CheckLoaded(() =>
+            {
+                // UI
+                content = uiData.GetMenuAsset(menuType);
 
-            energyMenu = root.Q<VisualElement>("EnergyMenu");
+                energyLabelA = content.Q<Label>("EnergyLabelA");
+                energyLabelB = content.Q<Label>("EnergyLabelB");
 
-            energyLabelA = energyMenu.Q<Label>("EnergyLabelA");
-            energyLabelB = energyMenu.Q<Label>("EnergyLabelB");
+                energyWatchLabel = content.Q<VisualElement>("EnergyBoxes").Q<Label>("WatchLabel");
+                energyBuyLabel = content.Q<VisualElement>("EnergyBoxes").Q<Label>("BuyLabel");
 
-            energyWatchLabel = energyMenu.Q<VisualElement>("EnergyBoxes").Q<Label>("WatchLabel");
-            energyBuyLabel = energyMenu.Q<VisualElement>("EnergyBoxes").Q<Label>("BuyLabel");
+                watchButton = content.Q<VisualElement>("EnergyBoxes").Q<Button>("WatchButton");
+                buyButton = content.Q<VisualElement>("EnergyBoxes").Q<Button>("BuyButton");
 
-            watchButton = energyMenu.Q<VisualElement>("EnergyBoxes").Q<Button>("WatchButton");
-            buyButton = energyMenu.Q<VisualElement>("EnergyBoxes").Q<Button>("BuyButton");
-
-            watchButton.clicked += () => WatchAdHandle();
-            buyButton.clicked += () => BuyEnergyHandler();
-
-            Init();
-        }
-
-        void Init()
-        {
-            // Make sure the menu is closed
-            energyMenu.style.display = DisplayStyle.None;
-            energyMenu.style.opacity = 0;
+                watchButton.clicked += () => WatchAdHandle();
+                buyButton.clicked += () => BuyEnergyHandler();
+            });
         }
 
         public void Open()
         {
-            if (menuUI.IsMenuOpen(energyMenu.name))
+            // Check menu
+            if (menuUI.IsMenuOpen(menuType))
             {
                 return;
             }
 
-            // Title
-            string title = LOCALE.Get("energy_menu_title");
-
+            // Set menu content
             SetUI();
 
             energyWatchLabel.text = "+" + adsManager.energyRewardAmountInner;
 
             // Open menu
-            menuUI.OpenMenu(energyMenu, title, true);
+            menuUI.OpenMenu(content, menuType);
         }
 
         void SetUI()

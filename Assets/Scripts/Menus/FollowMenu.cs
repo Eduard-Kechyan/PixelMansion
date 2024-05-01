@@ -13,16 +13,18 @@ namespace Merge
         public bool shouldShow = true;
         private string followDate;
 
+        private Types.Menu menuType = Types.Menu.Follow;
+
         // References
         private MenuUI menuUI;
         private GameData gameData;
         private SettingsMenu settingsMenu;
         private I18n LOCALE;
         private CloudSave cloudSave;
+        private UIData uiData;
 
         // UI
-        private VisualElement root;
-        private VisualElement followMenu;
+        private VisualElement content;
         private Label followLabel0;
         private Label followLabel1;
         private Button instagramFollowButton;
@@ -48,35 +50,34 @@ namespace Merge
             settingsMenu = GetComponent<SettingsMenu>();
             LOCALE = I18n.Instance;
             cloudSave = Services.Instance.GetComponent<CloudSave>();
+            uiData = GameData.Instance.GetComponent<UIData>();
 
-            // UI
-            root = GetComponent<UIDocument>().rootVisualElement;
+            DataManager.Instance.CheckLoaded(() =>
+            {
+                // UI
+                content = uiData.GetMenuAsset(menuType);
 
-            followMenu = root.Q<VisualElement>("FollowMenu");
-            followLabel0 = followMenu.Q<Label>("FollowLabel0");
-            followLabel1 = followMenu.Q<Label>("FollowLabel1");
+                followLabel0 = content.Q<Label>("FollowLabel0");
+                followLabel1 = content.Q<Label>("FollowLabel1");
 
-            instagramFollowButton = followMenu.Q<Button>("InstagramFollowButton");
-            facebookFollowButton = followMenu.Q<Button>("FacebookFollowButton");
-            youtubeFollowButton = followMenu.Q<Button>("YoutubeFollowButton");
-            noButton = followMenu.Q<Button>("NoButton");
+                instagramFollowButton = content.Q<Button>("InstagramFollowButton");
+                facebookFollowButton = content.Q<Button>("FacebookFollowButton");
+                youtubeFollowButton = content.Q<Button>("YoutubeFollowButton");
+                noButton = content.Q<Button>("NoButton");
 
-            // UI Taps
-            instagramFollowButton.clicked += () => HandleSocialMediaButton(Types.SocialMediaType.Instagram);
-            facebookFollowButton.clicked += () => HandleSocialMediaButton(Types.SocialMediaType.Facebook);
-            youtubeFollowButton.clicked += () => HandleSocialMediaButton(Types.SocialMediaType.Youtube);
+                // UI Taps
+                instagramFollowButton.clicked += () => HandleSocialMediaButton(Types.SocialMediaType.Instagram);
+                facebookFollowButton.clicked += () => HandleSocialMediaButton(Types.SocialMediaType.Facebook);
+                youtubeFollowButton.clicked += () => HandleSocialMediaButton(Types.SocialMediaType.Youtube);
 
-            noButton.clicked += () => HandleNoButton();
+                noButton.clicked += () => HandleNoButton();
 
-            Init();
+                Init();
+            });
         }
 
         void Init()
         {
-            // Make sure the menu is closed
-            followMenu.style.display = DisplayStyle.None;
-            followMenu.style.opacity = 0;
-
             noButton.text = LOCALE.Get("follow_menu_no_button");
 
             followLabel0.text = LOCALE.Get("follow_menu_rate_label_0", LOCALE.Get("game_title"));
@@ -85,13 +86,16 @@ namespace Merge
 
         public void Open(bool ignoreCheck = false)
         {
+            // Check menu
+            if (menuUI.IsMenuOpen(menuType))
+            {
+                return;
+            }
+
             if (ignoreCheck || gameData.level >= 4)
             {
-                // Set the title
-                string title = LOCALE.Get("follow_menu_title");
-
                 // Open menu
-                menuUI.OpenMenu(followMenu, title, false, false, true);
+                menuUI.OpenMenu(content, menuType, "", false, false, true, false, true);
             }
         }
 
@@ -124,7 +128,7 @@ namespace Merge
 
         void CloseMenu()
         {
-            menuUI.CloseMenu(followMenu.name, () =>
+            menuUI.CloseMenu(menuType, () =>
             {
                 shouldShow = false;
             });

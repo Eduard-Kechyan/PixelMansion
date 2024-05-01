@@ -32,6 +32,8 @@ namespace Merge
 
         private Coroutine levelFillTimeout;
 
+        private Types.Menu menuType = Types.Menu.Level;
+
         // References
         private GameData gameData;
         private ItemHandler itemHandler;
@@ -43,10 +45,10 @@ namespace Merge
         private ValuesUI valuesUI;
         private WorldUI worldUI;
         private UIButtons uiButtons;
+        private UIData uiData;
 
         // UI
-        private VisualElement root;
-        private VisualElement levelMenu;
+        private VisualElement content;
         private Label levelLabel;
         private Label levelValue;
         private VisualElement levelFill;
@@ -79,57 +81,55 @@ namespace Merge
             valuesUI = GameRefs.Instance.valuesUI;
             worldUI = GameRefs.Instance.worldUI;
             uiButtons = gameData.GetComponent<UIButtons>();
+            uiData = GameData.Instance.GetComponent<UIData>();
 
-            // UI
-            root = GetComponent<UIDocument>().rootVisualElement;
-
-            levelMenu = root.Q<VisualElement>("LevelMenu");
-
-            levelLabel = levelMenu.Q<Label>("LevelLabel");
-            levelValue = levelMenu.Q<VisualElement>("LevelIndicator").Q<Label>("Value");
-            levelFill = levelMenu.Q<VisualElement>("Fill");
-            levelFillLabel = levelMenu.Q<Label>("FillLabel");
-            levelUpButton = levelMenu.Q<Button>("LevelUpButton");
-            levelUpButtonSlash = levelUpButton.Q<VisualElement>("ButtonSlash");
-            levelUpLabel = levelUpButton.Q<Label>("LevelUpLabel");
-            levelUpDummyButton = levelMenu.Q<Button>("LevelUpDummyButton");
-            levelUpDummyLabel = levelUpDummyButton.Q<Label>("LevelUpLabel");
-
-            levelRewards = levelMenu.Q<VisualElement>("LevelRewards");
-            levelRewardsLabel = levelRewards.Q<Label>("Label");
-            levelReward0 = levelRewards.Q<VisualElement>("LevelReward0");
-            levelRewardButton0 = levelReward0.Q<Button>("InfoButton");
-            levelReward1 = levelRewards.Q<VisualElement>("LevelReward1");
-            levelRewardButton1 = levelReward1.Q<Button>("InfoButton");
-            levelReward2 = levelRewards.Q<VisualElement>("LevelReward2");
-            levelRewardButton2 = levelReward2.Q<Button>("InfoButton");
-
-            levelRewardButton0.clicked += () =>
+            DataManager.Instance.CheckLoaded(() =>
             {
-                ShowInfo(levelRewardText0, 'd');
-            };
+                // UI
+                content = uiData.GetMenuAsset(menuType);
 
-            levelRewardButton1.clicked += () =>
-            {
-                ShowInfo(levelRewardText1, 'd');
-            };
+                levelLabel = content.Q<Label>("LevelLabel");
+                levelValue = content.Q<VisualElement>("LevelIndicator").Q<Label>("Value");
+                levelFill = content.Q<VisualElement>("Fill");
+                levelFillLabel = content.Q<Label>("FillLabel");
+                levelUpButton = content.Q<Button>("LevelUpButton");
+                levelUpButtonSlash = levelUpButton.Q<VisualElement>("ButtonSlash");
+                levelUpLabel = levelUpButton.Q<Label>("LevelUpLabel");
+                levelUpDummyButton = content.Q<Button>("LevelUpDummyButton");
+                levelUpDummyLabel = levelUpDummyButton.Q<Label>("LevelUpLabel");
 
-            levelRewardButton2.clicked += () =>
-            {
-                ShowInfo(levelRewardText2, 'd');
-            };
+                levelRewards = content.Q<VisualElement>("LevelRewards");
+                levelRewardsLabel = levelRewards.Q<Label>("Label");
+                levelReward0 = levelRewards.Q<VisualElement>("LevelReward0");
+                levelRewardButton0 = levelReward0.Q<Button>("InfoButton");
+                levelReward1 = levelRewards.Q<VisualElement>("LevelReward1");
+                levelRewardButton1 = levelReward1.Q<Button>("InfoButton");
+                levelReward2 = levelRewards.Q<VisualElement>("LevelReward2");
+                levelRewardButton2 = levelReward2.Q<Button>("InfoButton");
 
-            levelUpButton.clicked += () => UpdateLevel();
+                levelRewardButton0.clicked += () =>
+                {
+                    ShowInfo(levelRewardText0, 'd');
+                };
 
-            Init();
+                levelRewardButton1.clicked += () =>
+                {
+                    ShowInfo(levelRewardText1, 'd');
+                };
+
+                levelRewardButton2.clicked += () =>
+                {
+                    ShowInfo(levelRewardText2, 'd');
+                };
+
+                levelUpButton.clicked += () => UpdateLevel();
+
+                Init();
+            });
         }
 
         void Init()
         {
-            // Make sure the menu is closed
-            levelMenu.style.display = DisplayStyle.None;
-            levelMenu.style.opacity = 0;
-
             // Initialize level up button slash
             levelUpButtonSlash.RemoveFromClassList("button_slash_slashing");
 
@@ -140,16 +140,15 @@ namespace Merge
 
         public void Open()
         {
-            if (menuUI.IsMenuOpen(levelMenu.name))
+            // Check menu
+            if (menuUI.IsMenuOpen(menuType))
             {
                 return;
             }
 
             if (!isRewarding)
             {
-                // Set the title
-                string title = LOCALE.Get("level_menu_title");
-
+                // Set menu content
                 levelLabel.text = LOCALE.Get("level_menu_label");
 
                 levelRewardsLabel.text = LOCALE.Get("level_menu_rewards_label");
@@ -171,7 +170,7 @@ namespace Merge
                 HandleRewards();
 
                 // Open menu
-                menuUI.OpenMenu(levelMenu, title, true);
+                menuUI.OpenMenu(content, menuType,"",true);
             }
         }
 

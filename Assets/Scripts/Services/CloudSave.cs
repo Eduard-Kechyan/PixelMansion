@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Services.CloudSave;
-using Newtonsoft.Json;
 
 namespace Merge
 {
@@ -603,6 +602,93 @@ namespace Merge
                 }
             }
         }
+
+        /*public async void LoadCustomItemData(string customItemId, Action<T> callback = null, Action failCallback = null)
+        {
+            if (cloudSaveEnabled)
+            {
+                if (services.cloudSaveAvailable)
+                {
+                    try
+                    {
+                        var result = await CloudSaveService.Instance.Data.Player.LoadAsync(new HashSet<string> { key });
+
+                        if (result.TryGetValue(key, out var keyData))
+                        {
+                            callback?.Invoke(keyData.Value.GetAs<T>());
+                        }
+                        else
+                        {
+                            // ERROR
+                            errorManager.Throw(
+                                Types.ErrorType.Code,
+                                GetType().Name,
+                                    "Wrong key given: " + key
+                            );
+
+                            failCallback?.Invoke();
+                        }
+                    }
+                    catch (CloudSaveValidationException exception)
+                    {
+                        // ERROR
+                        errorManager.Throw(
+                            Types.ErrorType.Code,
+                            GetType().Name,
+                            "CloudSaveValidationException: " + exception
+                        );
+
+                        failCallback?.Invoke();
+                    }
+                    catch (CloudSaveRateLimitedException exception)
+                    {
+                        // ERROR
+                        errorManager.Throw(
+                            Types.ErrorType.Code,
+                            GetType().Name,
+                            "CloudSaveRateLimitedException: " + exception
+                        );
+
+                        failCallback?.Invoke();
+                    }
+                    catch (CloudSaveException exception)
+                    {
+                        // ERROR
+                        errorManager.Throw(
+                            Types.ErrorType.Code,
+                            GetType().Name,
+                            "CloudSaveException: " + exception
+                        );
+
+                        failCallback?.Invoke();
+                    }
+                }
+                else
+                {
+                    if (throwCalledBeforeServicesError)
+                    {
+                        // WARNING
+                        errorManager.ThrowWarning(
+                            Types.ErrorType.Code,
+                            GetType().Name,
+                            "Called before \"services.cloudSaveAvailable\""
+                        );
+                    }
+
+                    failCallback?.Invoke();
+                }
+
+                string newCustomItemId = customItemId == "" ? "TermsHtml" : customItemId;
+
+                var customItems = await CloudSaveService.Instance.Data.Custom.LoadAllAsync(newCustomItemId);
+
+                foreach (var customItem in customItems)
+                {
+                    Debug.Log(customItem.Key);
+                    Debug.Log(customItem.Value.Value);
+                }
+            }
+    }*/
 
         //// DELETE ////
 

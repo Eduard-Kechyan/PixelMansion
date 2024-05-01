@@ -26,6 +26,7 @@ namespace Merge
         public static event HandlingTaskEvent OnTaskHandling;
 
         // References
+        private GameRefs gameRefs;
         private GameData gameData;
         private DataManager dataManager;
         private WorldDataManager worldDataManager;
@@ -44,18 +45,19 @@ namespace Merge
         void Start()
         {
             // Cache
+            gameRefs = GameRefs.Instance;
             gameData = GameData.Instance;
             dataManager = DataManager.Instance;
-            worldDataManager = GameRefs.Instance.worldDataManager;
-            boardManager = GameRefs.Instance.boardManager;
-            tutorialManager = GameRefs.Instance.tutorialManager;
+            worldDataManager = gameRefs.worldDataManager;
+            boardManager = gameRefs.boardManager;
+            tutorialManager = gameRefs.tutorialManager;
             progressManager = GetComponent<ProgressManager>();
             removeFilth = GetComponent<RemoveFilth>();
             cameraMotion = Camera.main.GetComponent<CameraMotion>();
             cameraPinch = Camera.main.GetComponent<CameraPinch>();
-            noteDotHandler = GameRefs.Instance.noteDotHandler;
+            noteDotHandler = gameRefs.noteDotHandler;
             uiButtons = gameData.GetComponent<UIButtons>();
-            valuePop = GameRefs.Instance.valuePop;
+            valuePop = gameRefs.valuePop;
 
             // The world data manager is only attached in the world scene
             if (worldDataManager != null)

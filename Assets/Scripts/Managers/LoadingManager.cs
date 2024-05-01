@@ -16,7 +16,7 @@ namespace Merge
         public TutorialData tutorialData;
         public SceneLoader sceneLoader;
         public GameObject uiDocument;
-        public LoadingSceneUI loadingSceneUI;
+        public MenuUI menuUI;
 
 #if DEVELOPMENT_BUILD || UNITY_EDITOR
         public FeedbackManager feedbackManager;
@@ -50,6 +50,9 @@ namespace Merge
         private AuthManager authManager;
         private CloudSave cloudSave;
         private AnalyticsManager analyticsManager;
+        private TermsMenu termsMenu;
+        private ConflictMenu conflictMenu;
+        private UpdateMenu updateMenu;
 
         void Awake()
         {
@@ -78,6 +81,9 @@ namespace Merge
             cloudSave = services.GetComponent<CloudSave>();
             // analyticsManager = services.GetComponent<AnalyticsManager>();
             analyticsManager = AnalyticsManager.Instance;
+            termsMenu = menuUI.GetComponent<TermsMenu>();
+            conflictMenu = menuUI.GetComponent<ConflictMenu>();
+            updateMenu = menuUI.GetComponent<UpdateMenu>();
 
             // Get Ready
             singlePhasePercent = 100f / maxPhase;
@@ -103,7 +109,7 @@ namespace Merge
             StartLoading();
         }
 
-        void Update()
+        async void Update()
         {
             if (loading && fillCount < 100f && CheckForLoading())
             {
@@ -133,7 +139,10 @@ namespace Merge
                 {
                     loading = false;
 
-                    dataManager.CheckForLoadedSprites(callback);
+                    dataManager.CheckForLoadedData(() =>
+                    {
+                        menuUI.CheckLoadingSceneMenus(callback);
+                    });
 
                     if (logPhases)
                     {
@@ -157,24 +166,20 @@ namespace Merge
                     {
                         if (acceptTermsAuto)
                         {
-                            analyticsManager.StartDataCollection();
-
-                            PlayerPrefs.SetInt("termsAccepted", 1);
-                            PlayerPrefs.Save();
-
-                            services.termsAccepted = true;
-
-                            dataManager.SaveValue("termsAccepted", true, false);
-
-                            ContinueLoading();
-                        }
-                        else
-                        {
-                            loadingSceneUI.CheckTerms(() =>
+                            termsMenu.AcceptTerms(() =>
                             {
                                 analyticsManager.StartDataCollection();
 
-                                callback();
+                                ContinueLoading();
+                            });
+                        }
+                        else
+                        {
+                            termsMenu.Open(() =>
+                            {
+                                analyticsManager.StartDataCollection();
+
+                                ContinueLoading();
                             });
                         }
                     }
@@ -227,7 +232,7 @@ namespace Merge
                     {
                         ContinueLoading();
                         // FIX - Fix this function
-                        // loadingSceneUI.CheckForUpdates(callback);
+                        //updateMenu.Open(callback);
 
                         if (logPhases)
                         {
@@ -262,7 +267,7 @@ namespace Merge
 
                     if (authManager.hasLinkingConflict)
                     {
-                        loadingSceneUI.CheckConflict(callbackConflict);
+                        conflictMenu.Open(callbackConflict);
                     }
                     else
                     {
@@ -272,6 +277,19 @@ namespace Merge
                     if (logPhases)
                     {
                         Debug.Log("Phase 7");
+                    }
+                }
+
+                // Resolve account linking conflict
+                if (fillCount >= singlePhasePercent * 8 && phase == 8)
+                {
+                    loading = false;
+
+                    await authManager.HandleDSANotifications(callback);
+
+                    if (logPhases)
+                    {
+                        Debug.Log("Phase 8");
                     }
                 }
 

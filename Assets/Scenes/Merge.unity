@@ -785,6 +785,7 @@ MonoBehaviour:
   inputMenu: {fileID: 0}
   shopMenu: {fileID: 0}
   taskMenu: {fileID: 0}
+  debugMenu: {fileID: 0}
   valuePop: {fileID: 0}
   initialized: 0
   safeAreaHandler: {fileID: 0}
@@ -1619,6 +1620,10 @@ PrefabInstance:
       propertyPath: boardManager
       value: 
       objectReference: {fileID: 639326507}
+    - target: {fileID: 5271890099761773273, guid: 6a4bd6a5611eb914ea950405a066bcd8, type: 3}
+      propertyPath: sceneLoader
+      value: 
+      objectReference: {fileID: 2129448916}
     - target: {fileID: 6890635896343097084, guid: 6a4bd6a5611eb914ea950405a066bcd8, type: 3}
       propertyPath: m_PanelSettings
       value: 

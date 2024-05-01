@@ -18,6 +18,7 @@ namespace Merge
         private bool ignoreDuration = false;
 
         // References
+        private GameRefs gameRefs;
         private DataManager dataManager;
         private BoardManager boardManager;
         private WorldDataManager worldDataManager;
@@ -30,10 +31,11 @@ namespace Merge
         void Start()
         {
             // Cache
+            gameRefs = GameRefs.Instance;
             dataManager = DataManager.Instance;
-            boardManager = GameRefs.Instance.boardManager;
-            worldDataManager = GameRefs.Instance.worldDataManager;
-            sceneLoader = GameRefs.Instance.sceneLoader;
+            boardManager = gameRefs.boardManager;
+            worldDataManager = gameRefs.worldDataManager;
+            sceneLoader = gameRefs.sceneLoader;
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;

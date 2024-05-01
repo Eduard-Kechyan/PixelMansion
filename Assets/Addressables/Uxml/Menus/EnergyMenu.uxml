@@ -1,0 +1,20 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="Content" class="content">
+                    <ui:Label text="First Text" display-tooltip-when-elided="true" name="EnergyLabelA" class="energy_label" />
+                    <ui:Label text="Second text" display-tooltip-when-elided="true" name="EnergyLabelB" class="energy_label" />
+                    <ui:VisualElement name="EnergyBoxes" class="energy_boxes">
+                        <ui:VisualElement name="BoxAd" class="box" style="background-image: url(&quot;project://database/Assets/Sprites/Menus/EnergyMenu/BoxAd.png?fileID=2800000&amp;guid=6bc571f3f85f4cb4d9fc53d68ef705d0&amp;type=3#BoxAd&quot;);">
+                            <ui:Label tabindex="-1" text="+20" display-tooltip-when-elided="true" name="WatchLabel" class="label" />
+                            <ui:Button display-tooltip-when-elided="true" name="WatchButton" enable-rich-text="false" text="Watch" class="button button_active" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/LongButton.png?fileID=21300000&amp;guid=e6292ec8b0b2a5743a0f00750e1f4db0&amp;type=3#LongButton&quot;);">
+                                <ui:VisualElement name="Value" class="value" style="background-image: url(&quot;project://database/Assets/Sprites/Values/SmallAd.png?fileID=2800000&amp;guid=5a5e8c2e89de937438650a731383544b&amp;type=3#SmallAd&quot;);" />
+                            </ui:Button>
+                        </ui:VisualElement>
+                        <ui:VisualElement name="BoxEnergy" class="box" style="background-image: url(&quot;project://database/Assets/Sprites/Menus/EnergyMenu/BoxEnergy.png?fileID=2800000&amp;guid=b81700b0a7bf9d84ea088c640dfbd6ea&amp;type=3#BoxEnergy&quot;);">
+                            <ui:Label tabindex="-1" text="+100" display-tooltip-when-elided="true" name="BuyLabel" class="label" />
+                            <ui:Button display-tooltip-when-elided="true" name="BuyButton" enable-rich-text="false" text="Buy" class="button button_active" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/LongButton.png?fileID=21300000&amp;guid=e6292ec8b0b2a5743a0f00750e1f4db0&amp;type=3#LongButton&quot;);">
+                                <ui:VisualElement name="Value" class="value" style="background-image: url(&quot;project://database/Assets/Sprites/Values/SmallGem.png?fileID=2800000&amp;guid=324e7e0db7beb9248b629fa2da728b06&amp;type=3#SmallGem&quot;);" />
+                            </ui:Button>
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+</ui:UXML>

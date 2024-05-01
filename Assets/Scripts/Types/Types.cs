@@ -67,83 +67,7 @@ namespace Merge
             Chest
         };
 
-        [Serializable]
-        public class Creates
-        {
-            [HideInInspector]
-            public string name;
-            public Sprite sprite;
-            public Type type;
-            public ItemTypes.Group group;
-            public ItemTypes.GenGroup genGroup;
-            public CollGroup collGroup;
-            public int maxLevel;
-            public bool canIncreaseMaxLevel;
-            public float chance;
-        }
-
-        //// TIMERS ///
-        public enum TimerType
-        {
-            Item,
-            Energy,
-            Bubble
-        };
-
-        [Serializable]
-        public class Timer
-        {
-            public DateTime startTime;
-            public int seconds;
-            public bool running = true;
-            public TimerType timerType;
-            public Type itemType;
-            public string id;
-            public int notificationId;
-            public NotificationType notificationType;
-        }
-
-        [Serializable]
-        public class TimerJson
-        {
-            public string startTime;
-            public int seconds;
-            public bool running;
-            public string timerType;
-            public string id;
-            public int notificationId;
-            public string notificationType;
-        }
-
-        [Serializable]
-        public class CoolDown
-        {
-            public int[] maxCounts;
-            public int seconds;
-            [ReadOnly]
-            public int minutes;
-        }
-
-        [Serializable]
-        public class CoolDownCount
-        {
-            public int count;
-            public int level;
-            public string id;
-            public DateTime startTime;
-        }
-
-        [Serializable]
-        public class CoolDownCountJson
-        {
-            public int count;
-            public int level;
-            public string id;
-            public string startTime;
-        }
-
         //// ITEMS DATA ////
-
         [Serializable]
         public class Item
         {
@@ -292,6 +216,21 @@ namespace Merge
             public bool gemPopped;
         }
 
+        [Serializable]
+        public class Creates
+        {
+            [HideInInspector]
+            public string name;
+            public Sprite sprite;
+            public Type type;
+            public ItemTypes.Group group;
+            public ItemTypes.GenGroup genGroup;
+            public CollGroup collGroup;
+            public int maxLevel;
+            public bool canIncreaseMaxLevel;
+            public float chance;
+        }
+
         //// BOARD ////
         [Serializable]
         public class TileEmpty
@@ -412,6 +351,66 @@ namespace Merge
             public bool timerOn;
             public string timerAltTime;
             public bool gemPopped;
+        }
+
+        //// TIMERS ///
+        public enum TimerType
+        {
+            Item,
+            Energy,
+            Bubble
+        };
+
+        [Serializable]
+        public class Timer
+        {
+            public DateTime startTime;
+            public int seconds;
+            public bool running = true;
+            public TimerType timerType;
+            public Type itemType;
+            public string id;
+            public int notificationId;
+            public NotificationType notificationType;
+        }
+
+        [Serializable]
+        public class TimerJson
+        {
+            public string startTime;
+            public int seconds;
+            public bool running;
+            public string timerType;
+            public string id;
+            public int notificationId;
+            public string notificationType;
+        }
+
+        [Serializable]
+        public class CoolDown
+        {
+            public int[] maxCounts;
+            public int seconds;
+            [ReadOnly]
+            public int minutes;
+        }
+
+        [Serializable]
+        public class CoolDownCount
+        {
+            public int count;
+            public int level;
+            public string id;
+            public DateTime startTime;
+        }
+
+        [Serializable]
+        public class CoolDownCountJson
+        {
+            public int count;
+            public int level;
+            public string id;
+            public string startTime;
         }
 
         //// PROGRESS ////
@@ -611,16 +610,6 @@ namespace Merge
             public bool keepConvoOpen;
         }
 
-        //// ERROR ////
-        public enum ErrorType
-        {
-            Code,
-            GamePlay,
-            Unity,
-            Locale,
-            Network
-        };
-
         //// SHOP ////
         public enum ShopValuesType
         {
@@ -696,7 +685,6 @@ namespace Merge
             public string itemName;
         }
 
-
         //// AUDIO ////
         public enum MusicType
         {
@@ -769,6 +757,40 @@ namespace Merge
             Chinese // 中文 (zh-CN)
         };
 
+        public enum Menu
+        {
+            None,
+            Confirm,
+            Note,
+            Info,
+            Inventory,
+            Task,
+            Shop,
+            Level,
+            Energy,
+            Locale,
+            Settings,
+            Support,
+            Input,
+            Follow,
+            Rate,
+            Message,
+            Debug,
+            Terms,
+            Conflict,
+            Update,
+        }
+
+        public enum MessageType
+        {
+            None,
+            Custom,
+            Terms,
+            Privacy,
+            Note,
+            DigitalServiceAct
+        }
+
         public enum SocialMediaType
         {
             Instagram,
@@ -782,9 +804,18 @@ namespace Merge
             Bubble
         }
 
+        //// ERROR ////
+        public enum ErrorType
+        {
+            Code,
+            GamePlay,
+            Unity,
+            Locale,
+            Network
+        };
+
 #if DEVELOPMENT_BUILD || UNITY_EDITOR
         //// DEBUG ////
-
         [Serializable]
         public class LogData
         {

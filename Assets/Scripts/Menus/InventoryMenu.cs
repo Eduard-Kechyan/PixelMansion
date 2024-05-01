@@ -13,7 +13,10 @@ namespace Merge
         public int newSlotPrice = 50;
         public float slotPriceMultiplier = 0.5f;
 
+        private Types.Menu menuType = Types.Menu.Inventory;
+
         // References
+        private GameRefs gameRefs;
         private MenuUI menuUI;
         private ShopMenu shopMenu;
         private ConfirmMenu confirmMenu;
@@ -27,13 +30,12 @@ namespace Merge
         private UIButtons uiButtons;
         private TimeManager timeManager;
         private BoardManager boardManager;
-
-        // Instances
+        private UIData uiData;
         private I18n LOCALE;
 
         // UI
         private VisualElement root;
-        private VisualElement inventoryMenu;
+        private VisualElement content;
         private VisualElement slotsContainer;
         private Label amountLabel;
         private Label descriptionLabel;
@@ -45,6 +47,7 @@ namespace Merge
         void Start()
         {
             // Cache
+            gameRefs = GameRefs.Instance;
             menuUI = GetComponent<MenuUI>();
             shopMenu = GetComponent<ShopMenu>();
             confirmMenu = GetComponent<ConfirmMenu>();
@@ -52,58 +55,50 @@ namespace Merge
             dataManager = DataManager.Instance;
             popupManager = PopupManager.Instance;
             valuePop = GetComponent<ValuePop>();
-            mergeUI = GameRefs.Instance.mergeUI;
+            mergeUI = gameRefs.mergeUI;
             soundManager = SoundManager.Instance;
             uiButtons = gameData.GetComponent<UIButtons>();
-            timeManager = GameRefs.Instance.timeManager;
-            boardManager = GameRefs.Instance.boardManager;
-            boardSelection = GameRefs.Instance.boardSelection;
-
-            // Cache instances
+            timeManager = gameRefs.timeManager;
+            boardManager = gameRefs.boardManager;
+            boardSelection = gameRefs.boardSelection;
             LOCALE = I18n.Instance;
+            uiData = GameData.Instance.GetComponent<UIData>();
 
-            // UI
-            root = GetComponent<UIDocument>().rootVisualElement;
+            DataManager.Instance.CheckLoaded(() =>
+            {
 
-            inventoryMenu = root.Q<VisualElement>("InventoryMenu");
+                // UI
+                content = uiData.GetMenuAsset(menuType);
 
-            slotsContainer = inventoryMenu.Q<VisualElement>("SlotsContainer");
+                slotsContainer = content.Q<VisualElement>("SlotsContainer");
 
-            amountLabel = inventoryMenu.Q<Label>("AmountLabel");
-            descriptionLabel = inventoryMenu.Q<Label>("DescriptionLabel");
-            pauseLabel = inventoryMenu.Q<Label>("PauseLabel");
+                amountLabel = content.Q<Label>("AmountLabel");
+                descriptionLabel = content.Q<Label>("DescriptionLabel");
+                pauseLabel = content.Q<Label>("PauseLabel");
 
-            buyMoreContainer = inventoryMenu.Q<VisualElement>("BuyMoreContainer");
-            buyMoreLabel = buyMoreContainer.Q<Label>("BuyMoreLabel");
-            buyMoreButton = buyMoreContainer.Q<Button>("BuyMoreButton");
+                buyMoreContainer = content.Q<VisualElement>("BuyMoreContainer");
+                buyMoreLabel = buyMoreContainer.Q<Label>("BuyMoreLabel");
+                buyMoreButton = buyMoreContainer.Q<Button>("BuyMoreButton");
 
-            buyMoreButton.clicked += () => BuyMoreSpace();
-
-            Init();
-        }
-
-        void Init()
-        {
-            // Make sure the menu is closed
-            inventoryMenu.style.display = DisplayStyle.None;
-            inventoryMenu.style.opacity = 0;
+                buyMoreButton.clicked += () => BuyMoreSpace();
+            });
         }
 
         public void Open()
         {
-            if (menuUI.IsMenuOpen(inventoryMenu.name))
+            // Check menu
+            if (menuUI.IsMenuOpen(menuType))
             {
                 return;
             }
 
+            // Set menu content
             ClearData();
 
             SetUI();
 
-            string title = LOCALE.Get("menu_inventory_title");
-
             // Open menu
-            menuUI.OpenMenu(inventoryMenu, title, true);
+            menuUI.OpenMenu(content, menuType,"",true);
         }
 
         void SetUI()

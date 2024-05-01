@@ -295,3 +295,48 @@
     border-top-width: 0;
     border-bottom-width: 0;
 }
+
+.html_paragraph {
+    font-size: 6px;
+    width: 100%;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 5px;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    color: rgb(60, 60, 60);
+    -unity-font-style: normal;
+    white-space: normal;
+    -unity-text-align: upper-left;
+    -unity-font-definition: url("project://database/Assets/Fonts/Roboto%20SDF.asset?fileID=11400000&guid=1c5dedeb0ccefb74ebe6e5ff0a6f7e56&type=2#Roboto SDF");
+}
+
+.html_header {
+    font-size: 16px;
+    color: rgb(43, 43, 43);
+    margin-bottom: 0px;
+    -unity-font-style: bold;
+}
+
+.html_header_2 {
+    font-size: 14px;
+}
+
+.html_header_3 {
+    font-size: 12px;
+}
+
+.html_header_4 {
+    font-size: 10px;
+}
+
+.html_header_5 {
+    font-size: 8px;
+}
+
+.html_header_6 {
+    font-size: 6px;
+}

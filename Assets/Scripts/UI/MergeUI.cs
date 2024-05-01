@@ -24,12 +24,14 @@ namespace Merge
         private float singlePixelWidth;
 
         // References
+        private GameRefs gameRefs;
         private BonusManager bonusManager;
         private GameData gameData;
         private DataManager dataManager;
         private InventoryMenu inventoryMenu;
         private ShopMenu shopMenu;
         private TaskMenu taskMenu;
+        private DebugMenu debugMenu;
         private SoundManager soundManager;
         private UIButtons uiButtons;
         private ErrorManager errorManager;
@@ -59,19 +61,21 @@ namespace Merge
         void Start()
         {
             // Cache
+            gameRefs = GameRefs.Instance;
             bonusManager = GetComponent<BonusManager>();
             gameData = GameData.Instance;
             dataManager = DataManager.Instance;
-            inventoryMenu = GameRefs.Instance.inventoryMenu;
-            shopMenu = GameRefs.Instance.shopMenu;
-            taskMenu = GameRefs.Instance.taskMenu;
+            inventoryMenu = gameRefs.inventoryMenu;
+            shopMenu = gameRefs.shopMenu;
+            taskMenu = gameRefs.taskMenu;
+            debugMenu = gameRefs.debugMenu;
             soundManager = SoundManager.Instance;
             uiButtons = gameData.GetComponent<UIButtons>();
             errorManager = ErrorManager.Instance;
-            pointerHandler = GameRefs.Instance.pointerHandler;
+            pointerHandler = gameRefs.pointerHandler;
 
 #if DEVELOPMENT_BUILD || UNITY_EDITOR
-            feedbackManager = GameRefs.Instance.feedbackManager;
+            feedbackManager = gameRefs.feedbackManager;
 #endif
 
             // UI
@@ -137,7 +141,7 @@ namespace Merge
 
                 debugButton.style.display = DisplayStyle.Flex;
 
-                debugButton.clicked += () => DebugManager.Instance.OpenMenu();
+                debugButton.clicked += () => debugMenu.OpenMenu();
 
                 if (feedbackManager != null)
                 {

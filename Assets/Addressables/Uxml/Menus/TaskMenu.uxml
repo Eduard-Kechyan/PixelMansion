@@ -1,0 +1,35 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+                    <ui:VisualElement name="Content" class="content">
+                    <ui:ScrollView name="TaskScrollView" class="scroller">
+                        <ui:VisualElement name="TaskGroup" class="task_group">
+                            <ui:VisualElement name="GroupContainer" class="group_container" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+                                <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="GroupTitle" class="title" />
+                                <ui:VisualElement name="Divider" class="divider" />
+                                <ui:VisualElement name="GroupBox" class="group_box" style="background-color: rgba(0, 0, 0, 0);">
+                                    <ui:VisualElement name="Image" class="image" />
+                                    <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="Desc" class="desc" />
+                                </ui:VisualElement>
+                            </ui:VisualElement>
+                            <ui:VisualElement name="FillContainer" class="fill_container">
+                                <ui:VisualElement name="FillBorder" class="fill_border">
+                                    <ui:VisualElement name="Fill" class="fill" />
+                                    <ui:Label tabindex="-1" text="50%" display-tooltip-when-elided="true" name="FillLabel" focusable="false" class="fill_label" />
+                                </ui:VisualElement>
+                            </ui:VisualElement>
+                            <ui:VisualElement name="TasksContainer" style="width: 100%;" >
+                                <ui:VisualElement name="TaskItem" class="task_item">
+                                    <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="TaskTitle" class="title" />
+                                    <ui:VisualElement name="TaskNeeds" class="task_needs" >
+                                        <ui:VisualElement name="TaskNeed" class="task_need">
+                                            <ui:VisualElement name="Image" class="image"/>
+                                            <ui:Label tabindex="-1" text="0/1" display-tooltip-when-elided="true" name="Count" class="count" />
+                                            <ui:Button display-tooltip-when-elided="true" name="InfoButton" class="info_button button button_active" />
+                                        </ui:VisualElement>
+                                    </ui:VisualElement>
+                                    <ui:Button text="Button" display-tooltip-when-elided="true" name="PlayButton" class="button button_active task_button" />
+                                </ui:VisualElement>
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+                </ui:ScrollView>
+                </ui:VisualElement>
+</ui:UXML>

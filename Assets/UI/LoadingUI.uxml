@@ -25,19 +25,7 @@
     <ui:VisualElement name="Spinner" class="spinner" />
     <ui:Label text="Version: 0.0.0" display-tooltip-when-elided="true" name="Version" class="version" />
     <ui:VisualElement name="OverlayBackground" class="overlay_background" />
-    <ui:VisualElement name="TermsMenu" class="loading_scene_menu terms_menu" style="display: none; opacity: 0;">
-        <ui:Label tabindex="-1" text="Notice" display-tooltip-when-elided="true" name="TermsLabel" class="menu_label" style="-unity-text-align: upper-center;" />
-        <ui:Button text="Accept" display-tooltip-when-elided="true" name="AcceptButton" class="button button_active accept_button" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/LongButtonExtra.png?fileID=2800000&amp;guid=5807375128b344f44a31b9300397a38e&amp;type=3#LongButtonExtra&quot;);" />
-        <ui:VisualElement class="container">
-            <ui:Button text="Terms of Service" display-tooltip-when-elided="true" name="TermsButton" class="button button_active" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/LongButtonExtra.png?fileID=2800000&amp;guid=5807375128b344f44a31b9300397a38e&amp;type=3#LongButtonExtra&quot;); -unity-background-image-tint-color: rgb(113, 160, 246);" />
-            <ui:Button text="Privacy Policy" display-tooltip-when-elided="true" name="PrivacyButton" class="button button_active" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/LongButtonExtra.png?fileID=2800000&amp;guid=5807375128b344f44a31b9300397a38e&amp;type=3#LongButtonExtra&quot;); -unity-background-image-tint-color: rgb(113, 160, 246);" />
-        </ui:VisualElement>
-        <ui:VisualElement name="BorderBottom" class="border_bottom" style="background-image: url(&quot;project://database/Assets/Sprites/Scenes/Loading/Menu/BorderBottom.png?fileID=2800000&amp;guid=51a17fd56a7e00541ae25eaaae9f0320&amp;type=3#BorderBottom&quot;);" />
-        <ui:VisualElement name="Title" class="title" style="background-image: url(&quot;project://database/Assets/Sprites/Scenes/Loading/Menu/Title.png?fileID=2800000&amp;guid=20feb4a762c72b3438394c05558c7909&amp;type=3#Title&quot;); width: 174px; height: 22px; position: absolute; left: -5px; top: -16px;">
-            <ui:Label tabindex="-1" text="Important Notice" display-tooltip-when-elided="true" name="TitleLabel" class="title_label" />
-        </ui:VisualElement>
-    </ui:VisualElement>
-    <ui:VisualElement name="AgeMenu" class="loading_scene_menu age_menu" style="display: none; opacity: 0;">
+    <ui:VisualElement name="AgeMenu" class="age_menu" style="display: none; opacity: 0;">
         <ui:Label tabindex="-1" text="Notice" display-tooltip-when-elided="true" name="AgeLabel" class="menu_label" />
         <ui:VisualElement name="AgeArrowUp" class="arrow_up" style="background-image: url(&quot;project://database/Assets/Sprites/Scenes/Loading/Menu/AgeArrow.png?fileID=2800000&amp;guid=0ba53977c232d9e4b866c1efe7c21045&amp;type=3#AgeArrow&quot;);" />
         <ui:VisualElement name="AgeScrollerTopLine" class="scroller_top_line" />
@@ -48,29 +36,6 @@
         <ui:VisualElement name="BorderBottom" class="border_bottom" style="background-image: url(&quot;project://database/Assets/Sprites/Scenes/Loading/Menu/BorderBottom.png?fileID=2800000&amp;guid=51a17fd56a7e00541ae25eaaae9f0320&amp;type=3#BorderBottom&quot;);" />
         <ui:VisualElement name="Title" class="title" style="background-image: url(&quot;project://database/Assets/Sprites/Scenes/Loading/Menu/Title.png?fileID=2800000&amp;guid=20feb4a762c72b3438394c05558c7909&amp;type=3#Title&quot;); width: 174px; height: 22px; position: absolute; left: -5px; top: -16px;">
             <ui:Label tabindex="-1" text="Age Notice" display-tooltip-when-elided="true" name="TitleLabel" class="title_label" />
-        </ui:VisualElement>
-    </ui:VisualElement>
-    <ui:VisualElement name="ConflictMenu" class="loading_scene_menu terms_menu" style="display: none; opacity: 0;">
-        <ui:Label tabindex="-1" text="A previous account exists." display-tooltip-when-elided="true" name="ConflictLabelA" class="menu_label" style="-unity-text-align: upper-center; margin-bottom: 5px;" />
-        <ui:Label tabindex="-1" text="Which one to use?" display-tooltip-when-elided="true" name="ConflictLabelB" class="menu_label" style="-unity-text-align: upper-center;" />
-        <ui:VisualElement class="container">
-            <ui:Button text="Use previous" display-tooltip-when-elided="true" name="PreviousButton" class="button button_active" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/LongButtonExtra.png?fileID=2800000&amp;guid=5807375128b344f44a31b9300397a38e&amp;type=3#LongButtonExtra&quot;); -unity-background-image-tint-color: rgb(113, 160, 246);" />
-            <ui:Button text="Create New" display-tooltip-when-elided="true" name="NewButton" class="button button_active" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/LongButtonExtra.png?fileID=2800000&amp;guid=5807375128b344f44a31b9300397a38e&amp;type=3#LongButtonExtra&quot;); -unity-background-image-tint-color: rgb(113, 160, 246);" />
-        </ui:VisualElement>
-        <ui:VisualElement name="BorderBottom" class="border_bottom" style="background-image: url(&quot;project://database/Assets/Sprites/Scenes/Loading/Menu/BorderBottom.png?fileID=2800000&amp;guid=51a17fd56a7e00541ae25eaaae9f0320&amp;type=3#BorderBottom&quot;);" />
-        <ui:VisualElement name="Title" class="title" style="background-image: url(&quot;project://database/Assets/Sprites/Scenes/Loading/Menu/Title.png?fileID=2800000&amp;guid=20feb4a762c72b3438394c05558c7909&amp;type=3#Title&quot;); width: 174px; height: 22px; position: absolute; left: -5px; top: -16px;">
-            <ui:Label tabindex="-1" text="Important Notice" display-tooltip-when-elided="true" name="TitleLabel" class="title_label" />
-        </ui:VisualElement>
-    </ui:VisualElement>
-    <ui:VisualElement name="UpdateMenu" class="loading_scene_menu">
-        <ui:Label tabindex="-1" text="Notice" display-tooltip-when-elided="true" name="UpdateLabel" class="menu_label" />
-        <ui:VisualElement class="container">
-            <ui:Button text="Update" display-tooltip-when-elided="true" name="UpdateButton" class="button button_active" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/LongButtonExtra.png?fileID=2800000&amp;guid=5807375128b344f44a31b9300397a38e&amp;type=3#LongButtonExtra&quot;); -unity-background-image-tint-color: rgb(113, 160, 246);" />
-            <ui:Button text="Exit" display-tooltip-when-elided="true" name="ExitButton" class="button button_active" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/LongButtonExtra.png?fileID=2800000&amp;guid=5807375128b344f44a31b9300397a38e&amp;type=3#LongButtonExtra&quot;); -unity-background-image-tint-color: rgb(236, 115, 127);" />
-        </ui:VisualElement>
-        <ui:VisualElement name="BorderBottom" class="border_bottom" style="background-image: url(&quot;project://database/Assets/Sprites/Scenes/Loading/Menu/BorderBottom.png?fileID=2800000&amp;guid=51a17fd56a7e00541ae25eaaae9f0320&amp;type=3#BorderBottom&quot;);" />
-        <ui:VisualElement name="Title" class="title" style="background-image: url(&quot;project://database/Assets/Sprites/Scenes/Loading/Menu/Title.png?fileID=2800000&amp;guid=20feb4a762c72b3438394c05558c7909&amp;type=3#Title&quot;); width: 174px; height: 22px; position: absolute; left: -5px; top: -16px;">
-            <ui:Label tabindex="-1" text="Important Notice" display-tooltip-when-elided="true" name="TitleLabel" class="title_label" />
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:Button display-tooltip-when-elided="true" name="DebugButton" class="button button_active loading_debug_button" style="display: none;" />

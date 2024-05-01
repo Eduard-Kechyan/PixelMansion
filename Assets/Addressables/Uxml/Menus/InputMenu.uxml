@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="Content" class="content">
+                    <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="InputLabel" class="input_label" />
+                    <ui:TextField picking-mode="Ignore" label="Text Field" value="filler text" name="InputTextField" class="input_text_field" />
+                    <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="InputLimitLabel" class="input_label" style="color: rgb(204, 57, 57); opacity: 0; transition-duration: 0.3s;" />
+                    <ui:Button text="Continue" parse-escape-sequences="true" display-tooltip-when-elided="true" name="InputButton" class="input_button button button_active" />
+                    <ui:Button text="Random Name" parse-escape-sequences="true" display-tooltip-when-elided="true" name="RandomButton" class="input_button button button_active" style="-unity-background-image-tint-color: rgb(250, 126, 30); margin-top: 5px; font-size: 8px; display: none;" />
+                </ui:VisualElement>
+</ui:UXML>

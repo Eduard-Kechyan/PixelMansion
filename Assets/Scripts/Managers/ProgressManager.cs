@@ -16,6 +16,7 @@ namespace Merge
         private bool settingInitial = false;
 
         // References
+        private GameRefs gameRefs;
         private WorldDataManager worldDataManager;
         private ConvoUIHandler convoUIHandler;
         private TutorialManager tutorialManager;
@@ -31,15 +32,16 @@ namespace Merge
         void Start()
         {
             // Cache
-            worldDataManager = GameRefs.Instance.worldDataManager;
-            convoUIHandler = GameRefs.Instance.convoUIHandler;
-            tutorialManager = GameRefs.Instance.tutorialManager;
+            gameRefs = GameRefs.Instance;
+            worldDataManager = gameRefs.worldDataManager;
+            convoUIHandler = gameRefs.convoUIHandler;
+            tutorialManager = gameRefs.tutorialManager;
             gameData = GameData.Instance;
-            worldUI = GameRefs.Instance.worldUI;
-            valuesUI = GameRefs.Instance.valuesUI;
+            worldUI = gameRefs.worldUI;
+            valuesUI = gameRefs.valuesUI;
             charMain = CharMain.Instance;
             errorManager = ErrorManager.Instance;
-            valuePop = GameRefs.Instance.valuePop;
+            valuePop = gameRefs.valuePop;
 
             if (taskManager == null)
             {

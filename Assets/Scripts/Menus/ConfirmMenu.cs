@@ -8,55 +8,50 @@ namespace Merge
 {
     public class ConfirmMenu : MonoBehaviour
     {
-        // References
-        private MenuUI menuUI;
-        private I18n LOCALE;
-
+        // Variables
         private bool denyTapped = false;
         private Action callback;
         private Action callbackAlt;
 
+        private Types.Menu menuType = Types.Menu.Confirm;
+
+        // References
+        private MenuUI menuUI;
+        private I18n LOCALE;
+        private UIData uiData;
+
         // UI
-        private VisualElement root;
-        private VisualElement confirmMenu;
-        private VisualElement menuContent;
+        private VisualElement content;
 
         private Label confirmLabel;
         private Button confirmButton;
         private Button denyButton;
-        
+
         void Start()
         {
             // Cache
             menuUI = GetComponent<MenuUI>();
             LOCALE = I18n.Instance;
+            uiData = GameData.Instance.GetComponent<UIData>();
 
-            // UI
-            root = GetComponent<UIDocument>().rootVisualElement;
+            DataManager.Instance.CheckLoaded(() =>
+            {
+                // UI
+                content = uiData.GetMenuAsset(menuType);
 
-            confirmMenu = root.Q<VisualElement>("ConfirmMenu");
-            menuContent = confirmMenu.Q<VisualElement>("Content");
+                confirmLabel = content.Q<Label>("Label");
+                confirmButton = content.Q<Button>("ConfirmButton");
+                denyButton = content.Q<Button>("DenyButton");
 
-            confirmLabel = menuContent.Q<Label>("Label");
-            confirmButton = menuContent.Q<Button>("ConfirmButton");
-            denyButton = menuContent.Q<Button>("DenyButton");
-
-            confirmButton.clicked += () => ConfirmButtonClicked();
-            denyButton.clicked += () => DenyButtonClicked();
-
-            Init();
-        }
-
-        void Init()
-        {
-            // Make sure the menu is closed
-            confirmMenu.style.display = DisplayStyle.None;
-            confirmMenu.style.opacity = 0;
+                confirmButton.clicked += () => ConfirmButtonClicked();
+                denyButton.clicked += () => DenyButtonClicked();
+            });
         }
 
         public void Open(string preFix, Action newCallback, Action newCallbackAlt = null, bool alt = false, bool closeAll = false)
         {
-            if (menuUI.IsMenuOpen(confirmMenu.name))
+            // Check menu
+            if (menuUI.IsMenuOpen(menuType))
             {
                 return;
             }
@@ -79,7 +74,7 @@ namespace Merge
             }
 
             // Set the title
-            string title = LOCALE.Get("confirm_title_" + preFix);
+            string title = LOCALE.Get("Confirm_title_" + preFix);
 
             confirmLabel.text = LOCALE.Get("confirm_label_" + preFix);
 
@@ -95,7 +90,7 @@ namespace Merge
             }
 
             // Open menu
-            menuUI.OpenMenu(confirmMenu, title, false, closeAll);
+            menuUI.OpenMenu(content, menuType, title, false, closeAll);
         }
 
         void ConfirmButtonClicked()
@@ -117,7 +112,7 @@ namespace Merge
 
         public void Close()
         {
-            menuUI.CloseMenu(confirmMenu.name);
+            menuUI.CloseMenu(menuType);
         }
     }
 }

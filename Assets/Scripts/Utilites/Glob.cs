@@ -43,25 +43,25 @@ namespace Merge
         }
 
         //// TIMEOUT ////
-        public static Coroutine SetTimeout(Action function, float seconds = 1f)
+        public static Coroutine SetTimeout(Action callback, float seconds = 1f)
         {
             if (seconds > 10f)
             {
-                Debug.LogWarning("Set timeout function delay is too big!");
+                Debug.LogWarning("Set timeout callback delay is too big!");
             }
 
-            Coroutine newTimeout = Instance.StartCoroutine(SetTimeoutCoroutine(function, seconds));
+            Coroutine newTimeout = Instance.StartCoroutine(SetTimeoutCoroutine(callback, seconds));
 
             timeouts.Add(newTimeout);
 
             return newTimeout;
         }
 
-        private static IEnumerator SetTimeoutCoroutine(Action function, float seconds = 1f)
+        private static IEnumerator SetTimeoutCoroutine(Action callback, float seconds = 1f)
         {
             yield return new WaitForSeconds(seconds);
 
-            function();
+            callback();
         }
 
         public static void StopTimeout(Coroutine timeout)
@@ -74,27 +74,27 @@ namespace Merge
         }
 
         //// INTERVALS ////
-        public static Coroutine SetInterval(Action function, float seconds = 1f, bool callOnce = true)
+        public static Coroutine SetInterval(Action callback, float seconds = 1f, bool callOnce = true)
         {
             if (seconds > 10f)
             {
-                Debug.LogWarning("Set interval function delay is too big!");
+                Debug.LogWarning("Set interval callback delay is too big!");
             }
 
-            Coroutine newInterval = Instance.StartCoroutine(SetTimeoutCoroutine(function, seconds));
+            Coroutine newInterval = Instance.StartCoroutine(SetTimeoutCoroutine(callback, seconds));
 
             intervals.Add(newInterval);
 
-            return Instance.StartCoroutine(SetIntervalCoroutine(function, seconds, callOnce));
+            return Instance.StartCoroutine(SetIntervalCoroutine(callback, seconds, callOnce));
         }
 
-        private static IEnumerator SetIntervalCoroutine(Action function, float seconds, bool callOnce)
+        private static IEnumerator SetIntervalCoroutine(Action callback, float seconds, bool callOnce)
         {
             while (true)
             {
                 if (callOnce)
                 {
-                    function();
+                    callback();
 
                     yield return new WaitForSeconds(seconds);
                 }
@@ -102,7 +102,7 @@ namespace Merge
                 {
                     yield return new WaitForSeconds(seconds);
 
-                    function();
+                    callback();
                 }
             }
         }
@@ -147,19 +147,19 @@ namespace Merge
         }
 
         //// WAITERS ////
-        public static void WaitForSelectable(Action function)
+        public static void WaitForSelectable(Action callback)
         {
-            Instance.StartCoroutine(WaitForSelectableTimeout(function));
+            Instance.StartCoroutine(WaitForSelectableTimeout(callback));
         }
 
-        private static IEnumerator WaitForSelectableTimeout(Action function)
+        private static IEnumerator WaitForSelectableTimeout(Action callback)
         {
             while (taskLoading)
             {
                 yield return null;
             }
 
-            function();
+            callback();
         }
 
         //// OTHER ////

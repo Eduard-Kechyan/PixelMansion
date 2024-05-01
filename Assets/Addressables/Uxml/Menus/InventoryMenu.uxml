@@ -1,0 +1,23 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+                    <ui:VisualElement name="Content" class="content">
+                    <ui:Label tabindex="-1" text="00/00" display-tooltip-when-elided="true" name="AmountLabel" class="menu_label_alt" style="-unity-text-align: middle-center;" />
+                    <ui:Label tabindex="-1" text="Store your items here:" display-tooltip-when-elided="true" name="DescriptionLabel" class="menu_label" />
+                    <ui:VisualElement class="inventory_slots">
+                        <ui:VisualElement name="BorderTop" class="border_top_alt" style="background-image: url(&quot;project://database/Assets/Sprites/Menus/InventoryMenu/InventoryMenuBorder.png?fileID=2800000&amp;guid=e1f86ff5504c3934f83955fa756999bb&amp;type=3#InventoryMenuBorder&quot;);" />
+                        <ui:VisualElement name="BorderBottom" class="border_bottom_alt" style="background-image: url(&quot;project://database/Assets/Sprites/Menus/InventoryMenu/InventoryMenuBorder.png?fileID=2800000&amp;guid=e1f86ff5504c3934f83955fa756999bb&amp;type=3#InventoryMenuBorder&quot;);" />
+                        <ui:VisualElement class="huh" />
+                        <ui:ScrollView vertical-scroller-visibility="Auto" horizontal-scroller-visibility="AlwaysVisible" class="scroller" style="width: 100%;">
+                            <ui:VisualElement name="SlotsContainer" class="slots_container">
+                                <ui:VisualElement style="background-color: rgb(255, 255, 255); width: 24px; height: 24px; margin-left: 2px; margin-right: 2px; margin-bottom: 4px; display: flex;" />
+                            </ui:VisualElement>
+                        </ui:ScrollView>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="BuyMoreContainer" class="buy_more_container">
+                        <ui:Label tabindex="-1" text="Buy more slots:" display-tooltip-when-elided="true" name="BuyMoreLabel" class="label" />
+                        <ui:Button text="00" display-tooltip-when-elided="true" name="BuyMoreButton" focusable="false" class="inventory_more_button button_active button" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/LongButton.png?fileID=21300000&amp;guid=e6292ec8b0b2a5743a0f00750e1f4db0&amp;type=3#LongButton&quot;);">
+                            <ui:VisualElement name="Value" class="value" style="background-image: url(&quot;project://database/Assets/Sprites/Values/SmallGold.png?fileID=2800000&amp;guid=9927c70a39873234ead5f8d41fb591bf&amp;type=3#SmallGold&quot;);" />
+                        </ui:Button>
+                    </ui:VisualElement>
+                    <ui:Label tabindex="-1" text="Paused" display-tooltip-when-elided="true" name="PauseLabel" class="menu_label" style="margin-top: 5px; margin-bottom: 0; font-size: 6px;" />
+                </ui:VisualElement>
+</ui:UXML>

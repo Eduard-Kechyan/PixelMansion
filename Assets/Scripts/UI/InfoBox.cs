@@ -46,6 +46,7 @@ namespace Merge
         private ActionType secondaryActionType;
 
         // References
+        private GameRefs gameRefs;
         private InfoMenu infoMenu;
         private ShopMenu shopMenu;
         private ConfirmMenu confirmMenu;
@@ -81,16 +82,17 @@ namespace Merge
         void Start()
         {
             // Cache
-            infoMenu = GameRefs.Instance.infoMenu;
-            shopMenu = GameRefs.Instance.shopMenu;
-            confirmMenu = GameRefs.Instance.confirmMenu;
+            gameRefs = GameRefs.Instance;
+            infoMenu = gameRefs.infoMenu;
+            shopMenu = gameRefs.shopMenu;
+            confirmMenu = gameRefs.confirmMenu;
             gameData = GameData.Instance;
             LOCALE = I18n.Instance;
             adsManager = Services.Instance.GetComponent<AdsManager>();
-            boardInteractions = GameRefs.Instance.boardInteractions;
-            boardSelection = GameRefs.Instance.boardSelection;
-            timeManager = GameRefs.Instance.timeManager;
-            tutorialManager = GameRefs.Instance.tutorialManager;
+            boardInteractions = gameRefs.boardInteractions;
+            boardSelection = gameRefs.boardSelection;
+            timeManager = gameRefs.timeManager;
+            tutorialManager = gameRefs.tutorialManager;
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;

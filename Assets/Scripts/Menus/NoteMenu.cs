@@ -13,56 +13,47 @@ namespace Merge
 
         private bool menuOpen = false;
 
+        private Types.Menu menuType = Types.Menu.Note;
+
         // References
         private MenuUI menuUI;
         private I18n LOCALE;
+        private UIData uiData;
 
         // UI
         private VisualElement root;
-        private VisualElement noteMenu;
-        private VisualElement menuContent;
+        private VisualElement content;
 
         void Start()
         {
             // Cache
             menuUI = GetComponent<MenuUI>();
             LOCALE = I18n.Instance;
+            uiData = GameData.Instance.GetComponent<UIData>();
 
-            // UI
-            root = GetComponent<UIDocument>().rootVisualElement;
+            DataManager.Instance.CheckLoaded(() =>
+            {
+                // UI
+                root = GetComponent<UIDocument>().rootVisualElement;
 
-            noteMenu = root.Q<VisualElement>("NoteMenu");
-            menuContent = noteMenu.Q<VisualElement>("Content");
+                root.RegisterCallback<GeometryChangedEvent>(HandleCallback);
 
-            root.RegisterCallback<GeometryChangedEvent>(HandleCallback);
-
-            Init();
-        }
-
-        void Init()
-        {
-            // Make sure the menu is closed
-            noteMenu.style.display = DisplayStyle.None;
-            noteMenu.style.opacity = 0;
+                content = uiData.GetMenuAsset(menuType);
+            });
         }
 
         public void Open(string newTitle, List<string> notes, Action newCallback = null)
         {
-            if (menuUI.IsMenuOpen(noteMenu.name))
+            // Check menu
+            if (menuUI.IsMenuOpen(menuType))
             {
                 return;
             }
 
+            // Set menu content
             callback = newCallback;
 
-            // Clear children if there are any
-            if (menuContent.childCount > 0)
-            {
-                menuContent.Clear();
-            }
-
-            // Set the title
-            string title = LOCALE.Get(newTitle);
+            content.Clear();
 
             // Create the notes
             for (int i = 0; i < notes.Count; i++)
@@ -86,11 +77,11 @@ namespace Merge
 
                 newLabel.text = LOCALE.Get(notes[i]);
 
-                menuContent.Add(newLabel);
+                content.Add(newLabel);
             }
 
             // Open menu
-            menuUI.OpenMenu(noteMenu, title);
+            menuUI.OpenMenu(content, menuType, LOCALE.Get(newTitle));
 
             menuOpen = true;
         }
@@ -99,7 +90,9 @@ namespace Merge
         {
             root.UnregisterCallback<GeometryChangedEvent>(HandleCallback);
 
-            if (menuOpen && callback != null && noteMenu.resolvedStyle.display == DisplayStyle.None)
+            VisualElement noteMenu = uiData.GetMenuElement(menuType);
+
+            if (menuOpen && callback != null && noteMenu != null && noteMenu.resolvedStyle.display == DisplayStyle.None)
             {
                 menuOpen = false;
 

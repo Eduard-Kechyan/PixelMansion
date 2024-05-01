@@ -13,15 +13,17 @@ namespace Merge
         public Sprite unlockedQuestionMarkSprite;
         public Sprite infoCurrentSprite;
 
+        private Types.Menu menuType = Types.Menu.Info;
+
         // References
         private GameData gameData;
         private I18n LOCALE;
         private MenuUI menuUI;
         private InfoBox infoBox;
+        private UIData uiData;
 
         // UI
-        private VisualElement root;
-        private VisualElement infoMenu;
+        private VisualElement content;
         private VisualElement itemSprite;
         private VisualElement unlockedItems;
         private VisualElement containItems;
@@ -35,112 +37,106 @@ namespace Merge
             gameData = GameData.Instance;
             LOCALE = I18n.Instance;
             menuUI = GetComponent<MenuUI>();
+            uiData = GameData.Instance.GetComponent<UIData>();
 
-            if (SceneManager.GetActiveScene().name == Types.Scene.Merge.ToString())
+            if (GameRefs.Instance.mergeUI != null)
             {
                 infoBox = GameRefs.Instance.mergeUI.GetComponent<InfoBox>();
             }
 
-            // UI
-            root = GetComponent<UIDocument>().rootVisualElement;
+            DataManager.Instance.CheckLoaded(() =>
+            {
+                // UI
+                content = uiData.GetMenuAsset(menuType);
 
-            infoMenu = root.Q<VisualElement>("InfoMenu");
+                unlockedItems = content.Q<VisualElement>("UnlockedItems");
+                containItems = content.Q<VisualElement>("ContainItems");
+                infoParent = content.Q<VisualElement>("InfoParent");
 
-            unlockedItems = infoMenu.Q<VisualElement>("UnlockedItems");
-            containItems = infoMenu.Q<VisualElement>("ContainItems");
-            infoParent = infoMenu.Q<VisualElement>("InfoParent");
+                itemSprite = content.Q<VisualElement>("ItemSprite");
 
-            itemSprite = infoMenu.Q<VisualElement>("ItemSprite");
+                itemName = content.Q<Label>("ItemName");
+                itemData = content.Q<Label>("ItemData");
 
-            itemName = infoMenu.Q<Label>("ItemName");
-            itemData = infoMenu.Q<Label>("ItemData");
-
-            Init();
+                Init();
+            });
         }
 
         void Init()
         {
-            // Make sure the menu is closed
-            infoMenu.style.display = DisplayStyle.None;
-            infoMenu.style.opacity = 0;
-
             containItems.style.display = DisplayStyle.Flex;
             infoParent.style.display = DisplayStyle.None;
         }
 
         public void Open(Item item)
         {
-            if (menuUI.IsMenuOpen(infoMenu.name))
+            // Check menu
+            if (menuUI.IsMenuOpen(menuType))
             {
                 return;
             }
 
-            if (infoMenu != null)
+            // Set menu content
+            ClearData();
+
+            // Item data
+            itemSprite.style.backgroundImage = new StyleBackground(item.sprite);
+
+            itemName.text = item.itemName;
+
+            if (infoBox != null)
             {
-                ClearData();
-
-                // Item data
-                itemSprite.style.backgroundImage = new StyleBackground(item.sprite);
-
-                itemName.text = item.itemName;
-
-                if (infoBox != null)
-                {
-                    itemData.text = infoBox.GetItemData(item, true);
-                }
-                else
-                {
-                    itemData.text = LOCALE.Get("info_box_null");
-
-                    // ERROR
-                    ErrorManager.Instance.Throw(Types.ErrorType.Code, "InfoMenu.cs -> Open()", "InfoBox is null!");
-                }
-
-                // Content
-                string title;
-
-                switch (item.type)
-                {
-                    case Types.Type.Item:
-                        title = LOCALE.Get("Item_" + item.group + "_" + item.level);
-
-                        GetUnlockedItems(item);
-                        GetParent(item);
-                        break;
-                    case Types.Type.Gen:
-                        title = LOCALE.Get("Gen_" + item.genGroup);
-
-                        GetUnlockedItems(item);
-                        GetParent(item);
-                        break;
-                    case Types.Type.Coll:
-                        if (item.collGroup == Types.CollGroup.Gems)
-                        {
-                            title = LOCALE.Get("Coll_" + item.collGroup, item.level);
-                        }
-                        else
-                        {
-                            title = LOCALE.Get("Coll_" + item.collGroup);
-                        }
-
-                        GetUnlockedItems(item, true);
-
-                        if (item.collGroup != Types.CollGroup.Experience)
-                        {
-                            GetParent(item);
-                        }
-                        break;
-                    default: // Types.Type.Chest
-                        title = LOCALE.Get("Chest_" + item.chestGroup);
-
-                        GetUnlockedItems(item);
-                        GetChestItems(item);
-                        break;
-                }
-
-                // Open menu
-                menuUI.OpenMenu(infoMenu, title);
+                itemData.text = infoBox.GetItemData(item, true);
             }
+            else
+            {
+                itemData.text = LOCALE.Get("info_box_null");
+            }
+
+            // Content
+            string title;
+
+            switch (item.type)
+            {
+                case Types.Type.Item:
+                    title = LOCALE.Get("Item_" + item.group + "_" + item.level);
+
+                    GetUnlockedItems(item);
+                    GetParent(item);
+                    break;
+                case Types.Type.Gen:
+                    title = LOCALE.Get("Gen_" + item.genGroup);
+
+                    GetUnlockedItems(item);
+                    GetParent(item);
+                    break;
+                case Types.Type.Coll:
+                    if (item.collGroup == Types.CollGroup.Gems)
+                    {
+                        title = LOCALE.Get("Coll_" + item.collGroup, item.level);
+                    }
+                    else
+                    {
+                        title = LOCALE.Get("Coll_" + item.collGroup);
+                    }
+
+                    GetUnlockedItems(item, true);
+
+                    if (item.collGroup != Types.CollGroup.Experience)
+                    {
+                        GetParent(item);
+                    }
+                    break;
+                default: // Types.Type.Chest
+                    title = LOCALE.Get("Chest_" + item.chestGroup);
+
+                    GetUnlockedItems(item);
+                    GetChestItems(item);
+                    break;
+            }
+
+            // Open menu
+            menuUI.OpenMenu(content, menuType, title);
         }
 
         void GetUnlockedItems(Item item, bool showAll = false)

@@ -32,6 +32,7 @@ namespace Merge
         private bool isGemsSlashing = false;
 
         // References
+        private GameRefs gameRefs;
         private LevelMenu levelMenu;
         private EnergyMenu energyMenu;
         private ShopMenu shopMenu;
@@ -73,14 +74,15 @@ namespace Merge
         void Start()
         {
             // Cache
-            levelMenu = GameRefs.Instance.levelMenu;
-            energyMenu = GameRefs.Instance.energyMenu;
-            shopMenu = GameRefs.Instance.shopMenu;
+            gameRefs = GameRefs.Instance;
+            levelMenu = gameRefs.levelMenu;
+            energyMenu = gameRefs.energyMenu;
+            shopMenu = gameRefs.shopMenu;
             errorManager = ErrorManager.Instance;
 
-            if (GameRefs.Instance.worldUI != null)
+            if (gameRefs.worldUI != null)
             {
-                safeAreaHandler = GameRefs.Instance.worldUI.GetComponent<SafeAreaHandler>();
+                safeAreaHandler = gameRefs.worldUI.GetComponent<SafeAreaHandler>();
             }
 
             // Cache instances

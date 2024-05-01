@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 using CI.QuickSave;
 using UnityEngine.SceneManagement;
@@ -20,14 +19,16 @@ namespace Merge
         public Colls colls;
         public Chests chests;
         public InitialItems initialItems;
+        public InitialItems initialItemsSkip;
 
+        // Events
         public delegate void BoardSaveEvent();
         public static event BoardSaveEvent OnBoardSave;
         public delegate void BoardSaveUndoEvent(bool unselect);
         public static event BoardSaveUndoEvent OnBoardSaveUndo;
 
         // Whether data has been fully loaded
-        public bool loaded;
+        public bool loaded = false;
 
         private bool isEditor = false;
 
@@ -53,7 +54,9 @@ namespace Merge
         public string unlockedRoomsJsonData;
 
         // References
+        private GameRefs gameRefs;
         private GameData gameData;
+        private UIData uiData;
         private DataConverter dataConverter;
         private RateMenu rateMenu;
         private FollowMenu followMenu;
@@ -91,14 +94,16 @@ namespace Merge
         void Start()
         {
             // Cache
+            gameRefs = GameRefs.Instance;
             gameData = GameData.Instance;
+            uiData = gameData.GetComponent<UIData>();
             dataConverter = GetComponent<DataConverter>();
-            rateMenu = GameRefs.Instance.rateMenu;
-            followMenu = GameRefs.Instance.followMenu;
+            rateMenu = gameRefs.rateMenu;
+            followMenu = gameRefs.followMenu;
             services = Services.Instance;
             cloudSave = services.GetComponent<CloudSave>();
             errorManager = ErrorManager.Instance;
-            worldDataManager = GameRefs.Instance.worldDataManager;
+            worldDataManager = gameRefs.worldDataManager;
 
 #if UNITY_EDITOR
             isEditor = true;
@@ -108,19 +113,19 @@ namespace Merge
             // Make this script run if we aren't starting from the Loading scene
             if (!loaded && (sceneName == Types.Scene.Merge.ToString() || sceneName == Types.Scene.World.ToString()))
             {
-                StartCoroutine(WaitForLoadedSprites());
+                StartCoroutine(WaitForLoadedData());
             }
 #endif
         }
 
-        public void CheckForLoadedSprites(Action callback = null)
+        public void CheckForLoadedData(Action callback = null)
         {
-            StartCoroutine(WaitForLoadedSprites(callback));
+            StartCoroutine(WaitForLoadedData(callback));
         }
 
-        public IEnumerator WaitForLoadedSprites(Action callback = null)
+        public IEnumerator WaitForLoadedData(Action callback = null)
         {
-            while (!gameData.spritesLoaded)
+            while (!gameData.dataLoaded || !uiData.dataLoaded)
             {
                 yield return null;
             }
@@ -128,12 +133,27 @@ namespace Merge
             CheckInitialData(callback);
         }
 
+        public void CheckLoaded(Action callback)
+        {
+            StartCoroutine(WaitForData(callback));
+        }
+
+        public IEnumerator WaitForData(Action callback)
+        {
+            while (!loaded)
+            {
+                yield return null;
+            }
+
+            callback();
+        }
+
         // Check if we need to save initial data to disk
         void CheckInitialData(Action callback)
         {
             if ((ignoreInitialCheck && isEditor) || (!PlayerPrefs.HasKey("dataLoaded") && !writer.Exists("rootSet")))
             {
-                boardJsonData = dataConverter.ConvertBoardToJson(initialItems.content, true);
+                boardJsonData = dataConverter.ConvertBoardToJson(PlayerPrefs.HasKey("tutorialFinished") ? initialItemsSkip.content : initialItems.content, true);
                 bonusData = dataConverter.ConvertBonusToJson(gameData.bonusData);
                 inventoryData = dataConverter.ConvertInventoryToJson(gameData.inventoryData);
                 tasksJsonData = dataConverter.ConvertTaskGroupsToJson(gameData.tasksData);

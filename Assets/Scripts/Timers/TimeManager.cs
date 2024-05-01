@@ -15,6 +15,7 @@ namespace Merge
         public bool energyTimerChecked = false;
 
         // References
+        private GameRefs gameRefs;
         private DataManager dataManager;
         private GameData gameData;
         private EnergyTimer energyTimer;
@@ -25,6 +26,7 @@ namespace Merge
 
         void Start()
         {
+            gameRefs = GameRefs.Instance;
             dataManager = DataManager.Instance;
             gameData = GameData.Instance;
             energyTimer = GetComponent<EnergyTimer>();
@@ -39,9 +41,9 @@ namespace Merge
 
             if (sceneName == Types.Scene.Merge.ToString())
             {
-                clockManager = GameRefs.Instance.clockManager;
-                infoBox = GameRefs.Instance.infoBox;
-                boardManager = GameRefs.Instance.boardManager;
+                clockManager = gameRefs.clockManager;
+                infoBox = gameRefs.infoBox;
+                boardManager = gameRefs.boardManager;
             }
 
             StartCoroutine(WaitForGameData());

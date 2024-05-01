@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="Content" class="content">
+        <ui:Label tabindex="-1" text="Notice" display-tooltip-when-elided="true" name="TermsLabel" class="menu_label" style="-unity-text-align: upper-center;" />
+        <ui:Button text="Accept" display-tooltip-when-elided="true" name="AcceptButton" class="button button_active accept_button" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/LongButtonExtra.png?fileID=2800000&amp;guid=5807375128b344f44a31b9300397a38e&amp;type=3#LongButtonExtra&quot;);" />
+        <ui:VisualElement name="ButtonBox" class="button_box">
+            <ui:Button text="Terms of Service" display-tooltip-when-elided="true" name="TermsButton" class="button button_active alt_button" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/LongButtonExtra.png?fileID=2800000&amp;guid=5807375128b344f44a31b9300397a38e&amp;type=3#LongButtonExtra&quot;); -unity-background-image-tint-color: rgb(113, 160, 246);" />
+            <ui:Button text="Privacy Policy" display-tooltip-when-elided="true" name="PrivacyButton" class="button button_active alt_button" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/LongButtonExtra.png?fileID=2800000&amp;guid=5807375128b344f44a31b9300397a38e&amp;type=3#LongButtonExtra&quot;); -unity-background-image-tint-color: rgb(113, 160, 246);" /> 
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

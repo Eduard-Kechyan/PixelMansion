@@ -141,6 +141,8 @@ namespace Merge
 
                     newTile.transform.SetParent(tiles.transform);
 
+                    CreateUIElements(count, x, y, newTile.transform.position);
+
                     // Create item
                     if (boardData[x, y] != null && boardData[x, y].sprite != null)
                     {
@@ -151,8 +153,6 @@ namespace Merge
                         newItem.transform.SetParent(newTile.transform);
 
                         newItem.transform.localScale = new Vector3(1, 1, 1);
-
-                        CreateUIElements(count, x, y, newTile.transform.position);
                     }
 
                     // Increase count for the next loop

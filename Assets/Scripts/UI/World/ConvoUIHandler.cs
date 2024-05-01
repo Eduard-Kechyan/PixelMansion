@@ -43,6 +43,7 @@ namespace Merge
         private Scale smallScaleFlipped = new(new Vector2(-0.8f, 0.8f));
 
         // References
+        private GameRefs gameRefs;
         private WorldUI worldUI;
         private ValuesUI valuesUI;
         private I18n LOCALE;
@@ -74,13 +75,14 @@ namespace Merge
         void Start()
         {
             // Cache
-            worldUI = GameRefs.Instance.worldUI;
-            valuesUI = GameRefs.Instance.valuesUI;
+            gameRefs = GameRefs.Instance;
+            worldUI = gameRefs.worldUI;
+            valuesUI = gameRefs.valuesUI;
             LOCALE = I18n.Instance;
             charMain = CharMain.Instance;
             addressableManager = DataManager.Instance.GetComponent<AddressableManager>();
-            progressManager = GameRefs.Instance.progressManager;
-            tutorialManager = GameRefs.Instance.tutorialManager;
+            progressManager = gameRefs.progressManager;
+            tutorialManager = gameRefs.tutorialManager;
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;

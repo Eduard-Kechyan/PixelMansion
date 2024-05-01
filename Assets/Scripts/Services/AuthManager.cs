@@ -20,6 +20,7 @@ namespace Merge
         // Variables
         public bool logData = false;
         public bool logDataAlt = false;
+        public MessageMenu messageMenu;
 
         [HideInInspector]
         public bool hasLinkingConflict = false;
@@ -240,8 +241,6 @@ namespace Merge
                 services.authAvailable = true;
 
                 SetPlayerData();
-
-                await HandleDSANotifications();
             }
             catch (AuthenticationException ex)
             {
@@ -311,8 +310,6 @@ namespace Merge
                 services.SetSignInData(type);
 
                 SetPlayerData();
-
-                await HandleDSANotifications();
 
                 if (logData)
                 {
@@ -404,8 +401,6 @@ namespace Merge
 
                 SetPlayerData();
 
-                await HandleDSANotifications();
-
                 if (logData)
                 {
                     Debug.Log(type + " sign in Success");
@@ -469,51 +464,111 @@ namespace Merge
             }
         }
 
-        // As of February 17, 2024, application need to comply with the DSA (Digital Service Act) Notifications
-        async Task HandleDSANotifications()
+        // NOTE - As of February 17, 2024, application need to comply with the DSA (Digital Service Act) Notifications
+        public async Task HandleDSANotifications(Action notificationsCallback)
         {
-            // TODO - Implement this function properly
-            string lastNotificationDate = AuthenticationService.Instance.LastNotificationDate;
-            /*string storedNotificationDate = PlayerPrefs.GetString("storedNotificationDate");
-
-            Debug.Log(lastNotificationDate);
-
-            if (lastNotificationDate != null && long.Parse(lastNotificationDate) > long.Parse(storedNotificationDate))
+            if (!services.anonymousSignIn && !services.googleSignIn && !services.appleSignIn)
             {
-                List<Notification> notifications = await AuthenticationService.Instance.GetNotificationsAsync();
+                notificationsCallback();
+                return;
+            }
 
-                for (int i = 0; i < notifications.Count; i++)
-                {
-                    Debug.Log("Notification " + i);
-                    Debug.Log(notifications[i].Id);
-                    Debug.Log(notifications[i].ProjectId);
-                    Debug.Log(notifications[i].CaseId);
-                    Debug.Log(notifications[i].CreatedAt);
-                    Debug.Log(notifications[i].Message);
-                    Debug.Log(notifications[i].Type);
-                }
 
-                PlayerPrefs.SetString("storedNotificationDate", lastNotificationDate);
-            }*/
+            List<Notification> notifications = null;
 
-            if (lastNotificationDate != null)
+            // Get notifications
+            try
             {
-                Debug.Log("Last Notification Date: " + lastNotificationDate);
+                string lastNotificationDate = AuthenticationService.Instance.LastNotificationDate;
+                int storedNotificationDate = PlayerPrefs.GetInt("storedNotificationDate");
 
-                List<Notification> notifications = await AuthenticationService.Instance.GetNotificationsAsync();
-
-                for (int i = 0; i < notifications.Count; i++)
+                if (lastNotificationDate != null && long.Parse(lastNotificationDate) > storedNotificationDate)
                 {
-                    Debug.Log("Notification " + i);
-                    Debug.Log(notifications[i].Id);
-                    Debug.Log(notifications[i].ProjectId);
-                    Debug.Log(notifications[i].CaseId);
-                    Debug.Log(notifications[i].CreatedAt);
-                    Debug.Log(notifications[i].Message);
-                    Debug.Log(notifications[i].Type);
+                    notifications = await AuthenticationService.Instance.GetNotificationsAsync();
                 }
+            }
+            catch (AuthenticationException ex)
+            {
+                notifications = ex.Notifications;
 
-                PlayerPrefs.SetString("storedNotificationDate", lastNotificationDate);
+                // ERROR
+                errorManager.Throw(
+                    Types.ErrorType.Code,
+                    GetType().Name,
+                    ex.Message,
+                    ex.ErrorCode.ToString()
+                );
+            }
+            catch (Exception ex)
+            {
+                // ERROR
+                errorManager.Throw(
+                    Types.ErrorType.Code,
+                    GetType().Name,
+                    ex.Message
+                );
+            }
+
+            // Handle notifications
+            if (notifications != null && notifications.Count > 0 && messageMenu != null)
+            {
+                StartCoroutine(HandleNotifications(notifications, notificationsCallback));
+            }
+            else
+            {
+                notificationsCallback();
+            }
+        }
+
+        IEnumerator HandleNotifications(List<Notification> notifications, Action notificationsCallback)
+        {
+            for (int i = 0; i < notifications.Count; i++)
+            {
+                Debug.Log("Notification " + i);
+                Debug.Log(notifications[i].Id);
+                Debug.Log(notifications[i].ProjectId);
+                Debug.Log(notifications[i].CaseId);
+                Debug.Log(notifications[i].CreatedAt);
+                Debug.Log(notifications[i].Message);
+                Debug.Log(notifications[i].Type);
+
+                yield return WaitForNotificationToBeRead(notifications[i]);
+
+                if (i == (notifications.Count - 1))
+                {
+                    notificationsCallback();
+                }
+            }
+        }
+
+
+        IEnumerator WaitForNotificationToBeRead(Notification notification)
+        {
+            bool loading = true;
+
+            messageMenu.Open(Types.MessageType.DigitalServiceAct, "", notification.Message, "", false, () =>
+            {
+                NotificationRead(notification);
+
+                loading = false;
+            });
+
+            while (loading)
+            {
+                yield return null;
+            }
+        }
+
+        void NotificationRead(Notification notification)
+        {
+            long lastNotificationDate = long.Parse(notification.CreatedAt);
+            int storedNotificationDate = PlayerPrefs.GetInt("storedNotificationDate");
+
+            if (lastNotificationDate > storedNotificationDate)
+            {
+                PlayerPrefs.SetInt("storedNotificationDate", (int)lastNotificationDate);
+
+                PlayerPrefs.Save();
             }
         }
 

@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
 // TODO - Kaleidoscope
 
@@ -108,7 +107,7 @@ namespace Merge
         public bool greeted = false;
 
         [HideInInspector]
-        public bool spritesLoaded = false;
+        public bool dataLoaded = false;
 
         // Notifications
         public List<Types.Notification> notifications = new();
@@ -127,6 +126,13 @@ namespace Merge
 
         // Other
         public Types.Scene lastScene = Types.Scene.None;
+
+        [HideInInspector]
+        public string termsHtml = "";
+        [HideInInspector]
+        public string privacyHtml = "";
+        [HideInInspector]
+        public bool gettingLegalData = false; // TODO - Set to true
 
         // Debug
 #if DEVELOPMENT_BUILD || UNITY_EDITOR
@@ -175,7 +181,7 @@ namespace Merge
 
             CalcGamePixelHeight();
 
-            LoadSprites();
+            LoadGameData();
         }
 
         public void Init(Types.Scene scene)
@@ -188,7 +194,7 @@ namespace Merge
             }
         }
 
-        public async void LoadSprites()
+        async void LoadGameData()
         {
             // Items
             itemSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("items");
@@ -205,7 +211,7 @@ namespace Merge
             wallSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("walls");
             propsSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("props");
 
-            spritesLoaded = true;
+            dataLoaded = true;
         }
 
         //////// SET ////////

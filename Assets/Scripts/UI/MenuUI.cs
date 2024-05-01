@@ -18,6 +18,11 @@ namespace Merge
         public Sprite[] spinnerSprites;
         private bool isMenuOverlayOpen = false;
 
+        [HideInInspector]
+        public int menusToLoad = 0;
+        private int menusLoaded = 0;
+        private Action menusLoadedCallback;
+
         private List<MenuItem> menus = new();
         private bool valuesShown;
         private bool closeAllMenus = false;
@@ -27,19 +32,31 @@ namespace Merge
 
         private class MenuItem
         {
-            public VisualElement menuItem;
+            public VisualElement menuUI;
+            public Types.Menu menuType;
             public bool showValues;
         }
 
+        private Types.Menu currentMenuType;
+        private VisualElement currentMenuUI;
+
+        // Events
+        public delegate void OpenEvent();
+        public static event OpenEvent OnMenuOpen;
+        public delegate void CloseEvent();
+        public static event CloseEvent OnMenuClose;
+        public delegate void MenuLoadedEvent();
+        public static event MenuLoadedEvent OnMenuLoaded;
+
         // References
         private ValuesUI valuesUI;
+        private I18n LOCALE;
+        private UIData uiData;
         private BoardInteractions boardInteractions;
 
         // UI
         private VisualElement root;
         private VisualElement localeWrapper;
-        private VisualElement currentMenu;
-        private Label title;
         private VisualElement menuOverlay;
         private VisualElement menuOverlaySpinner;
 
@@ -51,6 +68,8 @@ namespace Merge
         {
             // Cache
             valuesUI = GameRefs.Instance.valuesUI;
+            LOCALE = I18n.Instance;
+            uiData = GameData.Instance.GetComponent<UIData>();
             boardInteractions = GameRefs.Instance.boardInteractions;
 
             // UI
@@ -75,18 +94,21 @@ namespace Merge
             HideMenuOverlay();
         }
 
-        // Update the currently opened menu's title
-        public void UpdateTitle(string newTitle)
+        void OnEnable()
         {
-            if (currentMenu.name == "LocaleMenu")
-            {
-                menus[0].menuItem.Q<VisualElement>("Title").Q<Label>("Value").text = newTitle;
-            }
+            // Subscribe to events
+            MenuUI.OnMenuLoaded += MenuLoaded;
         }
 
-        public bool IsMenuOpen(string menuName)
+        void OnDisable()
         {
-            if (currentMenu != null && currentMenu.name == menuName)
+            // Unsubscribe to events
+            MenuUI.OnMenuLoaded -= MenuLoaded;
+        }
+
+        public bool IsMenuOpen(Types.Menu menu)
+        {
+            if (currentMenuType != Types.Menu.None && currentMenuType == menu)
             {
                 return true;
             }
@@ -97,7 +119,7 @@ namespace Merge
             {
                 for (int i = 0; i < menus.Count; i++)
                 {
-                    if (menus[i].menuItem.name == menuName)
+                    if (menus[i].menuType == menu)
                     {
                         found = true;
 
@@ -110,19 +132,56 @@ namespace Merge
         }
 
         // Get ready to open the given menu
-        public void OpenMenu(VisualElement menuElement, string newTitle, bool showValues = false, bool closeAll = false, bool ignoreClose = false)
+        public VisualElement OpenMenu(VisualElement menuUI, Types.Menu menuType, string altTitle = "", bool showValues = false, bool closeAll = false, bool ignoreClose = false, bool showCloseButton = true, bool isSmallMenu = false)
         {
             if (!isClosing)
             {
-                // Add the menu to the menu list
-                menus.Add(new MenuItem { menuItem = menuElement, showValues = showValues });
-
                 // Set the current menu
-                currentMenu = menuElement;
+                currentMenuType = menuType;
 
+                VisualElement menuElement = uiData.GetMenuElement(menuType);
+
+                if (menuElement != null)
+                {
+                    currentMenuUI = menuElement;
+                }
+                else
+                {
+                    // Create a new menu                
+                    currentMenuUI = uiData.menuContainerPrefab.CloneTree().Q<VisualElement>("Menu");
+
+                    // Add the content to the newly created menu
+                    currentMenuUI.Q<VisualElement>("Container").Insert(0, menuUI);
+
+                    // Add the related menu class
+                    currentMenuUI.AddToClassList(currentMenuType + "_menu");
+
+                    if (isSmallMenu)
+                    {
+                        currentMenuUI.Q<VisualElement>("Container").AddToClassList(currentMenuType + "small_menu");
+                    }
+                }
+
+                // Set or update the menu's title
+                string newTitle = altTitle != "" ? altTitle : LOCALE.Get(currentMenuType + "_menu_title");
+
+                currentMenuUI.Q<Label>("TitleValue").text = newTitle;
+
+                // Add the menu to the menu list
+                menus.Add(new MenuItem
+                {
+                    menuUI = currentMenuUI,
+                    menuType = currentMenuType,
+                    showValues = showValues
+                });
+
+                uiData.SetMenuElement(menuType, currentMenuUI);
+
+                // Add menu to the ui
+                localeWrapper.Insert(localeWrapper.childCount - 1, currentMenuUI);
+
+                // Close all menus if needed
                 closeAllMenus = closeAll;
-
-                currentMenu.SetEnabled(true);
 
                 if (showValues)
                 {
@@ -131,24 +190,33 @@ namespace Merge
 
                 CheckMenuOpened();
 
-                ShowMenu(newTitle, ignoreClose);
+                OnMenuOpen?.Invoke();
+
+                ShowMenu(ignoreClose, showCloseButton);
+
+                return currentMenuUI;
             }
+
+            return null;
         }
 
-        void ShowMenu(string newTitle, bool ignoreClose)
+        void ShowMenu(bool ignoreClose, bool showCloseButton = true)
         {
             // Show the menu locale container
             localeWrapper.style.display = DisplayStyle.Flex;
 
             // Show the menu
-            currentMenu.style.display = DisplayStyle.Flex;
-            currentMenu.style.opacity = 1f;
+            currentMenuUI.style.display = DisplayStyle.Flex;
+            currentMenuUI.style.opacity = 1f;
+
+            // Enable the menu to make it clickable
+            currentMenuUI.SetEnabled(true);
 
             if (!ignoreClose)
             {
                 // Add background click handler
-                VisualElement background = currentMenu.Q<VisualElement>("Background");
-                VisualElement closeButton = currentMenu.Q<VisualElement>("Close");
+                VisualElement background = currentMenuUI.Q<VisualElement>("Background");
+                VisualElement closeButton = currentMenuUI.Q<VisualElement>("Close");
 
                 if (background != null)
                 {
@@ -159,7 +227,8 @@ namespace Merge
                             HandleBackgroundClose();
                         }));
 
-                        closeButton.style.display = DisplayStyle.Flex;
+                        closeButton.style.display = showCloseButton ? DisplayStyle.Flex : DisplayStyle.None;
+                        closeButton.style.opacity = showCloseButton ? 1 : 0;
                     }
                     else
                     {
@@ -169,24 +238,10 @@ namespace Merge
                         }));
 
                         closeButton.style.display = DisplayStyle.None;
+                        closeButton.style.opacity = 0;
                     }
                 }
-
-                // Disable the close button
-                /* VisualElement closeButton = currentMenu.Q<VisualElement>("Close");
-                 VisualElement closeButtonBorder = closeButton.Q<VisualElement>("Border");
-
-                 if (closeButton != null)
-                 {
-                     closeButton.pickingMode = PickingMode.Ignore;
-                     closeButtonBorder.pickingMode = PickingMode.Ignore;
-                 }*/
             }
-
-            // Set the menu's title
-            title = currentMenu.Q<VisualElement>("Title").Q<Label>("Value");
-
-            title.text = newTitle;
 
             // Set open menu indicator to open
             menuOpen = true;
@@ -206,26 +261,28 @@ namespace Merge
             }
             else
             {
-                CloseMenu(currentMenu.name);
+                CloseMenu(currentMenuType);
             }
         }
 
-        public void CloseMenu(string menuName, Action callback = null)
+        public void CloseMenu(Types.Menu menuType, Action callback = null)
         {
+            OnMenuClose?.Invoke();
+
             isClosing = true;
 
             // Disable the menu to make it unclickable
-            currentMenu.SetEnabled(false);
+            currentMenuUI.SetEnabled(false);
 
             // Hide the menu
-            currentMenu.style.opacity = 0f;
+            currentMenuUI.style.opacity = 0f;
 
             // Remove the menu from the menu list
             int currentMenuIndex = 0;
 
             for (int i = 0; i < menus.Count; i++)
             {
-                if (menus[i].menuItem.name == menuName)
+                if (menus[i].menuType == menuType)
                 {
                     currentMenuIndex = i;
                 }
@@ -243,13 +300,19 @@ namespace Merge
             // Hide and remove the current menu
             if (menuItem == null)
             {
-                currentMenu.style.display = DisplayStyle.None;
+                currentMenuUI.style.display = DisplayStyle.None;
 
-                currentMenu = null;
+                localeWrapper.Remove(currentMenuUI);
+
+                currentMenuUI = null;
+
+                currentMenuType = Types.Menu.None;
             }
             else
             {
-                menuItem.menuItem.style.display = DisplayStyle.None;
+                menuItem.menuUI.style.display = DisplayStyle.None;
+
+                localeWrapper.Remove(menuItem.menuUI);
 
                 menus.RemoveAt(index);
             }
@@ -277,10 +340,10 @@ namespace Merge
                 // Decrease the menu's size
                 Scale scale = new Scale(new Vector2(menuDecreaseOffset, menuDecreaseOffset));
 
-                menus[menus.Count - 2].menuItem.style.scale = new StyleScale(scale);
+                menus[menus.Count - 2].menuUI.style.scale = new StyleScale(scale);
 
                 // Hide close button
-                menus[menus.Count - 2].menuItem.Q<VisualElement>("Close").style.opacity = 0f;
+                menus[menus.Count - 2].menuUI.Q<VisualElement>("Close").style.opacity = 0f;
             }
         }
 
@@ -290,15 +353,16 @@ namespace Merge
             if (menus.Count > 0)
             {
                 // Set the current menu
-                currentMenu = menus[menus.Count - 1].menuItem;
+                currentMenuUI = menus[menus.Count - 1].menuUI;
+                currentMenuType = menus[menus.Count - 1].menuType;
 
                 // Reset the menu's size
                 Scale scale = new Scale(new Vector2(1f, 1f));
 
-                currentMenu.style.scale = new StyleScale(scale);
+                currentMenuUI.style.scale = new StyleScale(scale);
 
                 // Show close button
-                currentMenu.Q<VisualElement>("Close").style.opacity = 1f;
+                currentMenuUI.Q<VisualElement>("Close").style.opacity = 1f;
 
                 if (menus[menus.Count - 1].showValues)
                 {
@@ -316,6 +380,9 @@ namespace Merge
 
                 // Hide the menu locale container
                 localeWrapper.style.display = DisplayStyle.None;
+
+                currentMenuUI = null;
+                currentMenuType = Types.Menu.None;
 
                 // Enable the board
                 if (boardInteractions != null)
@@ -336,6 +403,8 @@ namespace Merge
             {
                 closingAllMenus = true;
 
+                OnMenuClose?.Invoke();
+
                 StartCoroutine(CloseAllAfter());
             }
         }
@@ -344,8 +413,8 @@ namespace Merge
         {
             for (int i = menus.Count - 1; i > -1; i--) // NOTE - Counting backwards
             {
-                menus[i].menuItem.SetEnabled(false);
-                menus[i].menuItem.style.opacity = 0f;
+                menus[i].menuUI.SetEnabled(false);
+                menus[i].menuUI.style.opacity = 0f;
                 StartCoroutine(HideMenuAfter(menus[i], i));
                 yield return new WaitForSeconds(transitionDuration * 2);
             }
@@ -378,7 +447,41 @@ namespace Merge
             valuesUI.EnableButtons();
         }
 
-        //// Overlay menuOverlaySpinner ////
+        //// Menus ////
+
+        public void CheckLoadingSceneMenus(Action callback = null)
+        {
+            menusLoadedCallback = callback;
+
+            Component[] components = gameObject.GetComponents<Component>();
+
+            for (int i = 0; i < components.Length; i++)
+            {
+                Type type = components[i].GetType();
+
+                if (type.GetField("menuType") != null && type.GetField("hasLoadingEvent") != null)
+                {
+                    menusToLoad++;
+                }
+            }
+        }
+
+        void MenuLoaded()
+        {
+            menusLoaded++;
+
+            if (menusToLoad == menusLoaded)
+            {
+                menusLoadedCallback?.Invoke();
+            }
+        }
+
+        public void ThrowMenuLoadedEvent()
+        {
+            OnMenuLoaded?.Invoke();
+        }
+
+        //// Overlay ////
 
         public void ShowMenuOverlay(Action callback = null, bool delayCallback = false)
         {

@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="Content" class="content">
+                    <ui:Label tabindex="-1" text="Text goes here!" display-tooltip-when-elided="true" name="Label" class="menu_label" />
+                    <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; justify-content: space-around;">
+                        <ui:Button text="Button" display-tooltip-when-elided="true" name="DenyButton" class="button_active button" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/LongButton.png?fileID=2800000&amp;guid=e6292ec8b0b2a5743a0f00750e1f4db0&amp;type=3#LongButton&quot;); -unity-background-image-tint-color: rgb(236, 115, 127);" />
+                        <ui:Button text="Button" display-tooltip-when-elided="true" name="ConfirmButton" class="button_active button" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/LongButton.png?fileID=2800000&amp;guid=e6292ec8b0b2a5743a0f00750e1f4db0&amp;type=3#LongButton&quot;); -unity-background-image-tint-color: rgb(85, 203, 152);" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+</ui:UXML>

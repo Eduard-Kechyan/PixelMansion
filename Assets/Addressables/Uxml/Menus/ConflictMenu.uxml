@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="Content" class="content">
+        <ui:Label tabindex="-1" text="A previous account exists." display-tooltip-when-elided="true" name="ConflictLabelA" class="menu_label" style="-unity-text-align: upper-center; margin-bottom: 5px;" />
+        <ui:Label tabindex="-1" text="Which one to use?" display-tooltip-when-elided="true" name="ConflictLabelB" class="menu_label" style="-unity-text-align: upper-center;" />
+        <ui:Button text="Use previous" display-tooltip-when-elided="true" name="PreviousButton" class="button button_active" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/LongButtonExtra.png?fileID=2800000&amp;guid=5807375128b344f44a31b9300397a38e&amp;type=3#LongButtonExtra&quot;); -unity-background-image-tint-color: rgb(113, 160, 246);" />
+        <ui:Button text="Create New" display-tooltip-when-elided="true" name="NewButton" class="button button_active" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/LongButtonExtra.png?fileID=2800000&amp;guid=5807375128b344f44a31b9300397a38e&amp;type=3#LongButtonExtra&quot;); -unity-background-image-tint-color: rgb(113, 160, 246);" />
+    </ui:VisualElement>
+</ui:UXML>

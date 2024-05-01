@@ -38,6 +38,7 @@ namespace Merge
         private Action callback;
 
         // References
+        private GameRefs gameRefs;
         private BoardSelection boardSelection;
         private BoardManager boardManager;
         private BoardInitialization boardInitialization;
@@ -65,23 +66,24 @@ namespace Merge
         private void Start()
         {
             // Cache
+            gameRefs = GameRefs.Instance;
             boardInitialization = GetComponent<BoardInitialization>();
             boardSelection = GetComponent<BoardSelection>();
             boardManager = GetComponent<BoardManager>();
             boardIndication = GetComponent<BoardIndication>();
             popupManager = PopupManager.Instance;
-            inventoryMenu = GameRefs.Instance.inventoryMenu;
+            inventoryMenu = gameRefs.inventoryMenu;
             soundManager = SoundManager.Instance;
             dataManager = DataManager.Instance;
             gameData = GameData.Instance;
             itemHandler = dataManager.GetComponent<ItemHandler>();
             LOCALE = I18n.Instance;
-            clockManager = GameRefs.Instance.clockManager;
-            timeManager = GameRefs.Instance.timeManager;
-            pointerHandler = GameRefs.Instance.pointerHandler;
+            clockManager = gameRefs.clockManager;
+            timeManager = gameRefs.timeManager;
+            pointerHandler = gameRefs.pointerHandler;
 
             // Cache root and dragOverlay
-            root = GameRefs.Instance.mergeUIDoc.rootVisualElement;
+            root = gameRefs.mergeUIDoc.rootVisualElement;
             dragOverlay = root.Q<VisualElement>("DragOverlay");
 
             // Drag overlay shouldn't be pickable

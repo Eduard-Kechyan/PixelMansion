@@ -12,13 +12,15 @@ namespace Merge
         private Action<string> callback;
         private string inputText;
 
+        private Types.Menu menuType = Types.Menu.Input;
+
         // References
         private MenuUI menuUI;
         private I18n LOCALE;
+        private UIData uiData;
 
         // UI
-        private VisualElement root;
-        private VisualElement inputMenu;
+        private VisualElement content;
         private Label inputLabel;
         private TextField inputTextField;
         private Button inputButton;
@@ -30,51 +32,45 @@ namespace Merge
             // Cache
             menuUI = GetComponent<MenuUI>();
             LOCALE = I18n.Instance;
+            uiData = GameData.Instance.GetComponent<UIData>();
 
-            // UI
-            root = GetComponent<UIDocument>().rootVisualElement;
-
-            inputMenu = root.Q<VisualElement>("InputMenu");
-            inputLabel = inputMenu.Q<Label>("InputLabel");
-            inputTextField = inputMenu.Q<TextField>("InputTextField");
-            inputButton = inputMenu.Q<Button>("InputButton");
-            inputLimitLabel = inputMenu.Q<Label>("InputLimitLabel");
-
-            inputTextField.RegisterValueChangedCallback(evt => HandleInput(evt));
-
-            inputButton.clicked += () => Accept();
-
-            inputButton.SetEnabled(false);
-
-            if (Debug.isDebugBuild && !PlayerPrefs.HasKey("tutorialFinished"))
+            DataManager.Instance.CheckLoaded(() =>
             {
-                inputRandomButton = inputMenu.Q<Button>("RandomButton");
+                // UI
+                content = uiData.GetMenuAsset(menuType);
 
-                inputRandomButton.style.display = DisplayStyle.Flex;
+                inputLabel = content.Q<Label>("InputLabel");
+                inputTextField = content.Q<TextField>("InputTextField");
+                inputButton = content.Q<Button>("InputButton");
+                inputLimitLabel = content.Q<Label>("InputLimitLabel");
 
-                inputRandomButton.clicked += () => AcceptRandomName();
-            }
+                inputTextField.RegisterValueChangedCallback(evt => HandleInput(evt));
 
-            Init();
-        }
+                inputButton.clicked += () => Accept();
 
-        void Init()
-        {
-            // Make sure the menu is closed
-            inputMenu.style.display = DisplayStyle.None;
-            inputMenu.style.opacity = 0;
+                inputButton.SetEnabled(false);
+
+                if (Debug.isDebugBuild && !PlayerPrefs.HasKey("tutorialFinished"))
+                {
+                    inputRandomButton = content.Q<Button>("RandomButton");
+
+                    inputRandomButton.style.display = DisplayStyle.Flex;
+
+                    inputRandomButton.clicked += () => AcceptRandomName();
+                }
+            });
         }
 
         public void Open(string inputId, Action<string> newCallback)
         {
-            if (menuUI.IsMenuOpen(inputMenu.name))
+            // Check menu
+            if (menuUI.IsMenuOpen(menuType))
             {
                 return;
             }
 
+            // Set menu content
             callback = newCallback;
-
-            string title = "";
 
             if (inputId == "PlayerName")
             {
@@ -85,15 +81,12 @@ namespace Merge
 
                 inputTextField.SelectAll();
 
-                // Set the title
-                title = LOCALE.Get("input_menu_title_player_name");
-
                 // Set the input label
                 inputLabel.text = LOCALE.Get("input_menu_label_player_name");
             }
 
             // Open menu
-            menuUI.OpenMenu(inputMenu, title);
+            menuUI.OpenMenu(content, menuType);
         }
 
         void HandleInput(ChangeEvent<string> changeEvent)
@@ -141,7 +134,7 @@ namespace Merge
 
         void Accept()
         {
-            menuUI.CloseMenu(inputMenu.name, () =>
+            menuUI.CloseMenu(menuType, () =>
             {
                 callback(inputText);
             });
@@ -151,7 +144,7 @@ namespace Merge
         {
             string randomName = Glob.GetRandomWord(3, 12, true);
 
-            menuUI.CloseMenu(inputMenu.name, () =>
+            menuUI.CloseMenu(menuType, () =>
             {
                 callback(randomName);
             });

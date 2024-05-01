@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2656915087510296412}
   - component: {fileID: 7628476360138686812}
+  - component: {fileID: 26344694154187306}
   - component: {fileID: 2518802072706261672}
   - component: {fileID: 5365750438327078213}
   m_Layer: 0
@@ -75,10 +76,30 @@ MonoBehaviour:
   chestsData: []
   coolDowns: []
   timers: []
-  userId: 
   greeted: 0
-  resourcesLoaded: 0
+  dataLoaded: 0
   notifications: []
+  lastScene: 3
+  logsData: []
+--- !u!114 &26344694154187306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6831382092569983105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8310fc9aa8b0d804f82e035200c3bba6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dataLoaded: 0
+  menuContainerPreFab: {fileID: 0}
+  localeMenu: {fileID: 0}
+  shopItemBoxPrefab: {fileID: 0}
+  taskGroupPrefab: {fileID: 0}
+  taskPrefab: {fileID: 0}
+  taskNeedPrefab: {fileID: 0}
 --- !u!114 &2518802072706261672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105,16 +126,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drawGizmos: 1
-  gizmoRadiusHub: 28
-  gizmoRadiusHubSmall: 28
-  gizmoRadiusGameplay: 0.65
+  gizmoRadiusWorld: 28
+  gizmoRadiusWorldSmall: 20
+  gizmoRadiusMerge: 0.65
   gizmoColor: {r: 0, g: 0, b: 1, a: 1}
-  hubButtonsSet: 0
-  hubShopButtonPos: {x: 0, y: 0}
-  hubPlayButtonPos: {x: 0, y: 0}
-  hubTaskButtonPos: {x: 0, y: 0}
-  gameplayButtonsSet: 0
-  gameplayHomeButtonPos: {x: 0, y: 0}
-  gameplayShopButtonPos: {x: 0, y: 0}
-  gameplayTaskButtonPos: {x: 0, y: 0}
-  gameplayBonusButtonPos: {x: 0, y: 0}
+  worldButtonsSet: 0
+  worldShopButtonPos: {x: 0, y: 0}
+  worldPlayButtonPos: {x: 0, y: 0}
+  worldTaskButtonPos: {x: 0, y: 0}
+  mergeButtonsSet: 0
+  mergeHomeButtonPos: {x: 0, y: 0}
+  mergeShopButtonPos: {x: 0, y: 0}
+  mergeTaskButtonPos: {x: 0, y: 0}
+  mergeBonusButtonPos: {x: 0, y: 0}

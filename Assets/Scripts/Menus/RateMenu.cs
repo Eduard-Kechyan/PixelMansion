@@ -19,15 +19,17 @@ namespace Merge
 
         private int starCount = 0;
 
+        private Types.Menu menuType = Types.Menu.Rate;
+
         // References
         private MenuUI menuUI;
         private GameData gameData;
         private I18n LOCALE;
         private CloudSave cloudSave;
+        private UIData uiData;
 
         // UI
-        private VisualElement root;
-        private VisualElement rateMenu;
+        private VisualElement content;
         private VisualElement character;
         private VisualElement starsBox;
         private Label starsLabel;
@@ -54,37 +56,39 @@ namespace Merge
             gameData = GameData.Instance;
             LOCALE = I18n.Instance;
             cloudSave = Services.Instance.GetComponent<CloudSave>();
+            uiData = GameData.Instance.GetComponent<UIData>();
 
-            // UI
-            root = GetComponent<UIDocument>().rootVisualElement;
-
-            rateMenu = root.Q<VisualElement>("RateMenu");
-
-            character = rateMenu.Q<VisualElement>("Character");
-
-            starsBox = rateMenu.Q<VisualElement>("StarsBox");
-
-            starsLabel = rateMenu.Q<Label>("StarsLabel");
-            rateLabel0 = rateMenu.Q<Label>("RateLabel0");
-            rateLabel1 = rateMenu.Q<Label>("RateLabel1");
-
-            yesButton = rateMenu.Q<Button>("YesButton");
-            noButton = rateMenu.Q<Button>("NoButton");
-            neverButton = rateMenu.Q<Button>("NeverButton");
-
-            // UI Taps
-            for (int i = 0; i < starsBox.childCount; i++)
+            DataManager.Instance.CheckLoaded(() =>
             {
-                string order = i.ToString();
+                // UI
+                content = uiData.GetMenuAsset(menuType);
 
-                starsBox.Q<Button>("StarItem" + order).clicked += () => SetStar(order);
-            }
+                character = content.Q<VisualElement>("Character");
 
-            yesButton.clicked += () => HandleYesButton();
-            noButton.clicked += () => HandleNoButton();
-            neverButton.clicked += () => HandleNeverButton();
+                starsBox = content.Q<VisualElement>("StarsBox");
 
-            Init();
+                starsLabel = content.Q<Label>("StarsLabel");
+                rateLabel0 = content.Q<Label>("RateLabel0");
+                rateLabel1 = content.Q<Label>("RateLabel1");
+
+                yesButton = content.Q<Button>("YesButton");
+                noButton = content.Q<Button>("NoButton");
+                neverButton = content.Q<Button>("NeverButton");
+
+                // UI Taps
+                for (int i = 0; i < starsBox.childCount; i++)
+                {
+                    string order = i.ToString();
+
+                    starsBox.Q<Button>("StarItem" + order).clicked += () => SetStar(order);
+                }
+
+                yesButton.clicked += () => HandleYesButton();
+                noButton.clicked += () => HandleNoButton();
+                neverButton.clicked += () => HandleNeverButton();
+
+                Init();
+            });
         }
 
         void OnValidate()
@@ -97,10 +101,6 @@ namespace Merge
 
         void Init()
         {
-            // Make sure the menu is closed
-            rateMenu.style.display = DisplayStyle.None;
-            rateMenu.style.opacity = 0;
-
             yesButton.text = LOCALE.Get("rate_menu_yes_button");
             noButton.text = LOCALE.Get("rate_menu_no_button");
             neverButton.text = LOCALE.Get("rate_menu_never_button");
@@ -113,18 +113,16 @@ namespace Merge
 
         public void Open(bool ignoreCheck = false)
         {
-            if (menuUI.IsMenuOpen(rateMenu.name))
+            // Check menu
+            if (menuUI.IsMenuOpen(menuType))
             {
                 return;
             }
 
             if (ignoreCheck || gameData.level >= 3)
             {
-                // Set the title
-                string title = LOCALE.Get("rate_menu_title");
-
                 // Open menu
-                menuUI.OpenMenu(rateMenu, title, false, false, true);
+                menuUI.OpenMenu(content, menuType, "", false, false, true, false, true);
 
                 starsLabel.text = starCount + "/" + 5;
             }
@@ -187,7 +185,7 @@ namespace Merge
 
         void CloseMenu()
         {
-            menuUI.CloseMenu(rateMenu.name, () =>
+            menuUI.CloseMenu(menuType, () =>
             {
                 shouldShow = false;
             });

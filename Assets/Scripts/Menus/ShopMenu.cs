@@ -20,8 +20,11 @@ namespace Merge
 
         // private bool purchasing = false;
 
+        private Types.Menu menuType = Types.Menu.Shop;
+
         // References
         private GameData gameData;
+        private UIData uiData;
         private DailyData dailyData;
         private ItemHandler itemHandler;
         private I18n LOCALE;
@@ -38,8 +41,7 @@ namespace Merge
         private SceneLoader sceneLoader;
 
         // UI
-        private VisualElement root;
-        private VisualElement shopMenu;
+        private VisualElement content;
         private ScrollView scrollContainer;
         private Label dailySubtitle;
         private Label itemsSubtitle;
@@ -52,12 +54,11 @@ namespace Merge
         private Button restoreGems;
         private Button restoreGold;
 
-        private VisualTreeAsset shopItemBoxPrefab;
-
-        async void Start()
+        void Start()
         {
             // Cache
             gameData = GameData.Instance;
+            uiData = gameData.GetComponent<UIData>();
             dailyData = DataManager.Instance.GetComponent<DailyData>();
             LOCALE = I18n.Instance;
             itemHandler = DataManager.Instance.GetComponent<ItemHandler>();
@@ -73,38 +74,33 @@ namespace Merge
             boardManager = GameRefs.Instance.boardManager;
             sceneLoader = GameRefs.Instance.sceneLoader;
 
-            // UI
-            root = GetComponent<UIDocument>().rootVisualElement;
+            DataManager.Instance.CheckLoaded(() =>
+            {
+                // UI
+                content = uiData.GetMenuAsset(menuType);
 
-            shopMenu = root.Q<VisualElement>("ShopMenu");
+                scrollContainer = content.Q<ScrollView>("ScrollContainer");
 
-            scrollContainer = shopMenu.Q<ScrollView>("ScrollContainer");
+                dailySubtitle = content.Q<VisualElement>("DailySubtitle").Q<Label>("Subtitle");
+                itemsSubtitle = content.Q<VisualElement>("ItemsSubtitle").Q<Label>("Subtitle");
+                gemsSubtitle = content.Q<VisualElement>("GemsSubtitle").Q<Label>("Subtitle");
+                goldSubtitle = content.Q<VisualElement>("GoldSubtitle").Q<Label>("Subtitle");
 
-            dailySubtitle = shopMenu.Q<VisualElement>("DailySubtitle").Q<Label>("Subtitle");
-            itemsSubtitle = shopMenu.Q<VisualElement>("ItemsSubtitle").Q<Label>("Subtitle");
-            gemsSubtitle = shopMenu.Q<VisualElement>("GemsSubtitle").Q<Label>("Subtitle");
-            goldSubtitle = shopMenu.Q<VisualElement>("GoldSubtitle").Q<Label>("Subtitle");
-
-            dailyBoxes = shopMenu.Q<VisualElement>("DailyBoxes");
-            itemsBoxes = shopMenu.Q<VisualElement>("ItemsBoxes");
-            gemsBoxes = shopMenu.Q<VisualElement>("GemsBoxes");
-            goldBoxes = shopMenu.Q<VisualElement>("GoldBoxes");
+                dailyBoxes = content.Q<VisualElement>("DailyBoxes");
+                itemsBoxes = content.Q<VisualElement>("ItemsBoxes");
+                gemsBoxes = content.Q<VisualElement>("GemsBoxes");
+                goldBoxes = content.Q<VisualElement>("GoldBoxes");
 
 #if UNITY_IOS
             SetRestore();
 #endif
 
-            shopItemBoxPrefab = await addressableManager.LoadAssetAsync<VisualTreeAsset>("Assets/Addressables/Uxml/ShopItemBox.uxml");
-
-            Init();
+                Init();
+            });
         }
 
         void Init()
         {
-            // Make sure the menu is closed
-            shopMenu.style.display = DisplayStyle.None;
-            shopMenu.style.opacity = 0;
-
             InitializeShopItems(Types.ShopItemType.Item);
             InitializeShopCurrency(Types.ShopItemType.Gold);
             InitializeShopCurrency(Types.ShopItemType.Gems);
@@ -114,8 +110,8 @@ namespace Merge
 
         void SetRestore()
         {
-            restoreGems = shopMenu.Q<Button>("RestoreGems");
-            restoreGold = shopMenu.Q<Button>("RestoreGold");
+            restoreGems = content.Q<Button>("RestoreGems");
+            restoreGold = content.Q<Button>("RestoreGold");
 
             string restoreText = LOCALE.Get("shop_menu_restore");
 
@@ -160,7 +156,7 @@ namespace Merge
             {
                 // Initialize
                 string nameOrder = i.ToString();
-                var newShopItemBox = shopItemBoxPrefab.CloneTree();
+                var newShopItemBox = uiData.shopItemBoxPrefab.CloneTree();
 
                 // Shop box
                 VisualElement shopBox = newShopItemBox.Q<VisualElement>("ShopItemBox");
@@ -168,19 +164,19 @@ namespace Merge
                 shopBox.AddToClassList("shop_item_box_" + shopItemType.ToString().ToLower());
 
                 // Top label // FIX - Add a check for the items left in the shop
-                newShopItemBox.Q<Label>("TopLabel").text = dailyData.GetLeftCount(nameOrder, shopItems[i].total, shopItemType) + "/" + shopItems[i].total;
+                shopBox.Q<Label>("TopLabel").text = dailyData.GetLeftCount(nameOrder, shopItems[i].total, shopItemType) + "/" + shopItems[i].total;
 
                 // Popular
-                newShopItemBox.Q<VisualElement>("Popular").style.display = DisplayStyle.None;
+                shopBox.Q<VisualElement>("Popular").style.display = DisplayStyle.None;
 
                 // Image
-                newShopItemBox.Q<VisualElement>("Image").style.backgroundImage = new StyleBackground(shopItems[i].sprite);
+                shopBox.Q<VisualElement>("Image").style.backgroundImage = new StyleBackground(shopItems[i].sprite);
 
                 // Bonus
-                newShopItemBox.Q<VisualElement>("Bonus").style.display = DisplayStyle.None;
+                shopBox.Q<VisualElement>("Bonus").style.display = DisplayStyle.None;
 
                 // Buy button
-                Button buyButton = newShopItemBox.Q<Button>("BuyButton");
+                Button buyButton = shopBox.Q<Button>("BuyButton");
                 VisualElement buyButtonValue = buyButton.Q<VisualElement>("Value");
                 Label buyButtonLabel = buyButton.Q<Label>("Label");
 
@@ -282,7 +278,7 @@ namespace Merge
                         ProductCatalogPayout payoutBonus = GetProductBonus(product.Payouts);
 
                         // Initialize
-                        var newShopItemBox = shopItemBoxPrefab.CloneTree();
+                        var newShopItemBox = uiData.shopItemBoxPrefab.CloneTree();
 
                         // Shop box
                         VisualElement shopBox = newShopItemBox.Q<VisualElement>("ShopItemBox");
@@ -458,21 +454,19 @@ namespace Merge
 
         public void Open(string newLocation = "")
         {
-            if (menuUI.IsMenuOpen(shopMenu.name))
+            // Check menu
+            if (menuUI.IsMenuOpen(menuType))
             {
                 // Check if we need to scroll to a specific location
                 if (newLocation != "")
                 {
                     scrollLocation = newLocation;
 
-                    shopMenu.RegisterCallback<GeometryChangedEvent>(ScrollCallback);
+                    content.RegisterCallback<GeometryChangedEvent>(ScrollCallback);
                 }
 
                 return;
             }
-
-            // Title
-            string title = LOCALE.Get("shop_menu_title");
 
             // Subtitles
             dailySubtitle.text = LOCALE.Get("shop_menu_subtitle_daily");
@@ -481,7 +475,7 @@ namespace Merge
             goldSubtitle.text = LOCALE.Get("shop_menu_subtitle_gold");
 
             // Open menu
-            menuUI.OpenMenu(shopMenu, title, true);
+            menuUI.OpenMenu(content, menuType, "", true);
 
             // Reset scroll position
             scrollContainer.scrollOffset = Vector2.zero;
@@ -491,13 +485,13 @@ namespace Merge
             {
                 scrollLocation = newLocation;
 
-                shopMenu.RegisterCallback<GeometryChangedEvent>(ScrollCallback);
+                content.RegisterCallback<GeometryChangedEvent>(ScrollCallback);
             }
         }
 
         void ScrollCallback(GeometryChangedEvent evt)
         {
-            shopMenu.UnregisterCallback<GeometryChangedEvent>(ScrollCallback);
+            content.UnregisterCallback<GeometryChangedEvent>(ScrollCallback);
 
             switch (scrollLocation)
             {
@@ -588,7 +582,7 @@ namespace Merge
 
             InitializeShopItems(shopItemType);
 
-            menuUI.CloseMenu(shopMenu.name);
+            menuUI.CloseMenu(menuType);
         }
 
         void BuyCurrency(string productId)

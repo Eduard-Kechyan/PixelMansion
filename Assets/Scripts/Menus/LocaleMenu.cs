@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-
 namespace Merge
 {
     public class LocaleMenu : MonoBehaviour
@@ -14,15 +13,16 @@ namespace Merge
         public Color localeButtonColorSelected;
         public Types.Locale[] localeToInclude;
 
+        private Types.Menu menuType = Types.Menu.Locale;
+
         // References
         private MenuUI menuUI;
         private ConfirmMenu confirmMenu;
         private SettingsMenu settingsMenu;
         private I18n LOCALE;
+        private UIData uiData;
 
         // UI
-        private VisualElement root;
-        private VisualElement localeMenu;
         private VisualElement content;
 
         void Start()
@@ -32,33 +32,24 @@ namespace Merge
             settingsMenu = GetComponent<SettingsMenu>();
             confirmMenu = GetComponent<ConfirmMenu>();
             LOCALE = I18n.Instance;
+            uiData = GameData.Instance.GetComponent<UIData>();
 
-            // UI
-            root = GetComponent<UIDocument>().rootVisualElement;
-
-            localeMenu = root.Q<VisualElement>("LocaleMenu");
-            content = localeMenu.Q<VisualElement>("Content");
-
-            Init();
-        }
-
-        void Init()
-        {
-            // Make sure the menu is closed
-            localeMenu.style.display = DisplayStyle.None;
-            localeMenu.style.opacity = 0;
+            DataManager.Instance.CheckLoaded(() =>
+            {
+                // UI
+                content = uiData.GetMenuAsset(menuType);
+            });
         }
 
         public void Open()
         {
-            if (menuUI.IsMenuOpen(localeMenu.name))
+            // Check menu
+            if (menuUI.IsMenuOpen(menuType))
             {
                 return;
             }
 
-            // Set the title
-            string title = LOCALE.Get("locale_menu_title");
-
+            // Set menu content
             content.Clear();
 
             Types.Locale currentLocale = LOCALE.GetLocale();
@@ -149,7 +140,7 @@ namespace Merge
             }
 
             // Open menu
-            menuUI.OpenMenu(localeMenu, title);
+            menuUI.OpenMenu(content, menuType);
         }
 
         void SetLocale(Types.Locale newLocale)
