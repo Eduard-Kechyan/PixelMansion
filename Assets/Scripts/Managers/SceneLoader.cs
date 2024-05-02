@@ -13,7 +13,16 @@ namespace Merge
         public float fadeDuration = 0.5f;
 
         [HideInInspector]
-        public Types.Scene scene;
+        public SceneType scene;
+
+        // Enums
+        public enum SceneType
+        {
+            Loading,
+            World,
+            Merge,
+            None
+        };
 
         // References
         private SoundManager soundManager;
@@ -51,12 +60,12 @@ namespace Merge
 
         void OnSceneUnloaded(Scene scene)
         {
-            gameData.lastScene = Glob.ParseEnum<Types.Scene>(scene.name);
+            gameData.lastScene = Glob.ParseEnum<SceneType>(scene.name);
 
             SceneManager.sceneUnloaded -= OnSceneUnloaded;
         }
 
-        public void Load(Types.Scene scene)
+        public void Load(SceneType scene)
         {
             soundManager.FadeOutMusic(fadeDuration);
 
@@ -66,14 +75,14 @@ namespace Merge
             });
         }
 
-        public void LoadAsync(Types.Scene scene)
+        public void LoadAsync(SceneType scene)
         {
             transitionUI.Open();
             soundManager.FadeOutMusic(fadeDuration);
             StartCoroutine(LoadAsyncScene(scene));
         }
 
-        IEnumerator LoadAsyncScene(Types.Scene scene)
+        IEnumerator LoadAsyncScene(SceneType scene)
         {
             yield return new WaitForSeconds(duration);
 
@@ -85,9 +94,9 @@ namespace Merge
             }
         }
 
-        public Types.Scene GetScene()
+        public SceneType GetScene()
         {
-            return Glob.ParseEnum<Types.Scene>(SceneManager.GetActiveScene().name);
+            return Glob.ParseEnum<SceneType>(SceneManager.GetActiveScene().name);
         }
 
         void InitializeScene()
@@ -96,20 +105,20 @@ namespace Merge
             localeManager = Settings.Instance.GetComponent<LocaleManager>();
 
             // Play background music when the scene starts from the editor
-            scene = Glob.ParseEnum<Types.Scene>(SceneManager.GetActiveScene().name);
+            scene = Glob.ParseEnum<SceneType>(SceneManager.GetActiveScene().name);
 
             switch (scene)
             {
-                case Types.Scene.World:
+                case SceneType.World:
                     if (PlayerPrefs.HasKey("tutorialFinished"))
                     {
                         // Play world background music
-                        soundManager.PlayMusic(Types.MusicType.World);
+                        soundManager.PlayMusic(SoundManager.MusicType.World);
                     }
                     else
                     {
                         // Play tutorial background music
-                        soundManager.PlayMusic(Types.MusicType.Magical);
+                        soundManager.PlayMusic(SoundManager.MusicType.Magical);
                     }
 
                     soundManager.FadeInMusic(fadeDuration);
@@ -122,9 +131,9 @@ namespace Merge
 
                     break;
 
-                case Types.Scene.Merge:
+                case SceneType.Merge:
                     // Play background music
-                    soundManager.PlayMusic(Types.MusicType.Merge);
+                    soundManager.PlayMusic(SoundManager.MusicType.Merge);
 
                     soundManager.FadeInMusic(fadeDuration);
 

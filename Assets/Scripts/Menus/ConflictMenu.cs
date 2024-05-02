@@ -15,7 +15,7 @@ namespace Merge
         public bool hasLoadingEvent = true;
 
         [HideInInspector]
-        public Types.Menu menuType = Types.Menu.Conflict;
+        public MenuUI.Menu menuType = MenuUI.Menu.Conflict;
 
         // References
         private MenuUI menuUI;

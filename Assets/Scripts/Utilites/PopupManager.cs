@@ -48,7 +48,7 @@ namespace Merge
             root = popupUI.rootVisualElement;
         }
 
-        public void Pop(string newText, Vector2 position, Types.SoundType soundType = Types.SoundType.None, bool convertPosToUI = false, bool fromSelector = false)
+        public void Pop(string newText, Vector2 position, SoundManager.SoundType soundType = SoundManager.SoundType.None, bool convertPosToUI = false, bool fromSelector = false)
         {
             isSelectorPopup = fromSelector;
 
@@ -67,22 +67,22 @@ namespace Merge
 
             switch (Settings.Instance.currentLocale)
             {
-                case Types.Locale.Armenian:
+                case I18n.Locale.Armenian:
                     newPopupLabel.style.unityFontDefinition = new StyleFontDefinition(localeManager.hyFont);
                     break;
-                case Types.Locale.Japanese:
+                case I18n.Locale.Japanese:
                     newPopupLabel.style.unityFontDefinition = new StyleFontDefinition(localeManager.jpFont);
                     break;
-                case Types.Locale.Korean:
+                case I18n.Locale.Korean:
                     newPopupLabel.style.unityFontDefinition = new StyleFontDefinition(localeManager.krFont);
                     break;
-                case Types.Locale.Chinese:
+                case I18n.Locale.Chinese:
                     newPopupLabel.style.unityFontDefinition = new StyleFontDefinition(localeManager.cnFont);
                     break;
                 default:
                     newPopupLabel.style.unityFontDefinition = new StyleFontDefinition(localeManager.enFont);
 
-                    if (Settings.Instance.currentLocale != Types.Locale.German)
+                    if (Settings.Instance.currentLocale != I18n.Locale.German)
                     {
                         grownFontSize += 2;
                     }
@@ -97,7 +97,7 @@ namespace Merge
             newPopupLabel.RegisterCallback<GeometryChangedEvent>(evt => CheckForPopup(evt, position, newPopupLabel, soundType, convertPosToUI, fromSelector));
         }
 
-        void CheckForPopup(GeometryChangedEvent evt, Vector2 position, Label newPopupLabel, Types.SoundType soundType, bool convertPosToUI, bool fromSelector)
+        void CheckForPopup(GeometryChangedEvent evt, Vector2 position, Label newPopupLabel, SoundManager.SoundType soundType, bool convertPosToUI, bool fromSelector)
         {
             root.UnregisterCallback<GeometryChangedEvent>(evt => CheckForPopup(evt, position, newPopupLabel, soundType, convertPosToUI, fromSelector));
 
@@ -107,7 +107,7 @@ namespace Merge
             }
         }
 
-        IEnumerator PopText(Vector2 position, Label newPopupLabel, Types.SoundType soundType, bool convertPosToUI = false, bool fromSelector = false)
+        IEnumerator PopText(Vector2 position, Label newPopupLabel, SoundManager.SoundType soundType, bool convertPosToUI = false, bool fromSelector = false)
         {
             isPopupShowing = true;
 
@@ -156,7 +156,7 @@ namespace Merge
             newPopupLabel.style.top = newPos.y - 10;
 
             // Play popup sound
-            if (soundType != Types.SoundType.None)
+            if (soundType != SoundManager.SoundType.None)
             {
                 soundManager.PlaySound(soundType);
             }

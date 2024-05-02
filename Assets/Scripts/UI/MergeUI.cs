@@ -105,12 +105,12 @@ namespace Merge
             {
                 if (pointerHandler != null && pointerHandler.buttonCallback != null)
                 {
-                    pointerHandler.ButtonPress(Types.Button.Home);
+                    pointerHandler.ButtonPress(UIButtons.Button.Home);
                 }
                 else
                 {
-                    soundManager.PlaySound(Types.SoundType.Transition);
-                    sceneLoader.Load(Types.Scene.World);
+                    soundManager.PlaySound(SoundManager.SoundType.Transition);
+                    sceneLoader.Load(SceneLoader.SceneType.World);
                 }
             };
             inventoryButton.clicked += () => inventoryMenu.Open();
@@ -120,7 +120,7 @@ namespace Merge
             {
                 if (pointerHandler != null && pointerHandler.buttonCallback != null)
                 {
-                    pointerHandler.ButtonPress(Types.Button.Task, false, () =>
+                    pointerHandler.ButtonPress(UIButtons.Button.Task, false, () =>
                     {
                         taskMenu.Open();
                     });
@@ -246,26 +246,26 @@ namespace Merge
             }
         }
 
-        public void ShowButton(Types.Button button)
+        public void ShowButton(UIButtons.Button button)
         {
             switch (button)
             {
-                case Types.Button.Home:
+                case UIButtons.Button.Home:
                     homeButton.SetEnabled(true);
                     homeButton.style.display = DisplayStyle.Flex;
                     PlayerPrefs.SetInt("mergeHomeButtonShowing", 1);
                     break;
-                case Types.Button.Settings:
+                case UIButtons.Button.Settings:
                     inventoryButton.SetEnabled(true);
                     inventoryButton.style.display = DisplayStyle.Flex;
                     PlayerPrefs.SetInt("mergeInventoryButtonShowing", 1);
                     break;
-                case Types.Button.Shop:
+                case UIButtons.Button.Shop:
                     shopButton.SetEnabled(true);
                     shopButton.style.display = DisplayStyle.Flex;
                     PlayerPrefs.SetInt("mergeShopButtonShowing", 1);
                     break;
-                case Types.Button.Task:
+                case UIButtons.Button.Task:
                     taskButton.SetEnabled(true);
                     taskButton.style.display = DisplayStyle.Flex;
                     PlayerPrefs.SetInt("mergeTaskButtonShowing", 1);
@@ -273,11 +273,11 @@ namespace Merge
             }
         }
 
-        public void HideButton(Types.Button button, bool alt = false)
+        public void HideButton(UIButtons.Button button, bool alt = false)
         {
             switch (button)
             {
-                case Types.Button.Home:
+                case UIButtons.Button.Home:
                     if (alt)
                     {
                         homeButton.SetEnabled(false);
@@ -288,7 +288,7 @@ namespace Merge
                         PlayerPrefs.DeleteKey("mergeHomeButtonShowing");
                     }
                     break;
-                case Types.Button.Inventory:
+                case UIButtons.Button.Inventory:
                     if (alt)
                     {
                         inventoryButton.SetEnabled(false);
@@ -299,7 +299,7 @@ namespace Merge
                         PlayerPrefs.DeleteKey("mergeInventoryButtonShowing");
                     }
                     break;
-                case Types.Button.Shop:
+                case UIButtons.Button.Shop:
                     if (alt)
                     {
                         shopButton.SetEnabled(false);
@@ -310,7 +310,7 @@ namespace Merge
                         PlayerPrefs.DeleteKey("worldShopButtonShowing");
                     }
                     break;
-                case Types.Button.Task:
+                case UIButtons.Button.Task:
                     if (alt)
                     {
                         taskButton.SetEnabled(false);
@@ -322,7 +322,7 @@ namespace Merge
                     }
                     break;
                 default:
-                    errorManager.ThrowWarning(Types.ErrorType.Code, GetType().ToString(), "Types.Button " + button + " is not implemented!");
+                    errorManager.ThrowWarning(ErrorManager.ErrorType.Code, GetType().ToString(), "UIButtons.Button " + button + " is not implemented!");
                     break;
             }
         }

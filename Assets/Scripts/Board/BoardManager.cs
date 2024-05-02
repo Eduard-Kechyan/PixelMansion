@@ -30,6 +30,243 @@ namespace Merge
         private Coroutine crateCoroutine;
         private float crateTimeout = 0f;
 
+        // Classes
+        [Serializable]
+        public class TileEmpty
+        {
+            public int order;
+            public Vector2Int loc;
+            public float distance;
+        }
+
+        [Serializable]
+        public class Tile
+        {
+            public Sprite sprite;
+            public Item.Type type;
+            public Item.State state;
+            public Item.Group group;
+            public Item.GenGroup genGroup;
+            public Item.CollGroup collGroup;
+            public Item.ChestGroup chestGroup;
+            public bool hasTimer;
+
+            [HideInInspector]
+            public string id;
+
+            [HideInInspector]
+            public int generatesAtLevel;
+
+            [HideInInspector]
+            public int crate;
+
+            [HideInInspector]
+            public int order;
+
+            [HideInInspector]
+            public int chestItems;
+
+            [HideInInspector]
+            public bool chestItemsSet;
+
+            [HideInInspector]
+            public bool chestOpen;
+
+            [HideInInspector]
+            public bool gemPopped;
+
+            [HideInInspector]
+            public bool isCompleted;
+
+            [HideInInspector]
+            public bool timerOn;
+        }
+
+        [Serializable]
+        public class TileJson
+        {
+            public string sprite;
+            public string type;
+            public string group;
+            public string genGroup;
+            public string collGroup;
+            public string chestGroup;
+            public bool hasTimer;
+            public string id;
+            public int generatesAtLevel;
+            public int crate;
+            public string state;
+            public int chestItems;
+            public bool chestItemsSet;
+            public bool chestOpen;
+            public bool gemPopped;
+            public bool isCompleted;
+            public bool timerOn;
+        }
+
+        [Serializable]
+        public class TypeItem
+        {
+            [HideInInspector]
+            public string name;
+            public Item.Type type;
+            public Item.Group group;
+            public bool hasLevel;
+            public bool customName;
+
+            public ParentData[] parents;
+            public ItemData[] content;
+
+            [HideInInspector]
+            public Item.CollGroup collGroup;
+            [HideInInspector]
+            public Item.ChestGroup chestGroup;
+            [HideInInspector]
+            public Item.GenGroup genGroup;
+            [HideInInspector]
+            public bool hasTimer;
+            [HideInInspector]
+            public int generatesAtLevel;
+            [HideInInspector]
+            public int generatesMaxCount;
+            [HideInInspector]
+            public Creates[] creates;
+            [HideInInspector]
+            public TimeManager.CoolDown coolDown;
+        }
+
+        [Serializable]
+        public class TypeGen
+        {
+            [HideInInspector]
+            public string name;
+            public Item.GenGroup genGroup;
+            public bool hasLevel;
+            public bool customName;
+            public int generatesAtLevel;
+
+            public TimeManager.CoolDown coolDown;
+            public ParentData[] parents;
+            public Creates[] creates;
+            public ItemData[] content;
+        }
+
+        [Serializable]
+        public class TypeColl
+        {
+            [HideInInspector]
+            public string name;
+            public Item.CollGroup collGroup;
+            public bool hasLevel;
+            public bool customName;
+
+            public ParentData[] parents;
+            public ItemData[] content;
+        }
+
+        [Serializable]
+        public class TypeChest
+        {
+            [HideInInspector]
+            public string name;
+            public Item.ChestGroup chestGroup;
+            public bool hasLevel;
+            public bool customName;
+
+            public Creates[] creates;
+            public ItemData[] content;
+        }
+
+        [Serializable]
+        public class ParentData
+        {
+            [HideInInspector]
+            public string name;
+            public Item.Type type;
+            public Item.GenGroup genGroup;
+            public Item.ChestGroup chestGroup;
+        }
+
+        [Serializable]
+        public class ItemData
+        {
+            public Sprite sprite;
+            public bool customName;
+            public string itemName;
+
+            [HideInInspector]
+            public int level;
+
+            [HideInInspector]
+            public Item.Group group;
+
+            [HideInInspector]
+            public Item.Type type;
+
+            [HideInInspector]
+            public Item.ChestGroup chestGroup;
+
+            [HideInInspector]
+            public int generatesAtLevel;
+
+            [HideInInspector]
+            public Item.GenGroup genGroup;
+
+            [HideInInspector]
+            public Item.CollGroup collGroup;
+
+            [HideInInspector]
+            public ParentData[] parents;
+
+            [HideInInspector]
+            public Creates[] creates;
+
+            [HideInInspector]
+            public TimeManager.CoolDown coolDown;
+
+            [HideInInspector]
+            public bool unlocked;
+
+            [HideInInspector]
+            public bool isMaxLevel;
+
+            [HideInInspector]
+            public bool hasLevel;
+
+            [HideInInspector]
+            public bool hasTimer;
+
+            [HideInInspector]
+            public int chestItems;
+
+            [HideInInspector]
+            public bool chestItemsSet;
+
+            [HideInInspector]
+            public DateTime startTime;
+
+            [HideInInspector]
+            public int seconds;
+
+            [HideInInspector]
+            public bool gemPopped;
+        }
+
+        [Serializable]
+        public class Creates
+        {
+            [HideInInspector]
+            public string name;
+            public Sprite sprite;
+            public Item.Type type;
+            public Item.Group group;
+            public Item.GenGroup genGroup;
+            public Item.CollGroup collGroup;
+            public int maxLevel;
+            public bool canIncreaseMaxLevel;
+            public float chance;
+        }
+
         // References
         private BoardInitialization boardInitialization;
         private BoardInteractions interactions;
@@ -100,14 +337,14 @@ namespace Merge
                     else
                     {
                         // ERROR
-                        errorManager.ThrowWarning(Types.ErrorType.Code, GetType().ToString(), "Failed to parse order from tile name.");
+                        errorManager.ThrowWarning(ErrorManager.ErrorType.Code, GetType().ToString(), "Failed to parse order from tile name.");
                         return loc;
                     }
                 }
                 else
                 {
                     // ERROR
-                    errorManager.ThrowWarning(Types.ErrorType.Code, GetType().ToString(), "Invalid tile name format.");
+                    errorManager.ThrowWarning(ErrorManager.ErrorType.Code, GetType().ToString(), "Invalid tile name format.");
                     return loc;
                 }
             }
@@ -158,7 +395,7 @@ namespace Merge
             else
             {
                 // ERROR
-                errorManager.ThrowWarning(Types.ErrorType.Code, GetType().ToString(), "Failed to retrieve tile transform.");
+                errorManager.ThrowWarning(ErrorManager.ErrorType.Code, GetType().ToString(), "Failed to retrieve tile transform.");
                 return Vector2.zero;
             }
         }
@@ -181,7 +418,7 @@ namespace Merge
             }
 
             // ERROR
-            errorManager.ThrowWarning(Types.ErrorType.Code, GetType().ToString(), "Board item with sprite name \'" + spriteName + "\' not found!");
+            errorManager.ThrowWarning(ErrorManager.ErrorType.Code, GetType().ToString(), "Board item with sprite name \'" + spriteName + "\' not found!");
 
             return default;
         }
@@ -200,7 +437,7 @@ namespace Merge
             }
 
             // ERROR
-            errorManager.ThrowWarning(Types.ErrorType.Code, GetType().ToString(), "Item with ID " + id + " not found on the board.");
+            errorManager.ThrowWarning(ErrorManager.ErrorType.Code, GetType().ToString(), "Item with ID " + id + " not found on the board.");
             return Vector2.zero;
         }
 
@@ -213,10 +450,10 @@ namespace Merge
             Vector2Int newLoc = GetBoardLocation(0, newTile);
 
             // Save items
-            Types.Tile oldItem = gameData.boardData[oldLoc.x, oldLoc.y];
-            Types.Tile newItem = gameData.boardData[newLoc.x, newLoc.y];
+            Tile oldItem = gameData.boardData[oldLoc.x, oldLoc.y];
+            Tile newItem = gameData.boardData[newLoc.x, newLoc.y];
 
-            Types.Tile temp = gameData.boardData[oldLoc.x, oldLoc.y];
+            Tile temp = gameData.boardData[oldLoc.x, oldLoc.y];
             gameData.boardData[oldLoc.x, oldLoc.y] = gameData.boardData[newLoc.x, newLoc.y];
             gameData.boardData[newLoc.x, newLoc.y] = temp;
 
@@ -293,7 +530,7 @@ namespace Merge
             dataManager.SaveBoard();
 
             // Give experience if it's the first time unlocking it and its level is higher than experienceThreshold (default 4)
-            if (newItem.type != Types.Type.Coll && newItem.level >= (experienceThreshold + 1))
+            if (newItem.type != Item.Type.Coll && newItem.level >= (experienceThreshold + 1))
             {
                 CreateCollectable();
             }
@@ -307,7 +544,7 @@ namespace Merge
             int oldOrder = gameData.boardData[oldLoc.x, oldLoc.y].order;
 
             // Clear old items
-            gameData.boardData[oldLoc.x, oldLoc.y] = new Types.Tile { order = oldOrder };
+            gameData.boardData[oldLoc.x, oldLoc.y] = new Tile { order = oldOrder };
 
             // Save the board to disk
             dataManager.SaveBoard();
@@ -318,7 +555,7 @@ namespace Merge
             if (order < 0 || order >= boardTiles.transform.childCount)
             {
                 // ERROR
-                errorManager.ThrowWarning(Types.ErrorType.Code, GetType().ToString(), "Invalid order provided.");
+                errorManager.ThrowWarning(ErrorManager.ErrorType.Code, GetType().ToString(), "Invalid order provided.");
                 return;
             }
 
@@ -335,13 +572,13 @@ namespace Merge
                 else
                 {
                     // ERROR
-                    errorManager.ThrowWarning(Types.ErrorType.Code, GetType().ToString(), "Item component not found on tile.");
+                    errorManager.ThrowWarning(ErrorManager.ErrorType.Code, GetType().ToString(), "Item component not found on tile.");
                 }
             }
             else
             {
                 // ERROR
-                errorManager.ThrowWarning(Types.ErrorType.Code, GetType().ToString(), "Tile transform not found.");
+                errorManager.ThrowWarning(ErrorManager.ErrorType.Code, GetType().ToString(), "Tile transform not found.");
             }
         }
 
@@ -377,9 +614,9 @@ namespace Merge
         void FindItemAndOpenCrate(int x, int y)
         {
             // Find the the crate on the board and open it
-            if (gameData.boardData[x, y].state == Types.State.Crate)
+            if (gameData.boardData[x, y].state == Item.State.Crate)
             {
-                gameData.boardData[x, y].state = Types.State.Locker;
+                gameData.boardData[x, y].state = Item.State.Locker;
 
                 // Play crate opening audio
                 if (crateTimeout == 0)
@@ -390,7 +627,7 @@ namespace Merge
                         crateCoroutine = null;
                     }
 
-                    soundManager.PlaySound(Types.SoundType.OpenCrate);
+                    soundManager.PlaySound(SoundManager.SoundType.OpenCrate);
 
                     crateTimeout = crateSoundTimeout;
 
@@ -450,28 +687,28 @@ namespace Merge
                                     item.UnlockLock(0.05f, false);
 
                                     // Play unlocking audio
-                                    soundManager.PlaySound(Types.SoundType.UnlockLock);
+                                    soundManager.PlaySound(SoundManager.SoundType.UnlockLock);
 
                                     interactions.OpenLockCallback(item);
                                 }
                                 else
                                 {
                                     // ERROR
-                                    errorManager.ThrowWarning(Types.ErrorType.Code, GetType().ToString(), "Failed to retrieve item.");
+                                    errorManager.ThrowWarning(ErrorManager.ErrorType.Code, GetType().ToString(), "Failed to retrieve item.");
                                     return default;
                                 }
                             }
                             else
                             {
                                 // ERROR
-                                errorManager.ThrowWarning(Types.ErrorType.Code, GetType().ToString(), "Failed to retrieve item transform.");
+                                errorManager.ThrowWarning(ErrorManager.ErrorType.Code, GetType().ToString(), "Failed to retrieve item transform.");
                                 return default;
                             }
                         }
                         else
                         {
                             // ERROR
-                            errorManager.ThrowWarning(Types.ErrorType.Code, GetType().ToString(), "Failed to retrieve tile transform.");
+                            errorManager.ThrowWarning(ErrorManager.ErrorType.Code, GetType().ToString(), "Failed to retrieve tile transform.");
                             return default;
                         }
                     }
@@ -487,7 +724,7 @@ namespace Merge
 
         public void CheckForBubble(Item item)
         {
-            if (PlayerPrefs.HasKey("tutorialFinished") && item.level >= minBubbleLevel && item.type == Types.Type.Item)
+            if (PlayerPrefs.HasKey("tutorialFinished") && item.level >= minBubbleLevel && item.type == Item.Type.Item)
             {
                 float a = 0;
                 float b = 0;
@@ -514,7 +751,7 @@ namespace Merge
 
                     Vector2Int tileLoc = GetBoardLocation(0, tile);
 
-                    List<Types.TileEmpty> emptyBoard = GetEmptyTileItems(tileLoc);
+                    List<TileEmpty> emptyBoard = GetEmptyTileItems(tileLoc);
 
                     // Check if the board is full
                     if (emptyBoard.Count > 0)
@@ -537,7 +774,7 @@ namespace Merge
                                             true,
                                             null,
                                             null,
-                                            Types.State.Bubble
+                                            Item.State.Bubble
                                         );
 
                                         break;
@@ -577,9 +814,9 @@ namespace Merge
 
                             Vector2 position = bubbleItem.transform.position;
 
-                            boardSelection.Unselect(Types.SelectType.None);
+                            boardSelection.Unselect(BoardSelection.SelectType.None);
 
-                            Types.TileEmpty tileEmpty = new()
+                            TileEmpty tileEmpty = new()
                             {
                                 order = count,
                                 loc = new(x, y),
@@ -592,7 +829,7 @@ namespace Merge
 
                                 for (int i = 0; i < gameData.collectablesData.Length; i++)
                                 {
-                                    if (gameData.collectablesData[i].collGroup == Types.CollGroup.Gold)
+                                    if (gameData.collectablesData[i].collGroup == Item.CollGroup.Gold)
                                     {
                                         for (int j = 0; j < gameData.collectablesData[i].content.Length; j++)
                                         {
@@ -606,7 +843,7 @@ namespace Merge
                                                     false,
                                                     null,
                                                     null,
-                                                    Types.State.Default
+                                                    Item.State.Default
                                                 );
 
                                                 break;
@@ -634,7 +871,7 @@ namespace Merge
 
             Vector2Int tileLoc = GetBoardLocation(0, tile);
 
-            List<Types.TileEmpty> emptyBoard = GetEmptyTileItems(tileLoc);
+            List<TileEmpty> emptyBoard = GetEmptyTileItems(tileLoc);
 
             // Check if the board is full
             if (emptyBoard.Count > 0)
@@ -644,7 +881,7 @@ namespace Merge
                 // Create item from selected group
                 for (int i = 0; i < gameData.collectablesData.Length; i++)
                 {
-                    if (gameData.collectablesData[i].collGroup == Types.CollGroup.Experience)
+                    if (gameData.collectablesData[i].collGroup == Item.CollGroup.Experience)
                     {
                         CreateItemOnEmptyTile(
                             gameData.collectablesData[i].content[0],
@@ -658,24 +895,24 @@ namespace Merge
             }
             else
             {
-                valuePop.PopValue(1, Types.CollGroup.Experience, tile.transform.position);
+                valuePop.PopValue(1, Item.CollGroup.Experience, tile.transform.position);
             }
         }
 
         public void CreateItemOnEmptyTile(
-            Types.ItemData itemData,
-            Types.TileEmpty emptyBoard,
+            ItemData itemData,
+            TileEmpty emptyBoard,
             Vector2 initialPosition,
             bool canUnlock = true,
             bool useEnergy = false,
-            Types.Inventory inventoryItem = null,
+            InventoryMenu.Inventory inventoryItem = null,
             Action<Vector2> callBack = null,
-            Types.State newState = Types.State.Default
+            Item.State newState = Item.State.Default
         )
         {
             GameObject emptyTile = boardTiles.transform.GetChild(emptyBoard.order).gameObject;
 
-            Types.Tile tileItem;
+            Tile tileItem;
 
             if (inventoryItem != null && itemData == null)
             {
@@ -725,7 +962,7 @@ namespace Merge
             newItem.gameObject.layer = LayerMask.NameToLayer("ItemDragging");
 
             // Play generating audio
-            soundManager.PlaySound(Types.SoundType.Generate);
+            soundManager.PlaySound(SoundManager.SoundType.Generate);
 
             newItem.transform.position = initialPosition;
 
@@ -735,9 +972,9 @@ namespace Merge
             {
                 callBack?.Invoke(newItem.transform.position);
 
-                if (newState == Types.State.Bubble)
+                if (newState == Item.State.Bubble)
                 {
-                    timeManager.AddTimer(Types.TimerType.Bubble, Types.NotificationType.Chest, newItem.itemName, newItem.id, newItem.transform.position, bubblePopTimeout);
+                    timeManager.AddTimer(TimeManager.TimerType.Bubble, NotificsManager.NotificationType.Chest, newItem.itemName, newItem.id, newItem.transform.position, bubblePopTimeout);
                 }
             });
 
@@ -774,15 +1011,15 @@ namespace Merge
 
             if (useEnergy)
             {
-                gameData.UpdateValue(-1, Types.CollGroup.Energy, false, true);
+                gameData.UpdateValue(-1, Item.CollGroup.Energy, false, true);
             }
 
             dataManager.SaveBoard();
         }
 
-        public List<Types.TileEmpty> GetEmptyTileItems(Vector2Int tileLoc, bool useTileLoc = true)
+        public List<TileEmpty> GetEmptyTileItems(Vector2Int tileLoc, bool useTileLoc = true)
         {
-            List<Types.TileEmpty> emptyBoard = new();
+            List<TileEmpty> emptyBoard = new();
 
             for (int x = 0; x < gameData.boardData.GetLength(0); x++)
             {
@@ -791,7 +1028,7 @@ namespace Merge
                     if (gameData.boardData[x, y].sprite == null)
                     {
                         emptyBoard.Add(
-                            new Types.TileEmpty
+                            new TileEmpty
                             {
                                 order = gameData.boardData[x, y].order,
                                 loc = GetBoardLocation(gameData.boardData[x, y].order),
@@ -809,7 +1046,7 @@ namespace Merge
 
         public bool IsThereAnEmptyBoardSpace()
         {
-            List<Types.TileEmpty> emptyBoard = GetEmptyTileItems(Vector2Int.zero, false);
+            List<TileEmpty> emptyBoard = GetEmptyTileItems(Vector2Int.zero, false);
 
             return emptyBoard.Count > 0;
         }

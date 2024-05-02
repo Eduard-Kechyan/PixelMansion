@@ -173,7 +173,7 @@ namespace Merge
             {
                 // ERROR
                 ErrorManager.Instance.Throw(
-                    Types.ErrorType.Code,
+                    ErrorManager.ErrorType.Code,
                     "Glob",
                     "Couldn't parse enum: " + typeof(T) + ". Value: " + value
                 );

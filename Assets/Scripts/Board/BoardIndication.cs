@@ -13,7 +13,7 @@ namespace Merge
         // public float getCloserSpeed = 3f;
 
         private Pair selectedPairs = null;
-        //private List<Types.Board> lastSingleArray = new List<Types.Board>();
+        //private List<BoardManager.Board> lastSingleArray = new List<BoardManager.Board>();
 
         private bool checkingPossibleMerges = false;
         private bool indicatingPossibleMerges = false;
@@ -29,8 +29,8 @@ namespace Merge
         [Serializable]
         public class Pair
         {
-            public Types.Tile item1;
-            public Types.Tile item2;
+            public BoardManager.Tile item1;
+            public BoardManager.Tile item2;
             public Vector2 pos1;
             public Vector2 pos2;
             public Vector2 desiredPos1;
@@ -209,7 +209,7 @@ namespace Merge
             yield return new WaitForSeconds(UnityEngine.Random.Range(2, 5));
 
             // Variables
-            List<Types.Tile> singleArray = new();
+            List<BoardManager.Tile> singleArray = new();
 
             List<Pair> pairs = new();
 
@@ -218,9 +218,9 @@ namespace Merge
             {
                 for (int j = 0; j < GameData.HEIGHT; j++)
                 {
-                    Types.Tile singleItem = gameData.boardData[i, j];
+                    BoardManager.Tile singleItem = gameData.boardData[i, j];
 
-                    if (singleItem.state == Types.State.Default && singleItem.sprite != null)
+                    if (singleItem.state == Item.State.Default && singleItem.sprite != null)
                     {
                         if (!boardManager.boardTiles.transform.GetChild(singleItem.order).GetChild(0).gameObject.GetComponent<Item>().isMaxLevel)
                         {
@@ -324,7 +324,7 @@ namespace Merge
             yield return new WaitForSeconds(0.3f);
 
             // Variables
-            List<Types.Tile> singleArray = new();
+            List<BoardManager.Tile> singleArray = new();
 
             List<Pair> pairs = new();
 
@@ -333,9 +333,9 @@ namespace Merge
             {
                 for (int j = 0; j < GameData.HEIGHT; j++)
                 {
-                    Types.Tile singleItem = gameData.boardData[i, j];
+                    BoardManager.Tile singleItem = gameData.boardData[i, j];
 
-                    if ((singleItem.state == Types.State.Default || singleItem.state == Types.State.Locker) && singleItem.sprite != null)
+                    if ((singleItem.state == Item.State.Default || singleItem.state == Item.State.Locker) && singleItem.sprite != null)
                     {
                         if (boardManager.boardTiles.transform.GetChild(singleItem.order).childCount > 0 && !boardManager.boardTiles.transform.GetChild(singleItem.order).GetChild(0).gameObject.GetComponent<Item>().isMaxLevel)
                         {

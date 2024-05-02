@@ -10,11 +10,40 @@ namespace Merge
 
         private static readonly I18n instance = new();
 
-        private static Types.Locale currentLocale = Types.Locale.English;
+        private static Locale currentLocale = Locale.English;
 
         private static string localePath = "Locales/";
 
         private static bool isLoggingMissing = true;
+
+        // Enums
+        public enum Locale
+        {
+            English, // English (en-US)
+            French, // Français (fr-FR)
+            Spanish, // Español (es-ES)
+            German, // Deutsch (de-DE)
+            Italian, // Italiano (it-IT)
+            Russian, // Русский (ru-RU)
+            Armenian, // Հայերեն (hy-HY)
+            Japanese, // 日本語 (ja-JP)
+            Korean, // 한국어 (ko-KR)
+            Chinese // 中文 (zh-CN)
+        };
+
+        public enum LocaleAlt
+        {
+            English, // English (en-US)
+            Français, // French (fr-FR)
+            Español, // Spanish (es-ES)
+            Deutsch, // German (de-DE)
+            Italiano, // Italian (it-IT)
+            Русский, // Russian (ru-RU)
+            Հայերեն, // Armenian (hy-HY)
+            日本語, // Japanese (ja-JP)
+            한국어, // Korean (ko-KR)
+            中文 // Chinese (zh-CN)
+        };
 
         static I18n() { }
 
@@ -32,12 +61,12 @@ namespace Merge
             config = JSON.Parse(configText.text);
         }
 
-        public Types.Locale GetLocale()
+        public Locale GetLocale()
         {
             return currentLocale;
         }
 
-        public static void SetLocale(Types.Locale newLocale)
+        public static void SetLocale(Locale newLocale)
         {
             currentLocale = newLocale;
             InitConfig();
@@ -45,7 +74,7 @@ namespace Merge
 
         public static void Configure(
             string newLocalePath = null,
-            Types.Locale newLocale = Types.Locale.English,
+            Locale newLocale = Locale.English,
             bool newLogMissing = false
         )
         {
@@ -94,7 +123,7 @@ namespace Merge
             else if (isLoggingMissing)
             {
                 // ERROR
-                ErrorManager.Instance.ThrowWarning(Types.ErrorType.Locale, GetType().Name, "Missing translation for: " + key);
+                ErrorManager.Instance.ThrowWarning(ErrorManager.ErrorType.Locale, GetType().Name, "Missing translation for: " + key);
             }
 
             return translation;
@@ -135,7 +164,7 @@ namespace Merge
             else if (isLoggingMissing && !zeroExpected)
             {
                 // ERROR
-                ErrorManager.Instance.ThrowWarning(Types.ErrorType.Locale, GetType().Name, "Missing translation for: " + key);
+                ErrorManager.Instance.ThrowWarning(ErrorManager.ErrorType.Locale, GetType().Name, "Missing translation for: " + key);
             }
 
             return count;
@@ -190,7 +219,7 @@ namespace Merge
             else if (isLoggingMissing)
             {
                 // ERROR
-                ErrorManager.Instance.ThrowWarning(Types.ErrorType.Locale, GetType().Name, "Missing singPlurKey:" + singPlurKey + " for:" + key);
+                ErrorManager.Instance.ThrowWarning(ErrorManager.ErrorType.Locale, GetType().Name, "Missing singPlurKey:" + singPlurKey + " for:" + key);
             }
             return translation;
         }

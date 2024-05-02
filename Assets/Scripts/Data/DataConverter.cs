@@ -24,25 +24,25 @@ namespace Merge
 
         //// BOARD ////
 
-        public Types.Tile[] ConvertBoardFromJson(string boardString)
+        public BoardManager.Tile[] ConvertBoardFromJson(string boardString)
         {
-            Types.TileJson[] tileJson = JsonConvert.DeserializeObject<Types.TileJson[]>(boardString);
+            BoardManager.TileJson[] tileJson = JsonConvert.DeserializeObject<BoardManager.TileJson[]>(boardString);
 
-            Types.Tile[] boardData = new Types.Tile[tileJson.Length];
+            BoardManager.Tile[] boardData = new BoardManager.Tile[tileJson.Length];
 
             for (int i = 0; i < tileJson.Length; i++)
             {
-                Types.Type newType = Glob.ParseEnum<Types.Type>(tileJson[i].type);
+                Item.Type newType = Glob.ParseEnum<Item.Type>(tileJson[i].type);
 
-                Types.Tile newBoardData = new()
+                BoardManager.Tile newBoardData = new()
                 {
                     sprite = gameData.GetSprite(tileJson[i].sprite, newType),
-                    state = Glob.ParseEnum<Types.State>(tileJson[i].state),
+                    state = Glob.ParseEnum<Item.State>(tileJson[i].state),
                     type = newType,
-                    group = Glob.ParseEnum<ItemTypes.Group>(tileJson[i].group),
-                    genGroup = Glob.ParseEnum<ItemTypes.GenGroup>(tileJson[i].genGroup),
-                    collGroup = Glob.ParseEnum<Types.CollGroup>(tileJson[i].collGroup),
-                    chestGroup = Glob.ParseEnum<Types.ChestGroup>(tileJson[i].chestGroup),
+                    group = Glob.ParseEnum<Item.Group>(tileJson[i].group),
+                    genGroup = Glob.ParseEnum<Item.GenGroup>(tileJson[i].genGroup),
+                    collGroup = Glob.ParseEnum<Item.CollGroup>(tileJson[i].collGroup),
+                    chestGroup = Glob.ParseEnum<Item.ChestGroup>(tileJson[i].chestGroup),
                     chestItems = tileJson[i].chestItems,
                     chestItemsSet = tileJson[i].chestItemsSet,
                     chestOpen = tileJson[i].chestOpen,
@@ -60,15 +60,15 @@ namespace Merge
             return boardData;
         }
 
-        public string ConvertBoardToJson(Types.Tile[] boardData, bool initialLoop = false)
+        public string ConvertBoardToJson(BoardManager.Tile[] boardData, bool initialLoop = false)
         {
-            Types.TileJson[] tileJson = new Types.TileJson[boardData.Length];
+            BoardManager.TileJson[] tileJson = new BoardManager.TileJson[boardData.Length];
 
             for (int i = 0; i < boardData.Length; i++)
             {
                 int randomInt = Random.Range(0, itemHandler.crateSprites.Length);
 
-                Types.TileJson newTileJson = new()
+                BoardManager.TileJson newTileJson = new()
                 {
                     sprite = boardData[i].sprite == null ? "" : boardData[i].sprite.name,
                     state = boardData[i].state.ToString(),
@@ -94,9 +94,9 @@ namespace Merge
             return JsonConvert.SerializeObject(tileJson);
         }
 
-        public Types.Tile[,] ConvertArrayToBoard(Types.Tile[] boardArray)
+        public BoardManager.Tile[,] ConvertArrayToBoard(BoardManager.Tile[] boardArray)
         {
-            Types.Tile[,] newBoardData = new Types.Tile[GameData.WIDTH, GameData.HEIGHT];
+            BoardManager.Tile[,] newBoardData = new BoardManager.Tile[GameData.WIDTH, GameData.HEIGHT];
 
             int count = 0;
 
@@ -104,7 +104,7 @@ namespace Merge
             {
                 for (int j = 0; j < GameData.HEIGHT; j++)
                 {
-                    newBoardData[i, j] = new Types.Tile
+                    newBoardData[i, j] = new BoardManager.Tile
                     {
                         sprite = boardArray[count].sprite,
                         type = boardArray[count].type,
@@ -132,15 +132,15 @@ namespace Merge
             return newBoardData;
         }
 
-        public Types.Tile[] ConvertBoardToArray(Types.Tile[,] boardData)
+        public BoardManager.Tile[] ConvertBoardToArray(BoardManager.Tile[,] boardData)
         {
-            Types.Tile[] newBoardArray = new Types.Tile[GameData.ITEM_COUNT];
+            BoardManager.Tile[] newBoardArray = new BoardManager.Tile[GameData.ITEM_COUNT];
 
             int count = 0;
 
-            foreach (Types.Tile boardItem in boardData)
+            foreach (BoardManager.Tile boardItem in boardData)
             {
-                newBoardArray[count] = new Types.Tile
+                newBoardArray[count] = new BoardManager.Tile
                 {
                     sprite = boardItem.sprite,
                     type = boardItem.type,
@@ -168,22 +168,22 @@ namespace Merge
 
         //// BONUS ////
 
-        public List<Types.Bonus> ConvertBonusFromJson(string bonusString)
+        public List<BonusManager.Bonus> ConvertBonusFromJson(string bonusString)
         {
-            Types.BonusJson[] bonusJson = JsonConvert.DeserializeObject<Types.BonusJson[]>(bonusString);
+            BonusManager.BonusJson[] bonusJson = JsonConvert.DeserializeObject<BonusManager.BonusJson[]>(bonusString);
 
-            List<Types.Bonus> bonusData = new();
+            List<BonusManager.Bonus> bonusData = new();
 
             for (int i = 0; i < bonusJson.Length; i++)
             {
-                Types.Type newType = Glob.ParseEnum<Types.Type>(bonusJson[i].type);
+                Item.Type newType = Glob.ParseEnum<Item.Type>(bonusJson[i].type);
 
-                Types.Bonus newBonusData = new()
+                BonusManager.Bonus newBonusData = new()
                 {
                     sprite = gameData.GetSprite(bonusJson[i].sprite, newType),
                     type = newType,
-                    group = Glob.ParseEnum<ItemTypes.Group>(bonusJson[i].group),
-                    genGroup = Glob.ParseEnum<ItemTypes.GenGroup>(bonusJson[i].genGroup)
+                    group = Glob.ParseEnum<Item.Group>(bonusJson[i].group),
+                    genGroup = Glob.ParseEnum<Item.GenGroup>(bonusJson[i].genGroup)
                 };
 
                 bonusData.Add(newBonusData);
@@ -192,13 +192,13 @@ namespace Merge
             return bonusData;
         }
 
-        public string ConvertBonusToJson(List<Types.Bonus> bonusData)
+        public string ConvertBonusToJson(List<BonusManager.Bonus> bonusData)
         {
-            Types.BonusJson[] bonusJson = new Types.BonusJson[bonusData.Count];
+            BonusManager.BonusJson[] bonusJson = new BonusManager.BonusJson[bonusData.Count];
 
             for (int i = 0; i < bonusData.Count; i++)
             {
-                Types.BonusJson newBonusJson = new()
+                BonusManager.BonusJson newBonusJson = new()
                 {
                     sprite = bonusData[i].sprite == null ? "" : bonusData[i].sprite.name,
                     type = bonusData[i].type.ToString(),
@@ -214,25 +214,25 @@ namespace Merge
 
         //// INVENTORY ////
 
-        public List<Types.Inventory> ConvertInventoryFromJson(string inventoryString)
+        public List<InventoryMenu.Inventory> ConvertInventoryFromJson(string inventoryString)
         {
-            Types.InventoryJson[] inventoryJson = JsonConvert.DeserializeObject<Types.InventoryJson[]>(
+            InventoryMenu.InventoryJson[] inventoryJson = JsonConvert.DeserializeObject<InventoryMenu.InventoryJson[]>(
                 inventoryString
             );
 
-            List<Types.Inventory> inventoryData = new();
+            List<InventoryMenu.Inventory> inventoryData = new();
 
             for (int i = 0; i < inventoryJson.Length; i++)
             {
-                Types.Type newType = Glob.ParseEnum<Types.Type>(inventoryJson[i].type);
+                Item.Type newType = Glob.ParseEnum<Item.Type>(inventoryJson[i].type);
 
-                Types.Inventory newInventoryData = new()
+                InventoryMenu.Inventory newInventoryData = new()
                 {
                     sprite = gameData.GetSprite(inventoryJson[i].sprite, newType),
                     type = newType,
-                    group = Glob.ParseEnum<ItemTypes.Group>(inventoryJson[i].group),
-                    genGroup = Glob.ParseEnum<ItemTypes.GenGroup>(inventoryJson[i].genGroup),
-                    chestGroup = Glob.ParseEnum<Types.ChestGroup>(inventoryJson[i].chestGroup),
+                    group = Glob.ParseEnum<Item.Group>(inventoryJson[i].group),
+                    genGroup = Glob.ParseEnum<Item.GenGroup>(inventoryJson[i].genGroup),
+                    chestGroup = Glob.ParseEnum<Item.ChestGroup>(inventoryJson[i].chestGroup),
                     id = inventoryJson[i].id,
                     isCompleted = inventoryJson[i].isCompleted,
                     timerOn = inventoryJson[i].timerOn,
@@ -246,13 +246,13 @@ namespace Merge
             return inventoryData;
         }
 
-        public string ConvertInventoryToJson(List<Types.Inventory> inventoryData)
+        public string ConvertInventoryToJson(List<InventoryMenu.Inventory> inventoryData)
         {
-            Types.InventoryJson[] inventoryJson = new Types.InventoryJson[inventoryData.Count];
+            InventoryMenu.InventoryJson[] inventoryJson = new InventoryMenu.InventoryJson[inventoryData.Count];
 
             for (int i = 0; i < inventoryData.Count; i++)
             {
-                Types.InventoryJson newInventoryJson = new()
+                InventoryMenu.InventoryJson newInventoryJson = new()
                 {
                     sprite = inventoryData[i].sprite == null ? "" : inventoryData[i].sprite.name,
                     type = inventoryData[i].type.ToString(),
@@ -274,15 +274,15 @@ namespace Merge
 
         //// AREAS ////
 
-        public List<WorldTypes.Area> ConvertJsonToArea(string areasString)
+        public List<WorldDataManager.Area> ConvertJsonToArea(string areasString)
         {
-            WorldTypes.AreaJson[] areaJson = JsonConvert.DeserializeObject<WorldTypes.AreaJson[]>(areasString);
+            WorldDataManager.AreaJson[] areaJson = JsonConvert.DeserializeObject<WorldDataManager.AreaJson[]>(areasString);
 
-            List<WorldTypes.Area> areasData = new();
+            List<WorldDataManager.Area> areasData = new();
 
             for (int i = 0; i < areaJson.Length; i++)
             {
-                WorldTypes.Area newAreasData = new()
+                WorldDataManager.Area newAreasData = new()
                 {
                     name = areaJson[i].name,
                     isLocked = areaJson[i].isLocked,
@@ -290,9 +290,9 @@ namespace Merge
                     wallLeftOrder = areaJson[i].wallLeftOrder,
                     wallRightOrder = areaJson[i].wallRightOrder,
                     floorOrder = areaJson[i].floorOrder,
-                    furniture = JsonConvert.DeserializeObject<List<WorldTypes.Furniture>>(areaJson[i].furniture),
-                    props = JsonConvert.DeserializeObject<List<WorldTypes.Prop>>(areaJson[i].props),
-                    filth = JsonConvert.DeserializeObject<List<WorldTypes.Filth>>(areaJson[i].filth),
+                    furniture = JsonConvert.DeserializeObject<List<WorldDataManager.Furniture>>(areaJson[i].furniture),
+                    props = JsonConvert.DeserializeObject<List<WorldDataManager.Prop>>(areaJson[i].props),
+                    filth = JsonConvert.DeserializeObject<List<WorldDataManager.Filth>>(areaJson[i].filth),
                 };
 
                 areasData.Add(newAreasData);
@@ -301,13 +301,13 @@ namespace Merge
             return areasData;
         }
 
-        public string ConvertAreaToJson(List<WorldTypes.Area> areasData)
+        public string ConvertAreaToJson(List<WorldDataManager.Area> areasData)
         {
-            WorldTypes.AreaJson[] areaJson = new WorldTypes.AreaJson[areasData.Count];
+            WorldDataManager.AreaJson[] areaJson = new WorldDataManager.AreaJson[areasData.Count];
 
             for (int i = 0; i < areasData.Count; i++)
             {
-                WorldTypes.AreaJson newAreaJson = new()
+                WorldDataManager.AreaJson newAreaJson = new()
                 {
                     name = areasData[i].name,
                     isLocked = areasData[i].isLocked,
@@ -327,17 +327,17 @@ namespace Merge
         }
 
         //// TASKS ////
-        public List<Types.TaskGroup> ConvertTaskGroupsFromJson(string tasksString)
+        public List<TaskManager.TaskGroup> ConvertTaskGroupsFromJson(string tasksString)
         {
-            Types.TaskGroupJson[] tasksJson = JsonConvert.DeserializeObject<Types.TaskGroupJson[]>(
+            TaskManager.TaskGroupJson[] tasksJson = JsonConvert.DeserializeObject<TaskManager.TaskGroupJson[]>(
                 tasksString
             );
 
-            List<Types.TaskGroup> tasksData = new();
+            List<TaskManager.TaskGroup> tasksData = new();
 
             for (int i = 0; i < tasksJson.Length; i++)
             {
-                Types.TaskGroup newTasksData = new()
+                TaskManager.TaskGroup newTasksData = new()
                 {
                     id = tasksJson[i].id,
                     tasks = ConvertTasksFromJson(tasksJson[i].tasks),
@@ -351,13 +351,13 @@ namespace Merge
             return tasksData;
         }
 
-        public string ConvertTaskGroupsToJson(List<Types.TaskGroup> tasksData)
+        public string ConvertTaskGroupsToJson(List<TaskManager.TaskGroup> tasksData)
         {
-            Types.TaskGroupJson[] tasksJson = new Types.TaskGroupJson[tasksData.Count];
+            TaskManager.TaskGroupJson[] tasksJson = new TaskManager.TaskGroupJson[tasksData.Count];
 
             for (int i = 0; i < tasksData.Count; i++)
             {
-                Types.TaskGroupJson newTasksJson = new()
+                TaskManager.TaskGroupJson newTasksJson = new()
                 {
                     id = tasksData[i].id,
                     tasks = ConvertTasksToJson(tasksData[i].tasks),
@@ -371,23 +371,23 @@ namespace Merge
             return JsonConvert.SerializeObject(tasksJson);
         }
 
-        List<Types.Task> ConvertTasksFromJson(string tasksString)
+        List<TaskManager.Task> ConvertTasksFromJson(string tasksString)
         {
-            Types.TaskJson[] tasksJson = JsonConvert.DeserializeObject<Types.TaskJson[]>(
+            TaskManager.TaskJson[] tasksJson = JsonConvert.DeserializeObject<TaskManager.TaskJson[]>(
                 tasksString
             );
 
-            List<Types.Task> tasksData = new();
+            List<TaskManager.Task> tasksData = new();
 
             for (int i = 0; i < tasksJson.Length; i++)
             {
-                Types.Task newTasksData = new()
+                TaskManager.Task newTasksData = new()
                 {
                     needs = ConvertTaskItemFromJson(tasksJson[i].needs),
                     rewards = ConvertTaskItemFromJson(tasksJson[i].rewards),
                     id = tasksJson[i].id,
                     taskRefName = tasksJson[i].taskRefName,
-                    taskRefType = Glob.ParseEnum<Types.TaskRefType>(tasksJson[i].taskRefType),
+                    taskRefType = Glob.ParseEnum<TaskManager.TaskRefType>(tasksJson[i].taskRefType),
                     isTaskRefRight = tasksJson[i].isTaskRefRight,
                     completed = tasksJson[i].completed,
                 };
@@ -398,13 +398,13 @@ namespace Merge
             return tasksData;
         }
 
-        string ConvertTasksToJson(List<Types.Task> tasksData)
+        string ConvertTasksToJson(List<TaskManager.Task> tasksData)
         {
-            Types.TaskJson[] taskJson = new Types.TaskJson[tasksData.Count];
+            TaskManager.TaskJson[] taskJson = new TaskManager.TaskJson[tasksData.Count];
 
             for (int i = 0; i < tasksData.Count; i++)
             {
-                Types.TaskJson newTaskJson = new()
+                TaskManager.TaskJson newTaskJson = new()
                 {
                     needs = ConvertTaskItemToJson(tasksData[i].needs),
                     rewards = ConvertTaskItemToJson(tasksData[i].rewards),
@@ -421,26 +421,26 @@ namespace Merge
             return JsonConvert.SerializeObject(taskJson);
         }
 
-        Types.TaskItem[] ConvertTaskItemFromJson(string itemsString)
+        TaskManager.TaskItem[] ConvertTaskItemFromJson(string itemsString)
         {
-            Types.TaskItemJson[] itemsJson = JsonConvert.DeserializeObject<Types.TaskItemJson[]>(
+            TaskManager.TaskItemJson[] itemsJson = JsonConvert.DeserializeObject<TaskManager.TaskItemJson[]>(
                 itemsString
             );
 
-            Types.TaskItem[] itemsData = new Types.TaskItem[itemsJson.Length];
+            TaskManager.TaskItem[] itemsData = new TaskManager.TaskItem[itemsJson.Length];
 
             for (int i = 0; i < itemsJson.Length; i++)
             {
-                Types.Type newType = Glob.ParseEnum<Types.Type>(itemsJson[i].type);
+                Item.Type newType = Glob.ParseEnum<Item.Type>(itemsJson[i].type);
 
-                Types.TaskItem newItemsData = new()
+                TaskManager.TaskItem newItemsData = new()
                 {
                     sprite = gameData.GetSprite(itemsJson[i].sprite, newType),
                     type = newType,
-                    group = Glob.ParseEnum<ItemTypes.Group>(itemsJson[i].group),
-                    genGroup = Glob.ParseEnum<ItemTypes.GenGroup>(itemsJson[i].genGroup),
-                    collGroup = Glob.ParseEnum<Types.CollGroup>(itemsJson[i].collGroup),
-                    chestGroup = Glob.ParseEnum<Types.ChestGroup>(itemsJson[i].chestGroup),
+                    group = Glob.ParseEnum<Item.Group>(itemsJson[i].group),
+                    genGroup = Glob.ParseEnum<Item.GenGroup>(itemsJson[i].genGroup),
+                    collGroup = Glob.ParseEnum<Item.CollGroup>(itemsJson[i].collGroup),
+                    chestGroup = Glob.ParseEnum<Item.ChestGroup>(itemsJson[i].chestGroup),
                     amount = itemsJson[i].amount,
                     completed = itemsJson[i].completed,
                 };
@@ -451,13 +451,13 @@ namespace Merge
             return itemsData;
         }
 
-        string ConvertTaskItemToJson(Types.TaskItem[] itemsData)
+        string ConvertTaskItemToJson(TaskManager.TaskItem[] itemsData)
         {
-            Types.TaskItemJson[] itemsJson = new Types.TaskItemJson[itemsData.Length];
+            TaskManager.TaskItemJson[] itemsJson = new TaskManager.TaskItemJson[itemsData.Length];
 
             for (int i = 0; i < itemsData.Length; i++)
             {
-                Types.TaskItemJson newItemsJson = new()
+                TaskManager.TaskItemJson newItemsJson = new()
                 {
                     sprite = itemsData[i].sprite.name,
                     type = itemsData[i].type.ToString(),
@@ -477,28 +477,28 @@ namespace Merge
 
         //// TIMERS ////
 
-        public List<Types.Timer> ConvertTimersFromJson(string timersString)
+        public List<TimeManager.Timer> ConvertTimersFromJson(string timersString)
         {
-            List<Types.Timer> timers = new();
+            List<TimeManager.Timer> timers = new();
 
             if (timersString.Contains("[") || timersString == "")
             {
-                Types.TimerJson[] timerJson = JsonConvert.DeserializeObject<Types.TimerJson[]>(
+                TimeManager.TimerJson[] timerJson = JsonConvert.DeserializeObject<TimeManager.TimerJson[]>(
                     timersString
                 );
 
                 for (int i = 0; i < timerJson.Length; i++)
                 {
                     timers.Add(
-                        new Types.Timer
+                        new TimeManager.Timer
                         {
                             startTime = System.DateTime.Parse(timerJson[i].startTime),
                             seconds = timerJson[i].seconds,
                             running = timerJson[i].running,
-                            timerType = Glob.ParseEnum<Types.TimerType>(timerJson[i].timerType),
+                            timerType = Glob.ParseEnum<TimeManager.TimerType>(timerJson[i].timerType),
                             id = timerJson[i].id,
                             notificationId = timerJson[i].notificationId,
-                            notificationType = Glob.ParseEnum<Types.NotificationType>(timerJson[i].notificationType),
+                            notificationType = Glob.ParseEnum<NotificsManager.NotificationType>(timerJson[i].notificationType),
                         }
                     );
                 }
@@ -512,13 +512,13 @@ namespace Merge
             return timers;
         }
 
-        public string ConvertTimersToJson(List<Types.Timer> timers)
+        public string ConvertTimersToJson(List<TimeManager.Timer> timers)
         {
-            Types.TimerJson[] timerJson = new Types.TimerJson[timers.Count];
+            TimeManager.TimerJson[] timerJson = new TimeManager.TimerJson[timers.Count];
 
             for (int i = 0; i < timers.Count; i++)
             {
-                Types.TimerJson newTimerJson = new()
+                TimeManager.TimerJson newTimerJson = new()
                 {
                     startTime = timers[i].startTime.ToString(),
                     seconds = timers[i].seconds,
@@ -537,18 +537,18 @@ namespace Merge
 
         //// COOL DOWNS ////
 
-        public List<Types.CoolDownCount> ConvertCoolDownsFromJson(string coolDownsString)
+        public List<TimeManager.CoolDownCount> ConvertCoolDownsFromJson(string coolDownsString)
         {
-            List<Types.CoolDownCount> coolDowns = new();
+            List<TimeManager.CoolDownCount> coolDowns = new();
 
-            Types.CoolDownCountJson[] timerJson = JsonConvert.DeserializeObject<Types.CoolDownCountJson[]>(
+            TimeManager.CoolDownCountJson[] timerJson = JsonConvert.DeserializeObject<TimeManager.CoolDownCountJson[]>(
                 coolDownsString
             );
 
             for (int i = 0; i < timerJson.Length; i++)
             {
                 coolDowns.Add(
-                    new Types.CoolDownCount
+                    new TimeManager.CoolDownCount
                     {
                         level = timerJson[i].level,
                         count = timerJson[i].count,
@@ -560,13 +560,13 @@ namespace Merge
             return coolDowns;
         }
 
-        public string ConvertCoolDownsToJson(List<Types.CoolDownCount> coolDowns)
+        public string ConvertCoolDownsToJson(List<TimeManager.CoolDownCount> coolDowns)
         {
-            Types.CoolDownCountJson[] coolDownJson = new Types.CoolDownCountJson[coolDowns.Count];
+            TimeManager.CoolDownCountJson[] coolDownJson = new TimeManager.CoolDownCountJson[coolDowns.Count];
 
             for (int i = 0; i < coolDowns.Count; i++)
             {
-                Types.CoolDownCountJson neCoolDownsJson = new()
+                TimeManager.CoolDownCountJson neCoolDownsJson = new()
                 {
                     level = coolDowns[i].level,
                     count = coolDowns[i].count,
@@ -581,22 +581,22 @@ namespace Merge
 
         //// NOTIFICATIONS ////
 
-        public List<Types.Notification> ConvertNotificationsFromJson(string notificationsString)
+        public List<NotificsManager.Notification> ConvertNotificationsFromJson(string notificationsString)
         {
-            List<Types.Notification> notifications = new();
+            List<NotificsManager.Notification> notifications = new();
 
-            Types.NotificationJson[] notificationsJson = JsonConvert.DeserializeObject<Types.NotificationJson[]>(
+            NotificsManager.NotificationJson[] notificationsJson = JsonConvert.DeserializeObject<NotificsManager.NotificationJson[]>(
                 notificationsString
             );
 
             for (int i = 0; i < notificationsJson.Length; i++)
             {
                 notifications.Add(
-                    new Types.Notification
+                    new NotificsManager.Notification
                     {
                         id = notificationsJson[i].id,
                         fireTime = System.DateTime.Parse(notificationsJson[i].fireTime),
-                        type = Glob.ParseEnum<Types.NotificationType>(notificationsJson[i].type),
+                        type = Glob.ParseEnum<NotificsManager.NotificationType>(notificationsJson[i].type),
                         itemName = notificationsJson[i].itemName,
                     }
                 );
@@ -605,13 +605,13 @@ namespace Merge
             return notifications;
         }
 
-        public string ConvertNotificationsToJson(List<Types.Notification> notifications)
+        public string ConvertNotificationsToJson(List<NotificsManager.Notification> notifications)
         {
-            Types.NotificationJson[] notificationJson = new Types.NotificationJson[notifications.Count];
+            NotificsManager.NotificationJson[] notificationJson = new NotificsManager.NotificationJson[notifications.Count];
 
             for (int i = 0; i < notifications.Count; i++)
             {
-                Types.NotificationJson newNotificationJson = new()
+                NotificsManager.NotificationJson newNotificationJson = new()
                 {
                     id = notifications[i].id,
                     fireTime = notifications[i].fireTime.ToString(),
@@ -627,26 +627,26 @@ namespace Merge
 
         //// SHOP CONTENT ////
 
-        public Types.ShopItemsContent[] ConvertShopItemContentFromJson(string shopContentString)
+        public ShopMenu.ShopItemsContent[] ConvertShopItemContentFromJson(string shopContentString)
         {
-            Types.ShopItemsContentJson[] shopContentJson = JsonConvert.DeserializeObject<Types.ShopItemsContentJson[]>(shopContentString);
+            ShopMenu.ShopItemsContentJson[] shopContentJson = JsonConvert.DeserializeObject<ShopMenu.ShopItemsContentJson[]>(shopContentString);
 
-            Types.ShopItemsContent[] shopContentData = new Types.ShopItemsContent[shopContentJson.Length];
+            ShopMenu.ShopItemsContent[] shopContentData = new ShopMenu.ShopItemsContent[shopContentJson.Length];
 
             for (int i = 0; i < shopContentJson.Length; i++)
             {
-                Types.Type newType = Glob.ParseEnum<Types.Type>(shopContentJson[i].type);
+                Item.Type newType = Glob.ParseEnum<Item.Type>(shopContentJson[i].type);
 
-                Types.ShopItemsContent newShopContentDataData = new()
+                ShopMenu.ShopItemsContent newShopContentDataData = new()
                 {
                     total = shopContentJson[i].total,
                     price = shopContentJson[i].price,
                     type = newType,
-                    group = Glob.ParseEnum<ItemTypes.Group>(shopContentJson[i].group),
-                    genGroup = Glob.ParseEnum<ItemTypes.GenGroup>(shopContentJson[i].genGroup),
-                    chestGroup = Glob.ParseEnum<Types.ChestGroup>(shopContentJson[i].chestGroup),
+                    group = Glob.ParseEnum<Item.Group>(shopContentJson[i].group),
+                    genGroup = Glob.ParseEnum<Item.GenGroup>(shopContentJson[i].genGroup),
+                    chestGroup = Glob.ParseEnum<Item.ChestGroup>(shopContentJson[i].chestGroup),
                     sprite = gameData.GetSprite(shopContentJson[i].sprite, newType),
-                    priceType = Glob.ParseEnum<Types.ShopValuesType>(shopContentJson[i].priceType),
+                    priceType = Glob.ParseEnum<ShopMenu.ShopValuesType>(shopContentJson[i].priceType),
                 };
                 shopContentData[i] = newShopContentDataData;
             }
@@ -654,13 +654,13 @@ namespace Merge
             return shopContentData;
         }
 
-        public string ConvertShopItemContentToJson(Types.ShopItemsContent[] shopContentData)
+        public string ConvertShopItemContentToJson(ShopMenu.ShopItemsContent[] shopContentData)
         {
-            Types.ShopItemsContentJson[] shopContentJson = new Types.ShopItemsContentJson[shopContentData.Length];
+            ShopMenu.ShopItemsContentJson[] shopContentJson = new ShopMenu.ShopItemsContentJson[shopContentData.Length];
 
             for (int i = 0; i < shopContentJson.Length; i++)
             {
-                Types.ShopItemsContentJson newShopContentJson = new()
+                ShopMenu.ShopItemsContentJson newShopContentJson = new()
                 {
                     total = shopContentData[i].total,
                     price = shopContentData[i].price,
@@ -681,15 +681,15 @@ namespace Merge
         //// OTHER ////
 
         // Convert scriptable object data to gameplay data
-        public Types.Item[] ConvertItems(Types.Item[] itemsContent)
+        public BoardManager.TypeItem[] ConvertItems(BoardManager.TypeItem[] itemsContent)
         {
-            Types.Item[] convertedItems = new Types.Item[itemsContent.Length];
+            BoardManager.TypeItem[] convertedItems = new BoardManager.TypeItem[itemsContent.Length];
 
             for (int i = 0; i < itemsContent.Length; i++)
             {
                 int count = 1;
 
-                Types.Item newObjectData = new()
+                BoardManager.TypeItem newObjectData = new()
                 {
                     type = itemsContent[i].type,
                     group = itemsContent[i].group,
@@ -702,14 +702,14 @@ namespace Merge
                     customName = itemsContent[i].customName,
                     parents = itemsContent[i].parents,
                     creates = itemsContent[i].creates,
-                    content = new Types.ItemData[itemsContent[i].content.Length]
+                    content = new BoardManager.ItemData[itemsContent[i].content.Length]
                 };
 
                 for (int j = 0; j < itemsContent[i].content.Length; j++)
                 {
-                    int chestItemsCount = itemsContent[i].type == Types.Type.Chest ? InitChestItems(itemsContent[i].content[j], itemsContent[i], count) : 0;
+                    int chestItemsCount = itemsContent[i].type == Item.Type.Chest ? InitChestItems(itemsContent[i].content[j], itemsContent[i], count) : 0;
 
-                    Types.ItemData newInnerObjectData = new()
+                    BoardManager.ItemData newInnerObjectData = new()
                     {
                         type = itemsContent[i].type,
                         group = itemsContent[i].group,
@@ -745,17 +745,17 @@ namespace Merge
             return convertedItems;
         }
 
-        public Types.Item[] ConvertGensToItems(Types.Gen[] gensContent)
+        public BoardManager.TypeItem[] ConvertGensToItems(BoardManager.TypeGen[] gensContent)
         {
-            Types.Item[] convertedItems = new Types.Item[gensContent.Length];
+            BoardManager.TypeItem[] convertedItems = new BoardManager.TypeItem[gensContent.Length];
 
             for (int i = 0; i < gensContent.Length; i++)
             {
                 int count = 1;
 
-                Types.Item newObjectData = new()
+                BoardManager.TypeItem newObjectData = new()
                 {
-                    type = Types.Type.Gen,
+                    type = Item.Type.Gen,
                     genGroup = gensContent[i].genGroup,
                     hasLevel = gensContent[i].hasLevel,
                     generatesAtLevel = gensContent[i].generatesAtLevel,
@@ -763,14 +763,14 @@ namespace Merge
                     creates = gensContent[i].creates,
                     coolDown = gensContent[i].coolDown,
                     parents = gensContent[i].parents,
-                    content = new Types.ItemData[gensContent[i].content.Length]
+                    content = new BoardManager.ItemData[gensContent[i].content.Length]
                 };
 
                 for (int j = 0; j < gensContent[i].content.Length; j++)
                 {
-                    Types.ItemData newInnerObjectData = new()
+                    BoardManager.ItemData newInnerObjectData = new()
                     {
-                        type = Types.Type.Gen,
+                        type = Item.Type.Gen,
                         genGroup = gensContent[i].genGroup,
                         creates = gensContent[i].creates,
                         coolDown = gensContent[i].coolDown,
@@ -798,29 +798,29 @@ namespace Merge
             return convertedItems;
         }
 
-        public Types.Item[] ConvertChestsToItems(Types.Chest[] chestContent)
+        public BoardManager.TypeItem[] ConvertChestsToItems(BoardManager.TypeChest[] chestContent)
         {
-            Types.Item[] convertedItems = new Types.Item[chestContent.Length];
+            BoardManager.TypeItem[] convertedItems = new BoardManager.TypeItem[chestContent.Length];
 
             for (int i = 0; i < chestContent.Length; i++)
             {
                 int count = 1;
 
-                Types.Item newObjectData = new()
+                BoardManager.TypeItem newObjectData = new()
                 {
-                    type = Types.Type.Chest,
+                    type = Item.Type.Chest,
                     chestGroup = chestContent[i].chestGroup,
                     customName = chestContent[i].customName,
                     hasLevel = chestContent[i].hasLevel,
                     creates = chestContent[i].creates,
-                    content = new Types.ItemData[chestContent[i].content.Length]
+                    content = new BoardManager.ItemData[chestContent[i].content.Length]
                 };
 
                 for (int j = 0; j < chestContent[i].content.Length; j++)
                 {
-                    Types.ItemData newInnerObjectData = new()
+                    BoardManager.ItemData newInnerObjectData = new()
                     {
-                        type = Types.Type.Chest,
+                        type = Item.Type.Chest,
                         creates = chestContent[i].creates,
                         chestGroup = chestContent[i].chestGroup,
                         hasLevel = chestContent[i].hasLevel,
@@ -843,29 +843,29 @@ namespace Merge
             return convertedItems;
         }
 
-        public Types.Item[] ConvertCollsToItems(Types.Coll[] collsContent)
+        public BoardManager.TypeItem[] ConvertCollsToItems(BoardManager.TypeColl[] collsContent)
         {
-            Types.Item[] convertedItems = new Types.Item[collsContent.Length];
+            BoardManager.TypeItem[] convertedItems = new BoardManager.TypeItem[collsContent.Length];
 
             for (int i = 0; i < collsContent.Length; i++)
             {
                 int count = 1;
 
-                Types.Item newObjectData = new()
+                BoardManager.TypeItem newObjectData = new()
                 {
-                    type = Types.Type.Coll,
+                    type = Item.Type.Coll,
                     collGroup = collsContent[i].collGroup,
                     customName = collsContent[i].customName,
                     hasLevel = collsContent[i].hasLevel,
                     parents = collsContent[i].parents,
-                    content = new Types.ItemData[collsContent[i].content.Length]
+                    content = new BoardManager.ItemData[collsContent[i].content.Length]
                 };
 
                 for (int j = 0; j < collsContent[i].content.Length; j++)
                 {
-                    Types.ItemData newInnerObjectData = new()
+                    BoardManager.ItemData newInnerObjectData = new()
                     {
-                        type = Types.Type.Coll,
+                        type = Item.Type.Coll,
                         collGroup = collsContent[i].collGroup,
                         hasLevel = collsContent[i].hasLevel,
                         parents = collsContent[i].parents,
@@ -888,20 +888,20 @@ namespace Merge
             return convertedItems;
         }
 
-        string GetItemName(Types.ItemData itemSingle, Types.Item itemsData, int count)
+        string GetItemName(BoardManager.ItemData itemSingle, BoardManager.TypeItem itemsData, int count)
         {
             // Get name based on custom item name
             if (itemSingle.customName && itemSingle.itemName != "")
             {
                 switch (itemsData.type)
                 {
-                    case Types.Type.Item:
+                    case Item.Type.Item:
                         return LOCALE.Get("Item_" + itemSingle.group + "_" + count);
-                    case Types.Type.Gen:
+                    case Item.Type.Gen:
                         return LOCALE.Get("Gen_" + itemSingle.genGroup + "_" + count);
-                    case Types.Type.Coll:
+                    case Item.Type.Coll:
                         return LOCALE.Get("Item_" + itemSingle.collGroup + "_" + count);
-                    case Types.Type.Chest:
+                    case Item.Type.Chest:
                         return LOCALE.Get("Item_" + itemSingle.chestGroup + "_" + count);
                 }
 
@@ -912,70 +912,70 @@ namespace Merge
             {
                 switch (itemsData.type)
                 {
-                    case Types.Type.Item:
+                    case Item.Type.Item:
                         return LOCALE.Get(
                             itemsData.type + "_" + itemsData.group + "_" + count
                         );
-                    case Types.Type.Gen:
+                    case Item.Type.Gen:
                         return LOCALE.Get(
                             itemsData.type + "_" + itemsData.genGroup + "_" + count
                         );
-                    case Types.Type.Coll:
+                    case Item.Type.Coll:
                         return "";
-                    case Types.Type.Chest:
+                    case Item.Type.Chest:
                         return LOCALE.Get(
                             itemsData.type + "_" + itemsData.chestGroup
                         );
                     default:
                         // ERROR
-                        ErrorManager.Instance.Throw(Types.ErrorType.Code, "DataConverter.cs -> GetItemName()", "Wrong type: " + itemsData.type);
+                        ErrorManager.Instance.Throw(ErrorManager.ErrorType.Code, "DataConverter.cs -> GetItemName()", "Wrong type: " + itemsData.type);
                         return "";
                 }
             }
 
             // Get name based on the type
-            if (itemsData.type == Types.Type.Item)
+            if (itemsData.type == Item.Type.Item)
             {
                 return LOCALE.Get("Item_" + itemsData.group + "_" + count);
             }
 
-            if (itemsData.type == Types.Type.Gen)
+            if (itemsData.type == Item.Type.Gen)
             {
 
                 return LOCALE.Get("Gen_" + itemsData.genGroup);
             }
 
-            if (itemsData.type == Types.Type.Coll)
+            if (itemsData.type == Item.Type.Coll)
             {
                 return LOCALE.Get("Coll_" + itemsData.collGroup, count);
             }
 
-            if (itemsData.type == Types.Type.Chest)
+            if (itemsData.type == Item.Type.Chest)
             {
                 return LOCALE.Get("Chest_" + itemsData.chestGroup);
             }
 
             // ERROR - No valid name was found
-            ErrorManager.Instance.Throw(Types.ErrorType.Locale, "DataConverter.cs -> GetItemName()", "error_loc_name");
+            ErrorManager.Instance.Throw(ErrorManager.ErrorType.Locale, "DataConverter.cs -> GetItemName()", "error_loc_name");
 
             return LOCALE.Get("Item_error_name");
         }
 
-        int InitChestItems(Types.ItemData itemSingle, Types.Item itemsData, int count)
+        int InitChestItems(BoardManager.ItemData itemSingle, BoardManager.TypeItem itemsData, int count)
         {
             int chestItemsCount;
 
-            if (itemsData.type == Types.Type.Chest && !itemSingle.chestItemsSet)
+            if (itemsData.type == Item.Type.Chest && !itemSingle.chestItemsSet)
             {
                 switch (itemsData.chestGroup)
                 {
-                    case Types.ChestGroup.Piggy:
+                    case Item.ChestGroup.Piggy:
                         chestItemsCount = Random.Range(6 + count, 8 + count);
                         break;
-                    case Types.ChestGroup.Energy:
+                    case Item.ChestGroup.Energy:
                         chestItemsCount = Random.Range(4 + count, 6 + count);
                         break;
-                    default: // Types.ChestGroup.Item
+                    default: // Item.ChestGroup.Item
                         chestItemsCount = Random.Range(5 + count, 7 + count);
                         break;
                 }

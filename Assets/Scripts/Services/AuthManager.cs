@@ -155,7 +155,7 @@ namespace Merge
                {
                 // ERROR
                     errorManager.Throw(
-                        Types.ErrorType.Code,
+                        ErrorManager.ErrorType.Code,
                         GetType().Name,
                         ex.Message,
                         ex.ErrorCode.ToString()
@@ -249,7 +249,7 @@ namespace Merge
                 // Compare to AuthenticationErrorCodes
                 // ERROR
                 errorManager.Throw(
-                    Types.ErrorType.Code,
+                    ErrorManager.ErrorType.Code,
                     GetType().Name,
                     ex.Message,
                     ex.ErrorCode.ToString()
@@ -264,7 +264,7 @@ namespace Merge
                 {
                     // ERROR
                     errorManager.Throw(
-                        Types.ErrorType.Code,
+                        ErrorManager.ErrorType.Code,
                         GetType().Name,
                         ex.Message,
                         ex.ErrorCode.ToString()
@@ -274,7 +274,7 @@ namespace Merge
                 {
                     // WARNING
                     errorManager.ThrowWarning(
-                        Types.ErrorType.Code,
+                        ErrorManager.ErrorType.Code,
                         GetType().Name,
                         "No internet for authentication!"
                     );
@@ -354,7 +354,7 @@ namespace Merge
             {
                 // ERROR
                 errorManager.Throw(
-                    Types.ErrorType.Code,
+                    ErrorManager.ErrorType.Code,
                     GetType().Name,
                     ex.Message,
                     ex.ErrorCode.ToString()
@@ -369,7 +369,7 @@ namespace Merge
             {
                 // ERROR
                 errorManager.Throw(
-                    Types.ErrorType.Code,
+                    ErrorManager.ErrorType.Code,
                     GetType().Name,
                     ex.Message,
                     ex.ErrorCode.ToString()
@@ -415,7 +415,7 @@ namespace Merge
             {
                 // ERROR
                 errorManager.Throw(
-                    Types.ErrorType.Code,
+                    ErrorManager.ErrorType.Code,
                     GetType().Name,
                     ex.Message,
                     ex.ErrorCode.ToString()
@@ -430,7 +430,7 @@ namespace Merge
             {
                 // ERROR
                 errorManager.Throw(
-                    Types.ErrorType.Code,
+                    ErrorManager.ErrorType.Code,
                     GetType().Name,
                     ex.Message,
                     ex.ErrorCode.ToString()
@@ -493,7 +493,7 @@ namespace Merge
 
                 // ERROR
                 errorManager.Throw(
-                    Types.ErrorType.Code,
+                    ErrorManager.ErrorType.Code,
                     GetType().Name,
                     ex.Message,
                     ex.ErrorCode.ToString()
@@ -503,7 +503,7 @@ namespace Merge
             {
                 // ERROR
                 errorManager.Throw(
-                    Types.ErrorType.Code,
+                    ErrorManager.ErrorType.Code,
                     GetType().Name,
                     ex.Message
                 );
@@ -546,7 +546,7 @@ namespace Merge
         {
             bool loading = true;
 
-            messageMenu.Open(Types.MessageType.DigitalServiceAct, "", notification.Message, "", false, () =>
+            messageMenu.Open(MessageMenu.MessageType.DigitalServiceAct, "", notification.Message, "", false, () =>
             {
                 NotificationRead(notification);
 
@@ -606,7 +606,7 @@ namespace Merge
                         if (code == "" || code == null)
                         {
                             errorManager.Throw(
-                                Types.ErrorType.Code,
+                                ErrorManager.ErrorType.Code,
                                 GetType().Name,
                                 "Token is empty!"
                             );
@@ -653,7 +653,7 @@ namespace Merge
                     {
                         // ERROR
                         errorManager.Throw(
-                            Types.ErrorType.Code,
+                            ErrorManager.ErrorType.Code,
                             GetType().Name,
                             "Google logging in failed! Status: " + status
                         );
@@ -695,7 +695,7 @@ namespace Merge
                          if (code == "" || code == null)
                          {
                              errorManager.Throw(
-                                 Types.ErrorType.Code,
+                                 ErrorManager.ErrorType.Code,
                                  GetType().Name,
                                  "Token is empty!"
                              );
@@ -732,7 +732,7 @@ namespace Merge
                      {
                          // ERROR
                          errorManager.Throw(
-                             Types.ErrorType.Code,
+                             ErrorManager.ErrorType.Code,
                              GetType().Name,
                              "Google logging in failed! Status: " + status
                          );

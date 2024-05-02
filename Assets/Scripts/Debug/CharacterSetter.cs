@@ -12,7 +12,7 @@ namespace Merge
         public bool set = false;
         public bool log = false;
 
-        public Types.Locale[] localesToCreate;
+        public I18n.Locale[] localesToCreate;
 
 #if UNITY_EDITOR
         void OnValidate()
@@ -80,7 +80,7 @@ namespace Merge
             return foundCharacters + newCharacters;
         }
 
-        void SaveCharacterSetToDisk(string characters, Types.Locale locale)
+        void SaveCharacterSetToDisk(string characters, I18n.Locale locale)
         {
             string prePath = Directory.GetCurrentDirectory() + "/Assets/Fonts/Character Sets/";
             string fullPath = prePath + "Character Set " + locale + ".txt";

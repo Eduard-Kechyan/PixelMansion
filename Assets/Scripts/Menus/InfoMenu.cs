@@ -13,7 +13,7 @@ namespace Merge
         public Sprite unlockedQuestionMarkSprite;
         public Sprite infoCurrentSprite;
 
-        private Types.Menu menuType = Types.Menu.Info;
+        private MenuUI.Menu menuType = MenuUI.Menu.Info;
 
         // References
         private GameData gameData;
@@ -98,20 +98,20 @@ namespace Merge
 
             switch (item.type)
             {
-                case Types.Type.Item:
+                case Item.Type.Item:
                     title = LOCALE.Get("Item_" + item.group + "_" + item.level);
 
                     GetUnlockedItems(item);
                     GetParent(item);
                     break;
-                case Types.Type.Gen:
+                case Item.Type.Gen:
                     title = LOCALE.Get("Gen_" + item.genGroup);
 
                     GetUnlockedItems(item);
                     GetParent(item);
                     break;
-                case Types.Type.Coll:
-                    if (item.collGroup == Types.CollGroup.Gems)
+                case Item.Type.Coll:
+                    if (item.collGroup == Item.CollGroup.Gems)
                     {
                         title = LOCALE.Get("Coll_" + item.collGroup, item.level);
                     }
@@ -122,12 +122,12 @@ namespace Merge
 
                     GetUnlockedItems(item, true);
 
-                    if (item.collGroup != Types.CollGroup.Experience)
+                    if (item.collGroup != Item.CollGroup.Experience)
                     {
                         GetParent(item);
                     }
                     break;
-                default: // Types.Type.Chest
+                default: // Item.Type.Chest
                     title = LOCALE.Get("Chest_" + item.chestGroup);
 
                     GetUnlockedItems(item);
@@ -141,7 +141,7 @@ namespace Merge
 
         void GetUnlockedItems(Item item, bool showAll = false)
         {
-            Types.Item[] items;
+            BoardManager.TypeItem[] items;
             bool isGroup = false;
             bool isGenGroup = false;
             bool isCollGroup = false;
@@ -149,19 +149,19 @@ namespace Merge
 
             switch (item.type)
             {
-                case Types.Type.Item:
+                case Item.Type.Item:
                     items = gameData.itemsData;
                     isGroup = true;
                     break;
-                case Types.Type.Gen:
+                case Item.Type.Gen:
                     items = gameData.generatorsData;
                     isGenGroup = true;
                     break;
-                case Types.Type.Coll:
+                case Item.Type.Coll:
                     items = gameData.collectablesData;
                     isCollGroup = true;
                     break;
-                default: // Types.Type.Chest
+                default: // Item.Type.Chest
                     items = gameData.chestsData;
                     isChestGroup = true;
                     break;
@@ -286,20 +286,20 @@ namespace Merge
 
             containItems.style.display = DisplayStyle.Flex;
 
-            if (item.chestGroup == Types.ChestGroup.Item)
+            if (item.chestGroup == Item.ChestGroup.Item)
             {
                 for (int i = 0; i < item.creates.Length; i++)
                 {
                     itemSprites.Add(item.creates[i].sprite);
                 }
             }
-            else if (item.chestGroup == Types.ChestGroup.Piggy)
+            else if (item.chestGroup == Item.ChestGroup.Piggy)
             {
                 for (int i = 0; i < gameData.collectablesData.Length; i++)
                 {
                     if (
-                        gameData.collectablesData[i].collGroup == Types.CollGroup.Gold
-                        || gameData.collectablesData[i].collGroup == Types.CollGroup.Gems
+                        gameData.collectablesData[i].collGroup == Item.CollGroup.Gold
+                        || gameData.collectablesData[i].collGroup == Item.CollGroup.Gems
                     )
                     {
                         for (int j = 0; j < gameData.collectablesData[i].content.Length; j++)
@@ -313,7 +313,7 @@ namespace Merge
             {
                 for (int i = 0; i < gameData.collectablesData.Length; i++)
                 {
-                    if (gameData.collectablesData[i].collGroup == Types.CollGroup.Energy)
+                    if (gameData.collectablesData[i].collGroup == Item.CollGroup.Energy)
                     {
                         for (int j = 0; j < gameData.collectablesData[i].content.Length; j++)
                         {
@@ -368,11 +368,11 @@ namespace Merge
             }
         }
 
-        Sprite GetParentSprite(Types.ParentData parentData)
+        Sprite GetParentSprite(BoardManager.ParentData parentData)
         {
             Sprite sprite = null;
 
-            if (parentData.type == Types.Type.Gen)
+            if (parentData.type == Item.Type.Gen)
             {
                 for (int i = 0; i < gameData.generatorsData.Length; i++)
                 {

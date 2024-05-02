@@ -18,7 +18,7 @@ namespace Merge
 
         private bool valuesShown;
 
-        private Types.Menu menuType = Types.Menu.Debug;
+        private MenuUI.Menu menuType = MenuUI.Menu.Debug;
 
         // References
         private MenuUI menuUI;
@@ -106,12 +106,12 @@ namespace Merge
                 };
                 worldSceneButton.clicked += () =>
                 {
-                    sceneLoader.Load(Types.Scene.World);
+                    sceneLoader.Load(SceneLoader.SceneType.World);
                     CloseMenu();
                 };
                 mergeSceneButton.clicked += () =>
                 {
-                    sceneLoader.Load(Types.Scene.Merge);
+                    sceneLoader.Load(SceneLoader.SceneType.Merge);
                     CloseMenu();
                 };
 
@@ -128,19 +128,19 @@ namespace Merge
             CheckLogsShaking();
 
             // Handle scenes
-            switch (Glob.ParseEnum<Types.Scene>(SceneManager.GetActiveScene().name))
+            switch (Glob.ParseEnum<SceneLoader.SceneType>(SceneManager.GetActiveScene().name))
             {
-                case Types.Scene.Loading:
+                case SceneLoader.SceneType.Loading:
                     skipSceneButton.style.display = DisplayStyle.Flex; //
                     worldSceneButton.style.display = DisplayStyle.None;
                     mergeSceneButton.style.display = DisplayStyle.None;
                     break;
-                case Types.Scene.World:
+                case SceneLoader.SceneType.World:
                     skipSceneButton.style.display = DisplayStyle.None;
                     worldSceneButton.style.display = DisplayStyle.None;
                     mergeSceneButton.style.display = DisplayStyle.Flex;//
                     break;
-                case Types.Scene.Merge:
+                case SceneLoader.SceneType.Merge:
                     skipSceneButton.style.display = DisplayStyle.None;
                     worldSceneButton.style.display = DisplayStyle.Flex;//
                     mergeSceneButton.style.display = DisplayStyle.None;

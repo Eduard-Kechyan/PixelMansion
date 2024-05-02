@@ -9,6 +9,15 @@ namespace Merge
         // Variables
         public float selectSpeed = 1.8f;
 
+        // Enums
+        public enum SelectType
+        {
+            None,
+            Both,
+            Info,
+            Only
+        }
+
         // References
         private BoardInteractions interactions;
         private BoardDoubleTap boardDoubleTap;
@@ -53,14 +62,14 @@ namespace Merge
                     if (item.isIndicating || !item.isPlaying) // FIX - This was "!item.isPlaying", check if it's good now
                     {
                         // Unselect other items if they exist
-                        Unselect(Types.SelectType.Both);
+                        Unselect(SelectType.Both);
 
                         // Set current item
                         interactions.currentItem = item;
 
                         // Select the item
                         interactions.isSelected = true;
-                        Select(Types.SelectType.Both);
+                        Select(SelectType.Both);
                     }
                 }
             }
@@ -73,11 +82,11 @@ namespace Merge
         public void SelectItemAfterUndo()
         {
             // Unselect other items if they exist
-            Unselect(Types.SelectType.Both);
+            Unselect(SelectType.Both);
 
             // Select the item
             interactions.isSelected = true;
-            Select(Types.SelectType.Both);
+            Select(SelectType.Both);
         }
 
         void CheckUnselect(Vector3 worldPos)
@@ -94,16 +103,16 @@ namespace Merge
             {
                 // Unselect other items if they exist
                 interactions.isSelected = false;
-                Unselect(Types.SelectType.Both);
+                Unselect(SelectType.Both);
             }
         }
 
         // Select the given item
-        public void Select(Types.SelectType selectType, bool animate = true)
+        public void Select(SelectType selectType, bool animate = true)
         {
             if (interactions.currentItem != null)
             {
-                if (selectType == Types.SelectType.Info)
+                if (selectType == SelectType.Info)
                 {
                     infoBox.Select(interactions.currentItem);
                 }
@@ -111,7 +120,7 @@ namespace Merge
                 {
                     interactions.currentItem.isSelected = true;
 
-                    if (selectType != Types.SelectType.Only)
+                    if (selectType != SelectType.Only)
                     {
                         interactions.currentItem.Select(selectSpeed, animate);
                         infoBox.Select(interactions.currentItem);
@@ -121,9 +130,9 @@ namespace Merge
         }
 
         // Unselect the given item
-        public void Unselect(Types.SelectType selectType)
+        public void Unselect(SelectType selectType)
         {
-            if (selectType == Types.SelectType.Info)
+            if (selectType == SelectType.Info)
             {
                 infoBox.Unselect();
             }

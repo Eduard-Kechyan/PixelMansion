@@ -28,6 +28,41 @@ namespace Merge
 
         private bool referencesSet = false;
 
+        // Enums
+        public enum TutorialStepType
+        {
+            Task,
+            Convo,
+            Input,
+            Story,
+        };
+
+        public enum TutorialStepTask
+        {
+            Press,
+            Merge,
+            Gen,
+            Menu
+        };
+
+        // Classes
+        [Serializable]
+        public class TutorialStep
+        {
+            [HideInInspector]
+            public string name;
+            public string id;
+            public SceneLoader.SceneType scene;
+            public TutorialStepType type;
+            public TutorialStepTask taskType;
+            public UIButtons.Button taskButton;
+            public Sprite taskSprite;
+            public Item.Group itemGroup;
+            public Sprite genSprite;
+            public int taskOrder;
+            public bool keepConvoOpen;
+        }
+
         [Serializable]
         public class ShineSprites
         {
@@ -188,7 +223,7 @@ namespace Merge
 
         bool CheckScene()
         {
-            Types.Scene currentScene = sceneLoader.GetScene();
+            SceneLoader.SceneType currentScene = sceneLoader.GetScene();
 
             if (!PlayerPrefs.HasKey("taskToComplete"))
             {
@@ -196,18 +231,18 @@ namespace Merge
                 {
                     if (tutorialData.steps[i].id == tutorialStep)
                     {
-                        if (tutorialData.steps[i].scene == Types.Scene.Merge && currentScene != Types.Scene.Merge)
+                        if (tutorialData.steps[i].scene == SceneLoader.SceneType.Merge && currentScene != SceneLoader.SceneType.Merge)
                         {
                             // Merge scene
-                            sceneLoader.Load(Types.Scene.Merge);
+                            sceneLoader.Load(SceneLoader.SceneType.Merge);
 
                             return false;
                         }
 
-                        if (tutorialData.steps[i].scene == Types.Scene.World && currentScene != Types.Scene.World)
+                        if (tutorialData.steps[i].scene == SceneLoader.SceneType.World && currentScene != SceneLoader.SceneType.World)
                         {
                             // World scene
-                            sceneLoader.Load(Types.Scene.World);
+                            sceneLoader.Load(SceneLoader.SceneType.World);
 
                             return false;
                         }
@@ -340,7 +375,7 @@ namespace Merge
             {
                 if (tutorialData.steps[i].id == tutorialStep)
                 {
-                    if (tutorialData.steps[i].type == Types.TutorialStepType.Convo)
+                    if (tutorialData.steps[i].type == TutorialStepType.Convo)
                     {
                         return true;
                     }
@@ -356,13 +391,13 @@ namespace Merge
         {
             bool found = false;
 
-            if (gameData.lastScene == Types.Scene.None)
+            if (gameData.lastScene == SceneLoader.SceneType.None)
             {
                 for (int i = 0; i < tutorialData.steps.Length; i++)
                 {
                     if (tutorialData.steps[i].id == tutorialStep)
                     {
-                        if (tutorialData.steps[i].type == Types.TutorialStepType.Task && tutorialData.steps[i].taskType == Types.TutorialStepTask.Menu)
+                        if (tutorialData.steps[i].type == TutorialStepType.Task && tutorialData.steps[i].taskType == TutorialStepTask.Menu)
                         {
                             tutorialStep = tutorialData.steps[i - 1].id;
 
@@ -398,16 +433,16 @@ namespace Merge
                 {
                     switch (tutorialData.steps[i].type)
                     {
-                        case Types.TutorialStepType.Task:
+                        case TutorialStepType.Task:
                             HandleTask(tutorialData.steps[i]);
                             break;
-                        case Types.TutorialStepType.Convo:
+                        case TutorialStepType.Convo:
                             HandleConvo(tutorialData.steps[i]);
                             break;
-                        case Types.TutorialStepType.Story:
+                        case TutorialStepType.Story:
                             HandleStory();
                             break;
-                        case Types.TutorialStepType.Input:
+                        case TutorialStepType.Input:
                             HandleInput(tutorialData.steps[i].id);
                             break;
                     }
@@ -460,26 +495,26 @@ namespace Merge
 
         public void HideButtons()
         {
-            Types.Scene currentScene = sceneLoader.GetScene();
+            SceneLoader.SceneType currentScene = sceneLoader.GetScene();
 
-            if (currentScene == Types.Scene.World)
+            if (currentScene == SceneLoader.SceneType.World)
             {
-                worldUI.HideButton(Types.Button.Play, true);
-                worldUI.HideButton(Types.Button.Task, true);
+                worldUI.HideButton(UIButtons.Button.Play, true);
+                worldUI.HideButton(UIButtons.Button.Task, true);
 
                 return;
             }
 
-            if (currentScene == Types.Scene.Merge)
+            if (currentScene == SceneLoader.SceneType.Merge)
             {
-                mergeUI.HideButton(Types.Button.Home, true);
-                mergeUI.HideButton(Types.Button.Task, true);
+                mergeUI.HideButton(UIButtons.Button.Home, true);
+                mergeUI.HideButton(UIButtons.Button.Task, true);
 
                 return;
             }
         }
 
-        void HandleTask(Types.TutorialStep step)
+        void HandleTask(TutorialStep step)
         {
             if (infoBox)
             {
@@ -493,22 +528,22 @@ namespace Merge
 
             switch (step.taskType)
             {
-                case Types.TutorialStepTask.Press:
+                case TutorialStepTask.Press:
                     TaskPress(step);
                     break;
-                case Types.TutorialStepTask.Menu:
-                    pointerHandler.HandlePress(Vector2.zero, Types.Button.TaskMenu, () =>
+                case TutorialStepTask.Menu:
+                    pointerHandler.HandlePress(Vector2.zero, UIButtons.Button.TaskMenu, () =>
                     {
                         NextStep();
                     });
                     break;
-                case Types.TutorialStepTask.Merge:
+                case TutorialStepTask.Merge:
                     pointerHandler.HandleMerge(step.taskSprite, () =>
                     {
                         NextStep();
                     });
                     break;
-                case Types.TutorialStepTask.Gen:
+                case TutorialStepTask.Gen:
                     pointerHandler.HandleGen(step.genSprite, step.taskSprite, step.itemGroup, () =>
                     {
                         NextStep();
@@ -517,71 +552,71 @@ namespace Merge
             }
         }
 
-        void TaskPress(Types.TutorialStep step)
+        void TaskPress(TutorialStep step)
         {
-            if (step.scene == Types.Scene.World)
+            if (step.scene == SceneLoader.SceneType.World)
             {
-                if (step.taskButton == Types.Button.Play)
+                if (step.taskButton == UIButtons.Button.Play)
                 {
-                    worldUI.ShowButton(Types.Button.Play);
-                    worldUI.HideButton(Types.Button.Task, true);
+                    worldUI.ShowButton(UIButtons.Button.Play);
+                    worldUI.HideButton(UIButtons.Button.Task, true);
 
                     Glob.SetTimeout(() =>
                     {
-                        pointerHandler.HandlePress(uiButtons.worldPlayButtonPos, Types.Button.Play, () =>
+                        pointerHandler.HandlePress(uiButtons.worldPlayButtonPos, UIButtons.Button.Play, () =>
                         {
                             NextStep(false, () =>
                             {
-                                sceneLoader.Load(Types.Scene.Merge);
+                                sceneLoader.Load(SceneLoader.SceneType.Merge);
                             });
                         });
                     }, 0.5f);
                 }
 
-                if (step.taskButton == Types.Button.Task)
+                if (step.taskButton == UIButtons.Button.Task)
                 {
-                    worldUI.HideButton(Types.Button.Play, true);
-                    worldUI.ShowButton(Types.Button.Task);
+                    worldUI.HideButton(UIButtons.Button.Play, true);
+                    worldUI.ShowButton(UIButtons.Button.Task);
 
                     Glob.SetTimeout(() =>
                     {
-                        pointerHandler.HandlePress(uiButtons.worldTaskButtonPos, Types.Button.Task, () =>
+                        pointerHandler.HandlePress(uiButtons.worldTaskButtonPos, UIButtons.Button.Task, () =>
                         {
                             NextStep();
                         });
                     }, 0.5f);
                 }
             }
-            else // Types.Scene.Merge
+            else // SceneLoader.SceneType.Merge
             {
-                if (step.taskButton == Types.Button.Task)
+                if (step.taskButton == UIButtons.Button.Task)
                 {
-                    mergeUI.HideButton(Types.Button.Home, true);
-                    mergeUI.ShowButton(Types.Button.Task);
+                    mergeUI.HideButton(UIButtons.Button.Home, true);
+                    mergeUI.ShowButton(UIButtons.Button.Task);
 
-                    pointerHandler.HandlePress(uiButtons.mergeTaskButtonPos, Types.Button.Task, () =>
+                    pointerHandler.HandlePress(uiButtons.mergeTaskButtonPos, UIButtons.Button.Task, () =>
                     {
                         NextStep();
                     });
                 }
 
-                if (step.taskButton == Types.Button.Home)
+                if (step.taskButton == UIButtons.Button.Home)
                 {
-                    mergeUI.ShowButton(Types.Button.Home);
-                    mergeUI.HideButton(Types.Button.Task, true);
+                    mergeUI.ShowButton(UIButtons.Button.Home);
+                    mergeUI.HideButton(UIButtons.Button.Task, true);
 
-                    pointerHandler.HandlePress(uiButtons.mergeHomeButtonPos, Types.Button.Home, () =>
+                    pointerHandler.HandlePress(uiButtons.mergeHomeButtonPos, UIButtons.Button.Home, () =>
                     {
                         NextStep(false, () =>
                         {
-                            sceneLoader.Load(Types.Scene.World);
+                            sceneLoader.Load(SceneLoader.SceneType.World);
                         });
                     });
                 }
             }
         }
 
-        void HandleConvo(Types.TutorialStep step)
+        void HandleConvo(TutorialStep step)
         {
             Glob.WaitForSelectable(() =>
             {

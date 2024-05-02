@@ -255,7 +255,7 @@ namespace Merge
 
             cameraMotion.MoveToAndScaleTo(roomCenter, -1f, 195f, -1f, () =>
             {
-                soundManager.PlaySound(Types.SoundType.LevelUp); // TODO add proper unlocking sfx (RoomUnlocking)
+                soundManager.PlaySound(SoundManager.SoundType.LevelUp); // TODO add proper unlocking sfx (RoomUnlocking)
 
                 StartCoroutine(PlayParticles());
 

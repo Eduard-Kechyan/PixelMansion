@@ -27,7 +27,7 @@ namespace Merge
         [HideInInspector]
         public bool canUndo = false;
         private Item undoItem;
-        private Types.Tile undoTileItem = new();
+        private BoardManager.Tile undoTileItem = new();
         private GameObject undoTile;
         private Vector2 undoScale;
         private int sellUndoAmount = 0;
@@ -161,8 +161,8 @@ namespace Merge
                                 if (currentItem != null && currentItem.isSelected)
                                 {
                                     isSelected = false;
-                                    boardSelection.Unselect(Types.SelectType.Both);
-                                    boardSelection.Select(Types.SelectType.Only);
+                                    boardSelection.Unselect(BoardSelection.SelectType.Both);
+                                    boardSelection.Select(BoardSelection.SelectType.Only);
                                 }
 
                                 // Drag the item around
@@ -237,20 +237,20 @@ namespace Merge
                 Item item = hit.transform.gameObject.GetComponent<Item>();
 
                 // Check if game object is an item and isn't empty and if it isn't a crate or locked
-                if (item != null && item.state != Types.State.Crate && item.state != Types.State.Locker)
+                if (item != null && item.state != Item.State.Crate && item.state != Item.State.Locker)
                 {
                     CancelUndo();
 
                     if (currentItem != null && currentItem.isSelected)
                     {
-                        boardSelection.Unselect(Types.SelectType.Both);
+                        boardSelection.Unselect(BoardSelection.SelectType.Both);
                     }
 
                     // Set current item
                     currentItem = item;
 
                     // Show selected item's info in the info box
-                    boardSelection.Select(Types.SelectType.Info);
+                    boardSelection.Select(BoardSelection.SelectType.Info);
 
                     // Start dragging the item
                     StartDragging();
@@ -385,25 +385,25 @@ namespace Merge
 
                     switch (otherItem.type)
                     {
-                        case Types.Type.Item:
+                        case Item.Type.Item:
                             if (otherItem.group == currentItem.group)
                             {
                                 sameGroup = true;
                             }
                             break;
-                        case Types.Type.Gen:
+                        case Item.Type.Gen:
                             if (otherItem.genGroup == currentItem.genGroup)
                             {
                                 sameGroup = true;
                             }
                             break;
-                        case Types.Type.Coll:
+                        case Item.Type.Coll:
                             if (otherItem.collGroup == currentItem.collGroup)
                             {
                                 sameGroup = true;
                             }
                             break;
-                        case Types.Type.Chest:
+                        case Item.Type.Chest:
                             if (otherItem.chestGroup == currentItem.chestGroup)
                             {
                                 sameGroup = true;
@@ -411,7 +411,7 @@ namespace Merge
                             break;
                         default:
                             // ERROR
-                            ErrorManager.Instance.Throw(Types.ErrorType.Code, "BoardInteractions.cs -> CheckItemDropAction()", "Wrong type: " + otherItem.type);
+                            ErrorManager.Instance.Throw(ErrorManager.ErrorType.Code, "BoardInteractions.cs -> CheckItemDropAction()", "Wrong type: " + otherItem.type);
                             break;
                     }
 
@@ -419,11 +419,11 @@ namespace Merge
                         sameGroup
                         && otherItem.type == currentItem.type
                         && otherItem.level == currentItem.level
-                        && otherItem.state != Types.State.Bubble
-                        && currentItem.state != Types.State.Bubble
+                        && otherItem.state != Item.State.Bubble
+                        && currentItem.state != Item.State.Bubble
                     )
                     {
-                        if (!otherItem.isMaxLevel && otherItem.state != Types.State.Crate)
+                        if (!otherItem.isMaxLevel && otherItem.state != Item.State.Crate)
                         {
                             Merge(otherItem);
 
@@ -432,14 +432,14 @@ namespace Merge
                         else
                         {
                             // FIX - Check if we need this
-                            popupManager.Pop(LOCALE.Get("pop_max_level"), otherItem.transform.position, Types.SoundType.None, true);
+                            popupManager.Pop(LOCALE.Get("pop_max_level"), otherItem.transform.position, SoundManager.SoundType.None, true);
                         }
                     }
                     else
                     {
                         if (
-                            otherItem.state != Types.State.Crate
-                            && otherItem.state != Types.State.Locker
+                            otherItem.state != Item.State.Crate
+                            && otherItem.state != Item.State.Locker
                         )
                         {
                             Swap(otherItem);
@@ -478,7 +478,7 @@ namespace Merge
             boardManager.SwapBoardData(initialTile, tile);
 
             // Select item
-            boardSelection.Select(Types.SelectType.Both);
+            boardSelection.Select(BoardSelection.SelectType.Both);
 
             pointerHandler.ShowPointer();
         }
@@ -494,7 +494,7 @@ namespace Merge
 
             // Calc new item name
             Item item = otherItem;
-            Types.Tile tileItem = new()
+            BoardManager.Tile tileItem = new()
             {
                 sprite = item.sprite,
                 type = item.type,
@@ -506,7 +506,7 @@ namespace Merge
             };
 
             string spriteName = otherItem.nextSpriteName;
-            bool isLocked = otherItem.state == Types.State.Locker;
+            bool isLocked = otherItem.state == Item.State.Locker;
 
             currentItem.transform.parent = null;
             otherItem.transform.parent = null;
@@ -529,15 +529,15 @@ namespace Merge
             if (isLocked)
             {
                 // Play unlocking audio
-                soundManager.PlaySound(Types.SoundType.UnlockLock);
+                soundManager.PlaySound(SoundManager.SoundType.UnlockLock);
             }
             else
             {
                 // Play merge audio
-                soundManager.PlaySound(Types.SoundType.Merge);
+                soundManager.PlaySound(SoundManager.SoundType.Merge);
             }
 
-            if (currentItem.type != Types.Type.Coll)
+            if (currentItem.type != Item.Type.Coll)
             {
                 // Unlock the item
                 dataManager.UnlockItem(
@@ -570,7 +570,7 @@ namespace Merge
         void MergeBackCallback()
         {
             // Select item
-            boardSelection.Select(Types.SelectType.Both, false);
+            boardSelection.Select(BoardSelection.SelectType.Both, false);
         }
 
         void Swap(Item otherItem)
@@ -599,7 +599,7 @@ namespace Merge
             boardManager.SwapBoardData(initialTile, otherTile);
 
             // Select item
-            boardSelection.Select(Types.SelectType.Both);
+            boardSelection.Select(BoardSelection.SelectType.Both);
 
             pointerHandler.ShowPointer();
         }
@@ -625,7 +625,7 @@ namespace Merge
         void MoveBackCallback()
         {
             // Select item
-            boardSelection.Select(Types.SelectType.Both);
+            boardSelection.Select(BoardSelection.SelectType.Both);
         }
 
         IEnumerator MoveBackOverlay(Item item)
@@ -657,24 +657,24 @@ namespace Merge
 
         //// INFO ACTION ////
 
-        public void OpenItem(Item item, int amount, Types.State state)
+        public void OpenItem(Item item, int amount, Item.State state)
         {
             if (item.name == currentItem.name)
             {
-                if (gameData.UpdateValue(-amount, Types.CollGroup.Gems, false, true))
+                if (gameData.UpdateValue(-amount, Item.CollGroup.Gems, false, true))
                 {
                     switch (state)
                     {
-                        case Types.State.Crate:
+                        case Item.State.Crate:
                             OpenCrateCallback(currentItem);
 
                             currentItem.OpenCrate(crateBreakSpeed);
 
                             // Play crate opening audio
-                            soundManager.PlaySound(Types.SoundType.OpenCrate);
+                            soundManager.PlaySound(SoundManager.SoundType.OpenCrate);
                             break;
 
-                        case Types.State.Bubble:
+                        case Item.State.Bubble:
                             PopBubbleCallback(currentItem);
 
                             currentItem.PopBubble();
@@ -682,7 +682,7 @@ namespace Merge
                             timeManager.RemoveTimer(currentItem.id);
 
                             // Play crate opening audio
-                            soundManager.PlaySound(Types.SoundType.None, "PopBubble" + UnityEngine.Random.Range(0, 3));
+                            soundManager.PlaySound(SoundManager.SoundType.None, "PopBubble" + UnityEngine.Random.Range(0, 3));
                             break;
 
                         default:
@@ -691,7 +691,7 @@ namespace Merge
                             currentItem.UnlockLock();
 
                             // Play unlocking audio
-                            soundManager.PlaySound(Types.SoundType.UnlockLock);
+                            soundManager.PlaySound(SoundManager.SoundType.UnlockLock);
                             break;
                     }
                 }
@@ -700,10 +700,10 @@ namespace Merge
 
         public void UnlockChest(Item item)
         {
-            if (item.name == currentItem.name && item.type == Types.Type.Chest)
+            if (item.name == currentItem.name && item.type == Item.Type.Chest)
             {
                 // Play unlocking audio
-                soundManager.PlaySound(Types.SoundType.UnlockLock);
+                soundManager.PlaySound(SoundManager.SoundType.UnlockLock);
 
                 int seconds = 1800; // 30 minutes
 
@@ -712,7 +712,7 @@ namespace Merge
                     seconds *= item.level;
                 }
 
-                timeManager.AddTimer(Types.TimerType.Item, Types.NotificationType.Chest, item.name, item.id, item.transform.position, seconds);
+                timeManager.AddTimer(TimeManager.TimerType.Item, NotificsManager.NotificationType.Chest, item.name, item.id, item.transform.position, seconds);
             }
         }
 
@@ -720,21 +720,21 @@ namespace Merge
         {
             if (item.name == currentItem.name)
             {
-                if (gameData.UpdateValue(-amount, Types.CollGroup.Gems, false, true))
+                if (gameData.UpdateValue(-amount, Item.CollGroup.Gems, false, true))
                 {
                     // FIX - Remove switch statement
 
                     switch (currentItem.type)
                     {
-                        case Types.Type.Chest:
+                        case Item.Type.Chest:
                             // Play speeding up audio
-                            soundManager.PlaySound(Types.SoundType.Generate);
+                            soundManager.PlaySound(SoundManager.SoundType.Generate);
 
                             timeManager.RemoveTimer(item.id);
                             break;
-                        case Types.Type.Gen:
+                        case Item.Type.Gen:
                             // Play speeding up audio
-                            soundManager.PlaySound(Types.SoundType.Generate);
+                            soundManager.PlaySound(SoundManager.SoundType.Generate);
 
                             timeManager.RemoveTimer(item.id);
                             break;
@@ -753,9 +753,9 @@ namespace Merge
 
             Vector2Int loc = boardManager.GetBoardLocation(0, itemTile);
 
-            if (gameData.boardData[loc.x, loc.y].state == Types.State.Crate)
+            if (gameData.boardData[loc.x, loc.y].state == Item.State.Crate)
             {
-                gameData.boardData[loc.x, loc.y].state = Types.State.Locker;
+                gameData.boardData[loc.x, loc.y].state = Item.State.Locker;
 
                 dataManager.SaveBoard();
             }
@@ -767,9 +767,9 @@ namespace Merge
 
             Vector2Int loc = boardManager.GetBoardLocation(0, itemTile);
 
-            if (gameData.boardData[loc.x, loc.y].state == Types.State.Locker)
+            if (gameData.boardData[loc.x, loc.y].state == Item.State.Locker)
             {
-                gameData.boardData[loc.x, loc.y].state = Types.State.Default;
+                gameData.boardData[loc.x, loc.y].state = Item.State.Default;
 
                 dataManager.SaveBoard();
             }
@@ -781,9 +781,9 @@ namespace Merge
 
             Vector2Int loc = boardManager.GetBoardLocation(0, itemTile);
 
-            if (gameData.boardData[loc.x, loc.y].state == Types.State.Bubble)
+            if (gameData.boardData[loc.x, loc.y].state == Item.State.Bubble)
             {
-                gameData.boardData[loc.x, loc.y].state = Types.State.Default;
+                gameData.boardData[loc.x, loc.y].state = Item.State.Default;
 
                 dataManager.SaveBoard();
             }
@@ -803,7 +803,7 @@ namespace Merge
 
                     if (amount > 0)
                     {
-                        gameData.UpdateValue(amount, Types.CollGroup.Gold, false, true);
+                        gameData.UpdateValue(amount, Item.CollGroup.Gold, false, true);
 
                         sellUndoAmount = amount;
                     }
@@ -822,23 +822,23 @@ namespace Merge
 
                     undoItem.ScaleToSize(Vector2.zero, scaleSpeed, false);
 
-                    gameData.boardData[loc.x, loc.y] = new Types.Tile { order = undoTileItem.order };
+                    gameData.boardData[loc.x, loc.y] = new BoardManager.Tile { order = undoTileItem.order };
                 }
                 else
                 {
                     Vector2Int loc = boardManager.GetBoardLocation(0, currentItem.transform.parent.gameObject);
 
-                    Types.Tile removeTileItem = gameData.boardData[loc.x, loc.y];
+                    BoardManager.Tile removeTileItem = gameData.boardData[loc.x, loc.y];
 
                     currentItem.transform.parent = null;
 
-                    boardSelection.Unselect(Types.SelectType.Info);
+                    boardSelection.Unselect(BoardSelection.SelectType.Info);
 
                     currentItem.ScaleToSize(Vector2.zero, scaleSpeed, true);
 
                     currentItem = null;
 
-                    gameData.boardData[loc.x, loc.y] = new Types.Tile { order = removeTileItem.order };
+                    gameData.boardData[loc.x, loc.y] = new BoardManager.Tile { order = removeTileItem.order };
                 }
 
                 dataManager.SaveBoard(true, false);
@@ -859,7 +859,7 @@ namespace Merge
 
                 Vector2Int loc = boardManager.GetBoardLocation(0, undoTile);
 
-                gameData.boardData[loc.x, loc.y] = new Types.Tile
+                gameData.boardData[loc.x, loc.y] = new BoardManager.Tile
                 {
                     sprite = undoTileItem.sprite,
                     group = undoTileItem.group,
@@ -872,7 +872,7 @@ namespace Merge
 
                 if (sellUndoAmount > 0)
                 {
-                    gameData.UpdateValue(-sellUndoAmount, Types.CollGroup.Gold, false, true);
+                    gameData.UpdateValue(-sellUndoAmount, Item.CollGroup.Gold, false, true);
                     sellUndoAmount = 0;
                 }
 

@@ -42,7 +42,7 @@ namespace Merge
 
             transition = root.Q<VisualElement>("Transition");
 
-            if (SceneManager.GetActiveScene().name == Types.Scene.Loading.ToString())
+            if (SceneManager.GetActiveScene().name == SceneLoader.SceneType.Loading.ToString())
             {
                 transition.style.display = DisplayStyle.Flex;
                 transition.style.bottom = 500;
@@ -118,19 +118,19 @@ namespace Merge
             {
                 switch (sceneLoader.GetScene())
                 {
-                    case Types.Scene.World:
+                    case SceneLoader.SceneType.World:
                         if (worldDataManager.loaded)
                         {
                             readyToOpen = true;
                         }
                         break;
-                    case Types.Scene.Merge:
+                    case SceneLoader.SceneType.Merge:
                         if (boardManager.boardSet)
                         {
                             readyToOpen = true;
                         }
                         break;
-                    default: // Types.Scene.Loading
+                    default: // SceneLoader.SceneType.Loading
                         readyToOpen = true;
                         break;
                 }

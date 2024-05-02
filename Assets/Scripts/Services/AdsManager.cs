@@ -32,6 +32,13 @@ namespace Merge
         private int failedCount = 0;
         private const int maxFailedCount = 3;
 
+        // Enums
+        public enum AdType
+        {
+            Energy,
+            Bubble
+        }
+
         // References
         private Services services;
         private AnalyticsManager analyticsManager;
@@ -92,7 +99,7 @@ namespace Merge
         }
 
         // Watch a simple ad
-        public void WatchAd(Types.AdType adType, Action<int> callback = null, Action failCallback = null)
+        public void WatchAd(AdType adType, Action<int> callback = null, Action failCallback = null)
         {
             rewardCallback = callback;
             rewardFailedCallback = failCallback;
@@ -103,7 +110,7 @@ namespace Merge
             }
             else
             {
-                if (adType == Types.AdType.Energy)
+                if (adType == AdType.Energy)
                 {
                     rewardCallback?.Invoke(energyRewardAmountInner);
                 }
@@ -237,7 +244,7 @@ namespace Merge
             {
                 // ERROR
                 errorManager.Throw(
-                    Types.ErrorType.Code,
+                    ErrorManager.ErrorType.Code,
                     GetType().Name,
                     "Rewarded ad failed to open full screen content with error: " + error
                 );
@@ -263,7 +270,7 @@ namespace Merge
 
                 // ERROR
                 errorManager.Throw(
-                    Types.ErrorType.Code,
+                    ErrorManager.ErrorType.Code,
                     GetType().Name,
                     error.ToString()
                 );
@@ -275,7 +282,7 @@ namespace Merge
 
                 // ERROR
                 errorManager.Throw(
-                    Types.ErrorType.Code,
+                    ErrorManager.ErrorType.Code,
                     GetType().Name,
                     "Ad was null!"
                 );

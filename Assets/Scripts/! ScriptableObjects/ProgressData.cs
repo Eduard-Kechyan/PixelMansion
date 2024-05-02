@@ -9,7 +9,7 @@ namespace Merge
     public class ProgressData : ScriptableObject
     {
         public bool check;
-        public Types.Area[] areas;
+        public ProgressManager.StepArea[] areas;
 
         void OnValidate()
         {

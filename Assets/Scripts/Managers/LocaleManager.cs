@@ -25,7 +25,7 @@ namespace Merge
         private VisualElement worldLocaleWrapper;
         private VisualElement mergeLocaleWrapper;
 
-        public void Init(Types.Scene scene)
+        public void Init(SceneLoader.SceneType scene)
         {
             gameRefs = GameRefs.Instance;
 
@@ -40,14 +40,14 @@ namespace Merge
             }
 
             // Get world locale wrapper
-            if (scene == Types.Scene.World)
+            if (scene == SceneLoader.SceneType.World)
             {
                 worldLocaleWrapper = gameRefs.worldUI.GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("LocaleWrapper");
 
                 wrappers.Add(worldLocaleWrapper);
             }
             // Get merge locale wrapper
-            else if (scene == Types.Scene.Merge)
+            else if (scene == SceneLoader.SceneType.Merge)
             {
                 mergeLocaleWrapper = gameRefs.mergeUI.GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("LocaleWrapper");
 
@@ -57,16 +57,16 @@ namespace Merge
             SetLocaleWrappers(Settings.Instance.currentLocale);
         }
 
-        void SetLocaleWrappers(Types.Locale newLocale)
+        void SetLocaleWrappers(I18n.Locale newLocale)
         {
             for (int i = 0; i < wrappers.Count; i++)
             {
                 VisualElement wrapper = wrappers[i];
 
-                wrapper.RemoveFromClassList("locale_" + Types.Locale.Armenian);
-                wrapper.RemoveFromClassList("locale_" + Types.Locale.Japanese);
-                wrapper.RemoveFromClassList("locale_" + Types.Locale.Korean);
-                wrapper.RemoveFromClassList("locale_" + Types.Locale.Chinese);
+                wrapper.RemoveFromClassList("locale_" + I18n.Locale.Armenian);
+                wrapper.RemoveFromClassList("locale_" + I18n.Locale.Japanese);
+                wrapper.RemoveFromClassList("locale_" + I18n.Locale.Korean);
+                wrapper.RemoveFromClassList("locale_" + I18n.Locale.Chinese);
 
                 wrapper.AddToClassList("locale_" + newLocale);
             }

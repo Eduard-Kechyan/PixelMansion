@@ -21,7 +21,7 @@ namespace Merge
             public int amount;
         }
 
-        private Types.Menu menuType = Types.Menu.Task;
+        private MenuUI.Menu menuType = MenuUI.Menu.Task;
 
         // References
         private GameRefs gameRefs;
@@ -145,7 +145,7 @@ namespace Merge
                         }
 
                         // Set button
-                        if (gameData.tasksData[i].tasks[j].taskRefType == Types.TaskRefType.Last || gameData.tasksData[i].tasks[j].taskRefType == Types.TaskRefType.PreMansion)
+                        if (gameData.tasksData[i].tasks[j].taskRefType == TaskManager.TaskRefType.Last || gameData.tasksData[i].tasks[j].taskRefType == TaskManager.TaskRefType.PreMansion)
                         {
                             newTask.Q<VisualElement>("TaskNeeds").style.display = DisplayStyle.None;
 
@@ -153,7 +153,7 @@ namespace Merge
                             {
                                 if (pointerHandler != null)
                                 {
-                                    pointerHandler.ButtonPress(Types.Button.TaskMenu, true, () =>
+                                    pointerHandler.ButtonPress(UIButtons.Button.TaskMenu, true, () =>
                                     {
                                         HandleCompletedTap(groupId, taskId, true);
                                     });
@@ -164,7 +164,7 @@ namespace Merge
                                 }
                             };
 
-                            if (gameData.tasksData[i].tasks[j].taskRefType == Types.TaskRefType.Last)
+                            if (gameData.tasksData[i].tasks[j].taskRefType == TaskManager.TaskRefType.Last)
                             {
                                 playButton.text = LOCALE.Get("task_button_finish");
                             }
@@ -185,7 +185,7 @@ namespace Merge
                             {
                                 if (pointerHandler != null)
                                 {
-                                    pointerHandler.ButtonPress(Types.Button.TaskMenu, true, () =>
+                                    pointerHandler.ButtonPress(UIButtons.Button.TaskMenu, true, () =>
                                     {
                                         HandleCompletedTap(groupId, taskId, true);
                                     });
@@ -206,23 +206,23 @@ namespace Merge
 
                             playButton.style.unityBackgroundImageTintColor = Glob.colorBlue;
 
-                            if (sceneLoader.GetScene() == Types.Scene.World)
+                            if (sceneLoader.GetScene() == SceneLoader.SceneType.World)
                             {
                                 playButton.clicked += () =>
                                 {
                                     if (pointerHandler != null)
                                     {
-                                        pointerHandler.ButtonPress(Types.Button.TaskMenu, true, () =>
+                                        pointerHandler.ButtonPress(UIButtons.Button.TaskMenu, true, () =>
                                         {
                                             tutorialManager.NextStep(false, () =>
                                             {
-                                                sceneLoader.Load(Types.Scene.Merge);
+                                                sceneLoader.Load(SceneLoader.SceneType.Merge);
                                             });
                                         });
                                     }
                                     else
                                     {
-                                        sceneLoader.Load(Types.Scene.Merge);
+                                        sceneLoader.Load(SceneLoader.SceneType.Merge);
                                     }
                                 };
                             }
@@ -254,7 +254,7 @@ namespace Merge
                             newTaskNeed.Q<VisualElement>("Image").style.backgroundImage =
                                 new StyleBackground(gameData.tasksData[i].tasks[j].needs[k].sprite);
 
-                            Types.ShopItemsContent taskNeedItem =
+                            ShopMenu.ShopItemsContent taskNeedItem =
                                 new()
                                 {
                                     type = gameData.tasksData[i].tasks[j].needs[k].type,
@@ -295,7 +295,7 @@ namespace Merge
         // so it can be used in the world scene
         void HandleCompletedTap(string groupId, string taskId, bool wait = false)
         {
-            if (sceneLoader.GetScene() == Types.Scene.World)
+            if (sceneLoader.GetScene() == SceneLoader.SceneType.World)
             {
                 taskManager.TryToCompleteTask(groupId, taskId, () =>
                 {
@@ -324,7 +324,7 @@ namespace Merge
                     PlayerPrefs.Save();
                 }
 
-                sceneLoader.Load(Types.Scene.World);
+                sceneLoader.Load(SceneLoader.SceneType.World);
             }
         }
 

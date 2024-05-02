@@ -95,7 +95,7 @@ namespace Merge
                         break;
                     default:
                         // ERROR
-                        errorManager.ThrowWarning(Types.ErrorType.Code, GetType().ToString(), "Tag: " + tag.name + " not implemented!");
+                        errorManager.ThrowWarning(ErrorManager.ErrorType.Code, GetType().ToString(), "Tag: " + tag.name + " not implemented!");
                         break;
                 }
 

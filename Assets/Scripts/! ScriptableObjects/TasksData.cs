@@ -7,13 +7,13 @@ namespace Merge
     [CreateAssetMenu(fileName = "TasksData", menuName = "ScriptableObject/TasksData")]
     public class TasksData : ScriptableObject
     {
-        public Types.TaskGroup[] taskGroups;
+        public TaskManager.TaskGroup[] taskGroups;
 
         void OnValidate()
         {
             for (int i = 0; i < taskGroups.Length; i++)
             {
-                taskGroups[i].name =  taskGroups[i].id;
+                taskGroups[i].name = taskGroups[i].id;
 
                 for (int j = 0; j < taskGroups[i].tasks.Count; j++)
                 {

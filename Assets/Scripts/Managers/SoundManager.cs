@@ -17,14 +17,15 @@ namespace Merge
         public AudioSource sourceMusic;
 
         [HideInInspector]
-        public Types.MusicType currentMusic;
+        public MusicType currentMusic;
 
+        // Classes
         [Serializable]
         public class MusicClip
         {
             public AudioClip clip;
             public float volume = 1f;
-            public Types.MusicType type;
+            public MusicType type;
         }
 
         [Serializable]
@@ -32,8 +33,37 @@ namespace Merge
         {
             public AudioClip clip;
             public float volume = 1f;
-            public Types.SoundType type;
+            public SoundType type;
         }
+
+        // Enums
+        public enum MusicType
+        {
+            Loading,
+            World,
+            Merge,
+            Magical,
+        };
+
+        public enum SoundType
+        {
+            None,
+            Merge,
+            Generate,
+            UnlockLock,
+            OpenCrate,
+            LevelUp,
+            LevelUpIndicator,
+            Transition,
+            Experience,
+            Energy,
+            Gold,
+            Gems,
+            Pop,
+            Buzz,
+            RemoveFilth
+        };
+
 
         // References
         private Settings settings;
@@ -67,13 +97,13 @@ namespace Merge
             sourceSound.volume = volume;
         }
 
-        public void PlaySound(Types.SoundType soundType, string clipName = "")
+        public void PlaySound(SoundType soundType, string clipName = "")
         {
             bool found = false;
 
             foreach (SoundClip i in soundClips)
             {
-                if (soundType == Types.SoundType.None ? i.clip.name == clipName : i.type == soundType)
+                if (soundType == SoundType.None ? i.clip.name == clipName : i.type == soundType)
                 {
                     if (settings.soundOn)
                     {
@@ -99,7 +129,7 @@ namespace Merge
             sourceMusic.volume = volume;
         }
 
-        public void PlayMusic(Types.MusicType musicType)
+        public void PlayMusic(MusicType musicType)
         {
             currentMusic = musicType;
 
@@ -110,7 +140,7 @@ namespace Merge
                 settings = Settings.Instance;
             }
 
-            if (musicType == Types.MusicType.Loading && settings.musicOn)
+            if (musicType == MusicType.Loading && settings.musicOn)
             {
                 sourceMusic.volume = 1f;
             }

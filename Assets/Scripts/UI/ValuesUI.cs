@@ -328,13 +328,13 @@ namespace Merge
             return Length.Percent(fillPercent);
         }
 
-        public void SlashValues(Types.CollGroup type, Action callback = null)
+        public void SlashValues(Item.CollGroup type, Action callback = null)
         {
             bool calledBack = false;
 
             switch (type)
             {
-                case Types.CollGroup.Energy:
+                case Item.CollGroup.Energy:
                     if (!isEnergySlashing)
                     {
                         isEnergySlashing = true;
@@ -353,7 +353,7 @@ namespace Merge
                         }, 0.4f);
                     }
                     break;
-                case Types.CollGroup.Gold:
+                case Item.CollGroup.Gold:
                     if (!isGoldSlashing)
                     {
                         isGoldSlashing = true;
@@ -372,7 +372,7 @@ namespace Merge
                         }, 0.4f);
                     }
                     break;
-                case Types.CollGroup.Gems:
+                case Item.CollGroup.Gems:
                     if (!isGemsSlashing)
                     {
                         isGemsSlashing = true;
@@ -499,30 +499,30 @@ namespace Merge
             gemsPlus.style.opacity = 1f;
         }
 
-        public void ShowButton(Types.CollGroup collGroup)
+        public void ShowButton(Item.CollGroup collGroup)
         {
             if (!PlayerPrefs.HasKey("tutorialFinished"))
             {
                 switch (collGroup)
                 {
-                    case Types.CollGroup.Experience:
+                    case Item.CollGroup.Experience:
                         levelButton.style.display = DisplayStyle.Flex;
                         dummyLevelButton.style.display = DisplayStyle.None;
                         break;
-                    case Types.CollGroup.Energy:
+                    case Item.CollGroup.Energy:
                         energyButton.style.display = DisplayStyle.Flex;
                         dummyEnergyButton.style.display = DisplayStyle.None;
                         break;
-                    case Types.CollGroup.Gold:
+                    case Item.CollGroup.Gold:
                         goldButton.style.display = DisplayStyle.Flex;
                         dummyGoldButton.style.display = DisplayStyle.None;
                         break;
-                    case Types.CollGroup.Gems:
+                    case Item.CollGroup.Gems:
                         gemsButton.style.display = DisplayStyle.Flex;
                         dummyGemsButton.style.display = DisplayStyle.None;
                         break;
                     default:
-                        errorManager.ThrowWarning(Types.ErrorType.Code, GetType().ToString(), "Types.CollGroup " + collGroup + " is not implemented!");
+                        errorManager.ThrowWarning(ErrorManager.ErrorType.Code, GetType().ToString(), "Item.CollGroup " + collGroup + " is not implemented!");
                         break;
                 }
             }

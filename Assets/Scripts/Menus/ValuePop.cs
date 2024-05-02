@@ -52,7 +52,7 @@ namespace Merge
             root = GetComponent<UIDocument>().rootVisualElement;
         }
 
-        public void PopValue(int amount, Types.CollGroup type, Vector2 initialPosition, bool multiply = false, bool isUIPosition = false, Action callback = null)
+        public void PopValue(int amount, Item.CollGroup type, Vector2 initialPosition, bool multiply = false, bool useUIPosition = false, Action callback = null)
         {
             popping = true;
 
@@ -61,17 +61,17 @@ namespace Merge
 
             valuesUI.ShowButton(type);
 
-            StartCoroutine(HandlePopValue(amount, type, initialPosition, multiply, isUIPosition, callback));
+            StartCoroutine(HandlePopValue(amount, type, initialPosition, multiply, useUIPosition, callback));
         }
 
-        public void PopValue(int amount, Types.CollGroup type, bool multiply = false, bool isUIPosition = false, Action callback = null)
+        public void PopValue(int amount, Item.CollGroup type, bool multiply = false, bool useUIPosition = false, Action callback = null)
         {
             popping = true;
             mightPop = false;
 
             Vector2 screenCenter;
 
-            if (isUIPosition)
+            if (useUIPosition)
             {
                 screenCenter = new Vector2(root.worldBound.width / 2, root.worldBound.height / 2);
             }
@@ -80,7 +80,7 @@ namespace Merge
                 screenCenter = new Vector2(Screen.width / 2, Screen.height / 2);
             }
 
-            PopValue(amount, type, screenCenter, multiply, isUIPosition, callback);
+            PopValue(amount, type, screenCenter, multiply, useUIPosition, callback);
         }
 
         public void PopInventoryItem(Sprite sprite, Vector2 initialPosition, Vector2 position, Action callback = null)
@@ -95,84 +95,85 @@ namespace Merge
             Item item,
             Vector2 initialPosition,
             Vector2 bonusButtonPosition,
-            bool isUIPosition = false
+            bool useUIPosition = false
         )
         {
             popping = true;
             mightPop = false;
 
             StartCoroutine(
-                HandlePopBonus(item, initialPosition, bonusButtonPosition, isUIPosition)
+                HandlePopBonus(item, initialPosition, bonusButtonPosition, useUIPosition)
             );
         }
 
         public IEnumerator HandlePopValue(
             int amount,
-            Types.CollGroup type,
+            Item.CollGroup type,
             Vector2 initialPosition,
             bool multiply = false,
-            bool isUIPosition = false,
+            bool useUIPosition = false,
             Action callback = null
         )
         {
             Sprite valuePopSprite;
             float valuePopOffset;
-            Types.SoundType valuePopSoundType;
+            SoundManager.SoundType valuePopSoundType;
+            WaitForSeconds waitA = new WaitForSeconds(0.1f);
+            WaitForSeconds waitB = new WaitForSeconds(0.1f);
+
 
             // Get the value pop's sprite, offset and SFX name
             switch (type)
             {
-                case Types.CollGroup.Energy:
+                case Item.CollGroup.Energy:
                     valuePopSprite = energySprite;
                     valuePopOffset = valuesUI.energyButton.resolvedStyle.display == DisplayStyle.Flex ? valuesUI.energyButton.layout.x : valuesUI.dummyEnergyButton.layout.x;
-                    valuePopSoundType = Types.SoundType.Energy;
+                    valuePopSoundType = SoundManager.SoundType.Energy;
                     break;
-                case Types.CollGroup.Gold:
+                case Item.CollGroup.Gold:
                     valuePopSprite = goldSprite;
                     valuePopOffset = valuesUI.goldButton.resolvedStyle.display == DisplayStyle.Flex ? valuesUI.goldButton.layout.x : valuesUI.dummyGoldButton.layout.x;
-                    valuePopSoundType = Types.SoundType.Gold;
+                    valuePopSoundType = SoundManager.SoundType.Gold;
                     break;
-                case Types.CollGroup.Gems:
+                case Item.CollGroup.Gems:
                     valuePopSprite = gemsSprite;
                     valuePopOffset = valuesUI.gemsButton.resolvedStyle.display == DisplayStyle.Flex ? valuesUI.gemsButton.layout.x : valuesUI.dummyGemsButton.layout.x;
-                    valuePopSoundType = Types.SoundType.Gems;
+                    valuePopSoundType = SoundManager.SoundType.Gems;
                     break;
-                default: // Types.CollGroup.Experience
+                default: // Item.CollGroup.Experience
                     valuePopSprite = experienceSprite;
                     valuePopOffset = valuesUI.levelButton.resolvedStyle.display == DisplayStyle.Flex ? valuesUI.levelButton.layout.x : valuesUI.dummyLevelButton.layout.x;
-                    valuePopSoundType = Types.SoundType.Experience;
+                    valuePopSoundType = SoundManager.SoundType.Experience;
                     break;
             }
 
             // Add value pop element to the root
-            VisualElement valuePop = InitializePopValueElement(valuePopSprite, initialPosition, false, isUIPosition);
+            VisualElement valuePop = InitializePopValueElement(valuePopSprite, initialPosition, false, useUIPosition);
 
             // Add the value pop to the root
             root.Add(valuePop);
 
-            yield return new WaitForSeconds(0.1f);
+            yield return waitA;
 
             // Increase the size of the value pop
             Scale scale = new(new Vector2(1f, 1f));
 
             valuePop.style.scale = new StyleScale(scale);
 
-            yield return new WaitForSeconds(0.5f);
+            yield return waitB;
 
             // Move the value pop to it's intended position
             valuePop.style.left = Mathf.Ceil(valuePopOffset + offset);
             valuePop.style.top = safeAreaHandler.topPadding + offset;
 
-            yield return new WaitForSeconds(0.5f);
+            yield return waitB;
 
             // Decrease the size of the value pop
             scale = new Scale(new Vector2(0f, 0f));
 
             valuePop.style.scale = new StyleScale(scale);
 
-            yield return new WaitForSeconds(0.1f);
-
-            // callback?.Invoke();
+            yield return waitA;
 
             // Play value pop sound
             soundManager.PlaySound(valuePopSoundType);
@@ -181,13 +182,13 @@ namespace Merge
             valuePop.style.visibility = Visibility.Hidden;
             valuePop.style.opacity = 0;
 
-            yield return new WaitForSeconds(0.5f);
+            yield return waitB;
 
             // Remove the value pop
             root.Remove(valuePop);
 
             // Update data
-            if (type != Types.CollGroup.Experience)
+            if (type != Item.CollGroup.Experience)
             {
                 gameData.UpdateValueUI(amount, type, multiply, () =>
                 {
@@ -264,7 +265,7 @@ namespace Merge
             Item item,
             Vector2 initialPosition,
             Vector2 bonusButtonPosition,
-            bool isUIPosition = false
+            bool useUIPosition = false
         )
         {
             gameData.AddToBonus(item);
@@ -272,7 +273,7 @@ namespace Merge
             Sprite valuePopSprite = item.sprite;
 
             // Add value pop element to the root
-            VisualElement valuePop = InitializePopValueElement(valuePopSprite, initialPosition, true, isUIPosition);
+            VisualElement valuePop = InitializePopValueElement(valuePopSprite, initialPosition, true, useUIPosition);
 
             // Get position on the UI from the scene
             Vector2 newUIPos = RuntimePanelUtils.CameraTransformWorldToPanel(
@@ -309,7 +310,7 @@ namespace Merge
             yield return new WaitForSeconds(0.1f);
 
             // Play value pop sound
-            soundManager.PlaySound(Types.SoundType.Experience);
+            soundManager.PlaySound(SoundManager.SoundType.Experience);
 
             // Hide the value pop
             valuePop.style.visibility = Visibility.Hidden;
@@ -329,7 +330,7 @@ namespace Merge
             Sprite sprite,
             Vector2 position,
             bool isItem = true,
-            bool isUIPosition = false
+            bool useUIPosition = false
         )
         {
             VisualElement newValuePop = new() { name = "ValuePop" };
@@ -366,7 +367,7 @@ namespace Merge
             }
             else
             {
-                if (isUIPosition)
+                if (useUIPosition)
                 {
                     newValuePop.style.left = position.x - halfWidth;
                     newValuePop.style.top = position.y - halfWidth;

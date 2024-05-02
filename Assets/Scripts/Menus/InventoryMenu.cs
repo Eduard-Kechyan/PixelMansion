@@ -13,7 +13,36 @@ namespace Merge
         public int newSlotPrice = 50;
         public float slotPriceMultiplier = 0.5f;
 
-        private Types.Menu menuType = Types.Menu.Inventory;
+        private MenuUI.Menu menuType = MenuUI.Menu.Inventory;
+
+        // Enums
+        public class Inventory
+        {
+            public Sprite sprite;
+            public Item.Type type;
+            public Item.Group group;
+            public Item.GenGroup genGroup;
+            public Item.ChestGroup chestGroup;
+            public string id;
+            public bool isCompleted;
+            public bool timerOn;
+            public DateTime timerAltTime;
+            public bool gemPopped;
+        }
+
+        public class InventoryJson
+        {
+            public string sprite;
+            public string type;
+            public string group;
+            public string genGroup;
+            public string chestGroup;
+            public string id;
+            public bool isCompleted;
+            public bool timerOn;
+            public string timerAltTime;
+            public bool gemPopped;
+        }
 
         // References
         private GameRefs gameRefs;
@@ -98,7 +127,7 @@ namespace Merge
             SetUI();
 
             // Open menu
-            menuUI.OpenMenu(content, menuType,"",true);
+            menuUI.OpenMenu(content, menuType, "", true);
         }
 
         void SetUI()
@@ -169,7 +198,7 @@ namespace Merge
         {
             int amount = int.Parse(buyMoreButton.text);
 
-            if (gameData.UpdateValue(-amount, Types.CollGroup.Gold, false, true))
+            if (gameData.UpdateValue(-amount, Item.CollGroup.Gold, false, true))
             {
                 gameData.inventorySpace++;
 
@@ -223,7 +252,7 @@ namespace Merge
 
         void AddItemToBoard(string nameOrder)
         {
-            List<Types.TileEmpty> emptyBoard = boardManager.GetEmptyTileItems(Vector2Int.zero, true);
+            List<BoardManager.TileEmpty> emptyBoard = boardManager.GetEmptyTileItems(Vector2Int.zero, true);
 
             int order = int.Parse(nameOrder);
 
@@ -236,7 +265,7 @@ namespace Merge
             {
                 slot.Clear();
 
-                Types.Inventory inventoryItem = gameData.inventoryData[order];
+                Inventory inventoryItem = gameData.inventoryData[order];
 
                 // Pop out the item
                 valuePop.PopInventoryItem(
@@ -248,7 +277,7 @@ namespace Merge
                         Debug.Log(inventoryItem.id);
                         boardManager.CreateItemOnEmptyTile(null, emptyBoard[0], uiButtons.mergeBonusButtonPos, false, false, inventoryItem, (Vector2 position) =>
                         {
-                            if (inventoryItem.timerOn && inventoryItem.type == Types.Type.Gen)
+                            if (inventoryItem.timerOn && inventoryItem.type == Item.Type.Gen)
                             {
                                 timeManager.ItemTakenOutOfInventoryAfter(position, inventoryItem.id);
                             }
@@ -260,7 +289,7 @@ namespace Merge
                     }
                 );
 
-                if (inventoryItem.timerOn && inventoryItem.type == Types.Type.Gen)
+                if (inventoryItem.timerOn && inventoryItem.type == Item.Type.Gen)
                 {
                     timeManager.ItemTakenOutOfInventory(inventoryItem.id);
                 }
@@ -274,16 +303,16 @@ namespace Merge
                 popupManager.Pop(
                     LOCALE.Get("pop_board_full"),
                     initialPosition,
-                    Types.SoundType.Buzz
+                    SoundManager.SoundType.Buzz
                 );
             }
         }
 
-        Types.ItemData GetItemData(Types.Inventory inventoryItem)
+        BoardManager.ItemData GetItemData(Inventory inventoryItem)
         {
-            Types.ItemData newItemData = new();
+            BoardManager.ItemData newItemData = new();
 
-            if (inventoryItem.type == Types.Type.Item)
+            if (inventoryItem.type == Item.Type.Item)
             {
                 for (int i = 0; i < gameData.itemsData.Length; i++)
                 {
@@ -300,7 +329,7 @@ namespace Merge
                 }
             }
 
-            if (inventoryItem.type == Types.Type.Gen)
+            if (inventoryItem.type == Item.Type.Gen)
             {
                 for (int i = 0; i < gameData.generatorsData.Length; i++)
                 {
@@ -340,7 +369,7 @@ namespace Merge
             var pickedElement = root.panel.Pick(newUIPos);
 
             // Check if the item's type is the correct one
-            if (item.type != Types.Type.Coll)
+            if (item.type != Item.Type.Coll)
             {
                 // Check if the element under the position is the one we need
                 if (pickedElement != null && pickedElement.name == "InventoryButton")
@@ -349,7 +378,7 @@ namespace Merge
                     if (gameData.inventoryData.Count < gameData.inventorySpace)
                     {
                         // Add the item to the inventory
-                        Types.Inventory newInventoryItem = new()
+                        Inventory newInventoryItem = new()
                         {
                             sprite = item.sprite,
                             type = item.type,
@@ -360,7 +389,7 @@ namespace Merge
                             gemPopped = item.gemPopped,
                         };
 
-                        if (item.type == Types.Type.Gen && item.timerOn)
+                        if (item.type == Item.Type.Gen && item.timerOn)
                         {
                             DateTime altTime = DateTime.UtcNow;
 
@@ -374,7 +403,7 @@ namespace Merge
 
                         dataManager.SaveInventory();
 
-                        soundManager.PlaySound(Types.SoundType.OpenCrate); // FIX SOUND - Set proper sound
+                        soundManager.PlaySound(SoundManager.SoundType.OpenCrate); // FIX SOUND - Set proper sound
 
                         mergeUI.BlipInventoryIndicator();
 
@@ -385,12 +414,12 @@ namespace Merge
 
                         int order = gameData.boardData[loc.x, loc.y].order;
 
-                        gameData.boardData[loc.x, loc.y] = new Types.Tile { order = order };
+                        gameData.boardData[loc.x, loc.y] = new BoardManager.Tile { order = order };
 
 
                         dataManager.SaveBoard();
 
-                        boardSelection.Unselect(Types.SelectType.None);
+                        boardSelection.Unselect(BoardSelection.SelectType.None);
 
                         return true;
                     }
@@ -399,7 +428,7 @@ namespace Merge
                         popupManager.Pop(
                             LOCALE.Get("pop_inventory_full"),
                             item.transform.position,
-                            Types.SoundType.Buzz,
+                            SoundManager.SoundType.Buzz,
                             true
                         );
 

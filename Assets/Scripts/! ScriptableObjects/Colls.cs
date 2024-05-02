@@ -7,7 +7,7 @@ namespace Merge
     [CreateAssetMenu(fileName = "Colls", menuName = "ScriptableObject/Colls")]
     public class Colls : ScriptableObject
     {
-        public Types.Coll[] content;
+        public BoardManager.TypeColl[] content;
 
         void OnValidate()
         {
@@ -17,7 +17,7 @@ namespace Merge
 
                 for (int j = 0; j < content[i].parents.Length; j++)
                 {
-                    content[i].parents[j].name = content[i].parents[j].type.ToString() + " " + (content[i].parents[j].type == Types.Type.Gen
+                    content[i].parents[j].name = content[i].parents[j].type.ToString() + " " + (content[i].parents[j].type == Item.Type.Gen
                     ? content[i].parents[j].genGroup.ToString()
                     : content[i].parents[j].chestGroup.ToString());
                 }

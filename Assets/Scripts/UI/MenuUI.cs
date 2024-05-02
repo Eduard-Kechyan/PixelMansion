@@ -33,11 +33,11 @@ namespace Merge
         private class MenuItem
         {
             public VisualElement menuUI;
-            public Types.Menu menuType;
+            public Menu menuType;
             public bool showValues;
         }
 
-        private Types.Menu currentMenuType;
+        private Menu currentMenuType;
         private VisualElement currentMenuUI;
 
         // Events
@@ -47,6 +47,31 @@ namespace Merge
         public static event CloseEvent OnMenuClose;
         public delegate void MenuLoadedEvent();
         public static event MenuLoadedEvent OnMenuLoaded;
+
+        // Enums
+        public enum Menu
+        {
+            None,
+            Confirm,
+            Note,
+            Info,
+            Inventory,
+            Task,
+            Shop,
+            Level,
+            Energy,
+            Locale,
+            Settings,
+            Support,
+            Input,
+            Follow,
+            Rate,
+            Message,
+            Debug,
+            Terms,
+            Conflict,
+            Update,
+        }
 
         // References
         private ValuesUI valuesUI;
@@ -106,9 +131,9 @@ namespace Merge
             MenuUI.OnMenuLoaded -= MenuLoaded;
         }
 
-        public bool IsMenuOpen(Types.Menu menu)
+        public bool IsMenuOpen(Menu menu)
         {
-            if (currentMenuType != Types.Menu.None && currentMenuType == menu)
+            if (currentMenuType != Menu.None && currentMenuType == menu)
             {
                 return true;
             }
@@ -132,7 +157,7 @@ namespace Merge
         }
 
         // Get ready to open the given menu
-        public VisualElement OpenMenu(VisualElement menuUI, Types.Menu menuType, string altTitle = "", bool showValues = false, bool closeAll = false, bool ignoreClose = false, bool showCloseButton = true, bool isSmallMenu = false)
+        public VisualElement OpenMenu(VisualElement menuUI, Menu menuType, string altTitle = "", bool showValues = false, bool closeAll = false, bool ignoreClose = false, bool showCloseButton = true, bool isSmallMenu = false)
         {
             if (!isClosing)
             {
@@ -265,7 +290,7 @@ namespace Merge
             }
         }
 
-        public void CloseMenu(Types.Menu menuType, Action callback = null)
+        public void CloseMenu(Menu menuType, Action callback = null)
         {
             OnMenuClose?.Invoke();
 
@@ -306,7 +331,7 @@ namespace Merge
 
                 currentMenuUI = null;
 
-                currentMenuType = Types.Menu.None;
+                currentMenuType = Menu.None;
             }
             else
             {
@@ -382,7 +407,7 @@ namespace Merge
                 localeWrapper.style.display = DisplayStyle.None;
 
                 currentMenuUI = null;
-                currentMenuType = Types.Menu.None;
+                currentMenuType = Menu.None;
 
                 // Enable the board
                 if (boardInteractions != null)

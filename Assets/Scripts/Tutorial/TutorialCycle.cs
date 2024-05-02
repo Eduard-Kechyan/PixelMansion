@@ -144,7 +144,7 @@ namespace Merge
             // 1
             step1.style.opacity = 1;
 
-            soundManager.PlaySound(Types.SoundType.Experience); // TODO - Add proper sound here 
+            soundManager.PlaySound(SoundManager.SoundType.Experience); // TODO - Add proper sound here 
 
             yield return wait;
 
@@ -153,7 +153,7 @@ namespace Merge
 
             step2.style.opacity = 1;
 
-            soundManager.PlaySound(Types.SoundType.Experience); // TODO - Add proper sound here 
+            soundManager.PlaySound(SoundManager.SoundType.Experience); // TODO - Add proper sound here 
 
             yield return wait;
 
@@ -162,7 +162,7 @@ namespace Merge
 
             step3.style.opacity = 1;
 
-            soundManager.PlaySound(Types.SoundType.Experience); // TODO - Add proper sound here 
+            soundManager.PlaySound(SoundManager.SoundType.Experience); // TODO - Add proper sound here 
 
             yield return wait;
 
@@ -171,7 +171,7 @@ namespace Merge
 
             step4.style.opacity = 1;
 
-            soundManager.PlaySound(Types.SoundType.Experience); // TODO - Add proper sound here 
+            soundManager.PlaySound(SoundManager.SoundType.Experience); // TODO - Add proper sound here 
 
             yield return wait;
 

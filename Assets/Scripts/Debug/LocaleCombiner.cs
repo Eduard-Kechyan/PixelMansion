@@ -29,7 +29,7 @@ namespace Merge
 
         public void Combine(bool isBuilding = false, bool isPlaying = false, bool logAlt = false)
         {
-            string[] locales = System.Enum.GetNames(typeof(Types.Locale));
+            string[] locales = System.Enum.GetNames(typeof(I18n.Locale));
 
             int count = 0;
 

@@ -60,15 +60,15 @@ namespace Merge
         {
             switch (interactions.currentItem.type)
             {
-                case Types.Type.Gen:
+                case Item.Type.Gen:
                     DoubleTappedGenerator();
                     return true;
 
-                case Types.Type.Coll:
+                case Item.Type.Coll:
                     DoubleTappedCollectable();
                     return true;
 
-                case Types.Type.Chest:
+                case Item.Type.Chest:
                     DoubleTappedChest();
                     return true;
 
@@ -92,7 +92,7 @@ namespace Merge
 
                     Vector2Int tileLoc = boardManager.GetBoardLocation(0, tile);
 
-                    List<Types.TileEmpty> emptyTile = boardManager.GetEmptyTileItems(tileLoc);
+                    List<BoardManager.TileEmpty> emptyTile = boardManager.GetEmptyTileItems(tileLoc);
 
                     // Check if the board is full
                     if (emptyTile.Count > 0)
@@ -120,7 +120,7 @@ namespace Merge
                         popupManager.Pop(
                             LOCALE.Get("pop_board_full"),
                             interactions.currentItem.transform.position,
-                            Types.SoundType.Buzz,
+                            SoundManager.SoundType.Buzz,
                             true
                         );
                     }
@@ -132,17 +132,17 @@ namespace Merge
             }
         }
 
-        void SelectRandomGroupAndItem(Types.TileEmpty emptyTile, Vector2 initialPosition)
+        void SelectRandomGroupAndItem(BoardManager.TileEmpty emptyTile, Vector2 initialPosition)
         {
             bool found = false;
 
-            Types.Creates[] creates = interactions.currentItem.creates;
+            BoardManager.Creates[] creates = interactions.currentItem.creates;
 
             System.Random random = new();
             double diceRoll = random.NextDouble();
             double cumulative = 0.0;
 
-            ItemTypes.Group selectedGroup = new();
+            Item.Group selectedGroup = new();
             int maxLevel = 0;
             bool canIncreaseMaxLevel = false;
 
@@ -227,7 +227,7 @@ namespace Merge
             }
         }
 
-        void HandleGenTutorial(Types.TileEmpty emptyTile, Vector2 initialPosition)
+        void HandleGenTutorial(BoardManager.TileEmpty emptyTile, Vector2 initialPosition)
         {
             bool found = false;
 
@@ -274,7 +274,7 @@ namespace Merge
         // Collectable
         void DoubleTappedCollectable()
         {
-            if (levelMenu != null && interactions.currentItem.collGroup == Types.CollGroup.Experience)
+            if (levelMenu != null && interactions.currentItem.collGroup == Item.CollGroup.Experience)
             {
                 levelMenu.isRewarding = true;
             }
@@ -308,7 +308,7 @@ namespace Merge
         {
             if (!interactions.currentItem.timerOn)
             {
-                if (interactions.currentItem.chestGroup == Types.ChestGroup.Item && !interactions.currentItem.chestOpen)
+                if (interactions.currentItem.chestGroup == Item.ChestGroup.Item && !interactions.currentItem.chestOpen)
                 {
                     return;
                 }
@@ -317,7 +317,7 @@ namespace Merge
 
                 Vector2Int tileLoc = boardManager.GetBoardLocation(0, tile);
 
-                List<Types.TileEmpty> emptyTile = boardManager.GetEmptyTileItems(tileLoc);
+                List<BoardManager.TileEmpty> emptyTile = boardManager.GetEmptyTileItems(tileLoc);
 
                 // Check if the board is full
                 if (emptyTile.Count > 0)
@@ -333,25 +333,25 @@ namespace Merge
                     popupManager.Pop(
                         LOCALE.Get("pop_board_full"),
                         interactions.currentItem.transform.position,
-                        Types.SoundType.Buzz,
+                        SoundManager.SoundType.Buzz,
                         true
                     );
                 }
             }
         }
 
-        void SelectRandomItemFromChest(Types.TileEmpty emptyTile, Vector2 initialPosition, bool last = false)
+        void SelectRandomItemFromChest(BoardManager.TileEmpty emptyTile, Vector2 initialPosition, bool last = false)
         {
-            if (interactions.currentItem.chestGroup == Types.ChestGroup.Energy)
+            if (interactions.currentItem.chestGroup == Item.ChestGroup.Energy)
             {
                 int energyCollCount = 0;
                 int randomEnergyOrder;
 
-                Types.Item energyItems = new();
+                BoardManager.TypeItem energyItems = new();
 
                 for (int i = 0; i < gameData.collectablesData.Length; i++)
                 {
-                    if (gameData.collectablesData[i].collGroup == Types.CollGroup.Energy)
+                    if (gameData.collectablesData[i].collGroup == Item.CollGroup.Energy)
                     {
                         energyItems = gameData.collectablesData[i];
 
@@ -375,13 +375,13 @@ namespace Merge
                     true
                 );
             }
-            else if (interactions.currentItem.chestGroup == Types.ChestGroup.Piggy)
+            else if (interactions.currentItem.chestGroup == Item.ChestGroup.Piggy)
             {
                 int randomCollTypeOrder = Random.Range(0, gemChance - interactions.currentItem.level);
                 int collCount = 0;
                 int randomCollOrder = 0;
 
-                Types.Item collItems = new();
+                BoardManager.TypeItem collItems = new();
 
                 // Make sure at least once a gem is created
                 if (last && !interactions.currentItem.gemPopped)
@@ -394,7 +394,7 @@ namespace Merge
                     // Get random gem
                     for (int i = 0; i < gameData.collectablesData.Length; i++)
                     {
-                        if (gameData.collectablesData[i].collGroup == Types.CollGroup.Gems)
+                        if (gameData.collectablesData[i].collGroup == Item.CollGroup.Gems)
                         {
                             collItems = gameData.collectablesData[i];
 
@@ -409,7 +409,7 @@ namespace Merge
                     // Get random gold
                     for (int i = 0; i < gameData.collectablesData.Length; i++)
                     {
-                        if (gameData.collectablesData[i].collGroup == Types.CollGroup.Gold)
+                        if (gameData.collectablesData[i].collGroup == Item.CollGroup.Gold)
                         {
                             collItems = gameData.collectablesData[i];
 
@@ -434,18 +434,18 @@ namespace Merge
                     true
                 );
             }
-            else // Types.ChestGroup.Items
+            else // Item.ChestGroup.Items
             {
-                Types.Creates[] creates = interactions.currentItem.creates;
+                BoardManager.Creates[] creates = interactions.currentItem.creates;
 
                 System.Random random = new();
                 double diceRoll = random.NextDouble();
                 double cumulative = 0.0;
 
                 string selectedSpriteName = "";
-                Types.Type selectedType = new();
-                ItemTypes.GenGroup selectedGenGroup = new();
-                Types.CollGroup selectedCollGroup = new();
+                Item.Type selectedType = new();
+                Item.GenGroup selectedGenGroup = new();
+                Item.CollGroup selectedCollGroup = new();
 
                 // Randomly select a group of items to choose from
                 for (int i = 0; i < creates.Length; i++)
@@ -466,7 +466,7 @@ namespace Merge
                 boardManager.RemoveItemFromChest(interactions.currentItem);
 
                 // Create item from selected group
-                if (selectedType == Types.Type.Gen)
+                if (selectedType == Item.Type.Gen)
                 {
                     for (int i = 0; i < gameData.generatorsData.Length; i++)
                     {
@@ -492,7 +492,7 @@ namespace Merge
                         }
                     }
                 }
-                else //Types.Type.Coll
+                else //Item.Type.Coll
                 {
                     for (int i = 0; i < gameData.collectablesData.Length; i++)
                     {

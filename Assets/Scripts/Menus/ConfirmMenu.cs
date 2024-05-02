@@ -13,7 +13,7 @@ namespace Merge
         private Action callback;
         private Action callbackAlt;
 
-        private Types.Menu menuType = Types.Menu.Confirm;
+        private MenuUI.Menu menuType = MenuUI.Menu.Confirm;
 
         // References
         private MenuUI menuUI;

@@ -44,7 +44,16 @@ namespace Merge
 
         private Coroutine clearTimeout;
 
-        public List<Types.LogData> tempLogsData = new();
+        public List<LogData> tempLogsData = new();
+
+        // Classes
+        [Serializable]
+        public class LogData
+        {
+            public string message;
+            public List<string> stackTrace;
+            public Color color;
+        }
 
         // References
         private UIDocument debugUI;
@@ -284,7 +293,7 @@ namespace Merge
                     }
                 }
 
-                Types.LogData newLogData = new()
+                LogData newLogData = new()
                 {
                     message = newMessage,
                     stackTrace = stackList,
@@ -309,7 +318,7 @@ namespace Merge
             }
         }
 
-        void AddNewLogToUI(Types.LogData newLogData)
+        void AddNewLogToUI(LogData newLogData)
         {
             Label newLogMessageLabel = new() { text = "• " + newLogData.message };
 

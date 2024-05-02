@@ -26,7 +26,7 @@ namespace Merge
 
         private GameObject board;
         private GameObject tiles;
-        private Types.Tile[,] boardData;
+        private BoardManager.Tile[,] boardData;
         private float tileSize;
 
         // References
@@ -161,9 +161,9 @@ namespace Merge
             }
         }
 
-        Types.Tile[,] ConvertArrayToBoard(Types.Tile[] boardArray)
+        BoardManager.Tile[,] ConvertArrayToBoard(BoardManager.Tile[] boardArray)
         {
-            Types.Tile[,] newBoardData = new Types.Tile[GameData.WIDTH, GameData.HEIGHT];
+            BoardManager.Tile[,] newBoardData = new BoardManager.Tile[GameData.WIDTH, GameData.HEIGHT];
 
             int count = 0;
 
@@ -171,7 +171,7 @@ namespace Merge
             {
                 for (int j = 0; j < GameData.HEIGHT; j++)
                 {
-                    newBoardData[i, j] = new Types.Tile
+                    newBoardData[i, j] = new BoardManager.Tile
                     {
                         sprite = boardArray[count].sprite,
                         type = boardArray[count].type,

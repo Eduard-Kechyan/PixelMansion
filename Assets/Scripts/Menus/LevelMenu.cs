@@ -16,7 +16,7 @@ namespace Merge
         [ReadOnly]
         public bool isRewarding = false;
 
-        private Types.ShopItemsContent[] rewardContent = new Types.ShopItemsContent[0];
+        private ShopMenu.ShopItemsContent[] rewardContent = new ShopMenu.ShopItemsContent[0];
 
         private string levelRewardText0;
         private string levelRewardText1;
@@ -32,7 +32,7 @@ namespace Merge
 
         private Coroutine levelFillTimeout;
 
-        private Types.Menu menuType = Types.Menu.Level;
+        private MenuUI.Menu menuType = MenuUI.Menu.Level;
 
         // References
         private GameData gameData;
@@ -170,7 +170,7 @@ namespace Merge
                 HandleRewards();
 
                 // Open menu
-                menuUI.OpenMenu(content, menuType,"",true);
+                menuUI.OpenMenu(content, menuType, "", true);
             }
         }
 
@@ -332,7 +332,7 @@ namespace Merge
                 StartCoroutine(PopOutBonus(i * 0.4f, i, check));
             }
 
-            soundManager.PlaySound(Types.SoundType.LevelUp);
+            soundManager.PlaySound(SoundManager.SoundType.LevelUp);
         }
 
         IEnumerator PopOutBonus(float seconds, int order, bool newCheck = true)

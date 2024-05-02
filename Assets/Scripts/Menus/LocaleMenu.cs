@@ -11,9 +11,9 @@ namespace Merge
         public Sprite localeButtonSprite;
         public Color localeButtonColor;
         public Color localeButtonColorSelected;
-        public Types.Locale[] localeToInclude;
+        public I18n.Locale[] localeToInclude;
 
-        private Types.Menu menuType = Types.Menu.Locale;
+        private MenuUI.Menu menuType = MenuUI.Menu.Locale;
 
         // References
         private MenuUI menuUI;
@@ -50,11 +50,19 @@ namespace Merge
             }
 
             // Set menu content
+            SetUI();
+
+            // Open menu
+            menuUI.OpenMenu(content, menuType);
+        }
+
+        void SetUI()
+        {
             content.Clear();
 
-            Types.Locale currentLocale = LOCALE.GetLocale();
+            I18n.Locale currentLocale = LOCALE.GetLocale();
 
-            foreach (Types.Locale locale in System.Enum.GetValues(typeof(Types.Locale)))
+            foreach (I18n.Locale locale in System.Enum.GetValues(typeof(I18n.Locale)))
             {
                 Button localeButton = new() { name = "LocaleButton" + locale.ToString() };
 
@@ -74,39 +82,41 @@ namespace Merge
                 localeButton.AddToClassList("button_active");
                 localeButton.RemoveFromClassList("local_button_disabled");
 
-                switch (locale)
+                /*switch (locale)
                 {
-                    case Types.Locale.English:
+                    case I18n.Locale.English:
                         localeButton.text = "English";
                         break;
-                    case Types.Locale.Armenian:
+                    case I18n.Locale.Armenian:
                         localeButton.text = "Հայերեն";
                         break;
-                    case Types.Locale.Japanese:
+                    case I18n.Locale.Japanese:
                         localeButton.text = "日本語";
                         break;
-                    case Types.Locale.Korean:
+                    case I18n.Locale.Korean:
                         localeButton.text = "한국어";
                         break;
-                    case Types.Locale.Chinese:
+                    case I18n.Locale.Chinese:
                         localeButton.text = "中文";
                         break;
-                    case Types.Locale.Russian:
+                    case I18n.Locale.Russian:
                         localeButton.text = "Русский";
                         break;
-                    case Types.Locale.French:
+                    case I18n.Locale.French:
                         localeButton.text = "Français";
                         break;
-                    case Types.Locale.German:
+                    case I18n.Locale.German:
                         localeButton.text = "Deutsch";
                         break;
-                    case Types.Locale.Spanish:
+                    case I18n.Locale.Spanish:
                         localeButton.text = "Español";
                         break;
-                    case Types.Locale.Italian:
+                    case I18n.Locale.Italian:
                         localeButton.text = "Italiano";
                         break;
-                }
+                }*/
+
+                localeButton.text = ((I18n.LocaleAlt)(int)locale).ToString();
 
                 // TODO - Remove this line after adding all the necessary languages
                 bool include = false;
@@ -139,11 +149,9 @@ namespace Merge
                 content.Add(localeButton);
             }
 
-            // Open menu
-            menuUI.OpenMenu(content, menuType);
         }
 
-        void SetLocale(Types.Locale newLocale)
+        void SetLocale(I18n.Locale newLocale)
         {
             settingsMenu.SetLocale(newLocale);
 

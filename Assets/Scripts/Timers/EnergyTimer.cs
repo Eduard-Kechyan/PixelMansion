@@ -91,7 +91,7 @@ namespace Merge
 
             for (int i = 0; i < gameData.timers.Count; i++)
             {
-                if (gameData.timers[i].timerType == Types.TimerType.Energy)
+                if (gameData.timers[i].timerType == TimeManager.TimerType.Energy)
                 {
                     found = true;
 
@@ -201,7 +201,7 @@ namespace Merge
 
                     yield return waitA;
 
-                    gameData.UpdateValue(1, Types.CollGroup.Energy, false, true);
+                    gameData.UpdateValue(1, Item.CollGroup.Energy, false, true);
 
                     yield return waitB;
                 }

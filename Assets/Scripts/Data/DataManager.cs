@@ -111,7 +111,7 @@ namespace Merge
             string sceneName = SceneManager.GetActiveScene().name;
 
             // Make this script run if we aren't starting from the Loading scene
-            if (!loaded && (sceneName == Types.Scene.Merge.ToString() || sceneName == Types.Scene.World.ToString()))
+            if (!loaded && (sceneName == SceneLoader.SceneType.Merge.ToString() || sceneName == SceneLoader.SceneType.World.ToString()))
             {
                 StartCoroutine(WaitForLoadedData());
             }
@@ -276,7 +276,7 @@ namespace Merge
                 gameData.unlockedRoomsData = unlockedRoomsDataTemp;
             }
 
-            gameData.finishedTasks = JsonConvert.DeserializeObject<List<Types.FinishedTask>>(newFinishedTasks);
+            gameData.finishedTasks = JsonConvert.DeserializeObject<List<TaskManager.FinishedTask>>(newFinishedTasks);
 
             // Convert data
             gameData.itemsData = dataConverter.ConvertItems(items.content);
@@ -302,7 +302,7 @@ namespace Merge
             // Finish Task
             loaded = true;
 
-            if (SceneManager.GetActiveScene().name == Types.Scene.World.ToString())
+            if (SceneManager.GetActiveScene().name == SceneLoader.SceneType.World.ToString())
             {
                 if (rateMenu.shouldShow)
                 {
@@ -393,7 +393,7 @@ namespace Merge
             {
                 // WARNING
                 errorManager.ThrowWarning(
-                    Types.ErrorType.Code,
+                    ErrorManager.ErrorType.Code,
                     GetType().Name,
                     "Save data key doesn't exist: " + key
                 );
@@ -424,7 +424,7 @@ namespace Merge
                 {
                     // ERROR
                     errorManager.Throw(
-                        Types.ErrorType.Code,
+                        ErrorManager.ErrorType.Code,
                         "DataManager.cs -> SaveValue()",
                         "Value is fo type: " + valueItem.Value + ". It needs to be converted to a STRING, INT, FLOAT or a BOOL!"
                     );
@@ -558,7 +558,7 @@ namespace Merge
             {
                 // ERROR
                 errorManager.Throw(
-                    Types.ErrorType.Code,
+                    ErrorManager.ErrorType.Code,
                     GetType().Name,
                     "Reader is null for key: " + key
                 );
@@ -579,7 +579,7 @@ namespace Merge
             {
                 // ERROR
                 errorManager.Throw(
-                    Types.ErrorType.Code,
+                    ErrorManager.ErrorType.Code,
                     GetType().Name,
                     "Reader is null for key: unsentData"
                 );
@@ -644,7 +644,7 @@ namespace Merge
                         writer.Write(key, valueString).Commit();
                         break;
                     case "finishedTasks":
-                        gameData.finishedTasks = JsonConvert.DeserializeObject<List<Types.FinishedTask>>(valueString);
+                        gameData.finishedTasks = JsonConvert.DeserializeObject<List<TaskManager.FinishedTask>>(valueString);
                         writer.Write(key, valueString).Commit();
                         break;
                     case "tasksData":
@@ -756,7 +756,7 @@ namespace Merge
                     default:
                         // ERROR
                         errorManager.Throw(
-                            Types.ErrorType.Code,
+                            ErrorManager.ErrorType.Code,
                             GetType().Name,
                             "Wrong key given: " + key
                         );
@@ -767,7 +767,7 @@ namespace Merge
             {
                 // ERROR
                 errorManager.Throw(
-                    Types.ErrorType.Code,
+                    ErrorManager.ErrorType.Code,
                     GetType().Name,
                     "Wrong value given for key: " + key + ". Value: " + valueString
                 );
@@ -786,11 +786,11 @@ namespace Merge
         // Unlock item
         public bool UnlockItem(
             string spriteName,
-            Types.Type type,
-            ItemTypes.Group group,
-            ItemTypes.GenGroup genGroup,
-            Types.CollGroup collGroup,
-            Types.ChestGroup chestGroup
+            Item.Type type,
+            Item.Group group,
+            Item.GenGroup genGroup,
+            Item.CollGroup collGroup,
+            Item.ChestGroup chestGroup
         )
         {
             bool found = false;
@@ -825,7 +825,7 @@ namespace Merge
 
             switch (type)
             {
-                case Types.Type.Item:
+                case Item.Type.Item:
                     for (int i = 0; i < gameData.itemsData.Length; i++)
                     {
                         if (gameData.itemsData[i].group == group)
@@ -840,7 +840,7 @@ namespace Merge
                         }
                     }
                     break;
-                case Types.Type.Gen:
+                case Item.Type.Gen:
                     for (int i = 0; i < gameData.generatorsData.Length; i++)
                     {
                         if (gameData.generatorsData[i].genGroup == genGroup)
@@ -855,7 +855,7 @@ namespace Merge
                         }
                     }
                     break;
-                case Types.Type.Coll:
+                case Item.Type.Coll:
                     for (int i = 0; i < gameData.collectablesData.Length; i++)
                     {
                         if (gameData.collectablesData[i].collGroup == collGroup)
@@ -870,7 +870,7 @@ namespace Merge
                         }
                     }
                     break;
-                case Types.Type.Chest:
+                case Item.Type.Chest:
                     for (int i = 0; i < gameData.chestsData.Length; i++)
                     {
                         if (gameData.chestsData[i].chestGroup == chestGroup)
@@ -887,7 +887,7 @@ namespace Merge
                     break;
                 default:
                     // ERROR
-                    ErrorManager.Instance.Throw(Types.ErrorType.Code, "DataManager.cs -> UnlockItem()", "Wrong type: " + type);
+                    ErrorManager.Instance.Throw(ErrorManager.ErrorType.Code, "DataManager.cs -> UnlockItem()", "Wrong type: " + type);
                     break;
             }
 
@@ -943,7 +943,7 @@ namespace Merge
             return found;
         }
 
-        public int GetGroupItemsCount(ItemTypes.Group group)
+        public int GetGroupItemsCount(Item.Group group)
         {
             int count = 0;
 

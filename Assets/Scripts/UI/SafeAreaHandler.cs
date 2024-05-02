@@ -53,17 +53,17 @@ namespace Merge
 
             Scene scene = SceneManager.GetActiveScene();
 
-            Types.Scene sceneName = Glob.ParseEnum<Types.Scene>(scene.name);
+            SceneLoader.SceneType sceneName = Glob.ParseEnum<SceneLoader.SceneType>(scene.name);
 
             switch (sceneName)
             {
-                case Types.Scene.Loading:
+                case SceneLoader.SceneType.Loading:
                     break;
 
-                case Types.Scene.World:
+                case SceneLoader.SceneType.World:
                     break;
 
-                case Types.Scene.Merge:
+                case SceneLoader.SceneType.Merge:
                     SetMergeUI();
                     break;
 

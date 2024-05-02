@@ -16,13 +16,13 @@ namespace Merge
 
         class MenuItem
         {
-            public Types.Menu menuType;
+            public MenuUI.Menu menuType;
             public VisualElement element;
             public VisualTreeAsset asset;
         };
 
         private MenuItem[] menuItems;
-        private int menuTypesLength = Enum.GetValues(typeof(Types.Menu)).Length;
+        private int menuTypesLength = Enum.GetValues(typeof(MenuUI.Menu)).Length;
 
         // Menus
         [HideInInspector]
@@ -61,11 +61,11 @@ namespace Merge
 
             for (int i = 0; i < menuTypesLength; i++)
             {
-                Types.Menu menuType = (Types.Menu)i;
+                MenuUI.Menu menuType = (MenuUI.Menu)i;
 
                 MenuItem newMenuItem;
 
-                if (menuType == Types.Menu.None)
+                if (menuType == MenuUI.Menu.None)
                 {
                     newMenuItem = new()
                     {
@@ -94,7 +94,7 @@ namespace Merge
             dataLoaded = true;
         }
 
-        public VisualElement GetMenuAsset(Types.Menu menuType)
+        public VisualElement GetMenuAsset(MenuUI.Menu menuType)
         {
             for (int i = 0; i < menuTypesLength; i++)
             {
@@ -107,7 +107,7 @@ namespace Merge
                     else
                     {
                         // ERROR
-                        errorManager.ThrowWarning(Types.ErrorType.Code, GetType().ToString(), "Types.Menu " + menuType + " is null!");
+                        errorManager.ThrowWarning(ErrorManager.ErrorType.Code, GetType().ToString(), "MenuUI.Menu " + menuType + " is null!");
 
                         return null;
                     }
@@ -115,12 +115,12 @@ namespace Merge
             }
 
             // ERROR
-            errorManager.ThrowWarning(Types.ErrorType.Code, GetType().ToString(), "Types.Menu " + menuType + " not found!");
+            errorManager.ThrowWarning(ErrorManager.ErrorType.Code, GetType().ToString(), "MenuUI.Menu " + menuType + " not found!");
 
             return null;
         }
 
-        public VisualElement GetMenuElement(Types.Menu menuType)
+        public VisualElement GetMenuElement(MenuUI.Menu menuType)
         {
             for (int i = 0; i < menuTypesLength; i++)
             {
@@ -131,12 +131,12 @@ namespace Merge
             }
 
             // ERROR
-            errorManager.ThrowWarning(Types.ErrorType.Code, GetType().ToString(), "Types.Menu " + menuType + " not found!");
+            errorManager.ThrowWarning(ErrorManager.ErrorType.Code, GetType().ToString(), "MenuUI.Menu " + menuType + " not found!");
 
             return null;
         }
 
-        public void SetMenuElement(Types.Menu menuType, VisualElement element)
+        public void SetMenuElement(MenuUI.Menu menuType, VisualElement element)
         {
             bool found = false;
 
@@ -155,11 +155,11 @@ namespace Merge
             if (!found)
             {
                 // ERROR
-                errorManager.ThrowWarning(Types.ErrorType.Code, GetType().ToString(), "Types.Menu " + menuType + " not found!");
+                errorManager.ThrowWarning(ErrorManager.ErrorType.Code, GetType().ToString(), "MenuUI.Menu " + menuType + " not found!");
             }
         }
 
-        public void ClearMenuElement(Types.Menu menuType)
+        public void ClearMenuElement(MenuUI.Menu menuType)
         {
             bool found = false;
 
@@ -179,7 +179,7 @@ namespace Merge
             if (!found)
             {
                 // ERROR
-                errorManager.ThrowWarning(Types.ErrorType.Code, GetType().ToString(), "Types.Menu " + menuType + " not found!");
+                errorManager.ThrowWarning(ErrorManager.ErrorType.Code, GetType().ToString(), "MenuUI.Menu " + menuType + " not found!");
             }
         }
     }

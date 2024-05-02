@@ -13,6 +13,26 @@ namespace Merge
         private UIButtons uiButtons;
         private BoardManager boardManager;
 
+        // Enums
+        public class Bonus
+        {
+            public Sprite sprite;
+            public Item.Type type;
+            public Item.Group group;
+            public Item.GenGroup genGroup;
+            public Item.ChestGroup chestGroup;
+        }
+
+        public class BonusJson
+        {
+            public string sprite;
+            public string type;
+            public string group;
+            public string genGroup;
+            public string chestGroup;
+        }
+
+
         // Instances
         private GameData gameData;
         private I18n LOCALE;
@@ -33,23 +53,23 @@ namespace Merge
 
         public void GetBonus()
         {
-            List<Types.TileEmpty> emptyBoard = boardManager.GetEmptyTileItems(Vector2Int.zero, false);
+            List<BoardManager.TileEmpty> emptyBoard = boardManager.GetEmptyTileItems(Vector2Int.zero, false);
 
             // Check if the board is full
             if (emptyBoard.Count > 0)
             {
-                Types.Bonus latestBonus = gameData.GetAndRemoveLatestBonus();
+                Bonus latestBonus = gameData.GetAndRemoveLatestBonus();
 
                 emptyBoard.Sort((p1, p2) => p1.distance.CompareTo(p2.distance));
 
-                Types.ItemData itemData = new()
+                BoardManager.ItemData itemData = new()
                 {
                     sprite = latestBonus.sprite,
                     type = latestBonus.type,
                     group = latestBonus.group,
                     genGroup = latestBonus.genGroup,
                     chestGroup = latestBonus.chestGroup,
-                    collGroup = Types.CollGroup.Experience,
+                    collGroup = Item.CollGroup.Experience,
                     gemPopped = false
                 };
 
@@ -67,7 +87,7 @@ namespace Merge
                 popupManager.Pop(
                     LOCALE.Get("pop_board_full"),
                     uiButtons.mergeBonusButtonPos,
-                    Types.SoundType.Buzz,
+                    SoundManager.SoundType.Buzz,
                     true
                 );
             }

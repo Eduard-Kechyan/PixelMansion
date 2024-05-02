@@ -55,7 +55,7 @@ namespace Merge
         {
             for (int i = 0; i < gameData.timers.Count; i++)
             {
-                if (gameData.timers[i].timerType == Types.TimerType.Item)
+                if (gameData.timers[i].timerType == TimeManager.TimerType.Item)
                 {
                     DateTime endTime = DateTime.UtcNow;
 

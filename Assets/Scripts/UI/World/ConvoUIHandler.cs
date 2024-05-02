@@ -10,7 +10,7 @@ namespace Merge
     {
         // Variables
         public ConvoData convoData;
-        public Types.CharacterColor[] characterColors;
+        public CharacterColor[] characterColors;
         [ReadOnly]
         public bool isConvoOpen = false;
 
@@ -24,7 +24,7 @@ namespace Merge
 
         private bool showText = false;
 
-        private Types.ConvoGroup currentConvoGroup;
+        private ConvoGroup currentConvoGroup;
         private int currentConvo;
         private string convoId = "";
 
@@ -42,6 +42,57 @@ namespace Merge
         private Scale fullScaleFlipped = new(new Vector2(-1f, 1f));
         private Scale smallScaleFlipped = new(new Vector2(-0.8f, 0.8f));
 
+        // Enums
+        public enum Character
+        {
+            NONE,
+            Julia,
+            James,
+        };
+
+        public enum CharacterExpression
+        {
+            Natural,
+            Happy,
+            Surprised,
+            Angry,
+            Sad,
+            Sleepy,
+            Thinking
+        };
+
+        // Classes
+        [Serializable]
+        public class CharacterColor
+        {
+            [HideInInspector]
+            public string name;
+            public Character character;
+            public Color accentColor = Color.black;
+        }
+
+        [Serializable]
+        public class ConvoGroup
+        {
+            [HideInInspector]
+            public string name;
+            public string id;
+            public bool hasTimeOut = true;
+            public Character characterA = Character.Julia;
+            public Character characterB = Character.NONE;
+            public List<Convo> content;
+        }
+
+        [Serializable]
+        public class Convo
+        {
+            public Character character;
+            public CharacterExpression expression;
+            public bool isRight;
+            public bool isSide;
+            public string convoExtra;
+        }
+
         // References
         private GameRefs gameRefs;
         private WorldUI worldUI;
@@ -49,7 +100,6 @@ namespace Merge
         private I18n LOCALE;
         private CharMain charMain;
         private AddressableManager addressableManager;
-        private ProgressManager progressManager;
         private TutorialManager tutorialManager;
 
         // UI
@@ -81,7 +131,6 @@ namespace Merge
             LOCALE = I18n.Instance;
             charMain = CharMain.Instance;
             addressableManager = DataManager.Instance.GetComponent<AddressableManager>();
-            progressManager = gameRefs.progressManager;
             tutorialManager = gameRefs.tutorialManager;
 
             // UI
@@ -159,7 +208,7 @@ namespace Merge
             {
                 for (int i = 0; i < characterColors.Length; i++)
                 {
-                    if (characterColors[i].character != Types.Character.NONE)
+                    if (characterColors[i].character != Character.NONE)
                     {
                         characterColors[i].name = characterColors[i].character.ToString();
                     }
@@ -247,7 +296,7 @@ namespace Merge
                 avatarLeft.style.left = 0;
                 avatarLeft.style.transitionDelay = nullDelay;
 
-                if (currentConvoGroup.characterB != Types.Character.NONE)
+                if (currentConvoGroup.characterB != Character.NONE)
                 {
                     avatarRight.style.right = 4;
                     avatarRight.style.transitionDelay = nullDelay;
@@ -427,29 +476,29 @@ namespace Merge
             }
         }
 
-        void SetAvatar(Types.Convo convo = null)
+        void SetAvatar(Convo convo = null)
         {
             if (convo == null)
             {
-                avatarLeft.style.backgroundImage = new StyleBackground(FindSprites(currentConvoGroup.characterA.ToString(), Types.CharacterExpression.Natural, false));
+                avatarLeft.style.backgroundImage = new StyleBackground(FindSprites(currentConvoGroup.characterA.ToString(), CharacterExpression.Natural, false));
 
-                if (currentConvoGroup.characterB != Types.Character.NONE)
+                if (currentConvoGroup.characterB != Character.NONE)
                 {
-                    avatarRight.style.backgroundImage = new StyleBackground(FindSprites(currentConvoGroup.characterB.ToString(), Types.CharacterExpression.Natural, false));
+                    avatarRight.style.backgroundImage = new StyleBackground(FindSprites(currentConvoGroup.characterB.ToString(), CharacterExpression.Natural, false));
                 }
             }
             else
             {
                 avatarLeft.style.backgroundImage = new StyleBackground(FindSprites(currentConvoGroup.characterA.ToString(), convo.expression, convo.isSide));
 
-                if (currentConvoGroup.characterB != Types.Character.NONE)
+                if (currentConvoGroup.characterB != Character.NONE)
                 {
                     avatarRight.style.backgroundImage = new StyleBackground(FindSprites(currentConvoGroup.characterB.ToString(), convo.expression, convo.isSide));
                 }
             }
         }
 
-        Color GetColor(Types.Character character)
+        Color GetColor(Character character)
         {
             for (int i = 0; i < characterColors.Length; i++)
             {
@@ -462,7 +511,7 @@ namespace Merge
             return Color.black;
         }
 
-        Sprite FindSprites(string characterName, Types.CharacterExpression expression = Types.CharacterExpression.Natural, bool isSide = false)
+        Sprite FindSprites(string characterName, CharacterExpression expression = CharacterExpression.Natural, bool isSide = false)
         {
             foreach (Sprite sprite in avatarsSprites)
             {

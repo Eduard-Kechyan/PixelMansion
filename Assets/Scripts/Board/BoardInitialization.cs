@@ -185,7 +185,7 @@ namespace Merge
                     newTile.transform.parent = boardManager.boardTiles.transform;
 
                     // Create item
-                    Types.Tile tileItem = gameData.boardData[x, y];
+                    BoardManager.Tile tileItem = gameData.boardData[x, y];
 
                     if (gameData.boardData[x, y].id == "")
                     {

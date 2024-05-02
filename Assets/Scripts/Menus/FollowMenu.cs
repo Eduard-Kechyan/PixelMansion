@@ -13,7 +13,7 @@ namespace Merge
         public bool shouldShow = true;
         private string followDate;
 
-        private Types.Menu menuType = Types.Menu.Follow;
+        private MenuUI.Menu menuType = MenuUI.Menu.Follow;
 
         // References
         private MenuUI menuUI;
@@ -66,9 +66,9 @@ namespace Merge
                 noButton = content.Q<Button>("NoButton");
 
                 // UI Taps
-                instagramFollowButton.clicked += () => HandleSocialMediaButton(Types.SocialMediaType.Instagram);
-                facebookFollowButton.clicked += () => HandleSocialMediaButton(Types.SocialMediaType.Facebook);
-                youtubeFollowButton.clicked += () => HandleSocialMediaButton(Types.SocialMediaType.Youtube);
+                instagramFollowButton.clicked += () => HandleSocialMediaButton(SettingsMenu.SocialMediaType.Instagram);
+                facebookFollowButton.clicked += () => HandleSocialMediaButton(SettingsMenu.SocialMediaType.Facebook);
+                youtubeFollowButton.clicked += () => HandleSocialMediaButton(SettingsMenu.SocialMediaType.Youtube);
 
                 noButton.clicked += () => HandleNoButton();
 
@@ -99,7 +99,7 @@ namespace Merge
             }
         }
 
-        void HandleSocialMediaButton(Types.SocialMediaType type)
+        void HandleSocialMediaButton(SettingsMenu.SocialMediaType type)
         {
             settingsMenu.OpenSocialMediaLink(type);
 

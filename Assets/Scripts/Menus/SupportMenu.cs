@@ -8,7 +8,7 @@ namespace Merge
     public class SupportMenu : MonoBehaviour
     {
         // Variables
-        private Types.Menu menuType = Types.Menu.Support;
+        private MenuUI.Menu menuType = MenuUI.Menu.Support;
 
         // References
         private MenuUI menuUI;

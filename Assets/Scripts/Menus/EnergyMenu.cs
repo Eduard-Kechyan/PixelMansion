@@ -15,7 +15,7 @@ namespace Merge
 
         private bool waitingForAd = false;
 
-        private Types.Menu menuType = Types.Menu.Energy;
+        private MenuUI.Menu menuType = MenuUI.Menu.Energy;
 
         // References
         private GameData gameData;
@@ -128,7 +128,7 @@ namespace Merge
 
                 menuUI.ShowMenuOverlay(() =>
                 {
-                    adsManager.WatchAd(Types.AdType.Energy, (int newEnergyAmount) =>
+                    adsManager.WatchAd(AdsManager.AdType.Energy, (int newEnergyAmount) =>
                     {
                         menuUI.HideMenuOverlay(() =>
                         {
@@ -136,7 +136,7 @@ namespace Merge
 
                             analyticsManager.FireEnergyBoughtEvent(gameData.level, gameData.energy, gameData.gems, true);
 
-                            valuePop.PopValue(newEnergyAmount, Types.CollGroup.Energy, watchButton.worldBound.center, false, true);
+                            valuePop.PopValue(newEnergyAmount, Item.CollGroup.Energy, watchButton.worldBound.center, false, true);
                         });
                     }, () =>
                     {
@@ -159,9 +159,9 @@ namespace Merge
             {
                 analyticsManager.FireEnergyBoughtEvent(gameData.level, gameData.energy, gameData.gems, false);
 
-                gameData.UpdateValue(-gemsCost, Types.CollGroup.Gems, false, true); // Note the -
+                gameData.UpdateValue(-gemsCost, Item.CollGroup.Gems, false, true); // Note the -
 
-                valuePop.PopValue(energyBuyAmount, Types.CollGroup.Energy, buyButton.worldBound.center, false, true);
+                valuePop.PopValue(energyBuyAmount, Item.CollGroup.Energy, buyButton.worldBound.center, false, true);
             }
             else
             {

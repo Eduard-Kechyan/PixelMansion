@@ -154,21 +154,21 @@ namespace Merge
 
                 switch (item.state)
                 {
-                    case Types.State.Crate: //// CRATE ////
+                    case Item.State.Crate: //// CRATE ////
                         infoName.text = LOCALE.Get("info_box_crate");
 
                         sprite = item.crateChild.GetComponent<SpriteRenderer>().sprite;
 
                         mainActionType = ActionType.Open;
                         break;
-                    case Types.State.Locker: //// LOCKER ////
+                    case Item.State.Locker: //// LOCKER ////
                         infoName.text = item.itemName + " " + LOCALE.Get("info_box_locker");
 
                         sprite = item.itemChild.GetComponent<SpriteRenderer>().sprite;
 
                         mainActionType = ActionType.Unlock;
                         break;
-                    case Types.State.Bubble: //// BUBBLE ////
+                    case Item.State.Bubble: //// BUBBLE ////
                         infoName.text = item.itemName + " " + LOCALE.Get("info_box_bubble");
 
                         sprite = item.itemChild.GetComponent<SpriteRenderer>().sprite;
@@ -192,9 +192,9 @@ namespace Merge
 
                         infoButton.style.display = DisplayStyle.Flex;
 
-                        if (item.type == Types.Type.Chest)
+                        if (item.type == Item.Type.Chest)
                         {
-                            if (!item.chestOpen && item.chestGroup == Types.ChestGroup.Item && !item.timerOn)
+                            if (!item.chestOpen && item.chestGroup == Item.ChestGroup.Item && !item.timerOn)
                             {
                                 mainActionType = ActionType.UnlockChest;
                             }
@@ -203,11 +203,11 @@ namespace Merge
                                 mainActionType = ActionType.None;
                             }
                         }
-                        else if (item.type == Types.Type.Coll)
+                        else if (item.type == Item.Type.Coll)
                         {
                             mainActionType = ActionType.None;
                         }
-                        else if ((item.type == Types.Type.Gen && item.level > genSellLevel) || (item.type == Types.Type.Item && item.level > itemSellLevel) || item.isMaxLevel)
+                        else if ((item.type == Item.Type.Gen && item.level > genSellLevel) || (item.type == Item.Type.Item && item.level > itemSellLevel) || item.isMaxLevel)
                         {
                             CalcSellPrice(item.level);
 
@@ -451,9 +451,9 @@ namespace Merge
                         }
                         else
                         {
-                            boardInteractions.OpenItem(item, openAmount, Types.State.Crate);
+                            boardInteractions.OpenItem(item, openAmount, Item.State.Crate);
                             Select(item);
-                            boardSelection.Select(Types.SelectType.Both, false);
+                            boardSelection.Select(BoardSelection.SelectType.Both, false);
                         }
                         break;
                     case ActionType.Unlock:
@@ -463,15 +463,15 @@ namespace Merge
                         }
                         else
                         {
-                            boardInteractions.OpenItem(item, unlockAmount, Types.State.Locker);
+                            boardInteractions.OpenItem(item, unlockAmount, Item.State.Locker);
                             Select(item);
-                            boardSelection.Select(Types.SelectType.Both, false);
+                            boardSelection.Select(BoardSelection.SelectType.Both, false);
                         }
                         break;
                     case ActionType.UnlockChest:
                         boardInteractions.UnlockChest(item);
                         Select(item);
-                        boardSelection.Select(Types.SelectType.Both, false);
+                        boardSelection.Select(BoardSelection.SelectType.Both, false);
                         break;
                     case ActionType.Pop:
                         if (gameData.gems < popAmount)
@@ -480,14 +480,14 @@ namespace Merge
                         }
                         else
                         {
-                            boardInteractions.OpenItem(item, unlockAmount, Types.State.Bubble);
+                            boardInteractions.OpenItem(item, unlockAmount, Item.State.Bubble);
                             Select(item);
-                            boardSelection.Select(Types.SelectType.Both, false);
+                            boardSelection.Select(BoardSelection.SelectType.Both, false);
                         }
                         break;
                     case ActionType.Sell:
                         // Confirm selling item if it's a generator or at least level 10
-                        if (item.type == Types.Type.Gen)
+                        if (item.type == Item.Type.Gen)
                         {
                             confirmMenu.Open("sell_gen", () =>
                             {
@@ -530,16 +530,16 @@ namespace Merge
                         {
                             boardInteractions.SpeedUpItem(item, speedUpAmount);
                             Select(item);
-                            boardSelection.Select(Types.SelectType.Both, false);
+                            boardSelection.Select(BoardSelection.SelectType.Both, false);
                             timeOn = false;
                         }
                         break;
                     case ActionType.Pop:
-                        adsManager.WatchAd(Types.AdType.Bubble, (int reward) =>
+                        adsManager.WatchAd(AdsManager.AdType.Bubble, (int reward) =>
                         {
-                            boardInteractions.OpenItem(item, unlockAmount, Types.State.Bubble);
+                            boardInteractions.OpenItem(item, unlockAmount, Item.State.Bubble);
                             Select(item);
-                            boardSelection.Select(Types.SelectType.Both, false);
+                            boardSelection.Select(BoardSelection.SelectType.Both, false);
                             timeOn = false;
                         });
                         break;
@@ -570,22 +570,22 @@ namespace Merge
         }
 
         // Show the collectables multiplied value
-        int GetMultipliedValue(int level, Types.CollGroup collGroup)
+        int GetMultipliedValue(int level, Item.CollGroup collGroup)
         {
             int multipliedValue = 0;
 
             switch (collGroup)
             {
-                case Types.CollGroup.Experience:
+                case Item.CollGroup.Experience:
                     multipliedValue = gameData.valuesData.experienceMultiplier[level - 1];
                     break;
-                case Types.CollGroup.Gold:
+                case Item.CollGroup.Gold:
                     multipliedValue = gameData.valuesData.goldMultiplier[level - 1];
                     break;
-                case Types.CollGroup.Gems:
+                case Item.CollGroup.Gems:
                     multipliedValue = gameData.valuesData.gemsMultiplier[level - 1];
                     break;
-                case Types.CollGroup.Energy:
+                case Item.CollGroup.Energy:
                     multipliedValue = gameData.valuesData.energyMultiplier[level - 1];
                     break;
             }
@@ -603,21 +603,21 @@ namespace Merge
         {
             switch (newItem.state)
             {
-                case Types.State.Crate:
+                case Item.State.Crate:
                     textToSet = LOCALE.Get("info_box_crate_text");
                     break;
-                case Types.State.Locker:
+                case Item.State.Locker:
 
                     textToSet = LOCALE.Get("info_box_locker_text");
                     break;
-                case Types.State.Bubble:
+                case Item.State.Bubble:
 
                     textToSet = LOCALE.Get("info_box_bubble_text");
                     break;
                 default:
                     switch (newItem.type)
                     {
-                        case Types.Type.Gen:
+                        case Item.Type.Gen:
                             if (newItem.isMaxLevel)
                             {
                                 textToSet = LOCALE.Get("info_box_gen_max");
@@ -635,10 +635,10 @@ namespace Merge
                                 }
                             }
                             break;
-                        case Types.Type.Coll:
+                        case Item.Type.Coll:
                             int multipliedValue = GetMultipliedValue(item.level, item.collGroup);
 
-                            if (item.collGroup == Types.CollGroup.Gems)
+                            if (item.collGroup == Item.CollGroup.Gems)
                             {
                                 if (item.isMaxLevel)
                                 {
@@ -677,7 +677,7 @@ namespace Merge
                                 }
                             }
                             break;
-                        case Types.Type.Chest:
+                        case Item.Type.Chest:
                             if (alt)
                             {
                                 if (!newItem.chestOpen)

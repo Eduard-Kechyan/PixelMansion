@@ -121,7 +121,7 @@ namespace Merge
                     {
                         selectable.Select();
 
-                        soundManager.PlaySound(Types.SoundType.Generate);
+                        soundManager.PlaySound(SoundManager.SoundType.Generate);
 
                         //selectorUIHandler.Open(selectable.GetSpriteOptions(), selectable.spriteOrder, false);
                         selectorUIHandler.Open(selectable.spriteOrder, false);
@@ -160,7 +160,7 @@ namespace Merge
 
                     if (!ignorePopup && notify)
                     {
-                        popupManager.Pop(LOCALE.Get("pop_item_unselectable"), worldPosition, Types.SoundType.None, true, true);
+                        popupManager.Pop(LOCALE.Get("pop_item_unselectable"), worldPosition, SoundManager.SoundType.None, true, true);
                     }
                 }
             }
@@ -171,7 +171,7 @@ namespace Merge
         {
             if (selectable.Tapped())
             {
-                soundManager.PlaySound(Types.SoundType.Generate);
+                soundManager.PlaySound(SoundManager.SoundType.Generate);
 
                 Vector2 newPos = new(selectable.transform.position.x, selectable.transform.position.y - selectable.charMoveOffset);
 
@@ -221,7 +221,7 @@ namespace Merge
             //selectorUIHandler.Open(selectable.GetSpriteOptions(), selectable.spriteOrder, true, true);
             selectorUIHandler.Open(selectable.spriteOrder, true, true);
 
-            soundManager.PlaySound(Types.SoundType.Pop);
+            soundManager.PlaySound(SoundManager.SoundType.Pop);
 
             isSelecting = false;
             isSelected = true;
@@ -233,7 +233,7 @@ namespace Merge
         {
             selectable.SetSprites(option);
 
-            soundManager.PlaySound(Types.SoundType.Generate);
+            soundManager.PlaySound(SoundManager.SoundType.Generate);
         }
 
         public void CancelSelecting(bool denied = false)
@@ -310,31 +310,31 @@ namespace Merge
 
             selectorArrow.style.backgroundImage = new StyleBackground(arrowSprites[1]);
 
-            soundManager.PlaySound(Types.SoundType.Pop);
+            soundManager.PlaySound(SoundManager.SoundType.Pop);
 
             yield return new WaitForSeconds(duration);
 
             selectorArrow.style.backgroundImage = new StyleBackground(arrowSprites[2]);
 
-            soundManager.PlaySound(Types.SoundType.Pop);
+            soundManager.PlaySound(SoundManager.SoundType.Pop);
 
             yield return new WaitForSeconds(duration);
 
             selectorArrow.style.backgroundImage = new StyleBackground(arrowSprites[3]);
 
-            soundManager.PlaySound(Types.SoundType.Pop);
+            soundManager.PlaySound(SoundManager.SoundType.Pop);
 
             yield return new WaitForSeconds(duration);
 
             selectorArrow.style.backgroundImage = new StyleBackground(arrowSprites[4]);
 
-            soundManager.PlaySound(Types.SoundType.Pop);
+            soundManager.PlaySound(SoundManager.SoundType.Pop);
 
             yield return new WaitForSeconds(duration);
 
             selectorArrow.style.backgroundImage = new StyleBackground(arrowSprites[5]);
 
-            soundManager.PlaySound(Types.SoundType.Pop);
+            soundManager.PlaySound(SoundManager.SoundType.Pop);
 
             yield return new WaitForSeconds(duration);
 

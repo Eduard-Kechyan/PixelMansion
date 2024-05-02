@@ -8,7 +8,7 @@ namespace Merge
     [CreateAssetMenu(fileName = "LevelData", menuName = "ScriptableObject/LevelData")]
     public class LevelData : ScriptableObject
     {
-        public Types.ShopItemsContent[] levelRewardContent;
-        public Types.ShopItemsContent[] levelTenRewardContent;
+        public ShopMenu.ShopItemsContent[] levelRewardContent;
+        public ShopMenu.ShopItemsContent[] levelTenRewardContent;
     }
 }

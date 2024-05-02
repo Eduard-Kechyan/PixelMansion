@@ -12,7 +12,7 @@ namespace Merge
         public bool vibrationOn = true;
         public bool notificationsOn = true;
 
-        public Types.Locale currentLocale;
+        public I18n.Locale currentLocale;
 
         // References
         private SoundManager soundManager;
@@ -62,7 +62,7 @@ namespace Merge
                 yield return null;
             }
 
-            SetLocale(Types.Locale.English, true);
+            SetLocale(I18n.Locale.English, true);
         }
 
         public void Init()
@@ -167,7 +167,7 @@ namespace Merge
         {
             if (PlayerPrefs.HasKey("locale"))
             {
-                Types.Locale locale = Glob.ParseEnum<Types.Locale>(PlayerPrefs.GetString("locale"));
+                I18n.Locale locale = Glob.ParseEnum<I18n.Locale>(PlayerPrefs.GetString("locale"));
 
                 currentLocale = locale;
 
@@ -175,13 +175,13 @@ namespace Merge
             }
         }
 
-        public void SetLocale(Types.Locale newLocale, bool initial = false)
+        public void SetLocale(I18n.Locale newLocale, bool initial = false)
         {
             if (initial)
             {
                 if (PlayerPrefs.HasKey("locale"))
                 {
-                    Types.Locale locale = Glob.ParseEnum<Types.Locale>(PlayerPrefs.GetString("locale"));
+                    I18n.Locale locale = Glob.ParseEnum<I18n.Locale>(PlayerPrefs.GetString("locale"));
 
                     currentLocale = locale;
 
@@ -191,14 +191,14 @@ namespace Merge
                 {
                     List<string> locales = new();
 
-                    foreach (Types.Locale locale in System.Enum.GetValues(typeof(Types.Locale)))
+                    foreach (I18n.Locale locale in System.Enum.GetValues(typeof(I18n.Locale)))
                     {
                         locales.Add(locale.ToString());
                     }
 
                     if (locales.Contains(Application.systemLanguage.ToString()))
                     {
-                        Types.Locale locale = Glob.ParseEnum<Types.Locale>(Application.systemLanguage.ToString());
+                        I18n.Locale locale = Glob.ParseEnum<I18n.Locale>(Application.systemLanguage.ToString());
 
                         currentLocale = locale;
 
@@ -210,7 +210,7 @@ namespace Merge
                     }
                     else
                     {
-                        I18n.SetLocale(Types.Locale.English);
+                        I18n.SetLocale(I18n.Locale.English);
 
                         PlayerPrefs.SetString("locale", "English");
 

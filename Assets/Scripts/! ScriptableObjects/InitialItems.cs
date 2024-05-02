@@ -8,6 +8,6 @@ namespace Merge
     [CreateAssetMenu(fileName = "InitialItems", menuName = "ScriptableObject/InitialItems")]
     public class InitialItems : ScriptableObject
     {
-        public Types.Tile[] content = new Types.Tile[GameData.ITEM_COUNT];
+        public BoardManager.Tile[] content = new BoardManager.Tile[GameData.ITEM_COUNT];
     }
 }

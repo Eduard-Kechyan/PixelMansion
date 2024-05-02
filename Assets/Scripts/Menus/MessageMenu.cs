@@ -13,7 +13,18 @@ namespace Merge
 
         private string newTitle = "";
 
-        private Types.Menu menuType = Types.Menu.Message;
+        private MenuUI.Menu menuType = MenuUI.Menu.Message;
+
+        // Enums
+        public enum MessageType
+        {
+            None,
+            Custom,
+            Terms,
+            Privacy,
+            Note,
+            DigitalServiceAct
+        }
 
         // References
         private MenuUI menuUI;
@@ -48,10 +59,10 @@ namespace Merge
             });
         }
 
-        public void Open(Types.MessageType messageType, string title = "", string message = "", string buttonPrefix = "", bool isHtml = false, Action callback = null)
+        public void Open(MessageType messageType, string title = "", string message = "", string buttonPrefix = "", bool isHtml = false, Action callback = null)
         {
             // Check menu
-            if (menuUI.IsMenuOpen(menuType) || messageType == Types.MessageType.None)
+            if (menuUI.IsMenuOpen(menuType) || messageType == MessageType.None)
             {
                 return;
             }
@@ -61,13 +72,13 @@ namespace Merge
 
             messageScrollView.Clear();
 
-            if (messageType == Types.MessageType.Custom)
+            if (messageType == MessageType.Custom)
             {
                 newTitle = title;
 
                 NewMessageLabel(message);
             }
-            else if (messageType == Types.MessageType.DigitalServiceAct)
+            else if (messageType == MessageType.DigitalServiceAct)
             {
                 newTitle = LOCALE.Get("Message_menu_title_" + messageType);
 
@@ -121,7 +132,7 @@ namespace Merge
                 NewMessageLabel(LOCALE.Get("message_error"));
 
                 // ERROR
-                errorManager.Throw(Types.ErrorType.Code, GetType().Name, "newMessageLabels count is 0!");
+                errorManager.Throw(ErrorManager.ErrorType.Code, GetType().Name, "newMessageLabels count is 0!");
             }
         }
 

@@ -15,7 +15,7 @@ namespace Merge
         public bool hasLoadingEvent = true;
 
         [HideInInspector]
-        public Types.Menu menuType = Types.Menu.Terms;
+        public MenuUI.Menu menuType = MenuUI.Menu.Terms;
 
         // References
         private MenuUI menuUI;
@@ -58,11 +58,11 @@ namespace Merge
                 termsAcceptButton.clicked += () => AcceptTerms();
                 termsTermsButton.clicked += () =>
                 {
-                    menuUtilities.TryToGetOnlineData(Types.MessageType.Terms);
+                    menuUtilities.TryToGetOnlineData(MessageMenu.MessageType.Terms);
                 };
                 termsPrivacyButton.clicked += () =>
                 {
-                    menuUtilities.TryToGetOnlineData(Types.MessageType.Privacy);
+                    menuUtilities.TryToGetOnlineData(MessageMenu.MessageType.Privacy);
                 };
 
                 Init();

@@ -67,40 +67,40 @@ namespace Merge
         public int inventorySlotPrice = 50;
         [HideInInspector]
         public int initialInventorySpace = 7;
-        public List<Types.Inventory> inventoryData = new();
+        public List<InventoryMenu.Inventory> inventoryData = new();
         public const int maxInventorySpace = 50;
 
         // Main data
         [HideInInspector]
-        public List<Types.Bonus> bonusData = new();
+        public List<BonusManager.Bonus> bonusData = new();
         [HideInInspector]
-        public List<Types.TaskGroup> tasksData = new();
+        public List<TaskManager.TaskGroup> tasksData = new();
         [HideInInspector]
-        public List<Types.FinishedTask> finishedTasks = new();
+        public List<TaskManager.FinishedTask> finishedTasks = new();
         [HideInInspector]
-        public List<WorldTypes.Area> areasData = new();
+        public List<WorldDataManager.Area> areasData = new();
 
         // Board
         [HideInInspector]
-        public Types.Tile[,] boardData;
+        public BoardManager.Tile[,] boardData;
         [HideInInspector]
         public string[] unlockedData = new string[0];
         [HideInInspector]
         public string[] unlockedRoomsData = new string[0];
         [HideInInspector]
-        public Types.Item[] itemsData;
+        public BoardManager.TypeItem[] itemsData;
         [HideInInspector]
-        public Types.Item[] collectablesData;
+        public BoardManager.TypeItem[] collectablesData;
         [HideInInspector]
-        public Types.Item[] generatorsData;
+        public BoardManager.TypeItem[] generatorsData;
         [HideInInspector]
-        public Types.Item[] chestsData;
+        public BoardManager.TypeItem[] chestsData;
         [HideInInspector]
-        public List<Types.CoolDownCount> coolDowns = new();
+        public List<TimeManager.CoolDownCount> coolDowns = new();
 
         // Timers
         [HideInInspector]
-        public List<Types.Timer> timers;
+        public List<TimeManager.Timer> timers;
 
         [Header("Other")]
         [ReadOnly]
@@ -110,7 +110,7 @@ namespace Merge
         public bool dataLoaded = false;
 
         // Notifications
-        public List<Types.Notification> notifications = new();
+        public List<NotificsManager.Notification> notifications = new();
 
         // Sprites
         private Sprite[] itemSprites;
@@ -125,7 +125,7 @@ namespace Merge
         private Sprite[] propsSprites;
 
         // Other
-        public Types.Scene lastScene = Types.Scene.None;
+        public SceneLoader.SceneType lastScene = SceneLoader.SceneType.None;
 
         [HideInInspector]
         public string termsHtml = "";
@@ -136,7 +136,7 @@ namespace Merge
 
         // Debug
 #if DEVELOPMENT_BUILD || UNITY_EDITOR
-        public List<Types.LogData> logsData = new();
+        public List<Logs.LogData> logsData = new();
 #endif
 
         // Events
@@ -184,11 +184,11 @@ namespace Merge
             LoadGameData();
         }
 
-        public void Init(Types.Scene scene)
+        public void Init(SceneLoader.SceneType scene)
         {
             valuesUI = GameRefs.Instance.valuesUI;
 
-            if (scene == Types.Scene.Merge)
+            if (scene == SceneLoader.SceneType.Merge)
             {
                 mergeUI = GameRefs.Instance.mergeUI;
             }
@@ -259,7 +259,7 @@ namespace Merge
 
             if (slash)
             {
-                valuesUI.SlashValues(Types.CollGroup.Energy);
+                valuesUI.SlashValues(Item.CollGroup.Energy);
             }
 
             EnergyUpdatedEventAction?.Invoke(true);
@@ -276,7 +276,7 @@ namespace Merge
 
             if (slash)
             {
-                valuesUI.SlashValues(Types.CollGroup.Gold);
+                valuesUI.SlashValues(Item.CollGroup.Gold);
             }
         }
 
@@ -291,7 +291,7 @@ namespace Merge
 
             if (slash)
             {
-                valuesUI.SlashValues(Types.CollGroup.Gems);
+                valuesUI.SlashValues(Item.CollGroup.Gems);
             }
         }
 
@@ -335,7 +335,7 @@ namespace Merge
             {
                 if (playSound && !canLevelUp)
                 {
-                    soundManager.PlaySound(Types.SoundType.LevelUpIndicator);
+                    soundManager.PlaySound(SoundManager.SoundType.LevelUpIndicator);
                 }
                 ToggleCanLevelUpCheck(true);
 
@@ -356,36 +356,36 @@ namespace Merge
             }
         }
 
-        public bool UpdateValue(int amount, Types.CollGroup type, bool useMultiplier = false, bool updateUI = false)
+        public bool UpdateValue(int amount, Item.CollGroup type, bool useMultiplier = false, bool updateUI = false)
         {
             int tempAmount = CalcNewAmount(amount, type, useMultiplier);
 
             switch (type)
             {
-                case Types.CollGroup.Energy:
+                case Item.CollGroup.Energy:
                     if (amount < 0 && energy + amount < 0)
                     {
                         return false;
                     }
                     break;
-                case Types.CollGroup.Gold:
+                case Item.CollGroup.Gold:
                     if (amount < 0 && gold + amount < 0)
                     {
                         return false;
                     }
                     break;
-                case Types.CollGroup.Gems:
+                case Item.CollGroup.Gems:
                     if (amount < 0 && gems + amount < 0)
                     {
                         return false;
                     }
                     break;
-                default: //Types.CollGroup.Experience
+                default: //Item.CollGroup.Experience
                     UpdateExperience(tempAmount);
                     return false;
             }
 
-            if (type == Types.CollGroup.Energy)
+            if (type == Item.CollGroup.Energy)
             {
                 energyTemp = CalcNewAmount(amount, type, useMultiplier);
 
@@ -402,7 +402,7 @@ namespace Merge
             return true;
         }
 
-        public void UpdateValueUI(int amount, Types.CollGroup type, bool useMultiplier = false, Action callback = null)
+        public void UpdateValueUI(int amount, Item.CollGroup type, bool useMultiplier = false, Action callback = null)
         {
             int tempAmount = CalcNewAmount(amount, type, useMultiplier);
 
@@ -414,20 +414,20 @@ namespace Merge
 
             switch (type)
             {
-                case Types.CollGroup.Energy:
+                case Item.CollGroup.Energy:
                     currentAmount = energy;
                     isUpdating = updatingEnergy;
                     break;
-                case Types.CollGroup.Gold:
+                case Item.CollGroup.Gold:
                     currentAmount = gold;
                     isUpdating = updatingGold;
                     break;
-                case Types.CollGroup.Gems:
+                case Item.CollGroup.Gems:
                     currentAmount = gems;
                     isUpdating = updatingGems;
                     break;
-                default: //Types.CollGroup.Experience
-                    Debug.LogWarning("Types.CollGroup.Experience was given to UpdateValueUI!");
+                default: //Item.CollGroup.Experience
+                    Debug.LogWarning("Item.CollGroup.Experience was given to UpdateValueUI!");
                     return;
             }
 
@@ -445,11 +445,11 @@ namespace Merge
             }
         }
 
-        int CalcNewAmount(int amount, Types.CollGroup type, bool useMultiplier = false)
+        int CalcNewAmount(int amount, Item.CollGroup type, bool useMultiplier = false)
         {
             switch (type)
             {
-                case Types.CollGroup.Energy:
+                case Item.CollGroup.Energy:
                     if (useMultiplier)
                     {
                         return energy + valuesData.energyMultiplier[amount - 1];
@@ -458,7 +458,7 @@ namespace Merge
                     {
                         return energy + amount;
                     }
-                case Types.CollGroup.Gold:
+                case Item.CollGroup.Gold:
                     if (useMultiplier)
                     {
                         return gold + valuesData.goldMultiplier[amount - 1];
@@ -467,7 +467,7 @@ namespace Merge
                     {
                         return gold + amount;
                     }
-                case Types.CollGroup.Gems:
+                case Item.CollGroup.Gems:
                     if (useMultiplier)
                     {
                         return gems + valuesData.gemsMultiplier[amount - 1];
@@ -476,7 +476,7 @@ namespace Merge
                     {
                         return gems + amount;
                     }
-                default: //Types.CollGroup.Experience
+                default: //Item.CollGroup.Experience
                     if (useMultiplier)
                     {
                         return experience + valuesData.experienceMultiplier[amount - 1];
@@ -488,7 +488,7 @@ namespace Merge
             }
         }
 
-        IEnumerator UpdateNumber(Types.CollGroup type, int amount, int newAmount, bool slash, Action callback = null)
+        IEnumerator UpdateNumber(Item.CollGroup type, int amount, int newAmount, bool slash, Action callback = null)
         {
             int prevAmount = amount;
             int stepAmount;
@@ -559,33 +559,33 @@ namespace Merge
             }
         }
 
-        void SetUpdateNumber(Types.CollGroup type, int amount)
+        void SetUpdateNumber(Item.CollGroup type, int amount)
         {
             switch (type)
             {
-                case Types.CollGroup.Energy:
+                case Item.CollGroup.Energy:
                     energy = amount;
                     break;
-                case Types.CollGroup.Gold:
+                case Item.CollGroup.Gold:
                     gold = amount;
                     break;
-                case Types.CollGroup.Gems:
+                case Item.CollGroup.Gems:
                     gems = amount;
                     break;
             }
         }
 
-        void SetUpdating(Types.CollGroup type, bool value)
+        void SetUpdating(Item.CollGroup type, bool value)
         {
             switch (type)
             {
-                case Types.CollGroup.Energy:
+                case Item.CollGroup.Energy:
                     updatingEnergy = value;
                     break;
-                case Types.CollGroup.Gold:
+                case Item.CollGroup.Gold:
                     updatingGold = value;
                     break;
-                case Types.CollGroup.Gems:
+                case Item.CollGroup.Gems:
                     updatingGems = value;
                     break;
             }
@@ -595,7 +595,7 @@ namespace Merge
 
         public void AddToBonus(Item item)
         {
-            Types.Bonus newBonus = new()
+            BonusManager.Bonus newBonus = new()
             {
                 sprite = item.sprite,
                 type = item.type,
@@ -614,11 +614,11 @@ namespace Merge
             mergeUI.CheckBonusButton();
         }
 
-        public Types.Bonus GetAndRemoveLatestBonus()
+        public BonusManager.Bonus GetAndRemoveLatestBonus()
         {
             int latestIndex = bonusData.Count - 1;
 
-            Types.Bonus newBonus = bonusData[latestIndex];
+            BonusManager.Bonus newBonus = bonusData[latestIndex];
 
             bonusData.RemoveAt(latestIndex);
 
@@ -640,7 +640,7 @@ namespace Merge
         }
 
         // Get item sprite from sprite name
-        public Sprite GetSprite(string name, Types.Type type)
+        public Sprite GetSprite(string name, Item.Type type)
         {
             if (name == null || name == "")
             {
@@ -649,17 +649,17 @@ namespace Merge
 
             switch (type)
             {
-                case Types.Type.Item:
+                case Item.Type.Item:
                     return FindSpriteByName(itemSprites, name);
-                case Types.Type.Gen:
+                case Item.Type.Gen:
                     return FindSpriteByName(generatorSprites, name);
-                case Types.Type.Coll:
+                case Item.Type.Coll:
                     return FindSpriteByName(collectableSprites, name);
-                case Types.Type.Chest:
+                case Item.Type.Chest:
                     return FindSpriteByName(chestSprites, name);
                 default:
                     // ERROR
-                    ErrorManager.Instance.Throw(Types.ErrorType.Code, GetType() + " // Item", "Wrong type: " + type);
+                    ErrorManager.Instance.Throw(ErrorManager.ErrorType.Code, GetType() + " // Item", "Wrong type: " + type);
                     return null;
             }
         }
@@ -686,7 +686,7 @@ namespace Merge
                     return FindSpriteByName(propsSprites, name);
                 default:
                     // ERROR
-                    ErrorManager.Instance.Throw(Types.ErrorType.Code, GetType() + " // Selectable", "Wrong type: " + type);
+                    ErrorManager.Instance.Throw(ErrorManager.ErrorType.Code, GetType() + " // Selectable", "Wrong type: " + type);
                     return null;
             }
         }
@@ -703,7 +703,7 @@ namespace Merge
             }
 
             // ERROR
-            ErrorManager.Instance.Throw(Types.ErrorType.Code, GetType().ToString(), "Sprite not found with name: " + name);
+            ErrorManager.Instance.Throw(ErrorManager.ErrorType.Code, GetType().ToString(), "Sprite not found with name: " + name);
 
             return null;
         }

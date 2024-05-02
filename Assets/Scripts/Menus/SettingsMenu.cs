@@ -13,7 +13,15 @@ namespace Merge
 
         private bool externalAppOpened = false;
 
-        private Types.Menu menuType = Types.Menu.Settings;
+        private MenuUI.Menu menuType = MenuUI.Menu.Settings;
+
+        // Enums
+        public enum SocialMediaType
+        {
+            Instagram,
+            Facebook,
+            Youtube
+        }
 
         // References
         private MenuUI menuUI;
@@ -123,8 +131,8 @@ namespace Merge
 
                 feedbackButton.clicked += () => feedbackManager.Open();
                 supportButton.clicked += () => Application.OpenURL(GameData.WEB_ADDRESS + "/support");
-                privacyButton.clicked += () => menuUtilities.TryToGetOnlineData(Types.MessageType.Terms);
-                termsButton.clicked += () => menuUtilities.TryToGetOnlineData(Types.MessageType.Privacy);
+                privacyButton.clicked += () => menuUtilities.TryToGetOnlineData(MessageMenu.MessageType.Terms);
+                termsButton.clicked += () => menuUtilities.TryToGetOnlineData(MessageMenu.MessageType.Privacy);
                 languageButton.clicked += () => localeMenu.Open();
                 resetButton.clicked += () => confirmMenu.Open("reset", resetHandler.ResetAndRestartApp);
                 exitButton.clicked += () => confirmMenu.Open("exit", Application.Quit);
@@ -147,9 +155,9 @@ namespace Merge
                     SetUISignInText();
                 };
 
-                instagramFollowButton.clicked += () => OpenSocialMediaLink(Types.SocialMediaType.Instagram);
-                facebookFollowButton.clicked += () => OpenSocialMediaLink(Types.SocialMediaType.Facebook);
-                youtubeFollowButton.clicked += () => OpenSocialMediaLink(Types.SocialMediaType.Youtube);
+                instagramFollowButton.clicked += () => OpenSocialMediaLink(SocialMediaType.Instagram);
+                facebookFollowButton.clicked += () => OpenSocialMediaLink(SocialMediaType.Facebook);
+                youtubeFollowButton.clicked += () => OpenSocialMediaLink(SocialMediaType.Youtube);
 
                 idCopyButton.clicked += () => CopyIdToClipboard();
             });
@@ -286,7 +294,7 @@ namespace Merge
 #endif
         }
 
-        public void SetLocale(Types.Locale newLocale)
+        public void SetLocale(I18n.Locale newLocale)
         {
             settings.SetLocale(newLocale, false);
         }
@@ -332,19 +340,19 @@ namespace Merge
             });
         }
 
-        public void OpenSocialMediaLink(Types.SocialMediaType type)
+        public void OpenSocialMediaLink(SocialMediaType type)
         {
             switch (type)
             {
-                case Types.SocialMediaType.Instagram:
+                case SocialMediaType.Instagram:
                     Application.OpenURL("instragram://user?username=" + GameData.STUDIO_NAME);
 
                     break;
-                case Types.SocialMediaType.Facebook:
+                case SocialMediaType.Facebook:
                     Application.OpenURL("https://facebook.com/" + GameData.STUDIO_NAME);
 
                     break;
-                case Types.SocialMediaType.Youtube:
+                case SocialMediaType.Youtube:
                     Application.OpenURL("https://youtube.com/@" + GameData.STUDIO_NAME);
 
                     break;
@@ -362,7 +370,7 @@ namespace Merge
             StartCoroutine(CheckSocialMediaLink(type));
         }
 
-        IEnumerator CheckSocialMediaLink(Types.SocialMediaType type)
+        IEnumerator CheckSocialMediaLink(SocialMediaType type)
         {
             yield return new WaitForSeconds(1f);
 
@@ -370,15 +378,15 @@ namespace Merge
             {
                 switch (type)
                 {
-                    case Types.SocialMediaType.Instagram:
+                    case SocialMediaType.Instagram:
                         Application.OpenURL("https://instagram.com/" + GameData.STUDIO_NAME);
 
                         break;
-                    case Types.SocialMediaType.Facebook:
+                    case SocialMediaType.Facebook:
                         Application.OpenURL("https://facebook.com/" + GameData.STUDIO_NAME);
 
                         break;
-                    case Types.SocialMediaType.Youtube:
+                    case SocialMediaType.Youtube:
                         Application.OpenURL("https://youtube.com/@" + GameData.STUDIO_NAME);
 
                         break;

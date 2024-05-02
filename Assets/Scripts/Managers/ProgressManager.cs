@@ -15,6 +15,52 @@ namespace Merge
         private bool initialSet = false;
         private bool settingInitial = false;
 
+        // Enums
+        public enum StepType
+        {
+            Task,
+            Convo,
+            Last,
+            PreMansion,
+        };
+
+        // Classes
+        [Serializable]
+        public class StepArea
+        {
+            [HideInInspector]
+            public string name;
+            public string id;
+            public Step[] steps;
+        }
+
+        [Serializable]
+        public class Step
+        {
+            [HideInInspector]
+            public string name;
+            public string id;
+            public StepType stepType;
+            public string[] nextIds;
+            public string[] requiredIds;
+        }
+
+        [Serializable]
+        public class NextStep
+        {
+            [HideInInspector]
+            public string name;
+            public string id;
+            public bool isArea;
+        }
+
+        [Serializable]
+        public class ProgressStep
+        {
+            public string stepType;
+            public string id;
+        }
+
         // References
         private GameRefs gameRefs;
         private WorldDataManager worldDataManager;
@@ -103,7 +149,7 @@ namespace Merge
                     // To get the last step
                     int length = progressData.areas[i].steps.Length - 1;
 
-                    if (progressData.areas[i].steps[length].stepType == Types.StepType.Last || progressData.areas[i].steps[length].stepType == Types.StepType.PreMansion)
+                    if (progressData.areas[i].steps[length].stepType == StepType.Last || progressData.areas[i].steps[length].stepType == StepType.PreMansion)
                     {
                         // Check if the step even has next ids
                         if (progressData.areas[i].steps[length].nextIds.Length > 0)
@@ -182,7 +228,7 @@ namespace Merge
         }
 
         // Check the next step's type
-        bool HandleNextStep(string groupId, string nextStepId, Types.Step[] steps)
+        bool HandleNextStep(string groupId, string nextStepId, Step[] steps)
         {
             bool shouldShowUI = true;
 
@@ -193,7 +239,7 @@ namespace Merge
                     bool addNewTask = true;
 
                     // Check for the last step
-                    if (steps[i].stepType == Types.StepType.Last || steps[i].stepType == Types.StepType.PreMansion)
+                    if (steps[i].stepType == StepType.Last || steps[i].stepType == StepType.PreMansion)
                     {
                         addNewTask = CheckLastRequirements(groupId);
                     }
@@ -222,7 +268,7 @@ namespace Merge
 
                     if (addNewTask)
                     {
-                        if (shouldShowUI && steps[i].stepType == Types.StepType.Convo)
+                        if (shouldShowUI && steps[i].stepType == StepType.Convo)
                         {
                             shouldShowUI = false;
                         }
@@ -310,14 +356,14 @@ namespace Merge
         }
 
         // Check witch functions to call for the next step
-        void HandleNextStepType(Types.StepType stepType, string areaId, string stepId)
+        void HandleNextStepType(StepType stepType, string areaId, string stepId)
         {
             switch (stepType)
             {
-                case Types.StepType.Task:
+                case StepType.Task:
                     taskManager.TryToAddTask(areaId, stepId);
                     break;
-                case Types.StepType.Convo:
+                case StepType.Convo:
                     if (worldDataManager != null)
                     {
                         SetProgressStep(stepType, stepId);
@@ -355,11 +401,11 @@ namespace Merge
         {
             if (PlayerPrefs.HasKey("progressStep"))
             {
-                Types.ProgressStep oldProgressStep = JsonConvert.DeserializeObject<Types.ProgressStep>(PlayerPrefs.GetString("progressStep"));
+                ProgressStep oldProgressStep = JsonConvert.DeserializeObject<ProgressStep>(PlayerPrefs.GetString("progressStep"));
 
-                switch (Glob.ParseEnum<Types.StepType>(oldProgressStep.stepType))
+                switch (Glob.ParseEnum<StepType>(oldProgressStep.stepType))
                 {
-                    case Types.StepType.Convo:
+                    case StepType.Convo:
                         if (worldDataManager != null)
                         {
                             Glob.SetTimeout(() =>
@@ -375,15 +421,15 @@ namespace Merge
                         }
                         break;
                     default:
-                        Debug.LogWarning("Types.StepType " + oldProgressStep.stepType + " is not being properly handled!");
+                        Debug.LogWarning("StepType " + oldProgressStep.stepType + " is not being properly handled!");
                         break;
                 }
             }
         }
 
-        void SetProgressStep(Types.StepType stepType, string stepId)
+        void SetProgressStep(StepType stepType, string stepId)
         {
-            Types.ProgressStep newProgressStep = new()
+            ProgressStep newProgressStep = new()
             {
                 stepType = stepType.ToString(),
                 id = stepId,

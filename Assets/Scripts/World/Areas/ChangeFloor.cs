@@ -275,7 +275,7 @@ namespace Merge
                 {
                     tiles[i][j].material.SetFloat("_FlashAmount", 1);
 
-                    SoundManager.Instance.PlaySound(Types.SoundType.Generate);
+                    SoundManager.Instance.PlaySound(SoundManager.SoundType.Generate);
 
                     tiles[i][j].sprite = selectable.GetSprite(spriteOrder);
                 }

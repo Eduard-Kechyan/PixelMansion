@@ -19,7 +19,7 @@ namespace Merge
 
         private int starCount = 0;
 
-        private Types.Menu menuType = Types.Menu.Rate;
+        private MenuUI.Menu menuType = MenuUI.Menu.Rate;
 
         // References
         private MenuUI menuUI;

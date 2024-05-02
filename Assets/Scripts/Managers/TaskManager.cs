@@ -25,6 +25,102 @@ namespace Merge
         public delegate void HandlingTaskEvent();
         public static event HandlingTaskEvent OnTaskHandling;
 
+        //Enums
+        public enum TaskRefType
+        {
+            Floor,
+            Wall,
+            Furniture,
+            Item,
+            Filth,
+            Last,
+            PreMansion
+        };
+
+        // Classes
+        [Serializable]
+        public class TaskGroup
+        {
+            [HideInInspector]
+            public string name;
+            public string id;
+            public List<Task> tasks;
+            [HideInInspector]
+            public int total;
+            [HideInInspector]
+            public int completed;
+        }
+
+        [Serializable]
+        public class Task
+        {
+            [HideInInspector]
+            public string name;
+            public string id;
+            public string taskRefName;
+            public TaskRefType taskRefType;
+            public bool isTaskRefRight;
+            public TaskItem[] needs;
+            public TaskItem[] rewards;
+            [HideInInspector]
+            public int completed;
+        }
+
+        [Serializable]
+        public class TaskItem
+        {
+            public Sprite sprite;
+            public Item.Type type;
+            public Item.Group group;
+            public Item.GenGroup genGroup;
+            public Item.CollGroup collGroup;
+            public Item.ChestGroup chestGroup;
+            public int amount;
+            [HideInInspector]
+            public int completed;
+        }
+
+        [Serializable]
+        public class FinishedTask
+        {
+            public string groupId;
+            public string taskId;
+        }
+
+        [Serializable]
+        public class TaskGroupJson
+        {
+            public string id;
+            public string tasks;
+            public int total;
+            public int completed;
+        }
+
+        [Serializable]
+        public class TaskJson
+        {
+            public string id;
+            public string taskRefName;
+            public string taskRefType;
+            public bool isTaskRefRight;
+            public string needs;
+            public string rewards;
+            public int completed;
+        }
+
+        [Serializable]
+        public class TaskItemJson
+        {
+            public string sprite;
+            public string type;
+            public string group;
+            public string genGroup;
+            public string collGroup;
+            public string chestGroup;
+            public int amount;
+            public int completed;
+        }
+
         // References
         private GameRefs gameRefs;
         private GameData gameData;
@@ -87,7 +183,7 @@ namespace Merge
         // Or add a new task group if it doesn't exists, then add the task to it
         void AddTask(string groupId, string taskId)
         {
-            Types.Task newTask = null;
+            Task newTask = null;
 
             // Get task data with the given id
             for (int i = 0; i < tasksData.taskGroups.Length; i++)
@@ -123,10 +219,10 @@ namespace Merge
                 if (addNewGroup)
                 {
                     // Initialize the new task group
-                    Types.TaskGroup newTaskGroup = new()
+                    TaskGroup newTaskGroup = new()
                     {
                         id = groupId,
-                        tasks = new List<Types.Task>(),
+                        tasks = new List<Task>(),
                         total = CountTaskGroupTotal(groupId)
                     };
 
@@ -240,7 +336,7 @@ namespace Merge
         {
             if (!gameData.finishedTasks.Exists(i => i.groupId == groupId && i.taskId == taskId))
             {
-                gameData.finishedTasks.Add(new Types.FinishedTask() { groupId = groupId, taskId = taskId, });
+                gameData.finishedTasks.Add(new FinishedTask() { groupId = groupId, taskId = taskId, });
             }
         }
 
@@ -251,8 +347,8 @@ namespace Merge
         {
             Transform taskRef = null;
             Vector2 taskRefPos = Vector2.zero;
-            Types.TaskRefType taskRefType = Types.TaskRefType.Last;
-            Types.TaskItem[] rewards = null;
+            TaskRefType taskRefType = TaskRefType.Last;
+            TaskItem[] rewards = null;
 
             bool handling = false;
 
@@ -300,12 +396,12 @@ namespace Merge
             }
         }
 
-        void HandleTaskCompletion(string groupId, string taskId, Transform taskRef, Types.TaskRefType taskRefType, Vector2 taskRefPos, Types.TaskItem[] rewards, Action callback)
+        void HandleTaskCompletion(string groupId, string taskId, Transform taskRef, TaskRefType taskRefType, Vector2 taskRefPos, TaskItem[] rewards, Action callback)
         {
             // Move the camera to the item we want to change
             switch (taskRefType)
             {
-                case Types.TaskRefType.Filth:
+                case TaskRefType.Filth:
                     cameraMotion.MoveTo(taskRefPos, 250, () =>
                     {
                         removeFilth.Remove(taskRef, () =>
@@ -327,7 +423,7 @@ namespace Merge
 
                     cameraPinch.isResetting = true;
                     break;
-                case Types.TaskRefType.Last:
+                case TaskRefType.Last:
                     Transform foundRoom = worldDataManager.FindRoomInWorld(groupId);
 
                     if (foundRoom != null)
@@ -356,7 +452,7 @@ namespace Merge
                         Debug.LogWarning("foundRoom is null");
                     }
                     break;
-                case Types.TaskRefType.PreMansion:
+                case TaskRefType.PreMansion:
                     preMansionHandler.Remove(() =>
                     {
                         callback?.Invoke();
@@ -436,7 +532,7 @@ namespace Merge
         // Remove the task needs from the board and the inventory after completing the task
         void RemoveNeedsFromBoardAndInventory(string groupId, string taskId, Action callback)
         {
-            List<Types.TaskItem> needs = new();
+            List<TaskItem> needs = new();
 
             // Get all the needs from the task
             // If the need amount is more than 0, then add the needs multiple times
@@ -471,15 +567,15 @@ namespace Merge
                 {
                     for (int y = 0; y < gameData.boardData.GetLength(1); y++)
                     {
-                        if (needs[i].sprite == gameData.boardData[x, y].sprite && needs[i].type == gameData.boardData[x, y].type && gameData.boardData[x, y].state == Types.State.Default)
+                        if (needs[i].sprite == gameData.boardData[x, y].sprite && needs[i].type == gameData.boardData[x, y].type && gameData.boardData[x, y].state == Item.State.Default)
                         {
                             int oldOrder = gameData.boardData[x, y].order;
 
                             // Create a new board data using the old older
-                            gameData.boardData[x, y] = new Types.Tile { order = oldOrder };
+                            gameData.boardData[x, y] = new BoardManager.Tile { order = oldOrder };
 
                             // Nullify the needs
-                            needs[i] = new Types.TaskItem();
+                            needs[i] = new TaskItem();
                         }
                     }
                 }
@@ -507,7 +603,7 @@ namespace Merge
         //// Rewards ////
 
         // Get the rewards and handle them as needed
-        void HandleRewards(Types.TaskItem[] rewards, Action callback)
+        void HandleRewards(TaskItem[] rewards, Action callback)
         {
             if (rewards.Length > 0)
             {
@@ -516,7 +612,7 @@ namespace Merge
 
                 for (int i = 0; i < rewards.Length; i++)
                 {
-                    if (rewards[i].type == Types.Type.Coll)
+                    if (rewards[i].type == Item.Type.Coll)
                     {
                         valuePop.PopValue(rewards[i].amount, rewards[i].collGroup, uiButtons.worldTaskButtonPos);
 
@@ -536,7 +632,7 @@ namespace Merge
         }
 
         // Handle Items, Generators and Chests
-        IEnumerator AddItemToBonus(Types.TaskItem reward, Action callback)
+        IEnumerator AddItemToBonus(TaskItem reward, Action callback)
         {
             yield return new WaitForSeconds(0.5f);
 
@@ -686,7 +782,7 @@ namespace Merge
         }
 
         // Check if a task need exists on the board or in the inventory and get its amount
-        int CheckNeedCompleted(Types.TaskItem taskNeed)
+        int CheckNeedCompleted(TaskItem taskNeed)
         {
             int amount = 0;
 
@@ -697,7 +793,7 @@ namespace Merge
                 {
                     if (
                         gameData.boardData[x, y].sprite == taskNeed.sprite
-                        && gameData.boardData[x, y].state == Types.State.Default
+                        && gameData.boardData[x, y].state == Item.State.Default
                         && gameData.boardData[x, y].type == taskNeed.type
                         && gameData.boardData[x, y].group == taskNeed.group
                         && gameData.boardData[x, y].genGroup == taskNeed.genGroup

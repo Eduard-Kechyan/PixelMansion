@@ -76,7 +76,7 @@ namespace Merge
 
             int filthCount = refFilth.childCount;
 
-            soundManager.PlaySound(Types.SoundType.Generate); // TODO - Change this to Types.SoundType.RemoveFilth and add the proper sound 
+            soundManager.PlaySound(SoundManager.SoundType.Generate); // TODO - Change this to SoundManager.SoundType.RemoveFilth and add the proper sound 
 
             // Remove mansion parts
             for (int i = 0; i < filthCount; i++)

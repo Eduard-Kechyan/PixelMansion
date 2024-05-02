@@ -14,6 +14,67 @@ namespace Merge
         [HideInInspector]
         public bool energyTimerChecked = false;
 
+        // Enums
+        public enum TimerType
+        {
+            Item,
+            Energy,
+            Bubble
+        };
+
+        // Classes
+        [Serializable]
+        public class Timer
+        {
+            public DateTime startTime;
+            public int seconds;
+            public bool running = true;
+            public TimerType timerType;
+            public Type itemType;
+            public string id;
+            public int notificationId;
+            public NotificsManager.NotificationType notificationType;
+        }
+
+        [Serializable]
+        public class TimerJson
+        {
+            public string startTime;
+            public int seconds;
+            public bool running;
+            public string timerType;
+            public string id;
+            public int notificationId;
+            public string notificationType;
+        }
+
+        [Serializable]
+        public class CoolDown
+        {
+            public int[] maxCounts;
+            public int seconds;
+            [ReadOnly]
+            public int minutes;
+        }
+
+        [Serializable]
+        public class CoolDownCount
+        {
+            public int count;
+            public int level;
+            public string id;
+            public DateTime startTime;
+        }
+
+        [Serializable]
+        public class CoolDownCountJson
+        {
+            public int count;
+            public int level;
+            public string id;
+            public string startTime;
+        }
+
         // References
         private GameRefs gameRefs;
         private DataManager dataManager;
@@ -39,7 +100,7 @@ namespace Merge
         {
             string sceneName = SceneManager.GetActiveScene().name;
 
-            if (sceneName == Types.Scene.Merge.ToString())
+            if (sceneName == SceneLoader.SceneType.Merge.ToString())
             {
                 clockManager = gameRefs.clockManager;
                 infoBox = gameRefs.infoBox;
@@ -66,24 +127,24 @@ namespace Merge
                         // End
                         ToggleTimerOnBoardData(gameData.timers[i].id, false);
 
-                        if (clockManager != null && gameData.timers[i].timerType == Types.TimerType.Item)
+                        if (clockManager != null && gameData.timers[i].timerType == TimerType.Item)
                         {
                             clockManager.RemoveClock(gameData.timers[i].id);
                         }
 
-                        if (!energyTimerChecked && gameData.timers[i].timerType == Types.TimerType.Energy)
+                        if (!energyTimerChecked && gameData.timers[i].timerType == TimerType.Energy)
                         {
                             energyTimerChecked = true;
 
                             energyTimer.TimerEnd();
                         }
 
-                        if (gameData.timers[i].timerType == Types.TimerType.Bubble)
+                        if (gameData.timers[i].timerType == TimerType.Bubble)
                         {
                             boardManager.RemoveBubble(gameData.timers[i].id);
                         }
 
-                        if (gameData.timers[i].notificationType == Types.NotificationType.Gen)
+                        if (gameData.timers[i].notificationType == NotificsManager.NotificationType.Gen)
                         {
                             ResetCoolDown(gameData.timers[i].id);
                         }
@@ -95,7 +156,7 @@ namespace Merge
                     else
                     {
                         // Continue
-                        if (gameData.timers[i].timerType == Types.TimerType.Energy)
+                        if (gameData.timers[i].timerType == TimerType.Energy)
                         {
                             if (!energyTimerChecked)
                             {
@@ -106,7 +167,7 @@ namespace Merge
                         }
                         else
                         {
-                            if (clockManager != null && gameData.timers[i].timerType != Types.TimerType.Bubble)
+                            if (clockManager != null && gameData.timers[i].timerType != TimerType.Bubble)
                             {
                                 clockManager.SetFillAmount(gameData.timers[i].id, timeDiffInSeconds);
                             }
@@ -164,9 +225,9 @@ namespace Merge
             return "00:00";
         }
 
-        public void AddTimer(Types.TimerType timerType, Types.NotificationType notificationType, string itemName, string id, Vector2 position = default, int seconds = 0)
+        public void AddTimer(TimerType timerType, NotificsManager.NotificationType notificationType, string itemName, string id, Vector2 position = default, int seconds = 0)
         {
-            if (timerType == Types.TimerType.Energy)
+            if (timerType == TimerType.Energy)
             {
                 Debug.LogWarning("You gave TimerType Energy to the AddTimer method. Use AddEnergyTimer instead!");
             }
@@ -175,13 +236,13 @@ namespace Merge
 
             int notificationId = 0;
 
-            if (timerType == Types.TimerType.Item)
+            if (timerType == TimerType.Item)
             {
                 notificsManager.Add(notificationType, startTime.AddSeconds(seconds), itemName);
             }
 
             gameData.timers.Add(
-                new Types.Timer
+                new Timer
                 {
                     startTime = startTime,
                     timerType = timerType,
@@ -193,14 +254,14 @@ namespace Merge
                 }
             );
 
-            if (timerType == Types.TimerType.Item)
+            if (timerType == TimerType.Item)
             {
                 ToggleTimerOnBoardData(id, true);
 
                 clockManager.AddClock(position, id, seconds);
             }
 
-            if (timerType == Types.TimerType.Bubble)
+            if (timerType == TimerType.Bubble)
             {
                 ToggleTimerOnBoardData(id, true);
             }
@@ -222,7 +283,7 @@ namespace Merge
             {
                 if (gameData.timers[i].id == id)
                 {
-                    if (gameData.timers[i].timerType == Types.TimerType.Item)
+                    if (gameData.timers[i].timerType == TimerType.Item)
                     {
                         notificsManager.Remove(gameData.timers[i].notificationId);
 
@@ -233,7 +294,7 @@ namespace Merge
                         ResetCoolDown(id);
                     }
 
-                    if (gameData.timers[i].timerType == Types.TimerType.Bubble)
+                    if (gameData.timers[i].timerType == TimerType.Bubble)
                     {
                         ToggleTimerOnBoardData(id, false);
                     }
@@ -345,7 +406,7 @@ namespace Merge
                     {
                         gameData.boardData[x, y].timerOn = enable;
 
-                        if (gameData.boardData[x, y].type == Types.Type.Chest && !enable)
+                        if (gameData.boardData[x, y].type == Item.Type.Chest && !enable)
                         {
                             gameData.boardData[x, y].chestOpen = true;
                         }
@@ -390,10 +451,10 @@ namespace Merge
                         {
                             item.timerOn = true;
 
-                            Types.NotificationType notificationType = item.type == Types.Type.Gen ? Types.NotificationType.Gen : Types.NotificationType.Chest;
+                            NotificsManager.NotificationType notificationType = item.type == Item.Type.Gen ? NotificsManager.NotificationType.Gen : NotificsManager.NotificationType.Chest;
 
                             // Note: use item.itemName not item.name 
-                            AddTimer(Types.TimerType.Item, notificationType, item.itemName, item.id, item.transform.position, item.coolDown.seconds);
+                            AddTimer(TimerType.Item, notificationType, item.itemName, item.id, item.transform.position, item.coolDown.seconds);
 
                             if (gameData.coolDowns[i].level == 0)
                             {
@@ -497,14 +558,14 @@ namespace Merge
 
             DateTime startTime = DateTime.UtcNow;
 
-            int notificationId = notificsManager.Add(Types.NotificationType.Energy, startTime.AddSeconds(pastSeconds));
+            int notificationId = notificsManager.Add(NotificsManager.NotificationType.Energy, startTime.AddSeconds(pastSeconds));
 
-            Types.Timer newEnergyTimer = new()
+            Timer newEnergyTimer = new()
             {
                 startTime = DateTime.UtcNow,
                 seconds = pastSeconds,
                 id = "energy_timer",
-                timerType = Types.TimerType.Energy,
+                timerType = TimerType.Energy,
                 notificationId = notificationId
             };
 
@@ -520,7 +581,7 @@ namespace Merge
 
             for (int i = gameData.timers.Count - 1; i >= 0; i--)
             {
-                if (gameData.timers[i].timerType == Types.TimerType.Energy)
+                if (gameData.timers[i].timerType == TimerType.Energy)
                 {
                     seconds = gameData.timers[i].seconds;
 

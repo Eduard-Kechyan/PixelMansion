@@ -7,7 +7,7 @@ namespace Merge
     [CreateAssetMenu(fileName = "Items", menuName = "ScriptableObject/Items")]
     public class Items : ScriptableObject
     {
-        public Types.Item[] content;
+        public BoardManager.TypeItem[] content;
 
         void OnValidate()
         {
@@ -15,23 +15,23 @@ namespace Merge
             {
                 switch (content[i].type)
                 {
-                    case Types.Type.Item:
+                    case Item.Type.Item:
                         content[i].name = content[i].group.ToString();
                         break;
-                    case Types.Type.Gen:
+                    case Item.Type.Gen:
                         content[i].name = content[i].genGroup.ToString();
                         break;
-                    case Types.Type.Coll:
+                    case Item.Type.Coll:
                         content[i].name = content[i].collGroup.ToString();
                         break;
-                    case Types.Type.Chest:
+                    case Item.Type.Chest:
                         content[i].name = content[i].chestGroup.ToString();
                         break;
                 }
 
                 for (int j = 0; j < content[i].parents.Length; j++)
                 {
-                    content[i].parents[j].name = content[i].parents[j].type.ToString() + " " + (content[i].parents[j].type == Types.Type.Gen
+                    content[i].parents[j].name = content[i].parents[j].type.ToString() + " " + (content[i].parents[j].type == Item.Type.Gen
                     ? content[i].parents[j].genGroup.ToString()
                     : content[i].parents[j].chestGroup.ToString());
                 }

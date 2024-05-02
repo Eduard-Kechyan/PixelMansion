@@ -314,7 +314,7 @@ namespace Merge
         public void StartLoading()
         {
             // PLay background music
-            soundManager.PlayMusic(Types.MusicType.Loading);
+            soundManager.PlayMusic(SoundManager.MusicType.Loading);
 
             loading = true;
         }
@@ -330,10 +330,10 @@ namespace Merge
                 {
                     if (tutorialData.steps[i].id == tutorialStep)
                     {
-                        if (tutorialData.steps[i].scene == Types.Scene.Merge)
+                        if (tutorialData.steps[i].scene == SceneLoader.SceneType.Merge)
                         {
                             // Merge scene
-                            sceneLoader.Load(Types.Scene.Merge);
+                            sceneLoader.Load(SceneLoader.SceneType.Merge);
 
                             return;
                         }
@@ -344,7 +344,7 @@ namespace Merge
             }
 
             // World scene
-            sceneLoader.Load(Types.Scene.World);
+            sceneLoader.Load(SceneLoader.SceneType.World);
         }
 
         bool CheckForLoading()

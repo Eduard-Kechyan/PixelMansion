@@ -7,7 +7,7 @@ namespace Merge
     [CreateAssetMenu(fileName = "Generators", menuName = "ScriptableObject/Generators")]
     public class Generators : ScriptableObject
     {
-        public Types.Gen[] content;
+        public BoardManager.TypeGen[] content;
 
         void OnValidate()
         {
@@ -26,7 +26,7 @@ namespace Merge
 
                 if (createsFullPercent > 100)
                 {
-                    Debug.LogWarning(content[i].name +" created percent is too big.");
+                    Debug.LogWarning(content[i].name + " created percent is too big.");
                 }
                 else if (createsFullPercent < 100)
                 {

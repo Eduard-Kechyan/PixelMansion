@@ -109,7 +109,7 @@ namespace Merge
             {
                 if (pointerHandler != null && pointerHandler.buttonCallback != null)
                 {
-                    pointerHandler.ButtonPress(Types.Button.Task, false, () =>
+                    pointerHandler.ButtonPress(UIButtons.Button.Task, false, () =>
                     {
                         taskMenu.Open();
                     });
@@ -123,12 +123,12 @@ namespace Merge
             {
                 if (pointerHandler != null && pointerHandler.buttonCallback != null)
                 {
-                    pointerHandler.ButtonPress(Types.Button.Play);
+                    pointerHandler.ButtonPress(UIButtons.Button.Play);
                 }
                 else
                 {
-                    soundManager.PlaySound(Types.SoundType.Transition);
-                    sceneLoader.Load(Types.Scene.Merge);
+                    soundManager.PlaySound(SoundManager.SoundType.Transition);
+                    sceneLoader.Load(SceneLoader.SceneType.Merge);
                 }
             };
 
@@ -277,26 +277,26 @@ namespace Merge
             }
         }
 
-        public void ShowButton(Types.Button button)
+        public void ShowButton(UIButtons.Button button)
         {
             switch (button)
             {
-                case Types.Button.Play:
+                case UIButtons.Button.Play:
                     playButton.SetEnabled(true);
                     playButton.style.display = DisplayStyle.Flex;
                     PlayerPrefs.SetInt("worldPlayButtonShowing", 1);
                     break;
-                case Types.Button.Settings:
+                case UIButtons.Button.Settings:
                     settingsButton.SetEnabled(true);
                     settingsButton.style.display = DisplayStyle.Flex;
                     PlayerPrefs.SetInt("worldSettingsButtonShowing", 1);
                     break;
-                case Types.Button.Shop:
+                case UIButtons.Button.Shop:
                     shopButton.SetEnabled(true);
                     shopButton.style.display = DisplayStyle.Flex;
                     PlayerPrefs.SetInt("worldShopButtonShowing", 1);
                     break;
-                case Types.Button.Task:
+                case UIButtons.Button.Task:
                     taskButton.SetEnabled(true);
                     taskButton.style.display = DisplayStyle.Flex;
                     PlayerPrefs.SetInt("worldTaskButtonShowing", 1);
@@ -304,11 +304,11 @@ namespace Merge
             }
         }
 
-        public void HideButton(Types.Button button, bool alt = false)
+        public void HideButton(UIButtons.Button button, bool alt = false)
         {
             switch (button)
             {
-                case Types.Button.Play:
+                case UIButtons.Button.Play:
                     if (alt)
                     {
                         playButton.SetEnabled(false);
@@ -319,7 +319,7 @@ namespace Merge
                         PlayerPrefs.DeleteKey("worldPlayButtonShowing");
                     }
                     break;
-                case Types.Button.Settings:
+                case UIButtons.Button.Settings:
                     if (alt)
                     {
                         settingsButton.SetEnabled(false);
@@ -330,7 +330,7 @@ namespace Merge
                         PlayerPrefs.DeleteKey("worldSettingsButtonShowing");
                     }
                     break;
-                case Types.Button.Shop:
+                case UIButtons.Button.Shop:
                     if (alt)
                     {
                         shopButton.SetEnabled(false);
@@ -341,7 +341,7 @@ namespace Merge
                         PlayerPrefs.DeleteKey("worldShopButtonShowing");
                     }
                     break;
-                case Types.Button.Task:
+                case UIButtons.Button.Task:
                     if (alt)
                     {
                         taskButton.SetEnabled(false);
@@ -353,7 +353,7 @@ namespace Merge
                     }
                     break;
                 default:
-                    errorManager.ThrowWarning(Types.ErrorType.Code, GetType().ToString(), "Types.Button " + button + " is not implemented!");
+                    errorManager.ThrowWarning(ErrorManager.ErrorType.Code, GetType().ToString(), "UIButtons.Button " + button + " is not implemented!");
                     break;
             }
         }
@@ -364,15 +364,15 @@ namespace Merge
             {
                 if (buttonsHidden)
                 {
-                    ShowButton(Types.Button.Play);
-                    ShowButton(Types.Button.Task);
+                    ShowButton(UIButtons.Button.Play);
+                    ShowButton(UIButtons.Button.Task);
 
                     buttonsHidden = false;
                 }
                 else
                 {
-                    HideButton(Types.Button.Play, true);
-                    HideButton(Types.Button.Task, true);
+                    HideButton(UIButtons.Button.Play, true);
+                    HideButton(UIButtons.Button.Task, true);
 
                     buttonsHidden = true;
                 }

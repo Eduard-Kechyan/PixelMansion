@@ -25,6 +25,56 @@ namespace Merge
 
         private bool initial = true;
 
+        // Classes
+        [Serializable]
+        public class Area
+        {
+            public string name;
+            public bool isLocked;
+            public bool isRoom;
+            public int wallLeftOrder;
+            public int wallRightOrder;
+            public int floorOrder;
+            public List<Furniture> furniture;
+            public List<Prop> props;
+            public List<Filth> filth;
+        }
+
+        [Serializable]
+        public class AreaJson
+        {
+            public string name;
+            public bool isLocked;
+            public bool isRoom;
+            public int wallLeftOrder;
+            public int wallRightOrder;
+            public int floorOrder;
+            public string furniture;
+            public string props;
+            public string filth;
+        }
+
+        [Serializable]
+        public class Furniture
+        {
+            public string name;
+            public int order;
+        }
+
+        [Serializable]
+        public class Prop
+        {
+            public string name;
+            public int order;
+        }
+
+        [Serializable]
+        public class Filth
+        {
+            public string name;
+            public bool removed;
+        }
+
         // References
         private NavMeshManager navMeshManager;
         private DataManager dataManager;
@@ -246,16 +296,16 @@ namespace Merge
         }
 
         // Read the data from the given area
-        WorldTypes.Area HandleArea(Transform area)
+        Area HandleArea(Transform area)
         {
             bool isRoom = false;
             bool isLocked = false;
             int wallLeftOrder = -1;
             int wallRightOrder = -1;
             int floorOrder = -1;
-            List<WorldTypes.Furniture> furniture = new();
-            List<WorldTypes.Prop> props = new();
-            List<WorldTypes.Filth> filth = new();
+            List<Furniture> furniture = new();
+            List<Prop> props = new();
+            List<Filth> filth = new();
 
             AreaRefs areaRefs = area.GetComponent<AreaRefs>();
             RoomHandler roomHandler = area.GetComponent<RoomHandler>();
@@ -310,7 +360,7 @@ namespace Merge
                     {
                         Selectable furnitureSelectable = areaFurniture.GetChild(i).GetComponent<Selectable>();
 
-                        WorldTypes.Furniture furnitureItem = new()
+                        Furniture furnitureItem = new()
                         {
                             name = areaFurniture.GetChild(i).name,
                             order = furnitureSelectable.spriteOrder
@@ -329,7 +379,7 @@ namespace Merge
                     {
                         Selectable propSelectable = areaProps.GetChild(i).GetComponent<Selectable>();
 
-                        WorldTypes.Prop propItem = new()
+                        Prop propItem = new()
                         {
                             name = areaProps.GetChild(i).name,
                             order = propSelectable.spriteOrder
@@ -348,7 +398,7 @@ namespace Merge
                     {
                         Transform filthItemTransform = areaFilth.GetChild(i);
 
-                        WorldTypes.Filth filthItem = new()
+                        Filth filthItem = new()
                         {
                             name = filthItemTransform.name,
                             removed = !filthItemTransform.gameObject.activeSelf
@@ -359,7 +409,7 @@ namespace Merge
                 }
             });
 
-            WorldTypes.Area newArea = new()
+            Area newArea = new()
             {
                 name = area.name,
                 isRoom = isRoom,
@@ -604,7 +654,7 @@ namespace Merge
         }
 
         // Get the selectable world item for the given task
-        public void GetWorldItem(string groupId, Types.Task task, Action<Transform> callback)
+        public void GetWorldItem(string groupId, TaskManager.Task task, Action<Transform> callback)
         {
             Transform worldArea = null;
             AreaRefs areaRefs = null;
@@ -631,13 +681,13 @@ namespace Merge
 
                     switch (task.taskRefType)
                     {
-                        case Types.TaskRefType.Last:
+                        case TaskManager.TaskRefType.Last:
                             foundWorldItem = worldArea;
                             break;
-                        case Types.TaskRefType.PreMansion:
+                        case TaskManager.TaskRefType.PreMansion:
                             foundWorldItem = worldArea;
                             break;
-                        case Types.TaskRefType.Wall:
+                        case TaskManager.TaskRefType.Wall:
                             if (task.isTaskRefRight)
                             {
                                 foundWorldItem = areaRefs.wallRight;
@@ -647,7 +697,7 @@ namespace Merge
                                 foundWorldItem = areaRefs.wallLeft;
                             }
                             break;
-                        case Types.TaskRefType.Filth:
+                        case TaskManager.TaskRefType.Filth:
                             foundWorldItem = areaRefs.filth.Find(task.taskRefName);
                             break;
                         default:
@@ -702,22 +752,22 @@ namespace Merge
         }
 
         // Find selectable items collider center position
-        public Vector2 GetColliderCenter(Transform taskRef, Types.TaskRefType taskRefType)
+        public Vector2 GetColliderCenter(Transform taskRef, TaskManager.TaskRefType taskRefType)
         {
             Vector2 center;
 
             switch (taskRefType)
             {
-                case Types.TaskRefType.Last:
+                case TaskManager.TaskRefType.Last:
                     center = taskRef.transform.position;
                     break;
-                case Types.TaskRefType.PreMansion:
+                case TaskManager.TaskRefType.PreMansion:
                     center = taskRef.transform.position;
                     break;
-                case Types.TaskRefType.Wall:
+                case TaskManager.TaskRefType.Wall:
                     center = taskRef.GetComponent<CompositeCollider2D>().bounds.center;
                     break;
-                case Types.TaskRefType.Floor:
+                case TaskManager.TaskRefType.Floor:
                     center = taskRef.GetComponent<CompositeCollider2D>().bounds.center;
                     break;
                 default: // Item and others

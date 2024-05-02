@@ -7,7 +7,7 @@ namespace Merge
     [CreateAssetMenu(fileName = "ConvoData", menuName = "ScriptableObject/ConvoData")]
     public class ConvoData : ScriptableObject
     {
-        public Types.ConvoGroup[] convoGroups;
+        public ConvoUIHandler.ConvoGroup[] convoGroups;
 
         void OnValidate()
         {

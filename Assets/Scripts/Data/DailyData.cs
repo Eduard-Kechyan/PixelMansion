@@ -19,7 +19,7 @@ namespace Merge
         [HideInInspector]
         public bool dailyItem2 = false;
         [HideInInspector]
-        public Types.ShopItemsContent[] dailyContent;
+        public ShopMenu.ShopItemsContent[] dailyContent;
 
         // References
         private DataConverter dataConverter;
@@ -76,7 +76,7 @@ namespace Merge
 
         void SetDailyContent()
         {
-            dailyContent = new Types.ShopItemsContent[2];
+            dailyContent = new ShopMenu.ShopItemsContent[2];
 
             dailyContent[0] = shopData.dailyContent[0];
             dailyContent[1] = shopData.dailyContent[UnityEngine.Random.Range(1, 3)];
@@ -94,14 +94,14 @@ namespace Merge
             dataSet = true;
         }
 
-        public int GetLeftCount(string nameOrder, int total, Types.ShopItemType shopItemType)
+        public int GetLeftCount(string nameOrder, int total, ShopMenu.ShopItemType shopItemType)
         {
             // FIX - Handle this
             int order = int.Parse(nameOrder);
             return 0;
         }
 
-        public void SetBoughtItem(string nameOrder, Types.ShopItemType shopItemType)
+        public void SetBoughtItem(string nameOrder, ShopMenu.ShopItemType shopItemType)
         {
             // FIX - Handle this
             int order = int.Parse(nameOrder);

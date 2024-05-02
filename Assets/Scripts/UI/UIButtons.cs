@@ -47,6 +47,20 @@ namespace Merge
         [ReadOnly]
         public Vector2 mergeBonusButtonPos;
 
+        // Buttons
+        public enum Button
+        {
+            None,
+            Play,
+            Home,
+            Task,
+            TaskMenu,
+            Shop,
+            Bonus,
+            Settings,
+            Inventory,
+        };
+
 #if UNITY_EDITOR
         void OnValidate()
         {
@@ -64,7 +78,7 @@ namespace Merge
             {
                 Gizmos.color = gizmoColor;
 
-                if (SceneManager.GetActiveScene().name == Types.Scene.World.ToString())
+                if (SceneManager.GetActiveScene().name == SceneLoader.SceneType.World.ToString())
                 {
                     Gizmos.DrawWireCube(worldShopButtonPos, gizmosSizeWorldSmall);
                     Gizmos.DrawWireCube(worldPlayButtonPos, gizmosSizeWorld);

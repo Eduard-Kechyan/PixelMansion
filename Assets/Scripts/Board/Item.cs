@@ -36,14 +36,14 @@ namespace Merge
         public int level = 1;
         public int generatesAtLevel = 0;
 
-        public Types.Type type = Types.Type.Item;
-        public ItemTypes.Group group;
-        public ItemTypes.GenGroup genGroup;
-        public Types.CollGroup collGroup;
-        public Types.ChestGroup chestGroup;
-        public Types.State state = Types.State.Default;
-        public Types.Creates[] creates;
-        public Types.ParentData[] parents;
+        public Type type = Type.Item;
+        public Group group;
+        public GenGroup genGroup;
+        public CollGroup collGroup;
+        public ChestGroup chestGroup;
+        public State state = State.Default;
+        public BoardManager.Creates[] creates;
+        public BoardManager.ParentData[] parents;
 
         // Chest
         public bool chestOpen = false;
@@ -53,7 +53,7 @@ namespace Merge
 
         // Timer
         public bool timerOn;
-        public Types.CoolDown coolDown;
+        public TimeManager.CoolDown coolDown;
 
         [HideInInspector]
         public Sprite sprite = null;
@@ -78,6 +78,49 @@ namespace Merge
         // Events
         public delegate void OnInitializedEvent();
         public event OnInitializedEvent OnInitialized;
+
+        //Enums
+        public enum GenGroup
+        {
+            Toolbox,
+        }
+
+        public enum Group
+        {
+            Tools,
+            Gloves
+        };
+
+        public enum ChestGroup
+        {
+            Item,
+            Piggy,
+            Energy
+        }
+
+        public enum CollGroup
+        {
+            Experience,
+            Gold,
+            Gems,
+            Energy
+        };
+
+        public enum State
+        {
+            Default,
+            Crate,
+            Locker,
+            Bubble
+        };
+
+        public enum Type
+        {
+            Item,
+            Gen,
+            Coll,
+            Chest
+        };
 
         // References
         private Animation anim;
@@ -111,7 +154,7 @@ namespace Merge
             completionChild = transform.GetChild(6).gameObject; // Completion
             itemChild = transform.GetChild(7).gameObject; // Item
 
-            if (type == Types.Type.Gen && level >= generatesAtLevel)
+            if (type == Type.Gen && level >= generatesAtLevel)
             {
                 readyChild.SetActive(true);
 
@@ -122,23 +165,23 @@ namespace Merge
                 readyChild.SetActive(false);
             }
 
-            if (type == Types.Type.Chest && chestGroup == Types.ChestGroup.Item)
+            if (type == Type.Chest && chestGroup == ChestGroup.Item)
             {
                 readyAltChild = transform.GetChild(5).gameObject; // Ready Chest
 
                 readyAltChild.SetActive(true);
             }
 
-            if (state == Types.State.Crate)
+            if (state == State.Crate)
             {
                 crateSpriteRenderer = crateChild.GetComponent<SpriteRenderer>();
                 lockSpriteRenderer = lockerChild.GetComponent<SpriteRenderer>();
             }
-            else if (state == Types.State.Locker)
+            else if (state == State.Locker)
             {
                 lockSpriteRenderer = lockerChild.GetComponent<SpriteRenderer>();
             }
-            else if (state == Types.State.Bubble)
+            else if (state == State.Bubble)
             {
                 bubbleSpriteRenderer = bubbleChild.GetComponent<SpriteRenderer>();
             }
@@ -259,21 +302,21 @@ namespace Merge
 
             switch (type)
             {
-                case Types.Type.Item:
+                case Type.Item:
                     nextSpriteName = group + "Item" + (level + 1);
                     break;
-                case Types.Type.Gen:
+                case Type.Gen:
                     nextSpriteName = genGroup + "Gen" + (level + 1);
                     break;
-                case Types.Type.Coll:
+                case Type.Coll:
                     nextSpriteName = collGroup + "Coll" + (level + 1);
                     break;
-                case Types.Type.Chest:
+                case Type.Chest:
                     nextSpriteName = chestGroup + "Chest" + (level + 1);
                     break;
                 default:
                     // ERROR
-                    ErrorManager.Instance.Throw(Types.ErrorType.Code, "Item.cs -> SetItemInitial()", "Wrong type: " + type);
+                    ErrorManager.Instance.Throw(ErrorManager.ErrorType.Code, "Item.cs -> SetItemInitial()", "Wrong type: " + type);
                     break;
             }
 
@@ -288,13 +331,13 @@ namespace Merge
         {
             switch (state)
             {
-                case Types.State.Default:
+                case State.Default:
                     lockerChild.SetActive(false);
                     crateChild.SetActive(false);
                     itemChild.SetActive(true); //
                     bubbleChild.SetActive(false);
 
-                    if (type == Types.Type.Gen && level >= generatesAtLevel)
+                    if (type == Type.Gen && level >= generatesAtLevel)
                     {
                         if (timerOn)
                         {
@@ -306,7 +349,7 @@ namespace Merge
                         }
                     }
 
-                    if (type == Types.Type.Chest && chestGroup == Types.ChestGroup.Item)
+                    if (type == Type.Chest && chestGroup == ChestGroup.Item)
                     {
                         if (timerOn)
                         {
@@ -321,19 +364,19 @@ namespace Merge
                         }
                     }
                     break;
-                case Types.State.Crate:
+                case State.Crate:
                     lockerChild.SetActive(false);
                     crateChild.SetActive(true); //
                     itemChild.SetActive(false);
                     bubbleChild.SetActive(false);
                     break;
-                case Types.State.Locker:
+                case State.Locker:
                     lockerChild.SetActive(true); //
                     crateChild.SetActive(false);
                     itemChild.SetActive(true); //
                     bubbleChild.SetActive(false);
                     break;
-                case Types.State.Bubble:
+                case State.Bubble:
                     lockerChild.SetActive(false);
                     crateChild.SetActive(false);
                     itemChild.SetActive(true); //
@@ -355,7 +398,7 @@ namespace Merge
         {
             timerOn = enable;
 
-            if (state == Types.State.Default && type == Types.Type.Gen && level >= generatesAtLevel)
+            if (state == State.Default && type == Type.Gen && level >= generatesAtLevel)
             {
                 if (timerOn)
                 {
@@ -367,7 +410,7 @@ namespace Merge
                 }
             }
 
-            if (!chestOpen && type == Types.Type.Chest && chestGroup == Types.ChestGroup.Item && !enable && !initial)
+            if (!chestOpen && type == Type.Chest && chestGroup == ChestGroup.Item && !enable && !initial)
             {
                 chestOpen = true;
             }
@@ -377,9 +420,9 @@ namespace Merge
 
         public void OpenCrate(float crateBreakSpeed = 0.05f, float newSpeed = 1f)
         {
-            if (state == Types.State.Crate)
+            if (state == State.Crate)
             {
-                state = Types.State.Locker;
+                state = State.Locker;
 
                 itemChild.transform.localScale = Vector2.zero;
                 itemChild.SetActive(true);
@@ -431,9 +474,9 @@ namespace Merge
 
         public void UnlockLock(float lockOpenSpeed = 0.05f, bool wait = true)
         {
-            if (state == Types.State.Locker)
+            if (state == State.Locker)
             {
-                state = Types.State.Default;
+                state = State.Default;
 
                 if (wait)
                 {
@@ -464,9 +507,9 @@ namespace Merge
 
         public void PopBubble(bool destroy = false, float bubblePopSpeed = 0.05f)
         {
-            if (state == Types.State.Bubble)
+            if (state == State.Bubble)
             {
-                state = Types.State.Default;
+                state = State.Default;
 
                 StartCoroutine(WaitForBubbleToPopAnimation(destroy, bubblePopSpeed));
             }
@@ -504,12 +547,12 @@ namespace Merge
                 completionChild.SetActive(false);
             }
 
-            if (type == Types.Type.Gen && level >= generatesAtLevel && isReadyPlaying)
+            if (type == Type.Gen && level >= generatesAtLevel && isReadyPlaying)
             {
                 StopAnimateReady();
             }
 
-            if (type == Types.Type.Chest && chestGroup == Types.ChestGroup.Item)
+            if (type == Type.Chest && chestGroup == ChestGroup.Item)
             {
                 readyAltChild.SetActive(false);
             }
@@ -524,12 +567,12 @@ namespace Merge
                 completionChild.SetActive(true);
             }
 
-            if (state == Types.State.Default && type == Types.Type.Gen && level >= generatesAtLevel && !timerOn && !isReadyPlaying)
+            if (state == State.Default && type == Type.Gen && level >= generatesAtLevel && !timerOn && !isReadyPlaying)
             {
                 AnimateReady();
             }
 
-            if (type == Types.Type.Chest && chestGroup == Types.ChestGroup.Item && !chestOpen && !timerOn)
+            if (type == Type.Chest && chestGroup == ChestGroup.Item && !chestOpen && !timerOn)
             {
                 readyAltChild.SetActive(true);
             }

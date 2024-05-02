@@ -12,7 +12,7 @@ namespace Merge
         private Action<string> callback;
         private string inputText;
 
-        private Types.Menu menuType = Types.Menu.Input;
+        private MenuUI.Menu menuType = MenuUI.Menu.Input;
 
         // References
         private MenuUI menuUI;

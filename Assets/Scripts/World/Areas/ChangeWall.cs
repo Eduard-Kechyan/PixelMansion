@@ -266,7 +266,7 @@ namespace Merge
             {
                 chunks[i].material.SetFloat("_FlashAmount", 1);
 
-                SoundManager.Instance.PlaySound(Types.SoundType.Generate);
+                SoundManager.Instance.PlaySound(SoundManager.SoundType.Generate);
 
                 chunks[i].sprite = selectable.GetSprite(selectable.spriteOrder);
 

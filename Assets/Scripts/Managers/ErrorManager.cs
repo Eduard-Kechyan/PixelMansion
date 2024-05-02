@@ -20,6 +20,16 @@ namespace Merge
         private bool readyToThrowTestErrors = false;
 #endif
 
+        // Enums
+        public enum ErrorType
+        {
+            Code,
+            GamePlay,
+            Unity,
+            Locale,
+            Network
+        };
+
         // References
         private AuthManager authManager;
         private NoteMenu noteMenu;
@@ -80,7 +90,7 @@ namespace Merge
 
                 if (readyToThrowTestErrors)
                 {
-                    Debug.LogException(new Exception(Types.ErrorType.Code + " Error, Code: n/a, Message: This is a test exception!, At: " + GetType().Name + " -> OnValidate()"));
+                    Debug.LogException(new Exception(ErrorType.Code + " Error, Code: n/a, Message: This is a test exception!, At: " + GetType().Name + " -> OnValidate()"));
                 }
                 else
                 {
@@ -92,12 +102,12 @@ namespace Merge
             {
                 throwTestWarning = false;
 
-                Debug.LogWarning(Types.ErrorType.Code + " Error, Code: n/a, Message: This is a test warning!, At: " + GetType().Name + " -> OnValidate()");
+                Debug.LogWarning(ErrorType.Code + " Error, Code: n/a, Message: This is a test warning!, At: " + GetType().Name + " -> OnValidate()");
             }
         }
 #endif
 
-        public void Throw(Types.ErrorType type, string className, string errorMessage, string errorCode = "n/a", bool showToPlayer = false, [CallerMemberName] string functionName = "")
+        public void Throw(ErrorType type, string className, string errorMessage, string errorCode = "n/a", bool showToPlayer = false, [CallerMemberName] string functionName = "")
         {
             // Throw and log the exception
             string exceptionString = type + " Error, Code: " + errorCode + ", Message: " + errorMessage + ", At: " + className + ".cs" + " -> " + functionName + "()";
@@ -111,7 +121,7 @@ namespace Merge
             }
         }
 
-        public void ThrowWarning(Types.ErrorType type, string className, string errorMessage, string errorCode = "", [CallerMemberName] string functionName = "")
+        public void ThrowWarning(ErrorType type, string className, string errorMessage, string errorCode = "", [CallerMemberName] string functionName = "")
         {
             Debug.LogWarning(type + " Warning, Code: " + errorCode + ", Message: " + errorMessage + ", At: " + className + ".cs" + " -> " + functionName + "()");
         }

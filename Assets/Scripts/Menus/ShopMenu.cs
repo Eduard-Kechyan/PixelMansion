@@ -20,7 +20,57 @@ namespace Merge
 
         // private bool purchasing = false;
 
-        private Types.Menu menuType = Types.Menu.Shop;
+        private MenuUI.Menu menuType = MenuUI.Menu.Shop;
+
+        // Classes
+        [Serializable]
+        public class ShopItemsContent
+        {
+            public int total;
+            public int price;
+            public Item.Type type;
+            public Item.Group group;
+            public Item.GenGroup genGroup;
+            public Item.ChestGroup chestGroup;
+            public ShopValuesType priceType;
+            public Sprite sprite;
+        }
+
+        [Serializable]
+        public class ShopItemsContentJson
+        {
+            public int total;
+            public int price;
+            public string type;
+            public string group;
+            public string genGroup;
+            public string chestGroup;
+            public string priceType;
+            public string sprite;
+        }
+
+        [Serializable]
+        public class ShopValuesContent
+        {
+            public string id;
+            public Sprite sprite;
+            public bool isPopular;
+        }
+
+        // Enums
+        public enum ShopValuesType
+        {
+            Gems,
+            Gold
+        };
+
+        public enum ShopItemType
+        {
+            Daily,
+            Item,
+            Gold,
+            Gems
+        }
 
         // References
         private GameData gameData;
@@ -101,9 +151,9 @@ namespace Merge
 
         void Init()
         {
-            InitializeShopItems(Types.ShopItemType.Item);
-            InitializeShopCurrency(Types.ShopItemType.Gold);
-            InitializeShopCurrency(Types.ShopItemType.Gems);
+            InitializeShopItems(ShopItemType.Item);
+            InitializeShopCurrency(ShopItemType.Gold);
+            InitializeShopCurrency(ShopItemType.Gems);
 
             StartCoroutine(WaitForDailyContent());
         }
@@ -132,14 +182,14 @@ namespace Merge
                 yield return null;
             }
 
-            InitializeShopItems(Types.ShopItemType.Daily);
+            InitializeShopItems(ShopItemType.Daily);
         }
 
-        void InitializeShopItems(Types.ShopItemType shopItemType)
+        void InitializeShopItems(ShopItemType shopItemType)
         {
-            Types.ShopItemsContent[] shopItems = new Types.ShopItemsContent[0];
+            ShopItemsContent[] shopItems = new ShopItemsContent[0];
 
-            if (shopItemType == Types.ShopItemType.Daily)
+            if (shopItemType == ShopItemType.Daily)
             {
                 shopItems = dailyData.dailyContent;
 
@@ -182,7 +232,7 @@ namespace Merge
 
                 // Check if this is the daily data
                 // Also check for button value and label
-                if (shopItemType == Types.ShopItemType.Daily && shopItems[i].price == 0)
+                if (shopItemType == ShopItemType.Daily && shopItems[i].price == 0)
                 {
                     buyButtonValue.style.display = DisplayStyle.None;
 
@@ -193,7 +243,7 @@ namespace Merge
                 else
                 {
                     buyButtonValue.style.backgroundImage = new StyleBackground(
-                        shopItems[i].priceType == Types.ShopValuesType.Gold
+                        shopItems[i].priceType == ShopValuesType.Gold
                             ? smallGoldSprite
                             : smallGemSprite
                     );
@@ -203,7 +253,7 @@ namespace Merge
 
                 // Check if this is the daily data
                 // Also check if we already got the free daily item
-                if (shopItemType == Types.ShopItemType.Daily && (i == 0 && dailyData.dailyItem1 || i == 1 && dailyData.dailyItem2))
+                if (shopItemType == ShopItemType.Daily && (i == 0 && dailyData.dailyItem1 || i == 1 && dailyData.dailyItem2))
                 {
                     buyButton.SetEnabled(false);
                     buyButtonLabel.text = LOCALE.Get("shop_menu_free_gotten");
@@ -215,7 +265,7 @@ namespace Merge
                 }
 
                 // Info button
-                if (shopItems[i].type == Types.Type.Coll)
+                if (shopItems[i].type == Item.Type.Coll)
                 {
                     newShopItemBox.Q<Button>("InfoButton").style.display = DisplayStyle.None;
                 }
@@ -225,7 +275,7 @@ namespace Merge
                 }
 
                 // Add to container
-                if (shopItemType == Types.ShopItemType.Daily)
+                if (shopItemType == ShopItemType.Daily)
                 {
                     dailyBoxes.Add(newShopItemBox);
                 }
@@ -236,12 +286,12 @@ namespace Merge
             }
         }
 
-        void InitializeShopCurrency(Types.ShopItemType shopItemType)
+        void InitializeShopCurrency(ShopItemType shopItemType)
         {
-            Types.ShopValuesContent[] shopValues;
+            ShopValuesContent[] shopValues;
             string idCheckValue;
 
-            if (shopItemType == Types.ShopItemType.Gold)
+            if (shopItemType == ShopItemType.Gold)
             {
                 goldBoxes.Clear();
 
@@ -266,7 +316,7 @@ namespace Merge
             {
                 if (product.id.StartsWith(idCheckValue))
                 {
-                    Types.ShopValuesContent shopValue = GetShopItem(shopValues, product.id);
+                    ShopValuesContent shopValue = GetShopItem(shopValues, product.id);
 
                     if (shopValue == null)
                     {
@@ -301,22 +351,22 @@ namespace Merge
 
                             switch (Settings.Instance.currentLocale)
                             {
-                                case Types.Locale.Armenian:
+                                case I18n.Locale.Armenian:
                                     popularLabel.style.fontSize = 3;
                                     break;
-                                case Types.Locale.Japanese:
+                                case I18n.Locale.Japanese:
                                     popularLabel.style.fontSize = 3;
                                     break;
-                                case Types.Locale.Korean:
+                                case I18n.Locale.Korean:
                                     popularLabel.style.fontSize = 3;
                                     break;
-                                case Types.Locale.Chinese:
+                                case I18n.Locale.Chinese:
                                     popularLabel.style.fontSize = 3;
                                     break;
                                 default:
                                     popularLabel.style.fontSize = 3;
 
-                                    if (Settings.Instance.currentLocale != Types.Locale.German)
+                                    if (Settings.Instance.currentLocale != I18n.Locale.German)
                                     {
                                         popularLabel.style.fontSize = 5;
                                     }
@@ -327,7 +377,7 @@ namespace Merge
                             {
                                 topLabel.style.paddingLeft = 4f;
 
-                                if (shopItemType == Types.ShopItemType.Gold)
+                                if (shopItemType == ShopItemType.Gold)
                                 {
                                     if (payout.quantity > 9999)
                                     {
@@ -350,7 +400,7 @@ namespace Merge
                         newShopItemBox.Q<VisualElement>("Image").style.backgroundImage = new StyleBackground(shopValue.sprite);
 
                         // Bonus
-                        if (shopItemType == Types.ShopItemType.Gems && payoutBonus != null)
+                        if (shopItemType == ShopItemType.Gems && payoutBonus != null)
                         {
                             newShopItemBox.Q<VisualElement>("Bonus").Q<Label>("BonusLabel").text = "+" + payoutBonus.quantity;
                         }
@@ -404,7 +454,7 @@ namespace Merge
                         newShopItemBox.Q<Button>("InfoButton").style.display = DisplayStyle.None;
 
                         // Add to container
-                        if (shopItemType == Types.ShopItemType.Gold)
+                        if (shopItemType == ShopItemType.Gold)
                         {
                             goldBoxes.Add(newShopItemBox);
                         }
@@ -419,7 +469,7 @@ namespace Merge
             }
         }
 
-        Types.ShopValuesContent GetShopItem(Types.ShopValuesContent[] shopValues, string productId)
+        ShopValuesContent GetShopItem(ShopValuesContent[] shopValues, string productId)
         {
             for (int i = 0; i < shopValues.Length; i++)
             {
@@ -529,22 +579,22 @@ namespace Merge
         {
             int order = int.Parse(nameOrder);
 
-            Types.ShopItemsContent shopItemsContent = shopData.itemsContent[order];
+            ShopItemsContent shopItemsContent = shopData.itemsContent[order];
 
             infoMenu.Open(itemHandler.CreateItemTemp(shopItemsContent));
         }
 
-        void BuyItem(string nameOrder, Types.ShopItemType shopItemType)
+        void BuyItem(string nameOrder, ShopItemType shopItemType)
         {
             int order = int.Parse(nameOrder);
 
             if (shopData.itemsContent[order].price != 0)
             {
-                if (shopData.itemsContent[order].priceType == Types.ShopValuesType.Gold)
+                if (shopData.itemsContent[order].priceType == ShopValuesType.Gold)
                 {
                     if (gameData.gold >= shopData.itemsContent[order].price)
                     {
-                        gameData.UpdateValue(-shopData.itemsContent[order].price, Types.CollGroup.Gold, false, true);
+                        gameData.UpdateValue(-shopData.itemsContent[order].price, Item.CollGroup.Gold, false, true);
                     }
                     else
                     {
@@ -555,7 +605,7 @@ namespace Merge
                 {
                     if (gameData.gems >= shopData.itemsContent[order].price)
                     {
-                        gameData.UpdateValue(-shopData.itemsContent[order].price, Types.CollGroup.Gems, false, true);
+                        gameData.UpdateValue(-shopData.itemsContent[order].price, Item.CollGroup.Gems, false, true);
                     }
                     else
                     {
@@ -564,12 +614,12 @@ namespace Merge
                 }
             }
 
-            if (shopItemType == Types.ShopItemType.Daily)
+            if (shopItemType == ShopItemType.Daily)
             {
                 HandleDailyItem(order);
             }
 
-            if (sceneLoader.scene == Types.Scene.Merge)
+            if (sceneLoader.scene == SceneLoader.SceneType.Merge)
             {
                 StartCoroutine(AddItemToBoardOrBonusButton(order, shopItemType));
             }
@@ -649,40 +699,40 @@ namespace Merge
             }
         }
 
-        IEnumerator AddItemToBoardOrBonusButton(int order, Types.ShopItemType shopItemType)
+        IEnumerator AddItemToBoardOrBonusButton(int order, ShopItemType shopItemType)
         {
             yield return new WaitForSeconds(0.5f);
 
             // Add item to the board or to the bonus button
-            List<Types.TileEmpty> emptyBoard = boardManager.GetEmptyTileItems(Vector2Int.zero, false);
+            List<BoardManager.TileEmpty> emptyBoard = boardManager.GetEmptyTileItems(Vector2Int.zero, false);
 
-            Types.ItemData boardItem;
+            BoardManager.ItemData boardItem;
             Item newItem;
 
-            if (shopItemType == Types.ShopItemType.Item)
+            if (shopItemType == ShopItemType.Item)
             {
-                boardItem = new Types.ItemData
+                boardItem = new BoardManager.ItemData
                 {
                     sprite = shopData.itemsContent[order].sprite,
                     type = shopData.itemsContent[order].type,
                     group = shopData.itemsContent[order].group,
                     genGroup = shopData.itemsContent[order].genGroup,
                     chestGroup = shopData.itemsContent[order].chestGroup,
-                    collGroup = Types.CollGroup.Experience,
+                    collGroup = Item.CollGroup.Experience,
                 };
 
                 newItem = itemHandler.CreateItemTemp(shopData.itemsContent[order]);
             }
             else
             {
-                boardItem = new Types.ItemData
+                boardItem = new BoardManager.ItemData
                 {
                     sprite = shopData.dailyContent[order].sprite,
                     type = shopData.dailyContent[order].type,
                     group = shopData.dailyContent[order].group,
                     genGroup = shopData.dailyContent[order].genGroup,
                     chestGroup = shopData.dailyContent[order].chestGroup,
-                    collGroup = Types.CollGroup.Experience,
+                    collGroup = Item.CollGroup.Experience,
                 };
 
                 newItem = itemHandler.CreateItemTemp(shopData.dailyContent[order]);
@@ -701,13 +751,13 @@ namespace Merge
             }
         }
 
-        IEnumerator AddItemToPlayButton(int order, Types.ShopItemType shopItemType)
+        IEnumerator AddItemToPlayButton(int order, ShopItemType shopItemType)
         {
             yield return new WaitForSeconds(0.5f);
 
             Item newItem;
 
-            if (shopItemType == Types.ShopItemType.Item)
+            if (shopItemType == ShopItemType.Item)
             {
                 newItem = itemHandler.CreateItemTemp(shopData.itemsContent[order]);
             }

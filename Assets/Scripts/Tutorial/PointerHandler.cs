@@ -13,7 +13,7 @@ namespace Merge
         private Scale fullScale = new(new Vector2(1f, 1f));
         private Scale tapScale = new(new Vector2(0.8f, 0.8f));
 
-        private Types.Button currentButton;
+        private UIButtons.Button currentButton;
         private bool pointerHidden;
 
         // Press
@@ -43,7 +43,7 @@ namespace Merge
         [HideInInspector]
         public Sprite genItemSprite;
         [HideInInspector]
-        public ItemTypes.Group genItemGroup;
+        public Item.Group genItemGroup;
         private Action genCallback = null;
 
         // References
@@ -79,7 +79,7 @@ namespace Merge
         }
 
         //// Press ////
-        public void HandlePress(Vector2 position, Types.Button button, Action callback)
+        public void HandlePress(Vector2 position, UIButtons.Button button, Action callback)
         {
             StopAllAnimations();
 
@@ -87,7 +87,7 @@ namespace Merge
 
             currentButton = button;
 
-            if (button == Types.Button.TaskMenu)
+            if (button == UIButtons.Button.TaskMenu)
             {
                 StartCoroutine(WaitForTaskMenu());
             }
@@ -126,7 +126,7 @@ namespace Merge
             pressCoroutine = StartCoroutine(AnimatePress());
         }
 
-        public void ButtonPress(Types.Button button, bool alt = false, Action callback = null)
+        public void ButtonPress(UIButtons.Button button, bool alt = false, Action callback = null)
         {
             if (currentButton == button && buttonCallback != null)
             {
@@ -277,7 +277,7 @@ namespace Merge
         }
 
         //// Gen ////
-        public void HandleGen(Sprite generatorSprite, Sprite itemSprite, ItemTypes.Group itemGroup, Action callback)
+        public void HandleGen(Sprite generatorSprite, Sprite itemSprite, Item.Group itemGroup, Action callback)
         {
             StopAllAnimations();
 

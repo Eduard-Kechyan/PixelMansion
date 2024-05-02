@@ -13,7 +13,7 @@ namespace Merge
 
         private bool menuOpen = false;
 
-        private Types.Menu menuType = Types.Menu.Note;
+        private MenuUI.Menu menuType = MenuUI.Menu.Note;
 
         // References
         private MenuUI menuUI;

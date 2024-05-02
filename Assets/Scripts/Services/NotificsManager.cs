@@ -12,6 +12,8 @@ using Unity.Notifications.Android;
     using Unity.Notifications.iOS;
 #endif
 
+// POST_NOTIFICATIONS
+
 namespace Merge
 {
     public class NotificsManager : MonoBehaviour
@@ -35,7 +37,32 @@ namespace Merge
         private bool initialized = false;
         private bool allowed = false;
 
-        // POST_NOTIFICATIONS
+        // Classes
+        [Serializable]
+        public class Notification
+        {
+            public int id;
+            public DateTime fireTime;
+            public NotificationType type;
+            public string itemName;
+        }
+
+        [Serializable]
+        public class NotificationJson
+        {
+            public int id;
+            public string fireTime;
+            public string type;
+            public string itemName;
+        }
+
+        // Enums
+        public enum NotificationType
+        {
+            Gen,
+            Chest,
+            Energy,
+        }
 
         // References
         private Settings settings;
@@ -219,7 +246,7 @@ namespace Merge
 
         //// Send ////
 
-        public int Add(Types.NotificationType notificationType, DateTime fireTime, string itemName = "", bool addToGameData = true)
+        public int Add(NotificationType notificationType, DateTime fireTime, string itemName = "", bool addToGameData = true)
         {
             if (allowed && settings.notificationsOn)
             {
@@ -287,7 +314,7 @@ namespace Merge
             dataManager.SaveNotifications();
         }
 
-        AndroidNotification HandleNotificationType(Types.NotificationType notificationType, string itemName)
+        AndroidNotification HandleNotificationType(NotificationType notificationType, string itemName)
         {
             string title = "";
             string text = "";
@@ -297,17 +324,17 @@ namespace Merge
 
             switch (notificationType)
             {
-                case Types.NotificationType.Gen:
+                case NotificationType.Gen:
                     title = LOCALE.Get("notification_gen_title", itemName);
                     text = LOCALE.Get("notification_gen_text", itemName);
                     largeIcon = "ready_icon";
                     break;
-                case Types.NotificationType.Chest:
+                case NotificationType.Chest:
                     title = LOCALE.Get("notification_chest_title", itemName);
                     text = LOCALE.Get("notification_chest_text", itemName);
                     largeIcon = "open_icon";
                     break;
-                case Types.NotificationType.Energy:
+                case NotificationType.Energy:
                     title = LOCALE.Get("notification_energy_title");
                     text = LOCALE.Get("notification_energy_text");
                     largeIcon = "energy_icon";

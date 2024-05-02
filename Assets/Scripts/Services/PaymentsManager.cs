@@ -123,7 +123,7 @@ namespace Merge
             {
                 // ERROR
                 errorManager.Throw(
-                    Types.ErrorType.Code,
+                    ErrorManager.ErrorType.Code,
                     GetType().Name,
                     message + ", Reason: " + error.ToString()
                 );
@@ -141,7 +141,7 @@ namespace Merge
             {
                 // ERROR
                 errorManager.Throw(
-                    Types.ErrorType.Code,
+                    ErrorManager.ErrorType.Code,
                     GetType().Name,
                      error.ToString()
                 );
@@ -229,7 +229,7 @@ namespace Merge
 
                     // ERROR
                     errorManager.Throw(
-                        Types.ErrorType.Code,
+                        ErrorManager.ErrorType.Code,
                         GetType().Name,
                          "Failed to validate product with receipt: " + purchaseEvent.purchasedProduct.receipt
                     );
@@ -281,37 +281,37 @@ namespace Merge
                     case "Gold":
                         if (valuePop != null)
                         {
-                            valuePop.PopValue((int)payout.quantity, Types.CollGroup.Gold, false, true);
+                            valuePop.PopValue((int)payout.quantity, Item.CollGroup.Gold, false, true);
                         }
                         else
                         {
-                            gameData.UpdateValue((int)payout.quantity, Types.CollGroup.Gold, false);
+                            gameData.UpdateValue((int)payout.quantity, Item.CollGroup.Gold, false);
                         }
                         break;
                     case "Gems":
                         if (valuePop != null)
                         {
-                            valuePop.PopValue((int)payout.quantity, Types.CollGroup.Gems, false, true);
+                            valuePop.PopValue((int)payout.quantity, Item.CollGroup.Gems, false, true);
                         }
                         else
                         {
-                            gameData.UpdateValue((int)payout.quantity, Types.CollGroup.Gems, false);
+                            gameData.UpdateValue((int)payout.quantity, Item.CollGroup.Gems, false);
                         }
                         break;
                     case "Energy":
                         if (valuePop != null)
                         {
-                            valuePop.PopValue((int)payout.quantity, Types.CollGroup.Energy, false, true);
+                            valuePop.PopValue((int)payout.quantity, Item.CollGroup.Energy, false, true);
                         }
                         else
                         {
-                            gameData.UpdateValue((int)payout.quantity, Types.CollGroup.Energy, false);
+                            gameData.UpdateValue((int)payout.quantity, Item.CollGroup.Energy, false);
                         }
                         break;
                     default:
                         // ERROR
                         errorManager.Throw(
-                            Types.ErrorType.Code,
+                            ErrorManager.ErrorType.Code,
                             GetType().Name,
                              "Payout Subtype " + payout.subtype + " has not been implemented yet!"
                         );
@@ -322,7 +322,7 @@ namespace Merge
             {
                 // ERROR
                 errorManager.Throw(
-                    Types.ErrorType.Code,
+                    ErrorManager.ErrorType.Code,
                     GetType().Name,
                      "Payout Type " + payout.type + " has not been implemented yet!"
                 );
@@ -357,7 +357,7 @@ namespace Merge
                     {
                         // ERROR
                         errorManager.Throw(
-                            Types.ErrorType.Code,
+                            ErrorManager.ErrorType.Code,
                             GetType().Name,
                              "Reason: " + reason.ToString() + ", Product Id: " + product.definition.id
                         );
@@ -366,7 +366,7 @@ namespace Merge
                     {
                         // ERROR
                         errorManager.Throw(
-                            Types.ErrorType.Code,
+                            ErrorManager.ErrorType.Code,
                             GetType().Name,
                              "Message: " + message + ", Reason: " + reason.ToString() + ", Product Id: " + product.definition.id
                         );

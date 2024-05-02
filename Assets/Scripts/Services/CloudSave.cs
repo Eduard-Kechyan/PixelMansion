@@ -184,7 +184,7 @@ namespace Merge
                     {
                         // ERROR
                         errorManager.Throw(
-                            Types.ErrorType.Code,
+                            ErrorManager.ErrorType.Code,
                             GetType().Name,
                             "CloudSaveValidationException: " + exception
                         );
@@ -197,7 +197,7 @@ namespace Merge
                     {
                         // ERROR
                         errorManager.Throw(
-                            Types.ErrorType.Code,
+                            ErrorManager.ErrorType.Code,
                             GetType().Name,
                             "CloudSaveRateLimitedException: " + exception
                         );
@@ -210,7 +210,7 @@ namespace Merge
                     {
                         // ERROR
                         errorManager.Throw(
-                            Types.ErrorType.Code,
+                            ErrorManager.ErrorType.Code,
                             GetType().Name,
                             "CloudSaveException: " + exception
                         );
@@ -226,7 +226,7 @@ namespace Merge
                     {
                         // WARNING
                         errorManager.ThrowWarning(
-                            Types.ErrorType.Code,
+                            ErrorManager.ErrorType.Code,
                             GetType().Name,
                             "Called before \"services.cloudSaveAvailable\""
                         );
@@ -390,7 +390,7 @@ namespace Merge
                         {
                             // ERROR
                             errorManager.Throw(
-                                Types.ErrorType.Code,
+                                ErrorManager.ErrorType.Code,
                                 GetType().Name,
                                     "Wrong key given: " + key
                             );
@@ -402,7 +402,7 @@ namespace Merge
                     {
                         // ERROR
                         errorManager.Throw(
-                            Types.ErrorType.Code,
+                            ErrorManager.ErrorType.Code,
                             GetType().Name,
                             "CloudSaveValidationException: " + exception
                         );
@@ -413,7 +413,7 @@ namespace Merge
                     {
                         // ERROR
                         errorManager.Throw(
-                            Types.ErrorType.Code,
+                            ErrorManager.ErrorType.Code,
                             GetType().Name,
                             "CloudSaveRateLimitedException: " + exception
                         );
@@ -424,7 +424,7 @@ namespace Merge
                     {
                         // ERROR
                         errorManager.Throw(
-                            Types.ErrorType.Code,
+                            ErrorManager.ErrorType.Code,
                             GetType().Name,
                             "CloudSaveException: " + exception
                         );
@@ -438,7 +438,7 @@ namespace Merge
                     {
                         // WARNING
                         errorManager.ThrowWarning(
-                            Types.ErrorType.Code,
+                            ErrorManager.ErrorType.Code,
                             GetType().Name,
                             "Called before \"services.cloudSaveAvailable\""
                         );
@@ -467,7 +467,7 @@ namespace Merge
                         {
                             // ERROR
                             errorManager.ThrowWarning(
-                                Types.ErrorType.Code,
+                                ErrorManager.ErrorType.Code,
                                 GetType().Name,
                                  "Result is empty"
                             );
@@ -479,7 +479,7 @@ namespace Merge
                     {
                         // ERROR
                         errorManager.Throw(
-                            Types.ErrorType.Code,
+                            ErrorManager.ErrorType.Code,
                             GetType().Name,
                             "CloudSaveValidationException: " + exception
                         );
@@ -490,7 +490,7 @@ namespace Merge
                     {
                         // ERROR
                         errorManager.Throw(
-                            Types.ErrorType.Code,
+                            ErrorManager.ErrorType.Code,
                             GetType().Name,
                             "CloudSaveRateLimitedException: " + exception
                         );
@@ -501,7 +501,7 @@ namespace Merge
                     {
                         // ERROR
                         errorManager.Throw(
-                            Types.ErrorType.Code,
+                            ErrorManager.ErrorType.Code,
                             GetType().Name,
                             "CloudSaveException: " + exception
                         );
@@ -515,7 +515,7 @@ namespace Merge
                     {
                         // WARNING
                         errorManager.ThrowWarning(
-                            Types.ErrorType.Code,
+                            ErrorManager.ErrorType.Code,
                             GetType().Name,
                             "Called before \"services.cloudSaveAvailable\""
                         );
@@ -544,7 +544,7 @@ namespace Merge
                         {
                             // ERROR
                             errorManager.Throw(
-                                Types.ErrorType.Code,
+                                ErrorManager.ErrorType.Code,
                                 GetType().Name,
                                 "Result is empty"
                             );
@@ -556,7 +556,7 @@ namespace Merge
                     {
                         // ERROR
                         errorManager.Throw(
-                            Types.ErrorType.Code,
+                            ErrorManager.ErrorType.Code,
                             GetType().Name,
                             "CloudSaveValidationException: " + exception
                         );
@@ -567,7 +567,7 @@ namespace Merge
                     {
                         // ERROR
                         errorManager.Throw(
-                            Types.ErrorType.Code,
+                            ErrorManager.ErrorType.Code,
                             GetType().Name,
                             "CloudSaveRateLimitedException: " + exception
                         );
@@ -578,7 +578,7 @@ namespace Merge
                     {
                         // ERROR
                         errorManager.Throw(
-                            Types.ErrorType.Code,
+                            ErrorManager.ErrorType.Code,
                             GetType().Name,
                             "CloudSaveException: " + exception
                         );
@@ -592,7 +592,7 @@ namespace Merge
                     {
                         // WARNING
                         errorManager.ThrowWarning(
-                            Types.ErrorType.Code,
+                            ErrorManager.ErrorType.Code,
                             GetType().Name,
                             "Called before \"services.cloudSaveAvailable\""
                         );
@@ -621,7 +621,7 @@ namespace Merge
                         {
                             // ERROR
                             errorManager.Throw(
-                                Types.ErrorType.Code,
+                                ErrorManager.ErrorType.Code,
                                 GetType().Name,
                                     "Wrong key given: " + key
                             );
@@ -633,7 +633,7 @@ namespace Merge
                     {
                         // ERROR
                         errorManager.Throw(
-                            Types.ErrorType.Code,
+                            ErrorManager.ErrorType.Code,
                             GetType().Name,
                             "CloudSaveValidationException: " + exception
                         );
@@ -644,7 +644,7 @@ namespace Merge
                     {
                         // ERROR
                         errorManager.Throw(
-                            Types.ErrorType.Code,
+                            ErrorManager.ErrorType.Code,
                             GetType().Name,
                             "CloudSaveRateLimitedException: " + exception
                         );
@@ -655,7 +655,7 @@ namespace Merge
                     {
                         // ERROR
                         errorManager.Throw(
-                            Types.ErrorType.Code,
+                            ErrorManager.ErrorType.Code,
                             GetType().Name,
                             "CloudSaveException: " + exception
                         );
@@ -669,7 +669,7 @@ namespace Merge
                     {
                         // WARNING
                         errorManager.ThrowWarning(
-                            Types.ErrorType.Code,
+                            ErrorManager.ErrorType.Code,
                             GetType().Name,
                             "Called before \"services.cloudSaveAvailable\""
                         );
@@ -710,7 +710,7 @@ namespace Merge
                     {
                         // ERROR
                         errorManager.Throw(
-                            Types.ErrorType.Code,
+                            ErrorManager.ErrorType.Code,
                             GetType().Name,
                             "CloudSaveValidationException: " + exception
                         );
@@ -721,7 +721,7 @@ namespace Merge
                     {
                         // ERROR
                         errorManager.Throw(
-                            Types.ErrorType.Code,
+                            ErrorManager.ErrorType.Code,
                             GetType().Name,
                             "CloudSaveRateLimitedException: " + exception
                         );
@@ -732,7 +732,7 @@ namespace Merge
                     {
                         // ERROR
                         errorManager.Throw(
-                            Types.ErrorType.Code,
+                            ErrorManager.ErrorType.Code,
                             GetType().Name,
                             "CloudSaveException: " + exception
                         );
@@ -746,7 +746,7 @@ namespace Merge
                     {
                         // WARNING
                         errorManager.ThrowWarning(
-                            Types.ErrorType.Code,
+                            ErrorManager.ErrorType.Code,
                             GetType().Name,
                             "Called before \"services.cloudSaveAvailable\""
                         );
@@ -775,7 +775,7 @@ namespace Merge
                     {
                         // ERROR
                         errorManager.Throw(
-                            Types.ErrorType.Code,
+                            ErrorManager.ErrorType.Code,
                             GetType().Name,
                             "CloudSaveValidationException: " + exception
                         );
@@ -786,7 +786,7 @@ namespace Merge
                     {
                         // ERROR
                         errorManager.Throw(
-                            Types.ErrorType.Code,
+                            ErrorManager.ErrorType.Code,
                             GetType().Name,
                             "CloudSaveRateLimitedException: " + exception
                         );
@@ -797,7 +797,7 @@ namespace Merge
                     {
                         // ERROR
                         errorManager.Throw(
-                            Types.ErrorType.Code,
+                            ErrorManager.ErrorType.Code,
                             GetType().Name,
                             "CloudSaveException: " + exception
                         );
@@ -811,7 +811,7 @@ namespace Merge
                     {
                         // WARNING
                         errorManager.ThrowWarning(
-                            Types.ErrorType.Code,
+                            ErrorManager.ErrorType.Code,
                             GetType().Name,
                             "Called before \"services.cloudSaveAvailable\""
                         );

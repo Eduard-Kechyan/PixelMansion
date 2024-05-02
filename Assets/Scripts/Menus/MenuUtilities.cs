@@ -24,7 +24,7 @@ namespace Merge
             gameData = GameData.Instance;
         }
 
-        public void TryToGetOnlineData(Types.MessageType messageType)
+        public void TryToGetOnlineData(MessageMenu.MessageType messageType)
         {
             menuUI.ShowMenuOverlay(() =>
             {
@@ -32,14 +32,14 @@ namespace Merge
                 {
                     menuUI.HideMenuOverlay(() =>
                     {
-                        string foundMessage = messageType == Types.MessageType.Terms ? gameData.termsHtml : gameData.privacyHtml;
+                        string foundMessage = messageType == MessageMenu.MessageType.Terms ? gameData.termsHtml : gameData.privacyHtml;
 
                         if (foundMessage == "")
                         {
                             // Open in browser
                             // TODO - Use the next line 
                             // Application.OpenURL(GameData.WEB_ADDRESS + "/" + messageType.ToString().ToLower());
-                            messageMenu.Open(messageType, "", messageType == Types.MessageType.Terms ? termsHtml.text : privacyHtml.text, "", true);
+                            messageMenu.Open(messageType, "", messageType == MessageMenu.MessageType.Terms ? termsHtml.text : privacyHtml.text, "", true);
                         }
                         else
                         {
