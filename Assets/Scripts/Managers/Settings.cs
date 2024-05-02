@@ -82,6 +82,8 @@ namespace Merge
             cloudSave.SaveDataAsync("sound", soundOn ? 1 : 0);
 
             settingsMenu.SetUIOptionsButtons();
+
+            soundManager.PlaySound(vibrationOn ? SoundManager.SoundType.On : SoundManager.SoundType.Off);
         }
 
         public void ToggleMusic()
@@ -92,7 +94,7 @@ namespace Merge
 
             if (musicOn)
             {
-                soundManager.sourceMusic.Play();
+                soundManager.PlaySceneMusic();
             }
 
             PlayerPrefs.SetInt("music", musicOn ? 1 : 0);
@@ -101,6 +103,8 @@ namespace Merge
             cloudSave.SaveDataAsync("music", musicOn ? 1 : 0);
 
             settingsMenu.SetUIOptionsButtons();
+
+            soundManager.PlaySound(vibrationOn ? SoundManager.SoundType.On : SoundManager.SoundType.Off);
         }
 
         public void ToggleVibration()
@@ -113,6 +117,13 @@ namespace Merge
             cloudSave.SaveDataAsync("vibration", vibrationOn ? 1 : 0);
 
             settingsMenu.SetUIOptionsButtons();
+
+            if (vibrationOn)
+            {
+                Handheld.Vibrate();
+            }
+
+            soundManager.PlaySound(vibrationOn ? SoundManager.SoundType.On : SoundManager.SoundType.Off);
         }
 
         public void ToggleNotifications()
@@ -151,6 +162,8 @@ namespace Merge
 
                 settingsMenu.SetUIOptionsButtons();
             }
+
+            soundManager.PlaySound(vibrationOn ? SoundManager.SoundType.On : SoundManager.SoundType.Off);
         }
 
         public void SetNotifications(bool enable)

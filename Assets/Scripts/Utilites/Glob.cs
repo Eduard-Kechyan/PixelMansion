@@ -42,6 +42,11 @@ namespace Merge
             colorRed = FromHEX("EC737F");
         }
 
+        void Start()
+        {
+            ShowToast("Dummy Toast");
+        }
+
         //// TIMEOUT ////
         public static Coroutine SetTimeout(Action callback, float seconds = 1f)
         {
@@ -160,6 +165,24 @@ namespace Merge
             }
 
             callback();
+        }
+
+        //// Toast ////
+        public void ShowToast(string message)
+        {
+#if UNITY_EDITOR
+            Debug.Log("Toast message: " + message);
+#elif UNITY_ANDROID
+            AndroidJavaClass toastClass=new AndroidJavaClass("android.widget.Toast");
+
+            AndroidJavaObject currentActivity = new AndroidJavaObject("com.unity3d.player.UnityPlayer").GetStatic<AndroidJavaObject>("currentActivity");
+
+            AndroidJavaObject toast = toastClass.CallStatic<AndroidJavaObject>("makeText", currentActivity, message, toastClass.GetStatic<int>("LENGTH_SHORT"));
+
+            toast.Call("Show");
+#elif UNITY_IOS
+            Debug.LogWarning("IOS Toast messages aren't implement yet. Tried to show: " + message);
+#endif
         }
 
         //// OTHER ////

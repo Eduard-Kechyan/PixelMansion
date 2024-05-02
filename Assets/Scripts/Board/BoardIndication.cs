@@ -194,7 +194,7 @@ namespace Merge
         {
             if (currentItem != null)
             {
-                if ((item1.id != null && currentItem.id == item1.id) || (item2.id != null && currentItem.id == item2.id))
+                if ((item1 != null && item1.id != null && currentItem.id == item1.id) || (item2 != null && item2.id != null && currentItem.id == item2.id))
                 {
                     StopPossibleMergeCheck();
                 }

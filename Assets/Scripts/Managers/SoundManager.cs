@@ -45,6 +45,11 @@ namespace Merge
             Magical,
         };
 
+        // TODO - Add proper sounds for:
+        // RemoveFilth
+        // On
+        // Off
+        // RoomUnlocking
         public enum SoundType
         {
             None,
@@ -61,12 +66,15 @@ namespace Merge
             Gems,
             Pop,
             Buzz,
-            RemoveFilth
+            RemoveFilth,
+            On,
+            Off,
+            RoomUnlocking,
         };
-
 
         // References
         private Settings settings;
+        private SceneLoader sceneLoader;
 
         // Instance
         public static SoundManager Instance;
@@ -88,38 +96,7 @@ namespace Merge
         {
             // Cache
             settings = Settings.Instance;
-        }
-
-        //////// Sound ////////
-
-        public void SetVolumeSound(float volume)
-        {
-            sourceSound.volume = volume;
-        }
-
-        public void PlaySound(SoundType soundType, string clipName = "")
-        {
-            bool found = false;
-
-            foreach (SoundClip i in soundClips)
-            {
-                if (soundType == SoundType.None ? i.clip.name == clipName : i.type == soundType)
-                {
-                    if (settings.soundOn)
-                    {
-                        sourceSound.volume = i.volume;
-                    }
-
-                    sourceSound.PlayOneShot(i.clip);
-
-                    found = true;
-                }
-            }
-
-            if (!found)
-            {
-                Debug.Log("Sound \"" + soundType.ToString() + "\" not found!");
-            }
+            sceneLoader = GameRefs.Instance.sceneLoader;
         }
 
         //////// Music ////////
@@ -168,6 +145,30 @@ namespace Merge
             }
         }
 
+        public void PlaySceneMusic()
+        {
+            SceneLoader.SceneType sceneType = sceneLoader.GetScene();
+
+            switch (sceneType)
+            {
+                case SceneLoader.SceneType.World:
+                    if (PlayerPrefs.HasKey("tutorialFinished"))
+                    {
+                        PlayMusic(MusicType.World);
+                    }
+                    else
+                    {
+                        PlayMusic(MusicType.Magical);
+                    }
+                    break;
+                case SceneLoader.SceneType.Merge:
+                    PlayMusic(MusicType.Merge);
+                    break;
+                default:
+                    break;
+            }
+        }
+
         public void FadeInMusic(float seconds)
         {
             StartCoroutine(FadeCoroutine(seconds, sourceMusic.volume, 1, true));
@@ -201,6 +202,38 @@ namespace Merge
                 timePassed += Mathf.Min(Time.deltaTime, seconds - timePassed);
 
                 yield return null;
+            }
+        }
+
+        //////// Sound ////////
+
+        public void SetVolumeSound(float volume)
+        {
+            sourceSound.volume = volume;
+        }
+
+        public void PlaySound(SoundType soundType, string clipName = "")
+        {
+            bool found = false;
+
+            foreach (SoundClip i in soundClips)
+            {
+                if (soundType == SoundType.None ? i.clip.name == clipName : i.type == soundType)
+                {
+                    if (settings.soundOn)
+                    {
+                        sourceSound.volume = i.volume;
+                    }
+
+                    sourceSound.PlayOneShot(i.clip);
+
+                    found = true;
+                }
+            }
+
+            if (!found)
+            {
+                Debug.Log("Sound \"" + soundType.ToString() + "\" not found!");
             }
         }
     }

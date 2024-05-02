@@ -340,7 +340,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1537458401331318770, guid: f4034c2be9714cc41b0cf4ef9809c444, type: 3}
       propertyPath: log
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1537458401331318770, guid: f4034c2be9714cc41b0cf4ef9809c444, type: 3}
       propertyPath: combine
@@ -853,7 +853,7 @@ PrefabInstance:
       objectReference: {fileID: 639326507}
     - target: {fileID: 6008772859430314081, guid: 1bd750316f540934998c943551a39ba8, type: 3}
       propertyPath: skipTutorial
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6008772859430314081, guid: 1bd750316f540934998c943551a39ba8, type: 3}
       propertyPath: startFromStep

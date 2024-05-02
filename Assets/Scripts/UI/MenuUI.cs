@@ -183,7 +183,7 @@ namespace Merge
 
                     if (isSmallMenu)
                     {
-                        currentMenuUI.Q<VisualElement>("Container").AddToClassList(currentMenuType + "small_menu");
+                        currentMenuUI.Q<VisualElement>("Container").AddToClassList("small_menu");
                     }
                 }
 
