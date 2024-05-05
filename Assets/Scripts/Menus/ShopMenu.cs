@@ -428,7 +428,7 @@ namespace Merge
                             {
                                 buyButton.SetEnabled(true);
 
-                                buyButtonLabel.text = paymentsManager.GetPrice(product.id);
+                                buyButtonLabel.text = price;
                             }
                         }
                         else
@@ -525,7 +525,7 @@ namespace Merge
             goldSubtitle.text = LOCALE.Get("shop_menu_subtitle_gold");
 
             // Open menu
-            menuUI.OpenMenu(content, menuType, "", true);
+            menuUI.OpenMenu(content, menuType, "");
 
             // Reset scroll position
             scrollContainer.scrollOffset = Vector2.zero;

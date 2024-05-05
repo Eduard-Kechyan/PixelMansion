@@ -1,3 +1,16 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Styles/!MainStyles.uss?fileID=7433441132597879392&amp;guid=d72cb646ff9afd2458a02dbd4dc56421&amp;type=3#!MainStyles" />
     <Style src="project://database/Assets/UI/Styles/Debug/BoardViewer.uss?fileID=7433441132597879392&amp;guid=9b5e1c38c4effa7458debda6fdab9b70&amp;type=3#BoardViewer" />
+    <engine:VisualElement name="ItemMenu" class="item_menu" style="display: none; opacity: 0;">
+        <engine:Label text="Choose a new item:" name="MainLabel" class="item_menu_label" />
+        <engine:EnumField type="Merge.Item+State, Assembly-CSharp" name="ItemEnumFieldBottom" class="item_menu_state item_menu_state_bottom" />
+        <engine:ScrollView name="ItemScrollView" class="scroller item_menu_scrollview" />
+        <engine:Label text="Selected Item Name" name="SelectedItemLabel" class="item_menu_label" style="display: none; visibility: visible; opacity: 0;" />
+        <engine:EnumField type="Merge.Item+State, Assembly-CSharp" name="ItemEnumFieldTop" class="item_menu_state item_menu_state_top" />
+        <engine:VisualElement name="ButtonContainer" style="flex-grow: 1; flex-direction: row; justify-content: space-evenly;">
+            <engine:Button text="Accept" name="AcceptButton" class="button item_menu_button" />
+            <engine:Button text="Clear" name="ClearButton" class="button item_menu_button" style="background-color: rgb(33, 161, 97);" />
+            <engine:Button text="Cancel" name="CancelButton" class="button item_menu_button" style="background-color: rgb(212, 57, 83);" />
+        </engine:VisualElement>
+    </engine:VisualElement>
 </engine:UXML>

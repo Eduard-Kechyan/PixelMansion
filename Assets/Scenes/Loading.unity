@@ -1274,6 +1274,7 @@ MonoBehaviour:
   transitionDuration: 0.1
   menuDecreaseOffset: 0.8
   menuOpen: 0
+  menuOptionsData: {fileID: 11400000, guid: 89583e11c9d26634cb813e427a4a6bea, type: 2}
   spinnerSpeed: 0.07
   spinnerSprites:
   - {fileID: -506458403, guid: 6d6177bc530c98e4894d8b9e6e631322, type: 3}
@@ -1501,7 +1502,7 @@ PrefabInstance:
       objectReference: {fileID: 1419910202}
     - target: {fileID: 6666298423405771595, guid: a255d925b90a92e418c669c0cfae21e9, type: 3}
       propertyPath: stayOnScene
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6666298423405771595, guid: a255d925b90a92e418c669c0cfae21e9, type: 3}
       propertyPath: tutorialData

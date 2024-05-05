@@ -137,7 +137,7 @@ namespace Merge
             failureContainer = root.Q<VisualElement>("FailureContainer");
             failureLabel = failureContainer.Q<Label>("Label");
 
-            // Button taps
+            // UI taps
             cancelButton.clicked += () => Close();
             sendButton.clicked += () => Send();
 

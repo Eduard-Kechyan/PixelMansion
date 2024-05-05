@@ -1,23 +1,32 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEditor;
 
 namespace Merge
 {
     public class BoardViewer : MonoBehaviour
     {
+#if UNITY_EDITOR
         // Variables
         public GameObject tile;
         public GameObject item;
-        public InitialItems initialItems;
+        public TextAsset initialItems;
         public float tileWidth = 24f;
         public float bottomOffset = 20f;
 
         [Header("UI")]
         public Vector2 countLabelOffset;
         public Vector2 countIndexOffset;
+        public Vector2 countButtonOffset;
+
+        [HideInInspector]
+        public BoardManager.Tile[] boardData;
+
+        private string initialItemsPath = "";
 
         private float singlePixelWidth;
         private float screenUnitWidth;
@@ -26,27 +35,29 @@ namespace Merge
 
         private GameObject board;
         private GameObject tiles;
-        private BoardManager.Tile[,] boardData;
         private float tileSize;
 
         // References
         private Camera cam;
+        private BoardItemMenu boardItemMenu;
 
         // UI
         private VisualElement root;
+        private Button[] buttons = new Button[7 * 9];
 
         void Start()
         {
             // Cache
             cam = Camera.main;
+            boardItemMenu = GetComponent<BoardItemMenu>();
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
 
-            root.Clear();
+            Debug.LogWarning("This is BoardViewer! This text shouldn't be logged! If it is, then there is a problem!!!");
 
             // Initialization
-            boardData = ConvertArrayToBoard(initialItems.content);
+            initialItemsPath = Application.dataPath.Replace("/Assets", "/") + AssetDatabase.GetAssetPath(initialItems);
 
             // Set the gameObject
             board = gameObject;
@@ -56,6 +67,25 @@ namespace Merge
             singlePixelWidth = cam.pixelWidth / GameData.GAME_PIXEL_WIDTH;
             screenUnitWidth =
                 cam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 10)).x * 2;
+
+            root.RegisterCallback<GeometryChangedEvent>(Init);
+        }
+
+        void Init(GeometryChangedEvent evt)
+        {
+            root.UnregisterCallback<GeometryChangedEvent>(Init);
+
+            StartCoroutine(WaitForItemMenu());
+        }
+
+        IEnumerator WaitForItemMenu()
+        {
+            while (!boardItemMenu.ready)
+            {
+                yield return null;
+            }
+
+            boardData = boardItemMenu.ConvertInitialItemsToBoard(initialItems.text);
 
             SetBoard();
         }
@@ -141,19 +171,31 @@ namespace Merge
 
                     newTile.transform.SetParent(tiles.transform);
 
-                    CreateUIElements(count, x, y, newTile.transform.position);
+                    bool itemCreated = false;
+
+                    Vector2 uiPos = RuntimePanelUtils.CameraTransformWorldToPanel(
+                      root.panel,
+                      newTile.transform.position,
+                      cam
+                    );
 
                     // Create item
-                    if (boardData[x, y] != null && boardData[x, y].sprite != null)
+                    if (boardData[count] != null && boardData[count].sprite != null)
                     {
                         GameObject newItem = Instantiate(item, newTile.transform.position, Quaternion.identity);
 
-                        newItem.GetComponent<SpriteRenderer>().sprite = boardData[x, y].sprite;
+                        newItem.GetComponent<SpriteRenderer>().sprite = boardData[count].sprite;
 
                         newItem.transform.SetParent(newTile.transform);
 
                         newItem.transform.localScale = new Vector3(1, 1, 1);
+
+                        itemCreated = true;
                     }
+
+                    CreateUIButton(count, uiPos, boardData[count].state);
+
+                    CreateUILabels(count, x, y, uiPos, boardData[count].state, itemCreated);
 
                     // Increase count for the next loop
                     count++;
@@ -161,54 +203,28 @@ namespace Merge
             }
         }
 
-        BoardManager.Tile[,] ConvertArrayToBoard(BoardManager.Tile[] boardArray)
+        void CreateUILabels(int count, int indexX, int indexY, Vector2 uiPos, Item.State state, bool useState)
         {
-            BoardManager.Tile[,] newBoardData = new BoardManager.Tile[GameData.WIDTH, GameData.HEIGHT];
+            string stateLetter = "";
 
-            int count = 0;
-
-            for (int i = 0; i < GameData.WIDTH; i++)
+            if (useState)
             {
-                for (int j = 0; j < GameData.HEIGHT; j++)
+                if (state == Item.State.Default)
                 {
-                    newBoardData[i, j] = new BoardManager.Tile
-                    {
-                        sprite = boardArray[count].sprite,
-                        type = boardArray[count].type,
-                        group = boardArray[count].group,
-                        genGroup = boardArray[count].genGroup,
-                        collGroup = boardArray[count].collGroup,
-                        chestGroup = boardArray[count].chestGroup,
-                        state = boardArray[count].state,
-                        crate = boardArray[count].crate,
-                        order = count,
-                        chestItems = boardArray[count].chestItems,
-                        chestItemsSet = boardArray[count].chestItemsSet,
-                        chestOpen = boardArray[count].chestOpen,
-                        generatesAtLevel = boardArray[count].generatesAtLevel,
-                        id = boardArray[count].id,
-                        gemPopped = boardArray[count].gemPopped,
-                        isCompleted = boardArray[count].isCompleted,
-                        timerOn = boardArray[count].timerOn,
-                    };
-
-                    count++;
+                    stateLetter = "D ";
+                }
+                else if (state == Item.State.Crate)
+                {
+                    stateLetter = "C ";
+                }
+                else if (state == Item.State.Locker)
+                {
+                    stateLetter = "L ";
                 }
             }
 
-            return newBoardData;
-        }
-
-        void CreateUIElements(int count, int indexX, int indexY, Vector2 pos)
-        {
-            Vector2 uiPos = RuntimePanelUtils.CameraTransformWorldToPanel(
-              root.panel,
-              pos,
-              cam
-            );
-
-            Label newCountLabel = new() { name = "Count" + count, text = count.ToString() };
-            Label newIndexLabel = new() { name = "Index" + indexX + "." + indexY, text = indexX + "." + indexY };
+            Label newCountLabel = new() { name = "Count" + count, text = stateLetter + count.ToString() };
+            Label newIndexLabel = new() { name = "Index" + count, text = indexX + "." + indexY };
 
             newCountLabel.AddToClassList("count_label");
             newIndexLabel.AddToClassList("index_label");
@@ -219,8 +235,48 @@ namespace Merge
             newIndexLabel.style.top = uiPos.y + countIndexOffset.y;
             newIndexLabel.style.left = uiPos.x + countIndexOffset.x;
 
-            root.Add(newCountLabel);
-            root.Add(newIndexLabel);
+            root.Insert(0, newCountLabel);
+            root.Insert(0, newIndexLabel);
         }
+
+        void CreateUIButton(int count, Vector2 uiPos, Item.State state)
+        {
+            Button newItemButton = new() { name = "Count" + count, text = "" };
+
+            newItemButton.AddToClassList("board_item_button");
+
+            newItemButton.style.top = uiPos.y + countButtonOffset.y;
+            newItemButton.style.left = uiPos.x + countButtonOffset.x;
+
+            root.Insert(0, newItemButton);
+
+            buttons[count] = newItemButton;
+
+            string order = count.ToString();
+
+            bool isTop = uiPos.y > root.resolvedStyle.height / 2;
+
+            newItemButton.clicked += () => boardItemMenu.OpenItemMenu(order, isTop, state);
+        }
+
+        public void SelectButton(int order)
+        {
+            buttons[order].AddToClassList("board_item_button_selected");
+        }
+
+        public void DeSelectButton(int order)
+        {
+            buttons[order].RemoveFromClassList("board_item_button_selected");
+        }
+
+        async public void SaveBoardData(Action callback)
+        {
+            string initialItemsJson = boardItemMenu.ConvertBoardToInitialItems(boardData);
+
+            await File.WriteAllTextAsync(initialItemsPath, initialItemsJson);
+
+            callback();
+        }
+#endif
     }
 }

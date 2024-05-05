@@ -19,8 +19,8 @@ namespace Merge
         private GameData gameData;
         private I18n LOCALE;
         private MenuUI menuUI;
-        private InfoBox infoBox;
         private UIData uiData;
+        private ItemHandler itemHandler;
 
         // UI
         private VisualElement content;
@@ -38,11 +38,7 @@ namespace Merge
             LOCALE = I18n.Instance;
             menuUI = GetComponent<MenuUI>();
             uiData = GameData.Instance.GetComponent<UIData>();
-
-            if (GameRefs.Instance.mergeUI != null)
-            {
-                infoBox = GameRefs.Instance.mergeUI.GetComponent<InfoBox>();
-            }
+            itemHandler = DataManager.Instance.GetComponent<ItemHandler>();
 
             DataManager.Instance.CheckLoaded(() =>
             {
@@ -84,14 +80,7 @@ namespace Merge
 
             itemName.text = item.itemName;
 
-            if (infoBox != null)
-            {
-                itemData.text = infoBox.GetItemData(item, true);
-            }
-            else
-            {
-                itemData.text = LOCALE.Get("info_box_null");
-            }
+            itemData.text = itemHandler.GetItemData(item, true);
 
             // Content
             string title;

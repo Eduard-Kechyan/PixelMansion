@@ -83,6 +83,7 @@ namespace Merge
         public enum GenGroup
         {
             Toolbox,
+            Test
         }
 
         public enum Group

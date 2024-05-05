@@ -53,9 +53,10 @@ MonoBehaviour:
   generators: {fileID: 11400000, guid: e137e4880bf3a1b47af8d97ac8c94988, type: 2}
   colls: {fileID: 11400000, guid: 0d151817da1d697479bdb1a307eafd0e, type: 2}
   chests: {fileID: 11400000, guid: 4269ec268f2435744bcb14fe4886b718, type: 2}
-  initialItems: {fileID: 11400000, guid: 4e4dfc5175592b245906d52a6ec1dcd6, type: 2}
-  worldDataManager: {fileID: 0}
+  initialItems: {fileID: 4900000, guid: f6a96f947df86b440afbb35ff46be961, type: 3}
+  initialItemsSkip: {fileID: 4900000, guid: f6a96f947df86b440afbb35ff46be961, type: 3}
   loaded: 0
+  initialBoardData: []
   boardJsonData: 
   finishedTasksJsonData: 
   unlockedJsonData: 

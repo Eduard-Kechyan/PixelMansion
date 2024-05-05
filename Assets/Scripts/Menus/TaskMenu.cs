@@ -41,6 +41,7 @@ namespace Merge
         private VisualElement root;
         private VisualElement content;
         private VisualElement taskScrollView;
+        private Button playButtonToRegister;
 
         void Start()
         {
@@ -79,11 +80,12 @@ namespace Merge
             // Set menu content
             loadingTaskMenuButton = true;
             tempTaskButtonPos = Vector2.zero;
+            playButtonToRegister = null;
 
             SetTasks();
 
             // Open menu
-            menuUI.OpenMenu(content, menuType);
+            menuUI.OpenMenu(content, menuType, "", false, PlayerPrefs.HasKey("tutorialFinished"));
         }
 
         // Show task data
@@ -139,9 +141,11 @@ namespace Merge
                         string taskId = gameData.tasksData[i].tasks[j].id;
 
                         // Get the first task group's first task's play button position
-                        if (i == 0 && j == 0)
+                        if (!PlayerPrefs.HasKey("tutorialFinished") && i == 0 && j == 0)
                         {
-                            newTask.Q<Button>("PlayButton").RegisterCallback<GeometryChangedEvent>(SetTaskButtonPos);
+                            playButtonToRegister = newTask.Q<Button>("PlayButton");
+
+                            playButtonToRegister.RegisterCallback<GeometryChangedEvent>(SetTaskButtonPos);
                         }
 
                         // Set button
@@ -344,7 +348,7 @@ namespace Merge
 
         void SetTaskButtonPos(GeometryChangedEvent evt)
         {
-            root.UnregisterCallback<GeometryChangedEvent>(SetTaskButtonPos);
+            playButtonToRegister.UnregisterCallback<GeometryChangedEvent>(SetTaskButtonPos);
 
             foreach (var taskGroup in taskScrollView.Children())
             {

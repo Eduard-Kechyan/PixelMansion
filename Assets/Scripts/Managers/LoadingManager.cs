@@ -355,6 +355,8 @@ namespace Merge
                 !feedbackManager.feedbackOpen &&
                 !feedbackManager.thanksOpen &&
                 !feedbackManager.failureOpen &&
+                // Debug Menu
+                !menuUI.menuOpen &&
                 // Logs
                 !logs.logsOpen
                 // Other

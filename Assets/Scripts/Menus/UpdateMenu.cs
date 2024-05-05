@@ -44,7 +44,7 @@ namespace Merge
                 updateButton = content.Q<Button>("UpdateButton");
                 updateExitButton = content.Q<Button>("ExitButton");
 
-                // UI Taps
+                // UI taps
                 updateButton.clicked += () => UpdateGame();
                 updateExitButton.clicked += () => Application.Quit();
 

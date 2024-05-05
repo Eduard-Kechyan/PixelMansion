@@ -90,7 +90,7 @@ namespace Merge
             }
 
             // Open menu
-            menuUI.OpenMenu(content, menuType, title, false, closeAll);
+            menuUI.OpenMenu(content, menuType, title, closeAll);
         }
 
         void ConfirmButtonClicked()

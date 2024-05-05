@@ -1,0 +1,569 @@
+[
+    {
+        "sprite": "ExperienceColl1",
+        "type": "Coll",
+        "state": "Default",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    }
+]

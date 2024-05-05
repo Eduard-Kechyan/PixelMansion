@@ -42,11 +42,6 @@ namespace Merge
             colorRed = FromHEX("EC737F");
         }
 
-        void Start()
-        {
-            ShowToast("Dummy Toast");
-        }
-
         //// TIMEOUT ////
         public static Coroutine SetTimeout(Action callback, float seconds = 1f)
         {

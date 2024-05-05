@@ -9,9 +9,12 @@ namespace Merge
     public class MenuUI : MonoBehaviour
     {
         // Variables
-        public float transitionDuration = 0.1f;
+        public float transitionDuration = 0.2f;
         public float menuDecreaseOffset = 0.8f;
         public bool menuOpen = false;
+
+        [Header("Options")]
+        public MenuOptionsData menuOptionsData;
 
         [Header("Spinner")]
         public float spinnerSpeed = 0.07f;
@@ -30,6 +33,10 @@ namespace Merge
         [SerializeField]
         private bool isClosing = false;
 
+        private Menu currentMenuType;
+        private VisualElement currentMenuUI;
+
+        // Classes
         private class MenuItem
         {
             public VisualElement menuUI;
@@ -37,8 +44,16 @@ namespace Merge
             public bool showValues;
         }
 
-        private Menu currentMenuType;
-        private VisualElement currentMenuUI;
+        [Serializable]
+        public class MenuOptions
+        {
+            public string name;
+            public Menu menuType = Menu.None;
+            public bool showValues = false;
+            public bool isSmall = false;
+            public bool canClose = true;
+            public bool keepInMemory = true;
+        }
 
         // Events
         public delegate void OpenEvent();
@@ -70,7 +85,7 @@ namespace Merge
             Debug,
             Terms,
             Conflict,
-            Update,
+            Update
         }
 
         // References
@@ -78,6 +93,7 @@ namespace Merge
         private I18n LOCALE;
         private UIData uiData;
         private BoardInteractions boardInteractions;
+        private ErrorManager errorManager;
 
         // UI
         private VisualElement root;
@@ -96,6 +112,7 @@ namespace Merge
             LOCALE = I18n.Instance;
             uiData = GameData.Instance.GetComponent<UIData>();
             boardInteractions = GameRefs.Instance.boardInteractions;
+            errorManager = ErrorManager.Instance;
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
@@ -107,7 +124,7 @@ namespace Merge
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
             menuOverlayDebugCloseButton = menuOverlay.Q<Button>("DebugCloseButton");
 
-            // Button taps
+            // UI taps
             menuOverlayDebugCloseButton.clicked += () => HideMenuOverlay();
 
             menuOverlayDebugCloseButton.style.display = DisplayStyle.Flex;
@@ -131,40 +148,22 @@ namespace Merge
             MenuUI.OnMenuLoaded -= MenuLoaded;
         }
 
-        public bool IsMenuOpen(Menu menu)
-        {
-            if (currentMenuType != Menu.None && currentMenuType == menu)
-            {
-                return true;
-            }
-
-            bool found = false;
-
-            if (menus.Count > 0)
-            {
-                for (int i = 0; i < menus.Count; i++)
-                {
-                    if (menus[i].menuType == menu)
-                    {
-                        found = true;
-
-                        break;
-                    }
-                }
-            }
-
-            return found;
-        }
-
         // Get ready to open the given menu
-        public VisualElement OpenMenu(VisualElement menuUI, Menu menuType, string altTitle = "", bool showValues = false, bool closeAll = false, bool ignoreClose = false, bool showCloseButton = true, bool isSmallMenu = false)
+        public VisualElement OpenMenu(VisualElement menuUI, Menu menuType, string altTitle = "", bool closeAll = false, bool keepInMemory = true)
         {
             if (!isClosing)
             {
                 // Set the current menu
                 currentMenuType = menuType;
 
-                VisualElement menuElement = uiData.GetMenuElement(menuType);
+                MenuOptions menuOptions = GetMenuOptions(menuType);
+
+                VisualElement menuElement = null;
+
+                if (menuOptions.keepInMemory)
+                {
+                    menuElement = uiData.GetMenuElement(menuType);
+                }
 
                 if (menuElement != null)
                 {
@@ -181,7 +180,7 @@ namespace Merge
                     // Add the related menu class
                     currentMenuUI.AddToClassList(currentMenuType + "_menu");
 
-                    if (isSmallMenu)
+                    if (menuOptions.isSmall)
                     {
                         currentMenuUI.Q<VisualElement>("Container").AddToClassList("small_menu");
                     }
@@ -197,10 +196,13 @@ namespace Merge
                 {
                     menuUI = currentMenuUI,
                     menuType = currentMenuType,
-                    showValues = showValues
+                    showValues = menuOptions.showValues
                 });
 
-                uiData.SetMenuElement(menuType, currentMenuUI);
+                if (keepInMemory && menuOptions.keepInMemory)
+                {
+                    uiData.SetMenuElement(menuType, currentMenuUI);
+                }
 
                 // Add menu to the ui
                 localeWrapper.Insert(localeWrapper.childCount - 1, currentMenuUI);
@@ -208,7 +210,7 @@ namespace Merge
                 // Close all menus if needed
                 closeAllMenus = closeAll;
 
-                if (showValues)
+                if (menuOptions.showValues)
                 {
                     ShowValues();
                 }
@@ -217,7 +219,7 @@ namespace Merge
 
                 OnMenuOpen?.Invoke();
 
-                ShowMenu(ignoreClose, showCloseButton);
+                ShowMenu(menuOptions.canClose);
 
                 return currentMenuUI;
             }
@@ -225,7 +227,7 @@ namespace Merge
             return null;
         }
 
-        void ShowMenu(bool ignoreClose, bool showCloseButton = true)
+        void ShowMenu(bool canClose)
         {
             // Show the menu locale container
             localeWrapper.style.display = DisplayStyle.Flex;
@@ -237,35 +239,29 @@ namespace Merge
             // Enable the menu to make it clickable
             currentMenuUI.SetEnabled(true);
 
-            if (!ignoreClose)
+            // Add background click handler
+            VisualElement background = currentMenuUI.Q<VisualElement>("Background");
+            VisualElement closeButton = currentMenuUI.Q<VisualElement>("Close");
+
+            if (PlayerPrefs.HasKey("tutorialFinished") && canClose)
             {
-                // Add background click handler
-                VisualElement background = currentMenuUI.Q<VisualElement>("Background");
-                VisualElement closeButton = currentMenuUI.Q<VisualElement>("Close");
-
-                if (background != null)
+                background.AddManipulator(new Clickable(evt =>
                 {
-                    if (PlayerPrefs.HasKey("tutorialFinished"))
-                    {
-                        background.AddManipulator(new Clickable(evt =>
-                        {
-                            HandleBackgroundClose();
-                        }));
+                    HandleBackgroundClose();
+                }));
 
-                        closeButton.style.display = showCloseButton ? DisplayStyle.Flex : DisplayStyle.None;
-                        closeButton.style.opacity = showCloseButton ? 1 : 0;
-                    }
-                    else
-                    {
-                        background.RemoveManipulator(new Clickable(evt =>
-                        {
-                            HandleBackgroundClose();
-                        }));
+                closeButton.style.display = DisplayStyle.Flex;
+                closeButton.style.opacity = 1;
+            }
+            else
+            {
+                background.RemoveManipulator(new Clickable(evt =>
+                {
+                    HandleBackgroundClose();
+                }));
 
-                        closeButton.style.display = DisplayStyle.None;
-                        closeButton.style.opacity = 0;
-                    }
-                }
+                closeButton.style.display = DisplayStyle.None;
+                closeButton.style.opacity = 0;
             }
 
             // Set open menu indicator to open
@@ -470,6 +466,47 @@ namespace Merge
             valuesUI.SetSortingOrder(10);
 
             valuesUI.EnableButtons();
+        }
+
+        MenuOptions GetMenuOptions(Menu menuType)
+        {
+            foreach (MenuOptions menuOption in menuOptionsData.data)
+            {
+                if (menuOption.menuType == menuType)
+                {
+                    return menuOption;
+                }
+            }
+
+            // ERROR
+            errorManager.ThrowWarning(ErrorManager.ErrorType.Code, GetType().ToString(), "menuType " + menuType + " not found in menuOptionsData!");
+
+            return null;
+        }
+
+        public bool IsMenuOpen(Menu menu)
+        {
+            if (currentMenuType != Menu.None && currentMenuType == menu)
+            {
+                return true;
+            }
+
+            bool found = false;
+
+            if (menus.Count > 0)
+            {
+                for (int i = 0; i < menus.Count; i++)
+                {
+                    if (menus[i].menuType == menu)
+                    {
+                        found = true;
+
+                        break;
+                    }
+                }
+            }
+
+            return found;
         }
 
         //// Menus ////

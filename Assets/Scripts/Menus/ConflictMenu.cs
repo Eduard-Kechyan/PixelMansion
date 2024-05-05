@@ -46,7 +46,7 @@ namespace Merge
                 conflictNewButton = content.Q<Button>("NewButton");
                 conflictPreviousButton = content.Q<Button>("PreviousButton");
 
-                // UI Taps
+                // UI taps
                 conflictNewButton.clicked += () =>
                 {
                     ResolveConflict(true);

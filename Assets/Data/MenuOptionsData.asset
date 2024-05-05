@@ -1,0 +1,135 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb6add8780575334ca91278f893e426f, type: 3}
+  m_Name: MenuOptionsData
+  m_EditorClassIdentifier: 
+  data:
+  - name: None
+    menuType: 0
+    showValues: 0
+    isSmall: 0
+    canClose: 1
+    keepInMemory: 1
+  - name: Confirm
+    menuType: 1
+    showValues: 0
+    isSmall: 0
+    canClose: 1
+    keepInMemory: 1
+  - name: Note
+    menuType: 2
+    showValues: 0
+    isSmall: 0
+    canClose: 1
+    keepInMemory: 1
+  - name: Info
+    menuType: 3
+    showValues: 0
+    isSmall: 0
+    canClose: 1
+    keepInMemory: 1
+  - name: Inventory
+    menuType: 4
+    showValues: 1
+    isSmall: 0
+    canClose: 1
+    keepInMemory: 1
+  - name: Task
+    menuType: 5
+    showValues: 0
+    isSmall: 0
+    canClose: 1
+    keepInMemory: 1
+  - name: Shop
+    menuType: 6
+    showValues: 1
+    isSmall: 0
+    canClose: 1
+    keepInMemory: 1
+  - name: Level
+    menuType: 7
+    showValues: 1
+    isSmall: 0
+    canClose: 1
+    keepInMemory: 1
+  - name: Energy
+    menuType: 8
+    showValues: 0
+    isSmall: 0
+    canClose: 1
+    keepInMemory: 1
+  - name: Locale
+    menuType: 9
+    showValues: 0
+    isSmall: 0
+    canClose: 1
+    keepInMemory: 1
+  - name: Settings
+    menuType: 10
+    showValues: 0
+    isSmall: 0
+    canClose: 1
+    keepInMemory: 1
+  - name: Support
+    menuType: 11
+    showValues: 0
+    isSmall: 0
+    canClose: 1
+    keepInMemory: 1
+  - name: Input
+    menuType: 12
+    showValues: 0
+    isSmall: 0
+    canClose: 1
+    keepInMemory: 1
+  - name: Follow
+    menuType: 13
+    showValues: 0
+    isSmall: 1
+    canClose: 0
+    keepInMemory: 1
+  - name: Rate
+    menuType: 14
+    showValues: 0
+    isSmall: 1
+    canClose: 0
+    keepInMemory: 1
+  - name: Message
+    menuType: 15
+    showValues: 0
+    isSmall: 0
+    canClose: 1
+    keepInMemory: 1
+  - name: Debug
+    menuType: 16
+    showValues: 0
+    isSmall: 0
+    canClose: 1
+    keepInMemory: 1
+  - name: Terms
+    menuType: 17
+    showValues: 0
+    isSmall: 0
+    canClose: 1
+    keepInMemory: 1
+  - name: Conflict
+    menuType: 18
+    showValues: 0
+    isSmall: 0
+    canClose: 1
+    keepInMemory: 1
+  - name: Update
+    menuType: 19
+    showValues: 0
+    isSmall: 0
+    canClose: 1
+    keepInMemory: 1

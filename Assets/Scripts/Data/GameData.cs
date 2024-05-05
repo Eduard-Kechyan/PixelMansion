@@ -181,6 +181,16 @@ namespace Merge
 
             CalcGamePixelHeight();
 
+            StartCoroutine(WaitForInitialization());
+        }
+
+        IEnumerator WaitForInitialization()
+        {
+            while (!addressableManager.initialized)
+            {
+                yield return null;
+            }
+
             LoadGameData();
         }
 

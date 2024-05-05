@@ -1,7 +1,7 @@
 .count_label {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 50px;
+    left: 50px;
     width: 10px;
     height: 6px;
     margin-top: 0;
@@ -14,7 +14,7 @@
     padding-left: 0;
     font-size: 4px;
     color: rgb(255, 0, 0);
-    -unity-text-align: middle-left;
+    -unity-text-align: middle-center;
     -unity-font-style: bold;
     -unity-font-definition: url("project://database/Assets/Fonts/Files/RobotoMono.ttf?fileID=12800000&guid=7144b63d91be9e740aa1f0e7ba467a67&type=3#RobotoMono");
 }
@@ -35,9 +35,234 @@
     padding-left: 0;
     font-size: 4px;
     color: rgb(51, 51, 51);
-    -unity-text-align: middle-right;
+    -unity-text-align: middle-center;
     -unity-font-style: bold;
     -unity-font-definition: url("project://database/Assets/Fonts/Files/RobotoMono.ttf?fileID=12800000&guid=7144b63d91be9e740aa1f0e7ba467a67&type=3#RobotoMono");
     -unity-text-outline-color: rgb(0, 0, 0);
     text-shadow: 0 0 2px rgb(255, 255, 255);
+    transition-duration: 0.1s;
+}
+
+.board_item_button {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    width: 24px;
+    height: 24px;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    border-bottom-left-radius: 2px;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    background-color: rgba(0, 0, 0, 0);
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+}
+
+.board_item_button:hover {
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    border-bottom-left-radius: 2px;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-left-color: rgb(144, 108, 72);
+    border-right-color: rgb(144, 108, 72);
+    border-top-color: rgb(144, 108, 72);
+    border-bottom-color: rgb(144, 108, 72);
+}
+
+.board_item_button:active {
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    border-bottom-left-radius: 2px;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-left-color: rgb(144, 108, 72);
+    border-right-color: rgb(144, 108, 72);
+    border-top-color: rgb(144, 108, 72);
+    border-bottom-color: rgb(144, 108, 72);
+}
+
+.board_item_button_selected {
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    border-left-color: rgb(144, 108, 72);
+    border-right-color: rgb(144, 108, 72);
+    border-top-color: rgb(144, 108, 72);
+    border-bottom-color: rgb(144, 108, 72);
+}
+
+.item_menu {
+    position: absolute;
+    width: 170px;
+    height: 45%;
+    background-color: rgb(221, 206, 168);
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-left-color: rgb(144, 108, 72);
+    border-right-color: rgb(144, 108, 72);
+    border-top-color: rgb(144, 108, 72);
+    border-bottom-color: rgb(144, 108, 72);
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    left: 5px;
+    bottom: 5px;
+    right: 5px;
+    padding-top: 4px;
+    padding-right: 4px;
+    padding-bottom: 4px;
+    padding-left: 4px;
+    transition-duration: 0.2s;
+}
+
+.item_menu_top {
+    bottom: auto;
+    top: 4px;
+}
+
+.item_menu_top .item_menu_state_top {
+    display: flex;
+}
+
+.item_menu_top .item_menu_state_bottom {
+    display: none;
+}
+
+.item_menu_label {
+    width: 160px;
+    height: 10px;
+    -unity-text-align: middle-center;
+    font-size: 10px;
+    color: rgb(46, 46, 46);
+    -unity-font-definition: url("project://database/Assets/Fonts/Files/Roboto.ttf?fileID=12800000&guid=0435ef74bc89d2044a778758a25a13b0&type=3#Roboto");
+    margin-top: 0;
+    margin-right: auto;
+    margin-bottom: 0;
+    margin-left: auto;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 4px;
+    padding-left: 0;
+    transition-duration: 0.2s;
+}
+
+.item_menu_sub_label {
+    -unity-text-align: upper-left;
+    font-size: 8px;
+    color: rgb(70, 70, 70);
+}
+
+.item_menu_button {
+    height: 20px;
+    width: 40px;
+    background-color: rgb(57, 123, 212);
+    font-size: 8px;
+    color: rgb(255, 255, 255);
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+.item_menu_scrollview {
+    width: 100%;
+    height: 68%;
+    padding-top: 4px;
+}
+
+.item_menu_scrollview .unity-scroll-view__content-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.item_menu_item {
+    padding-bottom: 0;
+    width: 24px;
+    height: 24px;
+    background-color: rgb(238, 226, 195);
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    border-bottom-left-radius: 2px;
+    padding-right: 0;
+    padding-left: 0;
+    padding-top: 0;
+    margin-top: 0;
+    margin-right: 1px;
+    margin-bottom: 4px;
+    margin-left: 1px;
+    transition-duration: 0.1s;
+}
+
+.item_menu_item:active {
+    background-color: rgb(227, 213, 179);
+}
+
+.item_menu_state_top {
+    display: none;
+}
+
+.item_menu_state_bottom {
+    display: flex;
+}
+
+.item_menu_state {
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 4px;
+    margin-left: 0;
+}
+
+.item_menu_state .unity-enum-field__input {
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-left-color: rgb(144, 108, 72);
+    border-right-color: rgb(144, 108, 72);
+    border-top-color: rgb(144, 108, 72);
+    border-bottom-color: rgb(144, 108, 72);
+    background-color: rgb(238, 226, 195);
+    padding-top: 0;
+    padding-right: 8px;
+    padding-bottom: 0;
+    padding-left: 8px;
 }

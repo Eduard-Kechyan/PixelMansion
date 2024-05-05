@@ -65,7 +65,7 @@ namespace Merge
                 youtubeFollowButton = content.Q<Button>("YoutubeFollowButton");
                 noButton = content.Q<Button>("NoButton");
 
-                // UI Taps
+                // UI taps
                 instagramFollowButton.clicked += () => HandleSocialMediaButton(SettingsMenu.SocialMediaType.Instagram);
                 facebookFollowButton.clicked += () => HandleSocialMediaButton(SettingsMenu.SocialMediaType.Facebook);
                 youtubeFollowButton.clicked += () => HandleSocialMediaButton(SettingsMenu.SocialMediaType.Youtube);
@@ -95,7 +95,7 @@ namespace Merge
             if (ignoreCheck || gameData.level >= 4)
             {
                 // Open menu
-                menuUI.OpenMenu(content, menuType, "", false, false, true, false, true);
+                menuUI.OpenMenu(content, menuType, "");
             }
         }
 

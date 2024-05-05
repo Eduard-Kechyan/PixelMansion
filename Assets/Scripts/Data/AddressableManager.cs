@@ -13,6 +13,10 @@ namespace Merge
         // Variables
         private List<AddressableData> loadHandles = new();
 
+        [HideInInspector]
+        public bool initialized = false;
+
+        // Classes
         public class AddressableData
         {
             public AsyncOperationHandle loadHandle;
@@ -24,33 +28,64 @@ namespace Merge
 
         void Awake()
         {
-            // Initialize addressables
-            Addressables.InitializeAsync();
-        }
-
-        void Start()
-        {
             // Cache
             errorManager = ErrorManager.Instance;
+
+            // Initialize addressables
+            try
+            {
+                Addressables.InitializeAsync();
+            }
+            catch (Exception ex)
+            {
+                // ERROR
+                errorManager.Throw(
+                    ErrorManager.ErrorType.Code,
+                    GetType().Name,
+                    "Failed to initialize Addressables!"
+                );
+                // ERROR
+                errorManager.Throw(
+                    ErrorManager.ErrorType.Code,
+                    GetType().Name,
+                    ex.Message
+                );
+            }
+
+            initialized = true;
         }
 
         //// LOAD ////
 
         public async Task<TypeToGet> LoadAssetAsync<TypeToGet>(string key)
         {
-            AddressableData newData = new()
+            if (initialized)
             {
-                loadHandle = Addressables.LoadAssetAsync<TypeToGet>(key),
-                key = key
-            };
+                AddressableData newData = new()
+                {
+                    loadHandle = Addressables.LoadAssetAsync<TypeToGet>(key),
+                    key = key
+                };
 
-            await newData.loadHandle.Task;
+                await newData.loadHandle.Task;
 
-            if (newData.loadHandle.Status == AsyncOperationStatus.Succeeded)
-            {
-                loadHandles.Add(newData);
+                if (newData.loadHandle.Status == AsyncOperationStatus.Succeeded)
+                {
+                    loadHandles.Add(newData);
 
-                return (TypeToGet)newData.loadHandle.Result;
+                    return (TypeToGet)newData.loadHandle.Result;
+                }
+                else
+                {
+                    // ERROR
+                    errorManager.Throw(
+                        ErrorManager.ErrorType.Code,
+                        GetType().Name,
+                        newData.loadHandle.OperationException.Message
+                    );
+
+                    return default;
+                }
             }
             else
             {
@@ -58,7 +93,7 @@ namespace Merge
                 errorManager.Throw(
                     ErrorManager.ErrorType.Code,
                     GetType().Name,
-                    newData.loadHandle.OperationException.Message
+                    "Addressable was trying to load without initializing!"
                 );
 
                 return default;
@@ -67,33 +102,25 @@ namespace Merge
 
         public async Task<TypeToGet[]> LoadAssetAllArrayAsync<TypeToGet>(string key)
         {
-            List<TypeToGet> newList = await LoadAssetAllAsync<TypeToGet>(key);
-
-            TypeToGet[] newArray = new TypeToGet[newList.Count];
-
-            for (int i = 0; i < newList.Count; i++)
+            if (initialized)
             {
-                newArray[i] = newList[i];
-            }
+                List<TypeToGet> newList = await LoadAssetAllAsync<TypeToGet>(key);
 
-            return newArray;
-        }
+                int count = 0;
 
-        public async Task<List<TypeToGet>> LoadAssetAllAsync<TypeToGet>(string key)
-        {
-            AddressableData newData = new()
-            {
-                loadHandle = Addressables.LoadAssetsAsync<TypeToGet>(key, null),
-                key = key
-            };
+                if (newList != null)
+                {
+                    count = newList.Count;
+                }
 
-            await newData.loadHandle.Task;
+                TypeToGet[] newArray = new TypeToGet[count];
 
-            if (newData.loadHandle.Status == AsyncOperationStatus.Succeeded)
-            {
-                loadHandles.Add(newData);
+                for (int i = 0; i < count; i++)
+                {
+                    newArray[i] = newList[i];
+                }
 
-                return (List<TypeToGet>)newData.loadHandle.Result;
+                return newArray;
             }
             else
             {
@@ -101,7 +128,50 @@ namespace Merge
                 errorManager.Throw(
                     ErrorManager.ErrorType.Code,
                     GetType().Name,
-                    newData.loadHandle.OperationException.Message
+                    "Addressable was trying to load without initializing!"
+                );
+
+                return default;
+            }
+        }
+
+        public async Task<List<TypeToGet>> LoadAssetAllAsync<TypeToGet>(string key)
+        {
+            if (initialized)
+            {
+                AddressableData newData = new()
+                {
+                    loadHandle = Addressables.LoadAssetsAsync<TypeToGet>(key, null),
+                    key = key
+                };
+
+                await newData.loadHandle.Task;
+
+                if (newData.loadHandle.Status == AsyncOperationStatus.Succeeded)
+                {
+                    loadHandles.Add(newData);
+
+                    return (List<TypeToGet>)newData.loadHandle.Result;
+                }
+                else
+                {
+                    // ERROR
+                    errorManager.Throw(
+                        ErrorManager.ErrorType.Code,
+                        GetType().Name,
+                        newData.loadHandle.OperationException.Message
+                    );
+
+                    return null;
+                }
+            }
+            else
+            {
+                // ERROR
+                errorManager.Throw(
+                    ErrorManager.ErrorType.Code,
+                    GetType().Name,
+                    "Addressable was trying to load without initializing!"
                 );
 
                 return default;

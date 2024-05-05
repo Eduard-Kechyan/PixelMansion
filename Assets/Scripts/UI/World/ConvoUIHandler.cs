@@ -153,7 +153,7 @@ namespace Merge
             avatarLeft = convoBox.Q<VisualElement>("AvatarLeft");
             avatarRight = convoBox.Q<VisualElement>("AvatarRight");
 
-            // UI Taps
+            // UI taps
             /*nextButton.AddManipulator(new Clickable(evt =>
             {
                 HandleNext();
@@ -163,6 +163,16 @@ namespace Merge
             {
                 HandleNext();
             }));
+
+            StartCoroutine(WaitForInitialization());
+        }
+
+        IEnumerator WaitForInitialization()
+        {
+            while (!addressableManager.initialized)
+            {
+                yield return null;
+            }
 
             Init();
         }

@@ -95,8 +95,12 @@ namespace Merge
 
             DataManager.Instance.CheckLoaded(() =>
             {
-
                 // UI
+                if (mergeUI != null)
+                {
+                    root = mergeUI.GetComponent<UIDocument>().rootVisualElement;
+                }
+
                 content = uiData.GetMenuAsset(menuType);
 
                 slotsContainer = content.Q<VisualElement>("SlotsContainer");
@@ -127,7 +131,7 @@ namespace Merge
             SetUI();
 
             // Open menu
-            menuUI.OpenMenu(content, menuType, "", true);
+            menuUI.OpenMenu(content, menuType, "");
         }
 
         void SetUI()

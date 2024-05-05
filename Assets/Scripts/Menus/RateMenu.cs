@@ -75,7 +75,7 @@ namespace Merge
                 noButton = content.Q<Button>("NoButton");
                 neverButton = content.Q<Button>("NeverButton");
 
-                // UI Taps
+                // UI taps
                 for (int i = 0; i < starsBox.childCount; i++)
                 {
                     string order = i.ToString();
@@ -122,7 +122,7 @@ namespace Merge
             if (ignoreCheck || gameData.level >= 3)
             {
                 // Open menu
-                menuUI.OpenMenu(content, menuType, "", false, false, true, false, true);
+                menuUI.OpenMenu(content, menuType, "");
 
                 starsLabel.text = starCount + "/" + 5;
             }

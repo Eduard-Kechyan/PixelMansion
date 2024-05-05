@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 
 namespace Merge
 {
-#if DEVELOPMENT_BUILD || UNITY_EDITOR
     public class DebugMenu : MonoBehaviour
     {
         // Variables
@@ -15,8 +14,6 @@ namespace Merge
         public PreMansionHandler preMansionHandler;
         public float transitionDuration = 0.1f;
         public SceneLoader sceneLoader;
-
-        private bool valuesShown;
 
         private MenuUI.Menu menuType = MenuUI.Menu.Debug;
 
@@ -32,17 +29,18 @@ namespace Merge
 
         private VisualElement menuBackground;
 
+        private VisualElement sceneContainer;
+        private Button skipSceneButton;
+        private Button worldSceneButton;
+        private Button mergeSceneButton;
+
         private VisualElement otherContainer;
         private Button adButton;
         private Button diagnosticsButton;
         private Button logsButton;
         private Button logsShakingButton;
         private Button unlockPreMansionButton;
-
-        private VisualElement sceneContainer;
-        private Button skipSceneButton;
-        private Button worldSceneButton;
-        private Button mergeSceneButton;
+        private Button showToastButton;
 
         // Instance
         public static DebugMenu Instance;
@@ -68,37 +66,20 @@ namespace Merge
 
                 menuBackground = content.Q<VisualElement>("Background");
 
+                sceneContainer = content.Q<VisualElement>("SceneContainer");
+                skipSceneButton = sceneContainer.Q<Button>("SkipSceneButton");
+                worldSceneButton = sceneContainer.Q<Button>("WorldSceneButton");
+                mergeSceneButton = sceneContainer.Q<Button>("MergeSceneButton");
+
                 otherContainer = content.Q<VisualElement>("OtherContainer");
                 adButton = otherContainer.Q<Button>("AdButton");
                 diagnosticsButton = otherContainer.Q<Button>("DiagnosticsButton");
                 logsButton = otherContainer.Q<Button>("LogsButton");
                 logsShakingButton = otherContainer.Q<Button>("LogsShakingButton");
                 unlockPreMansionButton = otherContainer.Q<Button>("UnlockPreMansionButton");
+                showToastButton = otherContainer.Q<Button>("ShowToastButton");
 
-                sceneContainer = content.Q<VisualElement>("SceneContainer");
-                skipSceneButton = sceneContainer.Q<Button>("SkipSceneButton");
-                worldSceneButton = sceneContainer.Q<Button>("WorldSceneButton");
-                mergeSceneButton = sceneContainer.Q<Button>("MergeSceneButton");
-
-                // Button taps
-                menuBackground.AddManipulator(new Clickable(evt =>
-                {
-                    CloseMenu();
-                }));
-                adButton.clicked += () => MobileAds.OpenAdInspector(error =>
-                {
-                    if (error != null)
-                    {
-                        Debug.LogError("Couldn't open ad inspector!");
-                        Debug.LogError(error.GetMessage());
-                        Debug.LogError(error.GetCause());
-                    }
-                });
-                diagnosticsButton.clicked += () => ToggleDiagnostic();
-                logsButton.clicked += () => logs.Toggle();
-                logsShakingButton.clicked += () => ToggleLogsShaking();
-                unlockPreMansionButton.clicked += () => RemovePreMansion();
-
+                // UI taps
                 skipSceneButton.clicked += () =>
                 {
                     loadingManager.LoadNextScene();
@@ -114,6 +95,26 @@ namespace Merge
                     sceneLoader.Load(SceneLoader.SceneType.Merge);
                     CloseMenu();
                 };
+
+                menuBackground.AddManipulator(new Clickable(evt =>
+                {
+                    CloseMenu();
+                }));
+
+                adButton.clicked += () => MobileAds.OpenAdInspector(error =>
+                {
+                    if (error != null)
+                    {
+                        Debug.LogError("Couldn't open ad inspector!");
+                        Debug.LogError(error.GetMessage());
+                        Debug.LogError(error.GetCause());
+                    }
+                });
+                diagnosticsButton.clicked += () => ToggleDiagnostic();
+                logsButton.clicked += () => logs.Toggle();
+                logsShakingButton.clicked += () => ToggleLogsShaking();
+                unlockPreMansionButton.clicked += () => RemovePreMansion();
+                showToastButton.clicked += () => Glob.Instance.ShowToast("Debug toast");
 
                 Init();
             });
@@ -134,16 +135,19 @@ namespace Merge
                     skipSceneButton.style.display = DisplayStyle.Flex; //
                     worldSceneButton.style.display = DisplayStyle.None;
                     mergeSceneButton.style.display = DisplayStyle.None;
+                    unlockPreMansionButton.style.display = DisplayStyle.None;
                     break;
                 case SceneLoader.SceneType.World:
                     skipSceneButton.style.display = DisplayStyle.None;
                     worldSceneButton.style.display = DisplayStyle.None;
-                    mergeSceneButton.style.display = DisplayStyle.Flex;//
+                    mergeSceneButton.style.display = DisplayStyle.Flex; //
+                    unlockPreMansionButton.style.display = DisplayStyle.Flex; //
                     break;
                 case SceneLoader.SceneType.Merge:
                     skipSceneButton.style.display = DisplayStyle.None;
-                    worldSceneButton.style.display = DisplayStyle.Flex;//
+                    worldSceneButton.style.display = DisplayStyle.Flex; //
                     mergeSceneButton.style.display = DisplayStyle.None;
+                    unlockPreMansionButton.style.display = DisplayStyle.None;
                     break;
             }
         }
@@ -261,5 +265,4 @@ namespace Merge
             ToggleLogsShaking(false);
         }
     }
-#endif
 }

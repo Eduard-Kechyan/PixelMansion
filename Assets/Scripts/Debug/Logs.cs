@@ -112,7 +112,7 @@ namespace Merge
             biggerButton = logsContainer.Q<Button>("BiggerButton");
             stackButton = logsContainer.Q<Button>("StackButton");
 
-            // Button taps
+            // UI taps
             closeButton.clicked += () => Toggle();
 
             clearButton.clicked += () => ClearData();

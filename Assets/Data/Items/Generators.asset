@@ -36,7 +36,7 @@ MonoBehaviour:
       collGroup: 0
       maxLevel: 3
       canIncreaseMaxLevel: 1
-      chance: 97
+      chance: 90
     - name: Gloves
       sprite: {fileID: 0}
       type: 0
@@ -45,7 +45,7 @@ MonoBehaviour:
       collGroup: 0
       maxLevel: 0
       canIncreaseMaxLevel: 0
-      chance: 3
+      chance: 10
     content:
     - sprite: {fileID: 21300000, guid: 5843d96ae1fcc884080d43667c5b79b9, type: 3}
       customName: 0

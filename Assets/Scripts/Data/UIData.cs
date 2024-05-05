@@ -52,6 +52,16 @@ namespace Merge
 
             menuItems = new MenuItem[menuTypesLength];
 
+            StartCoroutine(WaitForInitialization());
+        }
+
+        IEnumerator WaitForInitialization()
+        {
+            while (!addressableManager.initialized)
+            {
+                yield return null;
+            }
+
             LoadUIData();
         }
 

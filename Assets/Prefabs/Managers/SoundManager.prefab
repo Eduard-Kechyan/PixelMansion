@@ -86,30 +86,33 @@ MonoBehaviour:
   - clip: {fileID: 8300000, guid: b9e9300cfbd4d744398fa9f0734814af, type: 3}
     volume: 1
     type: 13
-  - clip: {fileID: 8300000, guid: c91c60023ea7ac04aaf8db5e1aa02e91, type: 3}
+  - clip: {fileID: 8300000, guid: cd0c0b61c7c390c4e968532ca1af1187, type: 3}
     volume: 1
     type: 14
-  - clip: {fileID: 8300000, guid: c91c60023ea7ac04aaf8db5e1aa02e91, type: 3}
+  - clip: {fileID: 8300000, guid: 3e97a582e5d818a4e8ae29099addf385, type: 3}
     volume: 1
     type: 15
-  - clip: {fileID: 8300000, guid: c91c60023ea7ac04aaf8db5e1aa02e91, type: 3}
+  - clip: {fileID: 8300000, guid: 1211ab40305523c44be70092aa168315, type: 3}
     volume: 1
     type: 16
-  - clip: {fileID: 8300000, guid: 2c463166612f4a94da4e47427ee28ac8, type: 3}
+  - clip: {fileID: 8300000, guid: d072af9875fb0114db1dfd6ffb1b09b1, type: 3}
     volume: 1
     type: 17
+  - clip: {fileID: 8300000, guid: c31ee4bb67aa2904faf2213892544908, type: 3}
+    volume: 1
+    type: 18
   sourceSound: {fileID: 2007152343}
   musicClips:
-  - clip: {fileID: 8300000, guid: 629dbb8ea0ad13e4e886fd520d197e65, type: 3}
+  - clip: {fileID: 8300000, guid: 9a31a3d0d73d51c4eab92014a6f029e9, type: 3}
     volume: 0.6
     type: 2
-  - clip: {fileID: 8300000, guid: 67a1155b7e4d51e44979e8baaa35d70e, type: 3}
+  - clip: {fileID: 8300000, guid: ac4583aeeb12c05468885927a30cfa11, type: 3}
     volume: 0.6
     type: 1
-  - clip: {fileID: 8300000, guid: 2ab3bcc626e255942ae2fe88c88d260a, type: 3}
+  - clip: {fileID: 8300000, guid: 4fccb436515d7d548bf0db2dd93e5be9, type: 3}
     volume: 0.6
     type: 0
-  - clip: {fileID: 8300000, guid: d9c7c184bad526345bb40d7ce150d1cd, type: 3}
+  - clip: {fileID: 8300000, guid: c380be7b07665b548a84ec3bf960cb6c, type: 3}
     volume: 0.4
     type: 3
   sourceMusic: {fileID: 2129766215703338103}

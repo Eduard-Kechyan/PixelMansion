@@ -142,12 +142,7 @@ namespace Merge
                 }
             }
 
-            if (lockedOverlay == null)
-            {
-                lockedOverlay = areaRefs.GetLockedOverlay();
-            }
-
-            if (lockedOverlay != null)
+            if (lockedNavArea != null)
             {
                 lockedNavArea.SetActive(false);
             }

@@ -18,8 +18,8 @@ namespace Merge
         public Generators generators;
         public Colls colls;
         public Chests chests;
-        public InitialItems initialItems;
-        public InitialItems initialItemsSkip;
+        public TextAsset initialItems;
+        public TextAsset initialItemsSkip;
 
         // Events
         public delegate void BoardSaveEvent();
@@ -33,6 +33,9 @@ namespace Merge
         private bool isEditor = false;
 
         private string[] saveDataKeys;
+
+        [HideInInspector]
+        public BoardManager.Tile[] initialBoardData;
 
         // Quick Save
         private QuickSaveSettings saveSettings;
@@ -64,6 +67,7 @@ namespace Merge
         private CloudSave cloudSave;
         private ErrorManager errorManager;
         private WorldDataManager worldDataManager;
+        private TutorialManager tutorialManager;
 
         // Instance
         public static DataManager Instance;
@@ -104,6 +108,7 @@ namespace Merge
             cloudSave = services.GetComponent<CloudSave>();
             errorManager = ErrorManager.Instance;
             worldDataManager = gameRefs.worldDataManager;
+            tutorialManager = gameRefs.tutorialManager;
 
 #if UNITY_EDITOR
             isEditor = true;
@@ -151,9 +156,11 @@ namespace Merge
         // Check if we need to save initial data to disk
         void CheckInitialData(Action callback)
         {
+            initialBoardData = dataConverter.ConvertInitialItemsToBoard(((tutorialManager != null && tutorialManager.skipTutorial) || PlayerPrefs.HasKey("tutorialFinished")) ? initialItemsSkip.text : initialItems.text);
+
             if ((ignoreInitialCheck && isEditor) || (!PlayerPrefs.HasKey("dataLoaded") && !writer.Exists("rootSet")))
             {
-                boardJsonData = dataConverter.ConvertBoardToJson(PlayerPrefs.HasKey("tutorialFinished") ? initialItemsSkip.content : initialItems.content, true);
+                boardJsonData = dataConverter.ConvertBoardToJson(initialBoardData, true);
                 bonusData = dataConverter.ConvertBonusToJson(gameData.bonusData);
                 inventoryData = dataConverter.ConvertInventoryToJson(gameData.inventoryData);
                 tasksJsonData = dataConverter.ConvertTaskGroupsToJson(gameData.tasksData);

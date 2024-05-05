@@ -29,7 +29,7 @@ MonoBehaviour:
         collGroup: 0
         chestGroup: 0
         amount: 1
-        completed: 1
+        completed: 0
       rewards:
       - sprite: {fileID: 21300000, guid: ca3a280a957839843b47b3b96175df80, type: 3}
         type: 2
@@ -39,7 +39,7 @@ MonoBehaviour:
         chestGroup: 0
         amount: 10
         completed: 0
-      completed: 1
+      completed: 0
     - name: RemoveFilth2
       id: RemoveFilth2
       taskRefName: FilthGroup2
@@ -115,9 +115,9 @@ MonoBehaviour:
       taskRefType: 0
       isTaskRefRight: 0
       needs:
-      - sprite: {fileID: 21300000, guid: ca76bd9341439e145a7e676f297f7ab0, type: 3}
+      - sprite: {fileID: 21300000, guid: bd57e4d2a154c3a45a79b424e2cb6b6a, type: 3}
         type: 0
-        group: 1
+        group: 0
         genGroup: 0
         collGroup: 0
         chestGroup: 0
@@ -139,14 +139,14 @@ MonoBehaviour:
       taskRefType: 1
       isTaskRefRight: 0
       needs:
-      - sprite: {fileID: 21300000, guid: ca76bd9341439e145a7e676f297f7ab0, type: 3}
+      - sprite: {fileID: 21300000, guid: d25fb806c5d4bd440a7840db6bf08834, type: 3}
         type: 0
-        group: 1
+        group: 0
         genGroup: 0
         collGroup: 0
         chestGroup: 0
         amount: 1
-        completed: 2
+        completed: 0
       rewards:
       - sprite: {fileID: 21300000, guid: ca3a280a957839843b47b3b96175df80, type: 3}
         type: 2
@@ -156,7 +156,7 @@ MonoBehaviour:
         chestGroup: 0
         amount: 10
         completed: 0
-      completed: 2
+      completed: 0
     - name: ChangeWallRight
       id: ChangeWallRight
       taskRefName: 

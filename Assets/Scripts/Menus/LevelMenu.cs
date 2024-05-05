@@ -170,7 +170,7 @@ namespace Merge
                 HandleRewards();
 
                 // Open menu
-                menuUI.OpenMenu(content, menuType, "", true);
+                menuUI.OpenMenu(content, menuType, "");
             }
         }
 

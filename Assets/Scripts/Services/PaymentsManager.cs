@@ -152,10 +152,20 @@ namespace Merge
 
         public string GetPrice(string id)
         {
+            bool show = true;
+
             for (int i = 0; i < controller.products.all.Length; i++)
             {
                 if (controller.products.all[i].definition.id == id)
                 {
+                    if (show)
+                    {
+                        Debug.Log(RegionInfo.CurrentRegion.CurrencySymbol);
+                        Debug.Log(controller.products.all[i].metadata.localizedPriceString);
+
+                        show = false;
+                    }
+
                     return RegionInfo.CurrentRegion.CurrencySymbol + controller.products.all[i].metadata.localizedPriceString;
                 }
             }

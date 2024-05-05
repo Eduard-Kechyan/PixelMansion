@@ -11,13 +11,15 @@ namespace Merge
         public GameObject item;
         public Sprite[] crateSprites;
 
-        // Instances
+        // References
         private GameData gameData;
+        private I18n LOCALE;
 
         void Start()
         {
-            // Cache instances
+            // Cache
             gameData = GameData.Instance;
+            LOCALE = I18n.Instance;
         }
 
         public Item CreateItem(
@@ -360,6 +362,188 @@ namespace Merge
             }
 
             return nextName;
+        }
+
+        public string GetItemData(Item newItem, bool alt = false)
+        {
+            string textToSet;
+
+            switch (newItem.state)
+            {
+                case Item.State.Crate:
+                    textToSet = LOCALE.Get("info_box_crate_text");
+                    break;
+                case Item.State.Locker:
+
+                    textToSet = LOCALE.Get("info_box_locker_text");
+                    break;
+                case Item.State.Bubble:
+
+                    textToSet = LOCALE.Get("info_box_bubble_text");
+                    break;
+                default:
+                    switch (newItem.type)
+                    {
+                        case Item.Type.Gen:
+                            if (newItem.isMaxLevel)
+                            {
+                                textToSet = LOCALE.Get("info_box_gen_max");
+                            }
+                            else
+                            {
+                                if (newItem.level >= newItem.generatesAtLevel)
+                                {
+                                    textToSet = LOCALE.Get("info_box_gen", newItem.nextName);
+                                }
+                                else
+                                {
+
+                                    textToSet = LOCALE.Get("info_box_gen_pre", newItem.nextName);
+                                }
+                            }
+                            break;
+                        case Item.Type.Coll:
+                            int multipliedValue = GetMultipliedValue(newItem.level, newItem.collGroup);
+
+                            if (newItem.collGroup == Item.CollGroup.Gems)
+                            {
+                                if (newItem.isMaxLevel)
+                                {
+                                    textToSet = LOCALE.Get(
+                                        "info_box_gems_max",
+                                        multipliedValue,
+                                        LOCALE.Get("Coll_Gems", newItem.level)
+                                    );
+                                }
+                                else
+                                {
+                                    textToSet = LOCALE.Get(
+                                        "info_box_gems",
+                                        multipliedValue,
+                                        LOCALE.Get("Coll_" + newItem.collGroup.ToString())
+                                    );
+                                }
+                            }
+                            else
+                            {
+                                if (newItem.isMaxLevel)
+                                {
+                                    textToSet = LOCALE.Get(
+                                        "info_box_coll_max",
+                                        multipliedValue,
+                                        LOCALE.Get("Coll_" + newItem.collGroup.ToString())
+                                    );
+                                }
+                                else
+                                {
+                                    textToSet = LOCALE.Get(
+                                        "info_box_coll",
+                                        multipliedValue,
+                                        LOCALE.Get("Coll_" + newItem.collGroup.ToString())
+                                    );
+                                }
+                            }
+                            break;
+                        case Item.Type.Chest:
+                            if (alt)
+                            {
+                                if (!newItem.chestOpen)
+                                {
+                                    if (newItem.isMaxLevel)
+                                    {
+                                        textToSet = LOCALE.Get("info_box_chest_max_locked");
+                                    }
+                                    else
+                                    {
+                                        textToSet = LOCALE.Get("info_box_chest_locked", newItem.nextName);
+                                    }
+                                }
+                                else
+                                {
+                                    textToSet = LOCALE.Get("info_box_chest_alt_" + newItem.chestGroup); // Note the +
+                                }
+                            }
+                            else
+                            {
+                                if (newItem.timerOn)
+                                {
+                                    if (newItem.isMaxLevel)
+                                    {
+                                        textToSet = LOCALE.Get("info_box_chest_max_timer");
+                                    }
+                                    else
+                                    {
+                                        textToSet = LOCALE.Get("info_box_chest_timer", newItem.nextName);
+                                    }
+                                }
+                                else if (!newItem.chestOpen)
+                                {
+                                    if (newItem.isMaxLevel)
+                                    {
+                                        textToSet = LOCALE.Get("info_box_chest_max_locked");
+                                    }
+                                    else
+                                    {
+                                        textToSet = LOCALE.Get("info_box_chest_locked", newItem.nextName);
+                                    }
+                                }
+                                else
+                                {
+                                    if (!newItem.hasLevel)
+                                    {
+                                        textToSet = LOCALE.Get("info_box_chest_single_" + newItem.chestGroup); // Note the +
+                                    }
+                                    else if (newItem.isMaxLevel)
+                                    {
+                                        textToSet = LOCALE.Get("info_box_chest_max_" + newItem.chestGroup); // Note the +
+                                    }
+                                    else
+                                    {
+                                        textToSet = LOCALE.Get("info_box_chest_" + newItem.chestGroup, newItem.chestGroup.ToString(), newItem.nextName); // Note the +
+                                    }
+                                }
+                            }
+
+                            break;
+                        default:
+                            if (newItem.isMaxLevel)
+                            {
+                                textToSet = LOCALE.Get("info_box_item_max");
+                            }
+                            else
+                            {
+                                textToSet = LOCALE.Get("info_box_item", newItem.nextName);
+                            }
+                            break;
+                    }
+                    break;
+            }
+
+            return textToSet;
+        }
+
+        // Show the collectables multiplied value
+        int GetMultipliedValue(int level, Item.CollGroup collGroup)
+        {
+            int multipliedValue = 0;
+
+            switch (collGroup)
+            {
+                case Item.CollGroup.Experience:
+                    multipliedValue = gameData.valuesData.experienceMultiplier[level - 1];
+                    break;
+                case Item.CollGroup.Gold:
+                    multipliedValue = gameData.valuesData.goldMultiplier[level - 1];
+                    break;
+                case Item.CollGroup.Gems:
+                    multipliedValue = gameData.valuesData.gemsMultiplier[level - 1];
+                    break;
+                case Item.CollGroup.Energy:
+                    multipliedValue = gameData.valuesData.energyMultiplier[level - 1];
+                    break;
+            }
+
+            return multipliedValue;
         }
     }
 }

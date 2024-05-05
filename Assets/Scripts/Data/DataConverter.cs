@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,13 +14,81 @@ namespace Merge
         private ItemHandler itemHandler;
         private I18n LOCALE;
 
+        [Serializable]
+        public class InitialItemData
+        {
+            public string sprite;
+            public string type;
+            public string state;
+            public string group;
+            public string genGroup;
+            public string collGroup;
+            public string chestGroup;
+        }
+
         void Start()
         {
             // Cache
             gameData = GameData.Instance;
             dataManager = DataManager.Instance;
-            itemHandler = dataManager.GetComponent<ItemHandler>();
             LOCALE = I18n.Instance;
+
+            if (dataManager != null)
+            {
+                itemHandler = dataManager.GetComponent<ItemHandler>();
+            }
+        }
+
+        //// INITIAL ITEMS ////
+
+        public BoardManager.Tile[] ConvertInitialItemsToBoard(string initialJson)
+        {
+            InitialItemData[] initialItemDataJson = JsonConvert.DeserializeObject<InitialItemData[]>(initialJson);
+
+            BoardManager.Tile[] boardData = new BoardManager.Tile[initialItemDataJson.Length];
+
+            for (int i = 0; i < initialItemDataJson.Length; i++)
+            {
+                Item.Type newType = Glob.ParseEnum<Item.Type>(initialItemDataJson[i].type);
+
+                BoardManager.Tile newBoardData = new()
+                {
+                    sprite = initialItemDataJson[i].sprite == "" ? null : gameData.GetSprite(initialItemDataJson[i].sprite, newType),
+                    state = Glob.ParseEnum<Item.State>(initialItemDataJson[i].state),
+                    type = newType,
+                    group = Glob.ParseEnum<Item.Group>(initialItemDataJson[i].group),
+                    genGroup = Glob.ParseEnum<Item.GenGroup>(initialItemDataJson[i].genGroup),
+                    collGroup = Glob.ParseEnum<Item.CollGroup>(initialItemDataJson[i].collGroup),
+                    chestGroup = Glob.ParseEnum<Item.ChestGroup>(initialItemDataJson[i].chestGroup),
+                };
+
+                boardData[i] = newBoardData;
+            }
+
+            return boardData;
+        }
+
+        public string ConvertBoardToInitialItems(BoardManager.Tile[] boardData)
+        {
+            InitialItemData[] initialItemDataJson = new InitialItemData[boardData.Length];
+
+            for (int i = 0; i < boardData.Length; i++)
+            {
+                InitialItemData newInitialItemJson = new()
+                {
+                    sprite = boardData[i].sprite == null ? "" : boardData[i].sprite.name,
+                    state = boardData[i].state.ToString(),
+                    type = boardData[i].type.ToString(),
+                    group = boardData[i].group.ToString(),
+                    genGroup = boardData[i].genGroup.ToString(),
+                    collGroup = boardData[i].collGroup.ToString(),
+                    chestGroup = boardData[i].chestGroup.ToString(),
+                };
+
+                initialItemDataJson[i] = newInitialItemJson;
+            }
+
+            return JsonConvert.SerializeObject(initialItemDataJson);
         }
 
         //// BOARD ////
@@ -66,7 +135,7 @@ namespace Merge
 
             for (int i = 0; i < boardData.Length; i++)
             {
-                int randomInt = Random.Range(0, itemHandler.crateSprites.Length);
+                int randomInt = UnityEngine.Random.Range(0, itemHandler.crateSprites.Length);
 
                 BoardManager.TileJson newTileJson = new()
                 {
@@ -970,13 +1039,13 @@ namespace Merge
                 switch (itemsData.chestGroup)
                 {
                     case Item.ChestGroup.Piggy:
-                        chestItemsCount = Random.Range(6 + count, 8 + count);
+                        chestItemsCount = UnityEngine.Random.Range(6 + count, 8 + count);
                         break;
                     case Item.ChestGroup.Energy:
-                        chestItemsCount = Random.Range(4 + count, 6 + count);
+                        chestItemsCount = UnityEngine.Random.Range(4 + count, 6 + count);
                         break;
                     default: // Item.ChestGroup.Item
-                        chestItemsCount = Random.Range(5 + count, 7 + count);
+                        chestItemsCount = UnityEngine.Random.Range(5 + count, 7 + count);
                         break;
                 }
             }
@@ -1009,11 +1078,11 @@ namespace Merge
         public string GetInitialUnlocked()
         {
             // Get all item unlocks
-            string[] initialUnlockedPre = new string[dataManager.initialItems.content.Length];
+            string[] initialUnlockedPre = new string[dataManager.initialBoardData.Length];
 
-            for (int i = 0; i < dataManager.initialItems.content.Length; i++)
+            for (int i = 0; i < dataManager.initialBoardData.Length; i++)
             {
-                if (dataManager.initialItems.content[i].sprite != null)
+                if (dataManager.initialBoardData[i].sprite != null)
                 {
                     bool found = false;
 
@@ -1022,7 +1091,7 @@ namespace Merge
                     {
                         if (
                             initialUnlockedPre[j] != null
-                            && initialUnlockedPre[j] == dataManager.initialItems.content[i].sprite.name
+                            && initialUnlockedPre[j] == dataManager.initialBoardData[i].sprite.name
                         )
                         {
                             found = true;
@@ -1032,7 +1101,7 @@ namespace Merge
 
                     if (!found)
                     {
-                        string unlockedItem = dataManager.initialItems.content[i].sprite.name;
+                        string unlockedItem = dataManager.initialBoardData[i].sprite.name;
 
                         initialUnlockedPre[i] = unlockedItem;
                     }

@@ -86,7 +86,7 @@ namespace Merge
             }
 
             // Open menu
-            menuUI.OpenMenu(content, menuType);
+            menuUI.OpenMenu(content, menuType, LOCALE.Get("input_menu_title_player_name"));
         }
 
         void HandleInput(ChangeEvent<string> changeEvent)
