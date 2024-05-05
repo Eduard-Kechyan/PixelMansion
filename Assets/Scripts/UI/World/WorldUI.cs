@@ -36,7 +36,7 @@ namespace Merge
         private TutorialManager tutorialManager;
         private I18n LOCALE;
 
-#if DEVELOPMENT_BUILD || UNITY_EDITOR
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
         private FeedbackManager feedbackManager;
 #endif
 
@@ -76,7 +76,7 @@ namespace Merge
             tutorialManager = gameRefs.tutorialManager;
             LOCALE = I18n.Instance;
 
-#if DEVELOPMENT_BUILD || UNITY_EDITOR
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             feedbackManager = gameRefs.feedbackManager;
 #endif
 
@@ -132,7 +132,7 @@ namespace Merge
                 }
             };
 
-#if DEVELOPMENT_BUILD || UNITY_EDITOR
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             if (Application.isEditor || Debug.isDebugBuild)
             {
                 Button debugButton = root.Q<Button>("DebugButton");

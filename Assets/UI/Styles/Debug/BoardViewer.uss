@@ -2,8 +2,8 @@
     position: absolute;
     top: 50px;
     left: 50px;
-    width: 10px;
-    height: 6px;
+    width: auto;
+    height: 5px;
     margin-top: 0;
     margin-right: 0;
     margin-bottom: 0;
@@ -17,14 +17,18 @@
     -unity-text-align: middle-center;
     -unity-font-style: bold;
     -unity-font-definition: url("project://database/Assets/Fonts/Files/RobotoMono.ttf?fileID=12800000&guid=7144b63d91be9e740aa1f0e7ba467a67&type=3#RobotoMono");
+    background-color: rgb(255, 255, 255);
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    border-bottom-left-radius: 2px;
 }
 
 .index_label {
     position: absolute;
     top: 50px;
     left: 50px;
-    width: 10px;
-    height: 6px;
+    height: 5px;
     margin-top: 0;
     margin-right: 0;
     margin-bottom: 0;
@@ -38,9 +42,28 @@
     -unity-text-align: middle-center;
     -unity-font-style: bold;
     -unity-font-definition: url("project://database/Assets/Fonts/Files/RobotoMono.ttf?fileID=12800000&guid=7144b63d91be9e740aa1f0e7ba467a67&type=3#RobotoMono");
-    -unity-text-outline-color: rgb(0, 0, 0);
-    text-shadow: 0 0 2px rgb(255, 255, 255);
     transition-duration: 0.1s;
+    background-color: rgb(255, 255, 255);
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    border-bottom-left-radius: 2px;
+}
+
+.state_box {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    width: 8px;
+    height: 8px;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
 }
 
 .board_item_button {
@@ -156,7 +179,7 @@
 .item_menu_label {
     width: 160px;
     height: 10px;
-    -unity-text-align: middle-center;
+    -unity-text-align: middle-left;
     font-size: 10px;
     color: rgb(46, 46, 46);
     -unity-font-definition: url("project://database/Assets/Fonts/Files/Roboto.ttf?fileID=12800000&guid=0435ef74bc89d2044a778758a25a13b0&type=3#Roboto");
@@ -164,7 +187,7 @@
     margin-right: auto;
     margin-bottom: 0;
     margin-left: auto;
-    padding-top: 0;
+    padding-top: 4px;
     padding-right: 0;
     padding-bottom: 4px;
     padding-left: 0;
@@ -172,7 +195,7 @@
 }
 
 .item_menu_sub_label {
-    -unity-text-align: upper-left;
+    -unity-text-align: middle-center;
     font-size: 8px;
     color: rgb(70, 70, 70);
 }
@@ -191,8 +214,9 @@
 
 .item_menu_scrollview {
     width: 100%;
-    height: 68%;
+    height: 62%;
     padding-top: 4px;
+    padding-bottom: 4px;
 }
 
 .item_menu_scrollview .unity-scroll-view__content-container {
@@ -210,14 +234,25 @@
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
     border-bottom-left-radius: 2px;
-    padding-right: 0;
-    padding-left: 0;
-    padding-top: 0;
-    margin-top: 0;
+    padding-right: 2px;
+    padding-left: 2px;
+    padding-top: 2px;
+    margin-top: 2px;
     margin-right: 1px;
     margin-bottom: 4px;
     margin-left: 1px;
     transition-duration: 0.1s;
+}
+
+.item_menu_item_selected {
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-left-color: rgb(144, 108, 72);
+    border-right-color: rgb(144, 108, 72);
+    border-top-color: rgb(144, 108, 72);
+    border-bottom-color: rgb(144, 108, 72);
 }
 
 .item_menu_item:active {

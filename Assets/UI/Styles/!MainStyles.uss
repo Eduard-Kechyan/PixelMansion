@@ -254,6 +254,10 @@
     bottom: 0;
 }
 
+.scroller {
+    overflow: hidden;
+}
+
 .scroller .unity-scroller__low-button {
     display: none;
     opacity: 0;
@@ -301,7 +305,7 @@
     width: 100%;
     margin-top: 0;
     margin-right: 0;
-    margin-bottom: 5px;
+    margin-bottom: 2px;
     margin-left: 0;
     padding-top: 0;
     padding-right: 0;
@@ -317,7 +321,7 @@
 .html_header {
     font-size: 16px;
     color: rgb(43, 43, 43);
-    margin-bottom: 0;
+    margin-bottom: 4;
     -unity-font-style: bold;
 }
 

@@ -18,7 +18,7 @@ namespace Merge
         public GameObject uiDocument;
         public MenuUI menuUI;
 
-#if DEVELOPMENT_BUILD || UNITY_EDITOR
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
         public FeedbackManager feedbackManager;
         public Logs logs;
 #endif
@@ -349,7 +349,7 @@ namespace Merge
 
         bool CheckForLoading()
         {
-#if DEVELOPMENT_BUILD || UNITY_EDITOR
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             if (
                 // Feedback manager
                 !feedbackManager.feedbackOpen &&

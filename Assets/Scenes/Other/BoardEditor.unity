@@ -433,12 +433,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tile: {fileID: 3144219979623524005, guid: 2ac088b13948a194babd4a9e969ce74c, type: 3}
   item: {fileID: 5764234588304267110, guid: 0e3162765ad06634a923dbe5f9ffda08, type: 3}
-  initialItems: {fileID: 4900000, guid: f6a96f947df86b440afbb35ff46be961, type: 3}
   tileWidth: 24
   bottomOffset: 80
-  countLabelOffset: {x: -11, y: 3.36}
-  countIndexOffset: {x: 1, y: -10.64}
+  countLabelOffset: {x: -11, y: 5.36}
+  countIndexOffset: {x: 0, y: -10.64}
+  stateBoxOffset: {x: 5, y: 3.36}
   countButtonOffset: {x: -12, y: -11.64}
+  stateCrateBoxSprite: {fileID: 21300000, guid: f71e5ad897003bf4b9546bbf9fe1d382, type: 3}
+  stateLockerBoxSprite: {fileID: 21300000, guid: 5889a0a2b4de54b42ae7c45d4adf1e0a, type: 3}
+  stateBubbleBoxSprite: {fileID: 21300000, guid: 1c7c7461fb449e748864b63e8d6d22d1, type: 3}
   boardData: []
 --- !u!114 &1394346187
 MonoBehaviour:
@@ -468,12 +471,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68c8b5477ac162147ae2b42c4d1f20a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useSkipData: 1
   generators: {fileID: 11400000, guid: e137e4880bf3a1b47af8d97ac8c94988, type: 2}
   items: {fileID: 11400000, guid: c8cb055841d16d4418a75072be1f69f5, type: 2}
   chests: {fileID: 11400000, guid: 4269ec268f2435744bcb14fe4886b718, type: 2}
   colls: {fileID: 11400000, guid: 0d151817da1d697479bdb1a307eafd0e, type: 2}
   ready: 0
   orderToChange: 0
+  initialItems: {fileID: 0}
 --- !u!114 &1394346189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -486,6 +491,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30a70a5c5eefa814b8211900350b257f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialized: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

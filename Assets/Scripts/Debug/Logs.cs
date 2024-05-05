@@ -11,7 +11,6 @@ using UnityEngine.InputSystem;
 
 namespace Merge
 {
-#if DEVELOPMENT_BUILD || UNITY_EDITOR
     public class Logs : MonoBehaviour
     {
         // Variables
@@ -473,5 +472,4 @@ namespace Merge
             return acceleration.sqrMagnitude > SHAKE_ACCELERATION;
         }
     }
-#endif
 }

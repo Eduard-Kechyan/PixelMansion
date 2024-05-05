@@ -101,6 +101,7 @@ namespace Merge
             taskPrefab = await addressableManager.LoadAssetAsync<VisualTreeAsset>("Assets/Addressables/Uxml/Task.uxml");
             taskNeedPrefab = await addressableManager.LoadAssetAsync<VisualTreeAsset>("Assets/Addressables/Uxml/TaskNeed.uxml");
 
+            // Data loaded
             dataLoaded = true;
         }
 

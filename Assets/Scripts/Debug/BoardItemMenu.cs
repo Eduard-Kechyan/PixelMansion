@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using System.IO;
 using Newtonsoft.Json;
 
 namespace Merge
@@ -11,6 +12,7 @@ namespace Merge
     {
 #if UNITY_EDITOR
         // Variables
+        public bool useSkipData = false;
         public Generators generators;
         public Items items;
         public Chests chests;
@@ -22,6 +24,11 @@ namespace Merge
         public int orderToChange = 0;
         private BoardManager.ItemData selectedItemData;
         private Item.State selectedState = Item.State.Crate;
+
+        [HideInInspector]
+        public TextAsset initialItems;
+
+        private string initialItemsPath = "";
 
         // Item Menu
         private bool itemMenuOpen = false;
@@ -116,6 +123,22 @@ namespace Merge
             collectableSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("collectables");
             chestSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("chests");
 
+            // Get Initial Items
+            string prePath;
+
+            if (useSkipData)
+            {
+                prePath = "Assets/Addressables/Data/InitialItemsSkip.json";
+            }
+            else
+            {
+                prePath = "Assets/Addressables/Data/InitialItems.json";
+            }
+
+            initialItems = await addressableManager.LoadAssetAsync<TextAsset>(prePath);
+
+            initialItemsPath = Application.dataPath.Replace("/Assets", "/") + prePath;
+
             ready = true;
 
             AddItemsToScrollView();
@@ -179,10 +202,11 @@ namespace Merge
 
                     for (int j = 0; j < colls.content[i].content.Length; j++)
                     {
-                        Button newCollButton = new() { name = "CollButton" + i + "." + j, text = "" };
+                        Button newCollButton = new() { name = colls.content[i].content[j].sprite.name, text = "" };
                         newCollButton.AddToClassList("button");
                         newCollButton.AddToClassList("item_menu_item");
 
+                        BoardManager.TypeColl newTypeColl = colls.content[i];
                         BoardManager.ItemData newItemData = colls.content[i].content[j];
 
                         newItemData.type = Item.Type.Coll;
@@ -191,7 +215,7 @@ namespace Merge
 
                         itemScrollView.Add(newCollButton);
 
-                        newCollButton.clicked += () => SelectItem(newItemData);
+                        newCollButton.clicked += () => SelectItem(newItemData, Item.Type.Item, default, default, default, newTypeColl.collGroup);
                     }
                 }
 
@@ -209,6 +233,7 @@ namespace Merge
                         lastChestGroup = chests.content[i].chestGroup;
 
                         Label newChestGroupLabel = new() { name = "ChestGroupLabel" + i, text = lastChestGroup + ":" };
+                        newChestGroupLabel.AddToClassList("item_menu_label");
                         newChestGroupLabel.AddToClassList("item_menu_sub_label");
 
                         itemScrollView.Add(newChestGroupLabel);
@@ -216,10 +241,11 @@ namespace Merge
 
                     for (int j = 0; j < chests.content[i].content.Length; j++)
                     {
-                        Button newChestButton = new() { name = "ChestButton" + i + "." + j, text = "" };
+                        Button newChestButton = new() { name = chests.content[i].content[j].sprite.name, text = "" };
                         newChestButton.AddToClassList("button");
                         newChestButton.AddToClassList("item_menu_item");
 
+                        BoardManager.TypeChest newTypeChest = chests.content[i];
                         BoardManager.ItemData newItemData = chests.content[i].content[j];
 
                         newItemData.type = Item.Type.Chest;
@@ -228,8 +254,7 @@ namespace Merge
 
                         itemScrollView.Add(newChestButton);
 
-
-                        newChestButton.clicked += () => SelectItem(newItemData);
+                        newChestButton.clicked += () => SelectItem(newItemData, Item.Type.Item, default, default, newTypeChest.chestGroup);
                     }
                 }
 
@@ -238,7 +263,7 @@ namespace Merge
                 genLabel.AddToClassList("item_menu_label");
                 itemScrollView.Add(genLabel);
 
-                Item.GenGroup lastGenGroup = Item.GenGroup.Toolbox;
+                Item.GenGroup lastGenGroup = Item.GenGroup.Test;
 
                 for (int i = 0; i < generators.content.Length; i++)
                 {
@@ -247,6 +272,7 @@ namespace Merge
                         lastGenGroup = generators.content[i].genGroup;
 
                         Label newGenGroupLabel = new() { name = "GenGroupLabel" + i, text = lastGenGroup + ":" };
+                        newGenGroupLabel.AddToClassList("item_menu_label");
                         newGenGroupLabel.AddToClassList("item_menu_sub_label");
 
                         itemScrollView.Add(newGenGroupLabel);
@@ -254,10 +280,11 @@ namespace Merge
 
                     for (int j = 0; j < generators.content[i].content.Length; j++)
                     {
-                        Button newGenButton = new() { name = "GenButton" + i + "." + j, text = "" };
+                        Button newGenButton = new() { name = generators.content[i].content[j].sprite.name, text = "" };
                         newGenButton.AddToClassList("button");
                         newGenButton.AddToClassList("item_menu_item");
 
+                        BoardManager.TypeGen newTypeGen = generators.content[i];
                         BoardManager.ItemData newItemData = generators.content[i].content[j];
 
                         newItemData.type = Item.Type.Gen;
@@ -266,7 +293,7 @@ namespace Merge
 
                         itemScrollView.Add(newGenButton);
 
-                        newGenButton.clicked += () => SelectItem(newItemData);
+                        newGenButton.clicked += () => SelectItem(newItemData, Item.Type.Item, default, newTypeGen.genGroup);
                     }
                 }
 
@@ -284,6 +311,7 @@ namespace Merge
                         lastGroup = items.content[i].group;
 
                         Label newGroupLabel = new() { name = "GroupLabel" + i, text = lastGroup + ":" };
+                        newGroupLabel.AddToClassList("item_menu_label");
                         newGroupLabel.AddToClassList("item_menu_sub_label");
 
                         itemScrollView.Add(newGroupLabel);
@@ -291,10 +319,11 @@ namespace Merge
 
                     for (int j = 0; j < items.content[i].content.Length; j++)
                     {
-                        Button newItemButton = new() { name = "ItemButton" + i + "." + j, text = "" };
+                        Button newItemButton = new() { name = items.content[i].content[j].sprite.name, text = "" };
                         newItemButton.AddToClassList("button");
                         newItemButton.AddToClassList("item_menu_item");
 
+                        BoardManager.TypeItem newTypeItem = items.content[i];
                         BoardManager.ItemData newItemData = items.content[i].content[j];
 
                         newItemData.type = Item.Type.Item;
@@ -303,22 +332,36 @@ namespace Merge
 
                         itemScrollView.Add(newItemButton);
 
-                        newItemButton.clicked += () => SelectItem(newItemData);
+                        newItemButton.clicked += () => SelectItem(newItemData, Item.Type.Item, newTypeItem.group);
                     }
                 }
             }
         }
 
-        void SelectItem(BoardManager.ItemData itemData)
+        void SelectItem(BoardManager.ItemData itemData, Item.Type type, Item.Group group = default, Item.GenGroup genGroup = default, Item.ChestGroup chestGroup = default, Item.CollGroup collGroup = default)
         {
             selectedItemData = itemData;
+
+            selectedItemData.type = type;
+            selectedItemData.group = group;
+            selectedItemData.genGroup = genGroup;
+            selectedItemData.chestGroup = chestGroup;
+            selectedItemData.collGroup = collGroup;
 
             selectedItemLabel.text = itemData.sprite.name;
 
             selectedItemLabel.style.visibility = Visibility.Visible;
             selectedItemLabel.style.opacity = 1;
 
-            Debug.Log(itemData);
+            for (int i = 0; i < itemScrollView.contentContainer.childCount; i++)
+            {
+                itemScrollView.contentContainer[i].RemoveFromClassList("item_menu_item_selected");
+
+                if (itemScrollView.contentContainer[i].name == itemData.sprite.name)
+                {
+                    itemScrollView.contentContainer[i].AddToClassList("item_menu_item_selected");
+                }
+            }
         }
 
         void Clear()
@@ -333,8 +376,11 @@ namespace Merge
             boardViewer.boardData[orderToChange].collGroup = Item.CollGroup.Experience;
             boardViewer.boardData[orderToChange].state = Item.State.Crate;
 
-            boardViewer.SaveBoardData(() =>
+            SaveBoardData(() =>
             {
+                boardViewer.UpdateBoardItemSprite(orderToChange);
+                boardViewer.UpdateStateBoxSprite(orderToChange, Item.State.Crate, false);
+
                 CloseMenu();
             });
         }
@@ -366,8 +412,11 @@ namespace Merge
 
             if (changed)
             {
-                boardViewer.SaveBoardData(() =>
+                SaveBoardData(() =>
                 {
+                    boardViewer.UpdateBoardItemSprite(orderToChange);
+                    boardViewer.UpdateStateBoxSprite(orderToChange, selectedState);
+
                     CloseMenu();
                 });
             }
@@ -463,6 +512,15 @@ namespace Merge
             Debug.Log("SPRITE IS NULL");
 
             return default;
+        }
+
+        async void SaveBoardData(Action callback)
+        {
+            string initialItemsJson = ConvertBoardToInitialItems(boardViewer.boardData);
+
+            await File.WriteAllTextAsync(initialItemsPath, initialItemsJson);
+
+            callback();
         }
 
         public BoardManager.Tile[] ConvertInitialItemsToBoard(string initialJson)

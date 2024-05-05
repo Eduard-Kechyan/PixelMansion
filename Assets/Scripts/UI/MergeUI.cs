@@ -37,7 +37,7 @@ namespace Merge
         private ErrorManager errorManager;
         private PointerHandler pointerHandler;
 
-#if DEVELOPMENT_BUILD || UNITY_EDITOR
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
         private FeedbackManager feedbackManager;
 #endif
 
@@ -74,7 +74,7 @@ namespace Merge
             errorManager = ErrorManager.Instance;
             pointerHandler = gameRefs.pointerHandler;
 
-#if DEVELOPMENT_BUILD || UNITY_EDITOR
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             feedbackManager = gameRefs.feedbackManager;
 #endif
 
@@ -134,7 +134,7 @@ namespace Merge
             // Calculate the button position on the screen and the world space
             singlePixelWidth = Camera.main.pixelWidth / GameData.GAME_PIXEL_WIDTH;
 
-#if DEVELOPMENT_BUILD || UNITY_EDITOR
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             if (Application.isEditor || Debug.isDebugBuild)
             {
                 Button debugButton = root.Q<Button>("DebugButton");

@@ -1,10 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEditor;
 
 namespace Merge
 {
@@ -14,19 +12,20 @@ namespace Merge
         // Variables
         public GameObject tile;
         public GameObject item;
-        public TextAsset initialItems;
         public float tileWidth = 24f;
         public float bottomOffset = 20f;
 
         [Header("UI")]
         public Vector2 countLabelOffset;
         public Vector2 countIndexOffset;
+        public Vector2 stateBoxOffset;
         public Vector2 countButtonOffset;
+        public Sprite stateCrateBoxSprite;
+        public Sprite stateLockerBoxSprite;
+        public Sprite stateBubbleBoxSprite;
 
         [HideInInspector]
         public BoardManager.Tile[] boardData;
-
-        private string initialItemsPath = "";
 
         private float singlePixelWidth;
         private float screenUnitWidth;
@@ -37,13 +36,20 @@ namespace Merge
         private GameObject tiles;
         private float tileSize;
 
+        // Classes
+        class ButtonData
+        {
+            public Button button;
+            public bool isTop;
+        }
+
         // References
         private Camera cam;
         private BoardItemMenu boardItemMenu;
 
         // UI
         private VisualElement root;
-        private Button[] buttons = new Button[7 * 9];
+        private ButtonData[] buttons = new ButtonData[7 * 9];
 
         void Start()
         {
@@ -55,9 +61,6 @@ namespace Merge
             root = GetComponent<UIDocument>().rootVisualElement;
 
             Debug.LogWarning("This is BoardViewer! This text shouldn't be logged! If it is, then there is a problem!!!");
-
-            // Initialization
-            initialItemsPath = Application.dataPath.Replace("/Assets", "/") + AssetDatabase.GetAssetPath(initialItems);
 
             // Set the gameObject
             board = gameObject;
@@ -85,7 +88,7 @@ namespace Merge
                 yield return null;
             }
 
-            boardData = boardItemMenu.ConvertInitialItemsToBoard(initialItems.text);
+            boardData = boardItemMenu.ConvertInitialItemsToBoard(boardItemMenu.initialItems.text);
 
             SetBoard();
         }
@@ -188,7 +191,7 @@ namespace Merge
 
                         newItem.transform.SetParent(newTile.transform);
 
-                        newItem.transform.localScale = new Vector3(1, 1, 1);
+                        newItem.transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
 
                         itemCreated = true;
                     }
@@ -205,29 +208,33 @@ namespace Merge
 
         void CreateUILabels(int count, int indexX, int indexY, Vector2 uiPos, Item.State state, bool useState)
         {
-            string stateLetter = "";
+            Sprite stateBoxSprite = null;
 
             if (useState)
             {
-                if (state == Item.State.Default)
+                if (state == Item.State.Crate)
                 {
-                    stateLetter = "D ";
-                }
-                else if (state == Item.State.Crate)
-                {
-                    stateLetter = "C ";
+                    stateBoxSprite = stateCrateBoxSprite;
                 }
                 else if (state == Item.State.Locker)
                 {
-                    stateLetter = "L ";
+                    stateBoxSprite = stateLockerBoxSprite;
+                }
+                else if (state == Item.State.Bubble)
+                {
+                    stateBoxSprite = stateBubbleBoxSprite;
                 }
             }
 
-            Label newCountLabel = new() { name = "Count" + count, text = stateLetter + count.ToString() };
+            Label newCountLabel = new() { name = "Count" + count, text = count.ToString() };
             Label newIndexLabel = new() { name = "Index" + count, text = indexX + "." + indexY };
+            VisualElement newStateBox = new() { name = "State" + count };
 
             newCountLabel.AddToClassList("count_label");
             newIndexLabel.AddToClassList("index_label");
+            newStateBox.AddToClassList("state_box");
+
+            newStateBox.style.backgroundImage = new StyleBackground(stateBoxSprite);
 
             newCountLabel.style.top = uiPos.y + countLabelOffset.y;
             newCountLabel.style.left = uiPos.x + countLabelOffset.x;
@@ -235,13 +242,17 @@ namespace Merge
             newIndexLabel.style.top = uiPos.y + countIndexOffset.y;
             newIndexLabel.style.left = uiPos.x + countIndexOffset.x;
 
+            newStateBox.style.top = uiPos.y + stateBoxOffset.y;
+            newStateBox.style.left = uiPos.x + stateBoxOffset.x;
+
             root.Insert(0, newCountLabel);
             root.Insert(0, newIndexLabel);
+            root.Insert(0, newStateBox);
         }
 
         void CreateUIButton(int count, Vector2 uiPos, Item.State state)
         {
-            Button newItemButton = new() { name = "Count" + count, text = "" };
+            Button newItemButton = new() { name = "Button" + count, text = "" };
 
             newItemButton.AddToClassList("board_item_button");
 
@@ -250,32 +261,75 @@ namespace Merge
 
             root.Insert(0, newItemButton);
 
-            buttons[count] = newItemButton;
-
             string order = count.ToString();
 
             bool isTop = uiPos.y > root.resolvedStyle.height / 2;
+
+            buttons[count] = new()
+            {
+                button = newItemButton,
+                isTop = isTop
+            };
 
             newItemButton.clicked += () => boardItemMenu.OpenItemMenu(order, isTop, state);
         }
 
         public void SelectButton(int order)
         {
-            buttons[order].AddToClassList("board_item_button_selected");
+            buttons[order].button.AddToClassList("board_item_button_selected");
         }
 
         public void DeSelectButton(int order)
         {
-            buttons[order].RemoveFromClassList("board_item_button_selected");
+            buttons[order].button.RemoveFromClassList("board_item_button_selected");
         }
 
-        async public void SaveBoardData(Action callback)
+        public void UpdateBoardItemSprite(int order)
         {
-            string initialItemsJson = boardItemMenu.ConvertBoardToInitialItems(boardData);
+            Transform newTile = tiles.transform.GetChild(order);
 
-            await File.WriteAllTextAsync(initialItemsPath, initialItemsJson);
+            if (newTile.childCount > 0)
+            {
+                newTile.GetChild(0).GetComponent<SpriteRenderer>().sprite = boardData[order].sprite;
+            }
+            else
+            {
+                if (boardData[order] != null && boardData[order].sprite != null)
+                {
+                    GameObject newItem = Instantiate(item, newTile.transform.position, Quaternion.identity);
 
-            callback();
+                    newItem.GetComponent<SpriteRenderer>().sprite = boardData[order].sprite;
+
+                    newItem.transform.SetParent(newTile.transform);
+
+                    newItem.transform.localScale = new Vector3(1, 1, 1);
+                }
+            }
+        }
+
+        public void UpdateStateBoxSprite(int order, Item.State state, bool useState = true)
+        {
+            Sprite stateBoxSprite = null;
+
+            if (useState)
+            {
+                if (state == Item.State.Crate)
+                {
+                    stateBoxSprite = stateCrateBoxSprite;
+                }
+                else if (state == Item.State.Locker)
+                {
+                    stateBoxSprite = stateLockerBoxSprite;
+                }
+                else if (state == Item.State.Bubble)
+                {
+                    stateBoxSprite = stateBubbleBoxSprite;
+                }
+            }
+
+            root.Q<VisualElement>("State" + order).style.backgroundImage = new StyleBackground(stateBoxSprite);
+
+            root.Q<Button>("Button" + order).clicked += () => boardItemMenu.OpenItemMenu(order.ToString(), buttons[order].isTop, state);
         }
 #endif
     }

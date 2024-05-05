@@ -128,6 +128,9 @@ namespace Merge
         public SceneLoader.SceneType lastScene = SceneLoader.SceneType.None;
 
         [HideInInspector]
+        public TextAsset initialItemsTextAsset;
+
+        [HideInInspector]
         public string termsHtml = "";
         [HideInInspector]
         public string privacyHtml = "";
@@ -135,9 +138,7 @@ namespace Merge
         public bool gettingLegalData = false; // TODO - Set to true
 
         // Debug
-#if DEVELOPMENT_BUILD || UNITY_EDITOR
         public List<Logs.LogData> logsData = new();
-#endif
 
         // Events
         public delegate void EnergyUpdatedEvent(bool addTimer);
@@ -150,6 +151,7 @@ namespace Merge
         private SoundManager soundManager;
         private CloudSave cloudSave;
         private AddressableManager addressableManager;
+        private TutorialManager tutorialManager;
 
         // Instance
         public static GameData Instance;
@@ -174,6 +176,7 @@ namespace Merge
             soundManager = SoundManager.Instance;
             cloudSave = Services.Instance.GetComponent<CloudSave>();
             addressableManager = dataManager.GetComponent<AddressableManager>();
+            tutorialManager = GameRefs.Instance.tutorialManager;
 
             canLevelUp = PlayerPrefs.GetInt("canLevelUp") == 1;
 
@@ -221,6 +224,21 @@ namespace Merge
             wallSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("walls");
             propsSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("props");
 
+            // Initial Items
+            string prePath;
+
+            if ((tutorialManager != null && tutorialManager.skipTutorial) || PlayerPrefs.HasKey("tutorialFinished"))
+            {
+                prePath = "Assets/Addressables/Data/InitialItemsSkip.json";
+            }
+            else
+            {
+                prePath = "Assets/Addressables/Data/InitialItems.json";
+            }
+
+            initialItemsTextAsset = await addressableManager.LoadAssetAsync<TextAsset>(prePath);
+
+            // Data loaded
             dataLoaded = true;
         }
 

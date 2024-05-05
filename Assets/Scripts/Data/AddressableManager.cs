@@ -42,12 +42,6 @@ namespace Merge
                 errorManager.Throw(
                     ErrorManager.ErrorType.Code,
                     GetType().Name,
-                    "Failed to initialize Addressables!"
-                );
-                // ERROR
-                errorManager.Throw(
-                    ErrorManager.ErrorType.Code,
-                    GetType().Name,
                     ex.Message
                 );
             }

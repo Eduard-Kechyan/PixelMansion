@@ -1,15 +1,15 @@
 [
     {
-        "sprite": "ExperienceColl1",
-        "type": "Coll",
-        "state": "Default",
-        "group": "Tools",
+        "sprite": "GlovesItem1",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Gloves",
         "genGroup": "Toolbox",
         "collGroup": "Experience",
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -18,7 +18,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -27,7 +27,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -36,7 +36,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -45,7 +45,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -54,7 +54,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -63,7 +63,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -72,7 +72,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -81,7 +81,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -90,7 +90,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -99,7 +99,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -108,7 +108,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -117,7 +117,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem1",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -126,7 +126,16 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "GlovesItem1",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Gloves",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -135,7 +144,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -144,7 +153,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -153,7 +162,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -162,7 +171,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -171,7 +180,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem1",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -180,7 +189,25 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "GlovesItem2",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Gloves",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "ToolboxGen5",
+        "type": "Gen",
+        "state": "Crate",
+        "group": "Tools",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "ToolsItem5",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -189,7 +216,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -198,7 +225,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -207,7 +234,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -216,7 +243,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -225,7 +252,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -234,7 +261,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -243,7 +270,25 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "GlovesItem2",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Gloves",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "GlovesItem1",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Gloves",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "ToolsItem3",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -252,7 +297,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -261,7 +306,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -270,7 +315,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -279,7 +324,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -288,7 +333,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -297,7 +342,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem1",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -306,7 +351,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem4",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -315,7 +360,16 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "GlovesItem1",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Gloves",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -324,7 +378,16 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "GlovesItem2",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Gloves",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -333,7 +396,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -342,7 +405,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -351,7 +414,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -360,7 +423,16 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "GlovesItem1",
+        "type": "Item",
+        "state": "Crate",
+        "group": "Gloves",
+        "genGroup": "Toolbox",
+        "collGroup": "Experience",
+        "chestGroup": "Item"
+    },
+    {
+        "sprite": "ToolsItem6",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -369,7 +441,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -378,7 +450,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem1",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -387,7 +459,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -396,7 +468,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -405,7 +477,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -414,7 +486,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -423,7 +495,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -432,7 +504,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -441,7 +513,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -450,7 +522,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -459,7 +531,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -468,7 +540,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -477,7 +549,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",
@@ -486,79 +558,7 @@
         "chestGroup": "Item"
     },
     {
-        "sprite": "",
-        "type": "Item",
-        "state": "Crate",
-        "group": "Tools",
-        "genGroup": "Toolbox",
-        "collGroup": "Experience",
-        "chestGroup": "Item"
-    },
-    {
-        "sprite": "",
-        "type": "Item",
-        "state": "Crate",
-        "group": "Tools",
-        "genGroup": "Toolbox",
-        "collGroup": "Experience",
-        "chestGroup": "Item"
-    },
-    {
-        "sprite": "",
-        "type": "Item",
-        "state": "Crate",
-        "group": "Tools",
-        "genGroup": "Toolbox",
-        "collGroup": "Experience",
-        "chestGroup": "Item"
-    },
-    {
-        "sprite": "",
-        "type": "Item",
-        "state": "Crate",
-        "group": "Tools",
-        "genGroup": "Toolbox",
-        "collGroup": "Experience",
-        "chestGroup": "Item"
-    },
-    {
-        "sprite": "",
-        "type": "Item",
-        "state": "Crate",
-        "group": "Tools",
-        "genGroup": "Toolbox",
-        "collGroup": "Experience",
-        "chestGroup": "Item"
-    },
-    {
-        "sprite": "",
-        "type": "Item",
-        "state": "Crate",
-        "group": "Tools",
-        "genGroup": "Toolbox",
-        "collGroup": "Experience",
-        "chestGroup": "Item"
-    },
-    {
-        "sprite": "",
-        "type": "Item",
-        "state": "Crate",
-        "group": "Tools",
-        "genGroup": "Toolbox",
-        "collGroup": "Experience",
-        "chestGroup": "Item"
-    },
-    {
-        "sprite": "",
-        "type": "Item",
-        "state": "Crate",
-        "group": "Tools",
-        "genGroup": "Toolbox",
-        "collGroup": "Experience",
-        "chestGroup": "Item"
-    },
-    {
-        "sprite": "",
+        "sprite": "ToolsItem2",
         "type": "Item",
         "state": "Crate",
         "group": "Tools",

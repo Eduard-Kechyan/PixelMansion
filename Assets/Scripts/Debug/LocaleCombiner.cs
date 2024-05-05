@@ -6,9 +6,9 @@ using UnityEditor;
 
 namespace Merge
 {
-#if DEVELOPMENT_BUILD || UNITY_EDITOR
     public class LocaleCombiner : MonoBehaviour
     {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
         // Variables
         public bool combine = false;
         public bool log = false;
@@ -113,6 +113,6 @@ namespace Merge
                 writer.Close();
             }
         }
-    }
 #endif
+    }
 }

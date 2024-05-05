@@ -18,8 +18,6 @@ namespace Merge
         public Generators generators;
         public Colls colls;
         public Chests chests;
-        public TextAsset initialItems;
-        public TextAsset initialItemsSkip;
 
         // Events
         public delegate void BoardSaveEvent();
@@ -67,7 +65,6 @@ namespace Merge
         private CloudSave cloudSave;
         private ErrorManager errorManager;
         private WorldDataManager worldDataManager;
-        private TutorialManager tutorialManager;
 
         // Instance
         public static DataManager Instance;
@@ -108,7 +105,6 @@ namespace Merge
             cloudSave = services.GetComponent<CloudSave>();
             errorManager = ErrorManager.Instance;
             worldDataManager = gameRefs.worldDataManager;
-            tutorialManager = gameRefs.tutorialManager;
 
 #if UNITY_EDITOR
             isEditor = true;
@@ -156,7 +152,7 @@ namespace Merge
         // Check if we need to save initial data to disk
         void CheckInitialData(Action callback)
         {
-            initialBoardData = dataConverter.ConvertInitialItemsToBoard(((tutorialManager != null && tutorialManager.skipTutorial) || PlayerPrefs.HasKey("tutorialFinished")) ? initialItemsSkip.text : initialItems.text);
+            initialBoardData = dataConverter.ConvertInitialItemsToBoard(gameData.initialItemsTextAsset.text);
 
             if ((ignoreInitialCheck && isEditor) || (!PlayerPrefs.HasKey("dataLoaded") && !writer.Exists("rootSet")))
             {
@@ -216,16 +212,16 @@ namespace Merge
         // Get object data from the initial data
         void GetData(bool initialLoad, Action callback)
         {
-            string newBoardData = "";
-            string newBonusData = "";
-            string newInventoryData = "";
-            string newTasksData = "";
-            string newFinishedTasks = "";
-            string newTimersData = "";
-            string newCoolDownsData = "";
-            string newNotificationsData = "";
-            string newUnlockedData = "";
-            string newUnlockedRoomsData = "";
+            string newBoardData;
+            string newBonusData;
+            string newInventoryData;
+            string newTasksData;
+            string newFinishedTasks;
+            string newTimersData;
+            string newCoolDownsData;
+            string newNotificationsData;
+            string newUnlockedData;
+            string newUnlockedRoomsData;
 
             if (initialLoad)
             {
@@ -244,27 +240,27 @@ namespace Merge
             else
             {
                 // ! - Level should come before experience
-                gameData.SetLevel(reader.Read<int>("level"));
-                gameData.SetExperience(reader.Read<int>("experience"));
-                gameData.SetEnergy(reader.Read<int>("energy"));
-                gameData.SetGold(reader.Read<int>("gold"));
-                gameData.SetGems(reader.Read<int>("gems"));
+                gameData.SetLevel(ReadReaderData<int>("level"));
+                gameData.SetExperience(ReadReaderData<int>("experience"));
+                gameData.SetEnergy(ReadReaderData<int>("energy"));
+                gameData.SetGold(ReadReaderData<int>("gold"));
+                gameData.SetGems(ReadReaderData<int>("gems"));
 
                 // Get json string from the saved json file
-                reader.Read<string>("boardData", r => newBoardData = r);
-                reader.Read<string>("bonusData", r => newBonusData = r);
-                reader.Read<string>("inventoryData", r => newInventoryData = r);
-                reader.Read<string>("tasksData", r => newTasksData = r);
-                reader.Read<string>("finishedTasks", r => newFinishedTasks = r);
-                reader.Read<string>("timers", r => newTimersData = r);
-                reader.Read<string>("coolDowns", r => newCoolDownsData = r);
-                reader.Read<string>("notificationsData", r => newNotificationsData = r);
-                reader.Read<string>("unlockedData", r => newUnlockedData = r);
-                reader.Read<string>("unlockedRoomsData", r => newUnlockedRoomsData = r);
+                newBoardData = ReadReaderData<string>("boardData");
+                newBonusData = ReadReaderData<string>("bonusData");
+                newInventoryData = ReadReaderData<string>("inventoryData");
+                newFinishedTasks = ReadReaderData<string>("finishedTasks");
+                newTasksData = ReadReaderData<string>("tasksData");
+                newTimersData = ReadReaderData<string>("timers");
+                newCoolDownsData = ReadReaderData<string>("coolDowns");
+                newNotificationsData = ReadReaderData<string>("notificationsData");
+                newUnlockedData = ReadReaderData<string>("unlockedData");
+                newUnlockedRoomsData = ReadReaderData<string>("unlockedRoomsData");
 
                 // Other
-                gameData.inventorySpace = reader.Read<int>("inventorySpace");
-                gameData.inventorySlotPrice = reader.Read<int>("inventorySlotPrice");
+                gameData.inventorySpace = ReadReaderData<int>("inventorySpace");
+                gameData.inventorySlotPrice = ReadReaderData<int>("inventorySlotPrice");
             }
 
             if (newUnlockedData != "")
@@ -559,7 +555,7 @@ namespace Merge
 
             if (reader != null)
             {
-                reader.Read<T>(key, r => newData = r);
+                newData = ReadReaderData<T>(key);
             }
             else
             {
@@ -580,7 +576,7 @@ namespace Merge
 
             if (reader != null)
             {
-                reader.Read<string>("unsentData", r => unsentData = r);
+                unsentData = ReadReaderData<string>("unsentData");
             }
             else
             {
@@ -593,6 +589,36 @@ namespace Merge
             }
 
             return JsonConvert.DeserializeObject<Dictionary<string, object>>(unsentData);
+        }
+
+        T ReadReaderData<T>(string key)
+        {
+            T data = default;
+
+            try
+            {
+                if (typeof(T) == typeof(string))
+                {
+                    reader.Read<T>(key, r => data = r);
+                }
+                else
+                {
+                    data = reader.Read<T>(key);
+                }
+
+                return data;
+            }
+            catch (Exception ex)
+            {
+                // ERROR
+                errorManager.Throw(
+                    ErrorManager.ErrorType.Code,
+                    GetType().Name,
+                    ex.Message + ", Key: " + key
+                );
+
+                return data;
+            }
         }
 
         //// SET ////

@@ -143,7 +143,7 @@ namespace Merge
                 errorManager.Throw(
                     ErrorManager.ErrorType.Code,
                     GetType().Name,
-                     error.ToString()
+                    error.ToString()
                 );
             }
         }

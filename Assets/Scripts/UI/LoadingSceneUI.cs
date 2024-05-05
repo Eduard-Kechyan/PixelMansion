@@ -9,7 +9,7 @@ namespace Merge
     public class LoadingSceneUI : MonoBehaviour
     {
         // Variables
-#if DEVELOPMENT_BUILD || UNITY_EDITOR
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
         public FeedbackManager feedbackManager;
 #endif
         public MenuUI menuUI;
@@ -74,7 +74,7 @@ namespace Merge
 
             ageScrollView.verticalScroller.valueChanged += newValue => AgeScrollerHandle(newValue);
 
-#if DEVELOPMENT_BUILD || UNITY_EDITOR
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             if (Application.isEditor || Debug.isDebugBuild)
             {
                 Button debugButton = root.Q<Button>("DebugButton");
