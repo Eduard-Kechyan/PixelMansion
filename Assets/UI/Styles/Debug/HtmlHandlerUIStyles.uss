@@ -1,0 +1,32 @@
+.html_container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    bottom: 10px;
+    left: 10px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    background-color: rgb(243, 202, 127);
+    border-left-color: rgb(209, 166, 88);
+    border-right-color: rgb(209, 166, 88);
+    border-top-color: rgb(209, 166, 88);
+    border-bottom-color: rgb(209, 166, 88);
+}
+
+.html_scrollview {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    top: 0;
+    padding-top: 4px;
+    padding-right: 4px;
+    padding-bottom: 0;
+    padding-left: 4px;
+}

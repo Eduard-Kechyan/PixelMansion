@@ -244,6 +244,10 @@
     -unity-background-image-tint-color: rgb(255, 255, 255);
 }
 
+.scroller {
+    overflow: hidden;
+}
+
 .scroller .unity-scroller {
     width: 4px;
     overflow: hidden;
@@ -252,10 +256,6 @@
     top: 0;
     right: -12px;
     bottom: 0;
-}
-
-.scroller {
-    overflow: hidden;
 }
 
 .scroller .unity-scroller__low-button {
@@ -300,29 +300,19 @@
     border-bottom-width: 0;
 }
 
-.html_paragraph {
-    font-size: 6px;
-    width: 100%;
-    margin-top: 0;
-    margin-right: 0;
+.html_header {
+    font-size: 16px;
+    color: rgb(43, 43, 43);
     margin-bottom: 2px;
-    margin-left: 0;
+    -unity-font-style: bold;
     padding-top: 0;
     padding-right: 0;
     padding-bottom: 0;
     padding-left: 0;
-    color: rgb(60, 60, 60);
-    -unity-font-style: normal;
-    white-space: normal;
-    -unity-text-align: upper-left;
+    margin-top: 0;
+    margin-right: 0;
+    margin-left: 0;
     -unity-font-definition: url("project://database/Assets/Fonts/Roboto%20SDF.asset?fileID=11400000&guid=1c5dedeb0ccefb74ebe6e5ff0a6f7e56&type=2#Roboto SDF");
-}
-
-.html_header {
-    font-size: 16px;
-    color: rgb(43, 43, 43);
-    margin-bottom: 4;
-    -unity-font-style: bold;
 }
 
 .html_header_2 {
@@ -343,4 +333,74 @@
 
 .html_header_6 {
     font-size: 6px;
+}
+
+.html_list_item {
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 6px;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    font-size: 6px;
+    color: rgb(60, 60, 60);
+}
+
+.html_list_item_first {
+    margin-top: -6px;
+}
+
+.html_list_item_last {
+    margin-bottom: 6px;
+}
+
+.html_br {
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    width: 100%;
+    height: 6px;
+    color: rgba(0, 0, 0, 0);
+    font-size: 1px;
+}
+
+.html_paragraph {
+    font-size: 6px;
+    width: 100%;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 6px;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    color: rgb(60, 60, 60);
+    -unity-font-style: normal;
+    white-space: normal;
+    -unity-text-align: upper-left;
+    -unity-font-definition: url("project://database/Assets/Fonts/Roboto%20SDF.asset?fileID=11400000&guid=1c5dedeb0ccefb74ebe6e5ff0a6f7e56&type=2#Roboto SDF");
+}
+
+.html_hr {
+    width: 100%;
+    height: 1px;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 4px;
+    margin-left: 0;
+    color: rgba(27, 27, 27, 0);
+    font-size: 0;
+    background-color: rgba(0, 0, 0, 0.28);
 }

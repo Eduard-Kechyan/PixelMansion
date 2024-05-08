@@ -72,6 +72,8 @@ namespace Merge
 
             messageScrollView.Clear();
 
+            messageScrollView.scrollOffset = Vector2.zero;
+
             if (messageType == MessageType.Custom)
             {
                 newTitle = title;
@@ -118,7 +120,7 @@ namespace Merge
 
         void GetDataOnline(string html)
         {
-            List<VisualElement> newMessageElements = htmlHandler.ConvertHtmlToUI(html);
+            List<Label> newMessageElements = htmlHandler.ConvertHtmlToUI(html);
 
             if (newMessageElements != null && newMessageElements.Count > 0)
             {

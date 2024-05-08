@@ -50,8 +50,6 @@ namespace Merge
 
             services.analyticsAvailable = true;
 
-            Debug.Log("Initializing Analytics!");
-
             if (PlayerPrefs.HasKey("termsAccepted") || Application.isEditor)
             {
                 StartDataCollection();

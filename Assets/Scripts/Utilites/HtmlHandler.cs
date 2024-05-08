@@ -3,13 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using HtmlAgilityPack;
+
+#if UNITY_EDITOR
 using UnityEngine.UIElements;
+using UnityEngine.SceneManagement;
+#endif
 
 namespace Merge
 {
     public class HtmlHandler : MonoBehaviour
     {
-        // Variables
+        // Classes
         [Serializable]
         public class HtmlTag
         {
@@ -20,117 +25,246 @@ namespace Merge
         // References
         private ErrorManager errorManager;
 
+#if UNITY_EDITOR
+        public TextAsset dummyTermsHtml;
+        private ScrollView htmlScrollView;
+
+        void Start()
+        {
+            errorManager = ErrorManager.Instance;
+
+            if (SceneManager.GetActiveScene().name == "DummyScene")
+            {
+                htmlScrollView = GetComponent<UIDocument>().rootVisualElement.Q<ScrollView>("HtmlScrollView");
+
+                DebugHtml(dummyTermsHtml.text);
+            }
+        }
+
+        void DebugHtml(string htmlString)
+        {
+            List<Label> labels = ConvertHtmlToUI(htmlString);
+
+            foreach (Label newLabel in labels)
+            {
+                htmlScrollView.Add(newLabel);
+            }
+        }
+#else
         void Start()
         {
             // Cache
             errorManager = ErrorManager.Instance;
         }
+#endif
 
-        public List<VisualElement> ConvertHtmlToUI(string html)
+        public List<Label> ConvertHtmlToUI(string htmlString)
         {
-            List<HtmlTag> tags = ParseHtml(html);
+            string convertedHtml = htmlString.Replace("<p><br></p>", "<br>").Replace("<p><hr></p>", "<hr>");
 
-            List<VisualElement> elements = new();
+            HtmlDocument doc = new();
 
-            int count = 0;
+            doc.LoadHtml(convertedHtml);
 
-            foreach (HtmlTag tag in tags)
+            List<Label> labels = HandleNode(doc.DocumentNode.ChildNodes);
+
+            return labels;
+        }
+
+        List<Label> HandleNode(HtmlNodeCollection nodes, bool combine = false, bool isList = false)
+        {
+            List<Label> labels = new();
+
+            foreach (HtmlNode node in nodes)
             {
                 Label newLabel = new();
+                string labelName = "";
+                string stringContent = "";
+                bool addNewLabel = true;
 
-                switch (tag.name)
+                if (node.NodeType == HtmlNodeType.Element || (node.NodeType == HtmlNodeType.Text && (!string.IsNullOrWhiteSpace(node.InnerText) || !string.IsNullOrWhiteSpace(node.InnerHtml))))
                 {
-                    case "h1":
-                        newLabel.name = "Header1_" + count;
-                        newLabel.text = tag.content;
+                    switch (node.Name)
+                    {
+                        // Text
+                        case "#text":
+                            labelName = "HtmlParagraph";
+                            stringContent += node.InnerText;
+                            newLabel.AddToClassList("html_paragraph");
+                            break;
+                        case "p":
+                            if (node.InnerText == "")
+                            {
+                                labelName = "HtmlParagraph";
+                                stringContent += node.InnerText;
+                                newLabel.AddToClassList("html_paragraph");
+                            }
+                            else
+                            {
+                                addNewLabel = false;
+                                labels.AddRange(HandleNode(node.ChildNodes, true));
+                            }
+                            break;
+                        case "strong":
+                            stringContent += $"<b>{node.InnerText}</b>";
 
-                        newLabel.AddToClassList("html_paragraph");
-                        newLabel.AddToClassList("html_header");
-                        break;
-                    case "h2":
-                        newLabel.name = "Header2_" + count;
-                        newLabel.text = tag.content;
+                            if (labelName == "")
+                            {
+                                labelName = "HtmlParagraph";
+                            }
+                            break;
+                        case "b":
+                            stringContent += $"<b>{node.InnerText}</b>";
 
-                        newLabel.AddToClassList("html_paragraph");
-                        newLabel.AddToClassList("html_header");
-                        newLabel.AddToClassList("html_header_2");
-                        break;
-                    case "h3":
-                        newLabel.name = "Header3_" + count;
-                        newLabel.text = tag.content;
+                            if (labelName == "")
+                            {
+                                labelName = "HtmlParagraph";
+                            }
+                            break;
+                        case "i":
+                            stringContent += $"<i>{node.InnerText}</i>";
 
-                        newLabel.AddToClassList("html_paragraph");
-                        newLabel.AddToClassList("html_header");
-                        newLabel.AddToClassList("html_header_3");
-                        break;
-                    case "h4":
-                        newLabel.name = "Header4_" + count;
-                        newLabel.text = tag.content;
+                            if (labelName == "")
+                            {
+                                labelName = "HtmlParagraph";
+                            }
+                            break;
+                        // Headings
+                        case "h1":
+                            labelName = "HtmlHeader1";
+                            stringContent = node.InnerText;
+                            newLabel.AddToClassList("html_header");
+                            break;
+                        case "h2":
+                            labelName = "HtmlHeader2";
+                            stringContent = node.InnerText;
+                            newLabel.AddToClassList("html_header");
+                            newLabel.AddToClassList("html_header_2");
+                            break;
+                        case "h3":
+                            labelName = "HtmlHeader3";
+                            stringContent = node.InnerText;
+                            newLabel.AddToClassList("html_header");
+                            newLabel.AddToClassList("html_header_3");
+                            break;
+                        case "h4":
+                            labelName = "HtmlHeader4";
+                            stringContent = node.InnerText;
+                            newLabel.AddToClassList("html_header");
+                            newLabel.AddToClassList("html_header_4");
+                            break;
+                        case "h5":
+                            labelName = "HtmlHeader5";
+                            stringContent = node.InnerText;
+                            newLabel.AddToClassList("html_header");
+                            newLabel.AddToClassList("html_header_5");
+                            break;
+                        case "h6":
+                            labelName = "HtmlHeader6";
+                            stringContent = node.InnerText;
+                            newLabel.AddToClassList("html_header");
+                            newLabel.AddToClassList("html_header_6");
+                            break;
+                        // Lists
+                        case "ol":
+                            addNewLabel = false;
+                            labels.AddRange(HandleNode(node.ChildNodes, false, true));
+                            break;
+                        case "ul":
+                            addNewLabel = false;
+                            labels.AddRange(HandleNode(node.ChildNodes, false, true));
+                            break;
+                        case "li":
+                            labelName = "HtmlListItem";
+                            stringContent = "• " + node.InnerText;
+                            newLabel.AddToClassList("html_list_item");
+                            break;
+                        // Other
+                        case "a":
+                            string href = node.GetAttributeValue("href", "");
 
-                        newLabel.AddToClassList("html_paragraph");
-                        newLabel.AddToClassList("html_header");
-                        newLabel.AddToClassList("html_header_4");
-                        break;
-                    case "h5":
-                        newLabel.name = "Header5_" + count;
-                        newLabel.text = tag.content;
+                            href = href.Replace("www.", "").Replace("http://", "").Replace("https://", "");
 
-                        newLabel.AddToClassList("html_paragraph");
-                        newLabel.AddToClassList("html_header");
-                        newLabel.AddToClassList("html_header_5");
-                        break;
-                    case "h6":
-                        newLabel.name = "Header6_" + count;
-                        newLabel.text = tag.content;
+                            href = "https://" + href;
 
-                        newLabel.AddToClassList("html_paragraph");
-                        newLabel.AddToClassList("html_header");
-                        newLabel.AddToClassList("html_header_6");
-                        break;
-                    case "p":
-                        newLabel.name = "Paragraph_" + count;
-                        newLabel.text = tag.content;
+                            stringContent += $"<color=#2d92ff><a href='{href}'>{node.InnerText}</a></color>";
+                            break;
+                        case "br":
+                            labelName = "HtmlBreak";
+                            stringContent = "BR";
+                            newLabel.AddToClassList("html_br");
+                            break;
+                        case "hr":
+                            labelName = "HtmlHr";
+                            stringContent = "HR";
+                            newLabel.AddToClassList("html_hr");
+                            break;
+                        default:
+                            addNewLabel = false;
 
-                        newLabel.AddToClassList("html_paragraph");
-                        break;
-                    default:
-                        // ERROR
-                        errorManager.ThrowWarning(ErrorManager.ErrorType.Code, GetType().ToString(), "Tag: " + tag.name + " not implemented!");
-                        break;
+                            // ERROR
+                            // errorManager.ThrowWarning(ErrorManager.ErrorType.Code, GetType().ToString(), "Tag: " + node.Name + " not implemented!");
+                            break;
+                    }
+                }
+                else
+                {
+                    addNewLabel = false;
                 }
 
-                elements.Add(newLabel);
-
-                count++;
-            }
-
-            return elements;
-        }
-
-        List<HtmlTag> ParseHtml(string htmlString)
-        {
-            string convertedHtmlString = htmlString.Replace("<strong>", "<b>").Replace("</strong>", "</b>");
-
-            List<HtmlTag> tags = new();
-
-            string regexPattern = @"<(\w+)[^>]*>(.*?)</\1>";
-
-            MatchCollection matches = Regex.Matches(convertedHtmlString, regexPattern);
-
-            foreach (Match match in matches)
-            {
-                string convertedContent = match.Groups[2].Value.Replace("</br>", "\n");
-
-                HtmlTag newTag = new()
+                if (addNewLabel)
                 {
-                    name = match.Groups[1].Value,
-                    content = convertedContent
-                };
+                    if (stringContent != "")
+                    {
+                        newLabel.text = Regex.Replace(stringContent.Replace("\r\n", " ").Replace("\n", " "), @"\s+", " ");
+                        newLabel.name = labelName;
 
-                tags.Add(newTag);
+                        labels.Add(newLabel);
+                    }
+                }
             }
 
-            return tags;
+            if (combine)
+            {
+                List<Label> combinedLabels = new();
+                Label newCombinedLabel = new();
+                string combinedText = "";
+                int combinedCount = 0;
+
+                foreach (Label label in labels)
+                {
+                    if (combinedCount == 0)
+                    {
+                        newCombinedLabel.name = label.name;
+
+                        foreach (string labelClass in label.GetClasses())
+                        {
+                            newCombinedLabel.AddToClassList(labelClass);
+                        }
+                    }
+
+                    combinedText += label.text;
+
+                    combinedCount++;
+                }
+
+                newCombinedLabel.text = combinedText;
+
+                combinedLabels.Add(newCombinedLabel);
+
+                return combinedLabels;
+            }
+            else
+            {
+                if (isList)
+                {
+                    labels[0].AddToClassList("html_list_item_first");
+                    labels[labels.Count - 1].AddToClassList("html_list_item_last");
+                }
+
+                return labels;
+            }
         }
+
     }
 }

@@ -1,0 +1,7 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Styles/!MainStyles.uss?fileID=7433441132597879392&amp;guid=d72cb646ff9afd2458a02dbd4dc56421&amp;type=3#!MainStyles" />
+    <Style src="project://database/Assets/UI/Styles/Debug/HtmlHandlerUIStyles.uss?fileID=7433441132597879392&amp;guid=eed1f5cc814d5f24cb03a5b621bf85be&amp;type=3#HtmlHandlerUIStyles" />
+    <engine:VisualElement name="HtmlContainer" class="html_container">
+        <engine:ScrollView name="HtmlScrollView" class="scroller html_scrollview" />
+    </engine:VisualElement>
+</engine:UXML>

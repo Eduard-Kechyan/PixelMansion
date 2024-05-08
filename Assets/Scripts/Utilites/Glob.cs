@@ -165,39 +165,66 @@ namespace Merge
         //// Toast ////
         public void ShowToast(string message)
         {
+
+            /*
+            AndroidJavaClass toastClass;
+    AndroidJavaObject currentActivity;
+
+    void Start()
+    {
+        toastClass = new AndroidJavaClass("com.yourpackage.ToastHandler");
+        AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+        currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+    }
+
+    public void ShowToast(string message)
+    {
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            currentActivity.Call("runOnUiThread", new AndroidJavaRunnable(() =>
+            {
+                toastClass.CallStatic("showToast", currentActivity, message);
+            }));
+        }
+        else
+        {
+            Debug.Log("Toast can only be shown on Android platform.");
+        }
+    }
+            */
+
 #if UNITY_EDITOR
             Debug.Log("Toast message: " + message);
 #elif UNITY_ANDROID
-            AndroidJavaClass toastClass=new AndroidJavaClass("android.widget.Toast");
+            Debug.LogWarning("Toast messages for the android version are bugged. Tried to show : " + message);
+           /* AndroidJavaClass toastClass=new AndroidJavaClass("android.widget.Toast");
 
             AndroidJavaObject currentActivity = new AndroidJavaObject("com.unity3d.player.UnityPlayer").GetStatic<AndroidJavaObject>("currentActivity");
 
             AndroidJavaObject toast = toastClass.CallStatic<AndroidJavaObject>("makeText", currentActivity, message, toastClass.GetStatic<int>("LENGTH_SHORT"));
 
-            toast.Call("Show");
+            toast.Call("Show");*/
 #elif UNITY_IOS
             Debug.LogWarning("IOS Toast messages aren't implement yet. Tried to show: " + message);
 #endif
         }
 
         //// OTHER ////
-        public static T ParseEnum<T>(string value)
+        public static T ParseEnum<T>(string value) where T : struct
         {
-            try
+            if (Enum.TryParse(value, true, out T result))
             {
-                return (T)Enum.Parse(typeof(T), value, true);
+                return result;
             }
-            catch
-            {
-                // ERROR
-                ErrorManager.Instance.Throw(
-                    ErrorManager.ErrorType.Code,
-                    "Glob",
-                    "Couldn't parse enum: " + typeof(T) + ". Value: " + value
-                );
 
-                return default;
-            }
+            // ERROR
+            ErrorManager.Instance.Throw(
+                ErrorManager.ErrorType.Code,
+                "Glob",
+                "Couldn't parse enum: " + typeof(T) + ". Value: " + value
+            );
+
+            return default;
         }
 
         public static Color FromHEX(string hex)
