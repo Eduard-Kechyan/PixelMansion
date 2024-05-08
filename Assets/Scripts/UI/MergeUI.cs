@@ -103,32 +103,38 @@ namespace Merge
             // UI taps
             homeButton.clicked += () =>
             {
-                if (pointerHandler != null && pointerHandler.buttonCallback != null)
+                soundManager.Tap(() =>
                 {
-                    pointerHandler.ButtonPress(UIButtons.Button.Home);
-                }
-                else
-                {
-                    soundManager.PlaySound(SoundManager.SoundType.Transition);
-                    sceneLoader.Load(SceneLoader.SceneType.World);
-                }
+                    if (pointerHandler != null && pointerHandler.buttonCallback != null)
+                    {
+                        pointerHandler.ButtonPress(UIButtons.Button.Home);
+                    }
+                    else
+                    {
+                        soundManager.PlaySound(SoundManager.SoundType.Transition);
+                        sceneLoader.Load(SceneLoader.SceneType.World);
+                    }
+                });
             };
-            inventoryButton.clicked += () => inventoryMenu.Open();
-            bonusButton.clicked += () => bonusManager.GetBonus();
-            shopButton.clicked += () => shopMenu.Open();
+            inventoryButton.clicked += () => soundManager.Tap(inventoryMenu.Open);
+            bonusButton.clicked += () => soundManager.Tap(bonusManager.GetBonus);
+            shopButton.clicked += () => soundManager.Tap(() => shopMenu.Open());
             taskButton.clicked += () =>
             {
-                if (pointerHandler != null && pointerHandler.buttonCallback != null)
+                soundManager.Tap(() =>
                 {
-                    pointerHandler.ButtonPress(UIButtons.Button.Task, false, () =>
+                    if (pointerHandler != null && pointerHandler.buttonCallback != null)
+                    {
+                        pointerHandler.ButtonPress(UIButtons.Button.Task, false, () =>
+                        {
+                            taskMenu.Open();
+                        });
+                    }
+                    else
                     {
                         taskMenu.Open();
-                    });
-                }
-                else
-                {
-                    taskMenu.Open();
-                }
+                    }
+                });
             };
 
             // Calculate the button position on the screen and the world space
@@ -141,7 +147,7 @@ namespace Merge
 
                 debugButton.style.display = DisplayStyle.Flex;
 
-                debugButton.clicked += () => debugMenu.OpenMenu();
+                debugButton.clicked += () => soundManager.Tap(debugMenu.OpenMenu);
 
                 if (feedbackManager != null)
                 {
@@ -149,7 +155,7 @@ namespace Merge
 
                     feedbackButton.style.display = DisplayStyle.Flex;
 
-                    feedbackButton.clicked += () => feedbackManager.Open();
+                    feedbackButton.clicked += () => soundManager.Tap(feedbackManager.Open);
                 }
             }
 #endif

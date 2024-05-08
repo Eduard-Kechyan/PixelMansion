@@ -21,6 +21,7 @@ namespace Merge
         private CharMain charMain;
         private Camera cam;
         private CameraPan cameraPan;
+        private SoundManager soundManager;
 
         // UI
         private VisualElement root;
@@ -39,6 +40,7 @@ namespace Merge
             worldUI = GameRefs.Instance.worldUI;
             valuesUI = GameRefs.Instance.valuesUI;
             charMain = CharMain.Instance;
+            soundManager = SoundManager.Instance;
             cam = Camera.main;
             cameraPan = cam.GetComponent<CameraPan>();
 
@@ -55,12 +57,12 @@ namespace Merge
             option3Button = selectorBox.Q<Button>("Option3Button");
 
             // UI taps
-            denyButton.clicked += () => CancelSelection();
-            confirmButton.clicked += () => ConfirmSelection();
+            denyButton.clicked += () => soundManager.Tap(CancelSelection);
+            confirmButton.clicked += () => soundManager.Tap(ConfirmSelection);
 
-            option1Button.clicked += () => SelectOption(0);
-            option2Button.clicked += () => SelectOption(1);
-            option3Button.clicked += () => SelectOption(2);
+            option1Button.clicked += () => soundManager.Tap(() => SelectOption(0));
+            option2Button.clicked += () => soundManager.Tap(() => SelectOption(1));
+            option3Button.clicked += () => soundManager.Tap(() => SelectOption(2));
         }
 
         // Open the selector and set the appropriate sprites

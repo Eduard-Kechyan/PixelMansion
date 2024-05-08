@@ -43,8 +43,8 @@ namespace Merge
                 confirmButton = content.Q<Button>("ConfirmButton");
                 denyButton = content.Q<Button>("DenyButton");
 
-                confirmButton.clicked += () => ConfirmButtonClicked();
-                denyButton.clicked += () => DenyButtonClicked();
+                confirmButton.clicked += () => SoundManager.Tap(ConfirmButtonClicked);
+                denyButton.clicked += () => SoundManager.Tap(DenyButtonClicked);
             });
         }
 

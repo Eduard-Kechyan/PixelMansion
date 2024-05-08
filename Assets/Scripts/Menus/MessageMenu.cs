@@ -55,7 +55,7 @@ namespace Merge
                 acceptButton = content.Q<Button>("AcceptButton");
 
                 // UI taps
-                acceptButton.clicked += () => AcceptMessage();
+                acceptButton.clicked += () => SoundManager.Tap(AcceptMessage);
             });
         }
 

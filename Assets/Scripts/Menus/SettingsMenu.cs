@@ -34,6 +34,7 @@ namespace Merge
         private Settings settings;
         private Services services;
         private AuthManager authManager;
+        private SoundManager soundManager;
         //  private Notifics notifics;
         private ResetHandler resetHandler;
         private FeedbackManager feedbackManager;
@@ -84,6 +85,7 @@ namespace Merge
             settings = Settings.Instance;
             services = Services.Instance;
             authManager = services.GetComponent<AuthManager>();
+            soundManager = SoundManager.Instance;
             //notifics = Services.Instance.GetComponent<Notifics>();
             resetHandler = GetComponent<ResetHandler>();
             feedbackManager = GameRefs.Instance.feedbackManager;
@@ -129,14 +131,14 @@ namespace Merge
                 vibrationButton.clicked += () => settings.ToggleVibration();
                 notificationsButton.clicked += () => settings.ToggleNotifications();
 
-                feedbackButton.clicked += () => feedbackManager.Open();
-                supportButton.clicked += () => Application.OpenURL(GameData.WEB_ADDRESS + "/support");
-                privacyButton.clicked += () => menuUtilities.TryToGetOnlineData(MessageMenu.MessageType.Terms);
-                termsButton.clicked += () => menuUtilities.TryToGetOnlineData(MessageMenu.MessageType.Privacy);
-                languageButton.clicked += () => localeMenu.Open();
-                resetButton.clicked += () => confirmMenu.Open("reset", resetHandler.ResetAndRestartApp);
-                exitButton.clicked += () => confirmMenu.Open("exit", Application.Quit);
-                rateButton.clicked += () => rateMenu.Open(true);
+                feedbackButton.clicked += () => soundManager.Tap(feedbackManager.Open);
+                supportButton.clicked += () => soundManager.Tap(() => Application.OpenURL(GameData.WEB_ADDRESS + "/support"));
+                privacyButton.clicked += () => soundManager.Tap(() => menuUtilities.TryToGetOnlineData(MessageMenu.MessageType.Terms));
+                termsButton.clicked += () => soundManager.Tap(() => menuUtilities.TryToGetOnlineData(MessageMenu.MessageType.Privacy));
+                languageButton.clicked += () => soundManager.Tap(localeMenu.Open);
+                resetButton.clicked += () => soundManager.Tap(() => confirmMenu.Open("reset", resetHandler.ResetAndRestartApp));
+                exitButton.clicked += () => soundManager.Tap(() => confirmMenu.Open("exit", Application.Quit));
+                rateButton.clicked += () => soundManager.Tap(() => rateMenu.Open(true));
 
 #if UNITY_ANDROID
                 signInButton.clicked += () => HandleSignIn(AuthManager.AuthType.Google);

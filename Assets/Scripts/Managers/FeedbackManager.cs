@@ -138,17 +138,17 @@ namespace Merge
             failureLabel = failureContainer.Q<Label>("Label");
 
             // UI taps
-            cancelButton.clicked += () => Close();
-            sendButton.clicked += () => Send();
+            cancelButton.clicked += () => SoundManager.Tap(Close);
+            sendButton.clicked += () => SoundManager.Tap(Send);
 
             thanksContainer.AddManipulator(new Clickable(evt =>
             {
-                CloseThanks();
+                SoundManager.Tap(CloseThanks);
             }));
 
             failureContainer.AddManipulator(new Clickable(evt =>
             {
-                CloseFailure();
+                SoundManager.Tap(CloseFailure);
             }));
 
             reportCategoryEnumField.RegisterCallback<ChangeEvent<string>>(evt =>

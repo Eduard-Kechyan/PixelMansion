@@ -93,6 +93,7 @@ namespace Merge
         private I18n LOCALE;
         private UIData uiData;
         private BoardInteractions boardInteractions;
+        private SoundManager soundManager;
         private ErrorManager errorManager;
 
         // UI
@@ -110,6 +111,7 @@ namespace Merge
             // Cache
             valuesUI = GameRefs.Instance.valuesUI;
             LOCALE = I18n.Instance;
+            soundManager = SoundManager.Instance;
             uiData = GameData.Instance.GetComponent<UIData>();
             boardInteractions = GameRefs.Instance.boardInteractions;
             errorManager = ErrorManager.Instance;
@@ -125,7 +127,7 @@ namespace Merge
             menuOverlayDebugCloseButton = menuOverlay.Q<Button>("DebugCloseButton");
 
             // UI taps
-            menuOverlayDebugCloseButton.clicked += () => HideMenuOverlay();
+            menuOverlayDebugCloseButton.clicked += () => soundManager.Tap(() => HideMenuOverlay());
 
             menuOverlayDebugCloseButton.style.display = DisplayStyle.Flex;
 #endif
@@ -247,7 +249,7 @@ namespace Merge
             {
                 background.AddManipulator(new Clickable(evt =>
                 {
-                    HandleBackgroundClose();
+                    SoundManager.Tap(HandleBackgroundClose);
                 }));
 
                 closeButton.style.display = DisplayStyle.Flex;
@@ -257,7 +259,7 @@ namespace Merge
             {
                 background.RemoveManipulator(new Clickable(evt =>
                 {
-                    HandleBackgroundClose();
+                    SoundManager.Tap(HandleBackgroundClose);
                 }));
 
                 closeButton.style.display = DisplayStyle.None;
@@ -276,14 +278,17 @@ namespace Merge
 
         void HandleBackgroundClose()
         {
-            if (closeAllMenus)
+            soundManager.Tap(() =>
             {
-                CloseAllMenus();
-            }
-            else
-            {
-                CloseMenu(currentMenuType);
-            }
+                if (closeAllMenus)
+                {
+                    CloseAllMenus();
+                }
+                else
+                {
+                    CloseMenu(currentMenuType);
+                }
+            });
         }
 
         public void CloseMenu(Menu menuType, Action callback = null)
@@ -293,7 +298,15 @@ namespace Merge
             isClosing = true;
 
             // Disable the menu to make it unclickable
-            currentMenuUI.SetEnabled(false);
+            if (currentMenuUI == null)
+            {
+                // ERROR
+                errorManager.Throw(ErrorManager.ErrorType.Code, GetType().ToString(), "currentMenuUI is null!");
+            }
+            else
+            {
+                currentMenuUI.SetEnabled(false);
+            }
 
             // Hide the menu
             currentMenuUI.style.opacity = 0f;

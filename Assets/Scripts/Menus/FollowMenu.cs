@@ -66,11 +66,11 @@ namespace Merge
                 noButton = content.Q<Button>("NoButton");
 
                 // UI taps
-                instagramFollowButton.clicked += () => HandleSocialMediaButton(SettingsMenu.SocialMediaType.Instagram);
-                facebookFollowButton.clicked += () => HandleSocialMediaButton(SettingsMenu.SocialMediaType.Facebook);
-                youtubeFollowButton.clicked += () => HandleSocialMediaButton(SettingsMenu.SocialMediaType.Youtube);
+                instagramFollowButton.clicked += () => SoundManager.Tap(() => HandleSocialMediaButton(SettingsMenu.SocialMediaType.Instagram));
+                facebookFollowButton.clicked += () => SoundManager.Tap(() => HandleSocialMediaButton(SettingsMenu.SocialMediaType.Facebook));
+                youtubeFollowButton.clicked += () => SoundManager.Tap(() => HandleSocialMediaButton(SettingsMenu.SocialMediaType.Youtube));
 
-                noButton.clicked += () => HandleNoButton();
+                noButton.clicked += () => SoundManager.Tap(HandleNoButton);
 
                 Init();
             });

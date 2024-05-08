@@ -67,7 +67,7 @@ namespace Merge
             tail = root.Q<VisualElement>("Tail");
 
             // UI taps
-            speechBubble.clicked += () => StartCoroutine(CloseBubble());
+            speechBubble.clicked += () => SoundManager.Tap(() => StartCoroutine(CloseBubble()));
 
             enabled = false;
         }

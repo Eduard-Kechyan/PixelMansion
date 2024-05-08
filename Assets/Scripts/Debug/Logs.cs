@@ -112,12 +112,12 @@ namespace Merge
             stackButton = logsContainer.Q<Button>("StackButton");
 
             // UI taps
-            closeButton.clicked += () => Toggle();
+            closeButton.clicked += () => SoundManager.Tap(Toggle);
 
-            clearButton.clicked += () => ClearData();
-            smallerButton.clicked += () => SetFontSize(false);
-            biggerButton.clicked += () => SetFontSize();
-            stackButton.clicked += () => ToggleStack();
+            clearButton.clicked += () => SoundManager.Tap(ClearData);
+            smallerButton.clicked += () => SoundManager.Tap(() => SetFontSize(false));
+            biggerButton.clicked += () => SoundManager.Tap(() => SetFontSize());
+            stackButton.clicked += () => SoundManager.Tap(() => ToggleStack());
 
             // Init
             Init();

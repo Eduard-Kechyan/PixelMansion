@@ -80,12 +80,12 @@ namespace Merge
                 {
                     string order = i.ToString();
 
-                    starsBox.Q<Button>("StarItem" + order).clicked += () => SetStar(order);
+                    starsBox.Q<Button>("StarItem" + order).clicked += () => SoundManager.Tap(() => SetStar(order));
                 }
 
-                yesButton.clicked += () => HandleYesButton();
-                noButton.clicked += () => HandleNoButton();
-                neverButton.clicked += () => HandleNeverButton();
+                yesButton.clicked += () => SoundManager.Tap(HandleYesButton);
+                noButton.clicked += () => SoundManager.Tap(HandleNoButton);
+                neverButton.clicked += () => SoundManager.Tap(HandleNeverButton);
 
                 Init();
             });

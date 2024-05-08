@@ -99,6 +99,7 @@ namespace Merge
         private ValuesUI valuesUI;
         private I18n LOCALE;
         private CharMain charMain;
+        private SoundManager soundManager;
         private AddressableManager addressableManager;
         private TutorialManager tutorialManager;
 
@@ -128,6 +129,7 @@ namespace Merge
             gameRefs = GameRefs.Instance;
             worldUI = gameRefs.worldUI;
             valuesUI = gameRefs.valuesUI;
+            soundManager = SoundManager.Instance;
             LOCALE = I18n.Instance;
             charMain = CharMain.Instance;
             addressableManager = DataManager.Instance.GetComponent<AddressableManager>();
@@ -154,14 +156,9 @@ namespace Merge
             avatarRight = convoBox.Q<VisualElement>("AvatarRight");
 
             // UI taps
-            /*nextButton.AddManipulator(new Clickable(evt =>
-            {
-                HandleNext();
-            }));*/
-
             convoContainer.AddManipulator(new Clickable(evt =>
             {
-                HandleNext();
+                soundManager.Tap(HandleNext);
             }));
 
             StartCoroutine(WaitForInitialization());
@@ -198,7 +195,7 @@ namespace Merge
 
                 skipButton.AddManipulator(new Clickable(evt =>
                 {
-                    HandleSkip();
+                    soundManager.Tap(HandleSkip);
                 }));
 
                 skipLabel.text = LOCALE.Get("convo_skip_button");

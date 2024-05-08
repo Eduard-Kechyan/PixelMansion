@@ -54,6 +54,7 @@ namespace Merge
         private BoardInteractions boardInteractions;
         private BoardSelection boardSelection;
         private TimeManager timeManager;
+        private SoundManager soundManager;
         private TutorialManager tutorialManager;
         private ItemHandler itemHandler;
 
@@ -90,6 +91,7 @@ namespace Merge
             adsManager = Services.Instance.GetComponent<AdsManager>();
             boardInteractions = gameRefs.boardInteractions;
             boardSelection = gameRefs.boardSelection;
+            soundManager = SoundManager.Instance;
             timeManager = gameRefs.timeManager;
             tutorialManager = gameRefs.tutorialManager;
             itemHandler = DataManager.Instance.GetComponent<ItemHandler>();
@@ -123,11 +125,11 @@ namespace Merge
             infoTimer = infoBox.Q<Label>("InfoTimer");
 
             // UI taps
-            infoButton.clicked += () => infoMenu.Open(item);
+            infoButton.clicked += () => soundManager.Tap(() => infoMenu.Open(item));
 
-            infoMainButton.clicked += () => InfoAction();
+            infoMainButton.clicked += () => soundManager.Tap(() => InfoAction());
 
-            infoSecondaryButton.clicked += () => InfoAction(false);
+            infoSecondaryButton.clicked += () => soundManager.Tap(() => InfoAction(false));
 
             Init();
         }

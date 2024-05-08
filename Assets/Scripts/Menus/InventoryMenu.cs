@@ -113,7 +113,7 @@ namespace Merge
                 buyMoreLabel = buyMoreContainer.Q<Label>("BuyMoreLabel");
                 buyMoreButton = buyMoreContainer.Q<Button>("BuyMoreButton");
 
-                buyMoreButton.clicked += () => BuyMoreSpace();
+                buyMoreButton.clicked += () => SoundManager.Tap(BuyMoreSpace);
             });
         }
 
@@ -164,7 +164,7 @@ namespace Merge
 
                     slotItem.AddToClassList("slot_item");
 
-                    slotItem.clicked += () => AddItemToBoard(nameOrder);
+                    slotItem.clicked += () => SoundManager.Tap(() => AddItemToBoard(nameOrder));
 
                     if (gameData.inventoryData[i].isCompleted)
                     {

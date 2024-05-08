@@ -74,7 +74,7 @@ namespace Merge
             arrow3 = tutorialCycle.Q<VisualElement>("Arrow3");
             arrow4 = tutorialCycle.Q<VisualElement>("Arrow4");
 
-            close.clicked += () => HideCycle();
+            close.clicked += () => SoundManager.Tap(HideCycle);
         }
 
 #if UNITY_EDITOR

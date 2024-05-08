@@ -72,6 +72,18 @@ namespace Merge
 
         public void ToggleSound()
         {
+            StartCoroutine(WaitForSound());
+        }
+
+        IEnumerator WaitForSound()
+        {
+            if (soundOn)
+            {
+                soundManager.PlaySound(SoundManager.SoundType.Off);
+
+                yield return new WaitForSeconds(soundManager.GetSoundLength(SoundManager.SoundType.Off));
+            }
+
             soundOn = !soundOn;
 
             soundManager.sourceSound.enabled = soundOn;
@@ -83,7 +95,10 @@ namespace Merge
 
             settingsMenu.SetUIOptionsButtons();
 
-            soundManager.PlaySound(vibrationOn ? SoundManager.SoundType.On : SoundManager.SoundType.Off);
+            if (soundOn)
+            {
+                soundManager.PlaySound(SoundManager.SoundType.On);
+            }
         }
 
         public void ToggleMusic()
@@ -104,7 +119,7 @@ namespace Merge
 
             settingsMenu.SetUIOptionsButtons();
 
-            soundManager.PlaySound(vibrationOn ? SoundManager.SoundType.On : SoundManager.SoundType.Off);
+            soundManager.PlaySound(musicOn ? SoundManager.SoundType.On : SoundManager.SoundType.Off);
         }
 
         public void ToggleVibration()
@@ -163,7 +178,7 @@ namespace Merge
                 settingsMenu.SetUIOptionsButtons();
             }
 
-            soundManager.PlaySound(vibrationOn ? SoundManager.SoundType.On : SoundManager.SoundType.Off);
+            soundManager.PlaySound(notificationsOn ? SoundManager.SoundType.On : SoundManager.SoundType.Off);
         }
 
         public void SetNotifications(bool enable)

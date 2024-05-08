@@ -144,7 +144,7 @@ namespace Merge
                 }
 
                 // Tap
-                localeButton.clicked += () => SetLocale(locale);
+                localeButton.clicked += () => SoundManager.Tap(() => SetLocale(locale));
 
                 content.Add(localeButton);
             }

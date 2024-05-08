@@ -64,8 +64,8 @@ namespace Merge
                 watchButton = content.Q<VisualElement>("EnergyBoxes").Q<Button>("WatchButton");
                 buyButton = content.Q<VisualElement>("EnergyBoxes").Q<Button>("BuyButton");
 
-                watchButton.clicked += () => WatchAdHandle();
-                buyButton.clicked += () => BuyEnergyHandler();
+                watchButton.clicked += () => SoundManager.Tap(WatchAdHandle);
+                buyButton.clicked += () => SoundManager.Tap(BuyEnergyHandler);
             });
         }
 

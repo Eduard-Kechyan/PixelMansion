@@ -107,22 +107,11 @@ namespace Merge
                 levelReward2 = levelRewards.Q<VisualElement>("LevelReward2");
                 levelRewardButton2 = levelReward2.Q<Button>("InfoButton");
 
-                levelRewardButton0.clicked += () =>
-                {
-                    ShowInfo(levelRewardText0, 'd');
-                };
+                levelRewardButton0.clicked += () => SoundManager.Tap(() => ShowInfo(levelRewardText0, 'd'));
+                levelRewardButton1.clicked += () => SoundManager.Tap(() => ShowInfo(levelRewardText1, 'd'));
+                levelRewardButton2.clicked += () => SoundManager.Tap(() => ShowInfo(levelRewardText2, 'd'));
 
-                levelRewardButton1.clicked += () =>
-                {
-                    ShowInfo(levelRewardText1, 'd');
-                };
-
-                levelRewardButton2.clicked += () =>
-                {
-                    ShowInfo(levelRewardText2, 'd');
-                };
-
-                levelUpButton.clicked += () => UpdateLevel();
+                levelUpButton.clicked += () => SoundManager.Tap(UpdateLevel);
 
                 Init();
             });

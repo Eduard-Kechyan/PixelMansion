@@ -13,8 +13,7 @@
                         <ui:Button text="Diagnostics: On" display-tooltip-when-elided="true" name="DiagnosticsButton" class="button_active debug_menu_button" />
                         <ui:Button text="Show Logs" display-tooltip-when-elided="true" name="LogsButton" class="button_active debug_menu_button" />
                         <ui:Button text="Shaking: Off" display-tooltip-when-elided="true" name="LogsShakingButton" class="button_active debug_menu_button" />
-                        <ui:Button text="Unlock Pre Mansion" display-tooltip-when-elided="true" name="UnlockPreMansionButton" class="button_active debug_menu_button" />
-                        <ui:Button text="Show Toast" display-tooltip-when-elided="true" name="ShowToastButton" class="button_active debug_menu_button" />
+                        <ui:Button text="Unlock Pre Mansion" display-tooltip-when-elided="true" style="display: none;" name="UnlockPreMansionButton" class="button_active debug_menu_button" />
                     </ui:VisualElement>
                 </ui:ScrollView>
             </ui:VisualElement>

@@ -55,15 +55,15 @@ namespace Merge
                 termsPrivacyButton = content.Q<Button>("PrivacyButton");
 
                 // UI taps
-                termsAcceptButton.clicked += () => AcceptTerms();
-                termsTermsButton.clicked += () =>
+                termsAcceptButton.clicked += () => SoundManager.Tap(() => AcceptTerms());
+                termsTermsButton.clicked += () => SoundManager.Tap(() =>
                 {
                     menuUtilities.TryToGetOnlineData(MessageMenu.MessageType.Terms);
-                };
-                termsPrivacyButton.clicked += () =>
+                });
+                termsPrivacyButton.clicked += () => SoundManager.Tap(() =>
                 {
                     menuUtilities.TryToGetOnlineData(MessageMenu.MessageType.Privacy);
-                };
+                });
 
                 Init();
             });

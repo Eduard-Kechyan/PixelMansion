@@ -12,6 +12,7 @@ namespace Merge
         // Variables
         public ValuesData valuesData;
         public BuildData buildData;
+        public TutorialData tutorialData;
         public float countFPS = 10f;
         public float numberIncreaseDuration = 1f;
 
@@ -227,7 +228,7 @@ namespace Merge
             // Initial Items
             string prePath;
 
-            if ((tutorialManager != null && tutorialManager.skipTutorial) || PlayerPrefs.HasKey("tutorialFinished"))
+            if ((tutorialData.skipTutorial) || PlayerPrefs.HasKey("tutorialFinished"))
             {
                 prePath = "Assets/Addressables/Data/InitialItemsSkip.json";
             }

@@ -53,6 +53,10 @@ namespace Merge
             errorManager = ErrorManager.Instance;
             valuePop = GameRefs.Instance.valuePop;
             gameData = GameData.Instance;
+
+            Debug.Log("RegionInfo");
+            Debug.Log(RegionInfo.CurrentRegion);
+            Debug.Log(RegionInfo.CurrentRegion.CurrencySymbol);
         }
 
         //// Initialization ////
@@ -152,21 +156,20 @@ namespace Merge
 
         public string GetPrice(string id)
         {
-            bool show = true;
-
             for (int i = 0; i < controller.products.all.Length; i++)
             {
                 if (controller.products.all[i].definition.id == id)
                 {
-                    if (show)
+                    string localizedPriceString = controller.products.all[i].metadata.localizedPriceString;
+
+                    if (char.IsDigit(localizedPriceString[0]))
                     {
-                        Debug.Log(RegionInfo.CurrentRegion.CurrencySymbol);
-                        Debug.Log(controller.products.all[i].metadata.localizedPriceString);
-
-                        show = false;
+                        return RegionInfo.CurrentRegion.CurrencySymbol + localizedPriceString;
                     }
-
-                    return RegionInfo.CurrentRegion.CurrencySymbol + controller.products.all[i].metadata.localizedPriceString;
+                    else
+                    {
+                        return localizedPriceString;
+                    }
                 }
             }
 

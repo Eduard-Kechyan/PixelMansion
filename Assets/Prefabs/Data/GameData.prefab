@@ -49,6 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   valuesData: {fileID: 11400000, guid: e82c58a155150ca47be106027d9ca637, type: 2}
   buildData: {fileID: 11400000, guid: 7b4d7aa6d0263a645a84313243ba6733, type: 2}
+  tutorialData: {fileID: 11400000, guid: 46f222382f4fece48829f1645caddf12, type: 2}
   countFPS: 30
   numberIncreaseDuration: 1
   playerName: 
@@ -80,6 +81,10 @@ MonoBehaviour:
   dataLoaded: 0
   notifications: []
   lastScene: 3
+  initialItemsTextAsset: {fileID: 0}
+  termsHtml: 
+  privacyHtml: 
+  gettingLegalData: 0
   logsData: []
 --- !u!114 &26344694154187306
 MonoBehaviour:
@@ -94,8 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataLoaded: 0
-  menuContainerPreFab: {fileID: 0}
-  localeMenu: {fileID: 0}
+  menuContainerPrefab: {fileID: 0}
   shopItemBoxPrefab: {fileID: 0}
   taskGroupPrefab: {fileID: 0}
   taskPrefab: {fileID: 0}

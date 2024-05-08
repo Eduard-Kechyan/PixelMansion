@@ -171,8 +171,8 @@ namespace Merge
             restoreGems.style.display = DisplayStyle.Flex;
             restoreGold.style.display = DisplayStyle.Flex;
 
-            restoreGems.clicked += () => Restore("Gems");
-            restoreGold.clicked += () => Restore("Gold");
+            restoreGems.clicked += () => SoundManager.Tap(() => Restore("Gems"));
+            restoreGold.clicked += () => SoundManager.Tap(() => Restore("Gold"));
         }
 
         IEnumerator WaitForDailyContent()
@@ -261,7 +261,7 @@ namespace Merge
                 }
                 else
                 {
-                    buyButton.clicked += () => BuyItem(nameOrder, shopItemType);
+                    buyButton.clicked += () => SoundManager.Tap(() => BuyItem(nameOrder, shopItemType));
                 }
 
                 // Info button
@@ -271,7 +271,7 @@ namespace Merge
                 }
                 else
                 {
-                    newShopItemBox.Q<Button>("InfoButton").clicked += () => ShowInfo(nameOrder);
+                    newShopItemBox.Q<Button>("InfoButton").clicked += () => SoundManager.Tap(() => ShowInfo(nameOrder));
                 }
 
                 // Add to container
@@ -442,13 +442,13 @@ namespace Merge
 
                         string shopItemId = product.id;
 
-                        buyButton.clicked += () =>
+                        buyButton.clicked += () => SoundManager.Tap(() =>
                         {
                             StartCoroutine(PrePurchase(() =>
                             {
                                 BuyCurrency(shopItemId);
                             }));
-                        };
+                        });
 
                         // Info button
                         newShopItemBox.Q<Button>("InfoButton").style.display = DisplayStyle.None;

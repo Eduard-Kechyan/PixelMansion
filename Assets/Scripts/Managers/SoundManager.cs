@@ -45,11 +45,6 @@ namespace Merge
             Magical,
         };
 
-        // TODO - Add proper sounds for:
-        // RemoveFilth
-        // On
-        // Off
-        // RoomUnlocking
         public enum SoundType
         {
             None,
@@ -71,6 +66,7 @@ namespace Merge
             On,
             Off,
             RoomUnlocking,
+            Tap
         };
 
         // References
@@ -123,20 +119,22 @@ namespace Merge
                 sourceMusic.volume = 1f;
             }
 
-            foreach (MusicClip i in musicClips)
+            foreach (MusicClip m in musicClips)
             {
-                if (i.type == musicType)
+                if (m.type == musicType)
                 {
                     if (settings.musicOn)
                     {
-                        sourceMusic.volume = i.volume;
+                        sourceMusic.volume = m.volume;
                     }
 
-                    sourceMusic.clip = i.clip;
+                    sourceMusic.clip = m.clip;
 
                     sourceMusic.Play();
 
                     found = true;
+
+                    break;
                 }
             }
 
@@ -148,24 +146,30 @@ namespace Merge
 
         public void PlaySceneMusic()
         {
+            Debug.Log("Playing Scene Music");
             SceneLoader.SceneType sceneType = sceneLoader.GetScene();
+            Debug.Log(sceneType);
 
             switch (sceneType)
             {
                 case SceneLoader.SceneType.World:
                     if (PlayerPrefs.HasKey("tutorialFinished"))
                     {
+                        Debug.Log("A");
                         PlayMusic(MusicType.World);
                     }
                     else
                     {
+                        Debug.Log("B");
                         PlayMusic(MusicType.Magical);
                     }
                     break;
                 case SceneLoader.SceneType.Merge:
+                    Debug.Log("C");
                     PlayMusic(MusicType.Merge);
                     break;
                 default:
+                    Debug.Log("D");
                     break;
             }
         }
@@ -217,18 +221,20 @@ namespace Merge
         {
             bool found = false;
 
-            foreach (SoundClip i in soundClips)
+            foreach (SoundClip s in soundClips)
             {
-                if (soundType == SoundType.None ? i.clip.name == clipName : i.type == soundType)
+                if (soundType == SoundType.None ? s.clip.name == clipName : s.type == soundType)
                 {
                     if (settings.soundOn)
                     {
-                        sourceSound.volume = i.volume;
+                        sourceSound.volume = s.volume;
                     }
 
-                    sourceSound.PlayOneShot(i.clip);
+                    sourceSound.PlayOneShot(s.clip);
 
                     found = true;
+
+                    break;
                 }
             }
 
@@ -236,6 +242,31 @@ namespace Merge
             {
                 Debug.Log("Sound \"" + soundType.ToString() + "\" not found!");
             }
+        }
+
+        public float GetSoundLength(SoundType soundType, string clipName = "")
+        {
+            foreach (SoundClip s in soundClips)
+            {
+                if (soundType == SoundType.None ? s.clip.name == clipName : s.type == soundType)
+                {
+                    return s.clip.length + 0.05f;
+                }
+            }
+
+            return 0f;
+        }
+
+        public static void Tap(Action callback = null, SoundType soundType = SoundType.Generate, bool dummy = false) // TODO - Change SoundType.Generate to SoundType.Tap 
+        {
+            Instance.Tap(callback);
+        }
+
+        public void Tap(Action callback = null, SoundType soundType = SoundType.Generate) // TODO - Change SoundType.Generate to SoundType.Tap 
+        {
+            Instance.PlaySound(soundType);
+
+            callback?.Invoke();
         }
     }
 }

@@ -47,14 +47,8 @@ namespace Merge
                 conflictPreviousButton = content.Q<Button>("PreviousButton");
 
                 // UI taps
-                conflictNewButton.clicked += () =>
-                {
-                    ResolveConflict(true);
-                };
-                conflictPreviousButton.clicked += () =>
-                {
-                    ResolveConflict(false);
-                };
+                conflictNewButton.clicked += () => SoundManager.Tap(() => ResolveConflict(true));
+                conflictPreviousButton.clicked += () => SoundManager.Tap(() => ResolveConflict(false));
 
                 Init();
             });

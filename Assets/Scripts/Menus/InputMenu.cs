@@ -46,7 +46,7 @@ namespace Merge
 
                 inputTextField.RegisterValueChangedCallback(evt => HandleInput(evt));
 
-                inputButton.clicked += () => Accept();
+                inputButton.clicked += () => SoundManager.Tap(Accept);
 
                 inputButton.SetEnabled(false);
 
@@ -56,7 +56,7 @@ namespace Merge
 
                     inputRandomButton.style.display = DisplayStyle.Flex;
 
-                    inputRandomButton.clicked += () => AcceptRandomName();
+                    inputRandomButton.clicked += () => SoundManager.Tap(AcceptRandomName);
                 }
             });
         }

@@ -40,7 +40,6 @@ namespace Merge
         private Button logsButton;
         private Button logsShakingButton;
         private Button unlockPreMansionButton;
-        private Button showToastButton;
 
         // Instance
         public static DebugMenu Instance;
@@ -77,31 +76,30 @@ namespace Merge
                 logsButton = otherContainer.Q<Button>("LogsButton");
                 logsShakingButton = otherContainer.Q<Button>("LogsShakingButton");
                 unlockPreMansionButton = otherContainer.Q<Button>("UnlockPreMansionButton");
-                showToastButton = otherContainer.Q<Button>("ShowToastButton");
 
                 // UI taps
-                skipSceneButton.clicked += () =>
+                skipSceneButton.clicked += () => SoundManager.Tap(() =>
                 {
                     loadingManager.LoadNextScene();
                     CloseMenu();
-                };
-                worldSceneButton.clicked += () =>
+                });
+                worldSceneButton.clicked += () => SoundManager.Tap(() =>
                 {
                     sceneLoader.Load(SceneLoader.SceneType.World);
                     CloseMenu();
-                };
-                mergeSceneButton.clicked += () =>
+                });
+                mergeSceneButton.clicked += () => SoundManager.Tap(() =>
                 {
                     sceneLoader.Load(SceneLoader.SceneType.Merge);
                     CloseMenu();
-                };
+                });
 
                 menuBackground.AddManipulator(new Clickable(evt =>
                 {
-                    CloseMenu();
+                    SoundManager.Tap(CloseMenu);
                 }));
 
-                adButton.clicked += () => MobileAds.OpenAdInspector(error =>
+                adButton.clicked += () => SoundManager.Tap(() => MobileAds.OpenAdInspector(error =>
                 {
                     if (error != null)
                     {
@@ -109,12 +107,11 @@ namespace Merge
                         Debug.LogError(error.GetMessage());
                         Debug.LogError(error.GetCause());
                     }
-                });
-                diagnosticsButton.clicked += () => ToggleDiagnostic();
-                logsButton.clicked += () => logs.Toggle();
-                logsShakingButton.clicked += () => ToggleLogsShaking();
-                unlockPreMansionButton.clicked += () => RemovePreMansion();
-                showToastButton.clicked += () => Glob.Instance.ShowToast("Debug toast");
+                }));
+                diagnosticsButton.clicked += () => SoundManager.Tap(() => ToggleDiagnostic());
+                logsButton.clicked += () => SoundManager.Tap(logs.Toggle);
+                logsShakingButton.clicked += () => SoundManager.Tap(() => ToggleLogsShaking());
+                unlockPreMansionButton.clicked += () => SoundManager.Tap(RemovePreMansion);
 
                 Init();
             });

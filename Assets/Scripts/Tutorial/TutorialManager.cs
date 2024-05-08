@@ -9,7 +9,6 @@ namespace Merge
     public class TutorialManager : MonoBehaviour
     {
         // Variables
-        public bool skipTutorial = false;
         public bool startFromStep = false;
         public string stepToStartFrom = "";
         public SceneLoader sceneLoader;
@@ -99,7 +98,7 @@ namespace Merge
             {
                 Destroy(gameObject);
             }
-            else if (skipTutorial)
+            else if (tutorialData.skipTutorial)
             {
                 StartCoroutine(WaitForReferences(() =>
                 {
@@ -145,7 +144,7 @@ namespace Merge
 
         void Start()
         {
-            if (skipTutorial || PlayerPrefs.HasKey("tutorialFinished"))
+            if (tutorialData.skipTutorial || PlayerPrefs.HasKey("tutorialFinished"))
             {
                 progressManager = GameRefs.Instance.progressManager;
                 dataManager = DataManager.Instance;
@@ -197,7 +196,7 @@ namespace Merge
 
         IEnumerator WaitForLoading()
         {
-            while (skipTutorial || destroyingTutorial || !dataManager.loaded || !valuesUI.loaded || (convoUIHandler != null && !convoUIHandler.loaded) || (worldUI != null && !worldUI.loaded) || (mergeUI != null && !mergeUI.loaded))
+            while (tutorialData.skipTutorial || destroyingTutorial || !dataManager.loaded || !valuesUI.loaded || (convoUIHandler != null && !convoUIHandler.loaded) || (worldUI != null && !worldUI.loaded) || (mergeUI != null && !mergeUI.loaded))
             {
                 yield return null;
             }

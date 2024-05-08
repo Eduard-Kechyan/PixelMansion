@@ -153,7 +153,7 @@ namespace Merge
                         {
                             newTask.Q<VisualElement>("TaskNeeds").style.display = DisplayStyle.None;
 
-                            playButton.clicked += () =>
+                            playButton.clicked += () => SoundManager.Tap(() =>
                             {
                                 if (pointerHandler != null)
                                 {
@@ -166,7 +166,7 @@ namespace Merge
                                 {
                                     HandleCompletedTap(groupId, taskId);
                                 }
-                            };
+                            });
 
                             if (gameData.tasksData[i].tasks[j].taskRefType == TaskManager.TaskRefType.Last)
                             {
@@ -185,7 +185,7 @@ namespace Merge
                         }
                         else if (gameData.tasksData[i].tasks[j].needs.Length == gameData.tasksData[i].tasks[j].completed)
                         {
-                            playButton.clicked += () =>
+                            playButton.clicked += () => SoundManager.Tap(() =>
                             {
                                 if (pointerHandler != null)
                                 {
@@ -198,7 +198,7 @@ namespace Merge
                                 {
                                     HandleCompletedTap(groupId, taskId);
                                 }
-                            };
+                            });
 
                             playButton.text = LOCALE.Get("task_button_complete");
 
@@ -212,7 +212,7 @@ namespace Merge
 
                             if (sceneLoader.GetScene() == SceneLoader.SceneType.World)
                             {
-                                playButton.clicked += () =>
+                                playButton.clicked += () => SoundManager.Tap(() =>
                                 {
                                     if (pointerHandler != null)
                                     {
@@ -228,7 +228,7 @@ namespace Merge
                                     {
                                         sceneLoader.Load(SceneLoader.SceneType.Merge);
                                     }
-                                };
+                                });
                             }
                             else
                             {
@@ -268,8 +268,7 @@ namespace Merge
                                     sprite = gameData.tasksData[i].tasks[j].needs[k].sprite,
                                 };
 
-                            newTaskNeed.Q<Button>("InfoButton").clicked += () =>
-                                infoMenu.Open(itemHandler.CreateItemTemp(taskNeedItem));
+                            newTaskNeed.Q<Button>("InfoButton").clicked += () => SoundManager.Tap(() => infoMenu.Open(itemHandler.CreateItemTemp(taskNeedItem)));
 
                             newTask.Q<VisualElement>("TaskNeeds").Add(newTaskNeed);
                         }

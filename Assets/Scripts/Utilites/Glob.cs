@@ -25,11 +25,11 @@ namespace Merge
         public static bool taskLoading = false;
         public static bool convoUILoading = true;
 
-        // Instance
-        public static Glob Instance;
-
         private readonly static List<Coroutine> timeouts = new();
         private readonly static List<Coroutine> intervals = new();
+
+        // Instance
+        public static Glob Instance;
 
         void Awake()
         {
@@ -160,53 +160,6 @@ namespace Merge
             }
 
             callback();
-        }
-
-        //// Toast ////
-        public void ShowToast(string message)
-        {
-
-            /*
-            AndroidJavaClass toastClass;
-    AndroidJavaObject currentActivity;
-
-    void Start()
-    {
-        toastClass = new AndroidJavaClass("com.yourpackage.ToastHandler");
-        AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-        currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
-    }
-
-    public void ShowToast(string message)
-    {
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            currentActivity.Call("runOnUiThread", new AndroidJavaRunnable(() =>
-            {
-                toastClass.CallStatic("showToast", currentActivity, message);
-            }));
-        }
-        else
-        {
-            Debug.Log("Toast can only be shown on Android platform.");
-        }
-    }
-            */
-
-#if UNITY_EDITOR
-            Debug.Log("Toast message: " + message);
-#elif UNITY_ANDROID
-            Debug.LogWarning("Toast messages for the android version are bugged. Tried to show : " + message);
-           /* AndroidJavaClass toastClass=new AndroidJavaClass("android.widget.Toast");
-
-            AndroidJavaObject currentActivity = new AndroidJavaObject("com.unity3d.player.UnityPlayer").GetStatic<AndroidJavaObject>("currentActivity");
-
-            AndroidJavaObject toast = toastClass.CallStatic<AndroidJavaObject>("makeText", currentActivity, message, toastClass.GetStatic<int>("LENGTH_SHORT"));
-
-            toast.Call("Show");*/
-#elif UNITY_IOS
-            Debug.LogWarning("IOS Toast messages aren't implement yet. Tried to show: " + message);
-#endif
         }
 
         //// OTHER ////

@@ -7,6 +7,8 @@ namespace Merge
     [CreateAssetMenu(fileName = "TutorialData", menuName = "ScriptableObject/TutorialData")]
     public class TutorialData : ScriptableObject
     {
+        public bool skipTutorial = false;
+
         public TutorialManager.TutorialStep[] steps;
 
         void OnValidate()

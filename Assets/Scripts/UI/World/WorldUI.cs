@@ -102,34 +102,40 @@ namespace Merge
             textBoxText = textBox.Q<Label>("Text");
 
             // UI taps
-            settingsButton.clicked += () => settingsMenu.Open();
-            shopButton.clicked += () => shopMenu.Open();
+            settingsButton.clicked += () => soundManager.Tap(settingsMenu.Open);
+            shopButton.clicked += () => soundManager.Tap(() => shopMenu.Open());
 
             taskButton.clicked += () =>
             {
-                if (pointerHandler != null && pointerHandler.buttonCallback != null)
+                soundManager.Tap(() =>
                 {
-                    pointerHandler.ButtonPress(UIButtons.Button.Task, false, () =>
+                    if (pointerHandler != null && pointerHandler.buttonCallback != null)
+                    {
+                        pointerHandler.ButtonPress(UIButtons.Button.Task, false, () =>
+                        {
+                            taskMenu.Open();
+                        });
+                    }
+                    else
                     {
                         taskMenu.Open();
-                    });
-                }
-                else
-                {
-                    taskMenu.Open();
-                }
+                    }
+                });
             };
             playButton.clicked += () =>
             {
-                if (pointerHandler != null && pointerHandler.buttonCallback != null)
+                soundManager.Tap(() =>
                 {
-                    pointerHandler.ButtonPress(UIButtons.Button.Play);
-                }
-                else
-                {
-                    soundManager.PlaySound(SoundManager.SoundType.Transition);
-                    sceneLoader.Load(SceneLoader.SceneType.Merge);
-                }
+                    if (pointerHandler != null && pointerHandler.buttonCallback != null)
+                    {
+                        pointerHandler.ButtonPress(UIButtons.Button.Play);
+                    }
+                    else
+                    {
+                        soundManager.PlaySound(SoundManager.SoundType.Transition);
+                        sceneLoader.Load(SceneLoader.SceneType.Merge);
+                    }
+                });
             };
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -139,7 +145,7 @@ namespace Merge
 
                 debugButton.style.display = DisplayStyle.Flex;
 
-                debugButton.clicked += () => debugMenu.OpenMenu();
+                debugButton.clicked += () => soundManager.Tap(debugMenu.OpenMenu);
 
                 if (feedbackManager != null)
                 {
@@ -147,7 +153,7 @@ namespace Merge
 
                     feedbackButton.style.display = DisplayStyle.Flex;
 
-                    feedbackButton.clicked += () => feedbackManager.Open();
+                    feedbackButton.clicked += () => soundManager.Tap(feedbackManager.Open);
                 }
             }
 #endif

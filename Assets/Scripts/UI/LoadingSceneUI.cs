@@ -29,6 +29,7 @@ namespace Merge
         // References
         private I18n LOCALE;
         private DebugMenu debugMenu;
+        private SoundManager soundManager;
 
         // UI
         private VisualElement root;
@@ -52,6 +53,7 @@ namespace Merge
             // Cache
             LOCALE = I18n.Instance;
             debugMenu = menuUI.GetComponent<DebugMenu>();
+            soundManager = SoundManager.Instance;
 
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
@@ -70,7 +72,7 @@ namespace Merge
             ageScrollView = ageMenu.Q<ScrollView>("AgeScrollView");
 
             // UI taps
-            ageAcceptButton.clicked += () => SetAge();
+            ageAcceptButton.clicked += () => soundManager.Tap(SetAge);
 
             ageScrollView.verticalScroller.valueChanged += newValue => AgeScrollerHandle(newValue);
 
@@ -81,7 +83,7 @@ namespace Merge
 
                 debugButton.style.display = DisplayStyle.Flex;
 
-                debugButton.clicked += () => debugMenu.OpenMenu();
+                debugButton.clicked += () => soundManager.Tap(debugMenu.OpenMenu);
 
                 if (feedbackManager != null)
                 {
@@ -89,7 +91,7 @@ namespace Merge
 
                     feedbackButton.style.display = DisplayStyle.Flex;
 
-                    feedbackButton.clicked += () => feedbackManager.Open();
+                    feedbackButton.clicked += () => soundManager.Tap(feedbackManager.Open);
                 }
             }
 #endif

@@ -35,6 +35,7 @@ namespace Merge
         private GameRefs gameRefs;
         private LevelMenu levelMenu;
         private EnergyMenu energyMenu;
+        private SoundManager soundManager;
         private ShopMenu shopMenu;
         private SafeAreaHandler safeAreaHandler;
         [HideInInspector]
@@ -78,6 +79,7 @@ namespace Merge
             levelMenu = gameRefs.levelMenu;
             energyMenu = gameRefs.energyMenu;
             shopMenu = gameRefs.shopMenu;
+            soundManager = SoundManager.Instance;
             errorManager = ErrorManager.Instance;
 
             if (gameRefs.worldUI != null)
@@ -143,10 +145,10 @@ namespace Merge
 
         void CheckForTaps()
         {
-            levelButton.clicked += () => levelMenu.Open();
-            energyButton.clicked += () => energyMenu.Open();
-            goldButton.clicked += () => shopMenu.Open("Gold");
-            gemsButton.clicked += () => shopMenu.Open("Gems");
+            levelButton.clicked += () => soundManager.Tap(levelMenu.Open);
+            energyButton.clicked += () => soundManager.Tap(energyMenu.Open);
+            goldButton.clicked += () => soundManager.Tap(() => shopMenu.Open("Gold"));
+            gemsButton.clicked += () => soundManager.Tap(() => shopMenu.Open("Gems"));
         }
 
         void HandleEnergyTimer()

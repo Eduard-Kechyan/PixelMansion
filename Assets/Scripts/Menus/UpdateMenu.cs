@@ -45,8 +45,8 @@ namespace Merge
                 updateExitButton = content.Q<Button>("ExitButton");
 
                 // UI taps
-                updateButton.clicked += () => UpdateGame();
-                updateExitButton.clicked += () => Application.Quit();
+                updateButton.clicked += () => SoundManager.Tap(UpdateGame);
+                updateExitButton.clicked += () => SoundManager.Tap(Application.Quit);
 
                 menuUI.ThrowMenuLoadedEvent();
             });
