@@ -8,10 +8,16 @@ namespace Merge
     public class MergeUI : MonoBehaviour
     {
         // Variables
+        public Sprite boardDefault;
+        public Sprite boardTall;
+        public Sprite boardExtraTall;
         public SceneLoader sceneLoader;
 
         [HideInInspector]
         public bool loaded = false;
+
+        [HideInInspector]
+        public bool boardSet = false;
 
         [Header("Indicators")]
         public Sprite[] inventoryIndicatorSprites;
@@ -22,6 +28,8 @@ namespace Merge
         private bool blippingBonusIndicator = false;
 
         private float singlePixelWidth;
+
+        private Vector2 boardSizes;
 
         // References
         private GameRefs gameRefs;
@@ -43,6 +51,7 @@ namespace Merge
 
         // UI
         private VisualElement root;
+        private VisualElement board;
         private Button homeButton;
         private Button inventoryButton;
         public Button bonusButton;
@@ -81,6 +90,8 @@ namespace Merge
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
 
+            board = root.Q<VisualElement>("Board");
+
             homeButton = root.Q<Button>("HomeButton");
             inventoryButton = root.Q<Button>("InventoryButton");
             bonusButton = root.Q<Button>("BonusButton");
@@ -111,10 +122,9 @@ namespace Merge
                     }
                     else
                     {
-                        soundManager.PlaySound(SoundManager.SoundType.Transition);
                         sceneLoader.Load(SceneLoader.SceneType.World);
                     }
-                });
+                }, SoundManager.SoundType.Transition);
             };
             inventoryButton.clicked += () => soundManager.Tap(inventoryMenu.Open);
             bonusButton.clicked += () => soundManager.Tap(bonusManager.GetBonus);
@@ -201,6 +211,53 @@ namespace Merge
 
             inventoryButton.style.display = DisplayStyle.None;
             shopButton.style.display = DisplayStyle.None;
+
+            StartCoroutine(WaitForData());
+        }
+
+        IEnumerator WaitForData()
+        {
+            while (!dataManager.loaded)
+            {
+                yield return null;
+            }
+
+            SetBoard();
+        }
+
+        void SetBoard()
+        {
+            GameData.AspectRatioType x = GameData.AspectRatioType.Default;
+
+            switch (x)
+            {
+                case GameData.AspectRatioType.Tall:
+                    board.style.backgroundImage = new StyleBackground(boardTall);
+                    boardSizes = new Vector2(boardTall.textureRect.width, boardTall.textureRect.height);
+                    break;
+                case GameData.AspectRatioType.ExtraTall:
+                    board.style.backgroundImage = new StyleBackground(boardExtraTall);
+                    boardSizes = new Vector2(boardExtraTall.textureRect.width, boardExtraTall.textureRect.height);
+                    break;
+                default: // GameData.AspectRatioType.Default or  GameData.AspectRatioType.None
+                    board.style.backgroundImage = new StyleBackground(boardDefault);
+                    boardSizes = new Vector2(boardDefault.textureRect.width, boardDefault.textureRect.height);
+                    break;
+            }
+
+            board.style.height = boardSizes.y;
+
+            boardSet = true;
+        }
+
+        public float GetBoardBottomOffset()
+        {
+            return root.resolvedStyle.height - (board.worldBound.y + board.resolvedStyle.height);
+        }
+
+        public float GetBoardHeightDiff()
+        {
+            return boardSizes.x / boardSizes.y;
         }
 
         public void HideButtons()

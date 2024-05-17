@@ -59,6 +59,8 @@ SpriteAtlas:
     - dcdc28b82ad02ce469c4a972cf5733b0: 21300000
     - 2ddee409164f0a14983daf1fef113f6b: 21300000
     - 4845d5095b10cf142966fd25e7f7cf8c: 21300000
+    - 7b24c14a825d8554db1ccba865b98a5d: 21300000
+    - e7a9abdc50895fb42b96816a4540f9bc: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: 8118ed60cabb05c4bb72de3744f7d7dc, type: 3}
@@ -70,6 +72,8 @@ SpriteAtlas:
   - {fileID: 21300000, guid: dcdc28b82ad02ce469c4a972cf5733b0, type: 3}
   - {fileID: 21300000, guid: 2ddee409164f0a14983daf1fef113f6b, type: 3}
   - {fileID: 21300000, guid: 4845d5095b10cf142966fd25e7f7cf8c, type: 3}
+  - {fileID: 21300000, guid: 7b24c14a825d8554db1ccba865b98a5d, type: 3}
+  - {fileID: 21300000, guid: e7a9abdc50895fb42b96816a4540f9bc, type: 3}
   m_PackedSpriteNamesToIndex:
   - InfoBoxWatchAd
   - Background
@@ -80,6 +84,8 @@ SpriteAtlas:
   - Board
   - InfoBoxAvatar
   - InfoBoxButton
+  - BoardExtra2
+  - BoardExtra
   m_RenderDataMap: {}
   m_Tag: MergeSceneAtlas
   m_IsVariant: 0

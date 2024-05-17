@@ -45,9 +45,7 @@ namespace Merge
                     {
                         string textString = chunks[j].ToString();
 
-                        textString = textString.Remove(0, 1);
-
-                        textString = textString.Remove(textString.Length - 1, 1);
+                        textString = textString.Trim().Trim('{', '}');
 
                         combinedString += textString + ",";
 

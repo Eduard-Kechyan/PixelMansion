@@ -8,6 +8,8 @@ namespace Merge
     public class SoundManager : MonoBehaviour
     {
         // Variables
+        public SceneLoader sceneLoader;
+
         [Header("Sound")]
         public SoundClip[] soundClips;
         public AudioSource sourceSound;
@@ -71,7 +73,6 @@ namespace Merge
 
         // References
         private Settings settings;
-        private SceneLoader sceneLoader;
 
         // Instance
         public static SoundManager Instance;
@@ -93,7 +94,6 @@ namespace Merge
         {
             // Cache
             settings = Settings.Instance;
-            sceneLoader = GameRefs.Instance.sceneLoader;
         }
 
         //////// Music ////////
@@ -105,72 +105,73 @@ namespace Merge
 
         public void PlayMusic(MusicType musicType)
         {
-            currentMusic = musicType;
-
-            bool found = false;
-
-            if (settings == null)
+            if (sourceMusic.enabled)
             {
-                settings = Settings.Instance;
-            }
+                currentMusic = musicType;
 
-            if (musicType == MusicType.Loading && settings.musicOn)
-            {
-                sourceMusic.volume = 1f;
-            }
+                bool found = false;
 
-            foreach (MusicClip m in musicClips)
-            {
-                if (m.type == musicType)
+                if (settings == null)
                 {
-                    if (settings.musicOn)
-                    {
-                        sourceMusic.volume = m.volume;
-                    }
-
-                    sourceMusic.clip = m.clip;
-
-                    sourceMusic.Play();
-
-                    found = true;
-
-                    break;
+                    settings = Settings.Instance;
                 }
-            }
 
-            if (!found)
-            {
-                Debug.Log("Music \"" + musicType.ToString() + "\" not found!");
+                if (musicType == MusicType.Loading && settings.musicOn)
+                {
+                    sourceMusic.volume = 1f;
+                }
+
+                foreach (MusicClip m in musicClips)
+                {
+                    if (m.type == musicType)
+                    {
+                        if (settings.musicOn)
+                        {
+                            sourceMusic.volume = m.volume;
+                        }
+
+                        sourceMusic.clip = m.clip;
+
+                        sourceMusic.Play();
+
+                        found = true;
+
+                        break;
+                    }
+                }
+
+                if (!found)
+                {
+                    Debug.Log("Music \"" + musicType.ToString() + "\" not found!");
+                }
             }
         }
 
         public void PlaySceneMusic()
         {
-            Debug.Log("Playing Scene Music");
-            SceneLoader.SceneType sceneType = sceneLoader.GetScene();
-            Debug.Log(sceneType);
-
-            switch (sceneType)
+            if (sourceMusic.enabled)
             {
-                case SceneLoader.SceneType.World:
-                    if (PlayerPrefs.HasKey("tutorialFinished"))
-                    {
-                        Debug.Log("A");
-                        PlayMusic(MusicType.World);
-                    }
-                    else
-                    {
-                        Debug.Log("B");
-                        PlayMusic(MusicType.Magical);
-                    }
-                    break;
-                case SceneLoader.SceneType.Merge:
-                    Debug.Log("C");
-                    PlayMusic(MusicType.Merge);
-                    break;
-                default:
-                    Debug.Log("D");
-                    break;
+                SceneLoader.SceneType sceneType = sceneLoader.GetScene();
+
+                switch (sceneType)
+                {
+                    case SceneLoader.SceneType.World:
+                        if (PlayerPrefs.HasKey("tutorialFinished"))
+                        {
+                            PlayMusic(MusicType.World);
+                        }
+                        else
+                        {
+                            PlayMusic(MusicType.Magical);
+                        }
+                        break;
+                    case SceneLoader.SceneType.Merge:
+                        PlayMusic(MusicType.Merge);
+                        break;
+                    default:
+                        PlayMusic(MusicType.Loading);
+                        break;
+                }
             }
         }
 
@@ -219,28 +220,31 @@ namespace Merge
 
         public void PlaySound(SoundType soundType, string clipName = "")
         {
-            bool found = false;
-
-            foreach (SoundClip s in soundClips)
+            if (sourceSound.enabled)
             {
-                if (soundType == SoundType.None ? s.clip.name == clipName : s.type == soundType)
+                bool found = false;
+
+                foreach (SoundClip s in soundClips)
                 {
-                    if (settings.soundOn)
+                    if (soundType == SoundType.None ? s.clip.name == clipName : s.type == soundType)
                     {
-                        sourceSound.volume = s.volume;
+                        if (settings.soundOn)
+                        {
+                            sourceSound.volume = s.volume;
+                        }
+
+                        sourceSound.PlayOneShot(s.clip);
+
+                        found = true;
+
+                        break;
                     }
-
-                    sourceSound.PlayOneShot(s.clip);
-
-                    found = true;
-
-                    break;
                 }
-            }
 
-            if (!found)
-            {
-                Debug.Log("Sound \"" + soundType.ToString() + "\" not found!");
+                if (!found)
+                {
+                    Debug.Log("Sound \"" + soundType.ToString() + "\" not found!");
+                }
             }
         }
 

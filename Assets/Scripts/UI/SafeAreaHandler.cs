@@ -19,27 +19,28 @@ namespace Merge
 
         [HideInInspector]
         public float topPadding;
+        private float valuesBoxHeight;
         private float devicePixelWidth;
         private float singlePixelWidth;
 
         // UI
-        private VisualElement root;
+        private VisualElement valuesRoot;
         public VisualElement valuesBox;
-        private VisualElement bottomBox;
         private VisualElement options;
-        private VisualElement infoBox;
-        private VisualElement board;
 
         void Start()
         {
             // UI
-            valuesBox = GameRefs.Instance.valuesUIDoc.rootVisualElement.Q<VisualElement>("ValuesBox");
+            valuesRoot = GameRefs.Instance.valuesUIDoc.rootVisualElement;
+            valuesBox = valuesRoot.Q<VisualElement>("ValuesBox");
 
-            Init();
+            valuesRoot.RegisterCallback<GeometryChangedEvent>(Init);
         }
 
-        void Init()
+        void Init(GeometryChangedEvent evt)
         {
+            valuesRoot.UnregisterCallback<GeometryChangedEvent>(Init);
+
             // Get the safe area height
             height = Screen.height - Screen.safeArea.height;
 
@@ -50,6 +51,8 @@ namespace Merge
             // Set top padding for the values box
             topPadding = Mathf.RoundToInt(height / singlePixelWidth);
             valuesBox.style.top = topPadding;
+
+            valuesBoxHeight = topPadding + valuesBox.resolvedStyle.height + valuesBox.resolvedStyle.marginTop;
 
             Scene scene = SceneManager.GetActiveScene();
 
@@ -71,16 +74,13 @@ namespace Merge
                     Debug.Log("Unknown scene name: " + scene.name);
                     break;
             }
-
         }
 
         void SetMergeUI()
         {
-            root = GetComponent<UIDocument>().rootVisualElement;
-            bottomBox = root.Q<VisualElement>("BottomBox");
+            VisualElement root = GetComponent<UIDocument>().rootVisualElement;
+            VisualElement bottomBox = root.Q<VisualElement>("BottomBox");
             options = root.Q<VisualElement>("Options");
-            infoBox = root.Q<VisualElement>("InfoBox");
-            board = root.Q<VisualElement>("Board");
 
             // Calculated sizes
             calculatedHeight = ((Screen.height - height) / singlePixelWidth) - manualSizes;
@@ -94,16 +94,7 @@ namespace Merge
                 dividedHeight = Mathf.FloorToInt(calculatedHeight / 4);
             }
 
-            bottomBox.style.paddingBottom = dividedHeight;
-            infoBox.style.marginBottom = dividedHeight;
-            board.style.marginBottom = dividedHeight;
-        }
-
-        public float GetBottomOffset()
-        {
-            float bottomOffset = options.resolvedStyle.height + (dividedHeight * 2);
-
-            return bottomOffset;
+            bottomBox.style.top = valuesBoxHeight;
         }
 
         public float GetTopOffset()

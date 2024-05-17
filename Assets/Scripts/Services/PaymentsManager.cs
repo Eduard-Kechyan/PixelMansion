@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Purchasing;
 using UnityEngine.Purchasing.Extension;
-using UnityEngine.SceneManagement;
 using UnityEngine.Purchasing.Security;
 
 namespace Merge
@@ -53,10 +52,6 @@ namespace Merge
             errorManager = ErrorManager.Instance;
             valuePop = GameRefs.Instance.valuePop;
             gameData = GameData.Instance;
-
-            Debug.Log("RegionInfo");
-            Debug.Log(RegionInfo.CurrentRegion);
-            Debug.Log(RegionInfo.CurrentRegion.CurrencySymbol);
         }
 
         //// Initialization ////

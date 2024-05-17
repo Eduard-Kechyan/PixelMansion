@@ -1,0 +1,11 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Styles/Debug/TestBoardStyles.uss?fileID=7433441132597879392&amp;guid=057e2ea0624a5d34e85f2edbf5ee5eff&amp;type=3#TestBoardStyles" />
+    <engine:VisualElement name="Board" picking-mode="Ignore" style="width: 174px; height: 222px; position: absolute; left: 3px; right: 3px; top: 50%; translate: 0 -50%; background-image: url(&quot;project://database/Assets/Sprites/Scenes/Merge/Board.png?fileID=2800000&amp;guid=dcdc28b82ad02ce469c4a972cf5733b0&amp;type=3#Board&quot;); padding-top: 3px; padding-right: 3px; padding-bottom: 3px; padding-left: 3px; flex-direction: row; flex-wrap: wrap;">
+        <engine:Button name="Tile" class="board_tile">
+            <engine:VisualElement name="Item" class="board_tile_item" style="background-image: url(&quot;project://database/Assets/Addressables/Sprites/Items/Tools/ToolsItem2.png?fileID=2800000&amp;guid=ef488eadea2597c4f8d11a7763e15512&amp;type=3#ToolsItem2&quot;);" />
+            <engine:VisualElement name="Overlay" />
+            <engine:VisualElement name="Ready" class="board_tile_completed" style="flex-grow: 1;" />
+        </engine:Button>
+    </engine:VisualElement>
+    <engine:VisualElement name="PlaceholderSprite" picking-mode="Ignore" style="position: absolute; width: 24px; height: 24px; display: none;" />
+</engine:UXML>

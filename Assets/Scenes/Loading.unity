@@ -1179,6 +1179,10 @@ PrefabInstance:
       value: SoundManager
       objectReference: {fileID: 0}
     - target: {fileID: 1888629426759165983, guid: 3745bd78f7038594bb16e1e12adb1156, type: 3}
+      propertyPath: sceneLoader
+      value: 
+      objectReference: {fileID: 1419910202}
+    - target: {fileID: 1888629426759165983, guid: 3745bd78f7038594bb16e1e12adb1156, type: 3}
       propertyPath: soundClips.Array.data[6].volume
       value: 0.3
       objectReference: {fileID: 0}

@@ -132,10 +132,9 @@ namespace Merge
                     }
                     else
                     {
-                        soundManager.PlaySound(SoundManager.SoundType.Transition);
                         sceneLoader.Load(SceneLoader.SceneType.Merge);
                     }
-                });
+                }, SoundManager.SoundType.Transition);
             };
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD

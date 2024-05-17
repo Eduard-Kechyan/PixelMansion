@@ -14,6 +14,7 @@ namespace Merge
         public float tileSize;
 
         private GameObject board;
+        private SpriteRenderer boardSpriteRenderer;
 
         private float singlePixelWidth;
         private float screenUnitWidth;
@@ -28,6 +29,8 @@ namespace Merge
         public bool set;
         private bool readyToInitialize;
         private List<Item> items = new();
+
+        private float boardHeightDiff;
 
         // References
         private BoardManager boardManager;
@@ -66,6 +69,8 @@ namespace Merge
             // Set the gameObject
             board = gameObject;
 
+            boardSpriteRenderer = board.GetComponent<SpriteRenderer>();
+
             // Cache the preferences
             singlePixelWidth = cam.pixelWidth / GameData.GAME_PIXEL_WIDTH;
             screenUnitWidth =
@@ -77,7 +82,7 @@ namespace Merge
         IEnumerator WaitForDataAndUI()
         {
             // Check if data is loaded and if the board is not yet set up
-            while (!dataManager.loaded || !readyToInitialize)
+            while (!dataManager.loaded || !readyToInitialize || !mergeUI.boardSet)
             {
                 yield return null;
             }
@@ -90,17 +95,38 @@ namespace Merge
 
         void SetBoard()
         {
+            /*   if (gameData.aspectRatioType == GameData.AspectRatioType.Tall)
+               {
+                   boardSpriteRenderer.sprite = mergeUI.boardTall;
+               }
+
+               if (gameData.aspectRatioType == GameData.AspectRatioType.ExtraTall)
+               {
+                   boardSpriteRenderer.sprite = mergeUI.boardExtraTall;
+               }*/
+
+            boardHeightDiff = mergeUI.GetBoardHeightDiff();
+
             SetBoardScale();
 
-            float boardPosX = SetBoardPosition();
+            float boardPosY = SetBoardPosition();
+
+            //   Debug.Log(boardSpriteRenderer.sprite.textureRect.size);
+            //  Debug.Log(boardSpriteRenderer.sprite.textureRect.center);
+
+            float newBoardHeight = cam.ScreenToWorldPoint(new(
+                singlePixelWidth * boardSpriteRenderer.sprite.textureRect.size.y,
+                singlePixelWidth * boardSpriteRenderer.sprite.textureRect.size.y
+            )).y;
+            /*  Debug.Log(boardPosY);
+              Debug.Log(newBoardHeight);
+              Debug.Log(board.transform.localScale.x);
+              Debug.Log(boardHeightDiff);*/
 
             // Get board half
-            boardHalfWidth =
-    (board.transform.localScale.x / 2) - ((board.transform.localScale.x / 174) * 3);
-            boardHalfHeight =
-                ((board.transform.localScale.x) / 2)
-                - ((board.transform.localScale.x / 174) * 3)
-                - (boardPosX - ((board.transform.localScale.x * 1.28f) / 2));
+            boardHalfWidth = (board.transform.localScale.x / 2) - ((board.transform.localScale.x / 174) * 3);
+            boardHalfHeight = boardPosY + newBoardHeight;
+            //  Debug.Log(boardHalfHeight);
 
             // Calculate tile size
             // Get the size of the item relative to the in game units
@@ -141,23 +167,71 @@ namespace Merge
 
         float SetBoardPosition()
         {
-            float screenUnitHeight = cam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 10)).y * 2;
-            float gamePixelOnScreen = cam.pixelWidth / GameData.GAME_PIXEL_WIDTH;
-            float gamePixelHeight = cam.pixelHeight / gamePixelOnScreen;
+            /*  float screenUnitHeight = cam.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height)).y * 2;
+              float gamePixelOnScreen = cam.pixelWidth / GameData.GAME_PIXEL_WIDTH;
+              float gamePixelHeight = cam.pixelHeight / gamePixelOnScreen;*/
 
-            float boardPosX = (screenUnitHeight / 2) - ((screenUnitHeight / gamePixelHeight) * safeAreaHandler.GetBottomOffset());
+            /* Debug.Log(screenUnitHeight);
+             Debug.Log(gamePixelHeight);
+             Debug.Log((screenUnitHeight / 2) - ((screenUnitHeight / gamePixelHeight)));
+             Debug.Log((screenUnitHeight / 2) - ((screenUnitHeight / gamePixelHeight)) * safeAreaHandler.GetBottomOffset());*/
 
-            float boardOffsetX = ((board.transform.localScale.x * 1.28f) / 2);
+            // float boardPosY = (screenUnitHeight / 2) - ((screenUnitHeight / gamePixelHeight) * safeAreaHandler.GetBottomOffset());
 
-            board.transform.position = new Vector3(board.transform.position.x, -boardPosX + boardOffsetX, board.transform.position.z);
+            // Debug.Log(board.transform.localScale);
+            //  float boardOffsetY = ((board.transform.localScale.x * 1.28f) / 2);
 
-            return boardPosX;
+            float boardBottomOffset = mergeUI.GetBoardBottomOffset();
+
+            Vector2 newBoardPos = cam.ScreenToWorldPoint(new(
+                singlePixelWidth * boardBottomOffset,
+                singlePixelWidth * boardBottomOffset
+            ));
+
+
+            // Vector2 newScreenPos = root.LocalToWorld(new Vector2(0, boardBottomOffset));
+
+            /* Vector2 newBoardPos = RuntimePanelUtils.CameraTransformWorldToPanel(
+                  root.panel,
+                  new Vector2(0, boardBottomOffset),
+                  cam
+              );*/
+            /*  Debug.Log(screenUnitHeight);
+              Debug.Log(screenUnitHeight / 2);
+              Debug.Log(screenUnitHeight / gamePixelHeight);
+              Debug.Log((screenUnitHeight / 2) - (screenUnitHeight / gamePixelHeight));
+              Debug.Log((screenUnitHeight / 2) - (screenUnitHeight / gamePixelHeight) * boardBottomOffset);
+              Debug.Log((screenUnitHeight / 2) - ((screenUnitHeight / gamePixelHeight) * boardBottomOffset));
+              Debug.Log(board.transform.localScale.y);
+
+              float boardPosY = (screenUnitHeight / 2) - ((screenUnitHeight / gamePixelHeight) * boardBottomOffset);*/
+
+            /*   float boardPosY = (screenUnitHeight / 2) - ((screenUnitHeight / gamePixelHeight) * boardBottomOffset);
+                float boardOffsetY = ((board.transform.localScale.x * boardHeightDiff) / 2);
+                Debug.Log(boardHeightDiff);
+                Debug.Log(board.transform.localScale.x);
+                Debug.Log(board.transform.localScale.y);
+                Debug.Log(board.transform.localScale.x / boardHeightDiff);
+                Debug.Log((board.transform.localScale.x * boardHeightDiff) / 2);*/
+
+
+            /*     Debug.Log("AAAAAAAAA");
+                 Debug.Log(boardBottomOffset);
+                 Debug.Log(newScreenPos.y);
+                 Debug.Log(Screen.height + newScreenPos.y);
+                 Debug.Log(boardPosY);*/
+
+            board.transform.position = new Vector3(board.transform.position.x, newBoardPos.y, board.transform.position.z);
+
+            return newBoardPos.y;
         }
 
         void CreateBoard()
         {
             int count = 0;
             bool initial = false;
+
+            Debug.Log(tileSize);
 
             // Loop the items to the board
             for (int x = 0; x < GameData.WIDTH; x++)
@@ -167,9 +241,10 @@ namespace Merge
                     // Calculate tile's position
                     Vector3 pos = new(
                         (tileSize * x) - (boardHalfWidth - (tileSize / 2)),
-                        -(tileSize * y) + (boardHalfHeight + (tileSize / 2)),
+                        -(tileSize * y) + ((tileSize / 2)),
                         0
                     );
+                    Debug.Log(pos.y);
 
                     // Create tile
                     GameObject newTile = Instantiate(tilePrefab, pos, tilePrefab.transform.rotation);

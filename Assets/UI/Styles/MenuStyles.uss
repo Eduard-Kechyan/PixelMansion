@@ -650,16 +650,6 @@
     overflow: hidden;
 }
 
-.Shop_menu .sub_title {
-    background-image: url("project://database/Assets/Sprites/Menus/MenuSubtitle.png?fileID=21300000&guid=f8151e7c91cd3e341a010482e952df1e&type=3#MenuSubtitle");
-    width: 149px;
-    height: 15px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-
 .Shop_menu .box_container {
     flex-grow: 1;
     background-color: rgba(0, 0, 0, 0);
@@ -668,6 +658,23 @@
     padding-left: 4px;
     padding-right: 4px;
     flex-wrap: wrap;
+}
+
+.Shop_menu .sub_title {
+    width: 149px;
+    height: 15px;
+    background-image: url("project://database/Assets/Sprites/Menus/MenuSubtitle.png?fileID=2800000&guid=f8151e7c91cd3e341a010482e952df1e&type=3#MenuSubtitle");
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    color: rgb(255, 255, 255);
+    -unity-text-align: middle-center;
+    font-size: 10px;
 }
 
 .Shop_menu .shop_item_box {
@@ -870,6 +877,7 @@
     background-color: rgba(188, 188, 188, 0);
     flex-direction: row;
     transition-duration: 0.2s;
+    align-items: stretch;
 }
 
 .Shop_menu .restore_button:active {
@@ -892,10 +900,11 @@
     margin-right: 0;
     margin-top: 0;
     margin-bottom: 0;
-    width: 13px;
+    width: auto;
     height: 13px;
     -unity-text-align: middle-left;
     color: rgb(85, 203, 152);
+    font-size: 10px;
 }
 
 .Level_menu .menu_title_value {

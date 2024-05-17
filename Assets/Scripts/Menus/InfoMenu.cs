@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEngine.SceneManagement;
 
 namespace Merge
 {
@@ -277,8 +276,12 @@ namespace Merge
 
             if (item.chestGroup == Item.ChestGroup.Item)
             {
+                Debug.Log("ITEM");
+                Debug.Log(item.creates.Length);
                 for (int i = 0; i < item.creates.Length; i++)
                 {
+                    Debug.Log("//////////");
+                    Debug.Log(item.creates[i].sprite);
                     itemSprites.Add(item.creates[i].sprite);
                 }
             }

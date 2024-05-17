@@ -100,6 +100,7 @@ namespace Merge
             newItem.type = shopItem.type;
             newItem.hasLevel = itemData.hasLevel;
             newItem.parents = itemData.parents;
+            newItem.creates = itemData.creates;
             newItem.isMaxLevel = itemData.isMaxLevel;
             newItem.group = shopItem.group;
             newItem.genGroup = shopItem.genGroup;

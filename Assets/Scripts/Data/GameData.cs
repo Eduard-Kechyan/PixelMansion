@@ -15,6 +15,8 @@ namespace Merge
         public TutorialData tutorialData;
         public float countFPS = 10f;
         public float numberIncreaseDuration = 1f;
+        public int minTallAspectRatioHeight = 16;
+        public int minExtraTallAspectRatioHeight = 20;
 
         [HideInInspector]
         public const int WIDTH = 7;
@@ -138,8 +140,20 @@ namespace Merge
         [HideInInspector]
         public bool gettingLegalData = false; // TODO - Set to true
 
+        [HideInInspector]
+        public AspectRatioType aspectRatioType = AspectRatioType.None;
+
         // Debug
         public List<Logs.LogData> logsData = new();
+
+        // Enums
+        public enum AspectRatioType
+        {
+            None, // Al the other aspect ratios
+            Default, // 16:9
+            Tall, // 17:9 - 20:9
+            ExtraTall // 21:9 and taller
+        }
 
         // Events
         public delegate void EnergyUpdatedEvent(bool addTimer);
@@ -152,7 +166,6 @@ namespace Merge
         private SoundManager soundManager;
         private CloudSave cloudSave;
         private AddressableManager addressableManager;
-        private TutorialManager tutorialManager;
 
         // Instance
         public static GameData Instance;
@@ -177,7 +190,6 @@ namespace Merge
             soundManager = SoundManager.Instance;
             cloudSave = Services.Instance.GetComponent<CloudSave>();
             addressableManager = dataManager.GetComponent<AddressableManager>();
-            tutorialManager = GameRefs.Instance.tutorialManager;
 
             canLevelUp = PlayerPrefs.GetInt("canLevelUp") == 1;
 
@@ -228,7 +240,7 @@ namespace Merge
             // Initial Items
             string prePath;
 
-            if ((tutorialData.skipTutorial) || PlayerPrefs.HasKey("tutorialFinished"))
+            if (tutorialData.skipTutorial || PlayerPrefs.HasKey("tutorialFinished"))
             {
                 prePath = "Assets/Addressables/Data/InitialItemsSkip.json";
             }
@@ -239,8 +251,11 @@ namespace Merge
 
             initialItemsTextAsset = await addressableManager.LoadAssetAsync<TextAsset>(prePath);
 
-            // Data loaded
-            dataLoaded = true;
+            CheckAspectRatio(() =>
+            {
+                // Data loaded
+                dataLoaded = true;
+            });
         }
 
         //////// SET ////////
@@ -640,7 +655,7 @@ namespace Merge
 
         public void CheckBonus()
         {
-            mergeUI.CheckBonusButton();
+            mergeUI?.CheckBonusButton();
         }
 
         public BonusManager.Bonus GetAndRemoveLatestBonus()
@@ -657,6 +672,58 @@ namespace Merge
         }
 
         //////// OTHER ////////
+
+        void CheckAspectRatio(Action callback = null)
+        {
+            if (PlayerPrefs.HasKey("aspectRatioType"))
+            {
+                aspectRatioType = Glob.ParseEnum<AspectRatioType>(PlayerPrefs.GetString("aspectRatioType"));
+
+                callback?.Invoke();
+            }
+            else
+            {
+                int screenWidth = Screen.width;
+                int screenHeight = Screen.height;
+
+                int gcd = CalculateGCD(screenWidth, screenHeight);
+
+                int aspectRatioWidth = screenWidth / gcd;
+                int aspectRatioHeight = screenHeight / gcd;
+
+                aspectRatioType = AspectRatioType.Default;
+
+                if (aspectRatioWidth == 9)
+                {
+                    if (aspectRatioHeight > minTallAspectRatioHeight) // 16, 17 - 20
+                    {
+                        aspectRatioType = AspectRatioType.Tall;
+                    }
+
+                    if (aspectRatioHeight > minExtraTallAspectRatioHeight) // 20, 21 and taller
+                    {
+                        aspectRatioType = AspectRatioType.ExtraTall;
+                    }
+                }
+
+                PlayerPrefs.SetString("aspectRatioType", aspectRatioType.ToString());
+                PlayerPrefs.Save();
+
+                callback?.Invoke();
+            }
+        }
+
+        int CalculateGCD(int a, int b)
+        {
+            while (b != 0)
+            {
+                int temp = b;
+                b = a % b;
+                a = temp;
+            }
+
+            return a;
+        }
 
         void ToggleCanLevelUpCheck(bool canLevelUpCheck)
         {

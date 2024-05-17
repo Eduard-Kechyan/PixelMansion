@@ -29,7 +29,7 @@
                 <ui:Label text="Item Name" name="InfoName" class="item_name" />
                 <ui:Label text="Item Data" name="InfoData" class="item_data" />
             </ui:VisualElement>
-            <ui:VisualElement name="Board" picking-mode="Ignore" class="board" style="visibility: hidden;" />
+            <ui:VisualElement name="Board" picking-mode="Ignore" class="board" style="visibility: visible; overflow: hidden;" />
             <ui:VisualElement name="Options" class="options">
                 <ui:Button name="HomeButton" enable-rich-text="false" class="button_standard" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/Main/HomeButton.png?fileID=2800000&amp;guid=ba8db5a0c1107754fa75be6b4a22bcd5&amp;type=3#HomeButton&quot;);">
                     <ui:VisualElement name="Border" class="border" />

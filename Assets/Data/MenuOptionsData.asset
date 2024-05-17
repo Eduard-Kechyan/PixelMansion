@@ -42,19 +42,19 @@ MonoBehaviour:
     showValues: 1
     isSmall: 0
     canClose: 1
-    keepInMemory: 0
+    keepInMemory: 1
   - name: Task
     menuType: 5
     showValues: 0
     isSmall: 0
     canClose: 1
-    keepInMemory: 0
+    keepInMemory: 1
   - name: Shop
     menuType: 6
     showValues: 1
     isSmall: 0
     canClose: 1
-    keepInMemory: 0
+    keepInMemory: 1
   - name: Level
     menuType: 7
     showValues: 1
@@ -78,7 +78,7 @@ MonoBehaviour:
     showValues: 0
     isSmall: 0
     canClose: 1
-    keepInMemory: 0
+    keepInMemory: 1
   - name: Support
     menuType: 11
     showValues: 0
@@ -108,7 +108,7 @@ MonoBehaviour:
     showValues: 0
     isSmall: 0
     canClose: 1
-    keepInMemory: 0
+    keepInMemory: 1
   - name: Debug
     menuType: 16
     showValues: 0

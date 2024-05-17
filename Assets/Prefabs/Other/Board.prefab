@@ -56,6 +56,8 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -103,9 +105,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cae90e361364b694bb6d5aae463589ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tile: {fileID: 3144219979623524005, guid: 2ac088b13948a194babd4a9e969ce74c, type: 3}
+  tilePrefab: {fileID: 3144219979623524005, guid: 2ac088b13948a194babd4a9e969ce74c, type: 3}
   tileWidth: 24
   tileSize: 0
+  itemsTotal: 0
+  itemsInitialized: 0
+  set: 0
+  taskManager: {fileID: 0}
 --- !u!114 &1769535901462366456
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,15 +125,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 14
-  altMoveSpeed: 14
+  altMoveSpeed: 10
   scaleSpeed: 8
-  altScaleSpeed: 8
+  altScaleSpeed: 6
   experienceThreshold: 4
   crateSoundTimeout: 1
-  timeManager: {fileID: 0}
   boardSet: 0
   minBubbleLevel: 4
-  bubbleChance: 30
+  bubbleChance: 25
   bubbleCount: 1000
   bubblePopTimeout: 60
   boardTiles: {fileID: 0}
@@ -153,9 +158,6 @@ MonoBehaviour:
   isDragging: 0
   isSelected: 0
   currentItem: {fileID: 0}
-  clockManager: {fileID: 0}
-  timeManager: {fileID: 0}
-  pointerHandler: {fileID: 0}
   tempTile: {fileID: 0}
   canUndo: 0
 --- !u!114 &7639113953969003286
@@ -185,8 +187,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 14
   scaleSpeed: 8
-  clockManager: {fileID: 0}
-  timeManager: {fileID: 0}
   randomGoldCurves:
   - serializedVersion: 2
     m_Curve:
@@ -305,7 +305,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   indicateDelay: 2
   indicateSpeed: 0.5
-  pointerHandler: {fileID: 0}
 --- !u!1 &4861144735682741828
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,11 +4,8 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using HtmlAgilityPack;
-
-#if UNITY_EDITOR
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
-#endif
 
 namespace Merge
 {
@@ -266,5 +263,16 @@ namespace Merge
             }
         }
 
+        int CalculateGCD(int a, int b)
+        {
+            while (b != 0)
+            {
+                int temp = b;
+                b = a % b;
+                a = temp;
+            }
+
+            return a;
+        }
     }
 }

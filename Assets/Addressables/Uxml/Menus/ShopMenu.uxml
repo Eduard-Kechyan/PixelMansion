@@ -1,46 +1,17 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    
-                <ui:VisualElement name="Content" class="content">
+    <ui:VisualElement name="Content" class="content">
                     <ui:ScrollView horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" focusable="false" name="ScrollContainer" touch-scroll-type="Elastic" scroll-deceleration-rate="0.05" style="height: 100%; width: 100%;">
-                        <ui:VisualElement name="DailySubtitle" style="background-image: url(&quot;project://database/Assets/Sprites/Menus/MenuSubtitle.png?fileID=2800000&amp;guid=f8151e7c91cd3e341a010482e952df1e&amp;type=3#MenuSubtitle&quot;); width: 149px; height: 15px; margin-left: auto; margin-right: auto; margin-top: 10px; margin-bottom: 10px;">
-                            <ui:Label tabindex="-1" text="Daily Deals" display-tooltip-when-elided="true" name="Subtitle" style="width: 100%; height: 15px; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; -unity-text-align: middle-center; -unity-font-style: normal; color: rgb(255, 255, 255);" />
-                        </ui:VisualElement>
-                        <ui:VisualElement name="DailyBoxes" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; justify-content: space-around; padding-left: 4px; padding-right: 4px; flex-wrap: wrap;" />
-                        <ui:VisualElement name="ItemsSubtitle" style="background-image: url(&quot;project://database/Assets/Sprites/Menus/MenuSubtitle.png?fileID=2800000&amp;guid=f8151e7c91cd3e341a010482e952df1e&amp;type=3#MenuSubtitle&quot;); width: 149px; height: 15px; margin-left: auto; margin-right: auto; margin-top: 10px; margin-bottom: 10px;">
-                            <ui:Label tabindex="-1" text="Items" display-tooltip-when-elided="true" name="Subtitle" style="width: 100%; height: 15px; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; -unity-text-align: middle-center; -unity-font-style: normal; color: rgb(255, 255, 255);" />
-                        </ui:VisualElement>
-                        <ui:VisualElement name="ItemsBoxes" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; justify-content: space-between; padding-left: 4px; padding-right: 4px; flex-wrap: wrap;" />
-                        <ui:VisualElement name="GemsSubtitle" style="background-image: url(&quot;project://database/Assets/Sprites/Menus/MenuSubtitle.png?fileID=2800000&amp;guid=f8151e7c91cd3e341a010482e952df1e&amp;type=3#MenuSubtitle&quot;); width: 149px; height: 15px; margin-left: auto; margin-right: auto; margin-top: 10px; margin-bottom: 10px;">
-                            <ui:Label tabindex="-1" text="Gems" display-tooltip-when-elided="true" name="Subtitle" style="width: 100%; height: 15px; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; -unity-text-align: middle-center; -unity-font-style: normal; color: rgb(255, 255, 255);" />
-                        </ui:VisualElement>
-                        <ui:VisualElement name="GemsBoxes" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; justify-content: space-between; padding-left: 4px; padding-right: 4px; flex-wrap: wrap;" />
-                        <ui:Button display-tooltip-when-elided="true" name="RestoreGems" style="justify-content: center; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; background-color: rgba(188, 188, 188, 0); flex-direction: row; display: none;">
-                            <ui:VisualElement style="background-image: url(&quot;project://database/Assets/Sprites/Menus/ShopMenu/Restore.png?fileID=2800000&amp;guid=010266370f308ac469d2802810b2ee0f&amp;type=3#Restore&quot;); width: 13px; height: 13px; margin-right: 2px;" />
-                            <ui:Label tabindex="-1" text="Restore" display-tooltip-when-elided="true" name="RestoreLabel" style="padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; width: 13px; height: 13px; -unity-text-align: middle-left; color: rgb(85, 203, 152);" />
-                        </ui:Button>
-                        <ui:VisualElement name="GoldSubtitle" style="background-image: url(&quot;project://database/Assets/Sprites/Menus/MenuSubtitle.png?fileID=2800000&amp;guid=f8151e7c91cd3e341a010482e952df1e&amp;type=3#MenuSubtitle&quot;); width: 149px; height: 15px; margin-left: auto; margin-right: auto; margin-top: 10px; margin-bottom: 10px;">
-                            <ui:Label tabindex="-1" text="Gold" display-tooltip-when-elided="true" name="Subtitle" style="width: 100%; height: 15px; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; -unity-text-align: middle-center; -unity-font-style: normal; color: rgb(255, 255, 255);" />
-                        </ui:VisualElement>
-                        <ui:VisualElement name="GoldBoxes" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; justify-content: space-between; padding-left: 4px; padding-right: 4px; flex-wrap: wrap;">
-                            <ui:VisualElement name="ShopItemBox" class="shop_item_box">
-                                <ui:Label tabindex="-1" text="1/1" display-tooltip-when-elided="true" name="TopLabel" class="shop_box_top_label" />
-                                <ui:VisualElement name="Popular" class="shop_box_popular">
-                                    <ui:Label tabindex="-1" text="Popular" display-tooltip-when-elided="true" name="PopularLabel" class="popular_label" />
-                                </ui:VisualElement>
-                                <ui:VisualElement name="Image" class="shop_box_image" />
-                                <ui:VisualElement name="Bonus" class="shop_box_bonus">
-                                    <ui:Label tabindex="-1" text="+ 100" display-tooltip-when-elided="true" name="BonusLabel" class="bonus_label" />
-                                </ui:VisualElement>
-                                <ui:Button display-tooltip-when-elided="true" name="BuyButton" class="shop_box_buy_button button button_active">
-                                    <ui:VisualElement name="Value" class="shop_box_buy_button_value" />
-                                    <ui:Label tabindex="-1" text="00" display-tooltip-when-elided="true" name="Label" class="shop_box_buy_button_label" />
-                                </ui:Button>
-                                <ui:Button display-tooltip-when-elided="true" name="InfoButton" class="shop_box_info_button button button_active" />
-                            </ui:VisualElement>
-                        </ui:VisualElement>
-                        <ui:Button display-tooltip-when-elided="true" name="RestoreGold" style="justify-content: center; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 10px; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; background-color: rgba(188, 188, 188, 0); flex-direction: row; display: none;">
-                            <ui:VisualElement style="background-image: url(&quot;project://database/Assets/Sprites/Menus/ShopMenu/Restore.png?fileID=2800000&amp;guid=010266370f308ac469d2802810b2ee0f&amp;type=3#Restore&quot;); width: 13px; height: 13px; margin-right: 2px;" />
-                            <ui:Label tabindex="-1" text="Restore" display-tooltip-when-elided="true" name="RestoreLabel" style="padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; width: 13px; height: 13px; -unity-text-align: middle-left; color: rgb(85, 203, 152);" />
+                        <ui:Label tabindex="-1" text="Daily Deals" display-tooltip-when-elided="true" name="DailySubtitle" class="sub_title" />
+                        <ui:VisualElement name="DailyBoxes" class="box_container" />
+                        <ui:Label tabindex="-1" text="Items Deals" display-tooltip-when-elided="true" name="ItemsSubtitle" class="sub_title" />
+                        <ui:VisualElement name="ItemsBoxes" class="box_container" />
+                        <ui:Label tabindex="-1" text="Gems Deals" display-tooltip-when-elided="true" name="GemsSubtitle" class="sub_title" />
+                        <ui:VisualElement name="GemsBoxes" class="box_container" />
+                        <ui:Label tabindex="-1" text="Gold Deals" display-tooltip-when-elided="true" name="GoldSubtitle" class="sub_title" />
+                        <ui:VisualElement name="GoldBoxes" class="box_container"/>
+                        <ui:Button display-tooltip-when-elided="true" name="RestorePurchases" class="restore_button">
+                            <ui:VisualElement class="img" />
+                            <ui:Label tabindex="-1" text="Restore Purchases" display-tooltip-when-elided="true" name="RestoreLabel" class="label" />
                         </ui:Button>
                     </ui:ScrollView>
                 </ui:VisualElement>

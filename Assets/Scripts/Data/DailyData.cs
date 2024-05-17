@@ -15,18 +15,20 @@ namespace Merge
         [HideInInspector]
         public int dailyDate = DateTime.UtcNow.Day;
         [HideInInspector]
-        public bool dailyItem1 = false;
+        public bool dailyItem0 = false;
         [HideInInspector]
-        public bool dailyItem2 = false;
+        public bool dailyItem1 = false;
         [HideInInspector]
         public ShopMenu.ShopItemsContent[] dailyContent;
 
         // References
+        private DataManager dataManager;
         private DataConverter dataConverter;
 
         void Start()
         {
             // Cache
+            dataManager = GetComponent<DataManager>();
             dataConverter = GetComponent<DataConverter>();
 
             StartCoroutine(WaitForData());
@@ -34,7 +36,7 @@ namespace Merge
 
         IEnumerator WaitForData()
         {
-            while (!DataManager.Instance.loaded)
+            while (!dataManager.loaded)
             {
                 yield return null;
             }
@@ -50,26 +52,29 @@ namespace Merge
             {
                 if (dailyDate == PlayerPrefs.GetInt("dailyDate"))
                 {
-                    // A different day
+                    // The same day
                     GetDailyContent();
+
+                    dailyItem0 = PlayerPrefs.GetInt("dailyItem0") == 1;
                     dailyItem1 = PlayerPrefs.GetInt("dailyItem1") == 1;
-                    dailyItem2 = PlayerPrefs.GetInt("dailyItem2") == 1;
                 }
                 else
                 {
                     // A new day
                     SetDailyContent();
+
+                    dailyItem0 = false;
                     dailyItem1 = false;
-                    dailyItem2 = false;
                 }
             }
             else
             {
                 // First day
                 PlayerPrefs.SetInt("dailyDate", DateTime.UtcNow.Day);
+                PlayerPrefs.SetInt("dailyItem0", 0);
                 PlayerPrefs.SetInt("dailyItem1", 0);
-                PlayerPrefs.SetInt("dailyItem2", 0);
                 PlayerPrefs.Save();
+
                 SetDailyContent();
             }
         }
@@ -94,19 +99,18 @@ namespace Merge
             dataSet = true;
         }
 
-        public int GetLeftCount(string nameOrder, int total, ShopMenu.ShopItemType shopItemType)
+        public int CheckBoughtItem(string nameOrder, int total)
         {
             // FIX - Handle this
             int order = int.Parse(nameOrder);
+
             return 0;
         }
 
-        public void SetBoughtItem(string nameOrder, ShopMenu.ShopItemType shopItemType)
+        public void SetBoughtItem(string nameOrder)
         {
             // FIX - Handle this
             int order = int.Parse(nameOrder);
-
-
         }
     }
 }

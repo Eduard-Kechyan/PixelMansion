@@ -3,16 +3,16 @@
     left: 0;
     right: 0;
     bottom: 0;
-    padding-bottom: 15px;
+    padding-bottom: 3px;
     padding-right: 3px;
     padding-left: 3px;
     display: flex;
+    justify-content: space-evenly;
+    top: 30px;
+    padding-top: 3px;
 }
 
 .info_box {
-    margin-left: 1px;
-    margin-right: 1px;
-    margin-bottom: 15px;
     flex-direction: column;
     width: 172px;
     height: 38px;
@@ -224,9 +224,65 @@
 .board {
     width: 174px;
     height: 222px;
-    margin-bottom: 15px;
     background-image: url("project://database/Assets/Sprites/Scenes/Merge/Board.png?fileID=2800000&guid=dcdc28b82ad02ce469c4a972cf5733b0&type=3#Board");
     visibility: hidden;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding-top: 3px;
+    padding-right: 3px;
+    padding-bottom: 3px;
+    padding-left: 3px;
+}
+
+.board_tile {
+    width: 24px;
+    height: 24px;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    background-color: rgba(0, 0, 0, 0);
+    transition-duration: 0.2s;
+    color: rgba(27, 27, 27, 0);
+    font-size: 0;
+}
+
+.board_tile_item {
+    width: 24px;
+    height: 24px;
+}
+
+.board_tile_locker {
+    width: 24px;
+    height: 24px;
+}
+
+.board_tile_bubble {
+    width: 24px;
+    height: 24px;
+}
+
+.board_tile_chest {
+    width: 24px;
+    height: 24px;
+}
+
+.board_tile_ready {
+    width: 24px;
+    height: 24px;
+}
+
+.board_tile_selector {
+    width: 24px;
+    height: 24px;
 }
 
 .options {
