@@ -14,50 +14,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   check: 0
   areas:
-  - name: Garden
-    id: Garden
+  - name: LivingRoom
+    id: LivingRoom
     steps:
-    - name: Task RemoveFilth1
-      id: RemoveFilth1
+    - name: Task CleanUp1
+      id: CleanUp1
       stepType: 0
       nextIds:
-      - RemoveFilth2
+      - CleanUp2
       requiredIds: []
-    - name: Task RemoveFilth2
-      id: RemoveFilth2
+    - name: Task CleanUp2
+      id: CleanUp2
       stepType: 0
       nextIds:
-      - RemoveFilth3
+      - RepairFloor
       requiredIds: []
-    - name: Task RemoveFilth3
-      id: RemoveFilth3
+    - name: Task RepairFloor
+      id: RepairFloor
+      stepType: 0
+      nextIds:
+      - RepairWall1
+      - RepairWall2
+      requiredIds: []
+    - name: Task RepairWall1
+      id: RepairWall1
       stepType: 0
       nextIds:
       - Last
       requiredIds: []
-    - name: PreMansion Last
-      id: Last
-      stepType: 3
-      nextIds:
-      - LivingRoom
-      requiredIds: []
-  - name: LivingRoom
-    id: LivingRoom
-    steps:
-    - name: Task ChangeFloor
-      id: ChangeFloor
-      stepType: 0
-      nextIds:
-      - ChangeWallLeft
-      requiredIds: []
-    - name: Task ChangeWallLeft
-      id: ChangeWallLeft
-      stepType: 0
-      nextIds:
-      - ChangeWallRight
-      requiredIds: []
-    - name: Task ChangeWallRight
-      id: ChangeWallRight
+    - name: Task RepairWall2
+      id: RepairWall2
       stepType: 0
       nextIds:
       - Last
@@ -67,7 +53,9 @@ MonoBehaviour:
       stepType: 2
       nextIds:
       - KitchenRoom
-      requiredIds: []
+      requiredIds:
+      - RepairWall1
+      - RepairWall2
   - name: KitchenRoom
     id: KitchenRoom
     steps:

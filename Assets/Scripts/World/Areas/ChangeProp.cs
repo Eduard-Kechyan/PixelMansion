@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,9 @@ namespace Merge
         private bool isSelected = false;
 
         private Sprite oldSprite;
+
+        [HideInInspector]
+        public bool loaded = false;
 
         // Overlay
         private bool flashUp = true;
@@ -49,6 +53,17 @@ namespace Merge
                 oldSprite = spriteRenderer.sprite;
             }
 
+            StartCoroutine(WaitForSelectableTo());
+        }
+
+        IEnumerator WaitForSelectableTo()
+        {
+            while (!selectable.loaded)
+            {
+                yield return null;
+            }
+
+            loaded = true;
             enabled = false;
         }
 
@@ -106,7 +121,7 @@ namespace Merge
             spriteRenderer.sprite = selectable.GetSprite(order);
         }
 
-        public void Cancel(int order)
+        public void Cancel(int order, Action callback = null)
         {
             if (selectable.isOld)
             {
@@ -118,9 +133,11 @@ namespace Merge
                 // Reset the sprite to the new one
                 spriteRenderer.sprite = selectable.GetSprite(order);
             }
+
+            callback?.Invoke();
         }
 
-        public void Confirm()
+        public void Confirm(Action callback = null)
         {
             // Check if we are confirming for the first time
             if (selectable.isOld && selectable.spriteOrder > -1)
@@ -141,6 +158,12 @@ namespace Merge
                 CheckNavAreas();
 
                 selectable.isOld = false;
+
+                callback?.Invoke();
+            }
+            else
+            {
+                callback?.Invoke();
             }
         }
 

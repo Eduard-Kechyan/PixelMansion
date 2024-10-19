@@ -97,10 +97,10 @@ MonoBehaviour:
     - furniture
     - walls
     - props
-    - floorOption
-    - furnitureOption
-    - wallOption
-    - propOption
+    - floor_options
+    - furniture_options
+    - wall_options
+    - prop_options
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 13def40c1ff6d9c449baae4dc148e960, type: 2}

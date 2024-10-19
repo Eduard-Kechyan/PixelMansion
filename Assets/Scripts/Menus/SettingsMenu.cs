@@ -57,12 +57,16 @@ namespace Merge
         private Button exitButton;
         private Button rateButton;
 
+        private VisualElement signInContainer;
         private Button signInButton;
         private Button signOutButton;
 
+        private VisualElement followContainer;
         private Button instagramFollowButton;
         private Button facebookFollowButton;
         private Button youtubeFollowButton;
+
+        private Label moreOptionsLabel;
 
         private Label signInLabel;
         private Label followLabel;
@@ -110,12 +114,16 @@ namespace Merge
                 exitButton = content.Q<Button>("ExitButton");
                 rateButton = content.Q<Button>("RateButton");
 
+                signInContainer = content.Q<VisualElement>("SignInContainer");
                 signInButton = content.Q<Button>("SignInButton");
                 signOutButton = content.Q<Button>("SignOutButton");
 
+                followContainer = content.Q<VisualElement>("FollowContainer");
                 instagramFollowButton = content.Q<Button>("InstagramFollowButton");
                 facebookFollowButton = content.Q<Button>("FacebookFollowButton");
                 youtubeFollowButton = content.Q<Button>("YoutubeFollowButton");
+
+                moreOptionsLabel = content.Q<Label>("MoreOptionsLabel");
 
                 signInLabel = content.Q<Label>("SignInLabel");
                 followLabel = content.Q<Label>("FollowLabel");
@@ -176,6 +184,35 @@ namespace Merge
             if (menuUI.IsMenuOpen(menuType))
             {
                 return;
+            }
+
+            if (!PlayerPrefs.HasKey("tutorialFinished"))
+            {
+                // Limited menu
+                moreOptionsLabel.text = LOCALE.Get("settings_menu_more_options");
+
+                moreOptionsLabel.style.display = DisplayStyle.Flex;
+
+                signInContainer.style.display = DisplayStyle.None;
+                signInLabel.style.display = DisplayStyle.None;
+
+                followContainer.style.display = DisplayStyle.None;
+                followLabel.style.display = DisplayStyle.None;
+
+                rateButton.style.display = DisplayStyle.None;
+            }
+            else
+            {
+                // Full menu
+                moreOptionsLabel.style.display = DisplayStyle.None;
+
+                signInContainer.style.display = DisplayStyle.Flex;
+                signInLabel.style.display = DisplayStyle.Flex;
+
+                followContainer.style.display = DisplayStyle.Flex;
+                followLabel.style.display = DisplayStyle.Flex;
+
+                rateButton.style.display = DisplayStyle.Flex;
             }
 
             // Set menu content            

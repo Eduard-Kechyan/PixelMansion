@@ -1,0 +1,28 @@
+{
+    // GREETINGS //
+    "speech_greeting_0": "Welcome back, {0}. How are you doing?",
+    "speech_greeting_1": "Hello",
+    "speech_greeting_2": "Welcome back, {0}!",
+    "speech_greeting_3": "Hi there! Who? It's me Julia!!! Whhaaaat? You forgat meee?!?",
+    "speech_greeting_4": "Uuuh? Who might you be?! Ooooh, oops! It's my dear friend {0}.",
+    // ROOM UNLOCKED //
+    "speech_room_unlocked_LivingRoom": "This must be the Living Room? Not very living is it?!",
+    "speech_room_unlocked_Kitchen": "This is the Kitchen? Wow, couldn't be dirtier!",
+    "speech_room_unlocked_BedRoom": "Finally I can rest somewhere!",
+    // RANDOM JULIA //
+    "speech_Julia_random_0": "What a cramped room. Not that I'm complaining, mind you!",
+    "speech_Julia_random_1": "I really need a cup of coffee.",
+    "speech_Julia_random_2": "Is it just me, or is today a perfect day for merging?",
+    "speech_Julia_random_3": "They say that 42 is the meaning of life. I say, it just a number!",
+    "speech_Julia_random_4": "I was born on  May 10, 2023. They call me Julia. You don't need my last name!",
+    "speech_Julia_random_5": "Sometimes I feel lonely.",
+    "speech_Julia_random_6": "PLEASE, don't hit me, I'll talk!",
+    "speech_Julia_random_7": "Chepue de munja",
+    "speech_Julia_random_8": "The boredom, it's killing me!",
+    "speech_Julia_random_9": "Ever feel like the pieces just speak to you? No? Just me?",
+    "speech_Julia_random_10": "I wonder if there's a world where everything is already merged. How boring!",
+    "speech_Julia_random_11": "Did you know cats have five toes on their front paws but only four on their back ones?",
+    "speech_Julia_random_12": "Ever notice how time flies when you're having fun?",
+    "speech_Julia_random_13": "Why do they call it a 'building' if it's already built?",
+    "speech_Julia_random_14": "What if clouds were actually made of cotton candy?"
+}

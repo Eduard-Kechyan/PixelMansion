@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.SceneManagement;
 
 namespace Merge
 {
@@ -87,13 +88,13 @@ namespace Merge
             switch (item.type)
             {
                 case Item.Type.Item:
-                    title = LOCALE.Get("Item_" + item.group + "_" + item.level);
+                    title = LOCALE.Get("Item_" + item.group + "_Title");
 
                     GetUnlockedItems(item);
                     GetParent(item);
                     break;
                 case Item.Type.Gen:
-                    title = LOCALE.Get("Gen_" + item.genGroup);
+                    title = LOCALE.Get("Gen_" + item.genGroup + "_Title");
 
                     GetUnlockedItems(item);
                     GetParent(item);
@@ -164,6 +165,8 @@ namespace Merge
                     || (isChestGroup && item.chestGroup == items[i].chestGroup)
                 )
                 {
+                    unlockedItems.style.display = DisplayStyle.Flex;
+
                     for (int j = 0; j < items[i].content.Length; j++)
                     {
                         VisualElement current = new() { name = "Current" };
@@ -276,12 +279,8 @@ namespace Merge
 
             if (item.chestGroup == Item.ChestGroup.Item)
             {
-                Debug.Log("ITEM");
-                Debug.Log(item.creates.Length);
                 for (int i = 0; i < item.creates.Length; i++)
                 {
-                    Debug.Log("//////////");
-                    Debug.Log(item.creates[i].sprite);
                     itemSprites.Add(item.creates[i].sprite);
                 }
             }

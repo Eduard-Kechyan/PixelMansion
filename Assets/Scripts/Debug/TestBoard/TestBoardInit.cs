@@ -9,104 +9,330 @@ namespace Merge
     public class TestBoardInit : MonoBehaviour
     {
         // Variables
-        public const int TILE_WIDTH = 24;
+        public GameObject tilePrefab;
+        public float tileWidth = 24f;
+        public float tileSize;
+
+        private GameObject board;
+        private SpriteRenderer boardSpriteRenderer;
+
+        private float singlePixelWidth;
+        private float screenUnitWidth;
+        private float boardHalfWidth;
+        private float boardHalfHeight;
 
         [HideInInspector]
-        public BoardManager.Tile[] boardData;
+        public int itemsTotal;
+        [HideInInspector]
+        public int itemsInitialized;
+        [HideInInspector]
+        public bool set;
+        private bool readyToInitialize;
+        private List<Item> items = new();
+
+        private float boardHeightDiff;
 
         // References
-        private TestBoardManager testBoardManager;
+        private TestBoardManager boardManager;
+        private DataManager dataManager;
+        public TaskManager taskManager;
+        private GameData gameData;
+        private ItemHandler itemHandler;
+        private MergeUI mergeUI;
+        private SafeAreaHandler safeAreaHandler;
+        private Camera cam;
 
         // UI
         private VisualElement root;
-        private VisualElement board;
 
         void Start()
         {
             // Cache
-            testBoardManager = GetComponent<TestBoardManager>();
+            boardManager = GetComponent<TestBoardManager>();
+            dataManager = DataManager.Instance;
+            taskManager = GameRefs.Instance.taskManager;
+            gameData = GameData.Instance;
+            itemHandler = dataManager.GetComponent<ItemHandler>();
+            mergeUI = GameRefs.Instance.mergeUI;
+            safeAreaHandler = mergeUI.GetComponent<SafeAreaHandler>();
+            cam = Camera.main;
 
             // UI
-            root = GetComponent<UIDocument>().rootVisualElement;
-            board = root.Q<VisualElement>("Board");
+            root = mergeUI.GetComponent<UIDocument>().rootVisualElement;
 
-            board.Clear();
+            // Subscribe to GeometryChangedEvent to know when UI geometry is ready
+            root.RegisterCallback<GeometryChangedEvent>((evt) =>
+            {
+                readyToInitialize = true;
+            });
 
-            root.RegisterCallback<GeometryChangedEvent>(Init);
+            // Set the gameObject
+            board = gameObject;
+
+            boardSpriteRenderer = board.GetComponent<SpriteRenderer>();
+
+            // Cache the preferences
+            singlePixelWidth = cam.pixelWidth / GameData.GAME_PIXEL_WIDTH;
+            screenUnitWidth =
+                cam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 10)).x * 2;
+
+            StartCoroutine(WaitForDataAndUI());
         }
 
-        void Init(GeometryChangedEvent evt)
+        IEnumerator WaitForDataAndUI()
         {
-            root.UnregisterCallback<GeometryChangedEvent>(Init);
-
-            StartCoroutine(WaitForBoardManager());
-        }
-
-        IEnumerator WaitForBoardManager()
-        {
-            while (!testBoardManager.ready)
+            // Check if data is loaded and if the board is not yet set up
+            while (!dataManager.loaded || !readyToInitialize)
             {
                 yield return null;
             }
 
-            boardData = testBoardManager.ConvertInitialItemsToBoard(testBoardManager.initialItems.text);
+            set = true;
 
+            // Pre calculate board
             SetBoard();
         }
 
         void SetBoard()
         {
-            for (int i = 0; i < boardData.Length; i++)
+            /*   if (gameData.aspectRatioType == GameData.AspectRatioType.Tall)
+               {
+                   boardSpriteRenderer.sprite = mergeUI.boardTall;
+               }
+
+               if (gameData.aspectRatioType == GameData.AspectRatioType.ExtraTall)
+               {
+                   boardSpriteRenderer.sprite = mergeUI.boardExtraTall;
+               }*/
+
+            SetBoardScale();
+
+            float boardPosY = SetBoardPosition();
+
+            //   Debug.Log(boardSpriteRenderer.sprite.textureRect.size);
+            //  Debug.Log(boardSpriteRenderer.sprite.textureRect.center);
+
+            float newBoardHeight = cam.ScreenToWorldPoint(new(
+                singlePixelWidth * boardSpriteRenderer.sprite.textureRect.size.y,
+                singlePixelWidth * boardSpriteRenderer.sprite.textureRect.size.y
+            )).y;
+            /*  Debug.Log(boardPosY);
+              Debug.Log(newBoardHeight);
+              Debug.Log(board.transform.localScale.x);
+              Debug.Log(boardHeightDiff);*/
+
+            // Get board half
+            boardHalfWidth = (board.transform.localScale.x / 2) - ((board.transform.localScale.x / 174) * 3);
+            boardHalfHeight = boardPosY + newBoardHeight;
+            //  Debug.Log(boardHalfHeight);
+
+            // Calculate tile size
+            // Get the size of the item relative to the in game units
+            float tilePixelWidth = singlePixelWidth * tileWidth;
+
+            // Calc final width and height
+            tileSize = (screenUnitWidth / cam.pixelWidth) * tilePixelWidth;
+
+            CreateBoard();
+        }
+
+        void SetBoardScale()
+        {
+            SpriteRenderer boardSpriteRenderer = board.GetComponent<SpriteRenderer>();
+
+            if (boardSpriteRenderer == null)
             {
-                VisualElement newBoardTileButton = new() { name = "Tile" + i };
-                VisualElement newBoardItem = new() { name = "Item" };
-                VisualElement newBoardOverlay = new() { name = "Overlay" };
-                VisualElement newBoardReady = new() { name = "Ready" };
-                VisualElement newBoardCompleted = new() { name = "Completed" };
-
-                newBoardTileButton.pickingMode = PickingMode.Position;
-                newBoardItem.pickingMode = PickingMode.Ignore;
-                newBoardOverlay.pickingMode = PickingMode.Ignore;
-                newBoardReady.pickingMode = PickingMode.Ignore;
-                newBoardCompleted.pickingMode = PickingMode.Ignore;
-
-                newBoardTileButton.AddToClassList("board_tile");
-                newBoardItem.AddToClassList("board_tile_item");
-                newBoardReady.AddToClassList("board_tile_ready");
-                newBoardCompleted.AddToClassList("board_tile_completed");
-
-                if (boardData[i].state == Item.State.Crate)
-                {
-                    newBoardItem.style.backgroundImage = new StyleBackground(testBoardManager.crates[boardData[i].crate]);
-                }
-                else
-                {
-                    newBoardItem.style.backgroundImage = new StyleBackground(boardData[i].sprite);
-
-                    if (boardData[i].state == Item.State.Locker)
-                    {
-                        newBoardOverlay.AddToClassList("board_tile_locker");
-                        newBoardOverlay.style.display = DisplayStyle.Flex;
-                    }
-                    else if (boardData[i].state == Item.State.Bubble)
-                    {
-                        newBoardOverlay.AddToClassList("board_tile_bubble");
-                        newBoardOverlay.style.display = DisplayStyle.Flex;
-                    }
-
-                    if (boardData[i].isCompleted)
-                    {
-                        newBoardCompleted.style.display = DisplayStyle.Flex;
-                    }
-                }
-
-                newBoardTileButton.Add(newBoardItem);
-                newBoardTileButton.Add(newBoardOverlay);
-                newBoardTileButton.Add(newBoardReady);
-                newBoardTileButton.Add(newBoardCompleted);
-
-                board.Add(newBoardTileButton);
+                Debug.LogWarning("Board sprite renderer not found.");
+                return;
             }
+
+            // Get board sprite width
+            float boardWidth = boardSpriteRenderer.sprite.rect.width;
+
+            // Get the size of the board relative to the in-game units
+            float boardPixelWidth = singlePixelWidth * boardWidth;
+
+            // Calculate final width
+            float boardWidthInUnits = (screenUnitWidth / cam.pixelWidth) * boardPixelWidth;
+
+            // Set board scale
+            board.transform.localScale = new Vector3(
+                boardWidthInUnits,
+                boardWidthInUnits,
+                board.transform.localScale.z
+            );
+        }
+
+        float SetBoardPosition()
+        {
+            /*  float screenUnitHeight = cam.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height)).y * 2;
+              float gamePixelOnScreen = cam.pixelWidth / GameData.GAME_PIXEL_WIDTH;
+              float gamePixelHeight = cam.pixelHeight / gamePixelOnScreen;*/
+
+            /* Debug.Log(screenUnitHeight);
+             Debug.Log(gamePixelHeight);
+             Debug.Log((screenUnitHeight / 2) - ((screenUnitHeight / gamePixelHeight)));
+             Debug.Log((screenUnitHeight / 2) - ((screenUnitHeight / gamePixelHeight)) * safeAreaHandler.GetBottomOffset());*/
+
+            // float boardPosY = (screenUnitHeight / 2) - ((screenUnitHeight / gamePixelHeight) * safeAreaHandler.GetBottomOffset());
+
+            // Debug.Log(board.transform.localScale);
+            //  float boardOffsetY = ((board.transform.localScale.x * 1.28f) / 2);
+
+
+            // Vector2 newScreenPos = root.LocalToWorld(new Vector2(0, boardBottomOffset));
+
+            /* Vector2 newBoardPos = RuntimePanelUtils.CameraTransformWorldToPanel(
+                  root.panel,
+                  new Vector2(0, boardBottomOffset),
+                  cam
+              );*/
+            /*  Debug.Log(screenUnitHeight);
+              Debug.Log(screenUnitHeight / 2);
+              Debug.Log(screenUnitHeight / gamePixelHeight);
+              Debug.Log((screenUnitHeight / 2) - (screenUnitHeight / gamePixelHeight));
+              Debug.Log((screenUnitHeight / 2) - (screenUnitHeight / gamePixelHeight) * boardBottomOffset);
+              Debug.Log((screenUnitHeight / 2) - ((screenUnitHeight / gamePixelHeight) * boardBottomOffset));
+              Debug.Log(board.transform.localScale.y);
+
+              float boardPosY = (screenUnitHeight / 2) - ((screenUnitHeight / gamePixelHeight) * boardBottomOffset);*/
+
+            /*   float boardPosY = (screenUnitHeight / 2) - ((screenUnitHeight / gamePixelHeight) * boardBottomOffset);
+                float boardOffsetY = ((board.transform.localScale.x * boardHeightDiff) / 2);
+                Debug.Log(boardHeightDiff);
+                Debug.Log(board.transform.localScale.x);
+                Debug.Log(board.transform.localScale.y);
+                Debug.Log(board.transform.localScale.x / boardHeightDiff);
+                Debug.Log((board.transform.localScale.x * boardHeightDiff) / 2);*/
+
+
+            /*     Debug.Log("AAAAAAAAA");
+                 Debug.Log(boardBottomOffset);
+                 Debug.Log(newScreenPos.y);
+                 Debug.Log(Screen.height + newScreenPos.y);
+                 Debug.Log(boardPosY);*/
+
+
+            return 5f;
+        }
+
+        void CreateBoard()
+        {
+            int count = 0;
+            bool initial = false;
+
+            Debug.Log(tileSize);
+
+            // Loop the items to the board
+            for (int x = 0; x < GameData.WIDTH; x++)
+            {
+                for (int y = 0; y < GameData.HEIGHT; y++)
+                {
+                    // Calculate tile's position
+                    Vector3 pos = new(
+                        (tileSize * x) - (boardHalfWidth - (tileSize / 2)),
+                        -(tileSize * y) + ((tileSize / 2)),
+                        0
+                    );
+                    Debug.Log(pos.y);
+
+                    // Create tile
+                    GameObject newTile = Instantiate(tilePrefab, pos, tilePrefab.transform.rotation);
+
+                    newTile.transform.localScale = new Vector3(
+                        tileSize,
+                        tileSize,
+                        newTile.transform.localScale.y
+                    );
+
+                    newTile.gameObject.name = "Tile" + count;
+
+                    newTile.transform.parent = boardManager.boardTiles.transform;
+
+                    // Create item
+                    /* BoardManager.Tile tileItem = gameData.boardData[x, y];
+
+                     if (gameData.boardData[x, y].id == "")
+                     {
+                         gameData.boardData[x, y].id = Guid.NewGuid().ToString();
+
+                         initial = true;
+                     }
+
+                     if (tileItem != null && tileItem.sprite != null)
+                     {
+                           Item newItem = itemHandler.CreateItem(newTile, tileSize, tileItem);
+
+                           if (newItem)
+                           {
+                               dataManager.UnlockItem(
+                                   newItem.sprite.name,
+                                   newItem.type,
+                                   newItem.group,
+                                   newItem.genGroup,
+                                   newItem.collGroup,
+                                   newItem.chestGroup
+                               );
+                           }
+
+                           newItem.OnInitialized += IncreaseInitializedItemCount;
+
+                           items.Add(newItem);
+
+                           itemsTotal++;
+                     }*/
+
+                    // Increase count for the next loop
+                    count++;
+                }
+            }
+
+            if (initial)
+            {
+                dataManager.SaveBoard(false, false);
+            }
+
+            StartCoroutine(WaitForItemsToInitialize());
+        }
+
+        void IncreaseInitializedItemCount()
+        {
+            itemsInitialized++;
+        }
+
+        IEnumerator WaitForItemsToInitialize()
+        {
+            while (itemsTotal != itemsInitialized)
+            {
+                yield return null;
+            }
+
+            boardManager.boardSet = true;
+
+            if (taskManager != null && taskManager.enabled)
+            {
+                StartCoroutine(CheckIfThereIsATaskToComplete());
+            }
+
+            // Unsubscribe from events and clear references
+            for (int i = 0; i < items.Count; i++)
+            {
+                items[i].OnInitialized -= IncreaseInitializedItemCount;
+            }
+
+            items.Clear();
+            items = null;
+        }
+
+        // Check if there is a tasks to complete
+        IEnumerator CheckIfThereIsATaskToComplete()
+        {
+            while (!taskManager.isLoaded)
+            {
+                yield return null;
+            }
+
+            taskManager.CheckIfThereIsATaskToComplete(null, true);
         }
     }
 }

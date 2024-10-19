@@ -192,7 +192,6 @@ namespace Merge
             enabled = true;
         }
 
-
         public void MoveToChar(float newMotionSpeed = 250, Action newCallBack = null)
         {
             MoveTo(charMain.transform.position, newMotionSpeed, newCallBack);

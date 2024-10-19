@@ -56,6 +56,7 @@ namespace Merge
                     sprite = initialItemDataJson[i].sprite == "" ? null : gameData.GetSprite(initialItemDataJson[i].sprite, newType),
                     state = Glob.ParseEnum<Item.State>(initialItemDataJson[i].state),
                     type = newType,
+                    id = Guid.NewGuid().ToString(),
                     group = Glob.ParseEnum<Item.Group>(initialItemDataJson[i].group),
                     genGroup = Glob.ParseEnum<Item.GenGroup>(initialItemDataJson[i].genGroup),
                     collGroup = Glob.ParseEnum<Item.CollGroup>(initialItemDataJson[i].collGroup),
@@ -1010,8 +1011,16 @@ namespace Merge
 
             if (itemsData.type == Item.Type.Gen)
             {
+                int genGroupItemsCount = LOCALE.GetLength("Gen_" + itemsData.genGroup + "_", 1);
 
-                return LOCALE.Get("Gen_" + itemsData.genGroup);
+                if (genGroupItemsCount > 0)
+                {
+                    return LOCALE.Get("Gen_" + itemsData.genGroup + "_" + count);
+                }
+                else
+                {
+                    return LOCALE.Get("Gen_" + itemsData.genGroup);
+                }
             }
 
             if (itemsData.type == Item.Type.Coll)
@@ -1062,9 +1071,9 @@ namespace Merge
         {
             bool found = false;
 
-            for (int i = 0; i < gameData.unlockedData.Length; i++)
+            for (int i = 0; i < gameData.unlockedItems.Length; i++)
             {
-                if (spriteName == gameData.unlockedData[i])
+                if (spriteName == gameData.unlockedItems[i])
                 {
                     found = true;
                     break;

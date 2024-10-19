@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
+// TODO - Change all unnecessarysary GameData.Instance to just gameData 
+
 namespace Merge
 {
     public class Selectable : MonoBehaviour
@@ -38,6 +40,9 @@ namespace Merge
 
         [HideInInspector]
         public string id;
+
+        [HideInInspector]
+        public bool loaded = false;
 
         // Enums
         public enum Type
@@ -130,13 +135,45 @@ namespace Merge
                     }
                     break;
             }
+
+            loaded = true;
         }
 
         public Sprite GetSprite(int order)
         {
-            string name = Regex.Replace(gameObject.name, $"\\(.*", "") + (order + 2);
+            string name = Regex.Replace(gameObject.name, $"\\(.*", "") + (order + 1);
 
-            return gameData.GetSprite(name, type);
+            return GameData.Instance.GetSprite(name, type);
+        }
+
+        public Sprite GetWallSprite(int order, bool isDoor = false, bool isWindow = false, bool isRight = false)
+        {
+            string name = Regex.Replace(gameObject.name, $"\\(.*", "") + (order + 1);
+
+            name = name.Replace("Left", "").Replace("Right", "");
+
+            if (isDoor || isWindow)
+            {
+                if (isRight)
+                {
+                    name = Glob.InsertWordAtWord(name, "Wall", "Right");
+                }
+                else
+                {
+                    name = Glob.InsertWordAtWord(name, "Wall", "Left");
+                }
+            }
+
+            if (isDoor)
+            {
+                name = Glob.InsertWordAtWord(name, "Wall", "DoorFrame");
+            }
+            else if (isWindow)
+            {
+                name = Glob.InsertWordAtWord(name, "Wall", "Window");
+            }
+
+            return GameData.Instance.GetSprite(name, type);
         }
 
         public Sprite[] GetSpriteOptions()
@@ -147,7 +184,12 @@ namespace Merge
             {
                 string name = Regex.Replace(gameObject.name, $"\\(.*", "") + "Option" + (i + 1);
 
-                spriteOptions[i] = gameData.GetSprite(name, type, true);
+                if (type == Type.Wall)
+                {
+                    name = name.Replace("Left", "").Replace("Right", "");
+                }
+
+                spriteOptions[i] = GameData.Instance.GetSprite(name, type, true);
             }
 
             return spriteOptions;
@@ -158,16 +200,16 @@ namespace Merge
             GetChanger().SetSprites(order);
         }
 
-        public void CancelSpriteChange(int order)
+        public void CancelSpriteChange(int order, Action callback = null)
         {
-            GetChanger().Cancel(order);
+            GetChanger().Cancel(order, callback);
         }
 
-        public void ConfirmSpriteChange()
+        public void ConfirmSpriteChange(Action callback = null)
         {
             canBeSelected = true;
 
-            GetChanger().Confirm();
+            GetChanger().Confirm(callback);
         }
 
         public void Select(bool select = true)
@@ -217,8 +259,8 @@ namespace Merge
 
         void SetSprites(int order, bool alt = false);
 
-        void Cancel(int order);
+        void Cancel(int order, Action callback = null);
 
-        void Confirm();
+        void Confirm(Action callback = null);
     }
 }

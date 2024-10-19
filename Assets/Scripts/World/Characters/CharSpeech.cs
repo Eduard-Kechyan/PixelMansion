@@ -59,7 +59,11 @@ namespace Merge
 
         void Update()
         {
-            if (Input.touchCount == 1 && !selectorUIHandler.isSelectorOpen)
+            if (selectorUIHandler.isSelectorOpen)
+            {
+                speechBubble.Close();
+            }
+            else if (Input.touchCount == 1 && !selectorUIHandler.isSelectorOpen)
             {
                 Touch touch = Input.GetTouch(0);
 
@@ -81,10 +85,6 @@ namespace Merge
             else if (canSpeakRandomly && !isRandomSpeechTimeOut && !isSpeaking && !isTimeOut)
             {
                 StartCoroutine(RandomSpeech());
-            }
-            else if (selectorUIHandler.isSelectorOpen)
-            {
-                speechBubble.Close();
             }
 
             // Send the position of the character to the bubble if it's speaking

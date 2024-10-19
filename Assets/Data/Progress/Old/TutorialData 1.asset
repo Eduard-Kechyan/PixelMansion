@@ -1,0 +1,313 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82e8a683d2747de4f856146c05a3c226, type: 3}
+  m_Name: TutorialData 1
+  m_EditorClassIdentifier: 
+  skipTutorial: 1
+  steps:
+  - name: World Convo First
+    id: First
+    scene: 1
+    type: 1
+    taskType: 0
+    taskButton: 0
+    taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
+    taskOrder: 0
+    keepConvoOpen: 1
+  - name: World Input PlayerName
+    id: PlayerName
+    scene: 1
+    type: 2
+    taskType: 0
+    taskButton: 0
+    taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
+    taskOrder: 0
+    keepConvoOpen: 0
+  - name: World Convo Part1
+    id: Part1
+    scene: 1
+    type: 1
+    taskType: 0
+    taskButton: 0
+    taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
+    taskOrder: 0
+    keepConvoOpen: 0
+  - name: World Task Press Play1
+    id: Play1
+    scene: 1
+    type: 0
+    taskType: 0
+    taskButton: 1
+    taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
+    taskOrder: 0
+    keepConvoOpen: 0
+  - name: Merge Task Merge MergeGloves1
+    id: MergeGloves1
+    scene: 2
+    type: 0
+    taskType: 1
+    taskButton: 0
+    taskSprite: {fileID: 21300000, guid: 6e077ce393ad2964b99f0b9570de9afe, type: 3}
+    itemGroup: 1
+    genSprite: {fileID: 0}
+    taskOrder: 0
+    keepConvoOpen: 0
+  - name: Merge Task Merge MergeGloves2
+    id: MergeGloves2
+    scene: 2
+    type: 0
+    taskType: 1
+    taskButton: 0
+    taskSprite: {fileID: 21300000, guid: 76493dcb8626c364db7ad859d09cef65, type: 3}
+    itemGroup: 1
+    genSprite: {fileID: 0}
+    taskOrder: 0
+    keepConvoOpen: 0
+  - name: Merge Task Press Home
+    id: Home
+    scene: 2
+    type: 0
+    taskType: 0
+    taskButton: 2
+    taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
+    taskOrder: 0
+    keepConvoOpen: 0
+  - name: World Task Press Task1
+    id: Task1
+    scene: 1
+    type: 0
+    taskType: 0
+    taskButton: 3
+    taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
+    taskOrder: 0
+    keepConvoOpen: 0
+  - name: World Task Menu TaskMenu1
+    id: TaskMenu1
+    scene: 1
+    type: 0
+    taskType: 3
+    taskButton: 0
+    taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
+    taskOrder: 0
+    keepConvoOpen: 0
+  - name: World Convo Part2
+    id: Part2
+    scene: 1
+    type: 1
+    taskType: 0
+    taskButton: 0
+    taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
+    taskOrder: 0
+    keepConvoOpen: 0
+  - name: World Task Press Play2
+    id: Play2
+    scene: 1
+    type: 0
+    taskType: 0
+    taskButton: 1
+    taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
+    taskOrder: 0
+    keepConvoOpen: 0
+  - name: Merge Task Gen GenGloves
+    id: GenGloves
+    scene: 2
+    type: 0
+    taskType: 2
+    taskButton: 0
+    taskSprite: {fileID: 21300000, guid: 6e077ce393ad2964b99f0b9570de9afe, type: 3}
+    itemGroup: 1
+    genSprite: {fileID: 21300000, guid: 42bead8e5cf2e514785ce37d0791b327, type: 3}
+    taskOrder: 0
+    keepConvoOpen: 0
+  - name: Merge Task Merge MergeGloves3
+    id: MergeGloves3
+    scene: 2
+    type: 0
+    taskType: 1
+    taskButton: 0
+    taskSprite: {fileID: 21300000, guid: 6e077ce393ad2964b99f0b9570de9afe, type: 3}
+    itemGroup: 1
+    genSprite: {fileID: 0}
+    taskOrder: 0
+    keepConvoOpen: 0
+  - name: Merge Task Merge MergeGloves4
+    id: MergeGloves4
+    scene: 2
+    type: 0
+    taskType: 1
+    taskButton: 0
+    taskSprite: {fileID: 21300000, guid: 76493dcb8626c364db7ad859d09cef65, type: 3}
+    itemGroup: 1
+    genSprite: {fileID: 0}
+    taskOrder: 0
+    keepConvoOpen: 0
+  - name: Merge Task Press Task2
+    id: Task2
+    scene: 2
+    type: 0
+    taskType: 0
+    taskButton: 3
+    taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
+    taskOrder: 0
+    keepConvoOpen: 0
+  - name: Merge Task Menu TaskMenu2
+    id: TaskMenu2
+    scene: 2
+    type: 0
+    taskType: 3
+    taskButton: 0
+    taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
+    taskOrder: 0
+    keepConvoOpen: 0
+  - name: World Convo Part3
+    id: Part3
+    scene: 1
+    type: 1
+    taskType: 0
+    taskButton: 0
+    taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
+    taskOrder: 0
+    keepConvoOpen: 0
+  - name: World Task Press Task3
+    id: Task3
+    scene: 1
+    type: 0
+    taskType: 0
+    taskButton: 3
+    taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
+    taskOrder: 0
+    keepConvoOpen: 0
+  - name: World Task Menu TaskMenu3
+    id: TaskMenu3
+    scene: 1
+    type: 0
+    taskType: 3
+    taskButton: 4
+    taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
+    taskOrder: 0
+    keepConvoOpen: 0
+  - name: Merge Task Gen GenHammer
+    id: GenHammer
+    scene: 2
+    type: 0
+    taskType: 2
+    taskButton: 0
+    taskSprite: {fileID: 21300000, guid: d25fb806c5d4bd440a7840db6bf08834, type: 3}
+    itemGroup: 0
+    genSprite: {fileID: 21300000, guid: 42bead8e5cf2e514785ce37d0791b327, type: 3}
+    taskOrder: 0
+    keepConvoOpen: 0
+  - name: Merge Task Merge MergeHammer1
+    id: MergeHammer1
+    scene: 2
+    type: 0
+    taskType: 1
+    taskButton: 0
+    taskSprite: {fileID: 21300000, guid: d25fb806c5d4bd440a7840db6bf08834, type: 3}
+    itemGroup: 0
+    genSprite: {fileID: 0}
+    taskOrder: 0
+    keepConvoOpen: 0
+  - name: Merge Task Press Task4
+    id: Task4
+    scene: 2
+    type: 0
+    taskType: 0
+    taskButton: 3
+    taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
+    taskOrder: 0
+    keepConvoOpen: 0
+  - name: Merge Task Menu TaskMenu4
+    id: TaskMenu4
+    scene: 2
+    type: 0
+    taskType: 3
+    taskButton: 0
+    taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
+    taskOrder: 0
+    keepConvoOpen: 0
+  - name: World Convo Part4
+    id: Part4
+    scene: 1
+    type: 1
+    taskType: 0
+    taskButton: 0
+    taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
+    taskOrder: 0
+    keepConvoOpen: 0
+  - name: World Task Press Task5
+    id: Task5
+    scene: 1
+    type: 0
+    taskType: 0
+    taskButton: 3
+    taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
+    taskOrder: 0
+    keepConvoOpen: 0
+  - name: World Task Menu TaskMenu5
+    id: TaskMenu5
+    scene: 1
+    type: 0
+    taskType: 3
+    taskButton: 0
+    taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
+    taskOrder: 0
+    keepConvoOpen: 0
+  - name: World Convo Part5
+    id: Part5
+    scene: 1
+    type: 1
+    taskType: 0
+    taskButton: 0
+    taskSprite: {fileID: 0}
+    itemGroup: 0
+    genSprite: {fileID: 0}
+    taskOrder: 0
+    keepConvoOpen: 0

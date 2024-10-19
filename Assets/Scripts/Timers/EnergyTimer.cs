@@ -140,15 +140,15 @@ namespace Merge
 
                     if (!running)
                     {
-                        counterCoroutine = Glob.SetTimeout(() =>
-                        {
-                            if (!running)
-                            {
-                                timerOn = true;
+                        /*  counterCoroutine = Glob.SetTimeout(() =>
+                          {
+                              if (!running)
+                              {
+                                  timerOn = true;
 
-                                StartCoroutine(HandleTimer());
-                            }
-                        }, 0.3f);
+                                  StartCoroutine(HandleTimer());
+                              }
+                          }, 0.3f);*/
                     }
                 }
             }

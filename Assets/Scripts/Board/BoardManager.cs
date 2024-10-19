@@ -20,7 +20,7 @@ namespace Merge
 
         [Header("Bubbles")]
         public int minBubbleLevel = 6;
-        public int bubbleChance = 30; // In %
+        public int bubbleChance = 5; // In %
         public int bubbleCount = 1000;
         public int bubblePopTimeout = 60;
 
@@ -265,6 +265,13 @@ namespace Merge
             public int maxLevel;
             public bool canIncreaseMaxLevel;
             public float chance;
+        }
+
+        [Serializable]
+        public class GottenItem
+        {
+            public Vector2 pos;
+            public string id;
         }
 
         // References
@@ -530,7 +537,7 @@ namespace Merge
             dataManager.SaveBoard();
 
             // Give experience if it's the first time unlocking it and its level is higher than experienceThreshold (default 4)
-            if (newItem.type != Item.Type.Coll && newItem.level >= (experienceThreshold + 1))
+            if (newItem.type != Item.Type.Coll && newItem.level >= (experienceThreshold + 1) && PlayerPrefs.HasKey("tutorialFinished"))
             {
                 CreateCollectable();
             }
@@ -661,22 +668,23 @@ namespace Merge
             }
         }
 
-        public Vector2 UnlockAndGetItemPos(string spriteName)
+        public GottenItem UnlockAndGetItemPos(string spriteName, bool fullUnlock = false, string idToIgnore = "")
         {
             int count = 0;
-            Vector2 pos = new();
 
             for (int x = 0; x < GameData.WIDTH; x++)
             {
                 for (int y = 0; y < GameData.HEIGHT; y++)
                 {
-                    if (gameData.boardData[x, y].sprite != null && gameData.boardData[x, y].sprite.name == spriteName)
+                    if (gameData.boardData[x, y].sprite != null && gameData.boardData[x, y].sprite.name == spriteName && gameData.boardData[x, y].id != idToIgnore)
                     {
                         Transform tileTransform = boardTiles.transform.GetChild(count);
 
                         if (tileTransform != null)
                         {
-                            pos = tileTransform.position;
+                            Vector2 pos = tileTransform.position;
+
+                            string foundId = gameData.boardData[x, y].id;
 
                             Transform itemTransform = tileTransform.GetChild(0);
 
@@ -684,12 +692,33 @@ namespace Merge
                             {
                                 if (itemTransform.TryGetComponent(out Item item))
                                 {
-                                    item.UnlockLock(0.05f, false);
+                                    if (item.state != Item.State.Default)
+                                    {
+                                        if (fullUnlock || (item.state == Item.State.Locker && idToIgnore == ""))
+                                        {
+                                            item.UnlockLock(0.05f, false, fullUnlock);
 
-                                    // Play unlocking audio
-                                    soundManager.PlaySound(SoundManager.SoundType.UnlockLock);
+                                            // Play unlocking audio
+                                            soundManager.PlaySound(SoundManager.SoundType.UnlockLock);
 
-                                    interactions.OpenLockCallback(item);
+                                            interactions.OpenLockCallback(item, true);
+                                        }
+                                        else if (item.state == Item.State.Crate)
+                                        {
+                                            item.OpenCrate(0.05f);
+
+                                            // Play opening audio
+                                            soundManager.PlaySound(SoundManager.SoundType.OpenCrate);
+
+                                            interactions.OpenCrateCallback(item);
+                                        }
+                                    }
+
+                                    return new GottenItem()
+                                    {
+                                        pos = pos,
+                                        id = foundId
+                                    };
                                 }
                                 else
                                 {
@@ -717,7 +746,7 @@ namespace Merge
                 }
             }
 
-            return pos;
+            return default;
         }
 
         /////// BUBBLE ////////

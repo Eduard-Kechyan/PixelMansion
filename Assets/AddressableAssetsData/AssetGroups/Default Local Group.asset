@@ -76,11 +76,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - walls
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 3cb99002ca9e46c47a8ddb3dee05b23e
-    m_Address: Assets/Addressables/Sprites/SelectableOptions/Props
+  - m_GUID: 669e08668abc03f49bc75af6ef42cb56
+    m_Address: Assets/Addressables/Sprites/Options/Floors
     m_ReadOnly: 0
     m_SerializedLabels:
-    - propOption
+    - floor_options
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bdd0e14a5b409a448892ccce05cfdf05
     m_Address: Assets/Addressables/Sprites/Selectables/Props
@@ -97,6 +97,24 @@ MonoBehaviour:
     m_Address: Assets/Addressables/Data/InitialItemsSkip.json
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1d3fb5c8879c0cb4b9b4773903686752
+    m_Address: Assets/Addressables/Sprites/Options/Furniture
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - furniture_options
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3cb99002ca9e46c47a8ddb3dee05b23e
+    m_Address: Assets/Addressables/Sprites/Options/Props
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - prop_options
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b4bd28fd6ccedd243aab5ed1b742a80a
+    m_Address: Assets/Addressables/Sprites/Options/Walls
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - wall_options
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 9533a024c77f98944905221bc855309e, type: 2}

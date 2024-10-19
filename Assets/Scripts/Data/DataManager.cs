@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -42,17 +43,26 @@ namespace Merge
 
         [HideInInspector]
         public string boardJsonData;
+        [HideInInspector]
         private string bonusData;
+        [HideInInspector]
         private string inventoryData;
+        [HideInInspector]
         private string tasksJsonData;
         [HideInInspector]
         public string finishedTasksJsonData;
+        [HideInInspector]
         private string timersJsonData;
+        [HideInInspector]
         private string coolDownsJsonData;
+        [HideInInspector]
         private string notificationsJsonData;
         [HideInInspector]
         public string unlockedJsonData;
+        [HideInInspector]
         public string unlockedRoomsJsonData;
+        [HideInInspector]
+        public string unlockedDoorsJsonData;
 
         // References
         private GameRefs gameRefs;
@@ -181,8 +191,9 @@ namespace Merge
                     {"inventoryData", inventoryData},
                     {"tasksData", tasksJsonData},
                     {"finishedTasks", finishedTasksJsonData},
-                    {"unlockedData", dataConverter.GetInitialUnlocked()},
-                    {"unlockedRoomsData", worldDataManager != null ? worldDataManager.GetInitialUnlockedRooms() : "[]"},
+                    {"unlockedItems", dataConverter.GetInitialUnlocked()},
+                    {"unlockedRooms", worldDataManager != null ? worldDataManager.GetInitialUnlockedRooms() : "[]"},
+                    {"unlockedDoors", "[]"},
                     {"timers", timersJsonData},
                     {"coolDowns", coolDownsJsonData},
                     {"notificationsData", notificationsJsonData},
@@ -203,8 +214,6 @@ namespace Merge
             }
             else
             {
-                reader = QuickSaveReader.Create("Root", saveSettings);
-
                 GetData(false, callback);
             }
         }
@@ -212,6 +221,8 @@ namespace Merge
         // Get object data from the initial data
         void GetData(bool initialLoad, Action callback)
         {
+            reader = QuickSaveReader.Create("Root", saveSettings);
+
             string newBoardData;
             string newBonusData;
             string newInventoryData;
@@ -220,8 +231,9 @@ namespace Merge
             string newTimersData;
             string newCoolDownsData;
             string newNotificationsData;
-            string newUnlockedData;
-            string newUnlockedRoomsData;
+            string newUnlockedItems;
+            string newUnlockedRooms;
+            string newUnlockedDoors;
 
             if (initialLoad)
             {
@@ -234,8 +246,9 @@ namespace Merge
                 newTimersData = timersJsonData;
                 newCoolDownsData = coolDownsJsonData;
                 newNotificationsData = notificationsJsonData;
-                newUnlockedData = unlockedJsonData;
-                newUnlockedRoomsData = unlockedRoomsJsonData;
+                newUnlockedItems = unlockedJsonData;
+                newUnlockedRooms = unlockedRoomsJsonData;
+                newUnlockedDoors = unlockedDoorsJsonData;
             }
             else
             {
@@ -255,28 +268,37 @@ namespace Merge
                 newTimersData = ReadReaderData<string>("timers");
                 newCoolDownsData = ReadReaderData<string>("coolDowns");
                 newNotificationsData = ReadReaderData<string>("notificationsData");
-                newUnlockedData = ReadReaderData<string>("unlockedData");
-                newUnlockedRoomsData = ReadReaderData<string>("unlockedRoomsData");
+                newUnlockedItems = ReadReaderData<string>("unlockedItems");
+                newUnlockedRooms = ReadReaderData<string>("unlockedRooms");
+                newUnlockedDoors = ReadReaderData<string>("unlockedDoors");
 
                 // Other
                 gameData.inventorySpace = ReadReaderData<int>("inventorySpace");
                 gameData.inventorySlotPrice = ReadReaderData<int>("inventorySlotPrice");
             }
 
-            if (newUnlockedData != "")
+            if (newUnlockedItems != "")
             {
-                string[] unlockedDataTemp = JsonConvert.DeserializeObject<string[]>(newUnlockedData);
+                string[] unlockedItemsTemp = JsonConvert.DeserializeObject<string[]>(newUnlockedItems);
 
-                gameData.unlockedData.CopyTo(unlockedDataTemp, 0);
-                gameData.unlockedData = unlockedDataTemp;
+                gameData.unlockedItems.CopyTo(unlockedItemsTemp, 0);
+                gameData.unlockedItems = unlockedItemsTemp;
             }
 
-            if (newUnlockedRoomsData != "")
+            if (newUnlockedRooms != "")
             {
-                string[] unlockedRoomsDataTemp = JsonConvert.DeserializeObject<string[]>(newUnlockedRoomsData);
+                string[] unlockedRoomsTemp = JsonConvert.DeserializeObject<string[]>(newUnlockedRooms);
 
-                gameData.unlockedRoomsData.CopyTo(unlockedRoomsDataTemp, 0);
-                gameData.unlockedRoomsData = unlockedRoomsDataTemp;
+                gameData.unlockedRooms.CopyTo(unlockedRoomsTemp, 0);
+                gameData.unlockedRooms = unlockedRoomsTemp;
+            }
+
+            if (newUnlockedDoors != "")
+            {
+                string[] unlockedDoorsTemp = JsonConvert.DeserializeObject<string[]>(newUnlockedDoors);
+
+                gameData.unlockedDoors.CopyTo(unlockedDoorsTemp, 0);
+                gameData.unlockedDoors = unlockedDoorsTemp;
             }
 
             gameData.finishedTasks = JsonConvert.DeserializeObject<List<TaskManager.FinishedTask>>(newFinishedTasks);
@@ -348,8 +370,8 @@ namespace Merge
                 "inventoryData",
                 "tasksData",
                 "finishedTasks",
-                "unlockedData",
-                "unlockedRoomsData",
+                "unlockedItems",
+                "unlockedRooms",
                 "timers",
                 "coolDowns",
                 "notificationsData",
@@ -358,7 +380,6 @@ namespace Merge
                 //////// World ////////
                 "areaSet", // Prefs, Data
                 "areas",
-                "doorSet", // Prefs, Data
                 "unlockedDoors",
                 //////// Player Prefs ////////
                 "playerName",
@@ -418,6 +439,11 @@ namespace Merge
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
                 CheckSaveDataKey(valueItem.Key);
 #endif
+
+                if (valueItem.Key == "unlockedDoors")
+                {
+                    Debug.Log(writer.GetAllKeys().Count());
+                }
 
                 if (valueItem.Value is string || valueItem.Value is int || valueItem.Value is float || valueItem.Value is bool)
                 {
@@ -563,7 +589,7 @@ namespace Merge
                 errorManager.Throw(
                     ErrorManager.ErrorType.Code,
                     GetType().Name,
-                    "Reader is null for key: " + key
+                    "Reader is null, key: " + key
                 );
             }
 
@@ -684,19 +710,19 @@ namespace Merge
                         gameData.tasksData = dataConverter.ConvertTaskGroupsFromJson(valueString);
                         writer.Write(key, valueString).Commit();
                         break;
-                    case "unlockedData":
-                        string[] unlockedDataTemp = JsonConvert.DeserializeObject<string[]>(valueString);
+                    case "unlockedItems":
+                        string[] unlockedItemsTemp = JsonConvert.DeserializeObject<string[]>(valueString);
 
-                        gameData.unlockedData.CopyTo(unlockedDataTemp, 0);
-                        gameData.unlockedData = unlockedDataTemp;
+                        gameData.unlockedItems.CopyTo(unlockedItemsTemp, 0);
+                        gameData.unlockedItems = unlockedItemsTemp;
 
                         writer.Write(key, valueString).Commit();
                         break;
-                    case "unlockedRoomsData":
-                        string[] unlockedRoomsDataTemp = JsonConvert.DeserializeObject<string[]>(valueString);
+                    case "unlockedRooms":
+                        string[] unlockedRoomsTemp = JsonConvert.DeserializeObject<string[]>(valueString);
 
-                        gameData.unlockedRoomsData.CopyTo(unlockedRoomsDataTemp, 0);
-                        gameData.unlockedRoomsData = unlockedRoomsDataTemp;
+                        gameData.unlockedRooms.CopyTo(unlockedRoomsTemp, 0);
+                        gameData.unlockedRooms = unlockedRoomsTemp;
 
                         writer.Write(key, valueString).Commit();
                         break;
@@ -728,10 +754,6 @@ namespace Merge
                     case "areas":
                         gameData.areasData = dataConverter.ConvertJsonToArea(valueString);
                         writer.Write(key, valueString).Commit();
-                        break;
-                    case "doorSet":
-                        writer.Write(key, true).Commit();
-                        PlayerPrefs.SetInt("doorSet", 1);
                         break;
                     case "unlockedDoors":
                         writer.Write(key, valueString).Commit();
@@ -828,9 +850,9 @@ namespace Merge
         {
             bool found = false;
 
-            for (int i = 0; i < gameData.unlockedData.Length; i++)
+            for (int i = 0; i < gameData.unlockedItems.Length; i++)
             {
-                if (spriteName == gameData.unlockedData[i])
+                if (spriteName == gameData.unlockedItems[i])
                 {
                     found = true;
                     break;
@@ -839,20 +861,20 @@ namespace Merge
 
             if (!found)
             {
-                string[] newUnlockedData = new string[gameData.unlockedData.Length + 1];
+                string[] newUnlockedItems = new string[gameData.unlockedItems.Length + 1];
 
-                for (int i = 0; i < gameData.unlockedData.Length; i++)
+                for (int i = 0; i < gameData.unlockedItems.Length; i++)
                 {
-                    newUnlockedData[i] = gameData.unlockedData[i];
+                    newUnlockedItems[i] = gameData.unlockedItems[i];
                 }
 
-                newUnlockedData[gameData.unlockedData.Length] = spriteName;
+                newUnlockedItems[gameData.unlockedItems.Length] = spriteName;
 
-                gameData.unlockedData.CopyTo(newUnlockedData, 0);
-                gameData.unlockedData = newUnlockedData;
+                gameData.unlockedItems.CopyTo(newUnlockedItems, 0);
+                gameData.unlockedItems = newUnlockedItems;
 
                 writer
-                    .Write("unlockedData", JsonConvert.SerializeObject(gameData.unlockedData))
+                    .Write("unlockedItems", JsonConvert.SerializeObject(gameData.unlockedItems))
                     .Commit();
             }
 
@@ -931,9 +953,9 @@ namespace Merge
         {
             bool found = false;
 
-            for (int i = 0; i < gameData.unlockedRoomsData.Length; i++)
+            for (int i = 0; i < gameData.unlockedRooms.Length; i++)
             {
-                if (roomName == gameData.unlockedRoomsData[i])
+                if (roomName == gameData.unlockedRooms[i])
                 {
                     found = true;
                     break;
@@ -942,20 +964,20 @@ namespace Merge
 
             if (!found)
             {
-                string[] newUnlockedRoomsData = new string[gameData.unlockedRoomsData.Length + 1];
+                string[] newUnlockedRooms = new string[gameData.unlockedRooms.Length + 1];
 
-                for (int i = 0; i < gameData.unlockedRoomsData.Length; i++)
+                for (int i = 0; i < gameData.unlockedRooms.Length; i++)
                 {
-                    newUnlockedRoomsData[i] = gameData.unlockedRoomsData[i];
+                    newUnlockedRooms[i] = gameData.unlockedRooms[i];
                 }
 
-                newUnlockedRoomsData[gameData.unlockedRoomsData.Length] = roomName;
+                newUnlockedRooms[gameData.unlockedRooms.Length] = roomName;
 
-                gameData.unlockedRoomsData.CopyTo(newUnlockedRoomsData, 0);
-                gameData.unlockedRoomsData = newUnlockedRoomsData;
+                gameData.unlockedRooms.CopyTo(newUnlockedRooms, 0);
+                gameData.unlockedRooms = newUnlockedRooms;
 
                 writer
-                    .Write("unlockedRoomsData", JsonConvert.SerializeObject(gameData.unlockedData))
+                    .Write("unlockedRooms", JsonConvert.SerializeObject(gameData.unlockedItems))
                     .Commit();
             }
 
@@ -971,6 +993,41 @@ namespace Merge
 
                     break;
                 }
+            }
+
+            return found;
+        }
+
+        public bool UnlockDoor(string doorName)
+        {
+            bool found = false;
+
+            for (int i = 0; i < gameData.unlockedDoors.Length; i++)
+            {
+                if (doorName == gameData.unlockedDoors[i])
+                {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found)
+            {
+                string[] newUnlockedDoors = new string[gameData.unlockedDoors.Length + 1];
+
+                for (int i = 0; i < gameData.unlockedDoors.Length; i++)
+                {
+                    newUnlockedDoors[i] = gameData.unlockedDoors[i];
+                }
+
+                newUnlockedDoors[gameData.unlockedDoors.Length] = doorName;
+
+                gameData.unlockedDoors.CopyTo(newUnlockedDoors, 0);
+                gameData.unlockedDoors = newUnlockedDoors;
+
+                writer
+                    .Write("unlockedDoors", JsonConvert.SerializeObject(gameData.unlockedItems))
+                    .Commit();
             }
 
             return found;

@@ -245,6 +245,7 @@ MonoBehaviour:
     genGroup: 0
     hasTimer: 0
     generatesAtLevel: 0
+    generatesMaxCount: 0
     creates: []
     coolDown:
       maxCounts: 
@@ -338,6 +339,433 @@ MonoBehaviour:
     genGroup: 0
     hasTimer: 0
     generatesAtLevel: 0
+    generatesMaxCount: 0
+    creates: []
+    coolDown:
+      maxCounts: 
+      seconds: 0
+      minutes: 0
+  - name: CleaningTools
+    type: 0
+    group: 2
+    hasLevel: 1
+    customName: 1
+    parents:
+    - name: Gen ArtBox
+      type: 1
+      genGroup: 2
+      chestGroup: 0
+    content:
+    - sprite: {fileID: 21300000, guid: 6a261f1ecadf56341833cc049548b848, type: 3}
+      customName: 0
+      itemName: 
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      generatesAtLevel: 0
+      genGroup: 0
+      collGroup: 0
+      parents: []
+      creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
+      unlocked: 0
+      isMaxLevel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPopped: 0
+    - sprite: {fileID: 21300000, guid: beaf5fa5e40343e45960609177bdf974, type: 3}
+      customName: 0
+      itemName: 
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      generatesAtLevel: 0
+      genGroup: 0
+      collGroup: 0
+      parents: []
+      creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
+      unlocked: 0
+      isMaxLevel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPopped: 0
+    - sprite: {fileID: 21300000, guid: d7036f54185b7ca4bb8ac25563708dba, type: 3}
+      customName: 0
+      itemName: 
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      generatesAtLevel: 0
+      genGroup: 0
+      collGroup: 0
+      parents: []
+      creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
+      unlocked: 0
+      isMaxLevel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPopped: 0
+    - sprite: {fileID: 21300000, guid: 0be591844a418004aa93bdc1fb7011f5, type: 3}
+      customName: 0
+      itemName: 
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      generatesAtLevel: 0
+      genGroup: 0
+      collGroup: 0
+      parents: []
+      creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
+      unlocked: 0
+      isMaxLevel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPopped: 0
+    - sprite: {fileID: 21300000, guid: fc29c1f57932c6540913d8d37be10799, type: 3}
+      customName: 0
+      itemName: 
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      generatesAtLevel: 0
+      genGroup: 0
+      collGroup: 0
+      parents: []
+      creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
+      unlocked: 0
+      isMaxLevel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPopped: 0
+    collGroup: 0
+    chestGroup: 0
+    genGroup: 0
+    hasTimer: 0
+    generatesAtLevel: 0
+    generatesMaxCount: 0
+    creates: []
+    coolDown:
+      maxCounts: 
+      seconds: 0
+      minutes: 0
+  - name: Brushes
+    type: 0
+    group: 3
+    hasLevel: 1
+    customName: 1
+    parents:
+    - name: Gen ArtBox
+      type: 1
+      genGroup: 2
+      chestGroup: 0
+    content:
+    - sprite: {fileID: 21300000, guid: d4839ff81065d934dacba2ebce36fad5, type: 3}
+      customName: 0
+      itemName: 
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      generatesAtLevel: 0
+      genGroup: 0
+      collGroup: 0
+      parents: []
+      creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
+      unlocked: 0
+      isMaxLevel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPopped: 0
+    - sprite: {fileID: 21300000, guid: a289db73211d417469de2a2cd4d8b771, type: 3}
+      customName: 0
+      itemName: 
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      generatesAtLevel: 0
+      genGroup: 0
+      collGroup: 0
+      parents: []
+      creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
+      unlocked: 0
+      isMaxLevel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPopped: 0
+    - sprite: {fileID: 21300000, guid: 4baea06f42a5471479dadacfd9dc0812, type: 3}
+      customName: 0
+      itemName: 
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      generatesAtLevel: 0
+      genGroup: 0
+      collGroup: 0
+      parents: []
+      creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
+      unlocked: 0
+      isMaxLevel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPopped: 0
+    - sprite: {fileID: 21300000, guid: 92b553808ae7e1a4ea3d0126dd6b79ed, type: 3}
+      customName: 0
+      itemName: 
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      generatesAtLevel: 0
+      genGroup: 0
+      collGroup: 0
+      parents: []
+      creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
+      unlocked: 0
+      isMaxLevel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPopped: 0
+    collGroup: 0
+    chestGroup: 0
+    genGroup: 0
+    hasTimer: 0
+    generatesAtLevel: 0
+    generatesMaxCount: 0
+    creates: []
+    coolDown:
+      maxCounts: 
+      seconds: 0
+      minutes: 0
+  - name: Paint
+    type: 0
+    group: 4
+    hasLevel: 1
+    customName: 1
+    parents:
+    - name: Gen ArtBox
+      type: 1
+      genGroup: 2
+      chestGroup: 0
+    content:
+    - sprite: {fileID: 21300000, guid: cd8490e4bd4d3df4bafde40fa9852910, type: 3}
+      customName: 0
+      itemName: 
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      generatesAtLevel: 0
+      genGroup: 0
+      collGroup: 0
+      parents: []
+      creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
+      unlocked: 0
+      isMaxLevel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPopped: 0
+    - sprite: {fileID: 21300000, guid: c718b26b398f5cb43a8eca6b56652164, type: 3}
+      customName: 0
+      itemName: 
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      generatesAtLevel: 0
+      genGroup: 0
+      collGroup: 0
+      parents: []
+      creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
+      unlocked: 0
+      isMaxLevel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPopped: 0
+    - sprite: {fileID: 21300000, guid: 3999f1348baf32647ba9cc4beb2c790c, type: 3}
+      customName: 0
+      itemName: 
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      generatesAtLevel: 0
+      genGroup: 0
+      collGroup: 0
+      parents: []
+      creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
+      unlocked: 0
+      isMaxLevel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPopped: 0
+    - sprite: {fileID: 21300000, guid: 9e4fcc9e06bfd7943a065db82dcee821, type: 3}
+      customName: 0
+      itemName: 
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      generatesAtLevel: 0
+      genGroup: 0
+      collGroup: 0
+      parents: []
+      creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
+      unlocked: 0
+      isMaxLevel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPopped: 0
+    - sprite: {fileID: 21300000, guid: 4dc869bbc1a270f4d979c8245067d7ae, type: 3}
+      customName: 0
+      itemName: 
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      generatesAtLevel: 0
+      genGroup: 0
+      collGroup: 0
+      parents: []
+      creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
+      unlocked: 0
+      isMaxLevel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPopped: 0
+    - sprite: {fileID: 21300000, guid: 2c0c8e63edff37a4f98846af16ef754c, type: 3}
+      customName: 0
+      itemName: 
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      generatesAtLevel: 0
+      genGroup: 0
+      collGroup: 0
+      parents: []
+      creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
+      unlocked: 0
+      isMaxLevel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPopped: 0
+    collGroup: 0
+    chestGroup: 0
+    genGroup: 0
+    hasTimer: 0
+    generatesAtLevel: 0
+    generatesMaxCount: 0
     creates: []
     coolDown:
       maxCounts: 

@@ -489,8 +489,7 @@ namespace Merge
             GameObject otherTile = otherItem.transform.parent.gameObject;
             Vector3 initialScale = otherItem.transform.localScale;
             Vector3 initialPos = otherItem.transform.position;
-
-            pointerHandler.CheckMerge(currentItem.sprite);
+            Sprite prevSprite = currentItem.sprite;
 
             // Calc new item name
             Item item = otherItem;
@@ -561,6 +560,8 @@ namespace Merge
             callback += MergeBackCallback;
 
             currentItem.ScaleToSize(initialScale, scaleSpeed, false, callback);
+
+            pointerHandler.CheckMerge(prevSprite);
 
             boardManager.CheckForCrate(otherTile);
 
@@ -747,7 +748,7 @@ namespace Merge
             }
         }
 
-        void OpenCrateCallback(Item item)
+        public void OpenCrateCallback(Item item)
         {
             GameObject itemTile = item.transform.parent.gameObject;
 
@@ -761,13 +762,13 @@ namespace Merge
             }
         }
 
-        public void OpenLockCallback(Item item)
+        public void OpenLockCallback(Item item, bool ignoreState = false)
         {
             GameObject itemTile = item.transform.parent.gameObject;
 
             Vector2Int loc = boardManager.GetBoardLocation(0, itemTile);
 
-            if (gameData.boardData[loc.x, loc.y].state == Item.State.Locker)
+            if (ignoreState || gameData.boardData[loc.x, loc.y].state == Item.State.Locker)
             {
                 gameData.boardData[loc.x, loc.y].state = Item.State.Default;
 

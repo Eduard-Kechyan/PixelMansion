@@ -1,0 +1,11 @@
+{
+    // AREAS //
+    "area_Garden": "The Forgotten Garden",
+    "area_Garden_desc": "Very forgotten indeed. I can't remember why I am here!",
+    "area_LivingRoom": "The Living Room",
+    "area_LivingRoom_desc": "Since this is the 'Living' room, you can't die here!",
+    "area_Kitchen": "The Grand Kitchen",
+    "area_Kitchen_desc": "The kitchen is where all the cooking happens!",
+    "area_Bedroom": "The Teeny Tiny Bedroom",
+    "area_Bedroom_desc": "Sweet dreaming happens right here!"
+}

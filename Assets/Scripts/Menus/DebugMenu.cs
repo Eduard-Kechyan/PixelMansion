@@ -14,8 +14,11 @@ namespace Merge
         public PreMansionHandler preMansionHandler;
         public float transitionDuration = 0.1f;
         public SceneLoader sceneLoader;
+        public CameraPan cameraPan;
 
         private MenuUI.Menu menuType = MenuUI.Menu.Debug;
+
+        private bool controlJuliaChecked = false;
 
         // References
         private MenuUI menuUI;
@@ -40,6 +43,7 @@ namespace Merge
         private Button logsButton;
         private Button logsShakingButton;
         private Button unlockPreMansionButton;
+        private Button controlJuliaButton;
 
         // Instance
         public static DebugMenu Instance;
@@ -76,6 +80,7 @@ namespace Merge
                 logsButton = otherContainer.Q<Button>("LogsButton");
                 logsShakingButton = otherContainer.Q<Button>("LogsShakingButton");
                 unlockPreMansionButton = otherContainer.Q<Button>("UnlockPreMansionButton");
+                controlJuliaButton = otherContainer.Q<Button>("ControlJuliaButton");
 
                 // UI taps
                 skipSceneButton.clicked += () => SoundManager.Tap(() =>
@@ -112,6 +117,7 @@ namespace Merge
                 logsButton.clicked += () => SoundManager.Tap(logs.Toggle);
                 logsShakingButton.clicked += () => SoundManager.Tap(() => ToggleLogsShaking());
                 unlockPreMansionButton.clicked += () => SoundManager.Tap(RemovePreMansion);
+                controlJuliaButton.clicked += () => SoundManager.Tap(() => ToggleControlJulia());
 
                 Init();
             });
@@ -119,10 +125,9 @@ namespace Merge
 
         void Init()
         {
-            // Diagnostics
+            // Checks
             CheckDiagnostic();
 
-            // Log shaking
             CheckLogsShaking();
 
             // Handle scenes
@@ -133,18 +138,23 @@ namespace Merge
                     worldSceneButton.style.display = DisplayStyle.None;
                     mergeSceneButton.style.display = DisplayStyle.None;
                     unlockPreMansionButton.style.display = DisplayStyle.None;
+                    controlJuliaButton.style.display = DisplayStyle.None;
                     break;
                 case SceneLoader.SceneType.World:
                     skipSceneButton.style.display = DisplayStyle.None;
                     worldSceneButton.style.display = DisplayStyle.None;
                     mergeSceneButton.style.display = DisplayStyle.Flex; //
                     unlockPreMansionButton.style.display = DisplayStyle.Flex; //
+                    controlJuliaButton.style.display = DisplayStyle.Flex; //
+
+                    CheckJuliaControl();
                     break;
                 case SceneLoader.SceneType.Merge:
                     skipSceneButton.style.display = DisplayStyle.None;
                     worldSceneButton.style.display = DisplayStyle.Flex; //
                     mergeSceneButton.style.display = DisplayStyle.None;
                     unlockPreMansionButton.style.display = DisplayStyle.None;
+                    controlJuliaButton.style.display = DisplayStyle.None;
                     break;
             }
         }
@@ -260,6 +270,54 @@ namespace Merge
             }
 
             ToggleLogsShaking(false);
+        }
+
+        //// CONTROL JULIA ////
+
+        void ToggleControlJulia(bool toggle = true)
+        {
+            if (cameraPan != null)
+            {
+                Debug.Log("cj");
+
+                if (toggle)
+                {
+                    cameraPan.debugCharacterMovement = !cameraPan.debugCharacterMovement;
+                }
+
+                if (cameraPan.debugCharacterMovement)
+                {
+                    controlJuliaButton.text = "Control Julia: On";
+                    controlJuliaButton.RemoveFromClassList("debug_menu_button_red");
+                }
+                else
+                {
+                    controlJuliaButton.text = "Control Julia: Off";
+                    controlJuliaButton.AddToClassList("debug_menu_button_red");
+                }
+
+                PlayerPrefs.SetInt("debugCharacterMovement", cameraPan.debugCharacterMovement ? 1 : 0);
+                PlayerPrefs.Save();
+            }
+        }
+
+        void CheckJuliaControl()
+        {
+            if (cameraPan != null && !controlJuliaChecked)
+            {
+                if (PlayerPrefs.HasKey("debugCharacterMovement"))
+                {
+                    cameraPan.debugCharacterMovement = PlayerPrefs.GetInt("debugCharacterMovement") == 1 ? true : false;
+                }
+                else
+                {
+                    cameraPan.debugCharacterMovement = false;
+                }
+
+                controlJuliaChecked = true;
+
+                ToggleLogsShaking(false);
+            }
         }
     }
 }

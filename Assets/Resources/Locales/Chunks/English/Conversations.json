@@ -1,0 +1,34 @@
+{
+    "convo_skip_button": "Skip",
+    "convo_next_button": "Next",
+    // TUTORIAL //
+    "convo_TutorialPart1_0": "........",
+    "convo_TutorialPart1_1": "Ugh, Where am I???",
+    "convo_TutorialPart1_2": "This place is... strange. What happened?",
+    "convo_TutorialPart1_3": "What? I can't remember anything!",
+    "convo_TutorialPart1_4": "Ooh. Hi there! Good thing I still remember you, my friend!",
+    "convo_TutorialPart1_5": "But wait! I can't remember your name. Do you mind reminding me?",
+    ////
+    "convo_TutorialPart2_0": "{0}? Sounds familiar. Something is coming back to me!",
+    "convo_TutorialPart2_1": "Uuuuh! No, got nothing. But, don't worry! I will do my best to remember.",
+    "convo_TutorialPart2_2": "For now, let's see where we are!",
+    ////
+    "convo_TutorialPart3_0": "A mansion? And a locked gate!",
+    "convo_TutorialPart3_1": "Well, let's see if there is someone inside who can help us.",
+    ////
+    "convo_TutorialPart4_0": "Uuuff! This must be the living room! It's do dirty!",
+    "convo_TutorialPart4_1": "We need to do some cleaning before we can continue exploring this mansion.",
+    "convo_TutorialPart4_2": "Let's find some cleaning supplies!",
+    ////
+    "convo_TutorialPart5_0": "So much dust! The Broom broke too! How come???",
+    "convo_TutorialPart5_1": "And we are only halfway done!",
+    ////
+    "convo_TutorialPart6_0": "Aaaah, much better! But, why is the floor so rotten?",
+    "convo_TutorialPart6_1": "I fear it might break, and I will fall beneath it!!! SCARRYYY!",
+    "convo_TutorialPart6_2": "Surely we should fix this first!",
+    ////
+    "convo_TutorialPart7_0": "You know what, since we have done so much already, why don't we continue?",
+    "convo_TutorialPart7_1": "I know, let's start with the walls!",
+    // LIVING ROOM //
+    "________ CONVO LIVING ROOM ________": "________________"
+}

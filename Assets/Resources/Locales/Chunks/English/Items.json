@@ -1,0 +1,77 @@
+{
+    ////////////////// CHESTS //////////////////
+    "Chest_Item": "Chest of Items",
+    "Chest_Piggy": "Piggy Bank",
+    "Chest_Energy": "Energetic Chest",
+    ////////////////// COLLECTABLES //////////////////
+    "Coll_Experience": "Experience",
+    "Coll_Gold": "Gold",
+    "Coll_Gems": {
+        "zero": "Gem",
+        "one": "Gem",
+        "other": "Gems"
+    },
+    "Coll_Energy": "Energy",
+    ////////////////// GENERATORS //////////////////
+    // TOOLBOX //
+    "Gen_Toolbox_Title": "Toolbox",
+    "Gen_Toolbox_1": "Toolbox Handle",
+    "Gen_Toolbox_2": "Toolbox Lid",
+    "Gen_Toolbox_3": "Toolbox Parts",
+    "Gen_Toolbox_4": "Closed Toolbox",
+    "Gen_Toolbox_5": "Half-Opened Toolbox",
+    "Gen_Toolbox_6": "Toolbox",
+    "Gen_Toolbox_7": "Large Half-Opened Toolbox",
+    "Gen_Toolbox_8": "Large Toolbox",
+    // CLEANING BOX //
+    "Gen_CleaningBox_Title": "Cleaning Supplies",
+    "Gen_CleaningBox_1": "Cleaning Items",
+    "Gen_CleaningBox_2": "Cleaning Supplies",
+    "Gen_CleaningBox_3": "Cleaning Cart",
+    // ART BOX //
+    "Gen_ArtBox_Title": "Art Supplies",
+    "Gen_ArtBox_1": "Planks for Art Supplies",
+    "Gen_ArtBox_2": "Board for Art Supplies",
+    "Gen_ArtBox_3": "Box for Art Supplies",
+    "Gen_ArtBox_4": "Art Supply Case (Closed)",
+    "Gen_ArtBox_5": "Art Supply Case (Empty)",
+    "Gen_ArtBox_6": "Art Supply Case",
+    ////////////////// ITEMS //////////////////
+    // TOOLS //
+    "Item_Tools_Title": "Tools",
+    "Item_Tools_1": "Screwdriver",
+    "Item_Tools_2": "Wrench",
+    "Item_Tools_3": "Pliers",
+    "Item_Tools_4": "Hammer",
+    "Item_Tools_5": "Jaw Wrench",
+    "Item_Tools_6": "Hand Saw",
+    "Item_Tools_7": "Hack Saw",
+    "Item_Tools_8": "Axe",
+    "Item_Tools_9": "Chainsaw",
+    // GLOVES //
+    "Item_Gloves_Title": "Gloves",
+    "Item_Gloves_1": "Glove",
+    "Item_Gloves_2": "Gloves",
+    "Item_Gloves_3": "Super Gloves",
+    // CLEANING TOOLS //
+    "Item_CleaningTools_Title": "Cleaning Supplies",
+    "Item_CleaningTools_1": "Soap",
+    "Item_CleaningTools_2": "Liquid Soap",
+    "Item_CleaningTools_3": "Cleaning Spray",
+    "Item_CleaningTools_4": "Bucket",
+    "Item_CleaningTools_5": "Broom",
+    // BRUSHES //
+    "Item_Brushes_Title": "Brushes",
+    "Item_Brushes_1": "Paint Brush",
+    "Item_Brushes_2": "Big Paint Brush",
+    "Item_Brushes_3": "Paint Roller",
+    "Item_Brushes_4": "Big Paint Roller",
+    // PAINT //
+    "Item_Paint_Title": "Paint",
+    "Item_Paint_1": "Palette",
+    "Item_Paint_2": "Tube of Paint",
+    "Item_Paint_3": "Tubes of Paint",
+    "Item_Paint_4": "Spray Paint",
+    "Item_Paint_5": "Can of Paint",
+    "Item_Paint_6": "Bucket of Paint"
+}

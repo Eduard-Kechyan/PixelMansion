@@ -2,161 +2,1102 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Newtonsoft.Json;
 
 namespace Merge
 {
     public class TestBoardManager : MonoBehaviour
     {
         // Variables
-        public Generators generators;
-        public Items items;
-        public Chests chests;
-        public Colls colls;
-        public List<Sprite> crates;
+        public float moveSpeed = 14f;
+        public float altMoveSpeed = 14f;
+        public float scaleSpeed = 8f;
+        public float altScaleSpeed = 8f;
+        public int experienceThreshold = 4;
+        public float crateSoundTimeout = 1f;
+
+        [ReadOnly]
+        public bool boardSet = false;
+
+        [Header("Bubbles")]
+        public int minBubbleLevel = 6;
+        public int bubbleChance = 30; // In %
+        public int bubbleCount = 1000;
+        public int bubblePopTimeout = 60;
 
         [HideInInspector]
-        public bool ready = false;
+        public GameObject boardTiles;
 
-        [HideInInspector]
-        public TextAsset initialItems;
-
-        private string initialItemsPath = "";
-
-        // Sprites
-        private Sprite[] itemSprites;
-        private Sprite[] generatorSprites;
-        private Sprite[] chestSprites;
-        private Sprite[] collectableSprites;
+        private Coroutine crateCoroutine;
+        private float crateTimeout = 0f;
 
         // Classes
         [Serializable]
-        public class InitialItemData
+        public class TileEmpty
+        {
+            public int order;
+            public Vector2Int loc;
+            public float distance;
+        }
+
+        [Serializable]
+        public class Tile
+        {
+            public Sprite sprite;
+            public Item.Type type;
+            public Item.State state;
+            public Item.Group group;
+            public Item.GenGroup genGroup;
+            public Item.CollGroup collGroup;
+            public Item.ChestGroup chestGroup;
+            public bool hasTimer;
+
+            [HideInInspector]
+            public string id;
+
+            [HideInInspector]
+            public int generatesAtLevel;
+
+            [HideInInspector]
+            public int level;
+
+            [HideInInspector]
+            public int crate;
+
+            [HideInInspector]
+            public int order;
+
+            [HideInInspector]
+            public int chestItems;
+
+            [HideInInspector]
+            public bool chestItemsSet;
+
+            [HideInInspector]
+            public bool chestOpen;
+
+            [HideInInspector]
+            public bool gemPopped;
+
+            [HideInInspector]
+            public bool isCompleted;
+
+            [HideInInspector]
+            public bool timerOn;
+        }
+
+        [Serializable]
+        public class TileJson
         {
             public string sprite;
             public string type;
-            public string state;
             public string group;
             public string genGroup;
             public string collGroup;
             public string chestGroup;
+            public bool hasTimer;
+            public string id;
+            public int generatesAtLevel;
+            public int crate;
+            public string state;
+            public int chestItems;
+            public bool chestItemsSet;
+            public bool chestOpen;
+            public bool gemPopped;
+            public bool isCompleted;
+            public bool timerOn;
+        }
+
+        [Serializable]
+        public class TypeItem
+        {
+            [HideInInspector]
+            public string name;
+            public Item.Type type;
+            public Item.Group group;
+            public bool hasLevel;
+            public bool customName;
+
+            public ParentData[] parents;
+            public ItemData[] content;
+
+            [HideInInspector]
+            public Item.CollGroup collGroup;
+            [HideInInspector]
+            public Item.ChestGroup chestGroup;
+            [HideInInspector]
+            public Item.GenGroup genGroup;
+            [HideInInspector]
+            public bool hasTimer;
+            [HideInInspector]
+            public int generatesAtLevel;
+            [HideInInspector]
+            public int generatesMaxCount;
+            [HideInInspector]
+            public Creates[] creates;
+            [HideInInspector]
+            public TimeManager.CoolDown coolDown;
+        }
+
+        [Serializable]
+        public class TypeGen
+        {
+            [HideInInspector]
+            public string name;
+            public Item.GenGroup genGroup;
+            public bool hasLevel;
+            public bool customName;
+            public int generatesAtLevel;
+
+            public TimeManager.CoolDown coolDown;
+            public ParentData[] parents;
+            public Creates[] creates;
+            public ItemData[] content;
+        }
+
+        [Serializable]
+        public class TypeColl
+        {
+            [HideInInspector]
+            public string name;
+            public Item.CollGroup collGroup;
+            public bool hasLevel;
+            public bool customName;
+
+            public ParentData[] parents;
+            public ItemData[] content;
+        }
+
+        [Serializable]
+        public class TypeChest
+        {
+            [HideInInspector]
+            public string name;
+            public Item.ChestGroup chestGroup;
+            public bool hasLevel;
+            public bool customName;
+
+            public Creates[] creates;
+            public ItemData[] content;
+        }
+
+        [Serializable]
+        public class ParentData
+        {
+            [HideInInspector]
+            public string name;
+            public Item.Type type;
+            public Item.GenGroup genGroup;
+            public Item.ChestGroup chestGroup;
+        }
+
+        [Serializable]
+        public class ItemData
+        {
+            public Sprite sprite;
+            public bool customName;
+            public string itemName;
+
+            [HideInInspector]
+            public int level;
+
+            [HideInInspector]
+            public Item.Group group;
+
+            [HideInInspector]
+            public Item.Type type;
+
+            [HideInInspector]
+            public Item.ChestGroup chestGroup;
+
+            [HideInInspector]
+            public int generatesAtLevel;
+
+            [HideInInspector]
+            public Item.GenGroup genGroup;
+
+            [HideInInspector]
+            public Item.CollGroup collGroup;
+
+            [HideInInspector]
+            public ParentData[] parents;
+
+            [HideInInspector]
+            public Creates[] creates;
+
+            [HideInInspector]
+            public TimeManager.CoolDown coolDown;
+
+            [HideInInspector]
+            public bool unlocked;
+
+            [HideInInspector]
+            public bool isMaxLevel;
+
+            [HideInInspector]
+            public bool hasLevel;
+
+            [HideInInspector]
+            public bool hasTimer;
+
+            [HideInInspector]
+            public int chestItems;
+
+            [HideInInspector]
+            public bool chestItemsSet;
+
+            [HideInInspector]
+            public DateTime startTime;
+
+            [HideInInspector]
+            public int seconds;
+
+            [HideInInspector]
+            public bool gemPopped;
+        }
+
+        [Serializable]
+        public class Creates
+        {
+            [HideInInspector]
+            public string name;
+            public Sprite sprite;
+            public Item.Type type;
+            public Item.Group group;
+            public Item.GenGroup genGroup;
+            public Item.CollGroup collGroup;
+            public int maxLevel;
+            public bool canIncreaseMaxLevel;
+            public float chance;
         }
 
         // References
-        private AddressableManager addressableManager;
+        private TestBoardInit boardInitialization;
+        private TestBoardInteractions interactions;
+        private BoardSelection boardSelection;
+        private DataManager dataManager;
+        private SoundManager soundManager;
+        private GameData gameData;
+        private ItemHandler itemHandler;
+        private ValuePop valuePop;
+        private ErrorManager errorManager;
+        private TimeManager timeManager;
+        private TutorialManager tutorialManager;
 
         void Start()
         {
             // Cache
-            addressableManager = GetComponent<AddressableManager>();
-
-            StartCoroutine(WaitForInitialization());
+            boardTiles = transform.GetChild(0).gameObject;
+            boardInitialization = GetComponent<TestBoardInit>();
+            interactions = GetComponent<TestBoardInteractions>();
+            boardSelection = GetComponent<BoardSelection>();
+            dataManager = DataManager.Instance;
+            soundManager = SoundManager.Instance;
+            gameData = GameData.Instance;
+            itemHandler = dataManager.GetComponent<ItemHandler>();
+            valuePop = GameRefs.Instance.valuePop;
+            errorManager = ErrorManager.Instance;
+            timeManager = GameRefs.Instance.timeManager;
+            tutorialManager = GameRefs.Instance.tutorialManager;
         }
 
-        IEnumerator WaitForInitialization()
+        /////// GET BOARD DATA ////////
+
+        // Get the item's order from the board by its location
+        public int GetBoardOrder(int checkX, int checkY)
         {
-            while (!addressableManager.initialized)
+            int count = 0;
+
+            for (int x = 0; x < GameData.WIDTH; x++)
             {
-                yield return null;
+                for (int y = 0; y < GameData.HEIGHT; y++)
+                {
+                    if (x == checkX && y == checkY)
+                    {
+                        return count;
+                    }
+
+                    count++;
+                }
             }
 
-            Init();
+            return 0;
         }
 
-        async void Init()
+        // Get the item's location from the board by its tile's order
+        public Vector2Int GetBoardLocation(int order, GameObject tile = null)
         {
-            // Get sprites
-            itemSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("items");
-            generatorSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("generators");
-            collectableSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("collectables");
-            chestSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("chests");
+            Vector2Int loc = new(0, 0);
 
-            // Get Initial Items
-            string prePath = "Assets/Addressables/Data/InitialItemsSkip.json";
+            if (tile != null)
+            {
+                int index = tile.gameObject.name.LastIndexOf('e') + 1;
+                if (index >= 0 && index < tile.gameObject.name.Length)
+                {
+                    if (int.TryParse(tile.gameObject.name.Substring(index), out int parsedOrder))
+                    {
+                        order = parsedOrder;
+                    }
+                    else
+                    {
+                        // ERROR
+                        errorManager.ThrowWarning(ErrorManager.ErrorType.Code, GetType().ToString(), "Failed to parse order from tile name.");
+                        return loc;
+                    }
+                }
+                else
+                {
+                    // ERROR
+                    errorManager.ThrowWarning(ErrorManager.ErrorType.Code, GetType().ToString(), "Invalid tile name format.");
+                    return loc;
+                }
+            }
 
-            initialItems = await addressableManager.LoadAssetAsync<TextAsset>(prePath);
+            int count = 0;
 
-            initialItemsPath = Application.dataPath.Replace("/Assets", "/") + prePath;
+            for (int x = 0; x < gameData.boardData.GetLength(0); x++)
+            {
+                for (int y = 0; y < gameData.boardData.GetLength(1); y++)
+                {
+                    if (order == count)
+                    {
+                        {
+                            loc = new Vector2Int(x, y);
+                            return loc;
+                        }
+                    }
 
-            ready = true;
+                    count++;
+                }
+            }
+
+            return loc;
         }
 
-        Sprite GetSprite(string spriteName, Item.Type type)
+        public int GetBoardOrderFromTile(GameObject tile)
         {
-            if (type == Item.Type.Coll)
+            Vector2Int loc = GetBoardLocation(0, tile);
+
+            return GetBoardOrder(loc.x, loc.y);
+        }
+
+        public Vector2 GetTileItemPosByLoc(int checkX, int checkY)
+        {
+            int order = GetBoardOrder(checkX, checkY);
+
+            return GetTileItemPosByOrder(order);
+        }
+
+        public Vector2 GetTileItemPosByOrder(int order)
+        {
+            Transform tileTransform = boardTiles.transform.GetChild(order);
+
+            if (tileTransform != null)
             {
-                for (int i = 0; i < collectableSprites.Length; i++)
-                {
-                    if (collectableSprites[i].name == spriteName)
-                    {
-                        return collectableSprites[i];
-                    }
-                }
-            }
-            else if (type == Item.Type.Chest)
-            {
-                for (int i = 0; i < chestSprites.Length; i++)
-                {
-                    if (chestSprites[i].name == spriteName)
-                    {
-                        return chestSprites[i];
-                    }
-                }
-            }
-            else if (type == Item.Type.Gen)
-            {
-                for (int i = 0; i < generatorSprites.Length; i++)
-                {
-                    if (generatorSprites[i].name == spriteName)
-                    {
-                        return generatorSprites[i];
-                    }
-                }
+                return tileTransform.position;
             }
             else
             {
-                for (int i = 0; i < itemSprites.Length; i++)
-                {
-                    if (itemSprites[i].name == spriteName)
-                    {
-                        return itemSprites[i];
-                    }
-                }
+                // ERROR
+                errorManager.ThrowWarning(ErrorManager.ErrorType.Code, GetType().ToString(), "Failed to retrieve tile transform.");
+                return Vector2.zero;
             }
+        }
 
-            Debug.Log(type);
-            Debug.Log(spriteName);
+        public Vector2 GetTileItemPosBySpriteName(string spriteName)
+        {
+            //  int count = 0;
 
-            Debug.Log("SPRITE IS NULL");
+            /*   for (int x = 0; x < GameData.WIDTH; x++)
+               {
+                   for (int y = 0; y < GameData.HEIGHT; y++)
+                   {
+                       if (gameData.boardData[x, y].sprite != null && gameData.boardData[x, y].sprite.name == spriteName)
+                       {
+                           return GetTileItemPosByOrder(count);
+                       }
+
+                       count++;
+                   }
+               }*/
+
+            // ERROR
+            errorManager.ThrowWarning(ErrorManager.ErrorType.Code, GetType().ToString(), "Board item with sprite name \'" + spriteName + "\' not found!");
 
             return default;
         }
 
-        public BoardManager.Tile[] ConvertInitialItemsToBoard(string initialJson)
+        public Vector2 GetTileItemPosById(string id)
         {
-            InitialItemData[] initialItemDataJson = JsonConvert.DeserializeObject<InitialItemData[]>(initialJson);
+            /* for (int x = 0; x < gameData.boardData.GetLength(0); x++)
+             {
+                 for (int y = 0; y < gameData.boardData.GetLength(1); y++)
+                 {
+                     if (gameData.boardData[x, y].id == id)
+                     {
+                         return GetTileItemPosByLoc(x, y);
+                     }
+                 }
+             }*/
 
-            BoardManager.Tile[] boardData = new BoardManager.Tile[initialItemDataJson.Length];
+            // ERROR
+            errorManager.ThrowWarning(ErrorManager.ErrorType.Code, GetType().ToString(), "Item with ID " + id + " not found on the board.");
+            return Vector2.zero;
+        }
 
-            for (int i = 0; i < initialItemDataJson.Length; i++)
+        /////// SET BOARD DATA ////////
+
+        public void SwapBoardData(GameObject oldTile, GameObject newTile)
+        {
+            // Get tile locations
+            Vector2Int oldLoc = GetBoardLocation(0, oldTile);
+            Vector2Int newLoc = GetBoardLocation(0, newTile);
+
+            // Save items
+            /*   Tile oldItem = gameData.boardData[oldLoc.x, oldLoc.y];
+               Tile newItem = gameData.boardData[newLoc.x, newLoc.y];
+
+               Tile temp = gameData.boardData[oldLoc.x, oldLoc.y];
+               gameData.boardData[oldLoc.x, oldLoc.y] = gameData.boardData[newLoc.x, newLoc.y];
+               gameData.boardData[newLoc.x, newLoc.y] = temp;
+
+               // Set items
+               gameData.boardData[oldLoc.x, oldLoc.y] = new()
+               {
+                   sprite = newItem.sprite,
+                   type = newItem.type,
+                   group = newItem.group,
+                   genGroup = newItem.genGroup,
+                   collGroup = newItem.collGroup,
+                   chestGroup = newItem.chestGroup,
+                   state = newItem.state,
+                   crate = newItem.crate,
+                   order = oldItem.order,
+                   gemPopped = newItem.gemPopped,
+                   isCompleted = newItem.isCompleted,
+                   timerOn = newItem.timerOn,
+                   id = newItem.id,
+               };
+
+               gameData.boardData[newLoc.x, newLoc.y] = new()
+               {
+                   sprite = oldItem.sprite,
+                   type = oldItem.type,
+                   group = oldItem.group,
+                   genGroup = oldItem.genGroup,
+                   collGroup = oldItem.collGroup,
+                   chestGroup = oldItem.chestGroup,
+                   state = oldItem.state,
+                   crate = oldItem.crate,
+                   order = newItem.order,
+                   gemPopped = newItem.gemPopped,
+                   isCompleted = newItem.isCompleted,
+                   timerOn = oldItem.timerOn,
+                   id = oldItem.id,
+               };*/
+
+            // Save the board to disk
+            dataManager.SaveBoard();
+        }
+
+        public void MergeBoardData(GameObject oldTile, GameObject newTile, Item newItem)
+        {
+            // Get tile locations
+            Vector2Int oldLoc = GetBoardLocation(0, oldTile);
+            Vector2Int newLoc = GetBoardLocation(0, newTile);
+
+            /* int oldOrder = gameData.boardData[oldLoc.x, oldLoc.y].order;
+             int newOrder = gameData.boardData[newLoc.x, newLoc.y].order;
+
+             // Clear old items (preserve the order)
+             gameData.boardData[oldLoc.x, oldLoc.y] = new() { order = oldOrder };
+
+             // Set new item
+             gameData.boardData[newLoc.x, newLoc.y] = new()
+             {
+                 sprite = newItem.sprite,
+                 type = newItem.type,
+                 group = newItem.group,
+                 genGroup = newItem.genGroup,
+                 collGroup = newItem.collGroup,
+                 chestGroup = newItem.chestGroup,
+                 state = newItem.state,
+                 crate = newItem.crate,
+                 order = newOrder,
+                 gemPopped = newItem.gemPopped,
+                 isCompleted = newItem.isCompleted,
+                 timerOn = newItem.timerOn,
+                 id = newItem.id,
+             };
+
+             // Save the board to disk
+             dataManager.SaveBoard();
+
+             // Give experience if it's the first time unlocking it and its level is higher than experienceThreshold (default 4)
+             if (newItem.type != Item.Type.Coll && newItem.level >= (experienceThreshold + 1))
+             {
+                 CreateCollectable();
+             }*/
+        }
+
+        public void RemoveBoardData(GameObject oldTile)
+        {
+            // Get tile locations
+            Vector2Int oldLoc = GetBoardLocation(0, oldTile);
+
+            // int oldOrder = gameData.boardData[oldLoc.x, oldLoc.y].order;
+
+            // Clear old items
+            // gameData.boardData[oldLoc.x, oldLoc.y] = new Tile { order = oldOrder };
+
+            // Save the board to disk
+            dataManager.SaveBoard();
+        }
+
+        public void ToggleTimerOnItem(int order, bool enable)
+        {
+            if (order < 0 || order >= boardTiles.transform.childCount)
             {
-                Item.Type newType = Glob.ParseEnum<Item.Type>(initialItemDataJson[i].type);
-
-                BoardManager.Tile newBoardData = new()
-                {
-                    sprite = initialItemDataJson[i].sprite == "" ? null : GetSprite(initialItemDataJson[i].sprite, newType),
-                    state = Glob.ParseEnum<Item.State>(initialItemDataJson[i].state),
-                    type = newType,
-                    group = Glob.ParseEnum<Item.Group>(initialItemDataJson[i].group),
-                    genGroup = Glob.ParseEnum<Item.GenGroup>(initialItemDataJson[i].genGroup),
-                    collGroup = Glob.ParseEnum<Item.CollGroup>(initialItemDataJson[i].collGroup),
-                    chestGroup = Glob.ParseEnum<Item.ChestGroup>(initialItemDataJson[i].chestGroup),
-                };
-
-                boardData[i] = newBoardData;
+                // ERROR
+                errorManager.ThrowWarning(ErrorManager.ErrorType.Code, GetType().ToString(), "Invalid order provided.");
+                return;
             }
 
-            return boardData;
+            Transform tileTransform = boardTiles.transform.GetChild(order);
+
+            if (tileTransform != null)
+            {
+                Item itemComponent = tileTransform.GetComponentInChildren<Item>();
+
+                if (itemComponent != null)
+                {
+                    itemComponent.ToggleTimer(enable);
+                }
+                else
+                {
+                    // ERROR
+                    errorManager.ThrowWarning(ErrorManager.ErrorType.Code, GetType().ToString(), "Item component not found on tile.");
+                }
+            }
+            else
+            {
+                // ERROR
+                errorManager.ThrowWarning(ErrorManager.ErrorType.Code, GetType().ToString(), "Tile transform not found.");
+            }
+        }
+
+        /////// CRATE ////////
+
+        public void CheckForCrate(GameObject tile)
+        {
+            // Check if the item's neighbors are crates
+
+            Vector2Int loc = GetBoardLocation(0, tile);
+
+            if (loc.x < (GameData.WIDTH - 1))
+            {
+                FindItemAndOpenCrate(loc.x + 1, loc.y);
+            }
+
+            if (loc.x > 0)
+            {
+                FindItemAndOpenCrate(loc.x - 1, loc.y);
+            }
+
+            if (loc.y < (GameData.HEIGHT - 1))
+            {
+                FindItemAndOpenCrate(loc.x, loc.y + 1);
+            }
+
+            if (loc.y > 0)
+            {
+                FindItemAndOpenCrate(loc.x, loc.y - 1);
+            }
+        }
+
+        void FindItemAndOpenCrate(int x, int y)
+        {
+            // Find the the crate on the board and open it
+            /*   if (gameData.boardData[x, y].state == Item.State.Crate)
+               {
+                   gameData.boardData[x, y].state = Item.State.Locker;
+
+                   // Play crate opening audio
+                   if (crateTimeout == 0)
+                   {
+                       if (crateCoroutine != null)
+                       {
+                           StopCoroutine(crateCoroutine);
+                           crateCoroutine = null;
+                       }
+
+                       soundManager.PlaySound(SoundManager.SoundType.OpenCrate);
+
+                       crateTimeout = crateSoundTimeout;
+
+                       crateCoroutine = StartCoroutine(CrateTimeout());
+                   }
+
+                   int order = GetBoardOrder(x, y);
+
+                   Transform foundTile = boardTiles.transform.GetChild(order);
+
+                   if (foundTile.childCount > 0)
+                   {
+                       GameObject foundItem = foundTile.GetChild(0).gameObject;
+
+                       foundItem.GetComponent<Item>().OpenCrate();
+                   }
+
+                   dataManager.SaveBoard();
+               }*/
+        }
+
+        IEnumerator CrateTimeout()
+        {
+            WaitForSeconds wait = new(0.1f);
+
+            while (crateTimeout > 0)
+            {
+                yield return wait;
+
+                crateTimeout -= 0.1f;
+            }
+        }
+
+        public Vector2 UnlockAndGetItemPos(string spriteName)
+        {
+            // int count = 0;
+            Vector2 pos = new();
+
+            /*  for (int x = 0; x < GameData.WIDTH; x++)
+              {
+                  for (int y = 0; y < GameData.HEIGHT; y++)
+                  {
+                      if (gameData.boardData[x, y].sprite != null && gameData.boardData[x, y].sprite.name == spriteName)
+                      {
+                          Transform tileTransform = boardTiles.transform.GetChild(count);
+
+                          if (tileTransform != null)
+                          {
+                              pos = tileTransform.position;
+
+                              Transform itemTransform = tileTransform.GetChild(0);
+
+                              if (itemTransform != null)
+                              {
+                                  if (itemTransform.TryGetComponent(out Item item))
+                                  {
+                                      item.UnlockLock(0.05f, false);
+
+                                      // Play unlocking audio
+                                      soundManager.PlaySound(SoundManager.SoundType.UnlockLock);
+
+                                      // interactions.OpenLockCallback(item);
+                                  }
+                                  else
+                                  {
+                                      // ERROR
+                                      errorManager.ThrowWarning(ErrorManager.ErrorType.Code, GetType().ToString(), "Failed to retrieve item.");
+                                      return default;
+                                  }
+                              }
+                              else
+                              {
+                                  // ERROR
+                                  errorManager.ThrowWarning(ErrorManager.ErrorType.Code, GetType().ToString(), "Failed to retrieve item transform.");
+                                  return default;
+                              }
+                          }
+                          else
+                          {
+                              // ERROR
+                              errorManager.ThrowWarning(ErrorManager.ErrorType.Code, GetType().ToString(), "Failed to retrieve tile transform.");
+                              return default;
+                          }
+                      }
+
+                      count++;
+                  }
+              }*/
+
+            return pos;
+        }
+
+        /////// BUBBLE ////////
+
+        public void CheckForBubble(Item item)
+        {
+            if (PlayerPrefs.HasKey("tutorialFinished") && item.level >= minBubbleLevel && item.type == Item.Type.Item)
+            {
+                float a = 0;
+                float b = 0;
+
+                float single = 100f / (float)bubbleCount;
+
+                for (int i = 0; i < bubbleCount; i++)
+                {
+                    float randomNum = UnityEngine.Random.Range(0, 101);
+
+                    if (randomNum <= bubbleChance)
+                    {
+                        a += 1f;
+                    }
+                    else
+                    {
+                        b += 1f;
+                    }
+                }
+
+                if ((a * single) < bubbleChance)
+                {
+                    GameObject tile = item.transform.parent.gameObject;
+
+                    Vector2Int tileLoc = GetBoardLocation(0, tile);
+
+                    List<TileEmpty> emptyBoard = GetEmptyTileItems(tileLoc);
+
+                    // Check if the board is full
+                    if (emptyBoard.Count > 0)
+                    {
+                        emptyBoard.Sort((p1, p2) => p1.distance.CompareTo(p2.distance));
+
+                        for (int i = 0; i < gameData.itemsData.Length; i++)
+                        {
+                            if (gameData.itemsData[i].group == item.group)
+                            {
+                                for (int j = 0; j < gameData.itemsData[i].content.Length; j++)
+                                {
+                                    if (j == (item.level - 1))
+                                    {
+                                        /* CreateItemOnEmptyTile(
+                                             gameData.itemsData[i].content[j],
+                                             emptyBoard[0],
+                                             item.transform.position,
+                                             true,
+                                             true,
+                                             null,
+                                             null,
+                                             Item.State.Bubble
+                                         );*/
+
+                                        break;
+                                    }
+                                }
+
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public void RemoveBubble(string id)
+        {
+            //  int count = 0;
+
+            /* for (int x = 0; x < gameData.boardData.GetLength(0); x++)
+             {
+                 for (int y = 0; y < gameData.boardData.GetLength(1); y++)
+                 {
+                     if (gameData.boardData[x, y].id == id)
+                     {
+                         Transform tile = boardTiles.transform.GetChild(count);
+
+                         Item bubbleItem = null;
+
+                         if (tile != null)
+                         {
+                             bubbleItem = tile.GetChild(0).GetComponent<Item>();
+                         }
+
+                         if (bubbleItem != null)
+                         {
+                             int itemLevel = bubbleItem.level;
+
+                             Vector2 position = bubbleItem.transform.position;
+
+                             // boardSelection.Unselect(BoardSelection.SelectType.None);
+
+                             TileEmpty tileEmpty = new()
+                             {
+                                 order = count,
+                                 loc = new(x, y),
+                                 distance = 0f
+                             };
+
+                             bubbleItem.ScaleToSize(Vector2.zero, scaleSpeed, true, () =>
+                             {
+                                 gameData.boardData[x, y] = new();
+
+                                 for (int i = 0; i < gameData.collectablesData.Length; i++)
+                                 {
+                                     if (gameData.collectablesData[i].collGroup == Item.CollGroup.Gold)
+                                     {
+                                         for (int j = 0; j < gameData.collectablesData[i].content.Length; j++)
+                                         {
+                                             if (itemLevel >= minBubbleLevel && j < minBubbleLevel)
+                                             {
+                                                 CreateItemOnEmptyTile(
+                                                     gameData.collectablesData[i].content[j],
+                                                     tileEmpty,
+                                                     position,
+                                                     false,
+                                                     false,
+                                                     null,
+                                                     null,
+                                                     Item.State.Default
+                                                 );
+
+                                                 break;
+                                             }
+                                         }
+
+                                         break;
+                                     }
+                                 }
+                             });
+                         }
+
+                         return;
+                     }
+
+                     count++;
+                 }
+             }*/
+        }
+
+        /////// CREATE ITEM ON THE BOARD ////////
+        public void CreateCollectable()
+        {
+            /*GameObject tile = interactions.currentItem.transform.parent.gameObject;
+
+             Vector2Int tileLoc = GetBoardLocation(0, tile);
+
+             List<TileEmpty> emptyBoard = GetEmptyTileItems(tileLoc);
+
+             // Check if the board is full
+             if (emptyBoard.Count > 0)
+             {
+                 emptyBoard.Sort((p1, p2) => p1.distance.CompareTo(p2.distance));
+
+                 // Create item from selected group
+                 for (int i = 0; i < gameData.collectablesData.Length; i++)
+                 {
+                     if (gameData.collectablesData[i].collGroup == Item.CollGroup.Experience)
+                     {
+                         CreateItemOnEmptyTile(
+                             gameData.collectablesData[i].content[0],
+                             emptyBoard[0],
+                             tile.transform.position
+                         );
+
+                         return;
+                     }
+                 }
+             }
+             else
+             {
+                 valuePop.PopValue(1, Item.CollGroup.Experience, tile.transform.position);
+             }*/
+        }
+
+        public void CreateItemOnEmptyTile(
+            ItemData itemData,
+            TileEmpty emptyBoard,
+            Vector2 initialPosition,
+            bool canUnlock = true,
+            bool useEnergy = false,
+            InventoryMenu.Inventory inventoryItem = null,
+            Action<Vector2> callBack = null,
+            Item.State newState = Item.State.Default
+        )
+        {
+            GameObject emptyTile = boardTiles.transform.GetChild(emptyBoard.order).gameObject;
+
+            Tile tileItem;
+
+            if (inventoryItem != null && itemData == null)
+            {
+                tileItem = new()
+                {
+                    sprite = inventoryItem.sprite,
+                    type = inventoryItem.type,
+                    group = inventoryItem.group,
+                    genGroup = inventoryItem.genGroup,
+                    chestGroup = inventoryItem.chestGroup,
+                    gemPopped = inventoryItem.gemPopped,
+                    timerOn = inventoryItem.timerOn,
+                    isCompleted = inventoryItem.isCompleted,
+                    id = inventoryItem.id
+                };
+            }
+            else
+            {
+                tileItem = new()
+                {
+                    sprite = itemData.sprite,
+                    type = itemData.type,
+                    group = itemData.group,
+                    state = newState,
+                    genGroup = itemData.genGroup,
+                    collGroup = itemData.collGroup,
+                    chestGroup = itemData.chestGroup,
+                    gemPopped = itemData.gemPopped,
+                    id = ""
+                };
+            }
+
+            if (tileItem.id == "")
+            {
+                tileItem.id = Guid.NewGuid().ToString();
+            }
+
+            // Create the item on the board
+            /* Item newItem = itemHandler.CreateItem(emptyTile, boardInitialization.tileSize, tileItem);
+
+             Vector2 tempScale = new(
+                 newItem.transform.localScale.x,
+                 newItem.transform.localScale.y
+             );
+
+             newItem.transform.GetChild(3).GetComponent<SpriteRenderer>().sortingOrder = 2;
+             newItem.gameObject.layer = LayerMask.NameToLayer("ItemDragging");
+
+             // Play generating audio
+             soundManager.PlaySound(SoundManager.SoundType.Generate);
+
+             newItem.transform.position = initialPosition;
+
+             newItem.transform.localScale = Vector2.zero;
+
+             newItem.MoveAndScale(emptyTile.transform.position, tempScale, altMoveSpeed, altScaleSpeed, () =>
+             {
+                 callBack?.Invoke(newItem.transform.position);
+
+                 if (newState == Item.State.Bubble)
+                 {
+                     timeManager.AddTimer(TimeManager.TimerType.Bubble, NotificsManager.NotificationType.Chest, newItem.itemName, newItem.id, newItem.transform.position, bubblePopTimeout);
+                 }
+             });
+
+             Vector2Int boardLoc = Vector2Int.zero;
+
+             gameData.boardData[emptyBoard.loc.x, emptyBoard.loc.y] = new()
+             {
+                 sprite = newItem.sprite,
+                 type = newItem.type,
+                 group = newItem.group,
+                 genGroup = newItem.genGroup,
+                 collGroup = newItem.collGroup,
+                 chestGroup = newItem.chestGroup,
+                 gemPopped = newItem.gemPopped,
+                 timerOn = inventoryItem != null ? inventoryItem.timerOn : false,
+                 isCompleted = inventoryItem != null ? inventoryItem.isCompleted : false,
+                 id = newItem.id,
+                 state = newItem.state,
+                 crate = 0,
+                 order = emptyBoard.order
+             };
+
+             if (canUnlock)
+             {
+                 dataManager.UnlockItem(
+                     newItem.sprite.name,
+                     newItem.type,
+                     newItem.group,
+                     newItem.genGroup,
+                     newItem.collGroup,
+                     newItem.chestGroup
+                 );
+             }
+
+             if (useEnergy)
+             {
+                 gameData.UpdateValue(-1, Item.CollGroup.Energy, false, true);
+             }*/
+
+            dataManager.SaveBoard();
+        }
+
+        public List<TileEmpty> GetEmptyTileItems(Vector2Int tileLoc, bool useTileLoc = true)
+        {
+            List<TileEmpty> emptyBoard = new();
+
+            /* for (int x = 0; x < gameData.boardData.GetLength(0); x++)
+             {
+                 for (int y = 0; y < gameData.boardData.GetLength(1); y++)
+                 {
+                     if (gameData.boardData[x, y].sprite == null)
+                     {
+                         emptyBoard.Add(
+                             new TileEmpty
+                             {
+                                 order = gameData.boardData[x, y].order,
+                                 loc = GetBoardLocation(gameData.boardData[x, y].order),
+                                 distance = useTileLoc
+                                     ? CalculateDistance(tileLoc.x, tileLoc.y, x, y)
+                                     : 0
+                             }
+                         );
+                     }
+                 }
+             }*/
+
+            return emptyBoard;
+        }
+
+        public bool IsThereAnEmptyBoardSpace()
+        {
+            List<TileEmpty> emptyBoard = GetEmptyTileItems(Vector2Int.zero, false);
+
+            return emptyBoard.Count > 0;
+        }
+
+        public void RemoveItemFromChest(Item item)
+        {
+            if (item.chestItems > 1)
+            {
+                item.chestItems -= 1;
+
+                Vector2Int loc = GetBoardLocation(0, item.transform.parent.gameObject);
+
+                // gameData.boardData[loc.x, loc.y].chestItems -= 1;
+
+                dataManager.SaveBoard();
+            }
+            else
+            {
+                //  interactions.RemoveItem(item, 0, false);
+            }
+        }
+
+        // Calculate the distance between two points in a 2d array
+        float CalculateDistance(int currentX, int currentY, int otherX, int otherY)
+        {
+            float distance = Mathf.Sqrt(
+                (currentX - otherX) * (currentX - otherX) + (currentY - otherY) * (currentY - otherY)
+            );
+
+            return distance;
+        }
+
+        public void SetCompletedItems()
+        {
+            for (int x = 0; x < gameData.boardData.GetLength(0); x++)
+            {
+                for (int y = 0; y < gameData.boardData.GetLength(1); y++)
+                {
+                    int order = GetBoardOrder(x, y);
+
+                    Transform foundTile = boardTiles.transform.GetChild(order);
+
+                    if (foundTile.childCount > 0)
+                    {
+                        //  foundTile.GetChild(0).GetComponent<Item>().isCompleted = gameData.boardData[x, y].isCompleted;
+                    }
+                }
+            }
         }
     }
 }

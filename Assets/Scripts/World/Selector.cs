@@ -123,8 +123,7 @@ namespace Merge
 
                         soundManager.PlaySound(SoundManager.SoundType.Generate);
 
-                        //selectorUIHandler.Open(selectable.GetSpriteOptions(), selectable.spriteOrder, false);
-                        selectorUIHandler.Open(selectable.spriteOrder, false);
+                        selectorUIHandler.Open(selectable.GetSpriteOptions(), selectable.spriteOrder, false);
                     }
                     else
                     {
@@ -218,8 +217,9 @@ namespace Merge
 
             selectable = newSelectable;
 
-            //selectorUIHandler.Open(selectable.GetSpriteOptions(), selectable.spriteOrder, true, true);
-            selectorUIHandler.Open(selectable.spriteOrder, true, true);
+            lastSpriteOrder = selectable.spriteOrder;
+
+            selectorUIHandler.Open(selectable.GetSpriteOptions(), selectable.spriteOrder, true, !PlayerPrefs.HasKey("tutorialFinished"));
 
             soundManager.PlaySound(SoundManager.SoundType.Pop);
 
@@ -259,6 +259,7 @@ namespace Merge
             if (cancelCallback != null)
             {
                 cancelCallback();
+                cancelCallback = null;
             }
         }
 
@@ -273,6 +274,8 @@ namespace Merge
             if (cancelCallback != null)
             {
                 cancelCallback();
+
+                cancelCallback = null;
             }
         }
 
@@ -281,17 +284,20 @@ namespace Merge
             isSelecting = false;
             isSelected = false;
 
-            selectable.ConfirmSpriteChange();
+            selectable.ConfirmSpriteChange(() =>
+            {
+                worldDataManager.SetSelectable(selectable);
 
-            worldDataManager.SetSelectable(selectable);
-
-            selectable.Select(false);
+                selectable.Select(false);
+            });
 
             selectable = null;
 
             if (confirmCallback != null)
             {
                 confirmCallback();
+
+                confirmCallback = null;
             }
         }
 
@@ -342,8 +348,7 @@ namespace Merge
 
             selectorArrow.style.display = DisplayStyle.None;
 
-            //selectorUIHandler.Open(selectable.GetSpriteOptions(), selectable.spriteOrder, true);
-            selectorUIHandler.Open(selectable.spriteOrder, true);
+            selectorUIHandler.Open(selectable.GetSpriteOptions(), selectable.spriteOrder, true);
 
             isSelecting = false;
             isSelected = true;

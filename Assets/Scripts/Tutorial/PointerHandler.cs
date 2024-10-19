@@ -10,6 +10,8 @@ namespace Merge
     public class PointerHandler : MonoBehaviour
     {
         // Variables
+        public int pointerWidth = 30;
+
         private Scale fullScale = new(new Vector2(1f, 1f));
         private Scale tapScale = new(new Vector2(0.8f, 0.8f));
 
@@ -21,6 +23,7 @@ namespace Merge
         private bool pressing = false;
         private bool animatePress = false;
         public Action buttonCallback = null;
+        public float buttonPosXOffset = 10f;
 
         // Merge
         private Coroutine mergeCoroutine;
@@ -93,7 +96,14 @@ namespace Merge
             }
             else
             {
-                ContinuePress(GetUIPos(position));
+                Vector2 newPos = GetUIPos(position);
+
+                if ((newPos.x + pointerWidth) > root.resolvedStyle.width)
+                {
+                    newPos = new Vector2(newPos.x - buttonPosXOffset, newPos.y);
+                }
+
+                ContinuePress(newPos);
             }
         }
 
@@ -183,6 +193,10 @@ namespace Merge
         {
             StopAllAnimations();
 
+            BoardManager.GottenItem firstGottenItem = boardManager.UnlockAndGetItemPos(itemSprite.name, true);
+
+            boardManager.UnlockAndGetItemPos(itemSprite.name, false, firstGottenItem.id);
+
             mergeCallback = callback;
 
             mergeSprite = itemSprite;
@@ -193,13 +207,13 @@ namespace Merge
             pointer.style.display = DisplayStyle.Flex;
             pointer.style.opacity = 1;
 
-            mergeFirstPos = firstPos;
-            mergeSecondPos = secondPos;
+            mergeFirstPos = GetUIPos(firstPos);
+            mergeSecondPos = GetUIPos(secondPos);
 
             merging = true;
 
             animateMerge = true;
-            mergeCoroutine = StartCoroutine(AnimateMerge(firstPos, secondPos));
+            mergeCoroutine = StartCoroutine(AnimateMerge());
         }
 
         public void CheckMerge(Sprite itemSprite)
@@ -237,17 +251,14 @@ namespace Merge
             }
         }
 
-        IEnumerator AnimateMerge(Vector2 firstPos, Vector2 secondPos)
+        IEnumerator AnimateMerge()
         {
-            Vector2 firstUIPos = GetUIPos(firstPos);
-            Vector2 secondsUIPos = GetUIPos(secondPos);
-
             while (animateMerge)
             {
                 pointer.RemoveFromClassList("pointer_pos_transition");
                 pointer.style.opacity = 1;
-                pointer.style.left = firstUIPos.x;
-                pointer.style.top = firstUIPos.y;
+                pointer.style.left = mergeFirstPos.x;
+                pointer.style.top = mergeFirstPos.y;
 
                 yield return new WaitForSeconds(0.4f);
 
@@ -260,8 +271,8 @@ namespace Merge
 
                 yield return new WaitForSeconds(0.1f);
 
-                pointer.style.left = secondsUIPos.x;
-                pointer.style.top = secondsUIPos.y;
+                pointer.style.left = mergeSecondPos.x;
+                pointer.style.top = mergeSecondPos.y;
 
                 yield return new WaitForSeconds(0.6f);
 
@@ -296,9 +307,9 @@ namespace Merge
             pointer.style.opacity = 1;
             pointer.style.display = DisplayStyle.Flex;
 
-            Vector2 itemPos = boardManager.UnlockAndGetItemPos(genSprite.name);
+            BoardManager.GottenItem gottenItem = boardManager.UnlockAndGetItemPos(genSprite.name);
 
-            SetGenPos(itemPos, true);
+            SetGenPos(gottenItem.pos, true);
 
             if (pointerBackground != null)
             {
@@ -373,11 +384,14 @@ namespace Merge
         //// Other ////
         void StopAllAnimations()
         {
-            pointer.RemoveFromClassList("pointer_tap");
-            pointer.RemoveFromClassList("pointer_pos_transition");
-            pointer.style.scale = new StyleScale(fullScale);
-            pointer.style.opacity = 0;
-            pointer.style.display = DisplayStyle.None;
+            if (pointer != null)
+            {
+                pointer.RemoveFromClassList("pointer_tap");
+                pointer.RemoveFromClassList("pointer_pos_transition");
+                pointer.style.scale = new StyleScale(fullScale);
+                pointer.style.opacity = 0;
+                pointer.style.display = DisplayStyle.None;
+            }
 
             pointerHidden = false;
 
@@ -434,7 +448,7 @@ namespace Merge
                 if (merging)
                 {
                     animateMerge = true;
-                    mergeCoroutine = StartCoroutine(AnimateMerge(mergeFirstPos, mergeSecondPos));
+                    mergeCoroutine = StartCoroutine(AnimateMerge());
                 }
 
                 if (generating)

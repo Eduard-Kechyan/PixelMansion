@@ -34,6 +34,7 @@
                 <ui:VisualElement name="Plus" class="plus" style="background-image: url(&quot;project://database/Assets/Sprites/Values/ValuePlus.png?fileID=2800000&amp;guid=c164332ef8545e14c804928c22c83a7b&amp;type=3#ValuePlus&quot;);" />
                 <ui:VisualElement name="Edge" class="edge" />
             </ui:Button>
+            <ui:Button name="SettingsButton" class="values_settings_button" />
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="TutorialCycle" class="tutorial_cycle_container" style="display: none; opacity: 0;">

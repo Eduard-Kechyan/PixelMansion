@@ -37,6 +37,7 @@ namespace Merge
         private EnergyMenu energyMenu;
         private SoundManager soundManager;
         private ShopMenu shopMenu;
+        private SettingsMenu settingsMenu;
         private SafeAreaHandler safeAreaHandler;
         [HideInInspector]
         public EnergyTimer energyTimer;
@@ -72,6 +73,8 @@ namespace Merge
         private VisualElement gemsSlash;
         public VisualElement dummyGemsButton;
 
+        public Button settingsButton;
+
         void Start()
         {
             // Cache
@@ -79,6 +82,7 @@ namespace Merge
             levelMenu = gameRefs.levelMenu;
             energyMenu = gameRefs.energyMenu;
             shopMenu = gameRefs.shopMenu;
+            settingsMenu = gameRefs.settingsMenu;
             soundManager = SoundManager.Instance;
             errorManager = ErrorManager.Instance;
 
@@ -117,6 +121,8 @@ namespace Merge
             gemsSlash = gemsButton.Q<VisualElement>("Slash");
             dummyGemsButton = valuesBox.Q<VisualElement>("DummyGemsButton");
 
+            settingsButton = valuesBox.Q<Button>("SettingsButton");
+
             // Init
             energyTimerLabel.style.display = DisplayStyle.None;
 
@@ -126,7 +132,13 @@ namespace Merge
 
             UpdateValues();
 
-            CheckForTaps();
+            // UI Taps
+            levelButton.clicked += () => soundManager.Tap(levelMenu.Open);
+            energyButton.clicked += () => soundManager.Tap(energyMenu.Open);
+            goldButton.clicked += () => soundManager.Tap(() => shopMenu.Open("Gold"));
+            gemsButton.clicked += () => soundManager.Tap(() => shopMenu.Open("Gems"));
+
+            settingsButton.clicked += () => soundManager.Tap(settingsMenu.Open);
 
             root.RegisterCallback<GeometryChangedEvent>(SetLoaded);
         }
@@ -141,14 +153,6 @@ namespace Merge
             root.UnregisterCallback<GeometryChangedEvent>(SetLoaded);
 
             loaded = true;
-        }
-
-        void CheckForTaps()
-        {
-            levelButton.clicked += () => soundManager.Tap(levelMenu.Open);
-            energyButton.clicked += () => soundManager.Tap(energyMenu.Open);
-            goldButton.clicked += () => soundManager.Tap(() => shopMenu.Open("Gold"));
-            gemsButton.clicked += () => soundManager.Tap(() => shopMenu.Open("Gems"));
         }
 
         void HandleEnergyTimer()
@@ -478,6 +482,8 @@ namespace Merge
                 goldPlus.style.opacity = 0f;
                 gemsPlus.style.visibility = Visibility.Hidden;
                 gemsPlus.style.opacity = 0f;
+
+                settingsButton.AddToClassList("values_settings_button_tutorial");
             }
         }
 
@@ -499,6 +505,8 @@ namespace Merge
             goldPlus.style.opacity = 1f;
             gemsPlus.style.visibility = Visibility.Visible;
             gemsPlus.style.opacity = 1f;
+
+            settingsButton.RemoveFromClassList("values_settings_button_tutorial");
         }
 
         public void ShowButton(Item.CollGroup collGroup)

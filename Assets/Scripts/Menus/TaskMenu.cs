@@ -85,7 +85,7 @@ namespace Merge
             SetTasks();
 
             // Open menu
-            menuUI.OpenMenu(content, menuType, "", false, PlayerPrefs.HasKey("tutorialFinished"));
+            menuUI.OpenMenu(content, menuType, "", false);
         }
 
         // Show task data
@@ -149,7 +149,7 @@ namespace Merge
                         }
 
                         // Set button
-                        if (gameData.tasksData[i].tasks[j].taskRefType == TaskManager.TaskRefType.Last || gameData.tasksData[i].tasks[j].taskRefType == TaskManager.TaskRefType.PreMansion)
+                        if (gameData.tasksData[i].tasks[j].taskRefType == TaskManager.TaskRefType.Last)
                         {
                             newTask.Q<VisualElement>("TaskNeeds").style.display = DisplayStyle.None;
 

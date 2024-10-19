@@ -68,6 +68,7 @@ namespace Merge
         private SpriteRenderer stairsSpriteRenderer;
         private CharMain charMain;
         private CloudSave cloudSave;
+        private SoundManager soundManager;
 
         void Start()
         {
@@ -75,6 +76,7 @@ namespace Merge
             stairsSpriteRenderer = stairsOrderSetter.transform.GetChild(0).GetComponent<SpriteRenderer>();
             charMain = CharMain.Instance;
             cloudSave = Services.Instance.GetComponent<CloudSave>();
+            soundManager = SoundManager.Instance;
 
             if (!Debug.isDebugBuild)
             {
@@ -265,6 +267,8 @@ namespace Merge
 
                 yield return null;
             }
+
+            soundManager.PlaySound(SoundManager.SoundType.Generate);
 
             // Decrease the part scale to 0
             Vector3 newSecondTargetScale = new Vector3(secondTargetScale, secondTargetScale, secondTargetScale);

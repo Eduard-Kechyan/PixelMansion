@@ -60,6 +60,8 @@ namespace Merge
             // UI
             root = GetComponent<UIDocument>().rootVisualElement;
 
+            Debug.LogWarning("This is BoardViewer! This text shouldn't be logged! If it is, then there is a problem!!!");
+
             // Set the gameObject
             board = gameObject;
             tiles = transform.GetChild(0).gameObject;

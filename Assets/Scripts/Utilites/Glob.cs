@@ -28,7 +28,6 @@ namespace Merge
         private readonly static List<Coroutine> timeouts = new();
         private readonly static List<Coroutine> intervals = new();
 
-        // Instance
         public static Glob Instance;
 
         void Awake()
@@ -178,6 +177,18 @@ namespace Merge
             );
 
             return default;
+        }
+
+        public static string InsertWordAtWord(string original, string target, string wordToInsert)
+        {
+            int insertIndex = original.IndexOf(target) + target.Length;
+
+            if (insertIndex >= 0 && insertIndex <= original.Length)
+            {
+                return original.Insert(insertIndex, wordToInsert);
+            }
+
+            return original;
         }
 
         public static Color FromHEX(string hex)

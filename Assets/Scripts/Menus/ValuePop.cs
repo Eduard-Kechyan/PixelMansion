@@ -106,7 +106,7 @@ namespace Merge
             );
         }
 
-        public IEnumerator HandlePopValue(
+        IEnumerator HandlePopValue(
             int amount,
             Item.CollGroup type,
             Vector2 initialPosition,
@@ -209,7 +209,7 @@ namespace Merge
             }
         }
 
-        public IEnumerator HandlePopInventoryItem(Sprite sprite, Vector2 initialPosition, Vector2 position, Action callback = null)
+        IEnumerator HandlePopInventoryItem(Sprite sprite, Vector2 initialPosition, Vector2 position, Action callback = null)
         {
             Sprite valuePopSprite = sprite;
 

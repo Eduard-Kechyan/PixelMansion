@@ -35,7 +35,7 @@ namespace Merge
             GameObject newItemPre = Instantiate(item, tile.transform.position, Quaternion.identity);
             Item newItem = newItemPre.GetComponent<Item>();
 
-            newItem.id = tileItem.id;
+            newItem.id = tileItem.id == "" ? Guid.NewGuid().ToString() : tileItem.id;
             newItem.sprite = itemData.sprite;
             newItem.itemName = itemData.itemName;
             newItem.level = itemData.level;
@@ -100,7 +100,6 @@ namespace Merge
             newItem.type = shopItem.type;
             newItem.hasLevel = itemData.hasLevel;
             newItem.parents = itemData.parents;
-            newItem.creates = itemData.creates;
             newItem.isMaxLevel = itemData.isMaxLevel;
             newItem.group = shopItem.group;
             newItem.genGroup = shopItem.genGroup;

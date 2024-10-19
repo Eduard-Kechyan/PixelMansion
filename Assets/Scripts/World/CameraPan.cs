@@ -280,7 +280,7 @@ namespace Merge
                                     selector.CancelSelecting();
                                 }
 
-                                if (!moved && !PlayerPrefs.HasKey("tutorialFinished"))
+                                if (!moved && PlayerPrefs.HasKey("tutorialFinished"))
                                 {
                                     if (debugCharacterMovement && !selector.isSelected)
                                     {
@@ -342,7 +342,7 @@ namespace Merge
                                         && !selector.isSelecting
                                         && !selector.isSelected
                                         && !popupManager.isSelectorPopup
-                                        && !PlayerPrefs.HasKey("tutorialFinished")
+                                        && PlayerPrefs.HasKey("tutorialFinished")
                                     )
                                     {
                                         selector.StartSelecting(

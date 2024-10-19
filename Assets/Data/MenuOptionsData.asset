@@ -18,118 +18,138 @@ MonoBehaviour:
     showValues: 0
     isSmall: 0
     canClose: 1
+    calCloseDuringTutorial: 0
     keepInMemory: 0
   - name: Confirm
     menuType: 1
     showValues: 0
     isSmall: 0
     canClose: 1
+    calCloseDuringTutorial: 1
     keepInMemory: 0
   - name: Note
     menuType: 2
     showValues: 0
     isSmall: 0
     canClose: 1
+    calCloseDuringTutorial: 1
     keepInMemory: 0
   - name: Info
     menuType: 3
     showValues: 0
     isSmall: 0
     canClose: 1
+    calCloseDuringTutorial: 0
     keepInMemory: 0
   - name: Inventory
     menuType: 4
     showValues: 1
     isSmall: 0
     canClose: 1
+    calCloseDuringTutorial: 0
     keepInMemory: 1
   - name: Task
     menuType: 5
     showValues: 0
     isSmall: 0
     canClose: 1
-    keepInMemory: 1
+    calCloseDuringTutorial: 0
+    keepInMemory: 0
   - name: Shop
     menuType: 6
     showValues: 1
     isSmall: 0
     canClose: 1
+    calCloseDuringTutorial: 0
     keepInMemory: 1
   - name: Level
     menuType: 7
     showValues: 1
     isSmall: 0
     canClose: 1
+    calCloseDuringTutorial: 0
     keepInMemory: 0
   - name: Energy
     menuType: 8
     showValues: 0
     isSmall: 0
     canClose: 1
+    calCloseDuringTutorial: 0
     keepInMemory: 0
   - name: Locale
     menuType: 9
     showValues: 0
     isSmall: 0
     canClose: 1
+    calCloseDuringTutorial: 1
     keepInMemory: 0
   - name: Settings
     menuType: 10
     showValues: 0
     isSmall: 0
     canClose: 1
+    calCloseDuringTutorial: 1
     keepInMemory: 1
   - name: Support
     menuType: 11
     showValues: 0
     isSmall: 0
     canClose: 1
+    calCloseDuringTutorial: 1
     keepInMemory: 0
   - name: Input
     menuType: 12
     showValues: 0
     isSmall: 0
     canClose: 1
+    calCloseDuringTutorial: 0
     keepInMemory: 0
   - name: Follow
     menuType: 13
     showValues: 0
     isSmall: 1
     canClose: 0
+    calCloseDuringTutorial: 0
     keepInMemory: 0
   - name: Rate
     menuType: 14
     showValues: 0
     isSmall: 1
     canClose: 0
+    calCloseDuringTutorial: 0
     keepInMemory: 0
   - name: Message
     menuType: 15
     showValues: 0
     isSmall: 0
     canClose: 1
+    calCloseDuringTutorial: 0
     keepInMemory: 1
   - name: Debug
     menuType: 16
     showValues: 0
     isSmall: 0
     canClose: 1
+    calCloseDuringTutorial: 1
     keepInMemory: 0
   - name: Terms
     menuType: 17
     showValues: 0
     isSmall: 0
-    canClose: 1
+    canClose: 0
+    calCloseDuringTutorial: 0
     keepInMemory: 0
   - name: Conflict
     menuType: 18
     showValues: 0
     isSmall: 0
     canClose: 1
+    calCloseDuringTutorial: 1
     keepInMemory: 0
   - name: Update
     menuType: 19
     showValues: 0
     isSmall: 0
     canClose: 1
+    calCloseDuringTutorial: 1
     keepInMemory: 0

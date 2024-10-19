@@ -7,5 +7,6 @@
             <engine:VisualElement name="Ready" class="board_tile_completed" style="flex-grow: 1;" />
         </engine:Button>
     </engine:VisualElement>
-    <engine:VisualElement name="PlaceholderSprite" picking-mode="Ignore" style="position: absolute; width: 24px; height: 24px; display: none;" />
+    <engine:VisualElement name="CurrentTleOverlay" picking-mode="Ignore" style="position: absolute; width: 24px; height: 24px; display: none;" />
+    <engine:VisualElement name="OtherTleOverlay" picking-mode="Ignore" style="position: absolute; width: 24px; height: 24px; display: none;" />
 </engine:UXML>

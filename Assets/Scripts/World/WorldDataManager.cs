@@ -213,7 +213,10 @@ namespace Merge
                                 {
                                     changeWallLeft.SetSprites(gameData.areasData[i].wallLeftOrder, true);
 
-                                    changeWallLeft.GetComponent<Selectable>().canBeSelected = true;
+                                    Selectable selectable = changeWallLeft.GetComponent<Selectable>();
+
+                                    selectable.canBeSelected = true;
+                                    selectable.spriteOrder = gameData.areasData[i].wallLeftOrder;
                                 }
 
                                 // Wall right
@@ -221,7 +224,10 @@ namespace Merge
                                 {
                                     changeWallRight.SetSprites(gameData.areasData[i].wallRightOrder, true);
 
-                                    changeWallRight.GetComponent<Selectable>().canBeSelected = true;
+                                    Selectable selectable = changeWallRight.GetComponent<Selectable>();
+
+                                    selectable.canBeSelected = true;
+                                    selectable.spriteOrder = gameData.areasData[i].wallRightOrder;
                                 }
 
                                 // Floor
@@ -229,7 +235,10 @@ namespace Merge
                                 {
                                     changeFloor.SetSprites(gameData.areasData[i].floorOrder, true);
 
-                                    changeFloor.GetComponent<Selectable>().canBeSelected = true;
+                                    Selectable selectable = changeFloor.GetComponent<Selectable>();
+
+                                    selectable.canBeSelected = true;
+                                    selectable.spriteOrder = gameData.areasData[i].floorOrder;
                                 }
 
                                 // Furniture
@@ -245,7 +254,10 @@ namespace Merge
                                             {
                                                 changeFurniture.SetSprites(gameData.areasData[i].furniture[k].order, true);
 
-                                                changeFurniture.GetComponent<Selectable>().canBeSelected = true;
+                                                Selectable selectable = changeFurniture.GetComponent<Selectable>();
+
+                                                selectable.canBeSelected = true;
+                                                selectable.spriteOrder = gameData.areasData[i].furniture[k].order;
                                             }
                                         }
                                     }
@@ -264,7 +276,10 @@ namespace Merge
                                             {
                                                 changeProp.SetSprites(gameData.areasData[i].props[k].order, true);
 
-                                                changeProp.GetComponent<Selectable>().canBeSelected = true;
+                                                Selectable selectable = changeProp.GetComponent<Selectable>();
+
+                                                selectable.canBeSelected = true;
+                                                selectable.spriteOrder = gameData.areasData[i].props[k].order;
                                             }
                                         }
                                     }
@@ -542,10 +557,18 @@ namespace Merge
                 // Walls
                 if (selectable.type == Selectable.Type.Wall && gameData.areasData[i].name == selectable.transform.parent.name)
                 {
-                    gameData.areasData[i].wallRightOrder = selectable.spriteOrder;
+                    ChangeWall changeWall = selectable.GetComponent<ChangeWall>();
+
+                    if (changeWall.isRight)
+                    {
+                        gameData.areasData[i].wallRightOrder = selectable.spriteOrder;
+                    }
+                    else
+                    {
+                        gameData.areasData[i].wallLeftOrder = selectable.spriteOrder;
+                    }
 
                     SaveData();
-
 
                     break;
                 }
@@ -684,9 +707,6 @@ namespace Merge
                         case TaskManager.TaskRefType.Last:
                             foundWorldItem = worldArea;
                             break;
-                        case TaskManager.TaskRefType.PreMansion:
-                            foundWorldItem = worldArea;
-                            break;
                         case TaskManager.TaskRefType.Wall:
                             if (task.isTaskRefRight)
                             {
@@ -719,6 +739,8 @@ namespace Merge
         // Fine the position of a room in the world (root)
         public Transform FindRoomInWorld(string roomName)
         {
+            Debug.Log(roomName);
+
             for (int i = 0; i < worldRoot.childCount; i++)
             {
                 Transform tempArea = worldRoot.GetChild(i);
@@ -732,25 +754,6 @@ namespace Merge
             return null;
         }
 
-        // Doors
-        public void SaveDoors(List<string> unlockedDoors)
-        {
-            dataManager.SaveValue(new(){
-                {"doorSet", true},
-                {"unlockedDoors", JsonConvert.SerializeObject(unlockedDoors)}
-            });
-
-            PlayerPrefs.SetInt("doorSet", 1);
-            PlayerPrefs.Save();
-        }
-
-        public List<string> LoadDoors()
-        {
-            string newUnlockedDoors = dataManager.LoadValue<string>("unlockedDoors");
-
-            return JsonConvert.DeserializeObject<List<string>>(newUnlockedDoors);
-        }
-
         // Find selectable items collider center position
         public Vector2 GetColliderCenter(Transform taskRef, TaskManager.TaskRefType taskRefType)
         {
@@ -759,9 +762,6 @@ namespace Merge
             switch (taskRefType)
             {
                 case TaskManager.TaskRefType.Last:
-                    center = taskRef.transform.position;
-                    break;
-                case TaskManager.TaskRefType.PreMansion:
                     center = taskRef.transform.position;
                     break;
                 case TaskManager.TaskRefType.Wall:

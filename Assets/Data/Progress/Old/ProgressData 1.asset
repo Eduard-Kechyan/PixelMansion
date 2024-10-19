@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db8f164643505f24f84ff102ef052072, type: 3}
+  m_Name: ProgressData 1
+  m_EditorClassIdentifier: 
+  check: 0
+  areas:
+  - name: Garden
+    id: Garden
+    steps:
+    - name: Task RemoveFilth1
+      id: RemoveFilth1
+      stepType: 0
+      nextIds:
+      - RemoveFilth2
+      requiredIds: []
+    - name: Task RemoveFilth2
+      id: RemoveFilth2
+      stepType: 0
+      nextIds:
+      - RemoveFilth3
+      requiredIds: []
+    - name: Task RemoveFilth3
+      id: RemoveFilth3
+      stepType: 0
+      nextIds:
+      - Last
+      requiredIds: []
+    - name: PreMansion Last
+      id: Last
+      stepType: 3
+      nextIds:
+      - LivingRoom
+      requiredIds: []
+  - name: LivingRoom
+    id: LivingRoom
+    steps:
+    - name: Task ChangeFloor
+      id: ChangeFloor
+      stepType: 0
+      nextIds:
+      - ChangeWallLeft
+      requiredIds: []
+    - name: Task ChangeWallLeft
+      id: ChangeWallLeft
+      stepType: 0
+      nextIds:
+      - ChangeWallRight
+      requiredIds: []
+    - name: Task ChangeWallRight
+      id: ChangeWallRight
+      stepType: 0
+      nextIds:
+      - Last
+      requiredIds: []
+    - name: Last Last
+      id: Last
+      stepType: 2
+      nextIds:
+      - KitchenRoom
+      requiredIds: []
+  - name: KitchenRoom
+    id: KitchenRoom
+    steps:
+    - name: Task ChangeFloor
+      id: ChangeFloor
+      stepType: 0
+      nextIds: []
+      requiredIds: []

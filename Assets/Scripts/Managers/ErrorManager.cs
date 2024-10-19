@@ -107,7 +107,7 @@ namespace Merge
         }
 #endif
 
-        public void Throw(ErrorType type, string className, string errorMessage, string errorCode = "n/a", bool showToPlayer = false, [CallerMemberName] string functionName = "")
+        public void Throw(ErrorType type, string className, string errorMessage, string errorCode = "none", bool showToPlayer = false, [CallerMemberName] string functionName = "")
         {
             // Throw and log the exception
             string exceptionString = type + " Error, Code: " + errorCode + ", Message: " + errorMessage + ", At: " + className + ".cs" + " -> " + functionName + "()";
@@ -121,7 +121,7 @@ namespace Merge
             }
         }
 
-        public void ThrowWarning(ErrorType type, string className, string errorMessage, string errorCode = "", [CallerMemberName] string functionName = "")
+        public void ThrowWarning(ErrorType type, string className, string errorMessage, string errorCode = "NULL", [CallerMemberName] string functionName = "")
         {
             Debug.LogWarning(type + " Warning, Code: " + errorCode + ", Message: " + errorMessage + ", At: " + className + ".cs" + " -> " + functionName + "()");
         }

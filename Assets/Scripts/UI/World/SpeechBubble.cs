@@ -91,15 +91,15 @@ namespace Merge
             VisualElement worldRoot = worldUIDoc.rootVisualElement;
 
             VisualElement topBox = worldRoot.Q<VisualElement>("TopBox");
-            Button settingsButton = topBox.Q<Button>("SettingsButton");
+            Button shopButton = topBox.Q<Button>("ShopButton");
 
             VisualElement valuesBox = valuesUIDoc.rootVisualElement.Q<VisualElement>("ValuesBox");
 
             topBorderClamp = valuesBox.resolvedStyle.top + valuesBox.resolvedStyle.marginTop + valuesBox.resolvedStyle.height;
 
             topClamp = new Vector2(
-                topBox.resolvedStyle.paddingLeft + settingsButton.resolvedStyle.width + settingsButton.resolvedStyle.marginRight + borderClamp,
-                topBox.resolvedStyle.top + topBox.resolvedStyle.height + borderClamp - settingsButton.resolvedStyle.marginBottom
+                topBox.resolvedStyle.paddingLeft + shopButton.resolvedStyle.width + shopButton.resolvedStyle.marginRight + borderClamp,
+                topBox.resolvedStyle.top + topBox.resolvedStyle.height + borderClamp - shopButton.resolvedStyle.marginBottom
             );
 
             // Calc the bottom clamp
@@ -377,19 +377,22 @@ namespace Merge
 
         void HideSpeechBubble(Action callback = null, bool immediately = false)
         {
-            speechBubble.style.opacity = 0f;
-            speechBubble.style.scale = new Vector2(0f, 0f);
-
-            isBubbleShowing = false;
-            enabled = false;
-
-            if (immediately)
+            if (isBubbleShowing)
             {
-                speechBubble.style.display = DisplayStyle.None;
-            }
-            else
-            {
-                StartCoroutine(CloseSpeechBubble(callback));
+                speechBubble.style.opacity = 0f;
+                speechBubble.style.scale = new Vector2(0f, 0f);
+
+                isBubbleShowing = false;
+                enabled = false;
+
+                if (immediately)
+                {
+                    speechBubble.style.display = DisplayStyle.None;
+                }
+                else
+                {
+                    StartCoroutine(CloseSpeechBubble(callback));
+                }
             }
         }
 

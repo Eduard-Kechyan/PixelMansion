@@ -191,3 +191,278 @@ MonoBehaviour:
       chestItemsSet: 0
       seconds: 0
       gemPopped: 0
+  - name: ArtBox
+    genGroup: 2
+    hasLevel: 1
+    customName: 0
+    generatesAtLevel: 6
+    coolDown:
+      maxCounts: 3200000018000000
+      seconds: 120
+      minutes: 2
+    parents:
+    - name: 
+      type: 3
+      genGroup: 0
+      chestGroup: 0
+    creates:
+    - name: Brushes
+      sprite: {fileID: 0}
+      type: 0
+      group: 3
+      genGroup: 0
+      collGroup: 0
+      maxLevel: 3
+      canIncreaseMaxLevel: 1
+      chance: 60
+    - name: Paints
+      sprite: {fileID: 0}
+      type: 0
+      group: 4
+      genGroup: 0
+      collGroup: 0
+      maxLevel: 2
+      canIncreaseMaxLevel: 0
+      chance: 40
+    content:
+    - sprite: {fileID: 21300000, guid: b26eeeb71768e794aa1866a566cb5ab8, type: 3}
+      customName: 0
+      itemName: 
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      generatesAtLevel: 0
+      genGroup: 0
+      collGroup: 0
+      parents: []
+      creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
+      unlocked: 0
+      isMaxLevel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPopped: 0
+    - sprite: {fileID: 21300000, guid: 4a49edb0cf0797d42b62bcab634003e5, type: 3}
+      customName: 0
+      itemName: 
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      generatesAtLevel: 0
+      genGroup: 0
+      collGroup: 0
+      parents: []
+      creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
+      unlocked: 0
+      isMaxLevel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPopped: 0
+    - sprite: {fileID: 21300000, guid: af472ce6035c469458a176e9d82f38f7, type: 3}
+      customName: 0
+      itemName: 
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      generatesAtLevel: 0
+      genGroup: 0
+      collGroup: 0
+      parents: []
+      creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
+      unlocked: 0
+      isMaxLevel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPopped: 0
+    - sprite: {fileID: 21300000, guid: 5b624468518ac2744be66e1e8798945d, type: 3}
+      customName: 0
+      itemName: 
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      generatesAtLevel: 0
+      genGroup: 0
+      collGroup: 0
+      parents: []
+      creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
+      unlocked: 0
+      isMaxLevel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPopped: 0
+    - sprite: {fileID: 21300000, guid: 36390dd35c5dc3a48a809c0fff647c39, type: 3}
+      customName: 0
+      itemName: 
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      generatesAtLevel: 0
+      genGroup: 0
+      collGroup: 0
+      parents: []
+      creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
+      unlocked: 0
+      isMaxLevel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPopped: 0
+    - sprite: {fileID: 21300000, guid: 16571914c8681304c941a2b9acf14661, type: 3}
+      customName: 0
+      itemName: 
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      generatesAtLevel: 0
+      genGroup: 0
+      collGroup: 0
+      parents: []
+      creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
+      unlocked: 0
+      isMaxLevel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPopped: 0
+  - name: CleaningBox
+    genGroup: 1
+    hasLevel: 1
+    customName: 0
+    generatesAtLevel: 3
+    coolDown:
+      maxCounts: 3200000018000000
+      seconds: 120
+      minutes: 2
+    parents:
+    - name: 
+      type: 3
+      genGroup: 0
+      chestGroup: 0
+    creates:
+    - name: CleaningTools
+      sprite: {fileID: 0}
+      type: 0
+      group: 2
+      genGroup: 0
+      collGroup: 0
+      maxLevel: 3
+      canIncreaseMaxLevel: 1
+      chance: 100
+    content:
+    - sprite: {fileID: 21300000, guid: ebaf8327738e6f14084ae50121d4e354, type: 3}
+      customName: 0
+      itemName: 
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      generatesAtLevel: 0
+      genGroup: 0
+      collGroup: 0
+      parents: []
+      creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
+      unlocked: 0
+      isMaxLevel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPopped: 0
+    - sprite: {fileID: 21300000, guid: 223d96cb25b02144e9c02aef9c99a052, type: 3}
+      customName: 0
+      itemName: 
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      generatesAtLevel: 0
+      genGroup: 0
+      collGroup: 0
+      parents: []
+      creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
+      unlocked: 0
+      isMaxLevel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPopped: 0
+    - sprite: {fileID: 21300000, guid: a658e0818276034458e591f2d880d606, type: 3}
+      customName: 0
+      itemName: 
+      level: 0
+      group: 0
+      type: 0
+      chestGroup: 0
+      generatesAtLevel: 0
+      genGroup: 0
+      collGroup: 0
+      parents: []
+      creates: []
+      coolDown:
+        maxCounts: 
+        seconds: 0
+        minutes: 0
+      unlocked: 0
+      isMaxLevel: 0
+      hasLevel: 0
+      hasTimer: 0
+      chestItems: 0
+      chestItemsSet: 0
+      seconds: 0
+      gemPopped: 0

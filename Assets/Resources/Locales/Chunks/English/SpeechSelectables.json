@@ -1,0 +1,104 @@
+{
+    // PAINTING //
+    "speech_Painting_-1": "Is it a cat or a dog? I can't see through the dust!",
+    "speech_Painting_0": {
+        "zero": "Sure looks familiar.",
+        "one": "Ooh, it's just me younger.",
+        "other": "I have had better photos taken of me."
+    },
+    "speech_Painting_1": {
+        "zero": "The pixels are so small, I can't see what it is. Well at least it looks nice.",
+        "one": "Quantity over quality, huh?"
+    },
+    "speech_Painting_2": {
+        "zero": "Aah, yes. Abstract art! Nope, don't get it",
+        "one": "They say it's not about the beauty, but about the feeling when it comes to abstract art."
+    },
+    // BOOKCASE //
+    "speech_Bookcase_-1": {
+        "zero": "I can't put anything in here, it will break",
+        "one": "This thing has been in a better state."
+    },
+    "speech_Bookcase_0": {
+        "zero": "Aah, much better",
+        "one": "What should i put in here?",
+        "other": "It's the same, but better"
+    },
+    "speech_Bookcase_1": {
+        "zero": "Interesting color, but not my taste",
+        "one": "Hum?",
+        "other": "What to read today?"
+    },
+    "speech_Bookcase_2": {
+        "zero": "Red? Really?",
+        "one": "For my monster stories!"
+    },
+    // TABLE_LARGE //
+    "speech_TableLarge_-1": {
+        "zero": "So dirty. I can't put food on it!",
+        "one": "I just wonder, how did this table break?"
+    },
+    "speech_TableLarge_0": {
+        "zero": "Aah, my new and shiny table!",
+        "one": "Why are tables so expensive?"
+    },
+    "speech_TableLarge_1": {
+        "zero": "An alternative, huh? Not bad.",
+        "one": "Well, it's a table! Amazing!"
+    },
+    "speech_TableLarge_2": {
+        "zero": "Huh? Where is king Arthur?",
+        "one": "Everyone likes round tables! Well, except the ones that don't!"
+    },
+    // FRIDGE //
+    "speech_Fridge_-1": {
+        "zero": "It simply doesn't work.",
+        "one": "This things melts everything i put in it. Is it just a big oven? I'm confused!"
+    },
+    "speech_Fridge_0": {
+        "zero": "Much better. It even has a working freezer.",
+        "one": "What to eat today."
+    },
+    "speech_Fridge_1": {
+        "zero": "To eat, or not to eat?",
+        "one": "A classic."
+    },
+    "speech_Fridge_2": {
+        "zero": "Majestic!",
+        "one": "Is it gold or yellow? I can't tell!"
+    },
+    // BED //
+    "speech_Bed_-1": {
+        "zero": "I really don't want sleep on that bed!!!",
+        "one": "Why? Just why?"
+    },
+    "speech_Bed_0": {
+        "zero": "No that's a bed to sleep in",
+        "one": "Sooo soft!"
+    },
+    "speech_Bed_1": {
+        "zero": "To sleep, or not to sleep?",
+        "one": "I feel tired suddenly!"
+    },
+    "speech_Bed_2": {
+        "zero": "Incredible!",
+        "one": "Huh, look at that! It's a bed!"
+    },
+    // BEDSIDE_TABLE //
+    "speech_BedsideTable_-1": {
+        "zero": "Doesn't look safe!",
+        "one": "Is that mold?!"
+    },
+    "speech_BedsideTable_0": {
+        "zero": "I wonder, can I fit in there?",
+        "one": "Jup, still here."
+    },
+    "speech_BedsideTable_1": {
+        "zero": "Am i forgetting something? Nah.",
+        "one": "Does it pay taxes? I hope so!"
+    },
+    "speech_BedsideTable_2": {
+        "zero": "Ooooh, what a luxury!",
+        "one": "Too bad it doesn't have any drawers!"
+    }
+}

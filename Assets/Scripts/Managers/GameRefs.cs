@@ -24,6 +24,7 @@ namespace Merge
         public WorldDataManager worldDataManager;
         public ConvoUIHandler convoUIHandler;
         public NavMeshManager navMeshManager;
+        public DoorManager doorManager;
 
         [Header("Merge Scene")]
         public MergeUI mergeUI;

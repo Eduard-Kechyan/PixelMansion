@@ -1,0 +1,9 @@
+{
+    "error": "Error",
+    "error_type_Code": "Code Error",
+    "error_type_GamePlay": "Gameplay Error",
+    "error_type_Locale": "Language Error",
+    "error_type_Network": "Network Error",
+    "error_loc_name": "Failed to display correct item name!",
+    "Item_error_name": "Item"
+}

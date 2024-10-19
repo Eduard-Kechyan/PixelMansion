@@ -82,14 +82,18 @@ namespace Merge
         //Enums
         public enum GenGroup
         {
-            Toolbox,
-            Test
+            Toolbox, // Toolbox
+            CleaningBox, // Cleaning Cart
+            ArtBox // Art Supply Case
         }
 
         public enum Group
         {
-            Tools,
-            Gloves
+            Tools, // Toolbox
+            Gloves, // Toolbox
+            CleaningTools, // CleaningBox
+            Brushes, // ArtBox
+            Paint // ArtBox
         };
 
         public enum ChestGroup
@@ -473,9 +477,9 @@ namespace Merge
             crateChild.GetComponent<SpriteRenderer>().sprite = newSprite;
         }
 
-        public void UnlockLock(float lockOpenSpeed = 0.05f, bool wait = true)
+        public void UnlockLock(float lockOpenSpeed = 0.05f, bool wait = true, bool ignoreState = false)
         {
-            if (state == State.Locker)
+            if (ignoreState || state == State.Locker)
             {
                 state = State.Default;
 

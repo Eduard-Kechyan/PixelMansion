@@ -1,5 +1,6 @@
 using System.Collections;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -45,7 +46,13 @@ namespace Merge
                     {
                         string textString = chunks[j].ToString();
 
-                        textString = textString.Trim().Trim('{', '}');
+                        textString = textString.Trim();
+
+                        textString = textString.Remove(0, 1);
+
+                        textString = textString.Remove(textString.Length - 1, 1);
+
+                        textString = RemoveTextBetweenMarkers(textString);
 
                         combinedString += textString + ",";
 
@@ -110,6 +117,15 @@ namespace Merge
 
                 writer.Close();
             }
+        }
+
+        string RemoveTextBetweenMarkers(string input)
+        {
+            string pattern = @"//.*?//\s*";
+
+            string result = Regex.Replace(input, pattern, string.Empty, RegexOptions.Singleline);
+
+            return result;
         }
 #endif
     }

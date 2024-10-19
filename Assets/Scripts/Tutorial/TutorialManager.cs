@@ -11,14 +11,17 @@ namespace Merge
         // Variables
         public bool startFromStep = false;
         public string stepToStartFrom = "";
+        [SortingLayer]
+        public string livingRoomSortingLayer;
         public SceneLoader sceneLoader;
         public TutorialData tutorialData;
         public ShineSprites[] shineSprites;
+        public PreMansionHandler preMansionHandler;
 
         [HideInInspector]
         public bool ready = false;
 
-        private string tutorialStep = "First";
+        private string tutorialStep = "";
         private bool pointsShone = false;
 
         private bool destroyingTutorial = false;
@@ -41,7 +44,8 @@ namespace Merge
             Press,
             Merge,
             Gen,
-            Menu
+            Menu,
+            Unlock
         };
 
         // Classes
@@ -88,6 +92,8 @@ namespace Merge
         private ConvoUIHandler convoUIHandler;
         private BoardManager boardManager;
         private ValuePop valuePop;
+        private CharMove charMove;
+        private DoorManager doorManager;
 
         // UI
         private VisualElement convoBackground;
@@ -132,6 +138,8 @@ namespace Merge
                     }
                     else
                     {
+                        tutorialStep = tutorialData.steps[0].id; // Initial step
+
                         tutorialStarted = true;
 
                         PlayerPrefs.SetString("tutorialStep", "First");
@@ -179,6 +187,14 @@ namespace Merge
                 if (worldGameUIDoc != null)
                 {
                     convoBackground = worldGameUIDoc.GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("ConvoBackground");
+
+                    charMove = CharMain.Instance.GetComponent<CharMove>();
+                    doorManager = gameRefs.doorManager;
+                }
+
+                if (tutorialStep == "")
+                {
+                    Debug.LogWarning("tutorialStep is empty!");
                 }
 
                 if (tutorialStarted)
@@ -285,7 +301,7 @@ namespace Merge
         {
             if (convoBackground != null)
             {
-                if ((tutorialStep == "First" || tutorialStep == "PlayerName" || tutorialStep == "Part1") && !alt)
+                if ((tutorialStep == "Part1" || tutorialStep == "Part2" || tutorialStep == "PlayerName") && !alt)
                 {
                     List<TimeValue> nullTransition = new() { new TimeValue(0.0f, TimeUnit.Second) };
 
@@ -548,6 +564,19 @@ namespace Merge
                         NextStep();
                     });
                     break;
+                case TutorialStepTask.Unlock:
+                    doorManager.GetPosition(livingRoomSortingLayer, (Vector2 livingRoomDoorLocation) =>
+                    {
+                        charMove.SetDestination(livingRoomDoorLocation, false, false, () =>
+                        {
+                            preMansionHandler.Remove(() =>
+                            {
+                                NextStep();
+                            });
+                        }, true);
+                    });
+
+                    break;
             }
         }
 
@@ -725,7 +754,7 @@ namespace Merge
 
         void SetUI()
         {
-            valuesUI.SetSortingOrder(4);
+            // valuesUI.SetSortingOrder(4);
 
             valuesUI.HideButtons();
 
@@ -744,7 +773,7 @@ namespace Merge
 
         void ResetUI()
         {
-            valuesUI.SetSortingOrder(10);
+            // valuesUI.SetSortingOrder(10);
 
             valuesUI.ShowButtons();
 

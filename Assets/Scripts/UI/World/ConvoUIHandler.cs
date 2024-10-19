@@ -21,6 +21,7 @@ namespace Merge
         public bool loaded = false;
 
         private Coroutine convoContainerTimeOut;
+        private Coroutine fadeInCoroutine;
 
         private bool showText = false;
 
@@ -34,6 +35,8 @@ namespace Merge
         private bool showUnderlay = true;
 
         private bool canHandleNext = false;
+
+        private string currentText = "";
 
         private Sprite[] avatarsSprites;
 
@@ -186,20 +189,17 @@ namespace Merge
 
             loaded = true;
 
-            if (Debug.isDebugBuild)
+            skipButton = convoContainer.Q<VisualElement>("SkipButtonContainer");
+            skipLabel = skipButton.Q<Label>("Label");
+
+            skipButton.style.display = DisplayStyle.Flex;
+
+            skipButton.AddManipulator(new Clickable(evt =>
             {
-                skipButton = convoContainer.Q<VisualElement>("SkipButtonContainer");
-                skipLabel = skipButton.Q<Label>("Label");
+                soundManager.Tap(HandleSkip);
+            }));
 
-                skipButton.style.display = DisplayStyle.Flex;
-
-                skipButton.AddManipulator(new Clickable(evt =>
-                {
-                    soundManager.Tap(HandleSkip);
-                }));
-
-                skipLabel.text = LOCALE.Get("convo_skip_button");
-            }
+            skipLabel.text = LOCALE.Get("convo_skip_button");
         }
 
         void OnValidate()
@@ -261,7 +261,7 @@ namespace Merge
             }
         }
 
-        void UpdateConvo()
+        void UpdateConvo(Action updateCallback = null)
         {
             List<TimeValue> nullDelay = new() { new TimeValue(0.0f) };
             List<TimeValue> halfDelay = new() { new TimeValue(0.3f) };
@@ -308,6 +308,8 @@ namespace Merge
                     avatarRight.style.right = 4;
                     avatarRight.style.transitionDelay = nullDelay;
                 }
+
+                updateCallback?.Invoke();
             }
             else
             {
@@ -346,6 +348,8 @@ namespace Merge
 
                 canSkip = true;
                 closeAfter = true;
+
+                updateCallback?.Invoke();
             }
         }
 
@@ -377,10 +381,18 @@ namespace Merge
         void HandleSkip()
         {
             showText = false;
-            StopCoroutine(FadeInText(""));
+
+            if (fadeInCoroutine != null)
+            {
+                StopCoroutine(fadeInCoroutine);
+            }
 
             isConvoOpen = false;
-            UpdateConvo();
+
+            UpdateConvo(() =>
+            {
+                convoLabel.text = "";
+            });
 
             PlayerPrefs.DeleteKey("ProgressStep");
 
@@ -404,11 +416,6 @@ namespace Merge
 
                 currentConvo++;
 
-                if (convoId == "TutorialPart1" && currentConvo == 3)
-                {
-                    tutorialManager.CheckConvoBackground(true);
-                }
-
                 if (LOCALE.CheckIfExists("convo_" + currentConvoGroup.id + "_" + currentConvo))
                 {
                     // Next
@@ -419,6 +426,22 @@ namespace Merge
                     // Last
                     HandleSkip();
                 }
+            }
+            else if (showText)
+            {
+                nextButton.style.display = DisplayStyle.Flex;
+                nextButton.style.opacity = 1;
+
+                canHandleNext = true;
+
+                showText = false;
+
+                if (fadeInCoroutine != null)
+                {
+                    StopCoroutine(fadeInCoroutine);
+                }
+
+                convoLabel.text = currentText;
             }
         }
 
@@ -468,18 +491,23 @@ namespace Merge
             SetAvatar(currentConvoGroup.content[order]);
 
             showText = false;
-            StopCoroutine(FadeInText(""));
+            if (fadeInCoroutine != null)
+            {
+                StopCoroutine(fadeInCoroutine);
+            }
+
+            currentText = text;
 
             if (hasTimeout)
             {
                 Glob.SetTimeout(() =>
                 {
-                    StartCoroutine(FadeInText(text));
+                    fadeInCoroutine = StartCoroutine(FadeInText(text));
                 }, 0.6f);
             }
             else
             {
-                StartCoroutine(FadeInText(text));
+                fadeInCoroutine = StartCoroutine(FadeInText(text));
             }
         }
 

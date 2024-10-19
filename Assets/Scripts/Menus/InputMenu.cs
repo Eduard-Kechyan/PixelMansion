@@ -9,6 +9,8 @@ namespace Merge
     public class InputMenu : MonoBehaviour
     {
         // Variables
+        public List<string> randomNames;
+
         private Action<string> callback;
         private string inputText;
 
@@ -142,11 +144,12 @@ namespace Merge
 
         void AcceptRandomName()
         {
-            string randomName = Glob.GetRandomWord(3, 12, true);
+            //string randomName = Glob.GetRandomWord(3, 12, true);
+            int randomName = UnityEngine.Random.Range(0, randomNames.Count);
 
             menuUI.CloseMenu(menuType, () =>
             {
-                callback(randomName);
+                callback(randomNames[randomName]);
             });
         }
     }

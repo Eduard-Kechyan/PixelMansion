@@ -52,6 +52,7 @@ namespace Merge
             public bool showValues = false;
             public bool isSmall = false;
             public bool canClose = true;
+            public bool calCloseDuringTutorial = false;
             public bool keepInMemory = true;
         }
 
@@ -151,7 +152,7 @@ namespace Merge
         }
 
         // Get ready to open the given menu
-        public VisualElement OpenMenu(VisualElement menuUI, Menu menuType, string altTitle = "", bool closeAll = false, bool keepInMemory = true)
+        public VisualElement OpenMenu(VisualElement menuUI, Menu menuType, string altTitle = "", bool closeAll = false)
         {
             if (!isClosing)
             {
@@ -162,30 +163,44 @@ namespace Merge
 
                 VisualElement menuElement = null;
 
-                if (menuOptions.keepInMemory)
+                /*  if (menuOptions.keepInMemory)
+                  {
+                      menuElement = uiData.GetMenuElement(menuType);
+                  }
+
+                  if (menuElement != null)
+                  {
+                      currentMenuUI = menuElement;
+                  }
+                  else
+                  {
+                      // Create a new menu                
+                      currentMenuUI = uiData.menuContainerPrefab.CloneTree().Q<VisualElement>("Menu");
+
+                      // Add the content to the newly created menu
+                      currentMenuUI.Q<VisualElement>("Container").Insert(0, menuUI);
+
+                      // Add the related menu class
+                      currentMenuUI.AddToClassList(currentMenuType + "_menu");
+
+                      if (menuOptions.isSmall)
+                      {
+                          currentMenuUI.Q<VisualElement>("Container").AddToClassList("small_menu");
+                      }
+                  }*/
+
+                // Create a new menu                
+                currentMenuUI = uiData.menuContainerPrefab.CloneTree().Q<VisualElement>("Menu");
+
+                // Add the content to the newly created menu
+                currentMenuUI.Q<VisualElement>("Container").Insert(0, menuUI);
+
+                // Add the related menu class
+                currentMenuUI.AddToClassList(currentMenuType + "_menu");
+
+                if (menuOptions.isSmall)
                 {
-                    menuElement = uiData.GetMenuElement(menuType);
-                }
-
-                if (menuElement != null)
-                {
-                    currentMenuUI = menuElement;
-                }
-                else
-                {
-                    // Create a new menu                
-                    currentMenuUI = uiData.menuContainerPrefab.CloneTree().Q<VisualElement>("Menu");
-
-                    // Add the content to the newly created menu
-                    currentMenuUI.Q<VisualElement>("Container").Insert(0, menuUI);
-
-                    // Add the related menu class
-                    currentMenuUI.AddToClassList(currentMenuType + "_menu");
-
-                    if (menuOptions.isSmall)
-                    {
-                        currentMenuUI.Q<VisualElement>("Container").AddToClassList("small_menu");
-                    }
+                    currentMenuUI.Q<VisualElement>("Container").AddToClassList("small_menu");
                 }
 
                 // Set or update the menu's title
@@ -201,10 +216,10 @@ namespace Merge
                     showValues = menuOptions.showValues
                 });
 
-                if (keepInMemory && menuOptions.keepInMemory)
-                {
-                    uiData.SetMenuElement(menuType, currentMenuUI);
-                }
+                /* if (keepInMemory && menuOptions.keepInMemory)
+                 {
+                     uiData.SetMenuElement(menuType, currentMenuUI);
+                 }*/
 
                 // Add menu to the ui
                 localeWrapper.Insert(localeWrapper.childCount - 1, currentMenuUI);
@@ -221,7 +236,7 @@ namespace Merge
 
                 OnMenuOpen?.Invoke();
 
-                ShowMenu(menuOptions.canClose);
+                ShowMenu(menuOptions.calCloseDuringTutorial, menuOptions.canClose);
 
                 return currentMenuUI;
             }
@@ -229,7 +244,7 @@ namespace Merge
             return null;
         }
 
-        void ShowMenu(bool canClose)
+        void ShowMenu(bool calCloseDuringTutorial, bool canClose)
         {
             // Show the menu locale container
             localeWrapper.style.display = DisplayStyle.Flex;
@@ -245,11 +260,11 @@ namespace Merge
             VisualElement background = currentMenuUI.Q<VisualElement>("Background");
             VisualElement closeButton = currentMenuUI.Q<VisualElement>("Close");
 
-            if (PlayerPrefs.HasKey("tutorialFinished") && canClose)
+            if (calCloseDuringTutorial || PlayerPrefs.HasKey("tutorialFinished") && canClose)
             {
                 background.AddManipulator(new Clickable(evt =>
                 {
-                    SoundManager.Tap(HandleBackgroundClose);
+                    HandleBackgroundClose();
                 }));
 
                 closeButton.style.display = DisplayStyle.Flex;
@@ -259,7 +274,7 @@ namespace Merge
             {
                 background.RemoveManipulator(new Clickable(evt =>
                 {
-                    SoundManager.Tap(HandleBackgroundClose);
+                    HandleBackgroundClose();
                 }));
 
                 closeButton.style.display = DisplayStyle.None;

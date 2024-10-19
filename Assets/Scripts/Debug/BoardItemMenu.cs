@@ -215,7 +215,7 @@ namespace Merge
 
                         itemScrollView.Add(newCollButton);
 
-                        newCollButton.clicked += () => SelectItem(newItemData, Item.Type.Item, default, default, default, newTypeColl.collGroup);
+                        newCollButton.clicked += () => SelectItem(newItemData, Item.Type.Coll, default, default, default, newTypeColl.collGroup);
                     }
                 }
 
@@ -254,7 +254,7 @@ namespace Merge
 
                         itemScrollView.Add(newChestButton);
 
-                        newChestButton.clicked += () => SelectItem(newItemData, Item.Type.Item, default, default, newTypeChest.chestGroup);
+                        newChestButton.clicked += () => SelectItem(newItemData, Item.Type.Chest, default, default, newTypeChest.chestGroup);
                     }
                 }
 
@@ -263,7 +263,7 @@ namespace Merge
                 genLabel.AddToClassList("item_menu_label");
                 itemScrollView.Add(genLabel);
 
-                Item.GenGroup lastGenGroup = Item.GenGroup.Test;
+                Item.GenGroup lastGenGroup = Item.GenGroup.ArtBox;
 
                 for (int i = 0; i < generators.content.Length; i++)
                 {
@@ -293,7 +293,7 @@ namespace Merge
 
                         itemScrollView.Add(newGenButton);
 
-                        newGenButton.clicked += () => SelectItem(newItemData, Item.Type.Item, default, newTypeGen.genGroup);
+                        newGenButton.clicked += () => SelectItem(newItemData, Item.Type.Gen, default, newTypeGen.genGroup);
                     }
                 }
 
@@ -302,7 +302,7 @@ namespace Merge
                 itemLabel.AddToClassList("item_menu_label");
                 itemScrollView.Add(itemLabel);
 
-                Item.Group lastGroup = Item.Group.Gloves;
+                Item.Group lastGroup = Item.Group.Paint;
 
                 for (int i = 0; i < items.content.Length; i++)
                 {
@@ -399,6 +399,8 @@ namespace Merge
                 boardViewer.boardData[orderToChange].genGroup = selectedItemData.genGroup;
                 boardViewer.boardData[orderToChange].chestGroup = selectedItemData.chestGroup;
                 boardViewer.boardData[orderToChange].collGroup = selectedItemData.collGroup;
+
+                boardViewer.boardData[orderToChange].state = selectedState;
 
                 changed = true;
             }

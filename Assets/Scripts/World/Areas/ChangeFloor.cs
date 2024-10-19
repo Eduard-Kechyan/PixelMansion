@@ -9,7 +9,6 @@ namespace Merge
     {
         // Variables
         public float changeSpeed = 0.1f;
-        public int spriteOrder = -1;
 
         [Header("Flash")]
         public float alphaSpeed = 1f;
@@ -22,6 +21,11 @@ namespace Merge
         private bool isChanging = false;
         [ReadOnly]
         private bool isSelected = false;
+
+        [HideInInspector]
+        public bool loaded = false;
+
+        public int tempSpriteOrder = -1;
 
         // Tiles
         private readonly List<List<SpriteRenderer>> tiles = new();
@@ -47,6 +51,17 @@ namespace Merge
                 GetTiles();
             }
 
+            StartCoroutine(WaitForSelectableTo());
+        }
+
+        IEnumerator WaitForSelectableTo()
+        {
+            while (!selectable.loaded)
+            {
+                yield return null;
+            }
+
+            loaded = true;
             enabled = false;
         }
 
@@ -154,17 +169,19 @@ namespace Merge
         public void SetInitial()
         {
             // Set the sprite order to the first one
-            if (spriteOrder == -1)
+            if (tempSpriteOrder == -1)
             {
-                spriteOrder = 0;
+                tempSpriteOrder = 0;
             }
+
+            Sprite spriteToUse = selectable.GetSprite(tempSpriteOrder);
 
             // Set the sprites
             for (int i = 0; i < tiles.Count; i++)
             {
                 for (int j = 0; j < tiles[i].Count; j++)
                 {
-                    tiles[i][j].sprite = selectable.GetSprite(spriteOrder);
+                    tiles[i][j].sprite = spriteToUse;
                 }
             }
         }
@@ -174,40 +191,40 @@ namespace Merge
             // Stop changing if we are changing
             if (isChanging)
             {
-                StopCoroutine("ChangeFloorTiles");
+                StopCoroutine(ChangeFloorTiles());
             }
 
-            // Set the sprite order
-            spriteOrder = order;
+            tempSpriteOrder = order;
 
             if (alt)
             {
                 GetTiles();
             }
 
+            Sprite spriteToUse = selectable.GetSprite(order);
+
             // Set the sprites
             for (int i = 0; i < tiles.Count; i++)
             {
                 for (int j = 0; j < tiles[i].Count; j++)
                 {
-                    tiles[i][j].sprite = selectable.GetSprite(spriteOrder);
+                    tiles[i][j].sprite = spriteToUse;
                 }
             }
         }
 
-        public void Cancel(int order)
+        public void Cancel(int order, Action callback = null)
         {
             // Stop changing if we are changing
             if (isChanging)
             {
-                StopCoroutine("ChangeFloorTiles");
+                StopCoroutine(ChangeFloorTiles());
             }
-
-            // Reset the sprite order
-            spriteOrder = order;
 
             if (selectable.isOld)
             {
+                tempSpriteOrder = 0;
+
                 // Reset the sprites to the old ones
                 for (int i = 0; i < tiles.Count; i++)
                 {
@@ -219,27 +236,33 @@ namespace Merge
             }
             else
             {
+                tempSpriteOrder = order;
+
+                Sprite spriteToUse = selectable.GetSprite(order);
+
                 // Reset the sprites to the new ones
                 for (int i = 0; i < tiles.Count; i++)
                 {
                     for (int j = 0; j < tiles[i].Count; j++)
                     {
-                        tiles[i][j].sprite = selectable.GetSprite(spriteOrder);
+                        tiles[i][j].sprite = spriteToUse;
                     }
                 }
             }
+
+            callback?.Invoke();
         }
 
-        public void Confirm()
+        public void Confirm(Action callback = null)
         {
             // Stop changing if we are changing
             if (isChanging)
             {
-                StopCoroutine("ChangeFloorTiles");
+                StopCoroutine(ChangeFloorTiles());
             }
 
             // Check if we are confirming for the first time
-            if (selectable.isOld && spriteOrder > -1)
+            if (selectable.isOld && tempSpriteOrder > -1)
             {
                 // Reset the sprites to the old ones
                 for (int i = 0; i < tiles.Count; i++)
@@ -262,12 +285,17 @@ namespace Merge
 
                 selectable.isOld = false;
             }
+
+            selectable.spriteOrder = tempSpriteOrder;
+
+            callback?.Invoke();
         }
 
         IEnumerator ChangeFloorTiles()
         {
             isChanging = true;
             Glob.taskLoading = true;
+            Sprite spriteToUse = selectable.GetSprite(tempSpriteOrder);
 
             for (int i = 0; i < tiles.Count; i++)
             {
@@ -277,7 +305,7 @@ namespace Merge
 
                     SoundManager.Instance.PlaySound(SoundManager.SoundType.Generate);
 
-                    tiles[i][j].sprite = selectable.GetSprite(spriteOrder);
+                    tiles[i][j].sprite = spriteToUse;
                 }
 
                 yield return new WaitForSeconds(changeSpeed);

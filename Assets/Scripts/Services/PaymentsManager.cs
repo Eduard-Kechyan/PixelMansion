@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Purchasing;
 using UnityEngine.Purchasing.Extension;
+using UnityEngine.SceneManagement;
 using UnityEngine.Purchasing.Security;
 
 namespace Merge
@@ -83,11 +84,11 @@ namespace Merge
                 // Set the config builder
 #if UNITY_ANDROID
                 ConfigurationBuilder builder = ConfigurationBuilder.Instance(
-                StandardPurchasingModule.Instance(AppStore.GooglePlay)
+                    StandardPurchasingModule.Instance(AppStore.GooglePlay)
                 );
 #elif UNITY_IOS
                 ConfigurationBuilder builder = ConfigurationBuilder.Instance(
-                StandardPurchasingModule.Instance(AppStore.AppleAppStore)
+                    StandardPurchasingModule.Instance(AppStore.AppleAppStore)
                 );
 #endif
 
@@ -198,7 +199,7 @@ namespace Merge
 
                     bool foundReceipt = false;
 
-                    // TODO - Add server-side valdiation here
+                    // TODO - Add server-side validation here
 
                     foreach (IPurchaseReceipt receipt in result)
                     {

@@ -22,6 +22,8 @@ namespace Merge
 
         private Vector2 destinationPos;
 
+        private bool followChar;
+
         private bool canCheck = false;
 
         private bool checkRoamAfter = false;
@@ -56,6 +58,7 @@ namespace Merge
         private CharRoam charRoam;
         private CharSpeech charSpeech;
         private I18n LOCALE;
+        private Camera cam;
 
         void Awake()
         {
@@ -66,6 +69,7 @@ namespace Merge
             charRoam = GetComponent<CharRoam>();
             charSpeech = GetComponent<CharSpeech>();
             LOCALE = I18n.Instance;
+            cam = Camera.main;
         }
 
         void Start()
@@ -96,6 +100,11 @@ namespace Merge
 
             agent.velocity = agent.desiredVelocity;
 
+            if (followChar)
+            {
+                cam.transform.position = transform.position;
+            }
+
             if (!canCheck)
             {
                 Glob.SetTimeout(() =>
@@ -107,13 +116,15 @@ namespace Merge
             }
         }
 
-        public void SetDestination(Vector2 newPos, bool stayInRoom = false, bool isRoaming = false, Action newCallback = null, string newSpeechAfter = "")
+        public void SetDestination(Vector2 newPos, bool stayInRoom = false, bool isRoaming = false, Action newCallback = null, bool follow = false, string newSpeechAfter = "")
         {
             destinationPos = newPos;
 
             enabled = true;
 
             isWalking = true;
+
+            followChar = follow;
 
             speechAfter = newSpeechAfter;
 
@@ -151,16 +162,20 @@ namespace Merge
 
                     enabled = false;
 
+                    followChar = false;
+
                     canCheck = false;
 
                     isWalking = false;
 
                     charOrderSetter.SetShadow();
 
+                    callback?.Invoke();
+
+                    callback = null;
+
                     if (checkRoamAfter)
                     {
-                        callback();
-
                         ResetDirection();
                     }
 

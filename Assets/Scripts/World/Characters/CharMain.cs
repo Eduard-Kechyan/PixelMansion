@@ -41,7 +41,12 @@ namespace Merge
         {
             // Cache
             speechBubble = GameRefs.Instance.worldGameUI.GetComponent<SpeechBubble>();
-            worldDataManager = GameRefs.Instance.worldDataManager;
+
+            if (worldDataManager == null)
+            {
+                worldDataManager = GameRefs.Instance.worldDataManager;
+            }
+
             selector = worldDataManager.GetComponent<Selector>();
         }
 
@@ -87,6 +92,11 @@ namespace Merge
 
         IEnumerator WaitForData(Vector2 roomCenter, bool waitForData = false)
         {
+            if (worldDataManager == null)
+            {
+                worldDataManager = GameRefs.Instance.worldDataManager;
+            }
+
             while (waitForData && !worldDataManager.loaded)
             {
                 yield return null;

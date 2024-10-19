@@ -12,9 +12,9 @@ namespace Merge
         [HideInInspector]
         public DoorPH[] doors;
 
-        private List<string> unlockedDoors = new();
-
         // References
+        public GameData gameData;
+        public DataManager dataManager;
         public WorldDataManager worldDataManager;
 
         // Instance
@@ -28,29 +28,22 @@ namespace Merge
         void Start()
         {
             // Cache
+            gameData = GameData.Instance;
+            dataManager = DataManager.Instance;
             worldDataManager = GameRefs.Instance.worldDataManager;
 
             // Init
-            StartCoroutine(WaitForWorldData());
+            StartCoroutine(WaitForData());
         }
 
-        IEnumerator WaitForWorldData()
+        IEnumerator WaitForData()
         {
             while (!worldDataManager.loaded)
             {
                 yield return null;
             }
 
-            if (PlayerPrefs.HasKey("doorSet"))
-            {
-                unlockedDoors = worldDataManager.LoadDoors();
-
-                GetDoors();
-            }
-            else
-            {
-                GetDoors();
-            }
+            GetDoors();
         }
 
         public void GetDoors()
@@ -61,9 +54,9 @@ namespace Merge
             {
                 doors[i] = transform.GetChild(i).GetComponent<DoorPH>();
 
-                for (int j = 0; j < unlockedDoors.Count; j++)
+                for (int j = 0; j < gameData.unlockedDoors.Length; j++)
                 {
-                    if (unlockedDoors[j] == doors[i].roomSortingLayer)
+                    if (gameData.unlockedDoors[j] == doors[i].roomSortingLayer)
                     {
                         doors[i].gameObject.SetActive(false);
 
@@ -96,9 +89,9 @@ namespace Merge
 
             if (foundDoor)
             {
-                for (int i = 0; i < unlockedDoors.Count; i++)
+                for (int i = 0; i < gameData.unlockedDoors.Length; i++)
                 {
-                    if (unlockedDoors[i] == roomSortingLayer)
+                    if (gameData.unlockedDoors[i] == roomSortingLayer)
                     {
                         foundRoomSortingLayer = true;
 
@@ -108,9 +101,7 @@ namespace Merge
 
                 if (!foundRoomSortingLayer)
                 {
-                    unlockedDoors.Add(roomSortingLayer);
-
-                    worldDataManager.SaveDoors(unlockedDoors);
+                    dataManager.UnlockDoor(roomSortingLayer);
                 }
             }
 

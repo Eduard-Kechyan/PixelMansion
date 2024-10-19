@@ -66,12 +66,11 @@ namespace Merge
         }
 
         // Open the selector and set the appropriate sprites
-        // public void Open(Sprite[] sprites, int order, bool initialSelection, bool isAlt = false)
-        public void Open(int order, bool initialSelection, bool isAlt = false)
+        public void Open(Sprite[] sprites, int order, bool initialSelection, bool isAlt = false)
         {
-            // option1Button.style.backgroundImage = new StyleBackground(sprites[0]);
-            // option2Button.style.backgroundImage = new StyleBackground(sprites[1]);
-            // option3Button.style.backgroundImage = new StyleBackground(sprites[2]);
+            option1Button.style.backgroundImage = new StyleBackground(sprites[0]);
+            option2Button.style.backgroundImage = new StyleBackground(sprites[1]);
+            option3Button.style.backgroundImage = new StyleBackground(sprites[2]);
 
             SelectOptionButton(order);
 
@@ -86,6 +85,9 @@ namespace Merge
         void ToggleSelector(bool isAlt, bool canceled = false)
         {
             isSelectorOpen = !isSelectorOpen;
+            
+            Debug.Log("////////////////////////");
+            Debug.Log("isSelectorOpen: " + isSelectorOpen);
 
             UpdateSelector(isAlt, canceled);
         }

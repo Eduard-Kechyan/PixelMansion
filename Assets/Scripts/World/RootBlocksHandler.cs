@@ -100,6 +100,8 @@ namespace Merge
 
             newPrefab.transform.SetParent(blocksHolder.transform);
 
+            newPrefab.layer = LayerMask.NameToLayer("Unclick");
+
             int randomNum = 2;
 
             if (Random.value > 0.5)

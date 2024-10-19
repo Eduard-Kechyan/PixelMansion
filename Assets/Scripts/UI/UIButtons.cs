@@ -57,7 +57,6 @@ namespace Merge
             TaskMenu,
             Shop,
             Bonus,
-            Settings,
             Inventory,
         };
 

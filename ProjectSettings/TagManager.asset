@@ -83,8 +83,11 @@ TagManager:
   - name: Garden
     uniqueID: 3088312485
     locked: 0
-  - name: PreWallPatio
+  - name: PreWallPortico
     uniqueID: 3152450919
+    locked: 0
+  - name: Fences
+    uniqueID: 628217585
     locked: 0
   - name: NavMeshArea
     uniqueID: 3312263077

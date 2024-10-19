@@ -116,6 +116,8 @@ namespace Merge
                         break;
                 }*/
 
+                localeButton.AddToClassList("locale_" + locale);
+
                 localeButton.text = ((I18n.LocaleAlt)(int)locale).ToString();
 
                 // TODO - Remove this line after adding all the necessary languages

@@ -2000,3 +2000,10 @@
 .Debug_menu .debug_menu_scroller .unity-base-slider__dragger {
     width: 0;
 }
+
+.Settings_menu .more_options {
+    font-size: 8px;
+    white-space: normal;
+    -unity-text-align: upper-center;
+    color: rgba(67, 67, 67, 0.44);
+}

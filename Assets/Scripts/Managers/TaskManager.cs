@@ -13,7 +13,6 @@ namespace Merge
     {
         // Variables
         public TasksData tasksData;
-        public PreMansionHandler preMansionHandler;
 
         [HideInInspector]
         public bool isLoaded = false;
@@ -33,8 +32,7 @@ namespace Merge
             Furniture,
             Item,
             Filth,
-            Last,
-            PreMansion
+            Last
         };
 
         // Classes
@@ -452,17 +450,6 @@ namespace Merge
                         Debug.LogWarning("foundRoom is null");
                     }
                     break;
-                case TaskRefType.PreMansion:
-                    preMansionHandler.Remove(() =>
-                    {
-                        callback?.Invoke();
-
-                        HandleRewards(rewards, () =>
-                        {
-                            TaskCompleted(groupId, taskId, true);
-                        });
-                    });
-                    break;
                 default:
                     cameraMotion.MoveTo(taskRefPos, 250);
                     cameraPinch.isResetting = true;
@@ -612,15 +599,20 @@ namespace Merge
 
                 for (int i = 0; i < rewards.Length; i++)
                 {
+                    bool last = i == (rewards.Length - 1);
+
                     if (rewards[i].type == Item.Type.Coll)
                     {
                         valuePop.PopValue(rewards[i].amount, rewards[i].collGroup, uiButtons.worldTaskButtonPos);
 
-                        callback();
+                        if (last)
+                        {
+                            callback();
+                        }
                     }
                     else
                     {
-                        StartCoroutine(AddItemToBonus(rewards[i], callback));
+                        StartCoroutine(AddItemToBonus(rewards[i], callback, last));
                     }
                 }
             }
@@ -632,7 +624,7 @@ namespace Merge
         }
 
         // Handle Items, Generators and Chests
-        IEnumerator AddItemToBonus(TaskItem reward, Action callback)
+        IEnumerator AddItemToBonus(TaskItem reward, Action callback, bool last = false)
         {
             yield return new WaitForSeconds(0.5f);
 
@@ -661,7 +653,10 @@ namespace Merge
 
             valuePop.PopBonus(newItem, initialPosition, buttonPosition);
 
-            callback();
+            if (last)
+            {
+                callback();
+            }
         }
 
         //// Checks ////
@@ -689,13 +684,13 @@ namespace Merge
                     return;
                 }
 
-                noteDotHandler.ToggleButtonNoteDot("task", completedCount > 0, completedCount, completedCount > noteDotHandler.taskNoteDotAmount);
+                noteDotHandler.ToggleButtonNoteDot(UIButtons.Button.Task, completedCount > 0, completedCount, completedCount > noteDotHandler.taskNoteDotAmount);
             }
         }
 
         // Check if any task is ready to be completed
         // This function runs every time the board data is saved
-        public void CheckBoardAndInventoryForTasks()
+        void CheckBoardAndInventoryForTasks()
         {
             // Clear board items from being completed
             for (int x = 0; x < gameData.boardData.GetLength(0); x++)

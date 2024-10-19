@@ -51,30 +51,36 @@ SpriteAtlas:
     isAtlasV2: 0
     cachedData: {fileID: 0}
     packedSpriteRenderDataKeys:
-    - 3a8b8a410264f1548b7615fa5d3877e8: 21300000
-    - 9f64f3a1f4e751346b84be2b8b31551a: 21300000
-    - 0c6d12c14d2f847469053a9201138b38: 21300000
-    - c84b8eb4f5a868d448766a73d860da90: 21300000
+    - e55e33f4009b0f14f864be2a49cb2917: 21300000
     - 41f49355012fc5c4084be4620fc81b92: 21300000
+    - 10c91bf6c91d0314b9e561ee1d64f7c7: 21300000
     - bd478638a2122444e97ff157c924ce5e: 21300000
+    - f9f823a8844ecca4b9c290c7bce84200: 4028827446383682466
     - a45001598fe607841939ebe470c1f949: 21300000
+    - e468c85a73683e9498df43c5c0dfd7e5: 21300000
+    - 7960dc7a14498ac4cb72be4314b24348: 21300000
+    - 4ea232fe84fb21f40ae01d85c0a7cb58: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
-  - {fileID: 21300000, guid: 3a8b8a410264f1548b7615fa5d3877e8, type: 3}
-  - {fileID: 21300000, guid: 9f64f3a1f4e751346b84be2b8b31551a, type: 3}
-  - {fileID: 21300000, guid: 0c6d12c14d2f847469053a9201138b38, type: 3}
-  - {fileID: 21300000, guid: c84b8eb4f5a868d448766a73d860da90, type: 3}
+  - {fileID: 21300000, guid: e55e33f4009b0f14f864be2a49cb2917, type: 3}
   - {fileID: 21300000, guid: 41f49355012fc5c4084be4620fc81b92, type: 3}
+  - {fileID: 21300000, guid: 10c91bf6c91d0314b9e561ee1d64f7c7, type: 3}
   - {fileID: 21300000, guid: bd478638a2122444e97ff157c924ce5e, type: 3}
+  - {fileID: 4028827446383682466, guid: f9f823a8844ecca4b9c290c7bce84200, type: 3}
   - {fileID: 21300000, guid: a45001598fe607841939ebe470c1f949, type: 3}
+  - {fileID: 21300000, guid: e468c85a73683e9498df43c5c0dfd7e5, type: 3}
+  - {fileID: 21300000, guid: 7960dc7a14498ac4cb72be4314b24348, type: 3}
+  - {fileID: 21300000, guid: 4ea232fe84fb21f40ae01d85c0a7cb58, type: 3}
   m_PackedSpriteNamesToIndex:
-  - Tree1
-  - Tree4
-  - Tree2
-  - Tree3
+  - Stone1
   - DoorExterior
+  - Stone3
   - DoorLeft
+  - Placeground
   - DoorRight
+  - Stone2
+  - Bush1
+  - Stone4
   m_RenderDataMap: {}
   m_Tag: OtherEnvironmnetAtlas
   m_IsVariant: 0

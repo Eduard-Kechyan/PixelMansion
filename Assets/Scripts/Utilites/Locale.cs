@@ -170,9 +170,9 @@ namespace Merge
             return count;
         }
 
-        public int GetLength(string key)
+        public int GetLength(string key, int startAt = 0)
         {
-            int count = 0;
+            int count = startAt;
 
             if (config == null)
             {

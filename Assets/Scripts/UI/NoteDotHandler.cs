@@ -15,11 +15,14 @@ namespace Merge
         public bool isWorld = true;
 
         // References
+        private ErrorManager errorManager;
         private WorldUI worldUI;
         private MergeUI mergeUI;
 
         void Start()
         {
+            // Cache
+            errorManager = ErrorManager.Instance;
             worldUI = GetComponent<WorldUI>();
             mergeUI = GetComponent<MergeUI>();
 
@@ -30,7 +33,7 @@ namespace Merge
         }
 
         // Check if we need to show the note dot on the given button
-        public void ToggleButtonNoteDot(string buttonName, bool show, int amount = 0, bool useBloop = false)
+        public void ToggleButtonNoteDot(UIButtons.Button button, bool show, int amount = 0, bool useBloop = false)
         {
             VisualElement buttonNoteDot = new();
 
@@ -39,21 +42,18 @@ namespace Merge
                 StopCoroutine(BloopNoteDot(buttonNoteDot));
             }
 
-            switch (buttonName)
+            switch (button)
             {
-                case "settings":
-                    buttonNoteDot = worldUI.settingsButtonNoteDot;
-                    break;
-                case "play":
+                case UIButtons.Button.Play:
                     buttonNoteDot = worldUI.playButtonNoteDot;
                     break;
-                case "home":
+                case UIButtons.Button.Home:
                     buttonNoteDot = mergeUI.homeButtonNoteDot;
                     break;
-                case "inventory":
+                case UIButtons.Button.Inventory:
                     buttonNoteDot = mergeUI.inventoryButtonNoteDot;
                     break;
-                case "shop":
+                case UIButtons.Button.Shop:
                     if (isWorld)
                     {
                         buttonNoteDot = worldUI.shopButtonNoteDot;
@@ -63,7 +63,7 @@ namespace Merge
                         buttonNoteDot = mergeUI.shopButtonNoteDot;
                     }
                     break;
-                case "task":
+                case UIButtons.Button.Task:
                     if (isWorld)
                     {
                         buttonNoteDot = worldUI.taskButtonNoteDot;
@@ -85,7 +85,10 @@ namespace Merge
 
                     taskNoteDotAmount = amount;
 
-
+                    break;
+                default:
+                    // ERROR
+                    errorManager.ThrowWarning(ErrorManager.ErrorType.Code, GetType().ToString(), "Wrong button given: " + button);
                     break;
             }
 

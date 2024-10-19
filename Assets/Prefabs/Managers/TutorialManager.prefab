@@ -63,13 +63,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6219ae9bd0bfa2048b2cca0e8b80149d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skipTutorial: 0
   startFromStep: 0
   stepToStartFrom: 
-  tutorialData: {fileID: 11400000, guid: 46f222382f4fece48829f1645caddf12, type: 2}
-  progressManager: {fileID: 0}
-  convoUIHandler: {fileID: 0}
   sceneLoader: {fileID: 0}
+  tutorialData: {fileID: 11400000, guid: 46f222382f4fece48829f1645caddf12, type: 2}
   shineSprites:
   - sprites:
     - {fileID: -1348284963, guid: fd0f0afa5983bec4587b659d4b3f524d, type: 3}
@@ -112,6 +109,7 @@ MonoBehaviour:
     - {fileID: -612297195, guid: 1f4d7fe5983ff7c46bd20b08135b412c, type: 3}
     - {fileID: 1238636653, guid: 1f4d7fe5983ff7c46bd20b08135b412c, type: 3}
     speed: 0.1
+  ready: 0
 --- !u!114 &6221008523312400612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124,10 +122,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25374eef02c3a894f8c4b17449b50c96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boardInteractions: {fileID: 0}
+  pointerWidth: 30
+  buttonPosXOffset: 5
   merging: 0
   mergeSprite: {fileID: 0}
-  waitForBoardIndication: 0
+  generating: 0
+  genSprite: {fileID: 0}
+  genItemSprite: {fileID: 0}
+  genItemGroup: 0
 --- !u!114 &5299132373515573405
 MonoBehaviour:
   m_ObjectHideFlags: 0

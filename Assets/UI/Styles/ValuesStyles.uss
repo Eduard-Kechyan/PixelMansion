@@ -39,7 +39,7 @@
     margin-bottom: 0;
     padding-top: 0;
     padding-bottom: 2px;
-    width: 40px;
+    width: 36px;
     height: 20px;
     overflow: hidden;
     background-image: url("project://database/Assets/Sprites/Values/ValueBox.png?fileID=2800000&guid=7f2582712c649454cac7fdacf465ec27&type=3#ValueBox");
@@ -479,4 +479,32 @@
     left: 3px;
     top: 3px;
     -unity-font-definition: url("project://database/Assets/Fonts/Files/RobotoMono.ttf?fileID=12800000&guid=7144b63d91be9e740aa1f0e7ba467a67&type=3#RobotoMono");
+}
+
+.values_settings_button {
+    width: 16px;
+    height: 16px;
+    margin-top: 1px;
+    background-image: url("project://database/Assets/Sprites/Buttons/Main/SettingsButton.png?fileID=2800000&guid=ba1e299eb262acc479335a62d081f530&type=3#SettingsButton");
+    transition-duration: 0.1s;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.values_settings_button:active {
+    scale: 0.8 0.8;
+}
+
+.values_settings_button_tutorial {
+    margin-right: 7px;
 }

@@ -33,6 +33,9 @@ namespace Merge
 
         private bool filthRemoved = false;
 
+        [HideInInspector]
+        public bool loaded = false;
+
         private Transform refFilth = null;
         private Action callback = null;
 
@@ -43,6 +46,8 @@ namespace Merge
         {
             // Cache
             soundManager = SoundManager.Instance;
+
+            loaded = true;
         }
 
 #if UNITY_EDITOR
@@ -76,7 +81,17 @@ namespace Merge
 
             int filthCount = refFilth.childCount;
 
-            soundManager.PlaySound(SoundManager.SoundType.Generate); // TODO - Change this to SoundManager.SoundType.RemoveFilth and add the proper sound 
+            soundManager.PlaySound(SoundManager.SoundType.CleanDust);
+
+            if (UnityEngine.Random.value > 0.8)
+            {
+                float randomDelay = UnityEngine.Random.Range(0.1f, 0.3f);
+
+                Glob.SetTimeout(() =>
+                {
+                    soundManager.PlaySound(SoundManager.SoundType.CleanGlass);
+                }, randomDelay);
+            }
 
             // Remove mansion parts
             for (int i = 0; i < filthCount; i++)

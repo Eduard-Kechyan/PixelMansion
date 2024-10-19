@@ -23,7 +23,6 @@ namespace Merge
         // References
         private GameRefs gameRefs;
         private SafeAreaHandler safeAreaHandler;
-        private SettingsMenu settingsMenu;
         private ShopMenu shopMenu;
         private TaskMenu taskMenu;
         private DebugMenu debugMenu;
@@ -43,13 +42,11 @@ namespace Merge
         // UI
         private VisualElement root;
         private VisualElement topBox;
-        private Button settingsButton;
         private Button shopButton;
         private VisualElement bottomBox;
         private Button taskButton;
         private Button playButton;
 
-        public VisualElement settingsButtonNoteDot;
         public VisualElement shopButtonNoteDot;
         public VisualElement playButtonNoteDot;
         public VisualElement taskButtonNoteDot;
@@ -63,7 +60,6 @@ namespace Merge
             // Cache
             gameRefs = GameRefs.Instance;
             safeAreaHandler = gameRefs.safeAreaHandler;
-            settingsMenu = gameRefs.settingsMenu;
             shopMenu = gameRefs.shopMenu;
             taskMenu = gameRefs.taskMenu;
             debugMenu = gameRefs.debugMenu;
@@ -84,7 +80,6 @@ namespace Merge
             root = GetComponent<UIDocument>().rootVisualElement;
 
             topBox = root.Q<VisualElement>("TopBox");
-            settingsButton = topBox.Q<Button>("SettingsButton");
             shopButton = topBox.Q<Button>("ShopButton");
 
             bottomBox = root.Q<VisualElement>("BottomBox");
@@ -92,7 +87,6 @@ namespace Merge
             taskButton = root.Q<Button>("TaskButton");
             playButton = root.Q<Button>("PlayButton");
 
-            settingsButtonNoteDot = settingsButton.Q<VisualElement>("NoteDot");
             shopButtonNoteDot = shopButton.Q<VisualElement>("NoteDot");
             playButtonNoteDot = playButton.Q<VisualElement>("NoteDot");
             taskButtonNoteDot = taskButton.Q<VisualElement>("NoteDot");
@@ -102,7 +96,6 @@ namespace Merge
             textBoxText = textBox.Q<Label>("Text");
 
             // UI taps
-            settingsButton.clicked += () => soundManager.Tap(settingsMenu.Open);
             shopButton.clicked += () => soundManager.Tap(() => shopMenu.Open());
 
             taskButton.clicked += () =>
@@ -132,9 +125,10 @@ namespace Merge
                     }
                     else
                     {
+                        soundManager.PlaySound(SoundManager.SoundType.Transition);
                         sceneLoader.Load(SceneLoader.SceneType.Merge);
                     }
-                }, SoundManager.SoundType.Transition);
+                });
             };
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -218,22 +212,25 @@ namespace Merge
             uiButtons.worldTaskButtonPos = CalcButtonPosition(taskButton, true);
             uiButtons.worldPlayButtonPos = CalcButtonPosition(playButton, true);
 
-            shopButton.style.display = DisplayStyle.None;
+            if (!PlayerPrefs.HasKey("tutorialFinished"))
+            {
+                shopButton.style.display = DisplayStyle.None;
+            }
         }
 
         public void HideButtons()
         {
             playButton.style.display = DisplayStyle.None;
-            settingsButton.style.display = DisplayStyle.None;
             shopButton.style.display = DisplayStyle.None;
             taskButton.style.display = DisplayStyle.None;
         }
 
         public void ShowButtons(bool fromTutorial = false)
         {
+            shopButton.style.display = DisplayStyle.Flex;
+
             if (!buttonsHidden)
             {
-                Debug.Log("C");
                 playButton.SetEnabled(true);
                 taskButton.SetEnabled(true);
 
@@ -244,17 +241,14 @@ namespace Merge
             }
 
             playButton.SetEnabled(true);
-            settingsButton.SetEnabled(true);
             shopButton.SetEnabled(true);
             taskButton.SetEnabled(true);
 
             playButton.style.display = DisplayStyle.Flex;
-            settingsButton.style.display = DisplayStyle.Flex;
-            // shopButton.style.display = DisplayStyle.Flex;
+            shopButton.style.display = DisplayStyle.Flex;
             taskButton.style.display = DisplayStyle.Flex;
 
             PlayerPrefs.DeleteKey("worldPlayButtonShowing");
-            PlayerPrefs.DeleteKey("worldSettingsButtonShowing");
             PlayerPrefs.DeleteKey("worldShopButtonShowing");
             PlayerPrefs.DeleteKey("worldTaskButtonShowing");
         }
@@ -264,11 +258,6 @@ namespace Merge
             if (PlayerPrefs.HasKey("worldPlayButtonShowing"))
             {
                 playButton.style.display = DisplayStyle.Flex;
-            }
-
-            if (PlayerPrefs.HasKey("worldSettingsButtonShowing"))
-            {
-                settingsButton.style.display = DisplayStyle.Flex;
             }
 
             if (PlayerPrefs.HasKey("worldShopButtonShowing"))
@@ -290,11 +279,6 @@ namespace Merge
                     playButton.SetEnabled(true);
                     playButton.style.display = DisplayStyle.Flex;
                     PlayerPrefs.SetInt("worldPlayButtonShowing", 1);
-                    break;
-                case UIButtons.Button.Settings:
-                    settingsButton.SetEnabled(true);
-                    settingsButton.style.display = DisplayStyle.Flex;
-                    PlayerPrefs.SetInt("worldSettingsButtonShowing", 1);
                     break;
                 case UIButtons.Button.Shop:
                     shopButton.SetEnabled(true);
@@ -322,17 +306,6 @@ namespace Merge
                     {
                         playButton.style.display = DisplayStyle.None;
                         PlayerPrefs.DeleteKey("worldPlayButtonShowing");
-                    }
-                    break;
-                case UIButtons.Button.Settings:
-                    if (alt)
-                    {
-                        settingsButton.SetEnabled(false);
-                    }
-                    else
-                    {
-                        settingsButton.style.display = DisplayStyle.None;
-                        PlayerPrefs.DeleteKey("worldSettingsButtonShowing");
                     }
                     break;
                 case UIButtons.Button.Shop:
@@ -365,23 +338,25 @@ namespace Merge
 
         public void ToggleButtons()
         {
-            if (PlayerPrefs.HasKey("tutorialFinished"))
-            {
-                if (buttonsHidden)
-                {
-                    ShowButton(UIButtons.Button.Play);
-                    ShowButton(UIButtons.Button.Task);
+            /*  if (PlayerPrefs.HasKey("tutorialFinished"))
+              {
+                  Debug.Log(buttonsHidden);
 
-                    buttonsHidden = false;
-                }
-                else
-                {
-                    HideButton(UIButtons.Button.Play, true);
-                    HideButton(UIButtons.Button.Task, true);
+                  if (buttonsHidden)
+                  {
+                      ShowButton(UIButtons.Button.Play);
+                      ShowButton(UIButtons.Button.Task);
 
-                    buttonsHidden = true;
-                }
-            }
+                      buttonsHidden = false;
+                  }
+                  else
+                  {
+                      HideButton(UIButtons.Button.Play, true);
+                      HideButton(UIButtons.Button.Task, true);
+
+                      buttonsHidden = true;
+                  }
+              }*/
         }
 
         public void CloseUI()

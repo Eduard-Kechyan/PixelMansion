@@ -4,8 +4,7 @@
     <ui:VisualElement name="LocaleWrapper" style="left: 0; top: 0; right: 0; bottom: 0; position: absolute; display: none; opacity: 1;">
         <ui:VisualElement name="Menu" class="menu Shop_menu" style="display: none; opacity: 1;">
             <ui:VisualElement name="Background" class="background" />
-            <ui:VisualElement name="Container" class="container">
-                <ui:VisualElement name="Content" class="content"/>
+            <ui:VisualElement name="Container" class="container Settings_menu">
                 <ui:VisualElement name="BorderBottom" class="border_bottom" />
                 <ui:VisualElement name="ShadowDot" class="shadow_dot" />
                 <ui:VisualElement name="Title" class="menu_title">

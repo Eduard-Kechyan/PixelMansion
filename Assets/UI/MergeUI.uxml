@@ -29,7 +29,7 @@
                 <ui:Label text="Item Name" name="InfoName" class="item_name" />
                 <ui:Label text="Item Data" name="InfoData" class="item_data" />
             </ui:VisualElement>
-            <ui:VisualElement name="Board" picking-mode="Ignore" class="board" style="visibility: visible; overflow: hidden;" />
+            <ui:VisualElement name="Board" picking-mode="Ignore" class="board" style="visibility: hidden;" />
             <ui:VisualElement name="Options" class="options">
                 <ui:Button name="HomeButton" enable-rich-text="false" class="button_standard" style="background-image: url(&quot;project://database/Assets/Sprites/Buttons/Main/HomeButton.png?fileID=2800000&amp;guid=ba8db5a0c1107754fa75be6b4a22bcd5&amp;type=3#HomeButton&quot;);">
                     <ui:VisualElement name="Border" class="border" />
@@ -57,6 +57,6 @@
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
-    <ui:Button name="DebugButton" class="button_standard debug_button" style="right: 25px; bottom: 4px; display: none;" />
-    <ui:Button name="FeedbackButton" class="button_standard feedback_debug_button" style="right: auto; bottom: 0; height: 24px; display: none; left: 25px;" />
+    <ui:Button name="DebugButton" class="button_standard debug_button" style="right: 25px; bottom: 4px; display: none; visibility: hidden;" />
+    <ui:Button name="FeedbackButton" class="button_standard feedback_debug_button" style="right: auto; bottom: 0; height: 24px; display: none; left: 25px; visibility: hidden;" />
 </ui:UXML>

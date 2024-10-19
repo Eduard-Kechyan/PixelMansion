@@ -15,8 +15,6 @@ namespace Merge
         public TutorialData tutorialData;
         public float countFPS = 10f;
         public float numberIncreaseDuration = 1f;
-        public int minTallAspectRatioHeight = 16;
-        public int minExtraTallAspectRatioHeight = 20;
 
         [HideInInspector]
         public const int WIDTH = 7;
@@ -87,9 +85,11 @@ namespace Merge
         [HideInInspector]
         public BoardManager.Tile[,] boardData;
         [HideInInspector]
-        public string[] unlockedData = new string[0];
+        public string[] unlockedItems = new string[0];
         [HideInInspector]
-        public string[] unlockedRoomsData = new string[0];
+        public string[] unlockedRooms = new string[0];
+        [HideInInspector]
+        public string[] unlockedDoors = new string[0];
         [HideInInspector]
         public BoardManager.TypeItem[] itemsData;
         [HideInInspector]
@@ -127,6 +127,11 @@ namespace Merge
         private Sprite[] wallSprites;
         private Sprite[] propsSprites;
 
+        private Sprite[] furnitureOptionSprites;
+        private Sprite[] floorOptionSprites;
+        private Sprite[] wallOptionSprites;
+        private Sprite[] propsOptionSprites;
+
         // Other
         public SceneLoader.SceneType lastScene = SceneLoader.SceneType.None;
 
@@ -140,20 +145,8 @@ namespace Merge
         [HideInInspector]
         public bool gettingLegalData = false; // TODO - Set to true
 
-        [HideInInspector]
-        public AspectRatioType aspectRatioType = AspectRatioType.None;
-
         // Debug
         public List<Logs.LogData> logsData = new();
-
-        // Enums
-        public enum AspectRatioType
-        {
-            None, // Al the other aspect ratios
-            Default, // 16:9
-            Tall, // 17:9 - 20:9
-            ExtraTall // 21:9 and taller
-        }
 
         // Events
         public delegate void EnergyUpdatedEvent(bool addTimer);
@@ -166,6 +159,7 @@ namespace Merge
         private SoundManager soundManager;
         private CloudSave cloudSave;
         private AddressableManager addressableManager;
+        private TutorialManager tutorialManager;
 
         // Instance
         public static GameData Instance;
@@ -190,10 +184,17 @@ namespace Merge
             soundManager = SoundManager.Instance;
             cloudSave = Services.Instance.GetComponent<CloudSave>();
             addressableManager = dataManager.GetComponent<AddressableManager>();
+            tutorialManager = GameRefs.Instance.tutorialManager;
 
             canLevelUp = PlayerPrefs.GetInt("canLevelUp") == 1;
 
             initialInventorySpace = inventorySpace;
+
+            if (!Application.isEditor)
+            {
+                Debug.Log("Installer Name: " + Application.installerName);
+                Debug.Log("Install Mode: " + Application.installMode);
+            }
 
             CalcGamePixelHeight();
 
@@ -237,6 +238,11 @@ namespace Merge
             wallSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("walls");
             propsSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("props");
 
+            furnitureOptionSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("furniture_options");
+            floorOptionSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("floor_options");
+            wallOptionSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("wall_options");
+            propsOptionSprites = await addressableManager.LoadAssetAllArrayAsync<Sprite>("prop_options");
+
             // Initial Items
             string prePath;
 
@@ -251,11 +257,8 @@ namespace Merge
 
             initialItemsTextAsset = await addressableManager.LoadAssetAsync<TextAsset>(prePath);
 
-            CheckAspectRatio(() =>
-            {
-                // Data loaded
-                dataLoaded = true;
-            });
+            // Data loaded
+            dataLoaded = true;
         }
 
         //////// SET ////////
@@ -655,7 +658,7 @@ namespace Merge
 
         public void CheckBonus()
         {
-            mergeUI?.CheckBonusButton();
+            mergeUI.CheckBonusButton();
         }
 
         public BonusManager.Bonus GetAndRemoveLatestBonus()
@@ -672,58 +675,6 @@ namespace Merge
         }
 
         //////// OTHER ////////
-
-        void CheckAspectRatio(Action callback = null)
-        {
-            if (PlayerPrefs.HasKey("aspectRatioType"))
-            {
-                aspectRatioType = Glob.ParseEnum<AspectRatioType>(PlayerPrefs.GetString("aspectRatioType"));
-
-                callback?.Invoke();
-            }
-            else
-            {
-                int screenWidth = Screen.width;
-                int screenHeight = Screen.height;
-
-                int gcd = CalculateGCD(screenWidth, screenHeight);
-
-                int aspectRatioWidth = screenWidth / gcd;
-                int aspectRatioHeight = screenHeight / gcd;
-
-                aspectRatioType = AspectRatioType.Default;
-
-                if (aspectRatioWidth == 9)
-                {
-                    if (aspectRatioHeight > minTallAspectRatioHeight) // 16, 17 - 20
-                    {
-                        aspectRatioType = AspectRatioType.Tall;
-                    }
-
-                    if (aspectRatioHeight > minExtraTallAspectRatioHeight) // 20, 21 and taller
-                    {
-                        aspectRatioType = AspectRatioType.ExtraTall;
-                    }
-                }
-
-                PlayerPrefs.SetString("aspectRatioType", aspectRatioType.ToString());
-                PlayerPrefs.Save();
-
-                callback?.Invoke();
-            }
-        }
-
-        int CalculateGCD(int a, int b)
-        {
-            while (b != 0)
-            {
-                int temp = b;
-                b = a % b;
-                a = temp;
-            }
-
-            return a;
-        }
 
         void ToggleCanLevelUpCheck(bool canLevelUpCheck)
         {
@@ -772,18 +723,13 @@ namespace Merge
             switch (type)
             {
                 case Selectable.Type.Floor:
-                    return FindSpriteByName(floorSprites, name);
-                //return FindSpriteByName(isOption ? floorOptionSprites : floorSprites, name);
+                    return FindSpriteByName(isOption ? floorOptionSprites : floorSprites, name);
                 case Selectable.Type.Wall:
-                    return FindSpriteByName(wallSprites, name);
+                    return FindSpriteByName(isOption ? wallOptionSprites : wallSprites, name);
                 case Selectable.Type.Furniture:
-                    return FindSpriteByName(furnitureSprites, name);
-                case Selectable.Type.Prop:
-                    return FindSpriteByName(propsSprites, name);
-                default:
-                    // ERROR
-                    ErrorManager.Instance.Throw(ErrorManager.ErrorType.Code, GetType() + " // Selectable", "Wrong type: " + type);
-                    return null;
+                    return FindSpriteByName(isOption ? furnitureOptionSprites : furnitureSprites, name);
+                default: // Selectable.Type.Prop
+                    return FindSpriteByName(isOption ? propsOptionSprites : propsSprites, name);
             }
         }
 

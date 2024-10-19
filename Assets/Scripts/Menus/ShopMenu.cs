@@ -131,10 +131,10 @@ namespace Merge
 
                 scrollContainer = content.Q<ScrollView>("ScrollContainer");
 
-                dailySubtitle = content.Q<VisualElement>("DailySubtitle").Q<Label>("Subtitle");
-                itemsSubtitle = content.Q<VisualElement>("ItemsSubtitle").Q<Label>("Subtitle");
-                gemsSubtitle = content.Q<VisualElement>("GemsSubtitle").Q<Label>("Subtitle");
-                goldSubtitle = content.Q<VisualElement>("GoldSubtitle").Q<Label>("Subtitle");
+                dailySubtitle = content.Q<Label>("DailySubtitle");
+                itemsSubtitle = content.Q<Label>("ItemsSubtitle");
+                gemsSubtitle = content.Q<Label>("GemsSubtitle");
+                goldSubtitle = content.Q<Label>("GoldSubtitle");
 
                 dailyBoxes = content.Q<VisualElement>("DailyBoxes");
                 itemsBoxes = content.Q<VisualElement>("ItemsBoxes");
@@ -213,6 +213,9 @@ namespace Merge
                 shopBox.name = shopItemType.ToString() + "ShopBox" + i;
                 shopBox.AddToClassList("shop_item_box_" + shopItemType.ToString().ToLower());
 
+                // Top label // FIX - Add a check for the items left in the shop
+                shopBox.Q<Label>("TopLabel").text = dailyData.GetLeftCount(nameOrder, shopItems[i].total, shopItemType) + "/" + shopItems[i].total;
+
                 // Popular
                 shopBox.Q<VisualElement>("Popular").style.display = DisplayStyle.None;
 
@@ -250,46 +253,14 @@ namespace Merge
 
                 // Check if this is the daily data
                 // Also check if we already got the free daily item
-                if (shopItemType == ShopItemType.Daily)
+                if (shopItemType == ShopItemType.Daily && (i == 0 && dailyData.dailyItem1 || i == 1 && dailyData.dailyItem2))
                 {
-                    if (i == 0 && dailyData.dailyItem0 || i == 1 && dailyData.dailyItem1)
-                    {
-                        // Top label
-                        shopBox.Q<Label>("TopLabel").text = "1/1";
-
-                        buyButton.SetEnabled(false);
-                        buyButtonLabel.text = LOCALE.Get("shop_menu_free_gotten");
-                        buyButtonLabel.AddToClassList("shop_box_buy_button_label_full");
-                    }
-                    else
-                    {
-                        // Top label
-                        shopBox.Q<Label>("TopLabel").text = "0/1";
-
-                        buyButton.clicked += () => SoundManager.Tap(() => BuyItem(nameOrder, shopItemType));
-                    }
+                    buyButton.SetEnabled(false);
+                    buyButtonLabel.text = LOCALE.Get("shop_menu_free_gotten");
+                    buyButtonLabel.AddToClassList("shop_box_buy_button_label_full");
                 }
-                else if (shopItemType == ShopItemType.Item)
+                else
                 {
-                    /* if (true)
-                     {
-                         // Top label
-                         shopBox.Q<Label>("TopLabel").text = shopItems[i].total + "/" + shopItems[i].total;
-
-                         buyButton.SetEnabled(false);
-                         buyButtonLabel.text = LOCALE.Get("shop_menu_free_gotten");
-                         buyButtonLabel.AddToClassList("shop_box_buy_button_label_full");
-                     }
-                     else
-                     {
-                         // Top label
-                         shopBox.Q<Label>("TopLabel").text = "?/" + shopItems[i].total;
-
-                         buyButton.clicked += () => SoundManager.Tap(() => BuyItem(nameOrder, shopItemType));
-                     }*/
-                    // Top label
-                    shopBox.Q<Label>("TopLabel").text = "?/" + shopItems[i].total;
-
                     buyButton.clicked += () => SoundManager.Tap(() => BuyItem(nameOrder, shopItemType));
                 }
 
@@ -300,7 +271,7 @@ namespace Merge
                 }
                 else
                 {
-                    newShopItemBox.Q<Button>("InfoButton").clicked += () => SoundManager.Tap(() => ShowInfo(shopItemType, nameOrder));
+                    newShopItemBox.Q<Button>("InfoButton").clicked += () => SoundManager.Tap(() => ShowInfo(nameOrder));
                 }
 
                 // Add to container
@@ -604,11 +575,11 @@ namespace Merge
             );
         }
 
-        void ShowInfo(ShopItemType shopItemType, string nameOrder)
+        void ShowInfo(string nameOrder)
         {
             int order = int.Parse(nameOrder);
 
-            ShopItemsContent shopItemsContent = shopItemType == ShopItemType.Daily ? shopData.dailyContent[order] : shopData.itemsContent[order];
+            ShopItemsContent shopItemsContent = shopData.itemsContent[order];
 
             infoMenu.Open(itemHandler.CreateItemTemp(shopItemsContent));
         }
@@ -657,7 +628,7 @@ namespace Merge
                 StartCoroutine(AddItemToPlayButton(order, shopItemType));
             }
 
-            dailyData.SetBoughtItem(nameOrder);
+            dailyData.SetBoughtItem(nameOrder, shopItemType);
 
             InitializeShopItems(shopItemType);
 
@@ -720,11 +691,11 @@ namespace Merge
 
             if (order == 0)
             {
-                dailyData.dailyItem0 = true;
+                dailyData.dailyItem1 = true;
             }
             else
             {
-                dailyData.dailyItem1 = true;
+                dailyData.dailyItem2 = true;
             }
         }
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,9 +29,30 @@ namespace Merge
         [ReadOnly]
         private bool isSelected = false;
 
+        [HideInInspector]
+        public bool loaded = false;
+
         // Sprites
-        private readonly List<SpriteRenderer> chunks = new();
+        private readonly List<Chunk> chunks = new();
         private readonly List<Sprite> oldChunkSprites = new();
+
+        // Enums
+        public enum WallType
+        {
+            Default,
+            DoorLeft,
+            DoorRight,
+            WindowLeft,
+            WindowRight
+        }
+
+        // Classes
+        [Serializable]
+        public class Chunk
+        {
+            public SpriteRenderer spriteRenderer;
+            public WallType type;
+        }
 
         // Overlay
         private readonly List<SpriteRenderer> overlays = new();
@@ -59,6 +81,17 @@ namespace Merge
                 GetChunks();
             }
 
+            StartCoroutine(WaitForSelectableTo());
+        }
+
+        IEnumerator WaitForSelectableTo()
+        {
+            while (!selectable.loaded)
+            {
+                yield return null;
+            }
+
+            loaded = true;
             enabled = false;
         }
 
@@ -87,7 +120,9 @@ namespace Merge
 
                     for (int j = 0; j < wallItem.childCount; j++)
                     {
-                        SpriteRenderer newChild = wallItem.GetChild(j).GetComponent<SpriteRenderer>();
+                        Transform wallItemChunk = wallItem.GetChild(j);
+
+                        SpriteRenderer newChild = wallItemChunk.GetComponent<SpriteRenderer>();
 
                         if (j >= (wallItem.childCount == 2 ? 1 : 2)) // Placeholder
                         {
@@ -109,7 +144,36 @@ namespace Merge
                                 newChild.transform.localScale = new Vector3(1, newChild.transform.localScale.y, newChild.transform.localScale.z);
                             }
 
-                            chunks.Add(newChild);
+                            WallType newType = WallType.Default;
+
+                            if (wallItemChunk.name.Contains("Door"))
+                            {
+                                if (wallItemChunk.name.Contains("Left"))
+                                {
+                                    newType = WallType.DoorLeft;
+                                }
+                                else
+                                {
+                                    newType = WallType.DoorRight;
+                                }
+                            }
+                            else if (wallItemChunk.name.Contains("Window"))
+                            {
+                                if (wallItemChunk.name.Contains("Left"))
+                                {
+                                    newType = WallType.WindowLeft;
+                                }
+                                else
+                                {
+                                    newType = WallType.WindowRight;
+                                }
+                            }
+
+                            chunks.Add(new()
+                            {
+                                spriteRenderer = newChild,
+                                type = newType
+                            });
 
                             if (selectable.isOld)
                             {
@@ -124,7 +188,7 @@ namespace Merge
                 }
 
 
-                chunks.Sort((a, b) => a.transform.position.x.CompareTo(b.transform.position.x));
+                chunks.Sort((a, b) => a.spriteRenderer.transform.position.x.CompareTo(b.spriteRenderer.transform.position.x));
 
                 if (selectable.isOld)
                 {
@@ -166,10 +230,33 @@ namespace Merge
                 selectable.spriteOrder = 0;
             }
 
+            Sprite spriteToUse = selectable.GetWallSprite(selectable.spriteOrder);
+            Sprite spriteToUseDoorLeft = selectable.GetWallSprite(selectable.spriteOrder, true);
+            Sprite spriteToUseDoorRight = selectable.GetWallSprite(selectable.spriteOrder, true, false, true);
+            Sprite spriteToUseWindowLeft = selectable.GetWallSprite(selectable.spriteOrder, false, true);
+            Sprite spriteToUseWindowRight = selectable.GetWallSprite(selectable.spriteOrder, false, true, true);
+
             // Set the sprites
             for (int i = 0; i < chunks.Count; i++)
             {
-                chunks[i].sprite = selectable.GetSprite(selectable.spriteOrder);
+                switch (chunks[i].type)
+                {
+                    case WallType.DoorLeft:
+                        chunks[i].spriteRenderer.sprite = spriteToUseDoorLeft;
+                        break;
+                    case WallType.DoorRight:
+                        chunks[i].spriteRenderer.sprite = spriteToUseDoorRight;
+                        break;
+                    case WallType.WindowLeft:
+                        chunks[i].spriteRenderer.sprite = spriteToUseWindowLeft;
+                        break;
+                    case WallType.WindowRight:
+                        chunks[i].spriteRenderer.sprite = spriteToUseWindowRight;
+                        break;
+                    default: // WallType.Default
+                        chunks[i].spriteRenderer.sprite = spriteToUse;
+                        break;
+                }
             }
         }
 
@@ -181,6 +268,11 @@ namespace Merge
                 StopCoroutine("ChangeWallChunks");
             }
 
+            if (selectable == null)
+            {
+                selectable = GetComponent<Selectable>();
+            }
+
             // Set the sprite order
             selectable.spriteOrder = order;
 
@@ -189,14 +281,37 @@ namespace Merge
                 GetChunks();
             }
 
+            Sprite spriteToUse = selectable.GetWallSprite(selectable.spriteOrder);
+            Sprite spriteToUseDoorLeft = selectable.GetWallSprite(selectable.spriteOrder, true);
+            Sprite spriteToUseDoorRight = selectable.GetWallSprite(selectable.spriteOrder, true, false, true);
+            Sprite spriteToUseWindowLeft = selectable.GetWallSprite(selectable.spriteOrder, false, true);
+            Sprite spriteToUseWindowRight = selectable.GetWallSprite(selectable.spriteOrder, false, true, true);
+
             // Set the sprites
             for (int i = 0; i < chunks.Count; i++)
             {
-                chunks[i].sprite = selectable.GetSprite(order);
+                switch (chunks[i].type)
+                {
+                    case WallType.DoorLeft:
+                        chunks[i].spriteRenderer.sprite = spriteToUseDoorLeft;
+                        break;
+                    case WallType.DoorRight:
+                        chunks[i].spriteRenderer.sprite = spriteToUseDoorRight;
+                        break;
+                    case WallType.WindowLeft:
+                        chunks[i].spriteRenderer.sprite = spriteToUseWindowLeft;
+                        break;
+                    case WallType.WindowRight:
+                        chunks[i].spriteRenderer.sprite = spriteToUseWindowRight;
+                        break;
+                    default: // WallType.Default
+                        chunks[i].spriteRenderer.sprite = spriteToUse;
+                        break;
+                }
             }
         }
 
-        public void Cancel(int order)
+        public void Cancel(int order, Action callback = null)
         {
             // Stop changing if we are changing
             if (isChanging)
@@ -210,20 +325,45 @@ namespace Merge
                 // Reset the sprites to the old ones
                 for (int i = 0; i < chunks.Count; i++)
                 {
-                    chunks[i].sprite = oldChunkSprites[i];
+                    chunks[i].spriteRenderer.sprite = oldChunkSprites[i];
                 }
             }
             else
             {
+                Sprite spriteToUse = selectable.GetWallSprite(selectable.spriteOrder);
+                Sprite spriteToUseDoorLeft = selectable.GetWallSprite(selectable.spriteOrder, true);
+                Sprite spriteToUseDoorRight = selectable.GetWallSprite(selectable.spriteOrder, true, false, true);
+                Sprite spriteToUseWindowLeft = selectable.GetWallSprite(selectable.spriteOrder, false, true);
+                Sprite spriteToUseWindowRight = selectable.GetWallSprite(selectable.spriteOrder, false, true, true);
+
                 // Reset the sprites to the new ones
                 for (int i = 0; i < chunks.Count; i++)
                 {
-                    chunks[i].sprite = selectable.GetSprite(order);
+                    switch (chunks[i].type)
+                    {
+                        case WallType.DoorLeft:
+                            chunks[i].spriteRenderer.sprite = spriteToUseDoorLeft;
+                            break;
+                        case WallType.DoorRight:
+                            chunks[i].spriteRenderer.sprite = spriteToUseDoorRight;
+                            break;
+                        case WallType.WindowLeft:
+                            chunks[i].spriteRenderer.sprite = spriteToUseWindowLeft;
+                            break;
+                        case WallType.WindowRight:
+                            chunks[i].spriteRenderer.sprite = spriteToUseWindowRight;
+                            break;
+                        default: // WallType.Default
+                            chunks[i].spriteRenderer.sprite = spriteToUse;
+                            break;
+                    }
                 }
             }
+
+            callback?.Invoke();
         }
 
-        public void Confirm()
+        public void Confirm(Action callback = null)
         {
             // Stop changing if we are changing
             if (isChanging)
@@ -239,7 +379,7 @@ namespace Merge
                 {
                     for (int j = 0; j < chunks.Count; j++)
                     {
-                        chunks[i].sprite = oldChunkSprites[i];
+                        chunks[i].spriteRenderer.sprite = oldChunkSprites[i];
                     }
                 }
 
@@ -254,6 +394,12 @@ namespace Merge
                 ResetOverlays();
 
                 selectable.isOld = false;
+
+                callback?.Invoke();
+            }
+            else
+            {
+                callback?.Invoke();
             }
         }
 
@@ -262,17 +408,40 @@ namespace Merge
             isChanging = true;
             Glob.taskLoading = true;
 
+            Sprite spriteToUse = selectable.GetWallSprite(selectable.spriteOrder);
+            Sprite spriteToUseDoorLeft = selectable.GetWallSprite(selectable.spriteOrder, true);
+            Sprite spriteToUseDoorRight = selectable.GetWallSprite(selectable.spriteOrder, true, false, true);
+            Sprite spriteToUseWindowLeft = selectable.GetWallSprite(selectable.spriteOrder, false, true);
+            Sprite spriteToUseWindowRight = selectable.GetWallSprite(selectable.spriteOrder, false, true, true);
+
             for (int i = 0; i < chunks.Count; i++)
             {
-                chunks[i].material.SetFloat("_FlashAmount", 1);
+                chunks[i].spriteRenderer.material.SetFloat("_FlashAmount", 1);
 
                 SoundManager.Instance.PlaySound(SoundManager.SoundType.Generate);
 
-                chunks[i].sprite = selectable.GetSprite(selectable.spriteOrder);
+                switch (chunks[i].type)
+                {
+                    case WallType.DoorLeft:
+                        chunks[i].spriteRenderer.sprite = spriteToUseDoorLeft;
+                        break;
+                    case WallType.DoorRight:
+                        chunks[i].spriteRenderer.sprite = spriteToUseDoorRight;
+                        break;
+                    case WallType.WindowLeft:
+                        chunks[i].spriteRenderer.sprite = spriteToUseWindowLeft;
+                        break;
+                    case WallType.WindowRight:
+                        chunks[i].spriteRenderer.sprite = spriteToUseWindowRight;
+                        break;
+                    default: // WallType.Default
+                        chunks[i].spriteRenderer.sprite = spriteToUse;
+                        break;
+                }
 
                 yield return new WaitForSeconds(changeSpeed);
 
-                chunks[i].material.SetFloat("_FlashAmount", 0);
+                chunks[i].spriteRenderer.material.SetFloat("_FlashAmount", 0);
             }
 
             isChanging = false;

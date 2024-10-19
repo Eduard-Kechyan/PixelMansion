@@ -11,6 +11,8 @@ namespace Merge
         [ReadOnly]
         public bool referencesSet = false;
 
+        private int loadedCount = 0;
+
         // References
         [HideInInspector]
         public LockedOverlayPH lockedOverlayPH;
@@ -39,6 +41,8 @@ namespace Merge
         {
             if (!referencesSet)
             {
+                int loadingCount = 0;
+
                 WallLeftPH wallLeftPH = transform.GetComponentInChildren<WallLeftPH>();
                 WallRightPH wallRightPH = transform.GetComponentInChildren<WallRightPH>();
                 FloorPH floorPH = transform.GetComponentInChildren<FloorPH>();
@@ -49,41 +53,129 @@ namespace Merge
                 if (wallLeftPH != null)
                 {
                     wallLeft = wallLeftPH.transform;
+
+                    WaitForWallToLoad(wallLeftPH.GetComponent<ChangeWall>());
+
+                    loadingCount++;
                 }
 
                 if (wallRightPH != null)
                 {
                     wallRight = wallRightPH.transform;
+
+                    WaitForWallToLoad(wallRightPH.GetComponent<ChangeWall>());
+
+                    loadingCount++;
                 }
 
                 if (floorPH != null)
                 {
                     floor = floorPH.transform;
+
+                    WaitForFloorToLoad(floorPH.GetComponent<ChangeFloor>());
+
+                    loadingCount++;
                 }
 
                 if (furniturePH != null)
                 {
                     furniture = furniturePH.transform;
+
+                    WaitForFurnitureToLoad(furniturePH.GetComponent<ChangeFurniture>());
+
+                    loadingCount++;
                 }
 
                 if (propsPH != null)
                 {
                     props = propsPH.transform;
+
+                    WaitForPropToLoad(furniturePH.GetComponent<ChangeProp>());
+
+                    loadingCount++;
                 }
 
                 if (filthPH != null)
                 {
                     filth = filthPH.transform;
+
+                    WaitForFilthToLoad(filthPH.GetComponent<RemoveFilth>());
+
+                    loadingCount++;
                 }
 
                 referencesSet = true;
 
                 callback?.Invoke();
+
+                WaitForPartsToLoad(loadingCount, callback);
             }
             else
             {
                 callback?.Invoke();
             }
+        }
+
+        IEnumerator WaitForPartsToLoad(int targetCount, Action callback)
+        {
+            while (targetCount < loadedCount)
+            {
+                yield return null;
+            }
+
+            loadedCount = 0;
+
+            callback?.Invoke();
+        }
+
+        IEnumerator WaitForWallToLoad(ChangeWall changer)
+        {
+            while (changer.loaded)
+            {
+                yield return null;
+            }
+
+            loadedCount++;
+        }
+
+        IEnumerator WaitForFloorToLoad(ChangeFloor changer)
+        {
+            while (changer.loaded)
+            {
+                yield return null;
+            }
+
+            loadedCount++;
+        }
+
+        IEnumerator WaitForFurnitureToLoad(ChangeFurniture changer)
+        {
+            while (changer.loaded)
+            {
+                yield return null;
+            }
+
+            loadedCount++;
+        }
+
+        IEnumerator WaitForPropToLoad(ChangeProp changer)
+        {
+            while (changer.loaded)
+            {
+                yield return null;
+            }
+
+            loadedCount++;
+        }
+
+        IEnumerator WaitForFilthToLoad(RemoveFilth changer)
+        {
+            while (changer.loaded)
+            {
+                yield return null;
+            }
+
+            loadedCount++;
         }
 
         public GameObject GetLockedOverlay()
