@@ -15,12 +15,11 @@ Uses pixel art style.
 
 ## Milestones 
 * Started: 01.01.23
-* Finished: 00.00.00
-* Apple: 00.00.00
+* Abandoned: 06.02.24
 
 ## Technologies/Tools
 * Unity
 * C#
 
 ---
-*© 2023 Eduard Kechyan, Solo Node Games. All rights reserved.*
+*© 2026 Eduard Kechyan, Solo Node Games. All rights reserved.*
